@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI로 만든 제품이 안 팔리는 이유 — 디자인 시스템의 힘</title>
+<style>
+  :root {
+    --accent: #2d9162;
+    --accent-light: #e8f5ef;
+    --accent-dark: #1a6b46;
+    --bg: #f8fafb;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .hero { background: linear-gradient(135deg, #1a6b46 0%, #2d9162 50%, #34d399 100%); color: white; padding: 3rem 2rem 2rem; text-align: center; }
+  .hero .badge { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 0.3rem 1rem; font-size: 0.8rem; margin-bottom: 1rem; }
+  .hero h1 { font-size: clamp(1.4rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 0.5rem; line-height: 1.3; }
+  .hero .meta { font-size: 0.85rem; opacity: 0.85; margin-top: 0.5rem; }
+  .hero .cta { display: inline-block; margin-top: 1.2rem; background: white; color: var(--accent-dark); padding: 0.6rem 1.5rem; border-radius: 25px; font-weight: 700; font-size: 0.9rem; text-decoration: none; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+  .section { margin-bottom: 2rem; }
+  .section-title { font-size: 1.1rem; font-weight: 700; color: var(--accent-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .section-title::before { content: ''; display: inline-block; width: 4px; height: 1.2em; background: var(--accent); border-radius: 2px; }
+  .card { background: var(--card); border-radius: 12px; padding: 1.2rem 1.4rem; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border: 1px solid var(--border); margin-bottom: 1rem; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+  .highlight-box { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
+  .highlight-box strong { color: var(--accent-dark); }
+  .tag { display: inline-block; background: var(--accent-light); color: var(--accent-dark); border-radius: 12px; padding: 0.2rem 0.7rem; font-size: 0.78rem; font-weight: 600; margin: 0.2rem; }
+  .step-list { counter-reset: step; list-style: none; }
+  .step-list li { counter-increment: step; display: flex; gap: 0.8rem; margin-bottom: 0.9rem; align-items: flex-start; }
+  .step-list li::before { content: counter(step); background: var(--accent); color: white; border-radius: 50%; width: 1.6rem; height: 1.6rem; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; margin-top: 0.1rem; }
+  .tool-card { background: var(--card); border: 2px solid var(--accent); border-radius: 10px; padding: 1rem; text-align: center; }
+  .tool-card .icon { font-size: 2rem; margin-bottom: 0.4rem; }
+  .tool-card h3 { font-size: 0.95rem; color: var(--accent-dark); margin-bottom: 0.3rem; }
+  .tool-card p { font-size: 0.82rem; color: var(--text-muted); }
+  .flow { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.5rem 0; }
+  .flow-item { background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; padding: 0.4rem 0.8rem; font-size: 0.82rem; font-weight: 600; color: var(--accent-dark); }
+  .flow-arrow { color: var(--accent); font-weight: 700; }
+  .quote { background: #f0fdf4; border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: 0.9rem 1rem; font-style: italic; color: var(--text); font-size: 0.95rem; }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .vs-bad { background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 1rem; }
+  .vs-good { background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; padding: 1rem; }
+  .vs h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .vs-bad h4 { color: var(--danger); }
+  .vs-good h4 { color: var(--accent-dark); }
+  .vs p, .vs li { font-size: 0.82rem; color: var(--text-muted); }
+  .vs ul { padding-left: 1rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { background: var(--accent); color: white; padding: 0.6rem 0.8rem; text-align: left; }
+  td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: #f9fafb; }
+  .deeplink { color: var(--accent); text-decoration: none; font-size: 0.78rem; font-weight: 600; }
+  .deeplink:hover { text-decoration: underline; }
+  footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 2rem; }
+  @media (max-width: 600px) { .vs { grid-template-columns: 1fr; } .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">📺 메이커 에반 · 2026-05-06</div>
+  <h1>AI로 만든 제품이 안 팔리는 이유</h1>
+  <p style="margin-top:0.4rem; opacity:0.9;">디자인 시스템이 AI 시대의 마지막 해자(Moat)인 이유</p>
+  <div class="meta">🕐 10분 영상 · AI · 디자인시스템 · Vibe Coding</div>
+  <a class="cta" href="https://youtu.be/UCqJvQF3QxA" target="_blank">▶ 영상 바로가기</a>
+</div>
+
+<div class="container">
+
+  <!-- 핵심 문제 -->
+  <div class="section">
+    <div class="section-title">왜 AI 제품은 "AI 슬롭"이 될까?</div>
+    <div class="highlight-box">
+      <strong>AI 슬롭(AI Slop)</strong>이란? AI가 만든 결과물에서 나는 특유의 <strong>"어디서 본 듯한, 대충 그럴싸한"</strong> 느낌.<br>
+      원인: AI는 학습 데이터의 <strong>평균</strong>을 출력하기 때문 — 누구나 평균 수준의 결과물을 쉽게 만드는 시대.
+    </div>
+    <div class="vs">
+      <div class="vs-bad">
+        <h4>❌ 디자인 시스템 없이</h4>
+        <ul>
+          <li>버튼마다 다른 색, 폰트마다 다른 굵기</li>
+          <li>어수선하고 싸구려처럼 보이는 UI</li>
+          <li>AI에게 맡길수록 통일감이 없어짐</li>
+          <li>"AI 슬롭" 느낌 — 사용자가 0.5초만에 감지</li>
+        </ul>
+      </div>
+      <div class="vs-good">
+        <h4>✅ 디자인 시스템과 함께</h4>
+        <ul>
+          <li>색상·폰트·간격이 일관되게 유지</li>
+          <li>AI가 100개를 만들어도 같은 느낌</li>
+          <li>Design.md로 가이드라인 자동 전달</li>
+          <li>소수 팀이 대기업 품질 결과물 가능</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 비디자이너 필수 도구 3종 -->
+  <div class="section">
+    <div class="section-title">비디자이너를 위한 필수 도구 3종 <a class="deeplink" href="https://youtu.be/UCqJvQF3QxA?t=300" target="_blank">▶ 5:00</a></div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:1rem;">
+      <div class="tool-card">
+        <div class="icon">🎨</div>
+        <h3>원티드 몽타주</h3>
+        <p>한국어 최적화 디자인 시스템. 상업적 무료, 피그마·Design.md 익스포트 가능</p>
+      </div>
+      <div class="tool-card">
+        <div class="icon">🖼️</div>
+        <h3>쿨리콘즈(Coolicons)</h3>
+        <p>한 사람이 만든 통일된 아이콘 셋. 라인·듀오톤·컬러 3스타일, 굵기 3단계</p>
+      </div>
+      <div class="tool-card">
+        <div class="icon">✍️</div>
+        <h3>프리텐다드(Pretendard)</h3>
+        <p>자간 -0.02em, 행간 1.5~1.6 설정 필수. 네이버·토스가 쓰는 수치</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Design.md -->
+  <div class="section">
+    <div class="section-title">Design.md — AI에게 건네는 디자인 매뉴얼 <a class="deeplink" href="https://youtu.be/UCqJvQF3QxA?t=150" target="_blank">▶ 2:30</a></div>
+    <div class="card">
+      <p style="font-size:0.9rem; margin-bottom:0.8rem;">Google Labs가 제안한 포맷. 마크다운 파일 하나에 모든 디자인 규칙을 담아 AI에게 함께 전달.</p>
+      <div style="background:#1a1a2e; color:#34d399; border-radius:8px; padding:1rem; font-family:monospace; font-size:0.8rem; line-height:1.7;">
+        <span style="color:#6b7280;"># design.md 구조</span><br>
+        <span style="color:#f59e0b;">---  # YAML: 기계 읽기용 값</span><br>
+        primary-color: #2d9162<br>
+        font: Pretendard<br>
+        base-spacing: 8px<br>
+        font-size-body: 16px<br>
+        letter-spacing: -0.02em<br>
+        line-height: 1.5<br>
+        <span style="color:#f59e0b;">---</span><br><br>
+        <span style="color:#6b7280;">## 선택 이유 (AI가 판단에 활용)</span><br>
+        primary는 신뢰감을 위한 녹색 계열...
+      </div>
+    </div>
+    <div class="highlight-box">
+      <strong>역설적 진리:</strong> AI가 디자인을 더 많이 만들수록, 디자인 시스템은 더 중요해진다.<br>
+      가이드라인 없는 AI = 매뉴얼 없는 신입 직원 → 매번 다른 결과
+    </div>
+  </div>
+
+  <!-- 5단계 실행 워크플로우 -->
+  <div class="section">
+    <div class="section-title">디자인 시스템 구축 5단계 <a class="deeplink" href="https://youtu.be/UCqJvQF3QxA?t=720" target="_blank">▶ 12:00</a></div>
+    <div class="card">
+      <ol class="step-list">
+        <li><strong>기본값 설정</strong>: 색 5~6개, 폰트 크기 6단계, 간격 8단계 — 단순하게 SML 메뉴판처럼</li>
+        <li><strong>Design.md 작성</strong>: YAML로 값 정의 + 아래에 선택 이유 한 줄씩 서술</li>
+        <li><strong>컴포넌트 가져오기</strong>: 원티드 몽타주 버튼·폼·카드 → 색만 본인 브랜드로 교체</li>
+        <li><strong>아이콘 수집</strong>: 쿨리콘즈에서 자주 쓸 아이콘 30개만 → 전용 폴더 관리</li>
+        <li><strong>AI 작업마다 Design.md 전달</strong>: "이 파일 먼저 읽고 시작해" + 결과 검증</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 빠른 시작 팁 -->
+  <div class="section">
+    <div class="section-title">디자인 DNA 빠르게 추출하는 법</div>
+    <div class="flow">
+      <div class="flow-item">마음에 드는 사이트 찾기<br><small>(토스, Linear, Vercel…)</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">AI에게 클론 제작 요청<br><small>(30분이면 완성)</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">Design.md로 추출 요청<br><small>"디자인 규칙 정리해줘"</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">본인 브랜드로 색·폰트 교체</div>
+    </div>
+  </div>
+
+  <!-- 핵심 요약 -->
+  <div class="section">
+    <div class="section-title">핵심 메시지</div>
+    <div class="quote">
+      "코드는 흔해졌지만 시스템은 흔해지지 않았다. 디자인 시스템이 AI 시대의 마지막 해자(Moat)다."
+      <br><br>
+      디자이너의 새 역할: 픽셀 그리는 사람 → <strong>시스템을 설계하고 결과물 품질을 판단하는 지휘자</strong>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  📺 <a href="https://youtu.be/UCqJvQF3QxA" target="_blank" style="color:var(--accent);">원본 영상 보기</a> · 메이커 에반 · 2026-05-06 · 생성: 2026-05-07
+</footer>
+
+</body>
+</html>

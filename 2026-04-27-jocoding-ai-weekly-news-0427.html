@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>조코딩 AI 주간 뉴스 — 2026-04-27</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --text-muted: #666666;
+    --accent: #004D40;
+    --border: #EEEEEE;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 64px 24px 100px;
+  }
+
+  /* HERO */
+  .hero {
+    border-bottom: 2px solid var(--text-primary);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+  }
+  .hero-meta {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .hero-meta span { color: var(--accent); }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero-abstract {
+    font-size: 16px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  /* OVERVIEW TABLE */
+  .overview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px 0;
+    font-size: 14px;
+  }
+  .overview-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .overview-table td:first-child {
+    font-weight: 700;
+    color: var(--text-muted);
+    width: 120px;
+    white-space: nowrap;
+  }
+  .overview-table td:last-child {
+    color: var(--text-primary);
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 56px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    min-width: 24px;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  /* NEWS GRID */
+  .news-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .news-card {
+    background: var(--bg);
+    padding: 20px;
+  }
+  .news-card-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .news-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .news-card-body {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .news-card-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  .news-card-link:hover { text-decoration: underline; }
+
+  /* FULL-WIDTH CARD */
+  .card-full {
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card-full-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .card-full h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .card-full p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* STAT ROW */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .stat-item {
+    background: var(--bg);
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  /* FLOW DIAGRAM */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 20px 0;
+    overflow-x: auto;
+    padding: 4px 0;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 120px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 14px 12px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .flow-step span {
+    display: block;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .flow-arrow {
+    font-size: 16px;
+    color: var(--accent);
+    padding: 0 4px;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .flow-step.accent-step {
+    border-color: var(--accent);
+    border-width: 2px;
+  }
+
+  /* COMPARISON TABLE */
+  .cmp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0 24px;
+  }
+  .cmp-table th {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--text-primary);
+  }
+  .cmp-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .cmp-table tr:last-child td { border-bottom: none; }
+  .cmp-table td:first-child {
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* QUOTE */
+  blockquote {
+    border-left: 4px solid var(--accent);
+    padding: 14px 20px;
+    margin: 20px 0;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* SCENARIO LIST */
+  .scenario-list {
+    list-style: none;
+    border: 1px solid var(--border);
+  }
+  .scenario-list li {
+    display: flex;
+    gap: 16px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .scenario-list li:last-child { border-bottom: none; }
+  .scenario-list li::before {
+    content: attr(data-num);
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent);
+    min-width: 20px;
+    padding-top: 2px;
+  }
+  .scenario-list strong {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 14px;
+  }
+  .scenario-list span {
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* OUTLOOK TABLE */
+  .outlook-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .outlook-table th {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--text-primary);
+  }
+  .outlook-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .outlook-table tr:last-child td { border-bottom: none; }
+  .outlook-table td:first-child {
+    font-weight: 700;
+    white-space: nowrap;
+    width: 120px;
+  }
+  .outlook-table td.now { color: var(--text-muted); }
+  .outlook-table td.future { font-weight: 600; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  @media (max-width: 600px) {
+    .news-grid { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .hero h1 { font-size: 26px; }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-meta">
+      <span>조코딩</span> &nbsp;·&nbsp; AI 주간 뉴스 &nbsp;·&nbsp; 2026-04-27 &nbsp;·&nbsp; 138분
+    </div>
+    <h1>이번 주 AI: <em>GPT 5.5</em> 1위,<br>오픈소스의 반란, 로봇의 진화</h1>
+    <p class="hero-abstract">
+      GPT 5.5가 벤치마크 종합 1위를 탈환한 가운데, 중국발 오픈소스(DeepSeek V4·Kimi K2.6)가
+      유료 모델 수준에 도달했다. 의료 AI 상용화, AI 협상 에이전트 실증, 메타의 글로벌 10% 감원,
+      바퀴 달린 휴머노이드 로봇까지 — AI가 현실 세계를 빠르게 재편하는 한 주였다.
+    </p>
+    <div class="hero-tags">
+      <span class="tag">GPT 5.5</span>
+      <span class="tag">Gemini 2.5 Max</span>
+      <span class="tag">DeepSeek V4</span>
+      <span class="tag">Claude Max</span>
+      <span class="tag">바이브코딩</span>
+      <span class="tag">의료 AI</span>
+      <span class="tag">AI 에이전트</span>
+      <span class="tag">휴머노이드 로봇</span>
+    </div>
+  </header>
+
+  <!-- 1. 핵심 지표 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">이번 주 핵심 지표</h2>
+    </div>
+    <div class="stat-row">
+      <div class="stat-item">
+        <div class="stat-value">60점</div>
+        <div class="stat-label">GPT 5.5<br>Artificial Analysis 종합점수</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">93.3%</div>
+        <div class="stat-label">Gemini 2.5 Max<br>Deep Search QA</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">284B</div>
+        <div class="stat-label">DeepSeek V4<br>파라미터 수 (오픈소스)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">10%</div>
+        <div class="stat-label">메타 글로벌<br>인력 감축 (5월 20일~)</div>
+      </div>
+    </div>
+    <table class="overview-table">
+      <tr><td>채널</td><td>조코딩 (JoCoding)</td></tr>
+      <tr><td>분량</td><td>약 138분 라이브 스트리밍</td></tr>
+      <tr><td>주요 주제</td><td>LLM 모델 경쟁, 이미지 AI, 의료 AI, Claude 업데이트, AI 에이전트, 로보틱스, 일자리 변화</td></tr>
+      <tr><td>핵심 이벤트</td><td>GPT 5.5 출시, Google I/O(5/19) 예고, 메타 감원, 유닛트리 바퀴 로봇</td></tr>
+    </table>
+  </section>
+
+  <!-- 2. LLM 모델 경쟁 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">LLM 모델 대전 — 순위는 매달 바뀐다</h2>
+    </div>
+    <blockquote>
+      "클로즈드 소스(유료 모델)의 전유물이던 최고 성능을 오픈소스가 추격했다.
+      소비자 입장에서 구독료 없이 동급 AI를 쓸 수 있는 시대가 가까워지고 있다."
+    </blockquote>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="news-card-label">OpenAI &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=1620" target="_blank">▶ 27:00</a></div>
+        <div class="news-card-title">GPT 5.5 — 벤치마크 종합 1위 탈환</div>
+        <div class="news-card-body">
+          Artificial Analysis 종합 60점으로 Claude Opus 4.7을 밀어내고 1위. 에이전트(AI가 여러 단계 작업을 연속 수행하는 것) 특화. 프롬프트 1개로 포켓몬 게임 생성 데모 화제.
+        </div>
+      </div>
+      <div class="news-card">
+        <div class="news-card-label">Google &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=5340" target="_blank">▶ 89:00</a></div>
+        <div class="news-card-title">Gemini 2.5 Max — 딥서치 93.3%</div>
+        <div class="news-card-body">
+          Deep Search QA 93.3%, Humanity's Last Exam(인류 최고 난이도 시험) 최고 수준. 5월 19일 Google I/O에서 Gemini i4 등 추가 공개 예정.
+        </div>
+      </div>
+      <div class="news-card">
+        <div class="news-card-label">DeepSeek (오픈소스) &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=6540" target="_blank">▶ 109:00</a></div>
+        <div class="news-card-title">DeepSeek V4 — 오픈소스가 클로즈드급</div>
+        <div class="news-card-body">
+          284B 파라미터, MoE 구조(필요한 부분만 활성화해 효율 극대화). 코드포스 기준 1위. 누구나 무료 사용 가능 — 구독 없이 GPT-4급 성능.
+        </div>
+      </div>
+      <div class="news-card">
+        <div class="news-card-label">중국 오픈소스 군단 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=6840" target="_blank">▶ 114:00</a></div>
+        <div class="news-card-title">Kimi K2.6 · Xiaomi MiMo V2.5</div>
+        <div class="news-card-body">
+          각각 Claude 4.6 동급 성능. 1M 토큰 컨텍스트(약 750만 단어를 한 번에 처리)가 오픈소스에서도 기본값으로 정착.
+        </div>
+      </div>
+    </div>
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>모델</th>
+          <th>개발사</th>
+          <th>유형</th>
+          <th>특징</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GPT 5.5</td>
+          <td>OpenAI</td>
+          <td>클로즈드</td>
+          <td>Artificial Analysis 종합 1위, 에이전트 특화</td>
+        </tr>
+        <tr>
+          <td>Gemini 2.5 Max</td>
+          <td>Google</td>
+          <td>클로즈드</td>
+          <td>딥서치 93.3%, I/O에서 추가 공개 예정</td>
+        </tr>
+        <tr>
+          <td>Claude Opus 4.7</td>
+          <td>Anthropic</td>
+          <td>클로즈드</td>
+          <td>전 주까지 1위, Max 요금제 명칭 변경</td>
+        </tr>
+        <tr>
+          <td>DeepSeek V4</td>
+          <td>DeepSeek</td>
+          <td>오픈소스</td>
+          <td>284B, 코드포스 1위, 무료 사용 가능</td>
+        </tr>
+        <tr>
+          <td>Kimi K2.6</td>
+          <td>Moonshot AI</td>
+          <td>오픈소스</td>
+          <td>Claude 4.6급, 1M 컨텍스트</td>
+        </tr>
+        <tr>
+          <td>MiMo V2.5</td>
+          <td>Xiaomi</td>
+          <td>클로즈드 API</td>
+          <td>Claude Opus 4.6 동급, API 접근</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3. 이미지·영상 AI -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">이미지·영상 AI — 창작과 위협의 양면</h2>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="news-card-label">활용 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=2400" target="_blank">▶ 40:00</a></div>
+        <div class="news-card-title">GPT Image 2.0 SNS 유행</div>
+        <div class="news-card-body">퍼스널 컬러 진단, 커플 스타일링, 아바타·브이튜버 생성 급확산. 프롬프트 예시 공유로 진입 장벽 붕괴.</div>
+      </div>
+      <div class="news-card">
+        <div class="news-card-label">바이브코딩 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=2100" target="_blank">▶ 35:00</a></div>
+        <div class="news-card-title">게임 에셋 자동 생성</div>
+        <div class="news-card-body">GPT 5.5로 이미지 에셋 생성 → Sora/Kling으로 영상화 → 게임 로직 구현. 1인 게임 개발 파이프라인 현실화.</div>
+      </div>
+      <div class="news-card">
+        <div class="news-card-label">위험 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=3300" target="_blank">▶ 55:00</a></div>
+        <div class="news-card-title">신분증 위조 위험</div>
+        <div class="news-card-body">GPT Image 2.0 + Kling으로 리얼한 신분증 이미지·영상 생성 가능. 빛 반사, 질감까지 재현 — 본인 인증 시스템 위협.</div>
+      </div>
+      <div class="news-card">
+        <div class="news-card-label">이벤트 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=2940" target="_blank">▶ 49:00</a></div>
+        <div class="news-card-title">프롬프트 해킹 대회 $25,000</div>
+        <div class="news-card-body">AI 안전 장치(가이드라인)를 프롬프트로 뚫는 대회. 상금 약 3,700만원. 프롬프트 엔지니어링의 공격적 활용 공식화.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 의료 AI + Claude -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">전문 분야 침투 — 의료 AI와 Claude 업데이트</h2>
+    </div>
+    <div class="card-full">
+      <div class="card-full-label">의료 AI &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=3600" target="_blank">▶ 60:00</a></div>
+      <h3>ChatGPT for Clinicians — 의사용 ChatGPT 무료 공개</h3>
+      <p>
+        OpenAI가 의료진을 위한 전용 버전을 무료로 출시. 스탠포드 MedHmm·MedMax 벤치마크 최고 성능 달성. 전문 의학 용어와 진단 지원에 최적화. 일반인도 사용 가능 → 병원 방문 전 사전 의학 정보 수집에 활용 가능. 의학 AI가 소수 전문가 도구에서 대중 서비스로 전환되는 신호.
+      </p>
+    </div>
+    <div class="card-full">
+      <div class="card-full-label">Anthropic / Claude &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=3900" target="_blank">▶ 65:00</a></div>
+      <h3>Claude 3가지 업데이트 — 품질 논란 해소, 외부 연결, 요금제 개편</h3>
+      <p>
+        <strong>① 품질 저하 논란 해소:</strong> 커뮤니티에서 "Claude가 멍청해졌다"는 여론 확산 → Anthropic이 Claude Code 품질 보고서를 공식 공개해 개선 현황 제시.<br><br>
+        <strong>② 타사 추론 지원:</strong> Claude Desktop에서 오픈 라우터(여러 AI 모델을 중계해주는 서비스)를 통해 외부 모델 연결 가능. 컴퓨팅 용량 부족을 분산으로 대응하는 전략으로 해석.<br><br>
+        <strong>③ Max 요금제 개편:</strong> "Claude Pro Max" → "Claude Max" 명칭 변경, 상위 요금제 중심으로 구조 재편.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5. AI 에이전트 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">AI 에이전트 — "비싼 AI가 더 비싸게 팔아준다"</h2>
+    </div>
+    <blockquote>
+      "AI 에이전트에게 협상을 맡길 때, 비용이 더 비싼 대형 모델(Opus)이 소형 모델(Haiku)보다
+      훨씬 유리한 조건으로 거래를 성사시켰다. 에이전트 모델 선택에 경제적 논리가 생겼다."
+    </blockquote>
+    <div class="flow">
+      <div class="flow-step">Opus (대형 모델)<span>전략적 협상</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step accent-step">자전거 협상<span>더 높은 가격 달성</span></div>
+      <div class="flow-arrow">vs</div>
+      <div class="flow-step">Haiku (소형 모델)<span>저가 협상</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">낮은 가격 달성<span>동일 상품</span></div>
+    </div>
+    <div class="card-full">
+      <div class="card-full-label">실시간 음성 에이전트 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=6300" target="_blank">▶ 105:00</a></div>
+      <h3>AI 고객센터 — Gemini Flash Live API 기반 실시간 상담</h3>
+      <p>
+        툴콜(AI가 외부 데이터베이스를 실시간 조회하는 기능)을 결합한 음성 상담 AI 데모 공개. 응답 지연이 거의 없고, 목소리 자연스러움. 고객 문의 → AI 데이터 조회 → 즉시 답변 파이프라인을 실시간으로 구현.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6. 구글 생태계 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">구글 생태계 — 투자·브라우저·모델 3축 확장</h2>
+    </div>
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="news-card-label">투자 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=4800" target="_blank">▶ 80:00</a></div>
+        <div class="news-card-title">구글 투자 트랙 레코드</div>
+        <div class="news-card-body">Anthropic: 2023년 30억달러 → 현재 가치 120억달러(4배). SpaceX: 2015년 10억달러 → 현재 1,070억달러(107배). 모든 주요 VC를 이긴 투자 성과.</div>
+      </div>
+      <div class="news-card">
+        <div class="news-card-label">이벤트 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=5100" target="_blank">▶ 85:00</a></div>
+        <div class="news-card-title">Google I/O — 5월 19일</div>
+        <div class="news-card-body">Gemini i4 등 메가 업데이트 예정. 조코딩 현장 참가. 구글 내부 코드의 25%를 이미 AI가 생성 중, 에이전트 기반 워크플로우로 전환 완료.</div>
+      </div>
+      <div class="news-card">
+        <div class="news-card-label">Chrome &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=5700" target="_blank">▶ 95:00</a></div>
+        <div class="news-card-title">Chrome Gemini 통합 — 한국 공식 출시</div>
+        <div class="news-card-body">여러 탭 동시 참조, 이미지 생성, 화면 기반 분석. Google Photos와 연동해 가구 배치 시뮬레이션까지 가능.</div>
+      </div>
+      <div class="news-card">
+        <div class="news-card-label">논문 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=5460" target="_blank">▶ 91:00</a></div>
+        <div class="news-card-title">Vision Banana — 이미지 이해+생성 통합</div>
+        <div class="news-card-body">Google DeepMind 논문. 이미지를 보고 이해(분석)하면서 동시에 새 이미지를 생성. 세그멘테이션(물체 경계 정밀 인식) 정확도 높음.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. AI와 일자리 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2 class="section-title">AI와 일자리 — 감원·감시·데이터 수집의 삼각형</h2>
+    </div>
+    <table class="cmp-table">
+      <thead>
+        <tr><th>사건</th><th>주체</th><th>내용</th><th>함의</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://youtu.be/odhp7Ny2R5I?t=7440" target="_blank" style="color:var(--accent);text-decoration:none;">▶ 124:00</a><br>글로벌 감원</td>
+          <td>메타</td>
+          <td>5월 20일부터 전 세계 인력 10% 감축. AI 에이전트 기반 워크플로우로 전환.</td>
+          <td>글로벌 테크 구조조정 신호탄</td>
+        </tr>
+        <tr>
+          <td><a href="https://youtu.be/odhp7Ny2R5I?t=7500" target="_blank" style="color:var(--accent);text-decoration:none;">▶ 125:00</a><br>재택 감시 AI</td>
+          <td>다수 기업</td>
+          <td>원격근무 직원에게 배달 라이더 수준 실시간 근태 추적 AI 도입. EU GDPR 위반 논란.</td>
+          <td>업무 자율성 vs 생산성 충돌</td>
+        </tr>
+        <tr>
+          <td><a href="https://youtu.be/odhp7Ny2R5I?t=7560" target="_blank" style="color:var(--accent);text-decoration:none;">▶ 126:00</a><br>노동 데이터</td>
+          <td>빅테크</td>
+          <td>인도 공장 노동자 머리에 카메라 부착, 수작업 데이터 AI 학습에 활용.</td>
+          <td>로봇 학습용 인간 데이터 수집 가속</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 8. 로보틱스 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2 class="section-title">로보틱스 — 바퀴+이족의 하이브리드, 하프마라톤</h2>
+    </div>
+    <div class="card-full">
+      <div class="card-full-label">유닛트리 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=7680" target="_blank">▶ 128:00</a></div>
+      <h3>바퀴 달린 인간형 로봇 — 롤러스케이트·아이스스케이트까지</h3>
+      <p>
+        유닛트리(Unitree)가 바퀴+이족보행을 결합한 하이브리드 로봇을 공개. 롤러스케이트, 아이스링크 스케이팅까지 자연스럽게 구현. 움직임의 부드러움이 이전 세대 대비 현저히 향상. 빠른 이동(바퀴) + 복잡한 지형 대응(다리)을 동시에 실현해 물류·현장 투입 가능성 상승.
+      </p>
+    </div>
+    <div class="card-full">
+      <div class="card-full-label">휴머노이드 하프마라톤 &nbsp;·&nbsp; <a class="news-card-link" href="https://youtu.be/odhp7Ny2R5I?t=7920" target="_blank">▶ 132:00</a></div>
+      <h3>휴머노이드 로봇 달리기 대회 — 1·2·3위 석권</h3>
+      <p>
+        특정 제조사 로봇이 하프마라톤 대회에서 1·2·3위를 독식. 지구력, 균형, 연속 동작 유지 능력이 실용 수준에 근접했음을 실증.
+      </p>
+    </div>
+  </section>
+
+  <!-- 9. 활용 시나리오 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2 class="section-title">이번 주 뉴스를 내 일에 적용하려면</h2>
+    </div>
+    <ul class="scenario-list">
+      <li data-num="01">
+        <div>
+          <strong>바이브코딩 입문자</strong>
+          <span>GPT 5.5로 게임/앱 아이디어를 프롬프트 1개로 프로토타입화. 이미지 에셋 → 영상 → 코드 순서로 진행. 24시간 내 MVP 검증 가능.</span>
+        </div>
+      </li>
+      <li data-num="02">
+        <div>
+          <strong>의료·헬스케어 종사자</strong>
+          <span>ChatGPT for Clinicians를 전문 정보 조회 보조 도구로 활용. 환자 응대 전 의학 정보 사전 검토, 의학 용어 정리 등 실무 지원.</span>
+        </div>
+      </li>
+      <li data-num="03">
+        <div>
+          <strong>비즈니스 협상·구매 담당자</strong>
+          <span>AI 에이전트(Opus급 대형 모델)에 협상 초안 및 시나리오 작성 위임. 소형 모델 대비 더 유리한 조건 도출 가능성 실증됨.</span>
+        </div>
+      </li>
+      <li data-num="04">
+        <div>
+          <strong>콘텐츠 크리에이터</strong>
+          <span>Nuri AI 더빙으로 한국어 콘텐츠를 영어로 자동 변환. 본인 목소리 복제 수준의 퀄리티로 글로벌 플랫폼 진출 비용 대폭 절감.</span>
+        </div>
+      </li>
+      <li data-num="05">
+        <div>
+          <strong>개발자·오픈소스 활용자</strong>
+          <span>DeepSeek V4·Kimi K2.6 등 오픈소스 모델로 GPT-4급 성능을 무료로 활용. 1M 컨텍스트 기반 대용량 문서 처리에 특히 유리.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 10. 현황 및 전망 -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <h2 class="section-title">현황 및 전망</h2>
+    </div>
+    <table class="outlook-table">
+      <thead>
+        <tr><th>영역</th><th>현황</th><th>전망</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>모델 경쟁</td>
+          <td class="now">GPT 5.5 종합 1위, Claude·Gemini 추격</td>
+          <td class="future">월 단위 순위 교체 지속, 특화 영역별 분화</td>
+        </tr>
+        <tr>
+          <td>오픈소스</td>
+          <td class="now">DeepSeek V4·Kimi K2.6이 클로즈드 소스급 도달</td>
+          <td class="future">2026년 하반기 유료 모델 구독 수요 잠식 시작</td>
+        </tr>
+        <tr>
+          <td>의료 AI</td>
+          <td class="now">ChatGPT Clinician 무료 출시, 의학 벤치 1위</td>
+          <td class="future">법률·금융으로 전문 분야 수직 확장 가속</td>
+        </tr>
+        <tr>
+          <td>로보틱스</td>
+          <td class="now">바퀴+이족 하이브리드, 하프마라톤 수준</td>
+          <td class="future">2027년 공장·물류 현장 투입 시범 사례 증가</td>
+        </tr>
+        <tr>
+          <td>일자리</td>
+          <td class="now">메타 10% 글로벌 감축 시작</td>
+          <td class="future">AI 대체+재배치 사이클 가속, 감시 논란 심화</td>
+        </tr>
+        <tr>
+          <td>구글 I/O</td>
+          <td class="now">5월 19일 예정</td>
+          <td class="future">Gemini i4 등 메가 업데이트, Chrome AI 확대</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span>조코딩 AI 주간 뉴스 · 2026-04-27</span>
+    <a href="https://youtu.be/odhp7Ny2R5I" target="_blank">원본 영상 보기</a>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로키드 & 이분 리얼리티스 — 공간 컴퓨팅 스마트 글래스 두 혁신 기업</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2d9162;
+      --accent-mid: #52b788;
+      --accent-light: #d8f0e3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans KR', 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #1a5c3a 0%, var(--accent) 60%, var(--accent-mid) 100%);
+      color: white;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .hero .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .hero .sub {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-bottom: 32px;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .stat-box {
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 14px 8px;
+    }
+    .stat-box .val {
+      font-size: 24px;
+      font-weight: 800;
+      display: block;
+      line-height: 1.1;
+    }
+    .stat-box .lbl {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-top: 3px;
+    }
+    /* Main content */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 36px 20px 64px;
+    }
+    /* Section */
+    .section {
+      margin-bottom: 36px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .sec-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    /* Comparison table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .compare-table th {
+      background: var(--accent);
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+    }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:nth-child(odd) td { background: white; }
+    .compare-table tr:nth-child(even) td { background: #fafafa; }
+    .compare-table td:first-child { font-weight: 600; color: var(--muted); width: 120px; }
+    /* Timeline */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .tl-item {
+      display: flex;
+      gap: 0;
+    }
+    .tl-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 60px;
+      flex-shrink: 0;
+    }
+    .tl-year {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent);
+      width: 52px;
+      text-align: center;
+      padding: 6px 2px;
+      background: var(--accent-light);
+      border-radius: 6px;
+      margin-bottom: 0;
+    }
+    .tl-line {
+      width: 2px;
+      background: var(--border);
+      flex: 1;
+      min-height: 16px;
+    }
+    .tl-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+    .tl-content {
+      padding: 6px 0 16px 14px;
+      flex: 1;
+      font-size: 13px;
+    }
+    .tl-content strong { color: var(--text); }
+    .tl-content .deeplink {
+      display: inline-block;
+      margin-left: 8px;
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      background: var(--accent-light);
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+    /* Grid */
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .mini-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .mini-card h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 7px;
+    }
+    .mini-card p, .mini-card li {
+      font-size: 12.5px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .mini-card ul { padding-left: 14px; }
+    /* Trend fork */
+    .trend-container {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+    .trend-branch {
+      background: white;
+      border: 2px solid var(--accent-mid);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .trend-branch h4 {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .trend-branch p { font-size: 12.5px; color: var(--text); line-height: 1.5; }
+    .trend-branch .ex { font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+    .trend-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 12px;
+    }
+    .trend-center .root-box {
+      background: var(--accent);
+      color: white;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .trend-center .arrow { font-size: 20px; color: var(--accent-mid); }
+    /* OS Stack */
+    .os-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .os-layer {
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+    }
+    .os-layer.top { background: var(--accent); color: white; font-weight: 700; }
+    .os-layer.mid { background: var(--accent-light); border: 1px solid var(--accent-mid); }
+    .os-layer.bot { background: var(--surface); border: 1px solid var(--border); }
+    .os-layer h4 { font-weight: 700; margin-bottom: 3px; }
+    .os-layer p { font-size: 12px; opacity: 0.85; }
+    /* Feature pills */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .pill {
+      background: var(--accent-light);
+      color: var(--accent);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .pill.none { background: #fff0f0; color: #c0392b; }
+    /* Scenario table */
+    .scenario-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .scenario-table th {
+      background: var(--surface);
+      color: var(--muted);
+      padding: 8px 14px;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 2px solid var(--border);
+    }
+    .scenario-table td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-table td:first-child { font-weight: 600; }
+    /* Insight box */
+    .insight-box {
+      border-left: 4px solid var(--accent);
+      background: var(--accent-light);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      font-size: 13.5px;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    /* Source footer */
+    .source-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 36px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .source-footer a { color: var(--accent); text-decoration: none; }
+    /* Responsive */
+    @media (max-width: 760px) {
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .grid { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .trend-container { grid-template-columns: 1fr; }
+      .trend-center { display: none; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 20px; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero Banner -->
+<div class="hero">
+  <div class="tag">혁신 전파사 · 공간 컴퓨팅 시리즈 1편</div>
+  <h1>로키드(Rokid) & 이분 리얼리티스(Even Realities)<br>공간 컴퓨팅 스마트 글래스 두 혁신 기업</h1>
+  <div class="sub">2026-05-02 · 출처: <a href="https://youtu.be/D9cNvSb3fEI" style="color:rgba(255,255,255,0.8);">youtu.be/D9cNvSb3fEI</a></div>
+  <div class="hero-stats">
+    <div class="stat-box"><span class="val">2014</span><div class="lbl">로키드 창업연도</div></div>
+    <div class="stat-box"><span class="val">38 / 36g</span><div class="lbl">로키드 스타일 / 이분 G2 무게</div></div>
+    <div class="stat-box"><span class="val">Yoda OS</span><div class="lbl">로키드 자체 운영체제</div></div>
+    <div class="stat-box"><span class="val">2026</span><div class="lbl">로키드 홍콩 상장 예정</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Section 1: 두 기업 비교 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">01</div>
+      <h2>두 기업 한눈에 비교</h2>
+    </div>
+    <div class="card">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>로키드 (Rokid)</th>
+            <th>이분 리얼리티스 (Even Realities)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>창업자</td><td>주밍 (Zhu Ming, 70년대 후반)</td><td>왕샤오이 (Wang Xiaoyi)</td></tr>
+          <tr><td>창업 연도</td><td>2014년</td><td>2020년대 초</td></tr>
+          <tr><td>창업 전 이력</td><td>저장대 → 알리바바 Yun OS</td><td>상하이교통대 → UC버클리 → 애플 워치 PM → 앵커 → 오포 → JMGO</td></tr>
+          <tr><td>본사</td><td>중국 항저우</td><td>홍콩 법인 / 선전 본사</td></tr>
+          <tr><td>대표 제품</td><td>Air, Max, 스타일(38g), AR AI 글래스</td><td>G1, G2 (36g)</td></tr>
+          <tr><td>핵심 기능</td><td>카메라 + 디스플레이 + AI + Yoda OS</td><td>디스플레이 + 4개 마이크 (카메라 없음)</td></tr>
+          <tr><td>투자</td><td>2024년 대규모 투자 유치</td><td>-</td></tr>
+          <tr><td>제품 철학</td><td>AI+AR 결합, 다양한 라인업, 생태계</td><td>절제미, 개인 정보 보호, 일상 자연스러움</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 2: 로키드 창업자 스토리 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">02</div>
+      <h2>로키드 — 창업자 주밍의 10년 생존기</h2>
+    </div>
+    <div class="card">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">~2008</div><div class="tl-line"></div></div>
+          <div class="tl-content"><strong>저장대 공대 졸업</strong> → 모바일 OS 개발사 '멤머스 테크놀로지' 창업<br><span style="font-size:12px;color:var(--muted)">위장구(안경 제조 성지) 출신, 어린 시절부터 안경에 익숙</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">2010</div><div class="tl-line"></div></div>
+          <div class="tl-content"><strong>알리바바가 인수</strong> → Yun OS(알리바바 운영체제) 개발팀 합류</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">2012</div><div class="tl-line"></div></div>
+          <div class="tl-content"><strong>구글 글래스 등장</strong>에 영감 <a href="https://youtu.be/D9cNvSb3fEI?t=319" class="deeplink">▶ 5:19</a><br><span style="font-size:12px;color:var(--muted)">"저게 현실이 되면 멋지겠다" — 이때부터 AR 글래스를 꿈꾸기 시작</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">2014</div><div class="tl-line"></div></div>
+          <div class="tl-content"><strong>로키드(Rokid) 창업</strong> <a href="https://youtu.be/D9cNvSb3fEI?t=189" class="deeplink">▶ 3:09</a><br><span style="font-size:12px;color:var(--muted)">"로봇을 꿈꾸는 호기심 많은 아이들"이라는 뜻. AR 글래스 시장은 여전히 불모지</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">2014~19</div><div class="tl-line"></div></div>
+          <div class="tl-content"><strong>파산 직전 생존기</strong> <a href="https://youtu.be/D9cNvSb3fEI?t=498" class="deeplink">▶ 8:18</a><br><span style="font-size:12px;color:var(--muted)">AR 시장 불모지 + 코로나 타격. "그때는 정말 파산 직전이었다"</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">2020~21</div><div class="tl-line"></div></div>
+          <div class="tl-content"><strong>로키드 에어(Air) 출시</strong> → 킥스타터 캠페인 $69만 펀딩 성공</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">2023</div><div class="tl-line"></div></div>
+          <div class="tl-content"><strong>애플 비전 프로 등장</strong> → '공간 컴퓨팅' 개념이 세상에 알려지며 시장 주목</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">2024</div><div class="tl-line"></div></div>
+          <div class="tl-content"><strong>대규모 투자 유치</strong> → 글로벌 확장 본격화</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">2025</div><div class="tl-line"></div></div>
+          <div class="tl-content"><strong>CES 2025</strong> — 스타일(Style, 38g) 공개. CEO 주밍이 자사 글래스를 착용한 채 발표해 화제</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-year">2026</div></div>
+          <div class="tl-content"><strong>홍콩 증시 상장 예정</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: 로키드 Yoda OS 생태계 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">03</div>
+      <h2>로키드 기술 생태계 — Yoda OS</h2>
+    </div>
+    <div class="grid">
+      <div>
+        <div class="os-stack">
+          <div class="os-layer top">
+            <h4>앱 생태계 (App Store + SDK)</h4>
+            <p>개발자가 앱을 만들어 배포하는 스토어. OTA(무선 자동 업데이트) 포함.</p>
+          </div>
+          <div class="os-layer mid">
+            <h4>Yoda OS Master (핵심 기능 모음)</h4>
+            <p>SLAM 코어(공간 인식) · 제스처 인식 · 유니티 공간 SDK(UXR)</p>
+          </div>
+          <div class="os-layer bot">
+            <h4>Yoda Sprite (개발자 패키지)</h4>
+            <p>외부 개발자가 앱을 만들 수 있는 SDK. 생태계 확장의 핵심.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mini-card" style="display:flex;flex-direction:column;gap:10px;">
+        <h4 style="font-size:14px;">왜 자체 OS가 중요한가?</h4>
+        <p style="font-size:13px;">스마트폰 시대에 iOS와 안드로이드가 생태계를 지배한 것처럼, 스마트 글래스 시대에도 OS를 가진 회사가 시장을 장악할 수 있다. 로키드는 이를 일찍이 준비했다.</p>
+        <div style="background:var(--accent-light);border-radius:8px;padding:12px;font-size:12.5px;">
+          <strong>비유로 이해하기</strong><br>
+          Yoda OS = 안드로이드, Yoda Sprite SDK = 앱을 만들 수 있는 안드로이드 스튜디오, App Store = 구글 플레이스토어
+        </div>
+        <p style="font-size:12px;color:var(--muted);">자회사 항적 링반 테크놀로지에서 디스플레이·광학 R&D 전담</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: 이분 리얼리티스 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">04</div>
+      <h2>이분 리얼리티스 — 절제의 미학</h2>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h4 style="font-weight:800;margin-bottom:10px;font-size:14px;">창업자 왕샤오이의 이력</h4>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-year">학업</div><div class="tl-line"></div></div>
+            <div class="tl-content" style="font-size:12.5px;">상하이 교통대 → UC 버클리 석사</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-year">애플</div><div class="tl-line"></div></div>
+            <div class="tl-content" style="font-size:12.5px;"><strong>애플 워치 PM</strong> — 기획부터 양산, 판매까지 전 과정 총괄 <a href="https://youtu.be/D9cNvSb3fEI?t=628" class="deeplink">▶ 10:28</a></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-year">앵커</div><div class="tl-line"></div></div>
+            <div class="tl-content" style="font-size:12.5px;">자신이 기획한 제품을 <strong>애플 스토어에 입점</strong>시킴</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-year">오포·JMGO</div></div>
+            <div class="tl-content" style="font-size:12.5px;">제품 기획 → 전체 파이프라인 총괄 경험</div>
+          </div>
+        </div>
+        <div style="margin-top:10px;padding:10px;background:var(--accent-light);border-radius:8px;font-size:12.5px;">
+          <strong>브랜드 철학:</strong> Even = "이분하다" → 가상과 현실 사이에서 균형 잡기. 스마트폰에 매몰된 삶 대신 기술이 일상에 자연스럽게 녹아드는 것을 추구.
+        </div>
+      </div>
+      <div class="card">
+        <h4 style="font-weight:800;margin-bottom:12px;font-size:14px;">G2 제품 스펙 — "없애서 더 좋은 안경"</h4>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:5px;">의도적으로 없앤 것 (개인 정보 보호)</div>
+          <div class="pill-row">
+            <span class="pill none">카메라 없음</span>
+            <span class="pill none">외부 스피커 없음</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:5px;">핵심에 집중한 것</div>
+          <div class="pill-row">
+            <span class="pill">마이크 4개</span>
+            <span class="pill">마이크로 디스플레이</span>
+            <span class="pill">36g 초경량</span>
+            <span class="pill">IP67 방수</span>
+            <span class="pill">ChatGPT 연동</span>
+            <span class="pill">실시간 번역</span>
+            <span class="pill">텔레프롬프터</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--muted);">코파운더 다수가 <strong>린드버그·미키타</strong> 등 명품 안경 브랜드 출신 → 안경 설계 노하우 집약</div>
+        <div style="margin-top:8px;font-size:12.5px;background:var(--surface);border-radius:8px;padding:10px;">
+          <a href="https://youtu.be/D9cNvSb3fEI?t=755" class="deeplink" style="display:inline-block;margin-left:0;margin-bottom:4px;">▶ 12:35 제품 철학</a>
+          <a href="https://youtu.be/D9cNvSb3fEI?t=814" class="deeplink" style="display:inline-block;margin-left:8px;margin-bottom:4px;">▶ 13:34 텔레프롬프터</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: 스마트 글래스 두 가지 트렌드 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">05</div>
+      <h2>공간 컴퓨팅 — 스마트 글래스 두 가지 트렌드</h2>
+    </div>
+    <div class="card">
+      <div class="trend-container">
+        <div class="trend-branch">
+          <h4>AI 글래스 (음성 중심)</h4>
+          <p>LLM(대규모 언어 모델)과 연결해 음성으로 AI를 사용하는 안경. 화면이 없거나 작은 디스플레이만 있음.</p>
+          <p class="ex">예: 이분 리얼리티스 G2, 메타 레이밴 스마트 글래스</p>
+          <a href="https://youtu.be/D9cNvSb3fEI?t=1206" class="deeplink" style="margin-left:0;margin-top:8px;display:inline-block;">▶ 20:06</a>
+        </div>
+        <div class="trend-center">
+          <div class="root-box">공간 컴퓨팅<br>스마트 글래스</div>
+          <div class="arrow">↙ ↘</div>
+        </div>
+        <div class="trend-branch">
+          <h4>AR 글래스 (시각 중심)</h4>
+          <p>안경 렌즈에 디지털 정보를 겹쳐 보여주는(증강 현실) 안경. AI와 결합해 다양한 시각 정보 제공.</p>
+          <p class="ex">예: 로키드 맥스/에어, X리얼, 애플 비전 프로</p>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:12px;background:var(--surface);border-radius:8px;font-size:12.5px;color:var(--muted);">
+        두 형태 모두 목표는 같다 — 사용자의 일상 데이터를 모아 AI가 더 잘 학습하게 하고, 결국 더 맥락을 잘 이해하는 디바이스로 진화.
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: 활용 시나리오 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">06</div>
+      <h2>주요 활용 시나리오</h2>
+    </div>
+    <div class="card">
+      <table class="scenario-table">
+        <thead>
+          <tr>
+            <th>사용자</th>
+            <th>이분 리얼리티스</th>
+            <th>로키드</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>강연자 / 발표자</td>
+            <td>텔레프롬프터 — 대본을 디스플레이로 보며 자동 스크롤</td>
+            <td>발표 자료를 AR로 오버레이</td>
+          </tr>
+          <tr>
+            <td>외국인 소통</td>
+            <td>실시간 번역 — 상대방 말이 디스플레이에 번역돼 표시</td>
+            <td>번역 + 시각 안내 정보</td>
+          </tr>
+          <tr>
+            <td>일상 AI 어시스턴트</td>
+            <td>ChatGPT/Perplexity에 말로 물어보면 디스플레이로 답변</td>
+            <td>AI + AR 지도, 정보 오버레이</td>
+          </tr>
+          <tr>
+            <td>엔터테인먼트</td>
+            <td>해당 없음 (카메라·스피커 없음)</td>
+            <td>가상 대형 스크린 (Max/Joy 모델)</td>
+          </tr>
+          <tr>
+            <td>개발자</td>
+            <td>SDK 오픈 → 앱 생태계 구축 시작</td>
+            <td>Yoda OS + 유니티 SDK로 앱 개발</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 7: 핵심 인사이트 & 전망 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">07</div>
+      <h2>핵심 인사이트 & 2026년 전망</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="insight-box">
+        "좋은 안경이 먼저, 그다음이 스마트 기기다" — 로키드 CEO 주밍<br>
+        <span style="font-size:12.5px;font-style:normal;">좋은 안경 → 좋은 헤드셋 → 좋은 블루투스 헤드폰 → 좋은 카메라 → 궁극적으로 좋은 AI 기기</span>
+      </div>
+      <div class="grid-3">
+        <div class="mini-card">
+          <h4>중국 기업의 강점</h4>
+          <ul>
+            <li>빠른 제조·이터레이션 능력</li>
+            <li>오픈 생태계 전략 (SDK 공개)</li>
+            <li>선전 = 스마트 글래스 춘추전국시대</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>2026년이 중요한 이유</h4>
+          <ul>
+            <li>1세대 제품 시장 본격 진입</li>
+            <li>로키드: 홍콩 증시 상장 예정</li>
+            <li>이분: SDK 오픈 → 앱 생태계 구축 시작</li>
+            <li>"첫 제품이 10세대 제품과 같을 수 없다"</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>생태계가 승부를 가른다</h4>
+          <ul>
+            <li>OS를 가진 자가 시장을 지배</li>
+            <li>일상 데이터 수집 → AI 학습 → 맥락 이해 향상</li>
+            <li>애플·구글이 했던 일을 작은 스타트업이 반복 중</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="source-footer">
+    <strong>출처</strong><br>
+    <a href="https://youtu.be/D9cNvSb3fEI">혁신 전파사 — 로키드(Rokid) & 이분 리얼리티스(Even Realities): 공간 컴퓨팅 스마트 글래스 두 혁신 기업</a><br>
+    <span style="margin-top:4px;display:block;">2026-05-02 · AI Foundry 비주얼 리포트</span>
+  </div>
+
+</div>
+</body>
+</html>

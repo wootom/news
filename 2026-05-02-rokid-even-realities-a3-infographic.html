@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1587">
+  <title>로키드 & 이분 리얼리티스 — A3 인포그래픽</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #ffffff;
+      --surface:      #f5f5f5;
+      --border:       #e0e0e0;
+      --text:         #1a1a1a;
+      --muted:        #666666;
+      --accent:       #2d9162;
+      --accent-mid:   #52b788;
+      --accent-light: #d8f0e3;
+      --deep:         #1a5c3a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #e8e8e8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 32px;
+      min-height: 100vh;
+    }
+
+    /* A3 Landscape canvas: 420mm x 297mm @ 96dpi ≈ 1587 x 1123px */
+    .canvas {
+      width: 1587px;
+      height: 1123px;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: 96px 1fr;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    }
+
+    /* ── HEADER ────────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, var(--deep) 0%, var(--accent) 55%, var(--accent-mid) 100%);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 0 28px 0 32px;
+      gap: 20px;
+    }
+    .header-left h1 {
+      font-size: 20px;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .header-left .sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+    .header-stats {
+      display: flex;
+      gap: 10px;
+    }
+    .hstat {
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 8px 14px;
+      text-align: center;
+      min-width: 100px;
+    }
+    .hstat .v {
+      font-size: 18px;
+      font-weight: 800;
+      color: white;
+      line-height: 1;
+      display: block;
+    }
+    .hstat .l {
+      font-size: 10px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 3px;
+      display: block;
+    }
+
+    /* ── BODY ───────────────────────────────────── */
+    .body {
+      display: grid;
+      grid-template-columns: 340px 340px 1fr;
+      gap: 0;
+    }
+
+    /* Column borders */
+    .col {
+      padding: 14px 14px 12px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .col:last-child { border-right: none; }
+
+    /* Column header */
+    .col-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding-bottom: 7px;
+      border-bottom: 2px solid var(--accent-light);
+    }
+
+    /* Section label */
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .sec-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-size: 9px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .sec-label span {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 10px 11px;
+      border: 1px solid var(--border);
+    }
+    .card-accent {
+      background: var(--accent-light);
+      border-radius: 8px;
+      padding: 10px 11px;
+      border: 1px solid var(--accent-mid);
+    }
+
+    /* Compare table */
+    table.cmp {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5px;
+    }
+    table.cmp th {
+      background: var(--accent);
+      color: white;
+      padding: 5px 8px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 10px;
+    }
+    table.cmp th:first-child { border-radius: 5px 0 0 0; }
+    table.cmp th:last-child { border-radius: 0 5px 0 0; }
+    table.cmp td {
+      padding: 4.5px 8px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.4;
+    }
+    table.cmp tr:last-child td { border-bottom: none; }
+    table.cmp tr:nth-child(odd) td { background: white; }
+    table.cmp tr:nth-child(even) td { background: #fafafa; }
+    table.cmp td:first-child {
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 9.5px;
+      width: 70px;
+    }
+
+    /* Timeline mini */
+    .tl { display: flex; flex-direction: column; gap: 0; }
+    .tl-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .tl-yr {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--accent);
+      background: var(--accent-light);
+      border-radius: 4px;
+      padding: 2px 5px;
+      min-width: 40px;
+      text-align: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .tl-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 8px;
+      flex-shrink: 0;
+    }
+    .tl-circ {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 4px;
+    }
+    .tl-line-v {
+      width: 1.5px;
+      background: var(--border);
+      flex: 1;
+      min-height: 10px;
+    }
+    .tl-text {
+      font-size: 10.5px;
+      padding: 2px 0 10px 0;
+      color: var(--text);
+      line-height: 1.4;
+      flex: 1;
+    }
+    .tl-text strong { color: var(--text); font-weight: 700; }
+
+    /* Pill tags */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .pill {
+      background: var(--accent-light);
+      color: var(--accent);
+      border-radius: 20px;
+      padding: 2px 8px;
+      font-size: 9.5px;
+      font-weight: 700;
+    }
+    .pill.red { background: #fdecea; color: #c0392b; }
+
+    /* Feature grid */
+    .feat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-top: 5px;
+    }
+    .feat-item {
+      background: white;
+      border-radius: 6px;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      font-size: 9.5px;
+      line-height: 1.4;
+    }
+    .feat-item strong {
+      display: block;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 9px;
+      margin-bottom: 1px;
+    }
+
+    /* Trend fork */
+    .trend-box {
+      display: grid;
+      grid-template-columns: 1fr 28px 1fr;
+      gap: 6px;
+      align-items: center;
+    }
+    .trend-branch {
+      background: white;
+      border: 1.5px solid var(--accent-mid);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .trend-branch h5 {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .trend-branch p { font-size: 9.5px; color: var(--text); line-height: 1.4; }
+    .trend-branch .ex { font-size: 9px; color: var(--muted); margin-top: 3px; }
+    .trend-mid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .trend-mid .root {
+      background: var(--accent);
+      color: white;
+      border-radius: 6px;
+      padding: 5px 4px;
+      font-size: 8.5px;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .trend-mid .arr { font-size: 14px; color: var(--accent-mid); }
+
+    /* Scenario table */
+    table.sce {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+    }
+    table.sce th {
+      background: var(--surface);
+      color: var(--muted);
+      padding: 4px 7px;
+      font-weight: 700;
+      font-size: 9.5px;
+      border-bottom: 1.5px solid var(--border);
+      text-align: left;
+    }
+    table.sce td {
+      padding: 4px 7px;
+      border-bottom: 1px solid var(--border);
+      font-size: 9.5px;
+      vertical-align: top;
+      line-height: 1.35;
+    }
+    table.sce tr:last-child td { border-bottom: none; }
+    table.sce td:first-child { font-weight: 700; }
+
+    /* OS Stack */
+    .os-stack { display: flex; flex-direction: column; gap: 4px; }
+    .os-layer {
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 10px;
+    }
+    .os-layer.top { background: var(--accent); color: white; font-weight: 700; }
+    .os-layer.mid { background: var(--accent-light); border: 1px solid var(--accent-mid); }
+    .os-layer.bot { background: var(--surface); border: 1px solid var(--border); }
+    .os-layer h5 { font-size: 10px; font-weight: 700; margin-bottom: 1px; }
+    .os-layer p { font-size: 9px; opacity: 0.85; }
+
+    /* Insight strip */
+    .insight {
+      border-left: 3px solid var(--accent);
+      padding: 7px 10px;
+      background: var(--accent-light);
+      border-radius: 0 6px 6px 0;
+      font-size: 10px;
+      line-height: 1.5;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* 3-col insights */
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .insight-item {
+      background: white;
+      border-radius: 6px;
+      padding: 8px 9px;
+      border: 1px solid var(--border);
+    }
+    .insight-item h5 {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .insight-item ul {
+      padding-left: 12px;
+      font-size: 9.5px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* Bottom bar */
+    .bottom-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 26px;
+      background: var(--deep);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .bottom-bar span {
+      font-size: 9px;
+      color: rgba(255,255,255,0.65);
+      font-weight: 500;
+    }
+    .bottom-bar a {
+      font-size: 9px;
+      color: var(--accent-mid);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    /* Print */
+    @media print {
+      body { background: white; padding: 0; }
+      .canvas {
+        box-shadow: none;
+        width: 420mm;
+        height: 297mm;
+      }
+      @page { size: A3 landscape; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>로키드(Rokid) &amp; 이분 리얼리티스(Even Realities) — 공간 컴퓨팅 스마트 글래스 두 혁신 기업</h1>
+      <div class="sub">혁신 전파사 · 공간 컴퓨팅 시리즈 1편 · 2026-05-02 · youtu.be/D9cNvSb3fEI</div>
+    </div>
+    <div class="header-stats">
+      <div class="hstat"><span class="v">2014</span><span class="l">로키드 창업</span></div>
+      <div class="hstat"><span class="v">38 / 36g</span><span class="l">스타일 / G2 무게</span></div>
+      <div class="hstat"><span class="v">Yoda OS</span><span class="l">로키드 자체 OS</span></div>
+      <div class="hstat"><span class="v">2026</span><span class="l">홍콩 상장 예정</span></div>
+      <div class="hstat"><span class="v">IP67</span><span class="l">이분 방수등급</span></div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- COL 1: 로키드 -->
+    <div class="col">
+      <div class="col-title">01 로키드 (Rokid)</div>
+
+      <!-- 창업자 -->
+      <div>
+        <div class="sec-label"><div class="sec-dot">A</div><span>창업자 주밍 — 10년 생존기</span></div>
+        <div class="tl">
+          <div class="tl-row">
+            <div class="tl-yr">~2008</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text"><strong>저장대 공대 졸업</strong> → 모바일 OS 스타트업 창업<br><span style="font-size:9px;color:var(--muted)">위장구(중국 안경 성지) 출신</span></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">2010</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text"><strong>알리바바 인수</strong> → Yun OS 개발팀 합류</div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">2012</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text"><strong>구글 글래스 등장</strong>에 AR 비전 확립</div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">2014</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text"><strong>로키드 창업</strong> — "로봇을 꿈꾸는 호기심 많은 아이들"</div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">2014~19</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text"><strong>파산 직전 생존기</strong><br><span style="font-size:9px;color:var(--muted)">AR 불모지 + 코로나 타격</span></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">2021</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text"><strong>로키드 에어</strong> 킥스타터 $69만 펀딩 성공</div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">2023</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text"><strong>애플 비전 프로</strong> → 공간 컴퓨팅 시장 주목</div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">2024</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text"><strong>대규모 투자 유치</strong> → 글로벌 확장 본격화</div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">2026</div>
+            <div class="tl-bar"><div class="tl-circ"></div></div>
+            <div class="tl-text"><strong>홍콩 증시 상장 예정</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 제품 라인업 -->
+      <div>
+        <div class="sec-label"><div class="sec-dot">B</div><span>제품 라인업</span></div>
+        <div class="feat-grid">
+          <div class="feat-item"><strong>에어 (Air)</strong>AR 글래스, 대형 스크린</div>
+          <div class="feat-item"><strong>맥스 (Max)</strong>대형 스크린 특화</div>
+          <div class="feat-item"><strong>스타일 (Style)</strong>38g 초경량, AI 특화 — CES 2025</div>
+          <div class="feat-item"><strong>AR AI 글래스</strong>AI + AR 결합형</div>
+        </div>
+      </div>
+
+      <!-- Yoda OS -->
+      <div>
+        <div class="sec-label"><div class="sec-dot">C</div><span>Yoda OS — 자체 생태계</span></div>
+        <div class="os-stack">
+          <div class="os-layer top"><h5>앱 스토어 + OTA 무선 업데이트</h5><p>개발자가 앱을 올리고, 기기가 자동으로 최신 상태 유지</p></div>
+          <div class="os-layer mid"><h5>Yoda OS Master (핵심 엔진)</h5><p>SLAM 공간 인식 · 제스처 인식 · 유니티 SDK(UXR)</p></div>
+          <div class="os-layer bot"><h5>Yoda Sprite (개발자 SDK)</h5><p>외부 개발자가 앱을 만들 수 있는 도구 — 생태계 확장의 핵심</p></div>
+        </div>
+        <div style="margin-top:6px;font-size:9.5px;color:var(--muted);padding:0 2px;">자회사 <strong style="color:var(--text)">항적 링반 테크놀로지</strong> — 디스플레이·광학 R&amp;D 전담</div>
+      </div>
+    </div>
+
+    <!-- COL 2: 이분 리얼리티스 -->
+    <div class="col">
+      <div class="col-title">02 이분 리얼리티스 (Even Realities)</div>
+
+      <!-- 창업자 -->
+      <div>
+        <div class="sec-label"><div class="sec-dot">A</div><span>창업자 왕샤오이 — 애플 출신 PM</span></div>
+        <div class="tl">
+          <div class="tl-row">
+            <div class="tl-yr">학업</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text">상하이 교통대 → <strong>UC 버클리 석사</strong></div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">애플</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text"><strong>애플 워치 PM</strong> — 기획·양산·판매 전 과정 총괄</div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">앵커</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text">자신이 기획한 제품을 <strong>애플 스토어에 입점</strong>시킴</div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">오포·JMGO</div>
+            <div class="tl-bar"><div class="tl-circ"></div><div class="tl-line-v"></div></div>
+            <div class="tl-text">제품 기획 → 파이프라인 총괄 경험 축적</div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-yr">창업</div>
+            <div class="tl-bar"><div class="tl-circ"></div></div>
+            <div class="tl-text"><strong>이분 리얼리티스 창업</strong><br><span style="font-size:9px;color:var(--muted)">Even = "이분하다" → 가상과 현실 사이 균형</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 제품 철학 -->
+      <div>
+        <div class="sec-label"><div class="sec-dot">B</div><span>G2 — "없애서 더 좋은 안경"</span></div>
+        <div class="card">
+          <div style="font-size:9.5px;color:var(--muted);font-weight:700;margin-bottom:4px;">의도적으로 제거 (개인 정보 보호)</div>
+          <div class="pill-row" style="margin-top:0;">
+            <span class="pill red">카메라 없음</span>
+            <span class="pill red">외부 스피커 없음</span>
+          </div>
+          <div style="font-size:9.5px;color:var(--muted);font-weight:700;margin:8px 0 4px;">핵심에만 집중</div>
+          <div class="pill-row" style="margin-top:0;">
+            <span class="pill">마이크 4개</span>
+            <span class="pill">마이크로 디스플레이</span>
+            <span class="pill">36g 초경량</span>
+            <span class="pill">IP67 방수</span>
+            <span class="pill">ChatGPT 연동</span>
+            <span class="pill">실시간 번역</span>
+            <span class="pill">텔레프롬프터</span>
+          </div>
+        </div>
+        <div style="margin-top:6px;font-size:9.5px;color:var(--muted);padding:0 2px;">코파운더 다수 <strong style="color:var(--text)">린드버그·미키타</strong>(명품 안경 브랜드) 출신 → 안경 설계 노하우</div>
+      </div>
+
+      <!-- 두 기업 비교표 -->
+      <div>
+        <div class="sec-label"><div class="sec-dot">C</div><span>두 기업 핵심 비교</span></div>
+        <table class="cmp">
+          <thead>
+            <tr><th>항목</th><th>로키드</th><th>이분 리얼리티스</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>무게</td><td>38g (스타일)</td><td>36g (G2)</td></tr>
+            <tr><td>카메라</td><td>있음</td><td>없음 (의도적)</td></tr>
+            <tr><td>디스플레이</td><td>AR 오버레이</td><td>마이크로 디스플레이</td></tr>
+            <tr><td>OS</td><td>자체 Yoda OS</td><td>미공개</td></tr>
+            <tr><td>SDK</td><td>Yoda Sprite + UXR</td><td>최근 오픈</td></tr>
+            <tr><td>투자</td><td>2024 대규모 유치</td><td>-</td></tr>
+            <tr><td>상장</td><td>2026 홍콩 예정</td><td>-</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COL 3: 시장 분석 & 인사이트 -->
+    <div class="col">
+      <div class="col-title">03 시장 분석 &amp; 핵심 인사이트</div>
+
+      <!-- 트렌드 -->
+      <div>
+        <div class="sec-label"><div class="sec-dot">A</div><span>공간 컴퓨팅 두 가지 트렌드</span></div>
+        <div class="trend-box">
+          <div class="trend-branch">
+            <h5>AI 글래스 (음성 중심)</h5>
+            <p>LLM(대규모 언어 모델)과 연결해 음성으로 AI를 사용. 화면 최소화.</p>
+            <p class="ex">이분 G2, 메타 레이밴</p>
+          </div>
+          <div class="trend-mid">
+            <div class="root">공간<br>컴퓨팅</div>
+            <div class="arr">↙↘</div>
+          </div>
+          <div class="trend-branch">
+            <h5>AR 글래스 (시각 중심)</h5>
+            <p>렌즈에 디지털 정보를 겹쳐 보여주는 AR + AI 결합형.</p>
+            <p class="ex">로키드 맥스/에어, X리얼</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top:7px;font-size:9.5px;color:var(--muted);">
+          두 형태 공통 목표 — 일상 데이터 수집 → AI 학습 → 맥락 이해 향상 → 더 스마트한 디바이스로 진화
+        </div>
+      </div>
+
+      <!-- 활용 시나리오 -->
+      <div>
+        <div class="sec-label"><div class="sec-dot">B</div><span>주요 활용 시나리오</span></div>
+        <table class="sce">
+          <thead><tr><th>사용자</th><th>이분 리얼리티스</th><th>로키드</th></tr></thead>
+          <tbody>
+            <tr><td>강연자·발표자</td><td>텔레프롬프터 (대본 자동 스크롤)</td><td>발표 자료 AR 오버레이</td></tr>
+            <tr><td>외국인 소통</td><td>실시간 번역 → 디스플레이 출력</td><td>번역 + 시각 안내</td></tr>
+            <tr><td>일상 AI</td><td>ChatGPT/Perplexity 음성 Q&amp;A</td><td>AI + AR 지도, 정보 오버레이</td></tr>
+            <tr><td>엔터테인먼트</td><td>해당 없음</td><td>Max/Joy — 가상 대형 스크린</td></tr>
+            <tr><td>개발자</td><td>SDK 오픈 → 생태계 구축 중</td><td>Yoda OS + 유니티 SDK</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 핵심 인사이트 -->
+      <div>
+        <div class="sec-label"><div class="sec-dot">C</div><span>핵심 인사이트 &amp; 2026년 전망</span></div>
+        <div class="insight" style="margin-bottom:7px;">
+          "좋은 안경이 먼저, 그다음이 스마트 기기다" — 로키드 CEO 주밍<br>
+          <span style="font-style:normal;font-size:9px;">좋은 안경 → 좋은 헤드셋 → 좋은 블루투스 헤드폰 → 궁극적으로 좋은 AI 기기</span>
+        </div>
+        <div class="insight-grid">
+          <div class="insight-item">
+            <h5>중국 기업의 강점</h5>
+            <ul>
+              <li>빠른 제조·이터레이션 능력</li>
+              <li>오픈 생태계 전략 (SDK 공개)</li>
+              <li>선전 = 스마트 글래스 춘추전국시대</li>
+            </ul>
+          </div>
+          <div class="insight-item">
+            <h5>2026년이 중요한 이유</h5>
+            <ul>
+              <li>1세대 제품 시장 본격 진입</li>
+              <li>로키드: 홍콩 증시 상장 예정</li>
+              <li>이분: SDK → 앱 생태계 구축 시작</li>
+            </ul>
+          </div>
+          <div class="insight-item">
+            <h5>생태계가 승부를 가른다</h5>
+            <ul>
+              <li>OS를 가진 자가 시장을 지배</li>
+              <li>일상 데이터 → AI 학습 → 맥락 이해</li>
+              <li>애플·구글이 한 일을 스타트업이 반복</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /body -->
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <span>혁신 전파사 · 공간 컴퓨팅 시리즈 1편 · 2026-05-02</span>
+    <a href="https://macmini.tail884f5f.ts.net/2026-05-02-rokid-even-realities-smart-glasses.html">전체 리포트 보기</a>
+    <span>출처: youtu.be/D9cNvSb3fEI</span>
+  </div>
+
+</div><!-- /canvas -->
+</body>
+</html>

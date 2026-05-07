@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>맷 포콕이 만든 AI 코딩 끝판왕 스킬 7개 | 메이커 에반</title>
+<style>
+  :root {
+    --accent: #2d9162;
+    --accent-light: #e8f5f0;
+    --accent-dark: #1e6b47;
+    --bg: #f8fafb;
+    --card-bg: #ffffff;
+    --text: #1a2332;
+    --text-sub: #5a6a7a;
+    --border: #e2e8f0;
+    --tag-bg: #e8f5f0;
+    --tag-text: #1e6b47;
+    --purple: #6f42c1;
+    --purple-light: #f3f0ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .hero { background: linear-gradient(135deg, #3d2070 0%, #6f42c1 100%); color: white; padding: 48px 24px 36px; }
+  .hero-inner { max-width: 800px; margin: 0 auto; }
+  .channel-badge { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(20px, 4vw, 28px); font-weight: 800; line-height: 1.3; margin-bottom: 12px; }
+  .hero-meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; opacity: 0.85; margin-bottom: 20px; }
+  .watch-btn { display: inline-flex; align-items: center; gap: 6px; background: white; color: #3d2070; padding: 10px 20px; border-radius: 24px; font-weight: 700; font-size: 14px; text-decoration: none; }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px 48px; }
+  .summary-box { background: white; border-left: 4px solid var(--accent); border-radius: 8px; padding: 20px 24px; margin: 24px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .summary-box h2 { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .bullets { list-style: none; }
+  .bullets li { padding: 6px 0; padding-left: 20px; position: relative; font-size: 15px; }
+  .bullets li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .section { margin: 28px 0; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .section-num { width: 28px; height: 28px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; }
+  .section h2 { font-size: 18px; font-weight: 800; }
+  .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .problem-card { background: #fff8f0; border: 1px solid #ffd5a8; border-radius: 10px; padding: 14px; }
+  .problem-card .num { font-size: 20px; font-weight: 900; color: #e87010; }
+  .problem-card h4 { font-size: 13px; font-weight: 700; margin: 4px 0; }
+  .problem-card p { font-size: 12px; color: var(--text-sub); }
+  .skill-list { display: flex; flex-direction: column; gap: 14px; }
+  .skill-item { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: flex; gap: 14px; align-items: flex-start; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+  .skill-badge { width: 40px; height: 40px; background: var(--accent-light); border: 2px solid var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: var(--accent); flex-shrink: 0; }
+  .skill-content h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .skill-content .label { font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-light); padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
+  .skill-content p { font-size: 13px; color: var(--text-sub); line-height: 1.5; }
+  .skill-content a { color: var(--accent); font-weight: 600; font-size: 12px; text-decoration: none; display: inline-block; margin-top: 6px; }
+  .insight-box { background: linear-gradient(135deg, #f3f0ff, #ede5ff); border: 1px solid #c4aaff; border-radius: 12px; padding: 20px 24px; margin: 20px 0; }
+  .insight-box h3 { font-size: 14px; font-weight: 700; color: var(--purple); margin-bottom: 8px; }
+  .insight-box p { font-size: 14px; color: var(--text); }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  th { background: var(--purple); color: white; padding: 12px 14px; font-size: 13px; font-weight: 700; text-align: left; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  tr:last-child td { border-bottom: none; }
+  .tag { display: inline-block; background: var(--tag-bg); color: var(--tag-text); border-radius: 12px; padding: 3px 10px; font-size: 12px; font-weight: 600; margin: 3px 2px; }
+  footer { text-align: center; padding: 24px; font-size: 12px; color: var(--text-sub); border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="channel-badge">📺 메이커 에반 · 2026-05-05</div>
+    <h1>맷 포콕이 만든 AI 코딩 끝판왕 스킬 7개<br>(개발자 필수)</h1>
+    <div class="hero-meta">
+      <span>⏱ 8분</span>
+      <span>🛠 맥포(MacPaw) 스킬 5개</span>
+      <span>🎯 TDD + Diagnose + Grilme</span>
+    </div>
+    <a class="watch-btn" href="https://youtu.be/nyAHYmDaGBk" target="_blank">▶ 영상 보러가기</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 핵심 요약 -->
+  <div class="summary-box">
+    <h2>🎯 핵심 요약</h2>
+    <ul class="bullets">
+      <li>AI 결과물이 별로다 싶으면 AI 탓하지 말고 피드백 루프(테스트 환경)부터 점검하라</li>
+      <li>TDD(테스트 주도 개발): 구현 전에 테스트를 먼저 만들어 AI의 "치팅(속임수)"을 막는다</li>
+      <li>맥포 스킬은 강제 워크플로우 없이 필요한 스킬만 골라 쓸 수 있는 자유형 가이드북이다</li>
+      <li>Diagnose 스킬: AI가 추측 반복 대신 에러 재현 → 가설 수립 → 검증 순서로 일하게 만든다</li>
+    </ul>
+  </div>
+
+  <!-- 4대 문제 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>AI 코딩의 4가지 핵심 문제</h2>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="num">①</div>
+        <h4>요구사항-구현 불일치</h4>
+        <p>로그인 폼 만들어 달라 했더니 회원가입까지 싹 만들어버림</p>
+      </div>
+      <div class="problem-card">
+        <div class="num">②</div>
+        <h4>반복 설명</h4>
+        <p>프로젝트 색깔·폰트·컴포넌트를 매번 다시 알려줘야 함</p>
+      </div>
+      <div class="problem-card">
+        <div class="num">③</div>
+        <h4>코드 품질 저하</h4>
+        <p>AI가 만든 코드를 그냥 받으면 점점 누더기가 됨</p>
+      </div>
+      <div class="problem-card">
+        <div class="num">④</div>
+        <h4>아키텍처 붕괴</h4>
+        <p>처음엔 깔끔하다가 기능 2~3개 추가하면 손대기 무서운 코드</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5대 스킬 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>맥포 핵심 스킬 5개</h2>
+    </div>
+    <div class="skill-list">
+      <div class="skill-item">
+        <div class="skill-badge">G</div>
+        <div class="skill-content">
+          <div class="label">스킬 1 — 기획</div>
+          <h3>Grilme — 디자인 컨셉 대화</h3>
+          <p>문서만 던지는 게 아니라 AI와 함께 "현장에서 직접 맞추는" 과정을 거친다. 인테리어 업자와 현장 돌며 "여기 벽은 이런 느낌으로" 맞추는 것과 같다. 잘 쓴 문서보다 디자인 컨셉을 함께 만드는 과정이 중요하다.</p>
+          <a href="https://youtu.be/nyAHYmDaGBk?t=80" target="_blank">▶ 1:20 영상에서 보기</a>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-badge">D</div>
+        <div class="skill-content">
+          <div class="label">스킬 2 — 기획</div>
+          <h3>도메인 매핑</h3>
+          <p>프로젝트 고유 용어를 AI에게 1회 정의하면 이후 반복 설명이 불필요하다. 토큰·시간 절약. 같은 컨텍스트를 여러 세션에 재사용 가능.</p>
+          <a href="https://youtu.be/nyAHYmDaGBk?t=120" target="_blank">▶ 2:00 영상에서 보기</a>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-badge">T</div>
+        <div class="skill-content">
+          <div class="label">스킬 3 — 구현</div>
+          <h3>TDD(테스트 주도 개발)</h3>
+          <p>AI는 보통 구현 후 테스트를 덮는다 → 버그가 있어도 테스트가 같이 통과. <strong>해결</strong>: 구현 전에 테스트를 먼저 만들어 AI가 치팅을 못 하게 한다. 핵심 원리: "피드백 루프 품질이 AI 출력의 천장이다." AI 탓하기 전에 테스트 환경부터 점검하라.</p>
+          <a href="https://youtu.be/nyAHYmDaGBk?t=150" target="_blank">▶ 2:30 영상에서 보기</a>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-badge">Dx</div>
+        <div class="skill-content">
+          <div class="label">스킬 4 — 디버깅</div>
+          <h3>Diagnose — 체계적 디버깅</h3>
+          <p>"이거 왜 안 돼?" 물으면 AI가 추측→틀림→또 추측을 반복해 30분을 낭비한다. <strong>해결</strong>: 에러 재현 → 가설 수립 → 가설 검증 순서를 강제한다. 의사가 증상 듣자마자 약 처방하는 게 아니라 검사→진단→처방하는 것과 같다.</p>
+          <a href="https://youtu.be/nyAHYmDaGBk?t=220" target="_blank">▶ 3:40 영상에서 보기</a>
+        </div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-badge">IC</div>
+        <div class="skill-content">
+          <div class="label">스킬 5 — 유지보수</div>
+          <h3>Improve Code — 점진적 코드 개선</h3>
+          <p>기능 추가 때마다 AI가 만든 코드를 즉시 리팩토링·개선한다. 점진적 개선으로 아키텍처 붕괴를 방지하고, 코드베이스가 장기적으로 건강하게 유지된다.</p>
+          <a href="https://youtu.be/nyAHYmDaGBk?t=260" target="_blank">▶ 4:20 영상에서 보기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 핵심 인사이트 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>핵심 인사이트 — 피드백 루프</h2>
+    </div>
+    <div class="insight-box">
+      <h3>💡 "피드백 루프 품질이 AI 출력의 천장이다"</h3>
+      <p>야구 타자가 스윙 후 공이 어디 갔는지 봐야 다음 스윙을 고칠 수 있듯, AI도 테스트가 빠르고 정확해야 자기 실수를 스스로 발견하고 고친다. AI 결과물이 별로라면 AI를 탓하기 전에 테스트 환경(피드백 루프)부터 점검하라.</p>
+    </div>
+  </div>
+
+  <!-- 비교표 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>맥포 vs 다른 프레임워크</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>항목</th><th>맥포(MacPaw)</th><th>GST</th><th>슈퍼파워즈</th></tr>
+        <tr><td>방식</td><td>자유형 가이드북</td><td>풀세트 패키지</td><td>풀세트 패키지</td></tr>
+        <tr><td>강제 워크플로우</td><td>없음 (자유 조합)</td><td>있음</td><td>있음</td></tr>
+        <tr><td>강점</td><td>낮은 도입 장벽</td><td>스펙 브레인스토밍</td><td>서브 에이전트 구현</td></tr>
+        <tr><td>활용 단계</td><td>전 단계 (선택적)</td><td>기획·스펙</td><td>구현</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 태그 -->
+  <div style="margin-top: 28px;">
+    <span class="tag">#맥포</span>
+    <span class="tag">#TDD</span>
+    <span class="tag">#Grilme</span>
+    <span class="tag">#Diagnose</span>
+    <span class="tag">#AI코딩</span>
+    <span class="tag">#코드품질</span>
+    <span class="tag">#메이커에반</span>
+  </div>
+</div>
+
+<footer>
+  📺 메이커 에반 | 2026-05-05 | AI 비주얼 리포트 자동 생성
+</footer>
+</body>
+</html>
