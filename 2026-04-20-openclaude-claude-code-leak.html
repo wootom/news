@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaude — Claude Code 소스 유출 기반 멀티모델 코딩 에이전트</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --text-muted: #666666;
+    --accent: #004D40;
+    --border: #EEEEEE;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* Hero */
+  .meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .meta span { margin-right: 20px; }
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .abstract {
+    font-size: 17px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+
+  /* Section */
+  .section { margin-bottom: 52px; }
+  .section-num {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  p { font-size: 16px; margin-bottom: 14px; }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    margin: 20px 0;
+  }
+  th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  td:first-child { color: var(--text-muted); font-size: 13px; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+
+  /* Stat row */
+  .stats {
+    display: flex;
+    gap: 32px;
+    padding: 28px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 28px 0;
+  }
+  .stat-item { flex: 1; }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* Feature list */
+  .feature-list { list-style: none; padding: 0; }
+  .feature-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    display: flex;
+    gap: 16px;
+  }
+  .feature-list li:last-child { border-bottom: none; }
+  .feat-label {
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 130px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding-top: 1px;
+  }
+
+  /* Compare table */
+  .compare th { background: none; }
+  .compare td:first-child {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+  }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .tag-accent { background: var(--accent); color: #fff; }
+  .tag-gray { background: #F0F0F0; color: var(--text-muted); }
+  .tag-warn { background: #FFF3CD; color: #856404; }
+
+  /* Pipeline */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .pipe-step {
+    background: #F7FAF9;
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .pipe-arrow {
+    font-size: 18px;
+    color: var(--text-muted);
+    padding: 0 6px;
+  }
+
+  /* Scenario cards */
+  .scenarios { display: flex; flex-direction: column; gap: 0; }
+  .scenario {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 24px;
+  }
+  .scenario:last-child { border-bottom: none; }
+  .scenario-num {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 32px;
+    opacity: 0.3;
+  }
+  .scenario-content h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .scenario-content p { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+  /* Blockquote */
+  blockquote {
+    border-left: 4px solid var(--accent);
+    padding-left: 20px;
+    margin: 24px 0;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* Code */
+  code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    background: #F5F5F5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+  .code-block {
+    background: #F5F5F5;
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    margin: 16px 0;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="meta">
+  <span>2026-04-20</span>
+  <span>Tech · OpenSource</span>
+  <span>GeekNews</span>
+</div>
+<h1><em>OpenClaude</em> —<br>Claude Code 소스 유출 기반<br>멀티모델 코딩 에이전트</h1>
+<p class="abstract">
+  2026년 3월 31일, Claude Code의 npm 패키지에 소스맵이 의도치 않게 포함되어 소스코드가 노출됐다.
+  이를 기반으로 개발된 OpenClaude는 Claude Code의 모든 도구셋을 유지하면서
+  GPT-4o·Gemini·Ollama 등 멀티모델을 지원하는 오픈소스 코딩 에이전트 CLI로,
+  3주 만에 22.8k stars를 달성했다.
+</p>
+
+<!-- 현황 수치 -->
+<div class="stats">
+  <div class="stat-item">
+    <div class="stat-num">22.8k</div>
+    <div class="stat-label">GitHub Stars</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">7.7k</div>
+    <div class="stat-label">Forks</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">86</div>
+    <div class="stat-label">Contributors</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3주</div>
+    <div class="stat-label">성장 기간</div>
+  </div>
+</div>
+
+<!-- 핵심 개요 -->
+<div class="section">
+  <div class="section-num">01 — 핵심 개요</div>
+  <h2>무엇이, 어떻게 유출됐나</h2>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><td>유출 경로</td><td>npm 빌드 시 소스맵(.js.map)이 패키지에 포함되어 TypeScript 원본 노출</td></tr>
+    <tr><td>유출 시점</td><td>2026-03-31</td></tr>
+    <tr><td>대응</td><td>OpenClaude로 재구성 — OpenAI 호환 shim 추가</td></tr>
+    <tr><td>설치</td><td><code>npm install -g @gitlawb/openclaude</code></td></tr>
+    <tr><td>라이선스</td><td>MIT (Anthropic과 무관한 독립 커뮤니티 프로젝트)</td></tr>
+  </table>
+</div>
+
+<!-- 핵심 기능 -->
+<div class="section">
+  <div class="section-num">02 — 핵심 기능 구조</div>
+  <h2>Claude Code + 멀티모델 레이어</h2>
+
+  <div class="code-block">export CLAUDE_CODE_USE_OPENAI=1
+export OPENAI_API_KEY=sk-your-key
+export OPENAI_MODEL=gpt-4o
+openclaude</div>
+
+  <ul class="feature-list">
+    <li>
+      <span class="feat-label">백엔드 교체</span>
+      <span>환경변수 3줄로 OpenAI / Gemini / Ollama / DeepSeek 즉시 전환. <code>/provider</code> 명령으로 프로파일 저장</span>
+    </li>
+    <li>
+      <span class="feat-label">도구셋 유지</span>
+      <span>Bash, 파일 R/W/Edit, grep, glob, agents, tasks, MCP, 웹 도구 — Claude Code와 동일</span>
+    </li>
+    <li>
+      <span class="feat-label">에이전트 라우팅</span>
+      <span>Explore → DeepSeek-chat, Plan → GPT-4o 등 작업 유형별 최적 모델 자동 배정</span>
+    </li>
+    <li>
+      <span class="feat-label">부가 기능</span>
+      <span>VS Code 확장 내장, gRPC 헤드리스 서버 (포트 50051), Firecrawl 웹 검색 통합</span>
+    </li>
+  </ul>
+</div>
+
+<!-- 기술적 맥락 -->
+<div class="section">
+  <div class="section-num">03 — 기술적 맥락</div>
+  <h2>어떻게 동작하는가</h2>
+
+  <div class="pipeline">
+    <div class="pipe-step">Claude Code 원본</div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">npm 소스맵 노출</div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">TypeScript 재구성</div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">OpenAI shim 추가</div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">OpenClaude</div>
+  </div>
+
+  <p>TypeScript + Bun 기반 빌드. OpenAI Chat Completions API를 공통 인터페이스로 사용해 어떤 모델이든 동일한 도구 호출 방식으로 연결된다. v0.5.2 (2026-04-20) 기준 83개 이슈·67개 PR 처리 중.</p>
+</div>
+
+<!-- 경쟁 환경 비교 -->
+<div class="section">
+  <div class="section-num">04 — 경쟁 환경 비교</div>
+  <h2>코딩 에이전트 CLI 지형도</h2>
+  <table class="compare">
+    <tr>
+      <th></th>
+      <th>Claude Code</th>
+      <th>OpenClaude</th>
+      <th>Aider</th>
+      <th>Continue.dev</th>
+    </tr>
+    <tr>
+      <td>지원 모델</td>
+      <td><span class="tag tag-warn">Claude 전용</span></td>
+      <td><span class="tag tag-accent">멀티모델</span></td>
+      <td><span class="tag tag-accent">멀티모델</span></td>
+      <td><span class="tag tag-accent">멀티모델</span></td>
+    </tr>
+    <tr>
+      <td>도구셋</td>
+      <td>풍부 (MCP, agents)</td>
+      <td>동일 수준</td>
+      <td>제한적</td>
+      <td>IDE 중심</td>
+    </tr>
+    <tr>
+      <td>라이선스</td>
+      <td><span class="tag tag-warn">독점</span></td>
+      <td><span class="tag tag-accent">MIT</span></td>
+      <td><span class="tag tag-gray">Apache</span></td>
+      <td><span class="tag tag-gray">Apache</span></td>
+    </tr>
+    <tr>
+      <td>법적 지위</td>
+      <td>공식</td>
+      <td><span class="tag tag-warn">그레이존</span></td>
+      <td>합법</td>
+      <td>합법</td>
+    </tr>
+  </table>
+</div>
+
+<!-- 전략적 의미 -->
+<div class="section">
+  <div class="section-num">05 — 전략적 의미</div>
+  <h2>AI 에이전트 생태계에 미치는 영향</h2>
+  <p>Anthropic이 독점적으로 보유하던 코딩 에이전트 인프라가 사실상 오픈소스화됐다. Claude Code를 차별화하던 풍부한 도구셋(MCP, agents, tasks)이 이제 어떤 모델에서도 사용 가능해지면서, AI 에이전트 CLI 시장의 진입장벽이 급격히 낮아졌다.</p>
+  <blockquote>
+    "훔친걸 훔쳐서 훔치고" — GeekNews 댓글<br>
+    기술적 완성도는 인정하되, 법적 긴장 관계가 핵심 변수다.
+  </blockquote>
+</div>
+
+<!-- 활용 시나리오 -->
+<div class="section">
+  <div class="section-num">06 — 활용 시나리오</div>
+  <h2>실용적 사용 방법 3가지</h2>
+  <div class="scenarios">
+    <div class="scenario">
+      <div class="scenario-num">1</div>
+      <div class="scenario-content">
+        <h3>비용 최적화</h3>
+        <p>DeepSeek V3·GPT-4o mini로 교체 시 Claude 대비 최대 90% 비용 절감. 대규모 코드베이스 탐색 작업에 효과적.</p>
+      </div>
+    </div>
+    <div class="scenario">
+      <div class="scenario-num">2</div>
+      <div class="scenario-content">
+        <h3>완전 로컬 실행</h3>
+        <p>Ollama + qwen2.5-coder 조합으로 API 키·인터넷 연결 없이 사용. 기밀 코드베이스에 적합.</p>
+      </div>
+    </div>
+    <div class="scenario">
+      <div class="scenario-num">3</div>
+      <div class="scenario-content">
+        <h3>에이전트 라우팅</h3>
+        <p>파일 탐색·grep은 저비용 모델, 아키텍처 계획은 고성능 모델로 자동 분배. 속도·비용·품질 균형 최적화.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 현황 및 전망 -->
+<div class="section">
+  <div class="section-num">07 — 현황 및 전망</div>
+  <h2>3주 만에 22.8k Stars — 앞으로는?</h2>
+  <p>AI 오픈소스 역사상 최단기 성장 사례 중 하나로 기록될 가능성이 높다. 7.7k 포크가 이미 확산된 상태로, Anthropic이 법적 조치를 취해도 완전한 차단은 현실적으로 어렵다.</p>
+
+  <table>
+    <tr><th>시나리오</th><th>가능성</th><th>영향</th></tr>
+    <tr><td>Anthropic 법적 조치</td><td>높음</td><td>원본 레포 삭제, 포크는 지속</td></tr>
+    <tr><td>커뮤니티 자체 개발 지속</td><td>높음</td><td>사실상의 오픈소스 Claude Code 유지</td></tr>
+    <tr><td>Anthropic이 공식 오픈소스화</td><td>낮음</td><td>생태계 확장, 독점 포지션 포기</td></tr>
+  </table>
+</div>
+
+<div class="footer">
+  <span>출처: <a href="https://news.hada.io/topic?id=28115">GeekNews</a> · <a href="https://github.com/Gitlawb/openclaude">GitHub</a></span>
+  <span>2026-04-20</span>
+</div>
+
+</body>
+</html>

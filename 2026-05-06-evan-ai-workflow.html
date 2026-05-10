@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유튜버 에반의 AI 워크플로우 대 공개 | 메이커 에반</title>
+<style>
+  :root {
+    --accent: #2d9162;
+    --accent-light: #e8f5f0;
+    --accent-dark: #1e6b47;
+    --bg: #f8fafb;
+    --card-bg: #ffffff;
+    --text: #1a2332;
+    --text-sub: #5a6a7a;
+    --border: #e2e8f0;
+    --tag-bg: #e8f5f0;
+    --tag-text: #1e6b47;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .hero { background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%); color: white; padding: 48px 24px 36px; }
+  .hero-inner { max-width: 800px; margin: 0 auto; }
+  .channel-badge { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(20px, 4vw, 30px); font-weight: 800; line-height: 1.3; margin-bottom: 12px; }
+  .hero-meta { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; opacity: 0.85; margin-bottom: 20px; }
+  .watch-btn { display: inline-flex; align-items: center; gap: 6px; background: white; color: var(--accent-dark); padding: 10px 20px; border-radius: 24px; font-weight: 700; font-size: 14px; text-decoration: none; }
+  .watch-btn:hover { background: var(--accent-light); }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px 48px; }
+  .summary-box { background: white; border-left: 4px solid var(--accent); border-radius: 8px; padding: 20px 24px; margin: 24px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .summary-box h2 { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .bullets { list-style: none; }
+  .bullets li { padding: 6px 0; padding-left: 20px; position: relative; font-size: 15px; color: var(--text); }
+  .bullets li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .section { margin: 28px 0; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .section-num { width: 28px; height: 28px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; }
+  .section h2 { font-size: 18px; font-weight: 800; color: var(--text); }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .card-icon { font-size: 28px; margin-bottom: 10px; }
+  .card h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .card p { font-size: 13px; color: var(--text-sub); line-height: 1.55; }
+  .card a { color: var(--accent); font-weight: 600; font-size: 12px; text-decoration: none; display: inline-block; margin-top: 8px; }
+  .flow-box { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid var(--border); }
+  .flow-step { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 1px dashed var(--border); }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num { width: 32px; height: 32px; background: var(--accent-light); border: 2px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--accent); flex-shrink: 0; }
+  .flow-content h4 { font-size: 14px; font-weight: 700; color: var(--text); }
+  .flow-content p { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  th { background: var(--accent); color: white; padding: 12px 14px; font-size: 13px; font-weight: 700; text-align: left; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  tr:last-child td { border-bottom: none; }
+  .tag { display: inline-block; background: var(--tag-bg); color: var(--tag-text); border-radius: 12px; padding: 3px 10px; font-size: 12px; font-weight: 600; margin: 3px 2px; }
+  .insight-box { background: linear-gradient(135deg, #f0fdf7, #e8f5f0); border: 1px solid #b7e4cc; border-radius: 12px; padding: 20px 24px; margin: 20px 0; }
+  .insight-box h3 { font-size: 14px; font-weight: 700; color: var(--accent-dark); margin-bottom: 10px; }
+  .insight-box p { font-size: 14px; color: var(--text); }
+  footer { text-align: center; padding: 24px; font-size: 12px; color: var(--text-sub); border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="channel-badge">📺 메이커 에반 · 2026-05-05</div>
+    <h1>유튜버 에반의 AI 워크플로우 대 공개</h1>
+    <div class="hero-meta">
+      <span>⏱ 10분</span>
+      <span>🎯 맥포 + G스택 + 슈퍼파워즈 조합</span>
+      <span>🏗 DDD 아키텍처 적용</span>
+    </div>
+    <a class="watch-btn" href="https://youtu.be/CynJEEKWeqE" target="_blank">▶ 영상 보러가기</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 핵심 요약 -->
+  <div class="summary-box">
+    <h2>🎯 핵심 요약</h2>
+    <ul class="bullets">
+      <li>AI 코딩은 스킬 하나만 쓰면 한계가 있다 — 맥포·G스택·슈퍼파워즈 3개를 단계별로 조합해야 한다</li>
+      <li>맥포는 도메인 용어 정의, G스택은 스펙 브레인스토밍, 슈퍼파워즈는 서브 에이전트 실제 구현을 담당</li>
+      <li>DDD(도메인 주도 개발)로 용어→폴더 구조→코드 경계까지 연결하면 나중에 버그 수정이 쉬워진다</li>
+      <li>총 2~3시간 이상 걸리지만, 사람이 수작업으로 버그를 고칠 수 있는 수준의 코드가 나온다</li>
+    </ul>
+  </div>
+
+  <!-- 3스킬 카드 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>3스킬 역할 분담 구조</h2>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📖</div>
+        <h3>맥포(MacPaw) 스킬</h3>
+        <p>도메인 용어를 AI에게 각인시킨다. '주문'이라는 단어도 쇼핑몰·배달·B2B가 모두 다르므로, 우리 서비스의 정확한 정의를 먼저 박아줘야 코드가 흔들리지 않는다.</p>
+        <a href="https://youtu.be/CynJEEKWeqE?t=72" target="_blank">▶ 1:12 영상에서 보기</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h3>G스택</h3>
+        <p>제품 스펙(기능 명세서)을 심도 있게 다듬는다. "무엇을 빼야 하고 무엇을 살려야 하는가"를 AI가 밀도 있게 캐물어 스펙을 정제한다.</p>
+        <a href="https://youtu.be/CynJEEKWeqE?t=143" target="_blank">▶ 2:23 영상에서 보기</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>슈퍼파워즈</h3>
+        <p>서브 에이전트(보조 AI)들에게 작업을 자동으로 분배해 병렬로 코드를 구현한다. 파일·함수·입출력 단위까지 세분화해서 지시한다.</p>
+        <a href="https://youtu.be/CynJEEKWeqE?t=211" target="_blank">▶ 3:31 영상에서 보기</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 전체 워크플로우 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>전체 워크플로우 흐름</h2>
+    </div>
+    <div class="flow-box">
+      <div class="flow-step">
+        <div class="flow-num">①</div>
+        <div class="flow-content">
+          <h4>도메인 용어 정의 — 맥포 + Grilme + DDD 커스텀</h4>
+          <p>서비스에 등장하는 단어·개념·관계를 AI에게 정확하게 각인. 폴더 구조와 코드 경계까지 연결.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">②</div>
+        <div class="flow-content">
+          <h4>스펙 브레인스토밍 — G스택</h4>
+          <p>기능 명세서를 AI와 함께 심도 있게 다듬는다. 불필요한 기능을 걸러내고 핵심만 남긴다.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">③</div>
+        <div class="flow-content">
+          <h4>오피스 아워스 질문 — "이걸 진짜 만들어야 해?"</h4>
+          <p>구현에 뛰어들기 전, 본질적 필요성을 AI가 먼저 질문하게 만든다.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">④</div>
+        <div class="flow-content">
+          <h4>서브 에이전트 분배 — 슈퍼파워즈</h4>
+          <p>플랜을 확정하면 Claude가 서브 에이전트에 작업을 자동 분배해 병렬로 구현한다.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">⑤</div>
+        <div class="flow-content">
+          <h4>통합·검증</h4>
+          <p>병렬 구현 결과를 통합하고 검증. 도메인 모델이 잘 잡혀 있어 버그 수정 위치가 명확하다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DDD 설명 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>DDD란 무엇인가</h2>
+    </div>
+    <div class="insight-box">
+      <h3>💡 일반인도 이해하는 DDD 설명</h3>
+      <p>DDD(Domain-Driven Development, 도메인 주도 개발)는 소프트웨어를 우리 비즈니스 언어 중심으로 설계하는 방법론이다. 마치 요리사가 레시피 용어를 통일하듯, 개발자가 쓰는 단어와 코드 구조를 일치시킨다. 에반은 이를 AI 코딩에 적용해 AI가 항상 같은 언어로 일하도록 만든다.</p>
+    </div>
+  </div>
+
+  <!-- 핵심 정보 테이블 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>3스킬 역할 비교표</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>스킬</th><th>단계</th><th>핵심 역할</th><th>대표 도구</th></tr>
+        <tr><td>맥포(MacPaw)</td><td>기획</td><td>도메인 용어 AI 각인</td><td>Grilme 스킬</td></tr>
+        <tr><td>G스택</td><td>스펙 작성</td><td>기능 명세 브레인스토밍</td><td>스펙 다듬기</td></tr>
+        <tr><td>슈퍼파워즈</td><td>구현</td><td>서브 에이전트 병렬 코딩</td><td>서브 에이전트 분배</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 태그 -->
+  <div style="margin-top: 28px;">
+    <span class="tag">#AI코딩</span>
+    <span class="tag">#맥포</span>
+    <span class="tag">#G스택</span>
+    <span class="tag">#슈퍼파워즈</span>
+    <span class="tag">#DDD</span>
+    <span class="tag">#워크플로우</span>
+    <span class="tag">#메이커에반</span>
+  </div>
+</div>
+
+<footer>
+  📺 메이커 에반 | 2026-05-05 | AI 비주얼 리포트 자동 생성
+</footer>
+</body>
+</html>

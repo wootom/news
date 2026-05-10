@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>애플이 삼성을 찾은 진짜 이유 — 안될공학</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2d9162;
+      --accent-mid: #52b788;
+      --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* HERO */
+    .hero { background: var(--accent); color: #fff; padding: 48px 24px 32px; }
+    .hero-inner { max-width: 900px; margin: 0 auto; }
+    .hero-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: .7; margin-bottom: 8px; }
+    .hero h1 { font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
+    .hero-meta { font-size: 13px; opacity: .8; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .stat { background: rgba(255,255,255,.15); border-radius: 10px; padding: 14px 16px; text-align: center; }
+    .stat-value { font-size: 26px; font-weight: 800; display: block; }
+    .stat-label { font-size: 11px; opacity: .85; margin-top: 3px; }
+
+    /* MAIN */
+    .main { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
+
+    /* SECTION CARD */
+    .section { margin-bottom: 28px; }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .num { width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .section-title { font-size: 18px; font-weight: 700; color: var(--text); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: var(--accent-light); color: var(--accent); font-weight: 700; text-align: left; padding: 9px 12px; border-bottom: 2px solid var(--accent-mid); }
+    td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+
+    /* GRID */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } .stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(2, 1fr); } .hero h1 { font-size: 20px; } }
+
+    .grid-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .grid-card-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 8px; border-bottom: 1px solid var(--accent-light); padding-bottom: 6px; }
+    .grid-card p { font-size: 13px; color: var(--text); }
+
+    /* FLOW */
+    .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .flow-step { background: var(--accent-light); border: 1px solid var(--accent-mid); border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--accent); text-align: center; flex: 1; min-width: 120px; }
+    .flow-arrow { color: var(--accent-mid); font-size: 18px; font-weight: 700; }
+
+    /* TAG */
+    .tag { display: inline-block; background: var(--accent-light); color: var(--accent); border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 600; margin: 3px 2px; }
+
+    /* COMPARISON */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 480px) { .compare { grid-template-columns: 1fr; } }
+    .compare-col { border-radius: 10px; padding: 14px 16px; }
+    .compare-col.samsung { background: var(--accent-light); border: 2px solid var(--accent); }
+    .compare-col.tsmc { background: #f5f5f5; border: 1px solid var(--border); }
+    .compare-col h4 { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+    .compare-col h4.samsung-label { color: var(--accent); }
+    .compare-col h4.tsmc-label { color: #555; }
+    .compare-col ul { list-style: none; }
+    .compare-col li { font-size: 13px; padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,.06); }
+    .compare-col li:last-child { border-bottom: none; }
+    .compare-col li::before { content: "• "; color: var(--accent); font-weight: 700; }
+
+    /* TIMELINE */
+    .timeline { display: flex; flex-direction: column; gap: 10px; }
+    .tl-item { display: flex; gap: 12px; align-items: flex-start; }
+    .tl-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); margin-top: 4px; flex-shrink: 0; }
+    .tl-dot.dim { background: var(--border); }
+    .tl-content { flex: 1; }
+    .tl-time { font-size: 12px; font-weight: 700; color: var(--accent); }
+    .tl-text { font-size: 13px; color: var(--text); }
+
+    /* FOOTER */
+    .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 24px; text-align: center; font-size: 12px; color: var(--muted); }
+    .footer a { color: var(--accent); }
+
+    /* SCENARIO */
+    .scenario { display: flex; flex-direction: column; gap: 10px; }
+    .scenario-item { display: flex; gap: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; align-items: flex-start; }
+    .scenario-num { width: 24px; height: 24px; background: var(--accent); color: #fff; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .scenario-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .scenario-desc { font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">안될공학 · 2026-05-08</div>
+    <h1>애플이 삼성을 찾은 진짜 이유<br>진짜 때가 되었다</h1>
+    <div class="hero-meta">
+      <a href="https://youtu.be/g5GqmJ0wKms" target="_blank" style="color:#fff;opacity:.85;">youtube.com/watch?v=g5GqmJ0wKms</a>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-value">36%</span>
+        <span class="stat-label">TSMC 3nm 중 AI 비중<br>(5%→36% 급증)</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">+50%</span>
+        <span class="stat-label">TSMC 2nm 웨이퍼<br>가격 인상 전망</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">55%</span>
+        <span class="stat-label">삼성 2nm 수율<br>(개선 진행 중)</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">4만장</span>
+        <span class="stat-label">애플 필요 웨이퍼<br>(아이폰만 월 기준)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- 1. 핵심 개요 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num">01</div>
+      <div class="section-title">핵심 개요 — 무슨 일이 일어나고 있나</div>
+    </div>
+    <div class="card">
+      <table>
+        <tr><th>항목</th><th>내용</th></tr>
+        <tr><td><strong>트리거</strong></td><td>블룸버그 보도: 애플 임원이 삼성 텍사스 테일러 팹 방문</td></tr>
+        <tr><td><strong>핵심 이유</strong></td><td>TSMC 캐파 포화 + 삼성의 메모리·파운드리·패키징 통합 강점</td></tr>
+        <tr><td><strong>공정 비교</strong></td><td>삼성 2nm (수율 ~55%, 개선 중) vs TSMC 2nm (수율 ~60~70%)</td></tr>
+        <tr><td><strong>핵심 가치</strong></td><td>단순 파운드리가 아닌 메모리+로직+패키징 <strong>턴키 솔루션</strong></td></tr>
+        <tr><td><strong>현재 상태</strong></td><td>공식 계약 없음 — 방문·검토 단계</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2. TSMC 캐파 압박 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num">02</div>
+      <div class="section-title">TSMC 캐파 압박 — AI가 애플을 밀어냈다</div>
+    </div>
+    <div class="card">
+      <div class="grid">
+        <div class="grid-card">
+          <div class="grid-card-title">AI 수요 급증</div>
+          <p>Nvidia 루빈, AMD, Google TPU 등 AI 칩이 TSMC 3nm를 독식. 2025년 5%에서 36%로 폭발적 증가</p>
+        </div>
+        <div class="grid-card">
+          <div class="grid-card-title">캐파 확장의 한계</div>
+          <p>TSMC 3nm 생산량 2026년까지 18만 장/월(+40%)으로 확대 중이나, 수요가 공급을 지속 초과</p>
+        </div>
+        <div class="grid-card">
+          <div class="grid-card-title">애플의 상대적 하락</div>
+          <p>애플 A·M 시리즈는 여전히 TSMC 핵심 고객. 그러나 AI 칩 대비 상대적 우선순위 하락</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 비용 압박 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num">03</div>
+      <div class="section-title">비용 압박 — 2nm 전환의 딜레마</div>
+    </div>
+    <div class="card">
+      <table>
+        <tr><th>항목</th><th>내용</th></tr>
+        <tr><td>TSMC N2 웨이퍼 단가</td><td>약 <strong>$30,000/장</strong> — N3 대비 +50% 인상 전망</td></tr>
+        <tr><td>GAA 공정 전환</td><td>Gate-All-Around 첫 적용 → 초기 수율 리스크 추가</td></tr>
+        <tr><td>메모리 가격 상승</td><td>LPDDR5X · NAND 동반 상승. 삼성, 100% 인상 요구 사례 등장</td></tr>
+        <tr><td>애플의 선택</td><td>전 라인업 최신 공정 유지 어려움 → 일부 라인업 대안 공정 검토</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. 삼성의 레버리지 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num">04</div>
+      <div class="section-title">삼성의 협상 레버리지 — IDM의 힘</div>
+    </div>
+    <div class="card">
+      <div class="compare">
+        <div class="compare-col samsung">
+          <h4 class="samsung-label">삼성 (IDM 종합)</h4>
+          <ul>
+            <li>파운드리 (SF2, 미국 테일러)</li>
+            <li>DRAM · LPDDR 공급</li>
+            <li>NAND 플래시</li>
+            <li>첨단 패키징 (HBM, CoW)</li>
+            <li>미국 내 생산 명분</li>
+            <li>메모리 쇼티지 협상 레버리지</li>
+          </ul>
+        </div>
+        <div class="compare-col tsmc">
+          <h4 class="tsmc-label">TSMC · 인텔 · SK하이닉스</h4>
+          <ul>
+            <li>TSMC: 파운드리 최강, 메모리 없음</li>
+            <li>인텔: 미국 생산 가능, 메모리 없음</li>
+            <li>SK하이닉스: HBM 강점, 파운드리 없음</li>
+            <li>단일 기능만 제공 — 턴키 불가</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 턴키 시나리오 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num">05</div>
+      <div class="section-title">삼성 턴키 솔루션 — 원스톱 공급망</div>
+    </div>
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">애플 설계<br>(A/M 시리즈)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">삼성 SF2<br>파운드리<br>(텍사스 테일러)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">삼성 LPDDR5X<br>/ NAND 공급</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">첨단 패키징<br>(CoW / 3D 적층)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">완제품<br>(미국산 + 통합 검증)</div>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:14px;">
+        Apple Silicon의 <strong>유니파이드 메모리 아키텍처</strong>(CPU·GPU가 동일 DRAM 공유)로 인해, 
+        메모리 + 로직 + 패키징을 단일 벤더가 통합 검증하면 병목을 한 방에 해소 가능
+      </p>
+    </div>
+  </div>
+
+  <!-- 6. 활용 시나리오 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num">06</div>
+      <div class="section-title">현실적 시나리오 — 어디부터 적용되나</div>
+    </div>
+    <div class="card">
+      <div class="scenario">
+        <div class="scenario-item">
+          <div class="scenario-num">1</div>
+          <div>
+            <div class="scenario-title">보급형 · 파생 칩 우선 적용</div>
+            <div class="scenario-desc">아이폰 SE 계열, Apple TV, HomePod 등 물량이 적거나 성능 요구가 낮은 제품에 삼성 2nm 적용 → TSMC 캐파 절약</div>
+          </div>
+        </div>
+        <div class="scenario-item">
+          <div class="scenario-num">2</div>
+          <div>
+            <div class="scenario-title">서버용 Apple Silicon 테스트</div>
+            <div class="scenario-desc">데이터센터용 Apple Silicon 초기 물량을 삼성에 위탁해 검증. 미국 내 생산이라는 정치적 명분도 확보</div>
+          </div>
+        </div>
+        <div class="scenario-item">
+          <div class="scenario-num">3</div>
+          <div>
+            <div class="scenario-title">공급망 이원화 (장기)</div>
+            <div class="scenario-desc">디스플레이(BOE 육성)와 동일한 전략. TSMC 독점 의존도를 점진적으로 낮추고 협상력 강화</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 전망 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num">07</div>
+      <div class="section-title">현황 및 전망</div>
+    </div>
+    <div class="card">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-time">현재 (2026)</div>
+            <div class="tl-text">공식 계약 없음. 애플 임원 방문 + 삼성 2nm 수율 ~55% 개선 진행 중. TSMC 캐파 포화 지속</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-time">단기 (2026~2027)</div>
+            <div class="tl-text">일부 파생·보급형 칩 수주 가능성. 메모리 LTA와 연계한 패키지 계약 협상</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot dim"></div>
+          <div class="tl-content">
+            <div class="tl-time">중기 (2027~2028)</div>
+            <div class="tl-text">LPDDR + 파운드리 + 패키징 통합 계약으로 확대. 삼성 수율이 TSMC 수준(70%+) 도달 시 가속</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot dim"></div>
+          <div class="tl-content">
+            <div class="tl-time">핵심 변수</div>
+            <div class="tl-text">삼성 수율 개선 속도 / 미·중 무역 환경 / 애플 라인업 전략 / TSMC 추가 캐파 증설 속도</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>출처: <a href="https://youtu.be/g5GqmJ0wKms" target="_blank">안될공학 — 애플이 삼성을 찾은 진짜 이유, 진짜 때가 되었다</a></p>
+  <p style="margin-top:4px;">생성: 2026-05-08 | morning-digest 자동화</p>
+</div>
+
+</body>
+</html>
