@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 토큰 KPI 함정 — 메이커 에반</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2d9162;
+      --accent-mid: #52b788;
+      --accent-light: #d8f0e3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, 'Apple SD Gothic Neo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .hero {
+      background: linear-gradient(135deg, var(--accent) 0%, #1a5c3e 100%);
+      color: #fff;
+      padding: 40px 24px 32px;
+    }
+    .hero-inner { max-width: 860px; margin: 0 auto; }
+    .hero-tag { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; opacity: 0.8; margin-bottom: 10px; }
+    .hero h1 { font-size: 24px; font-weight: 800; line-height: 1.35; margin-bottom: 8px; }
+    .hero-meta { font-size: 13px; opacity: 0.75; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .stat { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 14px 12px; text-align: center; }
+    .stat-num { font-size: 28px; font-weight: 800; display: block; }
+    .stat-label { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 24px 60px; }
+    .section { margin-bottom: 28px; background: var(--surface); border-radius: 12px; padding: 24px; }
+    .sec-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .sec-num { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sec-title { font-size: 18px; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: var(--accent-light); color: var(--accent); font-weight: 700; padding: 10px 12px; text-align: left; border-bottom: 2px solid var(--accent-mid); }
+    td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } .stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(2, 1fr); } .hero h1 { font-size: 20px; } }
+    .card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .card.warn { border-color: #e57373; background: #fff8f8; }
+    .card.ok { border-color: var(--accent-mid); background: var(--accent-light); }
+    .card-icon { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-light); color: var(--accent); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+    .card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .flow { display: flex; flex-direction: column; gap: 0; }
+    .flow-step { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .flow-step:last-child { border-bottom: none; }
+    .flow-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-top: 5px; flex-shrink: 0; }
+    .flow-dot.red { background: #e57373; }
+    .flow-text { font-size: 14px; }
+    .flow-text strong { color: var(--accent); }
+    .stage-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 600px) { .stage-row { grid-template-columns: 1fr; } }
+    .stage { border-radius: 8px; padding: 16px; }
+    .stage-1 { background: #fff3e0; border: 1px solid #ffb74d; }
+    .stage-2 { background: #e8f5e9; border: 1px solid var(--accent-mid); }
+    .stage-3 { background: var(--accent-light); border: 2px solid var(--accent); }
+    .stage-label { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .stage h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .stage p { font-size: 12px; color: #444; line-height: 1.5; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .tag { background: var(--accent-light); color: var(--accent); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 700; }
+    .abuse-box { background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 16px; margin-top: 4px; }
+    .abuse-box h4 { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: #7c5a00; }
+    .abuse-flow { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; }
+    .abuse-arrow { color: var(--accent); font-weight: 700; }
+    .abuse-step { background: #fff; border: 1px solid #ffc107; border-radius: 6px; padding: 6px 10px; font-size: 12px; }
+    .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 24px; font-size: 12px; color: var(--muted); text-align: center; }
+    .footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">메이커 에반 | 2026-05-11</div>
+      <h1>AI 토큰 KPI 도입한 회사<br>한 달 수천만 원이 사라집니다</h1>
+      <div class="hero-meta">해커 뉴스 사례 분석 — AI 코드 줄수 KPI의 함정과 단계별 올바른 평가 전략</div>
+      <div class="stats">
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">도입 단계</span></div>
+        <div class="stat"><span class="stat-num">수천만원</span><span class="stat-label">월 낭비 비용</span></div>
+        <div class="stat"><span class="stat-num">2</span><span class="stat-label">핵심 대안 지표</span></div>
+        <div class="stat"><span class="stat-num">0</span><span class="stat-label">KPI가 나쁜게 아님</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- 섹션 1: 핵심 문제 -->
+    <div class="section">
+      <div class="sec-header">
+        <div class="sec-num">01</div>
+        <div class="sec-title">핵심 문제 — 어뷰징 메커니즘</div>
+      </div>
+      <div class="abuse-box">
+        <h4>토큰 KPI 어뷰징 흐름도</h4>
+        <div class="abuse-flow">
+          <span class="abuse-step">토큰 KPI 부여</span>
+          <span class="abuse-arrow">→</span>
+          <span class="abuse-step">불필요한 AI 호출</span>
+          <span class="abuse-arrow">→</span>
+          <span class="abuse-step">변수명·주석·정규식 전부 AI에</span>
+          <span class="abuse-arrow">→</span>
+          <span class="abuse-step">수치 상승</span>
+          <span class="abuse-arrow">→</span>
+          <span class="abuse-step">실제 품질 저하</span>
+          <span class="abuse-arrow">→</span>
+          <span class="abuse-step">월 수천만 원 낭비</span>
+        </div>
+      </div>
+      <div class="flow" style="margin-top:16px;">
+        <div class="flow-step">
+          <div class="flow-dot red"></div>
+          <div class="flow-text">토큰은 측정하기 쉽지만, 시스템은 "이 호출이 의미 있었는지" 판단 불가</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot red"></div>
+          <div class="flow-text">과거 "코드 줄수 KPI" 실패와 동일한 패턴 — 수치를 쫓다가 실제 가치 소멸</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot red"></div>
+          <div class="flow-text">영리할수록 어뷰징이 쉬움 — 신입보다 시니어 개발자가 더 잘 게이밍</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 2: 단계별 전략 -->
+    <div class="section">
+      <div class="sec-header">
+        <div class="sec-num">02</div>
+        <div class="sec-title">단계별 KPI 전략 (핵심 프레임워크)</div>
+      </div>
+      <div class="stage-row">
+        <div class="stage stage-1">
+          <div class="stage-label">1단계 — 도입 초기</div>
+          <h4>AI를 거의 안 씀</h4>
+          <p>토큰 사용량 측정 <strong>OK</strong>. 강제로라도 쓰게 만드는 효과. 슬랙 첫 도입 때 "올려라" 압박과 동일. <strong>양이 목표</strong>인 단계.</p>
+        </div>
+        <div class="stage stage-2">
+          <div class="stage-label">2단계 — 익숙해짐</div>
+          <h4>매일 쓰기 시작</h4>
+          <p>토큰 KPI <strong>제거</strong>. 활용 사례 회고로 대체. 어떤 작업에 어떻게 썼는지 팀 공유. 노하우 전파 단계.</p>
+        </div>
+        <div class="stage stage-3">
+          <div class="stage-label">3단계 — 숙련</div>
+          <h4>이미 잘 씀</h4>
+          <p>토큰 <strong>상한선 도입</strong>. 불필요한 호출 억제. 시니어가 "이 작업에 AI 호출 필요한가?" 판단. <strong>결과 중심 평가</strong>로 전환.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 3: 비용 문제 -->
+    <div class="section">
+      <div class="sec-header">
+        <div class="sec-num">03</div>
+        <div class="sec-title">실제 비용 문제</div>
+      </div>
+      <div class="grid">
+        <div class="card warn">
+          <h3>KPI 채우기 호출</h3>
+          <p>변수명·주석·정규식 등 5분짜리 작업을 AI에 위임. 결과물 품질 저하 + 비용 낭비.</p>
+        </div>
+        <div class="card warn">
+          <h3>MCP 과다 연결</h3>
+          <p>불필요한 MCP 덕지덕지 붙여서 자동 호출 폭증. 의미없는 토큰이 자동 소진.</p>
+        </div>
+        <div class="card warn">
+          <h3>회사 대응 악순환</h3>
+          <p>비용 증가 → 예산 삭감 → 직원 의욕 저하. 양쪽 모두 손해인 구조.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 4: 올바른 평가 지표 -->
+    <div class="section">
+      <div class="sec-header">
+        <div class="sec-num">04</div>
+        <div class="sec-title">숙련 단계 이후 올바른 평가 지표</div>
+      </div>
+      <table>
+        <tr><th>항목</th><th>나쁜 지표</th><th>좋은 지표</th></tr>
+        <tr><td>사용량</td><td>토큰 총량 (무제한 허용)</td><td>토큰 상한선 (1인당 분기 X)</td></tr>
+        <tr><td>생산성</td><td>AI 호출 횟수</td><td>완료 기능수 / 해결 이슈</td></tr>
+        <tr><td>품질</td><td>코드 줄수</td><td>코드 리뷰 통과율</td></tr>
+        <tr><td>성과</td><td>AI 사용 여부</td><td>실제 결과물 및 영향</td></tr>
+      </table>
+    </div>
+
+    <!-- 섹션 5: 핵심 요약 -->
+    <div class="section">
+      <div class="sec-header">
+        <div class="sec-num">05</div>
+        <div class="sec-title">핵심 요약 4가지</div>
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot"></div>
+          <div class="flow-text"><strong>토큰 KPI 자체가 나쁜 게 아님</strong> — 단계에 맞지 않으면 독이 되는 것</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot"></div>
+          <div class="flow-text"><strong>도입 초기엔 토큰 측정 OK</strong> — 강제로라도 쓰게 만드는 효과가 실제로 있음</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot"></div>
+          <div class="flow-text"><strong>익숙해진 후엔 어뷰징 비용이 너무 큼</strong> — 메트릭 게이밍 + 실제 API 비용 폭탄</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot"></div>
+          <div class="flow-text"><strong>AI는 도구</strong> — 그 자체가 성과가 아니라 결과물이 성과</div>
+        </div>
+      </div>
+      <div class="tag-row" style="margin-top:16px;">
+        <span class="tag">AI KPI 설계</span>
+        <span class="tag">토큰 어뷰징</span>
+        <span class="tag">단계별 평가</span>
+        <span class="tag">결과 중심 성과</span>
+        <span class="tag">API 비용 관리</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    출처: <a href="https://youtu.be/z5uoWmuCnRg" target="_blank">메이커 에반 — AI 토큰 KPI 도입한 회사 한 달 수천만 원이 사라집니다 (2026-05-11)</a>
+  </div>
+</body>
+</html>
