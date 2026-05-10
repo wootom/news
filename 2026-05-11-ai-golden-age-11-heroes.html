@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 황금기를 만든 11명의 영웅들 — 혁신전파사</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2d9162;
+      --accent-mid: #52b788;
+      --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #1a5c3e 0%, var(--accent) 60%, var(--accent-mid) 100%); color: #fff; padding: 48px 24px 40px; text-align: center; }
+    .hero-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.75; margin-bottom: 14px; }
+    .hero-title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
+    .hero-sub { font-size: 14px; opacity: 0.8; margin-bottom: 32px; }
+    .stats { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .stat-box { background: rgba(255,255,255,0.16); border-radius: 12px; padding: 14px 20px; min-width: 110px; }
+    .stat-num { font-size: 32px; font-weight: 800; letter-spacing: -1px; }
+    .stat-label { font-size: 11px; opacity: 0.8; margin-top: 3px; }
+
+    /* Layout */
+    .container { max-width: 980px; margin: 0 auto; padding: 36px 16px; }
+    .section-card { background: var(--surface); border-radius: 14px; padding: 26px; margin-bottom: 24px; border: 1px solid var(--border); }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .sec-num { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sec-title { font-size: 18px; font-weight: 700; }
+    .sec-link { font-size: 11px; color: var(--accent-mid); margin-left: 6px; }
+
+    /* Grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 760px) { .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .grid-3, .grid-4, .grid-2 { grid-template-columns: 1fr; } }
+
+    /* Person card */
+    .person-card { background: #fff; border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
+    .person-name { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+    .person-role { font-size: 11px; color: var(--muted); margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px; }
+    .person-body { font-size: 12px; color: var(--text); line-height: 1.6; }
+    .person-link { font-size: 11px; color: var(--accent-mid); margin-top: 6px; display: block; }
+
+    /* Achievement pill */
+    .achieve { display: inline-block; background: var(--accent-light); color: var(--accent); border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 700; margin: 2px 2px 0 0; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--accent); color: #fff; padding: 9px 12px; text-align: left; font-weight: 700; font-size: 12px; }
+    td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    /* Flow */
+    .flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
+    .flow-box { background: #fff; border: 2px solid var(--accent-mid); border-radius: 10px; padding: 12px 14px; font-size: 12px; font-weight: 700; text-align: center; flex: 1; min-width: 90px; }
+    .flow-box small { display: block; font-weight: 400; color: var(--muted); margin-top: 3px; font-size: 11px; }
+    .flow-arrow { color: var(--accent-mid); font-size: 22px; padding: 0 4px; display: flex; align-items: center; flex-shrink: 0; }
+
+    /* Quote */
+    .quote { border-left: 4px solid var(--accent-mid); padding: 10px 16px; background: var(--accent-light); border-radius: 0 8px 8px 0; font-size: 13px; font-style: italic; margin: 12px 0; }
+
+    /* Stage banner */
+    .stage { background: var(--accent); color: #fff; border-radius: 8px; padding: 8px 16px; font-size: 12px; font-weight: 700; margin-bottom: 14px; display: inline-block; letter-spacing: 1px; }
+
+    /* Mini table */
+    .mini-table { width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 10px; }
+    .mini-table th { background: var(--accent-light); color: var(--accent); padding: 7px 10px; font-weight: 700; border: 1px solid var(--border); }
+    .mini-table td { padding: 7px 10px; border: 1px solid var(--border); }
+
+    /* Legacy bar */
+    .legacy-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .legacy-item:last-child { border-bottom: none; }
+    .legacy-year { font-size: 11px; font-weight: 700; color: var(--accent); min-width: 48px; }
+    .legacy-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .legacy-text { font-size: 12px; }
+
+    /* vs */
+    .vs-box { background: #fff; border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
+    .vs-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+    .vs-box.warn { border-color: #e88; background: #fff8f8; }
+    .vs-box.warn h4 { color: #c0392b; }
+    .vs-box.ok { border-color: var(--accent-mid); background: var(--accent-light); }
+    .vs-box.ok h4 { color: var(--accent); }
+    .vs-divider { display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--muted); font-size: 18px; }
+
+    /* Footer */
+    .footer { text-align: center; padding: 24px 16px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">혁신전파사 · AI 황금기</div>
+  <div class="hero-title">AI 황금기를 만든 11명의 영웅들</div>
+  <div class="hero-sub">뉴럴넷 → 데이터 → GPU → 상용화 → AGI 경쟁까지, 그 기저의 사람들 · 2026-05-11</div>
+  <div class="stats">
+    <div class="stat-box"><div class="stat-num">11</div><div class="stat-label">핵심 영웅</div></div>
+    <div class="stat-box"><div class="stat-num">40+</div><div class="stat-label">년간의 여정</div></div>
+    <div class="stat-box"><div class="stat-num">2022</div><div class="stat-label">ChatGPT 모먼트</div></div>
+    <div class="stat-box"><div class="stat-num">3</div><div class="stat-label">AI 대부 (튜링상)</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 01. 핵심 개요 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">01</div>
+      <div class="sec-title">AI 황금기는 어떻게 만들어졌나 — 5단계 여정</div>
+    </div>
+
+    <div class="flow" style="margin-bottom:16px;">
+      <div class="flow-box">이론 정립<small>힌튼·르쿤·벤지오</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">데이터 혁명<small>페이 페이 리</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">컴퓨팅 도약<small>수츠케버·젠슨 황</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">AI 대중화<small>앤드류 응·하사비스</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">AGI 경쟁<small>알트만·아모데이·머스크</small></div>
+    </div>
+
+    <div class="quote">"AI는 한 천재의 작품이 아닌 이론·데이터·컴퓨팅·사람이 동시에 맞물려야 폭발적으로 성장한다"</div>
+  </div>
+
+  <!-- 02. AI 3대 대부 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">02</div>
+      <div class="sec-title">AI 3대 대부 — 이론의 기반을 닦다 <a class="sec-link" href="https://youtu.be/yvu9iouP_UE?t=88" target="_blank">▶ 01:28</a></div>
+    </div>
+    <div style="margin-bottom:10px;"><span class="stage">2018년 튜링상 공동 수상</span></div>
+
+    <div class="grid-3">
+      <!-- 힌튼 -->
+      <div class="person-card">
+        <div class="person-name">제프리 힌튼</div>
+        <div class="person-role">신경망의 아버지 · 구글 前 연구원</div>
+        <span class="achieve">역전파(1986)</span>
+        <span class="achieve">ReLU</span>
+        <span class="achieve">볼츠만 머신</span>
+        <span class="achieve">2024 노벨 물리학상</span>
+        <div class="person-body" style="margin-top:8px;">
+          사람 뇌 구조를 본떠 신경망 연구. 아무도 믿지 않던 혹한기에도 포기하지 않음. 2023년 구글 퇴사 → AI 위험성 경고 활동 시작.
+        </div>
+        <a class="person-link" href="https://youtu.be/yvu9iouP_UE?t=171" target="_blank">▶ 02:51 본편 바로가기</a>
+      </div>
+
+      <!-- 얀 르쿤 -->
+      <div class="person-card">
+        <div class="person-name">얀 르쿤</div>
+        <div class="person-role">CNN 창시자 · 메타 수석 AI 과학자</div>
+        <span class="achieve">CNN(합성곱신경망)</span>
+        <span class="achieve">우편번호 인식</span>
+        <span class="achieve">FAIR 설립</span>
+        <span class="achieve">AMIA Labs</span>
+        <div class="person-body" style="margin-top:8px;">
+          고양이 시각 인식 논문에서 영감 → CNN 창시. 우체국·은행에 최초 상업 적용. 현재 LLM 넘어 월드 모델 연구.
+        </div>
+        <a class="person-link" href="https://youtu.be/yvu9iouP_UE?t=267" target="_blank">▶ 04:27 본편 바로가기</a>
+      </div>
+
+      <!-- 벤지오 -->
+      <div class="person-card">
+        <div class="person-name">요슈아 벤지오</div>
+        <div class="person-role">생성형 AI의 씨앗 · 몬트리올大 교수</div>
+        <span class="achieve">RNN(순환신경망)</span>
+        <span class="achieve">GAN 공동 개발</span>
+        <span class="achieve">NPLM(언어모델)</span>
+        <div class="person-body" style="margin-top:8px;">
+          기울기 소실 문제 개선. GAN(생성자vs판별자 경쟁 구조)으로 생성형 AI 기틀 마련. LLM의 사상적 아버지.
+        </div>
+        <a class="person-link" href="https://youtu.be/yvu9iouP_UE?t=451" target="_blank">▶ 07:31 본편 바로가기</a>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <p style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:10px;">주요 이론 연표</p>
+      <div class="legacy-item">
+        <span class="legacy-year">1986</span>
+        <div class="legacy-dot"></div>
+        <span class="legacy-text">힌튼 — 역전파(Backpropagation) 논문 발표 <a href="https://youtu.be/yvu9iouP_UE?t=194" target="_blank" style="font-size:10px;">▶ 03:14</a></span>
+      </div>
+      <div class="legacy-item">
+        <span class="legacy-year">1989</span>
+        <div class="legacy-dot"></div>
+        <span class="legacy-text">르쿤 — CNN 창시 <a href="https://youtu.be/yvu9iouP_UE?t=319" target="_blank" style="font-size:10px;">▶ 05:19</a>, 우편번호 인식에 최초 적용</span>
+      </div>
+      <div class="legacy-item">
+        <span class="legacy-year">2003</span>
+        <div class="legacy-dot"></div>
+        <span class="legacy-text">벤지오 — NPLM 발표, 언어 확률 모델의 기틀 마련 <a href="https://youtu.be/yvu9iouP_UE?t=451" target="_blank" style="font-size:10px;">▶ 07:31</a></span>
+      </div>
+      <div class="legacy-item">
+        <span class="legacy-year">2014</span>
+        <div class="legacy-dot"></div>
+        <span class="legacy-text">벤지오·이안 굿펠로우 — GAN 발표, 생성형 AI의 불꽃</span>
+      </div>
+      <div class="legacy-item">
+        <span class="legacy-year">2015</span>
+        <div class="legacy-dot"></div>
+        <span class="legacy-text">힌튼·르쿤·벤지오 — 네이처지 딥러닝 논문 공동 게재</span>
+      </div>
+      <div class="legacy-item">
+        <span class="legacy-year">2018</span>
+        <div class="legacy-dot"></div>
+        <span class="legacy-text">3인 — 튜링상 공동 수상 (컴퓨터 과학의 노벨상)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03. 데이터·컴퓨팅 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">03</div>
+      <div class="sec-title">데이터 × 컴퓨팅 — AI에게 눈과 근육을 달다</div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;">페이 페이 리 — 이미지넷의 어머니 <a href="https://youtu.be/yvu9iouP_UE?t=622" target="_blank" style="font-size:10px;">▶ 10:22</a></p>
+        <div class="person-card">
+          <span class="achieve">이미지넷 1400만 장 오픈</span>
+          <span class="achieve">AI4ALL 설립</span>
+          <span class="achieve">World Labs</span>
+          <div class="person-body" style="margin-top:8px;">
+            "데이터가 많아야 AI가 똑똑해진다"는 신념으로 2만 카테고리·1400만 이미지 구축 후 오픈. 이미지넷 챌린지 개최 → 알렉스넷 등 혁신 모델 탄생.
+          </div>
+          <div class="person-body" style="margin-top:6px;">현재: World Labs — 프롬프트만으로 3D 공간 생성하는 "공간 지능" 연구.</div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;">일리아 수츠케버 + 젠슨 황</p>
+        <div class="person-card" style="margin-bottom:10px;">
+          <div class="person-name">일리아 수츠케버 <a href="https://youtu.be/yvu9iouP_UE?t=683" target="_blank" style="font-size:10px;">▶ 11:23</a></div>
+          <span class="achieve">알렉스넷 1등</span>
+          <span class="achieve">OpenAI 공동창업</span>
+          <span class="achieve">SSI 창업</span>
+          <div class="person-body" style="margin-top:6px;">힌튼 제자. 이미지넷 챌린지 우승으로 딥러닝 시대 개막 선언. 현재 안전한 초지능 연구(SSI).</div>
+        </div>
+        <div class="person-card">
+          <div class="person-name">젠슨 황 <a href="https://youtu.be/yvu9iouP_UE?t=723" target="_blank" style="font-size:10px;">▶ 12:03</a></div>
+          <span class="achieve">GPGPU 전환</span>
+          <span class="achieve">딥러닝 인프라</span>
+          <div class="person-body" style="margin-top:6px;">엔비디아 GPU를 그래픽용 → 딥러닝 학습용으로 전환. AI 가속화의 핵심 인프라 제공.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;padding:14px;background:#fff;border-radius:10px;border:1px solid var(--border);">
+      <p style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:10px;">알렉스넷 우승의 3요소 (2012 이미지넷 챌린지)</p>
+      <div class="flow">
+        <div class="flow-box" style="background:var(--accent-light);">뉴럴 네트워크<small>힌튼의 이론</small></div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-box" style="background:var(--accent-light);">이미지 데이터<small>페이리의 1400만 장</small></div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-box" style="background:var(--accent-light);">GPU 연산<small>엔비디아</small></div>
+        <div class="flow-arrow">=</div>
+        <div class="flow-box" style="background:var(--accent);color:#fff;">딥러닝 시대<small>개막</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04. 대중화 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">04</div>
+      <div class="sec-title">AI 대중화 — 모든 사람을 위한 AI</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="person-card">
+        <div class="person-name">앤드류 응 <a href="https://youtu.be/yvu9iouP_UE?t=891" target="_blank" style="font-size:10px;">▶ 14:51</a></div>
+        <div class="person-role">AI 민주화 전도사 · Landing AI · DeepLearning.AI</div>
+        <span class="achieve">스탠포드 무료 강의 10만 명</span>
+        <span class="achieve">구글 브레인 설립</span>
+        <span class="achieve">Coursera 공동창업</span>
+        <div class="person-body" style="margin-top:8px;">
+          AI를 리서처만의 것이 아닌 모든 사람의 것으로 만든 교육·대중화 1등 공신. 구글 브레인(16,000 CPU 인프라), Coursera, 바이두 AI 연구소 등 전방위 기여.
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-name">데미스 하사비스 <a href="https://youtu.be/yvu9iouP_UE?t=1037" target="_blank" style="font-size:10px;">▶ 17:17</a></div>
+        <div class="person-role">딥마인드 창업자 · 2024 노벨 화학상</div>
+        <span class="achieve">알파고 (2016)</span>
+        <span class="achieve">TPU 개발 기여</span>
+        <span class="achieve">알파폴드</span>
+        <div class="person-body" style="margin-top:8px;">
+          알파고로 전 세계가 AI를 인식하는 계기 마련. 2026년 한국 방문 — 이세돌 10주년 토크쇼, 한국 AI 연구센터 설립 선언.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05. AGI 경쟁 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">05</div>
+      <div class="sec-title">AGI 경쟁 — 상용화의 폭발 <a class="sec-link" href="https://youtu.be/yvu9iouP_UE?t=1122" target="_blank">▶ 18:42</a></div>
+    </div>
+
+    <div class="grid-3">
+      <div class="person-card">
+        <div class="person-name">샘 알트만</div>
+        <div class="person-role">OpenAI CEO · ChatGPT 모먼트 주역</div>
+        <span class="achieve">5일 → 100만 유저</span>
+        <span class="achieve">2달 → 1억 유저</span>
+        <div class="person-body" style="margin-top:8px;">2022년 11월 ChatGPT 출시. AI 황금기의 불꽃을 전 세계에 점화한 결정적 사건 주도.</div>
+        <a class="person-link" href="https://youtu.be/yvu9iouP_UE?t=1122" target="_blank">▶ 18:42</a>
+      </div>
+      <div class="person-card">
+        <div class="person-name">다리오 아모데이</div>
+        <div class="person-role">Anthropic 창업자 · 안전 우선 AI</div>
+        <span class="achieve">Anthropic 창업</span>
+        <span class="achieve">Claude 시리즈</span>
+        <div class="person-body" style="margin-top:8px;">OpenAI 상업화에 반발 → 안전 우선 AI 연구를 위해 Anthropic 창업. 알트만 축출 사태도 경험.</div>
+        <a class="person-link" href="https://youtu.be/yvu9iouP_UE?t=1142" target="_blank">▶ 19:02</a>
+      </div>
+      <div class="person-card">
+        <div class="person-name">일론 머스크</div>
+        <div class="person-role">xAI 창업자 · SpaceX</div>
+        <span class="achieve">OpenAI 공동창업 후 탈퇴</span>
+        <span class="achieve">xAI + Grok</span>
+        <div class="person-body" style="margin-top:8px;">OpenAI 공동창업 후 이탈 → xAI 설립. SpaceX와 통합해 거대 AI 제국 구상 중. OpenAI 소송 진행 중.</div>
+        <a class="person-link" href="https://youtu.be/yvu9iouP_UE?t=1154" target="_blank">▶ 19:14</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06. AI 안전성 논쟁 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">06</div>
+      <div class="sec-title">AI 안전성 논쟁 — 속도 vs 안전 <a class="sec-link" href="https://youtu.be/yvu9iouP_UE?t=1217" target="_blank">▶ 20:17</a></div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:16px;">
+      <div class="vs-box warn">
+        <h4>우려파 — "브레이크가 필요하다"</h4>
+        <div class="legacy-item" style="padding:6px 0;">
+          <div class="legacy-dot"></div>
+          <span class="legacy-text"><strong>제프리 힌튼</strong> — AI Safety Foundation 설립, AI 개발의 30%는 안전에 투자해야</span>
+        </div>
+        <div class="legacy-item" style="padding:6px 0;">
+          <div class="legacy-dot"></div>
+          <span class="legacy-text"><strong>요슈아 벤지오</strong> — 힌튼 만큼이나 AI 위험성 경고 활동 중</span>
+        </div>
+        <div class="legacy-item" style="padding:6px 0;">
+          <div class="legacy-dot"></div>
+          <span class="legacy-text"><strong>다리오 아모데이</strong> — 상업화보다 안전을 위해 Anthropic 창업</span>
+        </div>
+      </div>
+      <div class="vs-box ok">
+        <h4>낙관파 — "AI는 도구일 뿐이다"</h4>
+        <div class="legacy-item" style="padding:6px 0;">
+          <div class="legacy-dot"></div>
+          <span class="legacy-text"><strong>얀 르쿤</strong> — "AI가 인류를 정복할 리 없다, 낙관적으로 활용하자"</span>
+        </div>
+        <div class="legacy-item" style="padding:6px 0;">
+          <div class="legacy-dot"></div>
+          <span class="legacy-text"><strong>시장·투자자</strong> — 빠른 상용화와 수익성 압박</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote">"AI 개발에 70% 투자할 때, 나머지 30%는 인류를 AI로부터 보호하는 데 써야 한다" — 제프리 힌튼</div>
+  </div>
+
+  <!-- 07. 핵심 교훈 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">07</div>
+      <div class="sec-title">AI 황금기의 핵심 교훈</div>
+    </div>
+
+    <div class="grid-4">
+      <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid var(--border);text-align:center;">
+        <div style="font-size:28px;font-weight:800;color:var(--accent);margin-bottom:6px;">믿음</div>
+        <div style="font-size:12px;color:var(--muted);">아무도 안 믿던 신경망을 40년간 포기하지 않은 힌튼</div>
+      </div>
+      <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid var(--border);text-align:center;">
+        <div style="font-size:28px;font-weight:800;color:var(--accent);margin-bottom:6px;">융합</div>
+        <div style="font-size:12px;color:var(--muted);">이론 + 데이터 + GPU + 사람이 동시에 맞물려야 폭발</div>
+      </div>
+      <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid var(--border);text-align:center;">
+        <div style="font-size:28px;font-weight:800;color:var(--accent);margin-bottom:6px;">개방</div>
+        <div style="font-size:12px;color:var(--muted);">페이리의 이미지넷 오픈, 앤드류 응의 무료 강의</div>
+      </div>
+      <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid var(--border);text-align:center;">
+        <div style="font-size:28px;font-weight:800;color:var(--accent);margin-bottom:6px;">균형</div>
+        <div style="font-size:12px;color:var(--muted);">속도와 안전, 수익성과 가치 사이의 적절한 밸런스</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:14px;background:var(--surface);border-radius:10px;border:1px solid var(--border);font-size:12px;color:var(--muted);">
+    출처: <a href="https://youtu.be/yvu9iouP_UE?si=I5jNvTvocMrdgj7T" target="_blank">AI 황금기를 만든 11명의 영웅들 — 혁신전파사</a>
+  </div>
+</div>
+
+<div class="footer">비주얼 리포트 생성일: 2026-05-11 · AI Foundry</div>
+</body>
+</html>
