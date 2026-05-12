@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>요즘 개발자들이 다 갈아탄 Codex — 빌더 조쉬</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .hero { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); color: #fff; padding: 40px 24px 32px; }
+    .hero-tag { font-size: 12px; opacity: 0.8; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .hero-title { font-size: 22px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+    .hero-sub { font-size: 13px; opacity: 0.85; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .stat { background: rgba(255,255,255,0.18); border-radius: 10px; padding: 14px 10px; text-align: center; }
+    .stat-num { font-size: 24px; font-weight: 800; display: block; }
+    .stat-label { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+    .section { margin-bottom: 32px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .sec-num { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sec-title { font-size: 18px; font-weight: 700; }
+    .card { background: var(--surface); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+    /* 비교 2열 */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .compare-box { border-radius: 12px; padding: 20px; border: 2px solid; }
+    .compare-box.codex { border-color: var(--accent-mid); background: #f8fdf9; }
+    .compare-box.claude { border-color: #7c69ef; background: #f8f7ff; }
+    .compare-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .compare-title .badge { font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 600; }
+    .badge-codex { background: var(--accent-light); color: var(--accent); }
+    .badge-claude { background: #ece9ff; color: #5b4de0; }
+    .flow { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 13px; line-height: 1.8; }
+    .flow-step { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+    .flow-step:last-child { margin-bottom: 0; }
+    .step-dot { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; margin-top: 2px; }
+    .dot-codex { background: var(--accent); }
+    .dot-claude { background: #7c69ef; }
+    .compare-metaphor { font-size: 12px; color: var(--muted); margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); font-style: italic; }
+    /* 4개 환경 카드 */
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .env-card { background: var(--surface); border-radius: 10px; padding: 14px; border: 1px solid var(--border); text-align: center; }
+    .env-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+    .env-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .env-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+    /* 용도 추천 표 */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--accent); color: #fff; padding: 10px 12px; text-align: left; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    tr:nth-child(even) td { background: #fafafa; }
+    .tag-codex { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 8px; }
+    .tag-claude { display: inline-block; background: #ece9ff; color: #5b4de0; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 8px; }
+    /* 핵심 원칙 강조 박스 */
+    .principle { background: var(--accent); color: #fff; border-radius: 12px; padding: 20px 24px; text-align: center; margin-bottom: 16px; }
+    .principle-text { font-size: 18px; font-weight: 700; }
+    .principle-sub { font-size: 13px; opacity: 0.85; margin-top: 6px; }
+    /* 요약 */
+    .summary-list { list-style: none; }
+    .summary-list li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .summary-list li:last-child { border-bottom: none; }
+    .sum-num { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .footer { border-top: 1px solid var(--border); padding: 20px 24px; text-align: center; font-size: 12px; color: var(--muted); }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 760px) { .compare { grid-template-columns: 1fr; } .grid4 { grid-template-columns: repeat(2, 1fr); } .stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .grid4 { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">빌더 조쉬 · 2026-05-12</div>
+  <div class="hero-title">요즘 개발자들이 다 갈아탄 Codex<br>얼마나 좋은지 전부 써보겠습니다</div>
+  <div class="hero-sub">OpenAI Codex 종합 실사용 리뷰 — Claude Code와 무엇이 다른가?</div>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">4개</span><span class="stat-label">접속 환경</span></div>
+    <div class="stat"><span class="stat-num">$100</span><span class="stat-label">월 Pro 요금</span></div>
+    <div class="stat"><span class="stat-num">5배</span><span class="stat-label">Plus 대비 사용량</span></div>
+    <div class="stat"><span class="stat-num">87.6%</span><span class="stat-label">SWE-bench (Claude)</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 섹션 1: Codex 4개 환경 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">01</div>
+      <div class="sec-title">Codex를 쓸 수 있는 4가지 방법</div>
+    </div>
+    <div class="grid4">
+      <div class="env-card">
+        <div class="env-icon">W</div>
+        <div class="env-name">웹 에이전트</div>
+        <div class="env-desc">chatgpt.com/codex에서 바로 지시. 가장 쉬운 진입점</div>
+      </div>
+      <div class="env-card">
+        <div class="env-icon">C</div>
+        <div class="env-name">CLI 터미널</div>
+        <div class="env-desc">오픈소스. Rust+TypeScript. 개발자 직접 설치 사용</div>
+      </div>
+      <div class="env-card">
+        <div class="env-icon">I</div>
+        <div class="env-name">IDE 확장</div>
+        <div class="env-desc">VS Code, Cursor 등 에디터에 플러그인으로 통합</div>
+      </div>
+      <div class="env-card">
+        <div class="env-icon">M</div>
+        <div class="env-name">macOS 앱</div>
+        <div class="env-desc">2026년 2월 출시. GitHub·Slack·Linear 연동</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 2: Codex vs Claude Code 작동 방식 비교 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">02</div>
+      <div class="sec-title">Codex vs Claude Code — 작동 방식의 근본적 차이</div>
+    </div>
+    <div class="compare">
+      <div class="compare-box codex">
+        <div class="compare-title">
+          Codex
+          <span class="badge badge-codex">비동기·자율</span>
+        </div>
+        <div class="flow">
+          <div class="flow-step"><div class="step-dot dot-codex">1</div><div>상세 지시서 작성</div></div>
+          <div class="flow-step"><div class="step-dot dot-codex">2</div><div>Codex에 전달 후 자리 비움</div></div>
+          <div class="flow-step"><div class="step-dot dot-codex">3</div><div>나중에 완성된 diff·PR 확인</div></div>
+        </div>
+        <div class="compare-metaphor">"업무 지시서 쓰고 퇴근하면 다음날 결과물 완성"</div>
+      </div>
+      <div class="compare-box claude">
+        <div class="compare-title">
+          Claude Code
+          <span class="badge badge-claude">실시간·협업</span>
+        </div>
+        <div class="flow">
+          <div class="flow-step"><div class="step-dot dot-claude">1</div><div>각 파일 읽기·편집 직접 승인</div></div>
+          <div class="flow-step"><div class="step-dot dot-claude">2</div><div>실시간으로 결과 확인</div></div>
+          <div class="flow-step"><div class="step-dot dot-claude">3</div><div>즉각적인 방향 수정 가능</div></div>
+        </div>
+        <div class="compare-metaphor">"옆에서 같이 코딩하는 시니어 개발자"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 3: 상황별 추천 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">03</div>
+      <div class="sec-title">언제 어떤 도구를 써야 하는가?</div>
+    </div>
+    <div class="principle">
+      <div class="principle-text">"Claude Code로 설계, Codex로 구현"</div>
+      <div class="principle-sub">2026년 개발자들 사이에서 통용되는 원칙</div>
+    </div>
+    <div class="card">
+      <table>
+        <thead><tr><th>상황</th><th>추천</th><th>이유</th></tr></thead>
+        <tbody>
+          <tr><td>시스템 설계·아키텍처</td><td><span class="tag-claude">Claude Code</span></td><td>실시간 피드백으로 즉각 방향 수정 필요</td></tr>
+          <tr><td>반복적·단순 코드 작업</td><td><span class="tag-codex">Codex</span></td><td>비동기 처리로 시간·비용 절약</td></tr>
+          <tr><td>코드 리뷰·PR 검토</td><td><span class="tag-claude">Claude Code</span></td><td>정밀한 판단력·SWE-bench 87.6% 성능</td></tr>
+          <tr><td>대량 파일 일괄 수정</td><td><span class="tag-codex">Codex</span></td><td>자율 실행으로 효율적 처리</td></tr>
+          <tr><td>빠른 프로토타이핑</td><td><span class="tag-codex">Codex</span></td><td>3~4배 낮은 토큰 비용으로 빠른 결과</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 섹션 4: 핵심 요약 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">04</div>
+      <div class="sec-title">3줄 핵심 요약</div>
+    </div>
+    <div class="card">
+      <ul class="summary-list">
+        <li>
+          <div class="sum-num">1</div>
+          <div>Codex는 "지시 후 결과 수령" 비동기 방식으로, "실시간 협업"인 Claude Code와 근본적으로 다른 도구다</div>
+        </li>
+        <li>
+          <div class="sum-num">2</div>
+          <div>반복·대량 코드 작업은 Codex(비용 3~4배 절감), 설계·리뷰·정밀 판단은 Claude Code가 유리하다</div>
+        </li>
+        <li>
+          <div class="sum-num">3</div>
+          <div>두 도구를 상황에 맞게 병행 사용하는 것이 2026년 개발자의 표준 AI 워크플로우로 자리잡는 중이다</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>출처: <a href="https://youtu.be/BBg17O2Fa_U" target="_blank">빌더 조쉬 — 요즘 개발자들이 다 갈아탄 Codex, 얼마나 좋은지 전부 써보겠습니다.</a></p>
+  <p style="margin-top:6px;">생성일: 2026-05-13 | AI 비주얼 리포트</p>
+</div>
+
+</body>
+</html>
