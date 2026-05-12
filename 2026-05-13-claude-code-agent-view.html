@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Agent View — 멀티 에이전트 관리 신기능</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .hero { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); color: #fff; padding: 40px 24px 32px; }
+    .hero-tag { font-size: 12px; opacity: 0.85; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .hero-title { font-size: 24px; font-weight: 700; line-height: 1.35; margin-bottom: 6px; }
+    .hero-sub { font-size: 13px; opacity: 0.9; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .stat { background: rgba(255,255,255,0.18); border-radius: 10px; padding: 14px 10px; text-align: center; }
+    .stat-num { font-size: 22px; font-weight: 800; display: block; }
+    .stat-label { font-size: 11px; opacity: 0.9; margin-top: 2px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+    .section { margin-bottom: 32px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .sec-num { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sec-title { font-size: 18px; font-weight: 700; }
+    .card { background: var(--surface); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+    /* 명령어 강조 */
+    code, .cmd { font-family: 'SF Mono','Menlo',monospace; background: #1a1a1a; color: #d8f0e3; padding: 2px 8px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+    /* before/after 비교 */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .compare-box { border-radius: 12px; padding: 20px; border: 2px solid; }
+    .compare-box.before { border-color: #d0d0d0; background: #fafafa; }
+    .compare-box.after { border-color: var(--accent-mid); background: #f8fdf9; }
+    .compare-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .badge { font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 700; }
+    .badge-before { background: #e8e8e8; color: #555; }
+    .badge-after { background: var(--accent-light); color: var(--accent); }
+    .compare-list { list-style: none; }
+    .compare-list li { padding: 8px 0; font-size: 13px; line-height: 1.5; border-bottom: 1px solid var(--border); }
+    .compare-list li:last-child { border-bottom: none; }
+    .compare-list li::before { content: '›'; color: var(--accent); font-weight: 700; margin-right: 8px; }
+    .compare-box.before .compare-list li::before { color: #999; }
+    /* 키 매핑 */
+    .keys-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .key-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+    .key-key { display: inline-block; background: #1a1a1a; color: #fff; padding: 4px 10px; border-radius: 6px; font-family: 'SF Mono','Menlo',monospace; font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+    .key-desc { font-size: 12px; line-height: 1.4; color: var(--text); }
+    /* 워크플로우 흐름 */
+    .flow { display: flex; flex-direction: column; gap: 10px; }
+    .flow-row { display: flex; align-items: center; gap: 12px; }
+    .flow-num { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .flow-box { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 13px; line-height: 1.5; }
+    .flow-arrow { text-align: center; color: var(--accent); font-size: 18px; font-weight: 700; padding-left: 14px; }
+    /* 시나리오 카드 */
+    .scenarios { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .scen-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .scen-title { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 10px; }
+    .scen-body { font-size: 13px; line-height: 1.6; }
+    .scen-body strong { color: var(--text); }
+    /* /goal 강조 박스 */
+    .principle { background: var(--accent); color: #fff; border-radius: 12px; padding: 22px 24px; }
+    .principle-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .principle-text { font-size: 14px; line-height: 1.6; opacity: 0.95; }
+    .principle-text code { background: rgba(255,255,255,0.18); color: #fff; }
+    /* 요점 정리 */
+    .summary-list { list-style: none; }
+    .summary-list li { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.5; }
+    .summary-list li:last-child { border-bottom: none; }
+    .sum-num { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    /* 상태 표 */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--accent); color: #fff; padding: 10px 12px; text-align: left; font-weight: 700; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .footer { border-top: 1px solid var(--border); padding: 20px 24px; text-align: center; font-size: 12px; color: var(--muted); }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 760px) {
+      .compare { grid-template-columns: 1fr; }
+      .keys-grid { grid-template-columns: repeat(2, 1fr); }
+      .scenarios { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .keys-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">개발동생 · 2026-05-12</div>
+  <div class="hero-title">Claude Code Agent View<br>멀티 에이전트, 한 화면에서 지휘하기</div>
+  <div class="hero-sub">tmux 없이도 여러 에이전트를 방향키로 오가며 관리하는 신기능 (Research Preview)</div>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">1</span><span class="stat-label">통합 화면</span></div>
+    <div class="stat"><span class="stat-num">10:09</span><span class="stat-label">영상 길이</span></div>
+    <div class="stat"><span class="stat-num">3</span><span class="stat-label">신규 명령어</span></div>
+    <div class="stat"><span class="stat-num">N개</span><span class="stat-label">동시 세션</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 섹션 1: 무엇이 달라졌나 (Before/After) -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">01</div>
+      <div class="sec-title">무엇이 달라졌나 — Before / After</div>
+    </div>
+    <div class="compare">
+      <div class="compare-box before">
+        <div class="compare-title">기존 방식 <span class="badge badge-before">BEFORE</span></div>
+        <ul class="compare-list">
+          <li>터미널 탭을 N개 띄움</li>
+          <li>tmux 그리드 직접 관리</li>
+          <li>창 간 컨텍스트 스위칭 부담</li>
+          <li>tmux 단축키 학습 필요</li>
+          <li>세션 진행 상황 일일이 진입해서 확인</li>
+        </ul>
+      </div>
+      <div class="compare-box after">
+        <div class="compare-title">Agent View <span class="badge badge-after">AFTER</span></div>
+        <ul class="compare-list">
+          <li><span class="cmd">claude agents</span> 한 줄로 진입</li>
+          <li>방향키로 세션 순회</li>
+          <li>Space 키로 요약 미니뷰</li>
+          <li>레포 경계 없이 통합 관리</li>
+          <li><span class="cmd">/goal</span>로 자율 실행까지</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 2: 핵심 키 매핑 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">02</div>
+      <div class="sec-title">핵심 키 & 명령어 매핑</div>
+    </div>
+    <div class="keys-grid">
+      <div class="key-card">
+        <span class="key-key">claude agents</span>
+        <div class="key-desc">Agent View 진입 — 모든 세션을 한 화면에 표시</div>
+      </div>
+      <div class="key-card">
+        <span class="key-key">↑ ↓</span>
+        <div class="key-desc">세션 목록 위·아래로 이동</div>
+      </div>
+      <div class="key-card">
+        <span class="key-key">Enter / →</span>
+        <div class="key-desc">선택한 세션 내부로 진입</div>
+      </div>
+      <div class="key-card">
+        <span class="key-key">←</span>
+        <div class="key-desc">Agent View 메인 화면으로 복귀</div>
+      </div>
+      <div class="key-card">
+        <span class="key-key">Space</span>
+        <div class="key-desc">세션 요약 미니뷰 + 빠른 답장</div>
+      </div>
+      <div class="key-card">
+        <span class="key-key">@</span>
+        <div class="key-desc">다른 디렉토리(레포) 선택해서 작업 위임</div>
+      </div>
+      <div class="key-card">
+        <span class="key-key">/bg</span>
+        <div class="key-desc">현재 세션을 백그라운드로 → Agent View에 편입</div>
+      </div>
+      <div class="key-card">
+        <span class="key-key">/goal</span>
+        <div class="key-desc">완료 조건 정의 → 충족까지 자율 실행</div>
+      </div>
+      <div class="key-card">
+        <span class="key-key">Ctrl+S</span>
+        <div class="key-desc">디렉토리 단위 정렬 토글</div>
+      </div>
+      <div class="key-card">
+        <span class="key-key">Ctrl+X ×2</span>
+        <div class="key-desc">선택 세션 종료</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 3: 표준 워크플로우 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">03</div>
+      <div class="sec-title">표준 워크플로우 (3 step)</div>
+    </div>
+    <div class="card">
+      <div class="flow">
+        <div class="flow-row">
+          <div class="flow-num">1</div>
+          <div class="flow-box"><strong>진입</strong> · <span class="cmd">claude agents</span> 실행 → Agent View 화면 오픈</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-row">
+          <div class="flow-num">2</div>
+          <div class="flow-box"><strong>세션 채우기</strong> · 하단 채팅창에 신규 프롬프트 / 기존 세션은 <span class="cmd">/bg</span>로 끌어오기 / <span class="cmd">@</span>로 타 레포 위임</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-row">
+          <div class="flow-num">3</div>
+          <div class="flow-box"><strong>모니터 & 자율화</strong> · 방향키 순회 + Space 요약 확인 / 장기 작업엔 <span class="cmd">/goal "완료조건"</span> 부여</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 4: /goal 강조 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">04</div>
+      <div class="sec-title">함께 출시된 <code>/goal</code> 명령</div>
+    </div>
+    <div class="principle">
+      <div class="principle-title">완료 조건 기반 자율 실행</div>
+      <div class="principle-text">
+        Codex에서 먼저 검증된 패턴 — 완료 조건을 정의하면 그 조건이 충족될 때까지
+        <strong>제어권을 사용자에게 돌려주지 않고</strong> 에이전트가 스스로 반복·수정한다.<br><br>
+        예시: <code>/goal 현재 생성된 테스트가 모두 통과할 때까지 작업을 계속 진행해줘</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 5: 활용 시나리오 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">05</div>
+      <div class="sec-title">활용 시나리오 4가지</div>
+    </div>
+    <div class="scenarios">
+      <div class="scen-card">
+        <div class="scen-title">시나리오 1 · 풀스택 동시 개발</div>
+        <div class="scen-body">
+          세션 A: 백엔드 리팩토링<br>
+          세션 B: 프론트엔드 컴포넌트<br>
+          세션 C: 테스트 (<span class="cmd">/goal</span> 모든 테스트 통과까지)<br>
+          → <strong>Space</strong>로 빠른 진행률 체크
+        </div>
+      </div>
+      <div class="scen-card">
+        <div class="scen-title">시나리오 2 · 장시간 자율 + 모니터링</div>
+        <div class="scen-body">
+          단순 반복(의존성 업데이트, 코드 마이그레이션)에 <span class="cmd">/goal</span> 부여<br>
+          사람은 다른 세션에서 신규 기능 설계<br>
+          → <strong>두 흐름을 한 화면에 동시 추적</strong>
+        </div>
+      </div>
+      <div class="scen-card">
+        <div class="scen-title">시나리오 3 · 멀티 레포 통합</div>
+        <div class="scen-body">
+          A 레포 작업 중 <span class="cmd">@</span>로 B 레포 선택 → 동일 화면에 B 세션 생성<br>
+          기존: 터미널 여러 개 + cd 반복<br>
+          → <strong>단일 화면으로 단순화</strong>
+        </div>
+      </div>
+      <div class="scen-card">
+        <div class="scen-title">시나리오 4 · Agent View + /goal + deep-interview</div>
+        <div class="scen-body">
+          deep-interview 스킬로 <strong>명확한 목표 정의</strong><br>
+          각 세션마다 <span class="cmd">/goal</span> 완료 조건 자동화<br>
+          Agent View로 <strong>에이전트 부대</strong> 한눈에 운영
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 6: 현재 상태 / 한계 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">06</div>
+      <div class="sec-title">현재 상태 & 한계</div>
+    </div>
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <table>
+        <thead>
+          <tr><th style="width:30%;">항목</th><th>내용</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>출시 상태</td><td>Research Preview (정식 출시 전)</td></tr>
+          <tr><td>환경</td><td>터미널 환경 전용 — GUI 버전 없음</td></tr>
+          <tr><td>대상</td><td>Claude Code 다중 에이전트 운영 개발자</td></tr>
+          <tr><td>전망</td><td>멀티 에이전트가 표준이 되는 흐름에서 핵심 기능으로 자리잡을 가능성 높음</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 섹션 7: 핵심 요점 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">07</div>
+      <div class="sec-title">핵심 요점 6가지</div>
+    </div>
+    <div class="card">
+      <ul class="summary-list">
+        <li><div class="sum-num">1</div><div><strong><code>claude agents</code></strong> — 멀티 에이전트 통합 콘솔의 진입점</div></li>
+        <li><div class="sum-num">2</div><div><strong>방향키 + Space</strong> — 컨텍스트 스위칭 비용 0</div></li>
+        <li><div class="sum-num">3</div><div><strong><code>/bg</code></strong> — 기존 세션을 Agent View로 끌어오는 다리</div></li>
+        <li><div class="sum-num">4</div><div><strong><code>@</code></strong> — 디렉토리(레포) 경계를 넘는 작업 위임</div></li>
+        <li><div class="sum-num">5</div><div><strong><code>/goal</code></strong> — 완료 조건 기반 자율 실행 (Codex 따라잡기)</div></li>
+        <li><div class="sum-num">6</div><div><strong>Ctrl+S / Ctrl+X ×2</strong> — 정렬 토글 / 세션 종료</div></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  출처 · <a href="https://youtu.be/MPWKZzP-bQs">개발동생 — 클로드코드 대박 신기능 Agent View | 멀티 에이전트 관리가 너무 쉽습니다</a>
+</div>
+
+</body>
+</html>
