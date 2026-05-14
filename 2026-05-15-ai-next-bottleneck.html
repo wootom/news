@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPU·메모리 다음 AI 병목은 무엇인가</title>
+<style>
+  :root { --accent: #2d9162; --bg: #f8faf9; --card-bg: #fff; --text: #1a2e25; --muted: #6b8f7a; --border: #d4e8dc; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .hero { background: linear-gradient(135deg, #1a4731 0%, var(--accent) 100%); color: #fff; padding: 48px 24px 36px; text-align: center; }
+  .hero .channel { font-size: 13px; opacity: 0.8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(20px, 4vw, 32px); font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+  .hero .meta { font-size: 13px; opacity: 0.7; margin-bottom: 20px; }
+  .hero .tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .tag { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); padding: 4px 12px; border-radius: 20px; font-size: 12px; color: #fff; }
+  .yt-btn { display: inline-block; margin-top: 20px; background: #ff0000; color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 24px; font-size: 14px; font-weight: 700; }
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px; }
+  .summary-box { background: linear-gradient(135deg, #e8f5ee, #d4ede1); border-left: 4px solid var(--accent); border-radius: 12px; padding: 24px; margin-bottom: 28px; }
+  .summary-box h2 { color: var(--accent); font-size: 15px; margin-bottom: 14px; letter-spacing: 0.5px; }
+  .summary-box ul { list-style: none; }
+  .summary-box li { padding: 6px 0 6px 20px; position: relative; font-size: 15px; border-bottom: 1px solid rgba(45,145,98,0.15); }
+  .summary-box li:last-child { border-bottom: none; }
+  .summary-box li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 28px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 22px; box-shadow: 0 2px 12px rgba(45,145,98,0.07); }
+  .card h3 { font-size: 14px; color: var(--accent); font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .card ul { list-style: none; }
+  .card li { font-size: 13.5px; padding: 5px 0 5px 16px; position: relative; color: #2a3d32; border-bottom: 1px solid #f0f5f2; }
+  .card li:last-child { border-bottom: none; }
+  .card li::before { content: '•'; position: absolute; left: 0; color: var(--accent); }
+  table.overview { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+  table.overview td { padding: 8px 12px; border: 1px solid var(--border); font-size: 14px; }
+  table.overview td.label { background: #e8f5ee; color: var(--accent); font-weight: 700; width: 35%; }
+  .workflow-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 22px; margin-bottom: 28px; }
+  .workflow-card h3 { font-size: 14px; color: var(--accent); font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+  .workflow-card ol { padding-left: 20px; }
+  .workflow-card li { font-size: 14px; padding: 6px 0; color: #2a3d32; }
+  footer { text-align: center; padding: 24px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 20px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="channel">안될공학</div>
+  <h1>GPU·메모리 다음 AI 병목은 무엇인가</h1>
+  <div class="meta">2026-05-15 · AI 비주얼 리포트</div>
+  <div class="tags"><span class="tag">AI</span><span class="tag">인프라</span><span class="tag">반도체</span><span class="tag">SK하이닉스</span></div>
+  <a class="yt-btn" href="https://youtu.be/U9zhnUSs8lE" target="_blank">▶ YouTube 원본 보기</a>
+</div>
+
+<div class="container">
+
+  <div class="summary-box">
+    <h2>📌 핵심 요약</h2>
+    <ul><li>빅테크 AI 투자 7000억 달러 시대, 진짜 병목은 메모리가 아님</li><li>SK하이닉스 고객사가 공장 증설비까지 지원 — 전례 없는 역전 현상</li><li>전력·냉각·네트워크가 GPU 이후 차세대 병목으로 부상</li><li>공급망 통제권이 가치사슬 핵심으로 이동 중</li></ul>
+  </div>
+
+  <div class="card" style="margin-bottom:28px;">
+    <h3>🗂 핵심 개요</h3>
+    <table class="overview">
+      <tr><td class="label">주제</td><td>GPU·메모리 이후 AI 인프라 다음 병목 분석</td></tr><tr><td class="label">배경</td><td>빅테크 AI 투자 7000억 달러 돌파</td></tr><tr><td class="label">핵심 사건</td><td>SK 하이닉스 고객사가 공장 증설비까지 지원 약속</td></tr><tr><td class="label">채널</td><td>안될공학</td></tr>
+    </table>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>💡 핵심 내용</h3>
+      <ul><li>**7000억 달러** AI 관련 CAPEX — 반도체 공급이 절대 부족</li><li>**고객이 공장 증설비 지원**: 부품 사는 것이 아닌 생산라인 투자까지</li><li>**로이터 보도**: SK 하이닉스가 전례 없는 수요 압박 받는 중</li><li>다음 병목으로 **전력·냉각·광인터커넥트** 지목</li></ul>
+    </div>
+    <div class="card">
+      <h3>🔬 기술적 맥락</h3>
+      <ul><li>HBM4(High Bandwidth Memory 4세대)가 주요 쟁점</li><li>AI 학습에 GPU 하나당 수십 GB HBM 필요</li><li>데이터센터 전력 밀도: 10년 전 대비 10배 상승</li><li>냉각 방식이 공랭 → 수랭 → 액침 냉각으로 전환 중</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>♟ 전략적 의미</h3>
+      <ul><li>부품 공급사(SK하이닉스)가 협상력 역전 — 갑을 관계 뒤집힘</li><li>전력망 확충 없이는 AI 확장 자체가 불가능한 구조</li><li>한국 반도체 기업에게 전략적 기회 창출</li><li>에너지·냉각·광케이블 기업 수혜 예상</li></ul>
+    </div>
+    <div class="card">
+      <h3>🎯 활용 시나리오</h3>
+      <ul><li>반도체·에너지 관련 주식 투자 인사이트</li><li>AI 데이터센터 설계 시 병목 우선순위 파악</li><li>공급망 리스크 분석 및 대안 소재 연구</li></ul>
+    </div>
+  </div>
+
+  <div class="workflow-card">
+    <h3>🔄 핵심 워크플로우</h3>
+    <ol><li>GPU 수요 → HBM 수요 급증 → 생산 캐파 부족</li><li>빅테크가 공급사에 장기계약 + 공장 투자 지원</li><li>그 다음 단계: 전력·냉각·네트워크 병목 출현</li></ol>
+  </div>
+
+  <div class="card">
+    <h3>🔭 현황 및 전망</h3>
+    <ul><li>2026년: HBM3E/HBM4 공급 여전히 타이트</li><li>전력: 미국 전력망 업그레이드 법안 논의 중</li><li>냉각: 액침 냉각 시장 2028년까지 연 40% 성장 전망</li><li>광인터커넥트: 실리콘 포토닉스 투자 급증</li></ul>
+  </div>
+
+</div>
+<footer>AI 비주얼 리포트 · 2026-05-15 · wootom.github.io/news · 원본: <a href="https://youtu.be/U9zhnUSs8lE">YouTube</a></footer>
+</body>
+</html>
