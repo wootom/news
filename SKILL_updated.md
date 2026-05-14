@@ -3,7 +3,7 @@ name: url-to-vault
 description: >
   URL 하나를 입력받아 (웹 기사 또는 YouTube 링크) 콘텐츠를 자동으로 추출·분석·구조화한 뒤,
   Obsidian vault에 MECE 형식의 마크다운 노트로 저장하고,
-  동일 내용의 비주얼 리포트 HTML을 생성해 Netlify에 배포하는 워크플로우 스킬.
+  동일 내용의 비주얼 리포트 HTML을 생성해 GitHub Pages(wootom/news)에 배포하는 워크플로우 스킬.
 
   다음 상황에서 반드시 이 스킬을 사용하라:
   - 사용자가 https:// 또는 http:// URL을 입력했을 때
@@ -19,11 +19,10 @@ description: >
 ```
 Obsidian vault:       /Users/woojanghoon/Library/CloudStorage/GoogleDrive-woojanghoon@gmail.com/내 드라이브/obsidian_vault_2026/
 노트 저장 폴더:        CLAUDE.md 참조 — YouTube → 10-Sources/YouTube/ | 기사 → 10-Sources/articles/
-비주얼 리포트 경로:    /Users/woojanghoon/Sites/ai-infographic/
-배포 서비스:          Netlify (curl + zip, 무설치)
-배포 스크립트:        ~/Sites/ai-infographic/netlify-deploy.sh
-외부 베이스 URL:      https://vaax-infographic.netlify.app/
-  ※ 올바른 URL 예: https://vaax-infographic.netlify.app/2026-04-15-medvi-matthew-gallagher.html
+비주얼 리포트 경로:    /Users/woojanghoon/Sites/ai-infographic/    (이 폴더 = github.com/wootom/news repo 루트)
+배포 인프라:          GitHub Pages — origin: github.com/wootom/news (main 브랜치 자동 발행)
+외부 베이스 URL:      https://wootom.github.io/news/
+  ※ 올바른 URL 예: https://wootom.github.io/news/2026-05-15-figure-f03-robot-collaboration.html
 Telegram chat_id:     8378388303 (저장위치: ~/.vaax-telegram/chatid)
 Bot Token:            8526353326:AAGuYBDDyOiZfQd4hbpHyIwGzvFK0_Bzqa4
 Python 자막 도구:      youtube-transcript-api (pip install --break-system-packages)
@@ -34,14 +33,14 @@ Python 자막 도구:      youtube-transcript-api (pip install --break-system-pa
 ls /sessions/   # 현재 세션 ID 확인
 # 예: /sessions/funny-optimistic-dijkstra/
 Obsidian vault:  /sessions/{세션ID}/mnt/obsidian_vault_2026/    ← 전체 vault 마운트
-비주얼 리포트:    /sessions/{세션ID}/mnt/ai-infographic/         ← HTML 저장 + 배포 경로
+비주얼 리포트:    /sessions/{세션ID}/mnt/ai-infographic/         ← HTML 저장 + push 경로
 vaax-telegram:   /sessions/{세션ID}/mnt/vaax-telegram/
 ```
 
 > **⚠️ 배포 아키텍처**
 > - HTML은 `mnt/ai-infographic/`에 직접 저장 (`~/Sites/ai-infographic/`와 동일한 위치)
-> - 저장 완료 후 샌드박스에서 Netlify API를 Python으로 직접 호출해 배포
-> - rsync 불필요 — ai-infographic 폴더 자체가 배포 소스이자 저장 경로
+> - 저장 완료 후 git commit + push → GitHub Pages가 1~2분 내 자동 재빌드
+> - Netlify·rsync 일체 사용 안 함. wootom/news repo가 단일 외부 게시 채널
 
 ---
 
@@ -196,7 +195,7 @@ origin: "{원본 URL}"
 ```markdown
 ## 비주얼 리포트
 - 로컬: ~/Sites/ai-infographic/{YYYY-MM-DD}-{slug}.html
-- 외부: https://vaax-infographic.netlify.app/{YYYY-MM-DD}-{slug}.html
+- 외부: https://wootom.github.io/news/{YYYY-MM-DD}-{slug}.html
 
 ## 출처
 - [원본 제목](원본 URL)
@@ -222,56 +221,48 @@ HTML:  /sessions/{세션ID}/mnt/ai-infographic/{YYYY-MM-DD}-{slug}.html
 PPTX:  /sessions/{세션ID}/mnt/ai-infographic/{YYYY-MM-DD}-{slug}.pptx  (요청 시)
 ```
 
-### Step 4 완료 후 — Netlify 자동 배포 (필수)
+### Step 4 완료 후 — GitHub Pages 배포 (필수)
 
-HTML 저장이 끝나면 즉시 샌드박스에서 Netlify API를 Python으로 직접 호출해 배포한다.
+HTML(+ 갱신된 index.html) 저장이 끝나면 즉시 git commit + push 한다. `~/Sites/ai-infographic`은
+`github.com/wootom/news` repo의 작업 트리이며, main 브랜치가 곧 `https://wootom.github.io/news/` 의
+배포 소스다.
 
-```python
-import json, os, glob, zipfile, tempfile, urllib.request, subprocess
+```bash
+cd /sessions/{세션ID}/mnt/ai-infographic
 
-SESSION_ID = subprocess.check_output("ls /sessions/ | grep -v lost | head -1", shell=True).decode().strip()
-AI_DIR = f"/sessions/{SESSION_ID}/mnt/ai-infographic"
-AUTH_TOKEN = "nfp_6vUcFn4XUKgxVm9Zmy25d9pLuCrXGTgLc63b"
-SLUG = "{YYYY-MM-DD}-{slug}"  # 실제 slug로 치환
+# 1) staged 잔여물·신규 파일을 일괄 정리 (D + ?? 페어가 M으로 자연스럽게 합쳐짐)
+git add -A
 
-# site ID 조회 (Netlify API — ~/.vaax-netlify-site는 Mac 홈이라 샌드박스 미접근)
-req = urllib.request.Request(
-    "https://api.netlify.com/api/v1/sites",
-    headers={"Authorization": f"Bearer {AUTH_TOKEN}"}
-)
-sites = json.loads(urllib.request.urlopen(req, timeout=15).read())
-vaax = next((s for s in sites if "vaax-infographic" in s.get("name", "")), None)
-if not vaax:
-    raise RuntimeError("Netlify 사이트 미발견 — Mac 터미널에서 netlify-deploy.sh 1회 실행 후 재시도")
-site_id = vaax["id"]
-site_url = vaax.get("ssl_url", "https://vaax-infographic.netlify.app")
+# 2) 커밋 (slug + 날짜)
+SLUG="{YYYY-MM-DD}-{slug}"
+git commit -m "update: ${SLUG}"
 
-# HTML 전체 zip → 배포
-with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
-    zippath = tmp.name
-with zipfile.ZipFile(zippath, "w") as zf:
-    for html in glob.glob(f"{AI_DIR}/*.html"):
-        zf.write(html, os.path.basename(html))
-
-with open(zippath, "rb") as f:
-    zipdata = f.read()
-os.unlink(zippath)
-
-req = urllib.request.Request(
-    f"https://api.netlify.com/api/v1/sites/{site_id}/deploys",
-    data=zipdata,
-    headers={"Authorization": f"Bearer {AUTH_TOKEN}", "Content-Type": "application/zip"},
-    method="POST"
-)
-result = json.loads(urllib.request.urlopen(req, timeout=30).read())
-state = result.get("state", "error")
-if state not in ("ready", "uploaded", "processing", "enqueued"):
-    raise RuntimeError(f"Netlify 배포 실패: {result.get('error_message', result)}")
-
-print(f"[Netlify] 배포 완료: {site_url}/{SLUG}.html")
+# 3) push (origin/main → GitHub Pages 자동 빌드)
+git push origin main
 ```
 
-> **⚠️ 사이트 미존재 시**: Mac 터미널에서 `bash ~/Sites/ai-infographic/netlify-deploy.sh` 를 한 번 실행해 사이트를 먼저 생성한 뒤 재시도한다.
+push 실패 시 진단 순서:
+1. `git status` — lock 파일(`.git/index.lock`, `.git/HEAD.lock`)이 남아있으면 삭제 후 재시도
+2. `git remote -v` — origin이 `github.com/wootom/news.git`인지 확인
+3. 인증 실패면 PAT 만료. 회전 후 `git remote set-url`로 재등록 (PAT을 URL에 박지 말고 macOS keychain 사용 권장)
+
+### Step 4 검증 — 200 확인 게이트 (Step 6 발송 전 필수)
+
+GitHub Pages는 push 후 30~90초 내 재빌드된다. 다음 명령으로 실제 200 응답이 올 때까지 대기한 뒤
+Step 6(카톡 알림 발송)으로 진행한다. 404 상태로 알림을 발송하면 라이브 채팅방에 dead link가 노출된다.
+
+```bash
+SLUG="{YYYY-MM-DD}-{slug}"
+URL="https://wootom.github.io/news/${SLUG}.html"
+until [ "$(curl -s -o /dev/null -w "%{http_code}" "$URL")" = "200" ]; do
+  echo "waiting Pages rebuild..."
+  sleep 10
+done
+echo "OK: $URL"
+```
+
+기다리는 동안 5분(=30회) 초과면 GitHub Actions Pages 빌드 실패를 의심하고
+`gh run list --repo wootom/news --limit 3`으로 빌드 상태를 점검한다.
 
 ---
 
@@ -289,19 +280,19 @@ index.html 경로: `/sessions/{세션ID}/mnt/ai-infographic/index.html`
 </div>
 ```
 
-index.html 갱신 후 Netlify 배포 Python 코드를 다시 실행해 최신 index.html이 반영되도록 한다.
+index.html 변경분은 Step 4의 `git add -A` 단계에서 함께 커밋·푸시되므로 별도 배포 호출은 필요 없다.
 
 ---
 
 ## Step 6 — KakaoTalk 알림 발송
 
-비주얼 리포트 생성 완료 후 텔레그램 봇을 경유해 카카오톡 VAAX 방으로 알림을 보낸다.
+비주얼 리포트 생성 + GitHub Pages 200 검증(Step 4 게이트) 완료 후 텔레그램 봇을 경유해 카카오톡 VAAX 방으로 알림을 보낸다.
 
 ### 아키텍처
 ```
 Claude (샌드박스) → Telegram Bot API (@vaax_fovea_bot, chat_id: 8378388303)
   → vaax-telegram 릴레이 (Mac mini 상시 실행)
-  → KakaoTalk VAAX 방
+  → KakaoTalk VAAX 방 (vaaxbot이 telegram_listener를 통해 다중 forward)
 ```
 
 ### 알림 발송 코드 (샌드박스에서 직접 실행)
@@ -320,7 +311,7 @@ bullets = [
     "{핵심 요약 3}",
     "{핵심 요약 4}",
 ]
-url = "https://vaax-infographic.netlify.app/{YYYY-MM-DD}-{slug}.html"
+url = "https://wootom.github.io/news/{YYYY-MM-DD}-{slug}.html"
 date = "{YYYY-MM-DD}"
 
 lines = [f"[AI 비주얼 리포트] {date}", title, ""]
@@ -360,7 +351,7 @@ with urllib.request.urlopen(req, timeout=10) as resp:
 완료
 
 Obsidian: 10-Sources/YouTube/{파일명}.md  (또는 10-Sources/articles/)
-비주얼 리포트: https://vaax-infographic.netlify.app/{YYYY-MM-DD}-{slug}.html
+비주얼 리포트: https://wootom.github.io/news/{YYYY-MM-DD}-{slug}.html
 카카오톡: VAAX 알림 발송 완료 ({N}자)
 
 핵심 내용:
@@ -379,7 +370,8 @@ Obsidian: 10-Sources/YouTube/{파일명}.md  (또는 10-Sources/articles/)
 - Bash 샌드박스는 Mac 파일시스템 직접 접근 불가 → 반드시 Step 0 마운트 후 마운트 경로 사용
 - **Obsidian 실제 폴더 구조**: `10-Sources/YouTube/`, `10-Sources/articles/`, `20-Notes/AI/` — CLAUDE.md를 읽어 결정, 하드코딩 금지
 - HTML은 `mnt/ai-infographic/`에 직접 저장 (별도 비주얼 리포트 폴더 마운트 불필요)
-- HTML 저장 후 반드시 Netlify Python 배포 코드 실행 → 미실행 시 웹 URL 접근 불가
+- HTML 저장 후 반드시 Step 4의 git push 실행 → 미실행 시 외부 URL은 404
+- **카톡 알림 발송 전 Step 4의 200 검증 게이트 통과 필수** — 라이브 채팅방 dead link 방지
 - 마운트 경로의 세션 ID는 매 세션 변경됨 → `ls /sessions/` 로 확인
 - index.html 갱신 전 반드시 기존 파일 Read → 기존 항목 보존 후 최신 항목 맨 위 추가
 - 비주얼 리포트는 텍스트 나열 금지 — 도식(흐름도·비교표·파이프라인) 형태 필수
@@ -388,4 +380,5 @@ Obsidian: 10-Sources/YouTube/{파일명}.md  (또는 10-Sources/articles/)
 - WebFetch 실패 시 WebSearch 보완 검색 후 종합
 - **YouTube 콘텐츠**: 소주제별 타임스탬프 딥링크 필수 — 누락 시 결과물 재작성
 - **모든 콘텐츠**: 전문 용어 즉시 풀이 + 비유 사용 — 일반인 기준으로 이해 가능해야 함
-- **Netlify 사이트 미존재 시**: Mac 터미널에서 `bash ~/Sites/ai-infographic/netlify-deploy.sh` 1회 직접 실행 후 재시도
+- **외부 게시 채널은 GitHub Pages(`wootom.github.io/news`) 단일 채널** — Netlify·다른 호스팅 일체 사용 금지
+- GitHub PAT을 git remote URL에 평문으로 박지 말 것 (이미 박혀 있으면 회전 후 keychain credential helper로 분리)

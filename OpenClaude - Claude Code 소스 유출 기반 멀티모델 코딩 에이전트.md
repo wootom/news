@@ -62,7 +62,7 @@ type: Article
 
 ## 비주얼 리포트
 - 로컬: /sessions/focused-blissful-davinci/mnt/URL 요약공유/2026-04-20-openclaude-claude-code-leak.html
-- 외부: https://vaax-infographic.netlify.app/2026-04-20-openclaude-claude-code-leak.html
+- 외부: https://wootom.github.io/news/2026-04-20-openclaude-claude-code-leak.html
 
 ## 출처
 - [Claude Code 소스 유출로 탄생한 OpenClaude — GPT-4o, Gemini | GeekNews](https://news.hada.io/topic?id=28115)
