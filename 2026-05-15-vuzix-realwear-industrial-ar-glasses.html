@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>산업용 AI 글래스의 강자 — Vuzix vs RealWear | 혁신전파사</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    /* 히어로 */
+    .hero { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); color: #fff; padding: 40px 24px 32px; }
+    .hero-tag { font-size: 12px; opacity: 0.85; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .hero-title { font-size: 23px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+    .hero-sub { font-size: 13px; opacity: 0.9; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .stat { background: rgba(255,255,255,0.18); border-radius: 10px; padding: 14px 10px; text-align: center; }
+    .stat-num { font-size: 23px; font-weight: 800; display: block; }
+    .stat-label { font-size: 11px; opacity: 0.9; margin-top: 2px; }
+    /* 섹션 */
+    .container { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+    .section { margin-bottom: 34px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .sec-num { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sec-title { font-size: 18px; font-weight: 700; color: var(--text); }
+    .card { background: var(--surface); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+    /* 테이블 */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--accent); color: #fff; padding: 10px 12px; text-align: left; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .row-label { font-weight: 700; color: var(--accent); width: 22%; }
+    .vz { width: 39%; } .rw { width: 39%; }
+    /* 개념 카드 */
+    .concept { display: flex; gap: 16px; align-items: flex-start; }
+    .concept-badge { flex-shrink: 0; width: 60px; height: 60px; border-radius: 12px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; text-align: center; line-height: 1.25; }
+    .concept-body { font-size: 13px; color: var(--text); }
+    .concept-body b { color: var(--accent); }
+    .num-pop { font-size: 15px; font-weight: 800; color: var(--accent); }
+    /* 타임라인 */
+    .timeline { position: relative; padding-left: 26px; }
+    .timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: var(--accent-mid); }
+    .tl-item { position: relative; padding-bottom: 16px; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-item::before { content: ''; position: absolute; left: -23px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; }
+    .tl-year { font-size: 12px; font-weight: 800; color: var(--accent); }
+    .tl-text { font-size: 12.5px; color: var(--text); line-height: 1.55; }
+    /* 그리드 */
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(2, 1fr); } .two-col { grid-template-columns: 1fr !important; } }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .co-card { background: var(--surface); border-radius: 10px; padding: 16px; border: 1px solid var(--border); border-top: 4px solid var(--accent); }
+    .co-name { font-size: 15px; font-weight: 800; margin-bottom: 2px; }
+    .co-tag { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+    /* 이적 흐름 */
+    .move { display: flex; align-items: center; gap: 0; flex-wrap: wrap; margin-top: 14px; }
+    .move-box { flex: 1; min-width: 130px; padding: 14px 12px; border-radius: 10px; text-align: center; background: var(--surface); border: 1px solid var(--border); }
+    .move-arrow { display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent); padding: 0 8px; font-weight: 800; }
+    .move-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .move-name { font-size: 13px; font-weight: 700; }
+    @media (max-width: 600px) { .move-arrow { transform: rotate(90deg); width: 100%; padding: 6px 0; } }
+    /* 시나리오 */
+    .scenario { background: var(--surface); border-radius: 10px; padding: 16px; border: 1px solid var(--border); border-left: 4px solid var(--accent); }
+    .scenario-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .scenario-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+    /* 인사이트 / 시사점 */
+    .insight { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 8px; padding: 16px 18px; margin-top: 14px; }
+    .insight p { font-size: 13.5px; color: var(--text); line-height: 1.7; }
+    .lesson-list { list-style: none; }
+    .lesson-list li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+    .lesson-list li:last-child { border-bottom: none; }
+    .lesson-num { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .lesson-body b { color: var(--accent); }
+    /* 푸터 */
+    .footer { border-top: 1px solid var(--border); padding: 20px 24px; text-align: center; font-size: 12px; color: var(--muted); }
+    .footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- 히어로 배너 -->
+<div class="hero">
+  <div class="hero-tag">혁신전파사 · 2026-05-15</div>
+  <div class="hero-title">산업용 AI 글래스의 강자는 누구인가<br>Vuzix vs RealWear</div>
+  <div class="hero-sub">구글·메타보다 먼저 스마트 글래스 시장을 연 미국의 두 산업용 AR 기업 — 최형욱·전진수의 혁신 맞수 열전</div>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">1997 / 2015</span><span class="stat-label">Vuzix / RealWear 설립</span></div>
+    <div class="stat"><span class="stat-num">6배</span><span class="stat-label">RealWear 매출 우위</span></div>
+    <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Vuzix 웨이브가이드 특허</span></div>
+    <div class="stat"><span class="stat-num">20%+</span><span class="stat-label">산업용 AR 작업시간 단축</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 섹션 1: 핵심 개요 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">01</div>
+      <div class="sec-title">핵심 개요 — 두 기업 한눈에 비교</div>
+    </div>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>항목</th><th>Vuzix (뷰직스)</th><th>RealWear (리얼웨어)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="row-label">설립</td><td class="vz">1997년 (전신: 인터랙티브 이미지 시스템)</td><td class="rw">2015년 (전신: WearNext)</td></tr>
+          <tr><td class="row-label">창업자</td><td>폴 트래버스 — 코닥 엔지니어 출신</td><td>크리스 파킨슨 — RFID·HMD 경력</td></tr>
+          <tr><td class="row-label">출발점</td><td>군사용 야간투시 → VR → AR</td><td>처음부터 산업용 AR</td></tr>
+          <tr><td class="row-label">핵심 강점</td><td>웨이브가이드(도파관) 광학 기술 내재화</td><td>거친 현장용 견고한 핸즈프리 컴퓨터</td></tr>
+          <tr><td class="row-label">상장 여부</td><td>상장사</td><td>비상장 유지</td></tr>
+          <tr><td class="row-label">매출 규모</td><td>상대적으로 작음</td><td>Vuzix의 약 6배</td></tr>
+        </tbody>
+      </table>
+      <div class="insight">
+        <p>두 회사 모두 공간 컴퓨팅 분야에서 <b>실제로 돈을 벌고 있는</b> 미국의 산업용 특화 스마트 글래스 기업이다. 화려한 몰입감 대신 '현장 실용성'을 택한 것이 공통점이다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 2: 산업용 AR이란 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">02</div>
+      <div class="sec-title">산업용 AR이란 무엇인가 — 개념과 기원</div>
+    </div>
+    <div class="card">
+      <div class="concept">
+        <div class="concept-badge">보잉<br>1990s</div>
+        <div class="concept-body">
+          증강현실(AR, Augmented Reality)이라는 단어는 <b>보잉의 엔지니어 톰 코델</b>에게서 유래했다.
+          비행기 배선 작업이 너무 복잡하자 헤드 마운트 디스플레이를 설계해 전선 배선 모양을 AR로 보여주며 조립했고,
+          그 결과 작업 시간이 <span class="num-pop">20% 이상</span> 단축되고 정확도가 크게 올랐다.
+        </div>
+      </div>
+      <div class="insight">
+        <p><b>AR 구현이 어려운 이유</b> — 정확한 디지털 정보를 정확한 위치·시점에 눈앞에 겹쳐(오버레이) 보여줘야 하고, 공간을 이해하는 카메라 비전·AI, 이를 빠르게 돌릴 컴퓨팅 파워, 그리고 웨어러블의 착용감·배터리까지 모두 필요하다. 용어 등장 후 30년이 지났지만 여전히 난제다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 3+4: 두 기업 히스토리 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">03</div>
+      <div class="sec-title">두 기업의 역사 — 타임라인 비교</div>
+    </div>
+    <div class="two-col">
+      <div class="co-card">
+        <div class="co-name">Vuzix (뷰직스)</div>
+        <div class="co-tag">'XR 업계 할아버지' · 창업자 폴 트래버스</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-year">1997</div><div class="tl-text">인터랙티브 이미지 시스템 설립. 코닥 엔지니어 출신 폴 트래버스가 창업, 군사용 야간투시 디스플레이로 시작</div></div>
+          <div class="tl-item"><div class="tl-year">~2000s</div><div class="tl-text">VR 사업 진출 — 포르테 인수, VFX1/2/3 헤드기어. 1만 달러 군용 HMD를 1천 달러 이하로</div></div>
+          <div class="tl-item"><div class="tl-year">2007</div><div class="tl-text">사명을 'Vuzix'로 변경, AR에 집중</div></div>
+          <div class="tl-item"><div class="tl-year">2010</div><div class="tl-text">세계 최초 패스스루 AR 헤드셋 발표 (애플 비전 프로와 유사한 방식)</div></div>
+          <div class="tl-item"><div class="tl-year">2011</div><div class="tl-text">시스루 글래스 'Star 1200' 공개</div></div>
+          <div class="tl-item"><div class="tl-year">2013~</div><div class="tl-text">엔터프라이즈용 M시리즈(M100~M400) 출시 — 산업용 활용처를 명확히 함</div></div>
+        </div>
+      </div>
+      <div class="co-card">
+        <div class="co-name">RealWear (리얼웨어)</div>
+        <div class="co-tag">처음부터 산업 현장 집중 · 창업자 크리스 파킨슨</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-year">경력</div><div class="tl-text">크리스 파킨슨: Alien Technology(RFID) → Kopin('골든 아이' 프로젝트로 핸즈프리 HMD 개발)</div></div>
+          <div class="tl-item"><div class="tl-year">2015</div><div class="tl-text">'WearNext'로 창업. 미션: 안경 안 낀 채, 손 대지 않고, 거친 산업 현장에서 쓰는 컴퓨터</div></div>
+          <div class="tl-item"><div class="tl-year">재정의</div><div class="tl-text">AR을 'AaR(Assisted Reality, 보조현실)'로 바꿔 부름 — 몰입감 대신 작업자를 돕는 디스플레이</div></div>
+          <div class="tl-item"><div class="tl-year">2016~</div><div class="tl-text">CEO 영입·본인은 CTO. 첫 제품 HMT-1 출시 (헬멧 착용형 투박한 산업용 글래스)</div></div>
+          <div class="tl-item"><div class="tl-year">제품</div><div class="tl-text">100dB 소음에서도 음성 인식, 방진·방습·내열, 낙하 내구성, 교체형 배터리. Navigator 500/520 등</div></div>
+          <div class="tl-item"><div class="tl-year">결과</div><div class="tl-text">구글 글래스는 접었지만 RealWear는 산업 현장에서 꾸준히 판매·발전</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 5: 경쟁 환경 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">04</div>
+      <div class="sec-title">경쟁 환경 — 기술 확장과 '크리스 파킨슨'의 이적</div>
+    </div>
+    <div class="card">
+      <div class="grid" style="margin-bottom:14px;">
+        <div class="scenario">
+          <div class="scenario-title">Vuzix의 기술 확장</div>
+          <div class="scenario-desc">2015년 인텔 투자 유치. 폴의 광학 배경으로 웨이브가이드(빛을 얇은 판으로 전달하는 도파관 — 글래스 경량·소형화의 핵심)를 내부 개발, 특허 500개 이상. 로체스터 광학 공장에서 연 150만 개+ 생산. 글래스·솔루션 업체 → 웨이브가이드 부품·OEM 업체로 확장. Blade·Shield 안경형, Zoom·Teams 연동, 엣지 컴퓨팅 제공.</div>
+        </div>
+        <div class="scenario">
+          <div class="scenario-title">RealWear의 변신과 인수</div>
+          <div class="scenario-desc">스펙(SPAC) 우회 상장 실패 → 창업자 크리스 복귀. 2024년 스위스 Almer Technology(세바스찬 비천 창업, Arc 1·2)를 인수 — 공통 투자자 TeamViewer CEO의 주선. 인수 후 세바스찬이 CEO, 크리스는 물러남. OS·AI 강화로 LLM 기반 자연어 처리를 적용한 Arc 3 발표.</div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;">반전 — 창업자가 경쟁사로</div>
+      <div class="move">
+        <div class="move-box">
+          <div class="move-label">2025년 1월</div>
+          <div class="move-name">크리스 파킨슨,<br>RealWear 사임</div>
+        </div>
+        <div class="move-arrow">→</div>
+        <div class="move-box">
+          <div class="move-label">2025년 하반기</div>
+          <div class="move-name">경쟁사 Vuzix<br>엔터프라이즈 사장 합류</div>
+        </div>
+        <div class="move-arrow">→</div>
+        <div class="move-box">
+          <div class="move-label">배경</div>
+          <div class="move-name">상장사 기회 ·<br>웨이브가이드+AI 글래스 부상</div>
+        </div>
+      </div>
+      <div class="insight">
+        <p>Vuzix는 코로나 때 좋던 매출이 꺾여 "게임스탑 주식이냐"는 농담이 나올 만큼 산업 흔들림에 취약했고, 후발 주자 RealWear의 매출이 Vuzix의 <b>약 6배</b>. Vuzix는 이 베테랑을 영입해 엔터프라이즈 사업을 키우는 중이다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 6: 활용 시나리오 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">05</div>
+      <div class="sec-title">활용 시나리오 — 산업 현장에서의 쓰임</div>
+    </div>
+    <div class="grid">
+      <div class="scenario">
+        <div class="scenario-title">원격 전문가 연결</div>
+        <div class="scenario-desc">현장 작업자가 모르는 부분이 있으면 회사 전문가와 즉시 연결. 카메라로 현장을 비추면 전문가 지시에 따라 바로 해결.</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-title">작업자 간 협업·소통</div>
+        <div class="scenario-desc">여러 명이 함께 일할 때 통화·음성 명령으로 역할 분담. LLM 기반 AI와 대화하며 "지금 어떻게 할까요?" 식 소통.</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-title">다양한 서비스 통합</div>
+        <div class="scenario-desc">클라우드·SaaS·사내 인프라 서비스를 글래스에 계속 붙여, 폰 없이 글래스 디스플레이만으로 현장 어디서나 작업.</div>
+      </div>
+      <div class="scenario">
+        <div class="scenario-title">위험 환경 보호 · B2C 확장</div>
+        <div class="scenario-desc">위험 지역 진입을 감지해 작업자 보호(RealWear Navigator). Vuzix G1(35g 경량 AI 글래스)처럼 B2C·패셔너블 글래스로 확장 가능.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 7: 시사점 및 전망 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">06</div>
+      <div class="sec-title">시사점 및 전망</div>
+    </div>
+    <div class="card">
+      <ul class="lesson-list">
+        <li>
+          <div class="lesson-num">1</div>
+          <div class="lesson-body"><b>선택과 집중</b> — 디스플레이 '기능'이 아니라 "디스플레이가 어떤 목적에 어떻게 쓰일까"에 포커스. AR 글래스들이 화려한 몰입감을 좇다 실패한 것과 달리, 두 회사는 '산업용'으로 정의하고 손을 쓰지 않고 쓰는 글래스를 만들었다.</div>
+        </li>
+        <li>
+          <div class="lesson-num">2</div>
+          <div class="lesson-body"><b>산업용 XR의 본질</b> — 잘 운영·배치·유지보수되고 실제 현장 문제를 해결해야 한다. 기업 시스템 안에서 안정적으로 돌도록 인증받는 것 자체가 높은 진입 장벽이자 경쟁력이다.</div>
+        </li>
+        <li>
+          <div class="lesson-num">3</div>
+          <div class="lesson-body"><b>현장 요구 반영</b> — 공장·창고·리테일·용접 등 환경마다 다른 니즈를 끊임없이 듣고 반영한 것이 두 기업의 생존 비결. 구독형 하드웨어 모델 등 엔터프라이즈 솔루션 비즈니스로 진화 중이다.</div>
+        </li>
+        <li>
+          <div class="lesson-num">4</div>
+          <div class="lesson-body"><b>전망</b> — AR·AI·공간 컴퓨팅 분야는 앞으로 다양하게 발전할 것이며, 이름조차 알려지지 않은 수많은 산업용 글래스 기업이 더 존재한다.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>출처: <a href="https://youtu.be/r-UcNjFXneY" target="_blank">혁신전파사 — 산업용 AI 글래스의 강자는 누구인가? Vuzix vs RealWear</a> (2026-05-15)</p>
+  <p style="margin-top:6px;">생성일: 2026-05-15 | AI 비주얼 리포트</p>
+</div>
+
+</body>
+</html>
