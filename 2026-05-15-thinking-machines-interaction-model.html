@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thinking Machines 인터랙션 모델 — 안될공학</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    /* 히어로 */
+    .hero { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); color: #fff; padding: 40px 24px 32px; }
+    .hero-tag { font-size: 12px; opacity: 0.85; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .hero-title { font-size: 23px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+    .hero-sub { font-size: 13px; opacity: 0.9; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .stat { background: rgba(255,255,255,0.18); border-radius: 10px; padding: 14px 10px; text-align: center; }
+    .stat-num { font-size: 24px; font-weight: 800; display: block; }
+    .stat-label { font-size: 11px; opacity: 0.9; margin-top: 2px; }
+    /* 섹션 */
+    .container { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+    .section { margin-bottom: 34px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .sec-num { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sec-title { font-size: 18px; font-weight: 700; color: var(--text); }
+    .card { background: var(--surface); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+    /* 개요 테이블 */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--accent); color: #fff; padding: 10px 12px; text-align: left; }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .key-col { font-weight: 700; width: 26%; color: var(--accent); }
+    /* 인물 카드 */
+    .person { display: flex; gap: 16px; align-items: flex-start; margin-top: 14px; }
+    .person-badge { flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; text-align: center; line-height: 1.2; }
+    .person-body { font-size: 13px; color: var(--text); }
+    .person-body b { color: var(--accent); }
+    /* 그리드 */
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 760px) { .grid, .grid-3 { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(2, 1fr); } }
+    .demo-card { background: var(--surface); border-radius: 10px; padding: 16px; border: 1px solid var(--border); border-left: 4px solid var(--accent); }
+    .demo-time { display: inline-block; font-size: 10px; font-weight: 700; color: var(--accent); background: var(--accent-light); padding: 2px 7px; border-radius: 8px; margin-bottom: 8px; }
+    .demo-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .demo-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+    /* 흐름도: 단일쓰레드 문제 → 해법 */
+    .flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
+    .flow-box { flex: 1; min-width: 150px; padding: 16px 14px; border-radius: 10px; position: relative; }
+    .flow-problem { background: #fde8e8; border: 1px solid #f3c4c4; }
+    .flow-solution { background: var(--accent-light); border: 1px solid var(--accent-mid); }
+    .flow-arrow { display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--accent); padding: 0 8px; font-weight: 800; }
+    .flow-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .flow-problem .flow-label { color: #c33; }
+    .flow-solution .flow-label { color: var(--accent); }
+    .flow-text { font-size: 12.5px; color: var(--text); line-height: 1.55; }
+    @media (max-width: 760px) { .flow-arrow { transform: rotate(90deg); width: 100%; padding: 6px 0; } }
+    /* 기술 핵심 3요소 */
+    .tech-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .tech-item:last-child { border-bottom: none; }
+    .tech-icon { flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; }
+    .tech-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .tech-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+    /* 비교표 강조 */
+    .vs-old { color: #c33; font-weight: 600; }
+    .vs-new { color: var(--accent); font-weight: 600; }
+    /* 시나리오 */
+    .scenario { background: var(--surface); border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
+    .scenario.highlight { background: var(--accent-light); border-color: var(--accent-mid); }
+    .scenario-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px; background: var(--accent); color: #fff; margin-bottom: 8px; }
+    .scenario.highlight .scenario-tag { background: #c33; }
+    .scenario-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .scenario-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+    /* 인사이트 */
+    .insight { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 8px; padding: 16px 18px; margin-top: 14px; }
+    .insight p { font-size: 13.5px; color: var(--text); line-height: 1.7; }
+    /* 전망 리스트 */
+    .summary-list { list-style: none; }
+    .summary-list li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+    .summary-list li:last-child { border-bottom: none; }
+    .sum-num { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .sum-list-body b { color: var(--accent); }
+    /* 푸터 */
+    .footer { border-top: 1px solid var(--border); padding: 20px 24px; text-align: center; font-size: 12px; color: var(--muted); }
+    .footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- 히어로 배너 -->
+<div class="hero">
+  <div class="hero-tag">안될공학 · 2026-05-15</div>
+  <div class="hero-title">말하면서 듣는다 — 미라 무라티가 꺼낸<br>AI 경쟁의 다음 축, '인터랙션 모델'</div>
+  <div class="hero-sub">Thinking Machines Lab이 공개한 실시간 상호작용 AI 프리뷰 — 앱·디바이스 구조가 재편될까</div>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">200ms</span><span class="stat-label">턴 처리 단위</span></div>
+    <div class="stat"><span class="stat-num">단일쓰레드</span><span class="stat-label">기존 AI의 한계</span></div>
+    <div class="stat"><span class="stat-num">1GW</span><span class="stat-label">엔비디아 컴퓨팅 약속</span></div>
+    <div class="stat"><span class="stat-num">프리뷰</span><span class="stat-label">현재 단계</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 섹션 1: 핵심 개요 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">01</div>
+      <div class="sec-title">핵심 개요 — 무슨 발표인가</div>
+    </div>
+    <div class="card">
+      <table>
+        <tr><td class="key-col">발표 주체</td><td>Thinking Machines Lab — 미라 무라티가 2025년 2월 설립</td></tr>
+        <tr><td class="key-col">공개물</td><td>인터랙션 모델(Interaction model) — 사용자를 보고 들으며 실시간 반응하는 AI</td></tr>
+        <tr><td class="key-col">현재 상태</td><td>프리뷰 버전 — 아직 정식 제품(퍼블릭 프로덕트) 아님</td></tr>
+        <tr><td class="key-col">한 줄 정의</td><td>AI가 <b>말하는 도중에도</b> 새 입력을 받아 실시간 반응</td></tr>
+        <tr><td class="key-col">왜 중요한가</td><td>AI 모델만의 변화가 아니라, 그 모델을 쓰는 <b>모든 앱이 재편</b>될 수 있는 사건</td></tr>
+      </table>
+      <div class="person">
+        <div class="person-badge">미라<br>무라티</div>
+        <div class="person-body">
+          <b>오픈AI 전 CTO(기술총괄책임자)</b> — ChatGPT·DALL·E 개발을 이끌어 'ChatGPT의 어머니'로 불림.
+          2023년 샘 알트먼 해임 사태 때 잠시 임시 CEO를 맡았고, 2024년 오픈AI 퇴사 후 Thinking Machines Lab 설립.
+          오픈AI·메타·미스트랄 출신 연구자를 영입했다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 2: 인터랙션 모델이 하는 것 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">02</div>
+      <div class="sec-title">인터랙션 모델이 하는 것 — 데모로 본 동작</div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">
+      Thinking Machines가 노리는 것은 더 좋은 모델이 아니라 <b style="color:var(--accent);">AI와 사람이 협업하는 방식 자체</b>를 바꾸는 것이다.
+      (첫 제품은 파인튜닝 도구 '팅커(Tinker)', 이번이 인터랙션 모델)
+    </p>
+    <div class="grid">
+      <div class="demo-card">
+        <span class="demo-time">▶ 3:41</span>
+        <div class="demo-title">조용히 기다리기</div>
+        <div class="demo-desc">사용자가 커피를 마시는 등 말이 끊기면, 바로 답하지 않고 조용히 기다리며 이어지는 말을 인지한다.</div>
+      </div>
+      <div class="demo-card">
+        <span class="demo-time">▶ 4:13</span>
+        <div class="demo-title">순간 변화 캐치</div>
+        <div class="demo-desc">사용자가 갑자기 움직여도 프레임과 프레임 사이의 변화를 인지한다(자세 교정 등).</div>
+      </div>
+      <div class="demo-card">
+        <span class="demo-time">▶ 4:36</span>
+        <div class="demo-title">먼저 끊기</div>
+        <div class="demo-desc">AI가 사용자 말을 끊고 "그만 말해" 같은 개입을 한다. 이상한 소리를 하면 멈춰 세운다.</div>
+      </div>
+      <div class="demo-card">
+        <span class="demo-time">▶ 6:13</span>
+        <div class="demo-title">동시 통역</div>
+        <div class="demo-desc">상대 말이 끝나길 기다리지 않고, 실시간 통역사처럼 겹쳐서 동시에 말한다.</div>
+      </div>
+    </div>
+    <div class="insight">
+      <p>핵심은 <b>"언제 답해야 하는가"의 타이밍을 모델이 스스로 안다</b>는 점이다. 사용자가 생각 중인지, 말을 더 들어야 하는지, 끊어야 하는지를 계속 듣고 보면서 판단한다.</p>
+    </div>
+  </div>
+
+  <!-- 섹션 3: 기술적 맥락 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">03</div>
+      <div class="sec-title">기술적 맥락 — '단일 쓰레드' 문제와 해법</div>
+    </div>
+    <div class="card">
+      <div class="flow">
+        <div class="flow-box flow-problem">
+          <div class="flow-label">문제 · 협업 병목(Collaboration bottleneck)</div>
+          <div class="flow-text">"오늘날의 모델은 <b>단일 쓰레드(single-thread)</b>에서 현실을 경험한다." 답을 생성하는 동안에는 새 입력을 못 받고, 사용자가 뭘 하는지 모른 채 기다린다.</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box flow-solution">
+          <div class="flow-label">해법 · 인터랙션 모델</div>
+          <div class="flow-text">시간의 흐름 자체를 문맥(context)으로 사용. 말하면서도 계속 보고 듣는 구조로 전환한다.</div>
+        </div>
+      </div>
+      <div style="margin-top:18px;">
+        <div class="tech-item">
+          <div class="tech-icon">없음</div>
+          <div>
+            <div class="tech-name">별도의 대화 관리 장치 없음</div>
+            <div class="tech-desc">"there is no separate dialog management component" — 끼어들기 감지·발화 종료 감지 로직을 따로 넣지 않고, 그냥 모델을 돌리는 것만으로 처리한다.</div>
+          </div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">200<br><span style="font-size:9px;">ms</span></div>
+          <div>
+            <div class="tech-name">200밀리초(ms) 단위의 짧은 턴</div>
+            <div class="tech-desc">입력→출력을 반복하는 턴 기반 구조는 유지하되, 턴을 0.2초라는 매우 짧은 단위로 잘게 쪼개 실시간성을 확보한다.</div>
+          </div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-icon">시간<br>정렬</div>
+          <div>
+            <div class="tech-name">음성·영상의 마이크로 단위 시간 정렬(time-align)</div>
+            <div class="tech-desc">비디오와 오디오를 마이크로 단위로 시간축에 맞춰 모델이 인지 → 제스처·겹치는 발화·화면 변화까지 문맥으로 활용한다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 4: 기존 vs 인터랙션 모델 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">04</div>
+      <div class="sec-title">기존 음성 AI vs 인터랙션 모델</div>
+    </div>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>구분</th><th>기존 (ChatGPT Voice·Gemini Live)</th><th>인터랙션 모델</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>출발점</td><td class="vs-old">텍스트 → 실시간 기능 추가</td><td class="vs-new">처음부터 실시간 추구</td></tr>
+          <tr><td>입력 처리</td><td class="vs-old">답 생성 중 새 입력 못 받음</td><td class="vs-new">말하면서도 계속 입력 받음</td></tr>
+          <tr><td>끼어들기</td><td class="vs-old">가능하나 흐름 깨지면 답 품질 저하</td><td class="vs-new">흐름을 문맥으로 활용 → 품질 유지</td></tr>
+          <tr><td>대화 제어</td><td class="vs-old">발화 종료·인터럽트 로직 별도 탑재</td><td class="vs-new">별도 장치 없이 모델이 내장 판단</td></tr>
+          <tr><td>턴 단위</td><td class="vs-old">비교적 긴 턴</td><td class="vs-new">200ms 단위로 잘게 쪼갬</td></tr>
+          <tr><td>처리 방식</td><td class="vs-old">청크(chunk) 단위 배치 처리</td><td class="vs-new">스트리밍 처리</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 섹션 5: 전략적 의미 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">05</div>
+      <div class="sec-title">전략적 의미 — 경쟁의 축이 바뀐다</div>
+    </div>
+    <div class="card">
+      <div class="flow">
+        <div class="flow-box" style="background:#f0f0f0;border:1px solid var(--border);">
+          <div class="flow-label" style="color:var(--muted);">기존 프론티어 AI 경쟁축</div>
+          <div class="flow-text">어려운 문제 풀이 · 긴 컨텍스트 · 리즈닝(추론) · 도구 사용 · 자율 에이전트</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box flow-solution">
+          <div class="flow-label">새로운 경쟁축</div>
+          <div class="flow-text">사람과 AI의 <b>실시간 상호작용</b> · 어느 인터페이스(글래스·이어폰·로봇)를 장악하느냐</div>
+        </div>
+      </div>
+      <div class="insight">
+        <p>인터랙션 모델이 보편화되면 <b>앱 구조 자체가 재편</b>된다. 사용자가 그냥 쓰고 있으면 AI가 옆에서 보고 듣다가 필요할 때만 끼어드는 형태가 된다. AI 인프라 경쟁의 '브릿지'에 해당하는 인터페이스를 누가 강하게 쥐느냐의 싸움이 시작됐다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 6: 활용 시나리오 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">06</div>
+      <div class="sec-title">활용 시나리오</div>
+    </div>
+    <div class="grid">
+      <div class="scenario highlight">
+        <span class="scenario-tag">최대 수혜</span>
+        <div class="scenario-title">AI 글래스 / 스마트 글래스</div>
+        <div class="scenario-desc">옆에서 계속 보고 듣다가 필요할 때만 끼어드는 비서. 메타·애플 모두 글래스 출시를 예고한 상황이라 수혜가 가장 클 분야.</div>
+      </div>
+      <div class="scenario">
+        <span class="scenario-tag">시나리오</span>
+        <div class="scenario-title">로봇 / 휴머노이드</div>
+        <div class="scenario-desc">복잡한 작업은 백그라운드 모델이 처리하고 결과가 나오면 자연스럽게 끼어드는 식 — 시스템1/시스템2로 작업을 나누는 구조.</div>
+      </div>
+      <div class="scenario">
+        <span class="scenario-tag">시나리오</span>
+        <div class="scenario-title">실시간 통역</div>
+        <div class="scenario-desc">상대 말을 멈추거나 고치게 하지 않고, 동시에 통역하는 실시간 통역사 역할. 이어폰 안에 들어가면 바로 통역기.</div>
+      </div>
+      <div class="scenario">
+        <span class="scenario-tag">시나리오</span>
+        <div class="scenario-title">인터페이스 레이어별 역할 분화</div>
+        <div class="scenario-desc">채팅창=검색 보조, 이어폰=실시간 통역, 글래스=상황 인지 비서. 어느 레이어에 들어가느냐에 따라 디바이스·OS·앱 설계가 모두 달라진다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 7: 현황 및 전망 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-num">07</div>
+      <div class="sec-title">현황 및 전망</div>
+    </div>
+    <div class="card">
+      <ul class="summary-list">
+        <li>
+          <div class="sum-num">1</div>
+          <div class="sum-list-body"><b>아직 프리뷰 단계</b> — 정식 제품이 아닌 기술성 입증 단계. 레이턴시(지연 시간)는 기존보다 확실히 빠르지만, 실제 서빙(서비스 운영) 시 성능은 지켜봐야 한다.</div>
+        </li>
+        <li>
+          <div class="sum-num">2</div>
+          <div class="sum-list-body"><b>인프라 약속</b> — 2026년 3월 Thinking Machines는 엔비디아 베라 루빈(Vera Rubin) 시스템 기반 <b>최소 1GW(기가와트) 규모 컴퓨팅</b> 사용을 약속하는 파트너십을 발표했다.</div>
+        </li>
+        <li>
+          <div class="sum-num">3</div>
+          <div class="sum-list-body"><b>인프라 경쟁 양상 변화</b> — 큰 모델을 한 번 잘 돌리는 영역에서, 수많은 사람의 실시간 세션을 어떻게 유지하느냐로 이동. 빠른 SRAM·캐시 중심 메모리, 네트워크 지연 관리, 로컬-클라우드 역할 분담(하이브리드 AI)이 중요해진다.</div>
+        </li>
+        <li>
+          <div class="sum-num">4</div>
+          <div class="sum-list-body"><b>팔로업 포인트</b> — AI 글래스·휴머노이드 분야에서 이런 모델이 어떻게 산업적으로 퍼지는지, 어떤 제품과 반도체가 필요해지는지를 계속 추적할 필요가 있다.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>출처: <a href="https://youtu.be/Gqy9pWzJezQ" target="_blank">안될공학 — 말하면서 듣는다… AI 글래스, 앱 시장 재편되나 | 미라 무라티가 꺼낸 다음 경쟁축</a> (2026-05-15)</p>
+  <p style="margin-top:6px;">생성일: 2026-05-15 | AI 비주얼 리포트</p>
+</div>
+
+</body>
+</html>

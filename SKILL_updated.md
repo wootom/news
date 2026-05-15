@@ -221,48 +221,8 @@ HTML:  /sessions/{세션ID}/mnt/ai-infographic/{YYYY-MM-DD}-{slug}.html
 PPTX:  /sessions/{세션ID}/mnt/ai-infographic/{YYYY-MM-DD}-{slug}.pptx  (요청 시)
 ```
 
-### Step 4 완료 후 — GitHub Pages 배포 (필수)
-
-HTML(+ 갱신된 index.html) 저장이 끝나면 즉시 git commit + push 한다. `~/Sites/ai-infographic`은
-`github.com/wootom/news` repo의 작업 트리이며, main 브랜치가 곧 `https://wootom.github.io/news/` 의
-배포 소스다.
-
-```bash
-cd /sessions/{세션ID}/mnt/ai-infographic
-
-# 1) staged 잔여물·신규 파일을 일괄 정리 (D + ?? 페어가 M으로 자연스럽게 합쳐짐)
-git add -A
-
-# 2) 커밋 (slug + 날짜)
-SLUG="{YYYY-MM-DD}-{slug}"
-git commit -m "update: ${SLUG}"
-
-# 3) push (origin/main → GitHub Pages 자동 빌드)
-git push origin main
-```
-
-push 실패 시 진단 순서:
-1. `git status` — lock 파일(`.git/index.lock`, `.git/HEAD.lock`)이 남아있으면 삭제 후 재시도
-2. `git remote -v` — origin이 `github.com/wootom/news.git`인지 확인
-3. 인증 실패면 PAT 만료. 회전 후 `git remote set-url`로 재등록 (PAT을 URL에 박지 말고 macOS keychain 사용 권장)
-
-### Step 4 검증 — 200 확인 게이트 (Step 6 발송 전 필수)
-
-GitHub Pages는 push 후 30~90초 내 재빌드된다. 다음 명령으로 실제 200 응답이 올 때까지 대기한 뒤
-Step 6(카톡 알림 발송)으로 진행한다. 404 상태로 알림을 발송하면 라이브 채팅방에 dead link가 노출된다.
-
-```bash
-SLUG="{YYYY-MM-DD}-{slug}"
-URL="https://wootom.github.io/news/${SLUG}.html"
-until [ "$(curl -s -o /dev/null -w "%{http_code}" "$URL")" = "200" ]; do
-  echo "waiting Pages rebuild..."
-  sleep 10
-done
-echo "OK: $URL"
-```
-
-기다리는 동안 5분(=30회) 초과면 GitHub Actions Pages 빌드 실패를 의심하고
-`gh run list --repo wootom/news --limit 3`으로 빌드 상태를 점검한다.
+> ⚠️ **이 단계에서는 파일만 저장한다. 배포는 Step 6에서 일괄 처리.**
+> Step 5(index.html 갱신)가 끝나야 git push에 포털 변경분이 함께 포함된다.
 
 ---
 
@@ -280,13 +240,62 @@ index.html 경로: `/sessions/{세션ID}/mnt/ai-infographic/index.html`
 </div>
 ```
 
-index.html 변경분은 Step 4의 `git add -A` 단계에서 함께 커밋·푸시되므로 별도 배포 호출은 필요 없다.
+> 이 단계 또한 파일만 갱신한다. 실제 외부 노출은 Step 6의 단일 git push로 일괄 처리된다.
 
 ---
 
-## Step 6 — KakaoTalk 알림 발송
+## Step 6 — GitHub Pages 배포 + 200 검증 (필수)
 
-비주얼 리포트 생성 + GitHub Pages 200 검증(Step 4 게이트) 완료 후 텔레그램 봇을 경유해 카카오톡 VAAX 방으로 알림을 보낸다.
+Step 4·5에서 저장·갱신한 파일을 `~/Sites/ai-infographic` 작업 트리(= `github.com/wootom/news` repo)에서
+한 번에 commit·push한다. main 브랜치가 `https://wootom.github.io/news/` 의 배포 소스다.
+
+### 6-A: git push
+
+```bash
+cd /sessions/{세션ID}/mnt/ai-infographic
+
+# 1) 신규 HTML + index.html 변경분을 일괄 정리 (D + ?? 페어가 M으로 자연스럽게 합쳐짐)
+git add -A
+
+# 2) 커밋 (slug + 날짜) — index.html 변경분도 같은 커밋에 포함됨
+SLUG="{YYYY-MM-DD}-{slug}"
+git commit -m "update: ${SLUG}"
+
+# 3) push (origin/main → GitHub Pages 자동 빌드)
+git push origin main
+```
+
+push 실패 시 진단 순서:
+1. `git status` — lock 파일(`.git/index.lock`, `.git/HEAD.lock`)이 남아있으면 삭제 후 재시도
+2. `git remote -v` — origin이 `github.com/wootom/news.git`인지 확인
+3. 인증 실패면 PAT 만료. 회전 후 `git remote set-url`로 재등록 (PAT을 URL에 박지 말고 macOS keychain 사용 권장)
+
+### 6-B: 200 검증 게이트 (Step 7 발송 전 필수)
+
+GitHub Pages는 push 후 30~90초 내 재빌드된다. 다음 명령으로 실제 200 응답이 올 때까지 대기한 뒤
+Step 7(카톡 알림 발송)으로 진행한다. **404 상태로 알림을 발송하면 라이브 채팅방에 dead link가 노출된다.**
+
+```bash
+SLUG="{YYYY-MM-DD}-{slug}"
+URL="https://wootom.github.io/news/${SLUG}.html"
+until [ "$(curl -s -o /dev/null -w "%{http_code}" "$URL")" = "200" ]; do
+  echo "waiting Pages rebuild..."
+  sleep 10
+done
+echo "OK: $URL"
+```
+
+기다리는 동안 5분(=30회) 초과면 GitHub Actions Pages 빌드 실패를 의심하고
+`gh run list --repo wootom/news --limit 3`으로 빌드 상태를 점검한다.
+
+검증을 통과하지 못한 경우 Step 7로 진행 금지. 빌드 실패 원인을 해결해 200을 받은 뒤 알림 발송.
+
+---
+
+## Step 7 — KakaoTalk 알림 발송
+
+Step 6의 200 검증 게이트를 통과한 뒤에만 텔레그램 봇을 경유해 카카오톡 VAAX 방으로 알림을 보낸다.
+게이트 미통과 상태에서 이 단계를 실행하면 라이브 채팅방에 dead link가 노출된다.
 
 ### 아키텍처
 ```
@@ -345,7 +354,7 @@ with urllib.request.urlopen(req, timeout=10) as resp:
 
 ---
 
-## Step 7 — 완료 보고
+## Step 8 — 완료 보고
 
 ```
 완료
@@ -370,8 +379,8 @@ Obsidian: 10-Sources/YouTube/{파일명}.md  (또는 10-Sources/articles/)
 - Bash 샌드박스는 Mac 파일시스템 직접 접근 불가 → 반드시 Step 0 마운트 후 마운트 경로 사용
 - **Obsidian 실제 폴더 구조**: `10-Sources/YouTube/`, `10-Sources/articles/`, `20-Notes/AI/` — CLAUDE.md를 읽어 결정, 하드코딩 금지
 - HTML은 `mnt/ai-infographic/`에 직접 저장 (별도 비주얼 리포트 폴더 마운트 불필요)
-- HTML 저장 후 반드시 Step 4의 git push 실행 → 미실행 시 외부 URL은 404
-- **카톡 알림 발송 전 Step 4의 200 검증 게이트 통과 필수** — 라이브 채팅방 dead link 방지
+- HTML 저장 후 반드시 Step 6의 git push 실행 → 미실행 시 외부 URL은 404
+- **카톡 알림 발송(Step 7) 전 Step 6-B 200 검증 게이트 통과 필수** — 라이브 채팅방 dead link 방지
 - 마운트 경로의 세션 ID는 매 세션 변경됨 → `ls /sessions/` 로 확인
 - index.html 갱신 전 반드시 기존 파일 Read → 기존 항목 보존 후 최신 항목 맨 위 추가
 - 비주얼 리포트는 텍스트 나열 금지 — 도식(흐름도·비교표·파이프라인) 형태 필수
