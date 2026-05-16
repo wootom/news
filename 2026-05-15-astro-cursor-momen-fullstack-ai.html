@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cursor + Momen — 풀스택 AI 앱을 통째로 짓는 가장 미친 워크플로우</title>
+<style>
+  :root { --accent: #2d9162; --bg: #f8faf9; --card-bg: #fff; --text: #1a2e25; --muted: #6b8f7a; --border: #d4e8dc; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .hero { background: linear-gradient(135deg, #1a4731 0%, var(--accent) 100%); color: #fff; padding: 48px 24px 36px; text-align: center; }
+  .hero .channel { font-size: 13px; opacity: 0.8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(20px, 4vw, 32px); font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+  .hero .meta { font-size: 13px; opacity: 0.7; margin-bottom: 20px; }
+  .hero .tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .tag { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); padding: 4px 12px; border-radius: 20px; font-size: 12px; color: #fff; }
+  .yt-btn { display: inline-block; margin-top: 20px; background: #ff0000; color: #fff; text-decoration: none; padding: 10px 24px; border-radius: 24px; font-size: 14px; font-weight: 700; }
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px; }
+  .summary-box { background: linear-gradient(135deg, #e8f5ee, #d4ede1); border-left: 4px solid var(--accent); border-radius: 12px; padding: 24px; margin-bottom: 28px; }
+  .summary-box h2 { color: var(--accent); font-size: 15px; margin-bottom: 14px; letter-spacing: 0.5px; }
+  .summary-box ul { list-style: none; }
+  .summary-box li { padding: 6px 0 6px 20px; position: relative; font-size: 15px; border-bottom: 1px solid rgba(45,145,98,0.15); }
+  .summary-box li:last-child { border-bottom: none; }
+  .summary-box li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 28px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 22px; box-shadow: 0 2px 12px rgba(45,145,98,0.07); }
+  .card h3 { font-size: 14px; color: var(--accent); font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .card ul { list-style: none; }
+  .card li { font-size: 13.5px; padding: 5px 0 5px 16px; position: relative; color: #2a3d32; border-bottom: 1px solid #f0f5f2; }
+  .card li:last-child { border-bottom: none; }
+  .card li::before { content: '•'; position: absolute; left: 0; color: var(--accent); }
+  table.overview { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+  table.overview td { padding: 8px 12px; border: 1px solid var(--border); font-size: 14px; }
+  table.overview td.label { background: #e8f5ee; color: var(--accent); font-weight: 700; width: 35%; }
+  .workflow-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 22px; margin-bottom: 28px; }
+  .workflow-card h3 { font-size: 14px; color: var(--accent); font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+  .workflow-card ol { padding-left: 20px; }
+  .workflow-card li { font-size: 14px; padding: 6px 0; color: #2a3d32; }
+  .deeplink { display: inline-block; background: #e8f5ee; color: var(--accent); text-decoration: none; padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-left: 6px; }
+  footer { text-align: center; padding: 24px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 20px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="channel">Astro K Joseph</div>
+  <h1>Cursor + Momen — 풀스택 AI 앱을 통째로 짓는 가장 미친 워크플로우</h1>
+  <div class="meta">2026-05-15 · AI 비주얼 리포트</div>
+  <div class="tags"><span class="tag">Cursor</span><span class="tag">Momen</span><span class="tag">노코드</span><span class="tag">풀스택</span><span class="tag">AI에이전트</span><span class="tag">TestSprite</span></div>
+  <a class="yt-btn" href="https://youtu.be/7Y6qtsA6Wnk" target="_blank">▶ YouTube 원본 보기</a>
+</div>
+
+<div class="container">
+
+  <div class="summary-box">
+    <h2>📌 핵심 요약</h2>
+    <ul>
+      <li>Momen(노코드 백엔드) + Cursor(프론트엔드) 조합으로 프로덕션급 SaaS 1편 완성</li>
+      <li>DB·인증·AI 에이전트·Action Flow를 Momen 비주얼 빌더로 코드 0줄</li>
+      <li>Gemini Flash Image(나노바나나)로 AI 이미지 편집 기능 즉시 탑재</li>
+      <li>TestSprite MCP로 프론트엔드 자동 테스트 + GitHub PR 게이트 구축</li>
+    </ul>
+  </div>
+
+  <div class="card" style="margin-bottom:28px;">
+    <h3>🗂 핵심 개요</h3>
+    <table class="overview">
+      <tr><td class="label">예시 앱</td><td>로그인 가능한 AI 이미지 편집 SaaS (이미지 업로드 + 프롬프트 → 편집 결과)</td></tr>
+      <tr><td class="label">백엔드</td><td>Momen — DB / 인증 / Action Flow / AI 에이전트</td></tr>
+      <tr><td class="label">프론트</td><td>Cursor — Momen 연결 후 단일 프롬프트로 UI 자동 생성</td></tr>
+      <tr><td class="label">테스트</td><td>TestSprite MCP — AI 에이전트가 직접 화면을 클릭·검증</td></tr>
+      <tr><td class="label">배포</td><td>Vercel 등 원하는 플랫폼</td></tr>
+    </table>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🧱 Momen 백엔드 만들기</h3>
+      <ul>
+        <li>새 프로젝트 → 'image editor' 빈 프로젝트로 시작<a class="deeplink" href="https://youtu.be/7Y6qtsA6Wnk?t=204" target="_blank">▶3:24</a></li>
+        <li>AI Agent 추가: 입력=이미지+편집 지시, Role/Goal 템플릿 작성<a class="deeplink" href="https://youtu.be/7Y6qtsA6Wnk?t=288" target="_blank">▶4:48</a></li>
+        <li>모델 선택: Gemini 3.1 Flash Image Preview (Nano Banana)<a class="deeplink" href="https://youtu.be/7Y6qtsA6Wnk?t=394" target="_blank">▶6:34</a></li>
+        <li>Sync Changes로 백엔드 데이터모델 자동 반영</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🗃 데이터베이스 — AI Copilot</h3>
+      <ul>
+        <li>Data Model 탭에서 AI Copilot 호출 → 자연어로 테이블 생성<a class="deeplink" href="https://youtu.be/7Y6qtsA6Wnk?t=552" target="_blank">▶9:12</a></li>
+        <li>image_project / editing_history 테이블 자동 설계</li>
+        <li>스키마 변경 계획을 확인 후 Confirm & Execute 한 번으로 적용</li>
+        <li>대안: 직접 컬럼 추가도 가능 — 비숙련자는 Copilot 추천</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="workflow-card">
+    <h3>🔄 Action Flow — 비주얼 로직 빌더</h3>
+    <ol>
+      <li>입력 노드: image_project_id, edit_instruction 두 변수 정의<a class="deeplink" href="https://youtu.be/7Y6qtsA6Wnk?t=697" target="_blank">▶11:37</a></li>
+      <li>Query Data: image_project 테이블에서 ID로 조회 (AI Smart Suggestion으로 자동 매핑)</li>
+      <li>실행 모드를 Async로 전환 — 실패 시 해당 노드의 DB 수정만 롤백</li>
+      <li>Run AI: 앞서 만든 image_editor_agent 호출, 원본 이미지 + 지시문 전달</li>
+      <li>Insert Data: editing_history에 prompt / result_image / project_id 저장<a class="deeplink" href="https://youtu.be/7Y6qtsA6Wnk?t=923" target="_blank">▶15:23</a></li>
+      <li>Formula → Get Item으로 AI 응답에서 이미지 추출 (index 0)</li>
+    </ol>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🎨 Cursor로 프론트엔드 자동 생성</h3>
+      <ul>
+        <li>Momen ↔ Cursor 연결 후 단일 프롬프트로 UI 생성</li>
+        <li>로그인 + 이미지 업로드 + 프롬프트 입력 + 결과 영역 자동 구성</li>
+        <li>다크모드·테마 변경은 follow-up 프롬프트로 즉시 리디자인<a class="deeplink" href="https://youtu.be/7Y6qtsA6Wnk?t=1556" target="_blank">▶25:56</a></li>
+        <li>외부 API 연동: Momen의 API 섹션에서 OpenAI 등 추가 가능</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🧪 TestSprite — AI QA 자동화</h3>
+      <ul>
+        <li>TestSprite MCP를 Cursor에 추가, API Key 등록<a class="deeplink" href="https://youtu.be/7Y6qtsA6Wnk?t=1605" target="_blank">▶26:45</a></li>
+        <li>"5개 핵심 테스트만 돌려줘" 한 줄 명령으로 시작</li>
+        <li>AI 에이전트가 실제 UI를 클릭·입력하며 녹화까지 제공</li>
+        <li>실패 케이스의 원인·수정안을 자동 제시</li>
+        <li>GitHub 연동 시 PR마다 자동 테스트 게이트로 머지 차단 가능<a class="deeplink" href="https://youtu.be/7Y6qtsA6Wnk?t=1746" target="_blank">▶29:06</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🎯 활용 시나리오</h3>
+      <ul>
+        <li>AI 이미지/영상 편집 SaaS의 빠른 MVP 구축</li>
+        <li>사내 자동화 도구: 폼 입력 → AI 에이전트 호출 → DB 기록</li>
+        <li>1인 개발자가 풀스택 앱 + 자동 QA까지 단일 워크플로우로 완성</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>♟ 워크플로우의 의미</h3>
+      <ul>
+        <li>'노코드 백엔드' + '바이브 코딩' 결합으로 풀스택 진입 장벽 급락</li>
+        <li>코드 작성 없이 비즈니스 로직 90% 처리 가능</li>
+        <li>AI Copilot이 스키마·매핑·테스트까지 보조 → 1인 SaaS 시대</li>
+        <li>주의: 모델 비용·벤더 락인·복잡한 로직 한계는 별도 검토 필요</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔭 따라 해보기 체크리스트</h3>
+    <ul>
+      <li>moment.app 가입 → blank project → AI Agent 생성 (Role/Goal/Input)</li>
+      <li>Data Model AI Copilot으로 테이블 자동 생성 + Sync</li>
+      <li>Action Flow에서 Async + Run AI + Insert Data 노드 연결</li>
+      <li>Cursor에서 Momen 백엔드 연결 → 프롬프트로 UI 생성</li>
+      <li>TestSprite MCP 추가 → "5개 중요 테스트 실행" → 보고서로 자동 수정</li>
+      <li>GitHub 연동 후 PR마다 자동 테스트 게이트 설정</li>
+    </ul>
+  </div>
+
+</div>
+<footer>AI 비주얼 리포트 · 2026-05-15 · wootom.github.io/news · 원본: <a href="https://youtu.be/7Y6qtsA6Wnk">YouTube</a></footer>
+</body>
+</html>
