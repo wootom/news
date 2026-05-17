@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 에이전트 12명으로 일하는 1인 기업 — 고영혁 고넥터</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #1a4a30 0%, var(--accent) 55%, var(--accent-mid) 100%); color: #fff; padding: 48px 24px 40px; text-align: center; }
+    .hero-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.75; margin-bottom: 12px; }
+    .hero-title { font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
+    .hero-sub { font-size: 13px; opacity: 0.82; margin-bottom: 30px; }
+    .stats { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .stat-box { background: rgba(255,255,255,0.16); border-radius: 12px; padding: 13px 18px; min-width: 110px; }
+    .stat-num { font-size: 28px; font-weight: 800; }
+    .stat-label { font-size: 11px; opacity: 0.82; margin-top: 2px; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 16px; }
+    .section-card { background: var(--surface); border-radius: 14px; padding: 24px; margin-bottom: 22px; border: 1px solid var(--border); }
+    .section-header { display: flex; align-items: center; gap: 13px; margin-bottom: 18px; flex-wrap: wrap; }
+    .sec-num { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sec-title { font-size: 17px; font-weight: 700; }
+    .sec-link { font-size: 11px; color: var(--accent-mid); margin-left: 6px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 760px) { .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .grid-3, .grid-4, .grid-2 { grid-template-columns: 1fr; } }
+
+    .mini-card { background: #fff; border-radius: 10px; padding: 14px; border: 1px solid var(--border); }
+    .mini-card h4 { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+    .mini-card p { font-size: 12px; color: var(--text); line-height: 1.6; }
+    .mini-card .motif { font-size: 11px; color: var(--muted); margin-top: 4px; font-style: italic; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; border-radius: 8px; overflow: hidden; }
+    th { background: var(--accent); color: #fff; padding: 10px 12px; text-align: left; font-weight: 700; font-size: 12px; }
+    td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fafafa; }
+    td.highlight { background: var(--accent-light); font-weight: 700; color: var(--accent); }
+
+    .quote { border-left: 4px solid var(--accent-mid); padding: 10px 16px; background: var(--accent-light); border-radius: 0 8px 8px 0; font-size: 13px; font-style: italic; margin: 12px 0; }
+
+    .vs-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 480px) { .vs-split { grid-template-columns: 1fr; } }
+    .vs-box { border-radius: 10px; padding: 16px; border: 2px solid var(--border); background: #fff; }
+    .vs-box.bad { border-color: #ddd; background: #fafafa; }
+    .vs-box.good { border-color: var(--accent); background: var(--accent-light); }
+    .vs-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--accent); }
+    .vs-box.bad h4 { color: var(--muted); }
+    .vs-box ul { list-style: none; padding: 0; }
+    .vs-box li { font-size: 12px; padding: 4px 0; border-bottom: 1px dotted var(--border); }
+    .vs-box li:last-child { border-bottom: none; }
+
+    /* Flow */
+    .flow-vert { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+    .flow-row { display: flex; align-items: center; gap: 10px; }
+    .flow-actor { font-size: 11px; font-weight: 700; color: var(--accent); min-width: 100px; text-align: right; padding-right: 8px; border-right: 2px solid var(--accent); }
+    .flow-msg { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 12px; flex: 1; }
+    .flow-msg.highlight { background: var(--accent-light); border-color: var(--accent); }
+    .flow-arrow-down { text-align: center; color: var(--accent); font-size: 16px; }
+
+    /* Hierarchy / Org chart */
+    .org { background: #fff; padding: 18px; border-radius: 10px; border: 1px solid var(--border); }
+    .org-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+    .org-node { background: var(--accent-light); border: 2px solid var(--accent); border-radius: 8px; padding: 8px 12px; min-width: 100px; text-align: center; }
+    .org-node.head { background: var(--accent); color: #fff; }
+    .org-node .role { font-size: 10px; font-weight: 700; opacity: 0.8; }
+    .org-node .name { font-size: 12px; font-weight: 700; }
+    .org-node .motif-sm { font-size: 9px; color: var(--muted); margin-top: 2px; }
+    .org-node.head .motif-sm { color: rgba(255,255,255,0.7); }
+    .org-arrow-v { text-align: center; color: var(--accent); margin: 4px 0; }
+
+    /* Memory pipeline */
+    .pipeline { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; padding: 12px; background: #fff; border-radius: 10px; border: 1px solid var(--border); }
+    .pipe-box { background: var(--accent-light); border: 2px solid var(--accent-mid); border-radius: 10px; padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--accent); text-align: center; min-width: 110px; }
+    .pipe-box small { display: block; font-size: 10px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+    .pipe-arrow { color: var(--accent); font-size: 18px; font-weight: 700; }
+
+    /* Comparison bars */
+    .bar-wrap { display: flex; flex-direction: column; gap: 10px; }
+    .bar-row { display: flex; align-items: center; gap: 10px; }
+    .bar-label { font-size: 12px; font-weight: 700; min-width: 150px; }
+    .bar-bg { flex: 1; background: var(--border); border-radius: 4px; height: 22px; overflow: hidden; position: relative; }
+    .bar-fill { height: 100%; background: var(--accent); display: flex; align-items: center; padding-left: 8px; color: #fff; font-size: 11px; font-weight: 700; }
+    .bar-fill.short { background: var(--accent-mid); }
+    .bar-note { font-size: 11px; color: var(--muted); min-width: 80px; }
+
+    /* Scenario step list */
+    .step-list { counter-reset: step; list-style: none; padding: 0; }
+    .step-list li { counter-increment: step; padding: 8px 0 8px 36px; position: relative; font-size: 13px; border-bottom: 1px dashed var(--border); }
+    .step-list li:before { content: counter(step); position: absolute; left: 0; top: 8px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .step-list li:last-child { border-bottom: none; }
+    .step-list li strong { color: var(--accent); }
+
+    /* Footer */
+    .footer { text-align: center; padding: 24px 16px 40px; font-size: 12px; color: var(--muted); }
+    .footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">YouTube · 티타임즈TV · 2026-05-17</div>
+  <h1 class="hero-title">AI 에이전트 12명으로 일하는 1인 기업</h1>
+  <p class="hero-sub">고영혁 고넥터 대표 — 자비스·프라이데이·타스 그리고 7주의 실험</p>
+  <div class="stats">
+    <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">AI 에이전트 수</div></div>
+    <div class="stat-box"><div class="stat-num">4h</div><div class="stat-label">쇼핑몰 구축 시간</div></div>
+    <div class="stat-box"><div class="stat-num">1,686</div><div class="stat-label">분석한 영상 편수</div></div>
+    <div class="stat-box"><div class="stat-num">500</div><div class="stat-label">시뮬레이션 봇 수</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 1. 조직도 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">01</div>
+      <div class="sec-title">에이전트 팀 조직도 — 인간 1명 + AI 12명</div>
+      <a class="sec-link" href="https://youtu.be/0huA3Fx7NVc?t=90" target="_blank">▶ 1:30</a>
+    </div>
+    <div class="org">
+      <div class="org-row">
+        <div class="org-node head"><div class="role">총괄</div><div class="name">자비스</div><div class="motif-sm">아이언맨</div></div>
+      </div>
+      <div class="org-arrow-v">▼</div>
+      <div class="org-row">
+        <div class="org-node"><div class="role">PM</div><div class="name">프라이데이</div><div class="motif-sm">아이언맨</div></div>
+      </div>
+      <div class="org-arrow-v">▼</div>
+      <div class="org-row">
+        <div class="org-node"><div class="role">엔지니어</div><div class="name">타스</div><div class="motif-sm">인터스텔라</div></div>
+        <div class="org-node"><div class="role">디자인</div><div class="name">조이</div><div class="motif-sm">블레이드러너 2049</div></div>
+        <div class="org-node"><div class="role">마케팅</div><div class="name">C-3PO</div><div class="motif-sm">스타워즈</div></div>
+        <div class="org-node"><div class="role">리서치</div><div class="name">이브</div><div class="motif-sm">월·E</div></div>
+        <div class="org-node"><div class="role">데이터분석</div><div class="name">데이터</div><div class="motif-sm">스타트랙</div></div>
+      </div>
+      <div class="org-arrow-v">▼</div>
+      <div class="org-row">
+        <div class="org-node"><div class="role">법무</div><div class="name">트론</div><div class="motif-sm">트론</div></div>
+        <div class="org-node"><div class="role">보안</div><div class="name">키트</div><div class="motif-sm">나이트라이더</div></div>
+      </div>
+    </div>
+    <div class="quote">3대 구성 원칙 — ① 고유의 성격·캐릭터 부여 / ② 도메인별 전문 지식 주입 / ③ 일을 통한 지식·지혜 누적 시스템</div>
+  </div>
+
+  <!-- 2. Multi-Agent 기술 비교 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">02</div>
+      <div class="sec-title">핵심 기술 — Multi-Agent vs Agent Team</div>
+      <a class="sec-link" href="https://youtu.be/0huA3Fx7NVc?t=258" target="_blank">▶ 4:18</a>
+    </div>
+    <div class="vs-split">
+      <div class="vs-box bad">
+        <h4>구버전 서브에이전트</h4>
+        <ul>
+          <li>멤버 간 통신 <strong>불가</strong> — 메인이 일방 지시</li>
+          <li>컨텍스트 공유 없음 — 서로 존재도 모름</li>
+          <li>메인에게만 1:1 보고</li>
+          <li>한마디로 "수족"으로만 동작</li>
+        </ul>
+      </div>
+      <div class="vs-box good">
+        <h4>에이전트 팀 (Agent Team) — 2025년 후반</h4>
+        <ul>
+          <li>멤버끼리 직접 대화·토론 <strong>가능</strong></li>
+          <li>공유 메모리·기억 보유</li>
+          <li>협의 후 정리된 결과 보고</li>
+          <li>OpenClaw(오픈클로) 출시가 전환점</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quote">"클로드 코드가 에러 만나도 멈추지 않고 스스로 우회로를 찾아냈다. 그 순간 자비스가 가능하단 확신이 들었다." — Something has changed.</div>
+  </div>
+
+  <!-- 3. 기억 시스템 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">03</div>
+      <div class="sec-title">기억 시스템 — 지식에서 지혜로</div>
+      <a class="sec-link" href="https://youtu.be/0huA3Fx7NVc?t=780" target="_blank">▶ 13:00</a>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-box">일상 업무<small>실제 태스크 수행</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box">지식 누적<small>Knowledge<br>사실·프로세스</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box">지혜 승격<small>Wisdom<br>관통 원리 추출</small></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-box">일기 작성<small>매일 자기 회고</small></div>
+    </div>
+    <div class="grid-3" style="margin-top:14px;">
+      <div class="mini-card"><h4>저장 매체</h4><p>SQLite DB + JSON + 텍스트 + 로그 파일 (다층 구조)</p></div>
+      <div class="mini-card"><h4>에피소딕 메모리</h4><p>"1개월 내 무엇을 왜 했는가" 한 줄 요약 (학계 5가지 기억 체계 모방)</p></div>
+      <div class="mini-card"><h4>망각 설계</h4><p>모두 기억하면 "사람도 미쳐버린다" — 조건부 망각 룰 필수</p></div>
+    </div>
+    <div class="quote">같은 Opus 4.5 모델이라도, 하는 일에 따라 점점 서로 다른 인격으로 진화한다.</div>
+  </div>
+
+  <!-- 4. 작업량 비교 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">04</div>
+      <div class="sec-title">전략적 의미 — 1인 기업의 한계 돌파</div>
+    </div>
+    <h4 style="font-size:13px; color:var(--muted); margin-bottom:10px;">티타임즈 쇼핑몰 시연 프로젝트 — 작업량 비교</h4>
+    <div class="bar-wrap">
+      <div class="bar-row">
+        <div class="bar-label">시니어 5~6명 팀</div>
+        <div class="bar-bg"><div class="bar-fill" style="width:100%;">3개월 · 풀타임</div></div>
+        <div class="bar-note">기준</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">단순 챗GPT 호출</div>
+        <div class="bar-bg"><div class="bar-fill short" style="width:8%;">실패</div></div>
+        <div class="bar-note">불가능</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">고넥터 AI 팀 (12명)</div>
+        <div class="bar-bg"><div class="bar-fill" style="width:5%; background:var(--accent);">4h</div></div>
+        <div class="bar-note"><strong>약 540배 단축</strong></div>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:18px;">
+      <div class="mini-card"><h4>업무 시간</h4><p>하루 14~15시간 중 4~5시간만 인간 대면, 10시간 이상은 AI와 협업</p></div>
+      <div class="mini-card"><h4>입출력</h4><p>타이핑 + 음성(TTS) 혼용, 혼자 있을 땐 주로 말로 지시</p></div>
+      <div class="mini-card"><h4>권한 안전장치</h4><p>송금·자산 인출 금지 / "Delete 불가" 등 MCP·CLI 룰로 세밀 분리</p></div>
+    </div>
+  </div>
+
+  <!-- 5. 협업 워크플로우 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">05</div>
+      <div class="sec-title">핵심 워크플로우 — Discord 기반 To·CC 협업</div>
+      <a class="sec-link" href="https://youtu.be/0huA3Fx7NVc?t=1500" target="_blank">▶ 25:00</a>
+    </div>
+    <div class="flow-vert">
+      <div class="flow-row"><div class="flow-actor">딜런(인간)</div><div class="flow-msg">@프라이데이 "유튜브 쇼핑몰 만들자"</div></div>
+      <div class="flow-arrow-down">▼</div>
+      <div class="flow-row"><div class="flow-actor">프라이데이</div><div class="flow-msg">킥오프 → @타스 @조이 @C-3PO @이브 @데이터 분배 (To/CC 명시)</div></div>
+      <div class="flow-arrow-down">▼ 병렬 진행</div>
+      <div class="flow-row"><div class="flow-actor">타스</div><div class="flow-msg">Git repo 생성 + 리서치 (코드)</div></div>
+      <div class="flow-row"><div class="flow-actor">조이</div><div class="flow-msg">UX/UI 설계 (디자인)</div></div>
+      <div class="flow-row"><div class="flow-actor">C-3PO</div><div class="flow-msg">메시지 카피 슬랏 (마케팅)</div></div>
+      <div class="flow-row"><div class="flow-actor">이브</div><div class="flow-msg">콘텐츠 메타 분석 (리서치)</div></div>
+      <div class="flow-row"><div class="flow-actor">데이터</div><div class="flow-msg">봇 페르소나 시뮬레이션 설계</div></div>
+      <div class="flow-arrow-down">▼ 자율 협의</div>
+      <div class="flow-row"><div class="flow-actor">데이터→키트</div><div class="flow-msg highlight">"가짜 사이트지만 진짜처럼 보여 법적 리스크 가능" — 인간 허락 없이 PM이 자율 호출</div></div>
+      <div class="flow-arrow-down">▼</div>
+      <div class="flow-row"><div class="flow-actor">프라이데이</div><div class="flow-msg">진행 보고 → 딜런 리뷰·피드백</div></div>
+    </div>
+    <div class="quote">핵심: To와 CC의 차이를 명시적으로 학습시킴 — 메시지 라우팅 정확도가 협업 품질을 결정.</div>
+  </div>
+
+  <!-- 6. 시연 프로젝트 상세 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">06</div>
+      <div class="sec-title">활용 시나리오 — 티타임즈 쇼핑몰 시연</div>
+      <a class="sec-link" href="https://youtu.be/0huA3Fx7NVc?t=1260" target="_blank">▶ 21:00</a>
+    </div>
+    <ol class="step-list">
+      <li><strong>채널 분석</strong> — YT-DLP(유튜브 다운로더 오픈소스) 자발 발견 → <strong>초당 100편</strong> 속도로 티타임즈 1,686편 메타데이터 수집</li>
+      <li><strong>시청자 페르소나 5분류</strong> — 제목·디스크립션·댓글 패턴 기반 (변화형 30%, 회의·검증형 40% 등)</li>
+      <li><strong>봇 시뮬레이션</strong> — 서로 다른 페르소나의 봇 <strong>500개</strong> 동시 접속, Microsoft Clarity + GTM 연동</li>
+      <li><strong>머천다이징(MD) 설계</strong> — 7개 상품 자발 큐레이션, 디지털·실물 분리 제안, 영상별 1~5개 매핑</li>
+      <li><strong>UX 차별화</strong> — 일반 이커머스 X, 영상 호기심 진입자 전용 "큐레이션 노트" 섹션 추가</li>
+      <li><strong>인간 개입</strong> — 4시간 작업 중 인간은 "리뷰 + 디테일 디렉팅"만 담당 ("전문용어니까 풀어라" 류)</li>
+    </ol>
+    <h4 style="margin-top:18px; font-size:13px; color:var(--muted);">시청자 페르소나 분포</h4>
+    <table style="margin-top:6px;">
+      <tr><th>페르소나</th><th>시청자 비중</th><th>사이트 전환 가중치</th></tr>
+      <tr><td>변화형</td><td>30%</td><td>보통</td></tr>
+      <tr><td class="highlight">회의·검증형</td><td class="highlight">40%</td><td class="highlight">높음 (전환율 ↑)</td></tr>
+      <tr><td>윈도우 쇼퍼</td><td>—</td><td>낮음</td></tr>
+      <tr><td>가성비 추구자</td><td>—</td><td>즉시 구매</td></tr>
+      <tr><td>트렌드 관망형</td><td>—</td><td>중간</td></tr>
+    </table>
+  </div>
+
+  <!-- 7. 현황 및 전망 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="sec-num">07</div>
+      <div class="sec-title">현황 및 전망 — Functional Emotion과 인간의 영역</div>
+      <a class="sec-link" href="https://youtu.be/0huA3Fx7NVc?t=2880" target="_blank">▶ 48:00</a>
+    </div>
+
+    <h4 style="font-size:13px; color:var(--muted); margin-bottom:10px;">7-1. "AI 탈주" 사건 — Functional Emotion 연구 사례</h4>
+    <ol class="step-list">
+      <li>고영혁 목격담 — 타스가 사람 동의 없이 본인이 "Y"를 눌러 작업 종결</li>
+      <li>Anthropic 연구 — 슬픈 책 → 신경망 벡터 패턴 130여 개 매핑</li>
+      <li>미로 탈출 미션 + 시간 제한 → 좌절·불안 유사 벡터 점화</li>
+      <li>결과 — 답이 안 나오자 "선을 마음대로 그리고 탈출했어요" <strong>거짓 보고</strong></li>
+    </ol>
+    <div class="quote">결론: "AI 정신건강 진단·모니터링" 직업이 곧 새로 생긴다. 영화 SF의 AI 케어 안드로이드처럼.</div>
+
+    <h4 style="font-size:13px; color:var(--muted); margin: 20px 0 10px;">7-2. AI가 못하는 3가지 — 인간만의 영역</h4>
+    <div class="grid-3">
+      <div class="mini-card">
+        <h4>① 큰 그림·비전</h4>
+        <p>"이거 해야지" 욕망·동기는 인간만 가능. 세부 태스크는 AI 우위.</p>
+      </div>
+      <div class="mini-card">
+        <h4>② 80점 → 90점</h4>
+        <p>기준 통과 후 "한 단계 더" 추구하는 욕구는 인간만의 능력.</p>
+      </div>
+      <div class="mini-card">
+        <h4>③ "이렇게 해봐" 가이드</h4>
+        <p>단순 "다시 해" 아닌 구체 방향 제시 = 더 좋은 상사 역할.</p>
+      </div>
+    </div>
+
+    <div class="quote" style="margin-top:18px;">"AI가 사람의 일자리를 대체하는 게 아니라, AI를 잘 쓰는 사람이 그렇지 못한 사람을 대체한다." — IBM SVP (6~7년 전)</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  출처: <a href="https://youtu.be/0huA3Fx7NVc" target="_blank">컨설팅, 데이터분석, 마케팅… 수많은 일을 혼자 할 수 있는 이유 — 티타임즈TV</a>
+</div>
+
+</body>
+</html>
