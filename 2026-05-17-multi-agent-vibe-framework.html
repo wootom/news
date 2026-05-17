@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>멀티에이전트 바이브코딩 프레임워크 — Claude Cowork/Code 중규모 팀 워크플로우</title>
+  <style>
+    :root {
+      --bg:#ffffff; --surface:#f5f5f5; --border:#e0e0e0;
+      --text:#1a1a1a; --muted:#666666;
+      --accent:#2d9162; --accent-mid:#52b788; --accent-light:#d8f0e3;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+    .hero{background:linear-gradient(135deg,var(--accent) 0%,#1a6b45 100%);color:#fff;padding:40px 24px 32px;}
+    .hero-inner{max-width:960px;margin:0 auto;}
+    .hero-meta{font-size:13px;opacity:.8;margin-bottom:8px;}
+    .hero-title{font-size:26px;font-weight:700;margin-bottom:6px;}
+    .hero-sub{font-size:14px;opacity:.85;margin-bottom:22px;}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+    .stat{background:rgba(255,255,255,.15);border-radius:8px;padding:14px;text-align:center;}
+    .stat-num{font-size:28px;font-weight:700;}
+    .stat-label{font-size:12px;opacity:.85;margin-top:4px;}
+    .container{max-width:960px;margin:0 auto;padding:32px 24px;}
+    .section{margin-bottom:24px;background:var(--surface);border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+    .sec-head{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border);background:#fff;}
+    .num{width:32px;height:32px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+    .sec-title{font-size:17px;font-weight:700;}
+    .sec-body{padding:18px 20px;}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+    .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+    .grid6{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;}
+    .card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;}
+    .card-title{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:8px;}
+    .card-sub{font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+    ul.b{list-style:none;padding:0;}
+    ul.b li{font-size:13px;padding:5px 0 5px 18px;position:relative;border-bottom:1px solid var(--border);}
+    ul.b li:last-child{border-bottom:none;}
+    ul.b li::before{content:"";position:absolute;left:4px;top:12px;width:6px;height:6px;background:var(--accent-mid);border-radius:50%;}
+    table.t{width:100%;border-collapse:collapse;font-size:13px;}
+    table.t th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;}
+    table.t td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+    table.t tr:last-child td{border-bottom:none;}
+    table.t tr:nth-child(even) td{background:var(--accent-light);}
+    .flow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:10px 0;}
+    .fi{background:var(--accent-light);color:var(--accent);padding:8px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid var(--accent-mid);}
+    .fa{color:var(--muted);font-size:18px;font-weight:700;}
+    .agent-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--accent);}
+    .agent-role{font-size:12px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+    .agent-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;}
+    .agent-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+    .tier-block{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+    .tier-head{background:var(--accent);color:#fff;padding:8px 14px;font-size:13px;font-weight:700;}
+    .tier-body{padding:12px 14px;}
+    .tier-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+    .tool-pill{background:var(--accent-light);color:var(--accent);font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;}
+    .wf-block{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+    .wf-head{padding:10px 14px;font-size:14px;font-weight:700;color:#fff;}
+    .wf-body{padding:12px 14px;}
+    .wf-step{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);}
+    .wf-step:last-child{border-bottom:none;}
+    .step-num{width:22px;height:22px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+    .step-content{flex:1;}
+    .step-title{font-size:13px;font-weight:700;color:var(--text);}
+    .step-note{font-size:12px;color:var(--muted);margin-top:2px;}
+    .gate-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;border-left:4px solid var(--accent);}
+    .gate-label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+    .gate-title{font-size:14px;font-weight:700;margin-bottom:6px;}
+    .gate-desc{font-size:13px;color:var(--muted);}
+    .roadmap-row{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+    .roadmap-row:last-child{border-bottom:none;}
+    .phase-badge{background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+    .phase-content{flex:1;}
+    .phase-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+    .phase-detail{font-size:12px;color:var(--muted);}
+    .vs-block{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+    .vs-col{padding:14px;}
+    .vs-col.day{background:#fff;border-right:1px solid var(--border);}
+    .vs-col.night{background:var(--accent-light);}
+    .vs-label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+    .vs-title{font-size:15px;font-weight:700;margin-bottom:10px;}
+    .badge{display:inline-block;background:var(--accent-light);color:var(--accent);font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;margin:2px 2px 2px 0;}
+    .badge.warn{background:#fff3cd;color:#856404;}
+    .kv{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;}
+    .kv:last-child{border-bottom:none;}
+    .kv-k{color:var(--muted);}
+    .kv-v{font-weight:600;}
+    footer{text-align:center;font-size:12px;color:var(--muted);padding:24px;border-top:1px solid var(--border);margin-top:8px;}
+    footer a{color:var(--accent);}
+    @media(max-width:760px){.grid3,.stats,.grid6{grid-template-columns:repeat(2,1fr);}.grid2{grid-template-columns:1fr;}}
+    @media(max-width:480px){.grid3,.grid2,.stats,.grid6{grid-template-columns:1fr;}.hero-title{font-size:20px;}.vs-block{grid-template-columns:1fr;}.vs-col.day{border-right:none;border-bottom:1px solid var(--border);}}
+  </style>
+</head>
+<body>
+
+<!-- 히어로 배너 -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">멀티에이전트 리서치 · 2026-05-17 · 출처: Squid/AddyOsmani/Shipyard/AWS/여기어때</div>
+    <div class="hero-title">멀티에이전트 바이브코딩 프레임워크</div>
+    <div class="hero-sub">Claude Cowork/Code 기반 중규모 팀(5-20인) 워크플로우 방법론 — 외부 사례 기반 정의</div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">권장 에이전트 역할 수</div></div>
+      <div class="stat"><div class="stat-num">3x</div><div class="stat-label">병렬 처리 시 처리량</div></div>
+      <div class="stat"><div class="stat-num">3계층</div><div class="stat-label">오케스트레이션 도구 구조</div></div>
+      <div class="stat"><div class="stat-num">Day/Night</div><div class="stat-label">이중 워크플로우 모드</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 01 핵심 개요 -->
+  <div class="section">
+    <div class="sec-head"><div class="num">01</div><div class="sec-title">핵심 개요 — 바이브코딩 vs 에이전틱 코딩</div></div>
+    <div class="sec-body">
+      <table class="t" style="margin-bottom:16px;">
+        <tr><th>구분</th><th>바이브코딩 (Vibe Coding)</th><th>에이전틱 코딩 (Agentic Coding)</th></tr>
+        <tr><td>정의</td><td>자연어만으로 AI가 코드를 생성, 결과물을 직접 수용</td><td>AI가 코드를 작성하되, 인간이 설계·검증의 마스터마인드 역할 유지</td></tr>
+        <tr><td>에이전트 수</td><td>단일 에이전트, 동기 대화</td><td>다수 에이전트, 비동기 병렬 실행</td></tr>
+        <tr><td>인간 역할</td><td>결과물 승인/거부</td><td>아키텍처 결정, 스펙 작성, 품질 게이트 관리</td></tr>
+        <tr><td>한계</td><td>컨텍스트 과부하, 세부 오류 누락</td><td>초기 셋업 비용, 비용 증가</td></tr>
+        <tr><td>2026 트렌드</td><td>개인 프로토타입 수준</td><td>팀 단위 프로덕션 표준으로 부상</td></tr>
+      </table>
+      <div style="background:var(--accent-light);border-radius:8px;padding:14px;font-size:13px;color:var(--text);border-left:4px solid var(--accent);">
+        <strong style="color:var(--accent);">핵심 전환점:</strong> 2026년은 단일 AI 어시스턴트(지휘자 모델)에서 에이전트 팀 오케스트레이터(지휘관 모델)로의 전환 원년. AWS·LangGraph·Anthropic이 공통 인터페이스를 채택하며 에이전트 간 통신 프로토콜이 표준화되고 있음.
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 에이전트 팀 구성 -->
+  <div class="section">
+    <div class="sec-head"><div class="num">02</div><div class="sec-title">에이전트 팀 구성 — 6가지 역할 분담 (Squid 모델 기반)</div></div>
+    <div class="sec-body">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px;"><strong style="color:var(--text);">핵심 원칙:</strong> 코드를 작성한 에이전트가 코드의 정확성을 판단하지 않는다. 역할 분리가 품질의 기반.</div>
+      <div class="grid3">
+        <div class="agent-card">
+          <div class="agent-role">기획 / 아키텍처</div>
+          <div class="agent-name">PM Agent</div>
+          <div class="agent-desc">원시 스펙을 받아 ADR(Architecture Decision Record) 작성, 기능을 순서화된 태스크로 분할, DDD 용어 사전 유지. Claude는 PM과 소프트웨어 아키텍트 역할을 병합 가능.</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-role">개발 / 구현</div>
+          <div class="agent-name">Software Engineer Agent</div>
+          <div class="agent-desc">TDD(Test-Driven Development) 방식: 실패 테스트 작성 → 최소 코드 통과 → 리팩터링. git, gh 등 CLI 직접 사용. MCP 래퍼 미사용(유연성 확보).</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-role">검증 / QA</div>
+          <div class="agent-name">Tester Agent</div>
+          <div class="agent-desc">SWE가 통과시킨 테스트의 거짓 신뢰를 잡아내는 적대적 E2E 엣지 케이스 패스. SWE가 이미 실행한 해피패스 테스트는 재실행하지 않고 결과를 수용.</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-role">코드 리뷰</div>
+          <div class="agent-name">PR Reviewer Agent</div>
+          <div class="agent-desc">diff만 검토. 데드코드·중복·테스트 커버리지 누락·문서 준수 여부 확인. 핫패스의 성능 리뷰만 수행. 1회성 스크립트 마이크로 최적화 명시적 금지.</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-role">CI/CD 관리</div>
+          <div class="agent-name">On-Call Agent</div>
+          <div class="agent-desc">CI 파이프라인이 통과될 때까지 루프. SWE 루프 내에 있을 때는 자주 스킵되는 문제를 해결하기 위해 별도 에이전트로 승격. 최대 5회 재시도.</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-role">메타 개선 (선택)</div>
+          <div class="agent-name">Self-Improve Agent</div>
+          <div class="agent-name" style="font-size:12px;color:var(--muted);font-weight:400;">(Human Gate 필수)</div>
+          <div class="agent-desc">실행 결과를 스캔해 CLAUDE.md·스킬·서브에이전트 업데이트 제안. 반드시 인간 검토 후 적용. 무분별한 자동 적용 시 시스템 품질 저하 위험.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 오케스트레이션 패턴 -->
+  <div class="section">
+    <div class="sec-head"><div class="num">03</div><div class="sec-title">오케스트레이션 패턴 3단계 — 단순 위임 → 병렬 팀 → 대규모</div></div>
+    <div class="sec-body">
+      <div class="grid3" style="margin-bottom:16px;">
+        <div class="card">
+          <div class="card-sub">Pattern 1</div>
+          <div class="card-title">Subagents — 집중 위임</div>
+          <ul class="b">
+            <li>Task 도구로 부모→자식 에이전트 생성</li>
+            <li>독립 태스크는 병렬 실행, 의존 태스크는 순차</li>
+            <li>부모가 의존성 그래프 수동 관리</li>
+            <li>파일 소유권 명확히 분리 필수</li>
+            <li>약 22만 토큰 — 비용 중립적</li>
+            <li>시작점으로 권장. 설정 불필요.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-sub">Pattern 2</div>
+          <div class="card-title">Agent Teams — 진정한 병렬</div>
+          <ul class="b">
+            <li>공유 태스크 리스트 + 의존성 자동 해제</li>
+            <li>팀원 간 P2P 메시지 (리드 경유 불필요)</li>
+            <li>Git Worktree로 에이전트별 격리 실행</li>
+            <li>파일 잠금으로 동시 편집 충돌 방지</li>
+            <li>3-5명 팀원이 최적 (비용 선형 증가)</li>
+            <li>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-sub">Pattern 3</div>
+          <div class="card-title">Orchestration at Scale</div>
+          <ul class="b">
+            <li>5-20+ 에이전트, 다중 레포지토리</li>
+            <li>시각적 대시보드로 진행 상황 모니터링</li>
+            <li>diff 검토 및 병합 제어권 인간 유지</li>
+            <li>클라우드 VM에서 비동기 실행 가능</li>
+            <li>Ralph Loop: 원자 태스크 반복 루프</li>
+            <li>Multi-model 라우팅으로 비용 최적화</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 계층적 서브에이전트 다이어그램 -->
+      <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--accent);">계층적 서브에이전트 구조 — 팀의 팀 (중규모 팀 권장)</div>
+        <div class="flow">
+          <div class="fi" style="background:var(--accent);color:#fff;">Orchestrator (인간)</div>
+          <div class="fa">→</div>
+          <div class="fi">Feature Lead A</div>
+          <div class="fa">+</div>
+          <div class="fi">Feature Lead B</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+          <div style="background:var(--surface);border-radius:6px;padding:10px;font-size:12px;">
+            <div style="font-weight:700;color:var(--accent);margin-bottom:6px;">Feature Lead A</div>
+            <div class="flow" style="gap:6px;">
+              <div class="fi" style="font-size:11px;padding:4px 10px;">Data Agent</div>
+              <div class="fa" style="font-size:14px;">→</div>
+              <div class="fi" style="font-size:11px;padding:4px 10px;">Logic Agent</div>
+              <div class="fa" style="font-size:14px;">→</div>
+              <div class="fi" style="font-size:11px;padding:4px 10px;">API Agent</div>
+            </div>
+          </div>
+          <div style="background:var(--surface);border-radius:6px;padding:10px;font-size:12px;">
+            <div style="font-weight:700;color:var(--accent);margin-bottom:6px;">Feature Lead B</div>
+            <div class="flow" style="gap:6px;">
+              <div class="fi" style="font-size:11px;padding:4px 10px;">UI Agent</div>
+              <div class="fa" style="font-size:14px;">→</div>
+              <div class="fi" style="font-size:11px;padding:4px 10px;">Test Agent</div>
+              <div class="fa" style="font-size:14px;">→</div>
+              <div class="fi" style="font-size:11px;padding:4px 10px;">Review Agent</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:10px;">Orchestrator는 Feature Lead 2명과만 소통 → 컨텍스트 오염 방지. 실제 조직의 VP-TechLead-Engineer 계층과 동일한 구조.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 도구 3계층 -->
+  <div class="section">
+    <div class="sec-head"><div class="num">04</div><div class="sec-title">도구 3계층 — 용도별 최적 선택</div></div>
+    <div class="sec-body">
+      <div class="grid3">
+        <div class="tier-block">
+          <div class="tier-head">Tier 1 — 내장형 (즉시 사용)</div>
+          <div class="tier-body">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">단일 터미널 세션, 추가 도구 불필요. 시작점.</div>
+            <div class="tier-tools">
+              <span class="tool-pill">Claude Code Agent Teams</span>
+              <span class="tool-pill">Subagents (Task 도구)</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-top:8px;">적합: 1-3개 기능 병렬 개발, 팀 입문</div>
+          </div>
+        </div>
+        <div class="tier-block">
+          <div class="tier-head">Tier 2 — 로컬 오케스트레이터</div>
+          <div class="tier-body">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">3-10 에이전트, 시각적 대시보드, diff 리뷰 제어.</div>
+            <div class="tier-tools">
+              <span class="tool-pill">Conductor (Melty Labs)</span>
+              <span class="tool-pill">Gas Town (Steve Yegge)</span>
+              <span class="tool-pill">Multiclaude</span>
+              <span class="tool-pill">Vibe Kanban</span>
+              <span class="tool-pill">Claude Squad</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-top:8px;">적합: 중규모 팀, 알려진 코드베이스 병렬 스프린트</div>
+          </div>
+        </div>
+        <div class="tier-block">
+          <div class="tier-head">Tier 3 — 클라우드 비동기</div>
+          <div class="tier-body">
+            <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">태스크 할당 후 자리 비움, PR로 결과 수신.</div>
+            <div class="tier-tools">
+              <span class="tool-pill">Claude Code Web (claude.ai/code)</span>
+              <span class="tool-pill">GitHub Copilot Coding Agent</span>
+              <span class="tool-pill">Jules (Google/Gemini)</span>
+              <span class="tool-pill">Codex Web (OpenAI)</span>
+              <span class="tool-pill">Cursor Cloud Agents</span>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-top:8px;">적합: 백로그 야간 처리, 터미널 없는 환경</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:13px;color:var(--muted);background:var(--accent-light);border-radius:8px;padding:12px;border-left:3px solid var(--accent);">
+        <strong style="color:var(--accent);">중규모 팀 권장 조합:</strong> 평소 인터랙티브 작업은 Tier 1(Agent Teams), 병렬 스프린트는 Tier 2(Conductor), 백로그 소화는 Tier 3(Claude Code Web). 세 계층 모두 상황에 따라 혼용.
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 Day/Night 워크플로우 비교 -->
+  <div class="section">
+    <div class="sec-head"><div class="num">05</div><div class="sec-title">핵심 워크플로우 — Day vs Night 이중 파이프라인</div></div>
+    <div class="sec-body">
+      <div class="vs-block" style="margin-bottom:16px;">
+        <div class="vs-col day">
+          <div class="vs-label">/day — 빠른 내부 루프</div>
+          <div class="vs-title">수술적 편집 모드</div>
+          <div class="wf-step"><div class="step-num">1</div><div class="step-content"><div class="step-title">SWE Agent 실행</div><div class="step-note">타깃 코드 수정</div></div></div>
+          <div class="wf-step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Tester Agent 검증</div><div class="step-note">변경 부분만 테스트</div></div></div>
+          <div class="wf-step"><div class="step-num">3</div><div class="step-content"><div class="step-title">인간 커밋</div><div class="step-note">직접 검토 후 커밋</div></div></div>
+          <div style="margin-top:10px;">
+            <span class="badge">PM 그루밍 생략</span>
+            <span class="badge">PR 리뷰 생략</span>
+            <span class="badge">On-Call 생략</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-top:8px;">머지된 PR에서 마음에 안 드는 코드를 발견했을 때, 기존 코드 소규모 리팩터링에 적합</div>
+        </div>
+        <div class="vs-col night">
+          <div class="vs-label">/night — 전체 라이프사이클</div>
+          <div class="vs-title">자리 비움 완전 자동화</div>
+          <div class="wf-step"><div class="step-num">1</div><div class="step-content"><div class="step-title">인간 스펙 작성</div><div class="step-note">상세 기능 요구사항 (Human Gate)</div></div></div>
+          <div class="wf-step"><div class="step-num">2</div><div class="step-content"><div class="step-title">PM Agent 계획 수립</div><div class="step-note">ADR 작성 + 태스크 분할</div></div></div>
+          <div class="wf-step"><div class="step-num">3</div><div class="step-content"><div class="step-title">인간 계획 승인</div><div class="step-note">/grill-me로 날카로운 검토 (Human Gate)</div></div></div>
+          <div class="wf-step"><div class="step-num">4</div><div class="step-content"><div class="step-title">SWE + Tester 내부 루프</div><div class="step-note">최대 5회 재시도</div></div></div>
+          <div class="wf-step"><div class="step-num">5</div><div class="step-content"><div class="step-title">PM 인수 검토</div><div class="step-note">사용자 관점 전체 기능 검토, 최대 3회</div></div></div>
+          <div class="wf-step"><div class="step-num">6</div><div class="step-content"><div class="step-title">PR Reviewer + On-Call Agent</div><div class="step-note">diff 리뷰 → CI 통과 → PR 알림</div></div></div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;">
+        <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;">Factory Model — 6단계 생산 라인</div>
+        <div class="flow">
+          <div class="fi">1. Plan<div style="font-size:11px;color:var(--muted);margin-top:2px;">스펙+인수기준</div></div>
+          <div class="fa">→</div>
+          <div class="fi">2. Spawn<div style="font-size:11px;color:var(--muted);margin-top:2px;">팀 구성+할당</div></div>
+          <div class="fa">→</div>
+          <div class="fi">3. Monitor<div style="font-size:11px;color:var(--muted);margin-top:2px;">5-10분 주기 확인</div></div>
+          <div class="fa">→</div>
+          <div class="fi">4. Verify<div style="font-size:11px;color:var(--muted);margin-top:2px;">테스트+코드리뷰</div></div>
+          <div class="fa">→</div>
+          <div class="fi">5. Integrate<div style="font-size:11px;color:var(--muted);margin-top:2px;">머지+충돌 해결</div></div>
+          <div class="fa">→</div>
+          <div class="fi">6. Retro<div style="font-size:11px;color:var(--muted);margin-top:2px;">AGENTS.md 업데이트</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 품질 게이트 -->
+  <div class="section">
+    <div class="sec-head"><div class="num">06</div><div class="sec-title">품질 게이트 3종 — 신뢰할 수 있는 출력물 확보</div></div>
+    <div class="sec-body">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;"><strong style="color:var(--text);">핵심 관점 전환:</strong> 2026년 병목은 생성(Generation)이 아니라 검증(Verification). 에이전트는 빠르게 코드를 만들지만, 그 코드가 올바른지 확신하는 것이 어렵고 중요한 작업.</div>
+      <div class="grid3" style="margin-bottom:16px;">
+        <div class="gate-card">
+          <div class="gate-label">Gate 1</div>
+          <div class="gate-title">Plan Approval — 코드 전 계획 검토</div>
+          <div class="gate-desc">팀원이 구현 전 계획을 작성 → 리드가 검토 후 승인/거부. 나쁜 계획을 수정하는 비용이 나쁜 코드를 수정하는 비용보다 훨씬 저렴.</div>
+        </div>
+        <div class="gate-card">
+          <div class="gate-label">Gate 2</div>
+          <div class="gate-title">Hooks — 라이프사이클 자동 검증</div>
+          <div class="gate-desc">TaskCompleted 후크: lint + 테스트 통과 시에만 완료 처리. TeammateIdle 후크: 에이전트가 유휴 전 모든 테스트 통과 확인. 실패 시 에이전트가 계속 작업.</div>
+        </div>
+        <div class="gate-card">
+          <div class="gate-label">Gate 3</div>
+          <div class="gate-title">AGENTS.md — 복합 학습 메모리</div>
+          <div class="gate-desc">발견된 패턴·주의사항·스타일 규칙 누적. 매 세션 시작 시 모든 에이전트가 읽음. 인간이 직접 작성·승인. AI 자동 생성 금지 (성공률 3% 하락, 비용 20% 증가 연구 결과).</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;">AGENTS.md 권장 구조 (인간 직접 작성)</div>
+        <div class="grid2">
+          <div style="font-size:12px;background:var(--surface);border-radius:6px;padding:10px;">
+            <div style="font-weight:700;margin-bottom:6px;">## STYLE</div>
+            <div style="color:var(--muted);">코딩 스타일, 네이밍 규칙, 컴포넌트 패턴 등 팀 표준 기술</div>
+          </div>
+          <div style="font-size:12px;background:var(--surface);border-radius:6px;padding:10px;">
+            <div style="font-weight:700;margin-bottom:6px;">## GOTCHAS</div>
+            <div style="color:var(--muted);">에이전트가 자주 실수하는 함정, 특정 라이브러리 주의사항 등</div>
+          </div>
+          <div style="font-size:12px;background:var(--surface);border-radius:6px;padding:10px;">
+            <div style="font-weight:700;margin-bottom:6px;">## ARCH_DECISIONS</div>
+            <div style="color:var(--muted);">아키텍처 결정 이유, 사용하지 않는 패턴과 그 이유</div>
+          </div>
+          <div style="font-size:12px;background:var(--surface);border-radius:6px;padding:10px;">
+            <div style="font-weight:700;margin-bottom:6px;">## TEST_STRATEGY</div>
+            <div style="color:var(--muted);">테스트 작성 원칙, 통합 테스트 우선 여부, 사용 도구</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 도입 로드맵 -->
+  <div class="section">
+    <div class="sec-head"><div class="num">07</div><div class="sec-title">중규모 팀 도입 로드맵 — 3단계 확장</div></div>
+    <div class="sec-body">
+      <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px;">
+        <div class="roadmap-row">
+          <div class="phase-badge">Phase 1<br>1-2주</div>
+          <div class="phase-content">
+            <div class="phase-title">개인 → Subagents 전환</div>
+            <div class="phase-detail">각 팀원이 Claude Code에서 Task 도구로 서브에이전트 위임 실습. AGENTS.md 초안 작성. 파일 소유권 규칙 정립. /scaffold 스킬로 프로젝트 표준 구조 생성. 목표: 단순 기능 1개를 3개 서브에이전트로 병렬 구현 경험.</div>
+          </div>
+        </div>
+        <div class="roadmap-row">
+          <div class="phase-badge">Phase 2<br>3-4주</div>
+          <div class="phase-content">
+            <div class="phase-title">Agent Teams + Day/Night 워크플로우</div>
+            <div class="phase-detail">CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 활성화. PM+SWE+Tester 3인 팀으로 /night 파이프라인 운영. Conductor(Tier 2) 도입으로 시각적 관리. Plan Approval과 Hooks 품질 게이트 설정. ADR 디렉터리 구축 시작. 목표: 전체 기능 하나를 /night로 완전 자동화.</div>
+          </div>
+        </div>
+        <div class="roadmap-row">
+          <div class="phase-badge">Phase 3<br>5-8주</div>
+          <div class="phase-content">
+            <div class="phase-title">6 에이전트 풀팀 + 클라우드 스케일</div>
+            <div class="phase-detail">PM+SWE+Tester+PR Reviewer+On-Call+Self-Improve 전체 역할 활성화. Claude Code Web(Tier 3)으로 백로그 야간 처리. Multi-model 라우팅 도입(계획→저비용, 구현→Sonnet/Opus, 리뷰→보안 특화). Ralph Loop으로 지속적 개선. AGENTS.md 자동화 제안 → 인간 검토 루틴 정착. 목표: 스프린트 처리량 3배 달성.</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:10px;">인간이 유지해야 할 판단 영역 (에이전트에게 위임 불가)</div>
+        <div class="grid2">
+          <div style="font-size:13px;">
+            <ul class="b">
+              <li>아키텍처 설계 및 API 경계 결정</li>
+              <li>만들지 않을 기능 결정 (No라고 말하기)</li>
+              <li>전체 시스템 맥락으로 에이전트 출력물 검토</li>
+            </ul>
+          </div>
+          <div style="font-size:13px;">
+            <ul class="b">
+              <li>AGENTS.md 모든 항목 직접 작성/승인</li>
+              <li>Self-Improve Agent 제안 검토 후 반영 여부 결정</li>
+              <li>스펙(기능 요구사항)의 정밀도 유지</li>
+            </ul>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:10px;background:var(--accent-light);border-radius:6px;padding:8px;">
+          스펙이 레버리지다. 모호한 스펙은 수십 개 병렬 에이전트 전체에 오류를 곱한다. 정밀한 스펙은 전체 팀의 품질을 배가한다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 참고 소스 -->
+  <div class="section">
+    <div class="sec-head"><div class="num">08</div><div class="sec-title">참고 소스 (5개)</div></div>
+    <div class="sec-body">
+      <table class="t">
+        <tr><th>출처</th><th>핵심 기여</th><th>URL</th></tr>
+        <tr><td>Squid — Paul Iusztin (Decoding AI)</td><td>6에이전트 팀 구성, Day/Night 워크플로우, ADR/DDD 글로서리 패턴</td><td><a href="https://www.decodingai.com/p/squid-my-agentic-coding-setup-may-2026" style="color:var(--accent);">decodingai.com</a></td></tr>
+        <tr><td>Code Agent Orchestra — Addy Osmani (Google)</td><td>8단계 레벨, Conductor→Orchestrator 전환, Factory Model, 품질 게이트 체계</td><td><a href="https://addyosmani.com/blog/code-agent-orchestra/" style="color:var(--accent);">addyosmani.com</a></td></tr>
+        <tr><td>Multi-agent for Claude Code — Shipyard</td><td>Agent Teams vs Subagents 비교, Gas Town·Multiclaude 분석, 비용·한계</td><td><a href="https://shipyard.build/blog/claude-code-multi-agent/" style="color:var(--accent);">shipyard.build</a></td></tr>
+        <tr><td>AI 코딩 에이전트 팀 — 여기어때 기술블로그</td><td>국내 사례: CoT 결합 6단계 인지 흐름, .claude/ 규칙 체계, 페르소나별 전문화</td><td><a href="https://techblog.gccompany.co.kr" style="color:var(--accent);">techblog.gccompany.co.kr</a></td></tr>
+        <tr><td>멀티에이전트 웹 리서치 종합 (2026)</td><td>SK AX, AWS Deep Insight 아키텍처, CIO 멀티에이전트 코딩 트렌드</td><td>검색어: "멀티에이전트 바이브코딩 2026"</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  멀티에이전트 바이브코딩 프레임워크 · 생성일 2026-05-17 · 
+  출처: <a href="https://www.decodingai.com/p/squid-my-agentic-coding-setup-may-2026">Squid(Decoding AI)</a> · 
+  <a href="https://addyosmani.com/blog/code-agent-orchestra/">Code Agent Orchestra(Addy Osmani)</a> · 
+  <a href="https://shipyard.build/blog/claude-code-multi-agent/">Shipyard</a>
+</footer>
+
+</body>
+</html>
