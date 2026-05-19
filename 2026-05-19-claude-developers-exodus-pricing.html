@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>클로드 개발자 15만 명 이탈 — AI 구독 요금제의 민낯</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2d9162;
+      --accent-mid: #52b788;
+      --accent-light: #d8f0e3;
+      --warn: #e74c3c;
+      --warn-light: #fdecea;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; font-size: 15px; line-height: 1.6; }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); padding: 40px 24px 32px; color: #fff; }
+    .hero-label { font-size: 12px; letter-spacing: 1px; opacity: 0.85; margin-bottom: 8px; text-transform: uppercase; }
+    .hero h1 { font-size: 24px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+    .hero-sub { font-size: 13px; opacity: 0.85; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .stat-box { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 14px 10px; text-align: center; }
+    .stat-num { font-size: 26px; font-weight: 700; display: block; line-height: 1; }
+    .stat-label { font-size: 11px; opacity: 0.9; margin-top: 4px; display: block; }
+
+    /* MAIN */
+    .content { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+
+    /* SECTION CARD */
+    .section-card { margin-bottom: 28px; background: var(--surface); border-radius: 12px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 20px 14px; border-bottom: 1px solid var(--border); }
+    .section-num { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .section-title { font-size: 17px; font-weight: 700; }
+    .section-body { padding: 20px; }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: var(--accent); color: #fff; padding: 9px 12px; text-align: left; font-weight: 600; }
+    td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+
+    /* GRID */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 760px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } .stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    /* CARD */
+    .card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .card-title { font-weight: 700; font-size: 14px; color: var(--accent); margin-bottom: 8px; }
+    .card-body { font-size: 13px; }
+    .card-warn { border-left: 4px solid var(--warn); }
+    .card-accent { border-left: 4px solid var(--accent); }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before { content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: var(--accent-light); }
+    .tl-item { position: relative; margin-bottom: 16px; }
+    .tl-dot { position: absolute; left: -20px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); }
+    .tl-date { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+    .tl-text { font-size: 13px; }
+
+    /* COMPARISON */
+    .compare-box { background: var(--bg); border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .compare-header { display: grid; grid-template-columns: 1fr 1fr; }
+    .ch-left { background: var(--accent-light); padding: 10px 14px; font-weight: 700; font-size: 13px; color: var(--accent); }
+    .ch-right { background: var(--surface); padding: 10px 14px; font-weight: 700; font-size: 13px; color: var(--muted); }
+    .compare-row { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--border); }
+    .cr-left { padding: 10px 14px; font-size: 13px; background: rgba(82,183,136,0.05); }
+    .cr-right { padding: 10px 14px; font-size: 13px; border-left: 1px solid var(--border); }
+
+    /* FLOW */
+    .flow { display: flex; align-items: stretch; gap: 0; }
+    .flow-step { flex: 1; background: var(--accent-light); padding: 12px 10px; text-align: center; font-size: 12px; position: relative; }
+    .flow-step:not(:last-child)::after { content: ''; position: absolute; right: -8px; top: 50%; transform: translateY(-50%); border: 8px solid transparent; border-left-color: var(--accent-light); z-index: 1; }
+    .flow-step:not(:first-child) { margin-left: 8px; }
+    .flow-num { font-size: 18px; font-weight: 700; color: var(--accent); display: block; }
+    .flow-warn { background: var(--warn-light); }
+    .flow-warn::after { border-left-color: var(--warn-light) !important; }
+
+    /* BIG NUMBER */
+    .big-num { font-size: 36px; font-weight: 700; color: var(--accent); }
+    .big-num-warn { color: var(--warn); }
+
+    /* QUOTE */
+    .quote { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 18px; font-size: 14px; font-style: italic; margin: 14px 0; }
+    .quote-src { font-size: 12px; color: var(--muted); margin-top: 6px; font-style: normal; }
+
+    /* TAG */
+    .tag { display: inline-block; background: var(--accent-light); color: var(--accent); border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 600; margin: 2px; }
+    .tag-warn { background: var(--warn-light); color: var(--warn); }
+
+    /* LESSONS */
+    .lesson { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+    .lesson-num { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .lesson-content { flex: 1; }
+    .lesson-title { font-weight: 700; margin-bottom: 4px; }
+    .lesson-body { font-size: 13px; color: var(--text); }
+
+    /* FOOTER */
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px; text-align: center; font-size: 12px; color: var(--muted); }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">테코노미 × IT 커뮤니케이션 연구소 김아람 이사 | 2026-05-19</div>
+  <h1>클로드 개발자 15만 명 이탈<br>AI 구독 요금제의 민낯</h1>
+  <div class="hero-sub">Anthropic의 외부 도구 차단·청구 오류 사태로 드러난 AI 가격 구조의 한계</div>
+  <div class="stats">
+    <div class="stat-box">
+      <span class="stat-num">157,000</span>
+      <span class="stat-label">Claude 떠난 개발자 수</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">15-30x</span>
+      <span class="stat-label">구독 vs API 가격 차이</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">100조</span>
+      <span class="stat-label">OpenAI 2028년 예상 손실</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">20%</span>
+      <span class="stat-label">GitHub Claude 작업 비중 (연말 전망)</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- SEC 1: 도화선 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">도화선 — 20만 9천 원 청구 오류 사건</div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="card card-warn">
+          <div class="card-title" style="color:var(--warn);">청구 오류 발생 경위</div>
+          <div class="card-body">
+            월 200달러 구독 중 개발자에게 갑자기 <strong>20만 9,000원 추가 청구</strong><br><br>
+            원인: 작업 메모(커밋 로그)에 포함된 파일명을 Claude 과금 시스템이 오인<br><br>
+            사용량 <strong>86%</strong>가 남아 있었음에도 과금 발생
+          </div>
+        </div>
+        <div class="card card-warn">
+          <div class="card-title" style="color:var(--warn);">Anthropic의 초기 대응</div>
+          <div class="card-body">
+            처음엔 <strong>환불 불가</strong> 입장 고수<br><br>
+            SNS에 공개 항의 → 유사 피해자 줄줄이 등장<br><br>
+            여론 악화 후 뒤늦게 환불 진행<br><br>
+            <span class="tag tag-warn">Hermes/Openclaw 관련 용어 포함 → 의도적 차단 의혹</span>
+          </div>
+        </div>
+      </div>
+      <div class="quote">
+        "가격이 또 오를지도, 약관이 바뀔 수도 있으니 미리 보험을 들어 놓는 거다. 클로드 자체에 불만이 있다기보다 한 회사에 의존하면 내가 인질이 될 것 같다."
+        <div class="quote-src">— 이탈 개발자 인터뷰 요약</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 2: 외부 도구 차단 타임라인 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">2026년 4월 Anthropic의 조치 — 하루 만에 차단</div>
+    </div>
+    <div class="section-body">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">4월 3일</div>
+          <div class="tl-text">"외부 도구(서드파티 에이전트 프레임워크)로 Claude 사용 금지" 공지 발표</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--warn);"></div>
+          <div class="tl-date" style="color:var(--warn);">4월 4일 — 즉시 차단</div>
+          <div class="tl-text">공지 하루 만에 차단 실행. 업무에 깊이 사용하던 개발자들 하룻밤에 도구 사용 불가</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">4월 중 (추가 조치)</div>
+          <div class="tl-text">신규 프로(20달러) 가입자 약 2% 대상으로 Claude Code 메뉴 비활성화 (AB 테스트). 비싼 요금제에만 코딩 도구 제공 전략 의혹</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-date">6월 15일 (재허용)</div>
+          <div class="tl-text">외부 도구 다시 허용 — 단, <strong>별도 Agent SDK 크레딧 소진 방식</strong>으로만 가능. 이월 불가, 소진 시 추가 청구. 실사용량 최대 25배 감소 효과</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 3: 구독 vs API -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">구독 모델 vs API 모델 — 왜 문제가 생겼나</div>
+    </div>
+    <div class="section-body">
+      <div class="compare-box" style="margin-bottom:16px;">
+        <div class="compare-header">
+          <div class="ch-left">구독 모델 (뷔페)</div>
+          <div class="ch-right">API 모델 (정량제)</div>
+        </div>
+        <div class="compare-row">
+          <div class="cr-left">월 고정액 납부 후 자유롭게 사용</div>
+          <div class="cr-right">토큰(글자 수) 단위로 사용량만큼 결제</div>
+        </div>
+        <div class="compare-row">
+          <div class="cr-left">일반 소비자 대상</div>
+          <div class="cr-right">개발자 (자기 앱에 AI 탑재 시)</div>
+        </div>
+        <div class="compare-row">
+          <div class="cr-left">20달러로 마음껏 사용 가능</div>
+          <div class="cr-right">많이 쓸수록 비용 급증</div>
+        </div>
+      </div>
+      <div style="background: var(--warn-light); border-radius: 10px; padding: 16px; margin-bottom:14px;">
+        <div style="font-weight:700; color:var(--warn); margin-bottom:8px;">컴퓨팅 차익거래 (Computing Arbitrage)</div>
+        <div style="font-size:13px;">구독 요금제를 API 연결에 활용해 API 대비 <strong>15~30배</strong> 저렴하게 사용하는 현상. 월 20달러로 <strong>1,000달러치</strong> 사용한 사례까지 등장. 규모가 커지자 Anthropic이 차단 조치 단행.</div>
+      </div>
+      <div style="font-size:13px; color:var(--muted);">환율 차이로 이득 보는 '환차익'처럼, AI 가격 구조의 빈틈에서 자연 발생한 현상. 처음엔 약관 명시 금지 없었고 회사도 묵인 → 규모가 감당 불가 수준이 되자 갑작스럽게 차단</div>
+    </div>
+  </div>
+
+  <!-- SEC 4: Cursor 사례 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">선례 — Cursor도 1년 전 같은 실패를 겪었다</div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Cursor란?</div>
+          <div class="card-body">AI 코딩 도구. 전 세계 수백만 개발자 사용.<br>2025년 11월 기준 연매출 <strong>10억 달러 (1조 3,000억 원)</strong></div>
+        </div>
+        <div class="card card-warn">
+          <div class="card-title" style="color:var(--warn);">2025년 6월 사태</div>
+          <div class="card-body">
+            광고: 월 20달러로 "거의 무제한"<br>
+            현실: 요금제 개편 후 동일 금액에 사용량 절반<br>
+            <br>
+            - 광고 500회 빠른 응답 → 실제 225회만<br>
+            - 하루 만에 한 달 구독료 소진<br>
+            - 일주일 만에 <strong>45만 원 청구서</strong><br>
+            <br>
+            결과: CEO 공개 사과문 + 추가 청구금 전액 환불
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 5: AI 적자 구조 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">AI 회사들의 거대한 적자 — 왜 싸게 팔았나</div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="card">
+          <div class="card-title">OpenAI 재정 현황</div>
+          <div class="card-body">
+            <div class="big-num big-num-warn">10조</div>
+            <div style="font-size:12px; margin-bottom:8px;">연간 현금 소진 (2024년 기준)</div>
+            2028년 예상 손실: <strong>740~850억 달러 (100조 원)</strong><br>
+            흑자 전환 전망: 2029~2030년
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Anthropic (Claude) 재정 현황</div>
+          <div class="card-body">
+            <div class="big-num">40조</div>
+            <div style="font-size:12px; margin-bottom:8px;">2026년 연환산 매출 예상 (확정 아님)</div>
+            아직 손익분기 미달<br>
+            흑자 전환 전망: 2027~2028년 예상
+          </div>
+        </div>
+      </div>
+      <div class="quote">
+        "우리가 한 달에 3만 원 내고 쓰는 서비스를 회사가 손해 보면서 보조해 주고 있던 가격입니다. 새로 생긴 배달비 50% 할인 쿠폰 뿌려서 고객 모으고, 나중에 충성 고객이 되면 비용을 올리는 전략과 비슷하죠."
+        <div class="quote-src">— 김아람 IT 커뮤니케이션 연구소 이사</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 6: 경쟁 환경 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">경쟁 환경 — OpenAI의 반사이익</div>
+    </div>
+    <div class="section-body">
+      <div class="compare-box" style="margin-bottom:14px;">
+        <div class="compare-header">
+          <div class="ch-left">Claude (Anthropic)</div>
+          <div class="ch-right">ChatGPT (OpenAI)</div>
+        </div>
+        <div class="compare-row">
+          <div class="cr-left">외부 도구 차단 (6월 15일 재허용, 단 크레딧 방식)</div>
+          <div class="cr-right">"우리는 외부 도구 써도 돼" 명시적 허용</div>
+        </div>
+        <div class="compare-row">
+          <div class="cr-left">Claude Code — 외부 도구 제한</div>
+          <div class="cr-right">Codex (코딩 도구) 성능 향상, 모바일 연동</div>
+        </div>
+        <div class="compare-row">
+          <div class="cr-left">Openclaw 개발자 이탈 후 타 플랫폼 이전</div>
+          <div class="cr-right">Openclaw 개발자 <strong>Peter Steinberg 영입</strong></div>
+        </div>
+        <div class="compare-row">
+          <div class="cr-left">GitHub 작업 비중 현재 10%, 연말 20% 전망</div>
+          <div class="cr-right">동일 20달러에 더 많은 사용량 제공 (사용자 평가)</div>
+        </div>
+      </div>
+      <div style="font-size:13px; color:var(--muted);">단, OpenAI도 정액제를 정량제로 전환하는 방향. Claude보다 부드럽게 전환 중. 지금 ChatGPT로 가는 게 합리적이지만, 6~12개월 후 동일 현상 반복 가능성 있음.</div>
+    </div>
+  </div>
+
+  <!-- SEC 7: 벤더 락인 + 이탈 현황 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title">벤더 락인 — 개발자들의 보험 전략</div>
+    </div>
+    <div class="section-body">
+      <div style="background: var(--accent-light); border-radius: 10px; padding: 16px; margin-bottom:16px;">
+        <div style="font-weight:700; margin-bottom:6px;">벤더 락인 (Vendor Lock-in)</div>
+        <div style="font-size:13px;">특정 회사 서비스에 너무 깊이 의존하면, 가격 인상·정책 변경 시 빠져나오기 어려운 상태. 클라우드 시장 초기에도 한 업체에 의존하다 요금 폭탄 맞은 기업들이 있었던 전례가 있음.</div>
+      </div>
+      <div class="grid-2">
+        <div class="card card-accent">
+          <div class="card-title">이탈 개발자들이 간 곳</div>
+          <div class="card-body">
+            <strong>오픈 코드 (Open Code)</strong> — 오픈소스 AI 도구<br>
+            무료 · 코드 공개 · 단일 회사 종속 없음<br><br>
+            ChatGPT로도 일부 이동 (동일 가격에 더 많은 사용량)
+          </div>
+        </div>
+        <div class="card card-accent">
+          <div class="card-title">Claude 실사용 현황</div>
+          <div class="card-body">
+            이탈 많지만 GitHub 전체 작업 중 <strong>10%</strong>가 Claude<br>
+            연말까지 <strong>20%</strong> 기록 전망<br><br>
+            이탈 = "보험 들기"로 해석 가능. 실제 Claude 포기보단 리스크 분산
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 8: 결론 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="section-title">일반 사용자에게도 오는 변화 — 3가지 교훈</div>
+    </div>
+    <div class="section-body">
+      <div class="lesson">
+        <div class="lesson-num">1</div>
+        <div class="lesson-content">
+          <div class="lesson-title">AI는 전기다 — 공짜가 아니다</div>
+          <div class="lesson-body">우주에까지 데이터센터를 만드는 시대. 그 컴퓨팅 비용은 결국 이용자가 부담. 지금까지 월 2~3만 원은 회사가 보조하던 가격.</div>
+        </div>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">2</div>
+        <div class="lesson-content">
+          <div class="lesson-title">무제한 시대가 끝나간다</div>
+          <div class="lesson-body">통신비처럼 기본 사용량 분리 예정. 가볍게 쓰면 싸게, 많이 쓰면 비싸게. 개발자 먼저 겪는 변화가 일반 사용자에게 곧 온다.</div>
+        </div>
+      </div>
+      <div class="lesson">
+        <div class="lesson-num">3</div>
+        <div class="lesson-content">
+          <div class="lesson-title">한 서비스에 몰빵하지 마라</div>
+          <div class="lesson-body">이메일·메신저를 여러 개 쓰듯, AI도 분산 사용 권장. Claude + ChatGPT + 오픈소스 모델을 상황에 따라 나눠 사용하는 전략이 안전.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  출처: <a href="https://youtu.be/WqAog_dM6jY" target="_blank">테코노미 | 클로드 개발자 15만 명 이탈 분석 (2026-05-19)</a> &nbsp;|&nbsp;
+  비주얼 리포트: <a href="https://wootom.github.io/news/2026-05-19-claude-developers-exodus-pricing.html" target="_blank">wootom.github.io/news</a>
+</footer>
+
+</body>
+</html>
