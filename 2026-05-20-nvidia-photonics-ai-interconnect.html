@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>엔비디아 광통신 투자 — AI 서버의 진짜 병목은 칩 사이에 있다</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2d9162;
+      --accent-mid: #52b788;
+      --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; font-size: 15px; line-height: 1.6; }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); padding: 40px 24px 32px; color: #fff; }
+    .hero-label { font-size: 12px; letter-spacing: 1px; opacity: 0.85; margin-bottom: 8px; text-transform: uppercase; }
+    .hero h1 { font-size: 24px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+    .hero-sub { font-size: 13px; opacity: 0.85; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .stat-box { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 14px 10px; text-align: center; }
+    .stat-num { font-size: 24px; font-weight: 700; display: block; line-height: 1.1; }
+    .stat-label { font-size: 11px; opacity: 0.9; margin-top: 4px; display: block; }
+
+    /* MAIN */
+    .content { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+
+    /* SECTION CARD */
+    .section-card { margin-bottom: 28px; background: var(--surface); border-radius: 12px; overflow: hidden; }
+    .section-header { display: flex; align-items: center; gap: 14px; padding: 18px 20px 14px; border-bottom: 1px solid var(--border); }
+    .section-num { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .section-title { font-size: 17px; font-weight: 700; }
+    .section-body { padding: 20px; }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: var(--accent); color: #fff; padding: 9px 12px; text-align: left; font-weight: 600; }
+    td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+
+    /* GRID */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 760px) { .grid-3,.grid-4 { grid-template-columns: repeat(2, 1fr); } .stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; } }
+
+    /* CARD */
+    .card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .card-title { font-weight: 700; font-size: 14px; color: var(--accent); margin-bottom: 8px; }
+    .card-body { font-size: 13px; }
+    .card-accent { border-left: 4px solid var(--accent); }
+
+    /* COMPANY CARD */
+    .co-card { background: var(--bg); border: 2px solid var(--accent-light); border-radius: 10px; padding: 14px; }
+    .co-name { font-weight: 700; font-size: 15px; color: var(--accent); margin-bottom: 4px; }
+    .co-role { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+    .co-amount { font-size: 22px; font-weight: 700; color: var(--accent); }
+    .co-unit { font-size: 11px; color: var(--muted); }
+    .co-desc { font-size: 12px; margin-top: 6px; }
+
+    /* FLOW */
+    .flow-row { display: flex; align-items: center; gap: 0; margin-bottom: 12px; }
+    .flow-box { flex: 1; background: var(--accent-light); border-radius: 8px; padding: 10px 12px; font-size: 13px; text-align: center; }
+    .flow-box.dim { background: var(--surface); }
+    .flow-arrow { padding: 0 8px; color: var(--accent); font-size: 18px; font-weight: 700; flex-shrink: 0; }
+
+    /* VS COMPARE */
+    .vs-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .vs-side { padding: 14px 16px; font-size: 13px; }
+    .vs-side.left { background: var(--accent-light); }
+    .vs-side.right { background: var(--surface); border-left: 1px solid var(--border); }
+    .vs-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+
+    /* QUOTE */
+    .quote { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 18px; font-size: 14px; font-style: italic; margin: 14px 0; }
+
+    /* PIPELINE */
+    .pipeline { display: flex; align-items: stretch; gap: 2px; margin: 14px 0; }
+    .pipe-step { flex: 1; background: var(--accent-light); padding: 10px 8px; text-align: center; font-size: 12px; font-weight: 600; border-radius: 4px; }
+    .pipe-step.active { background: var(--accent); color: #fff; }
+    .pipe-step.muted { background: var(--surface); color: var(--muted); }
+    .pipe-arrow { color: var(--accent); font-size: 16px; display: flex; align-items: center; padding: 0 2px; }
+
+    /* BIG NUM */
+    .big-num { font-size: 32px; font-weight: 700; color: var(--accent); }
+
+    /* CAUTION */
+    .caution { background: #fff8e1; border-left: 4px solid #f39c12; border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 13px; margin-top: 14px; }
+    .caution-title { font-weight: 700; color: #d68910; margin-bottom: 4px; }
+
+    /* FOOTER */
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px; text-align: center; font-size: 12px; color: var(--muted); }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">에러 채널 | AI 인프라 분석 | 2026-05-20</div>
+  <h1>엔비디아 광통신 투자<br>AI 서버의 진짜 병목은 칩 사이에 있다</h1>
+  <div class="hero-sub">루멘텀·코히어런트·마벨·코닝 4개사 투자로 드러난 NVIDIA의 다음 전략</div>
+  <div class="stats">
+    <div class="stat-box">
+      <span class="stat-num">20억$</span>
+      <span class="stat-label">×4개사 투자 규모</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">409.6<br>Tb/s</span>
+      <span class="stat-label">SN6800 스위치 대역폭</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">945<br>TWh</span>
+      <span class="stat-label">2030년 데이터센터 전력 전망</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num">10배</span>
+      <span class="stat-label">코닝 미국 내 광연결 제조 확대</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- SEC 1: 4개사 투자 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">엔비디아의 광통신 투자 — 4개사, 전 공급망 커버</div>
+    </div>
+    <div class="section-body">
+      <div class="grid-4" style="margin-bottom:16px;">
+        <div class="co-card">
+          <div class="co-name">루멘텀</div>
+          <div class="co-role">레이저·광학 부품</div>
+          <div class="co-amount">20억$</div>
+          <div class="co-desc">구매 약정 + 향후 생산 능력 접근권 확보</div>
+        </div>
+        <div class="co-card">
+          <div class="co-name">코히어런트</div>
+          <div class="co-role">광트랜시버·광학 소자</div>
+          <div class="co-amount">20억$</div>
+          <div class="co-desc">차세대 데이터센터용 광기술·제조·R&D 협력</div>
+        </div>
+        <div class="co-card">
+          <div class="co-name">마벨</div>
+          <div class="co-role">커스텀 XPU + 네트워킹</div>
+          <div class="co-amount">20억$</div>
+          <div class="co-desc">NVLink Fusion 연동 + 실리콘 포토닉스 협력</div>
+        </div>
+        <div class="co-card">
+          <div class="co-name">코닝</div>
+          <div class="co-role">광섬유 유리 소재</div>
+          <div class="co-amount">장기</div>
+          <div class="co-unit">파트너십</div>
+          <div class="co-desc">미국 내 광연결 제조 10배 확대 / 광섬유 생산 50%↑</div>
+        </div>
+      </div>
+      <div class="quote">
+        "4개 뉴스를 하나로 묶으면: AI 서버의 중심축이 연산 장치에서 연결 장치로 확대되고 있다는 그림이 나온다."
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 2: 병목의 이동 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">병목의 이동 — GPU 성능에서 칩 간 연결로</div>
+    </div>
+    <div class="section-body">
+      <div style="margin-bottom:16px;">
+        <div style="font-weight:700; margin-bottom:8px; font-size:14px;">AI 서버 성능 공식의 변화</div>
+        <div class="flow-row">
+          <div class="flow-box dim">GPU 성능</div>
+          <div class="flow-arrow">+</div>
+          <div class="flow-box dim">HBM 용량</div>
+          <div class="flow-arrow">+</div>
+          <div class="flow-box dim">첨단 패키징</div>
+          <div class="flow-arrow">+</div>
+          <div class="flow-box dim">전력</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box" style="background:#fff; border:2px solid var(--accent); font-weight:700;">칩 간 연결</div>
+        </div>
+        <div style="font-size:12px; color:var(--muted); margin-top:6px;">이전 4가지 요소도 여전히 중요하나, 이제 새로운 병목으로 칩 간 연결이 부상</div>
+      </div>
+      <div style="background: var(--accent-light); border-radius: 10px; padding: 16px; margin-bottom:14px;">
+        <div style="font-weight:700; margin-bottom:8px;">컨베이어 벨트 비유</div>
+        <div class="grid-2">
+          <div style="font-size:13px;"><strong>공장 기계 = GPU</strong><br>아무리 빨라도 컨베이어 벨트(데이터 경로)가 느리면 기다릴 수밖에 없음</div>
+          <div style="font-size:13px;"><strong>전체 처리량 결정 요인</strong><br>가장 빠른 기계가 아니라 <strong>가장 느린 이동 구간</strong>이 결정. 있는 장비가 쉬는 시간도 비용</div>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">GPU가 기다리는 이유</div>
+          <div class="card-body">AI 학습은 수천 개 GPU가 분산 계산 → 중간 결과 맞춰야 다음 계산 가능. 데이터가 늦게 오면 먼저 끝낸 GPU는 멈춤</div>
+        </div>
+        <div class="card">
+          <div class="card-title">기다리는 시간의 비용</div>
+          <div class="card-body">학습 시간 증가 + 전력 소비 지속 + 냉각 유지 + 장비 감가상각 → 연결이 느릴수록 AI 공장 운영 비용 상승</div>
+        </div>
+        <div class="card">
+          <div class="card-title">도로망 비유</div>
+          <div class="card-body">차 몇 대 = GPU 적을 때는 차 속도가 중요. 차 수십만 대 = GPU 수천 개가 되면 도로망·신호 체계가 체감 속도를 결정</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 3: 구리 vs 광 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">구리선 vs 광신호 — 역할 분담의 재설계</div>
+    </div>
+    <div class="section-body">
+      <div class="vs-wrap" style="margin-bottom:16px;">
+        <div class="vs-side left">
+          <div class="vs-title">구리선 (전기 신호)</div>
+          단거리: 여전히 싸고 강함<br>
+          장거리·고대역폭: 신호 감쇠 + 잡음 + 발열<br>
+          → 리타이머·앰플리파이어 추가 필요<br>
+          → 전력 소비 추가 발생<br><br>
+          <strong>연산 중심 역할 유지</strong>
+        </div>
+        <div class="vs-side right">
+          <div class="vs-title">광신호 (빛)</div>
+          가까운 거리: 광전 변환 비용 존재<br>
+          멀고 많고 빠른 데이터: 손실 적고 전력 효율↑<br>
+          → 리타이머 불필요<br>
+          → 열 관리 방식 정교화 필요<br><br>
+          <strong>데이터 이동 구간 진출</strong>
+        </div>
+      </div>
+      <div class="caution">
+        <div class="caution-title">핵심: 대체가 아니라 분담</div>
+        전자(구리)와 광자(빛)는 서로를 밀어내는 관계가 아님. AI 서버 안에서 각자 맡은 구간이 달라지는 것. 클러스터가 커질수록 광학이 경제성 있는 구간이 늘어나는 방향.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 4: CPO -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">CPO (코패키지 옵틱스) — 광학을 칩 바로 옆으로</div>
+    </div>
+    <div class="section-body">
+      <div style="margin-bottom:16px;">
+        <div style="font-weight:700; margin-bottom:8px; font-size:14px;">광전 변환 위치의 변화</div>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">기존 방식</div>
+          <div class="pipeline">
+            <div class="pipe-step muted">스위치 칩</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step muted">전기 신호 (긴 경로)</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step muted">보드</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step muted">플러그형 광트랜시버</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step muted">빛</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px; color:var(--accent); margin-bottom:4px; font-weight:600;">CPO 방식</div>
+          <div class="pipeline">
+            <div class="pipe-step active">스위치 칩</div>
+            <div class="pipe-arrow">+</div>
+            <div class="pipe-step active">광학 엔진 (바로 옆 패키징)</div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-step active">즉시 빛으로 변환</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-bottom:14px;">
+        <div class="card">
+          <div class="card-title">엔비디아 스펙트럼 X 포토닉스 SN6800</div>
+          <div class="card-body">
+            <div class="big-num">409.6<span style="font-size:16px;">Tb/s</span></div>
+            512포트 × 800Gb/s<br>
+            매초 51.2TB 전송 = 고용량 SSD 수십 개 분량<br>
+            → AI 공장 내부 도로의 폭을 보여주는 숫자
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">플러그형 vs CPO</div>
+          <div class="card-body">
+            <strong>플러그형</strong>: USB처럼 꽂음, 교체 쉬움, 칩에서 멂<br><br>
+            <strong>CPO</strong>: 성능·효율 높음, 칩 바로 옆 내장<br>고장 대응 어려움, 제조 난이도 높음, 열 관리 필요
+          </div>
+        </div>
+      </div>
+      <div style="font-size:13px; color:var(--muted);">CPO는 단순 케이블 교체가 아니라 서버 설계의 경계선이 바뀌는 문제. 광학 부품이 랙 바깥 통신 장비에서 스위치 칩 패키지 가까운 곳으로 이동.</div>
+    </div>
+  </div>
+
+  <!-- SEC 5: 실리콘 포토닉스 + IRF Labs -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">실리콘 포토닉스 & aR Labs — 경쟁사들이 함께 투자한 이유</div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="card card-accent">
+          <div class="card-title">실리콘 포토닉스란?</div>
+          <div class="card-body">
+            기존 반도체 공정 위에 <strong>빛이 지나가는 경로(광도파로)</strong>와 광전 변환 소자를 함께 제조<br><br>
+            회로 위에 전기 배선 + 광통신 고속도로를 함께 깔아넣는 개념<br><br>
+            핵심 과제: 전자 회로 설계 능력 + 광학 소자 구현 능력을 같은 패키지로 통합
+          </div>
+        </div>
+        <div class="card card-accent">
+          <div class="card-title">aR Labs (IRF Labs) 투자 현황</div>
+          <div class="card-body">
+            2026년 3월 시리즈 2: <strong>5억 달러</strong><br>
+            총 투자금: <strong>8억 7천만 달러</strong><br>
+            기업가치: <strong>37억 5천만 달러</strong><br><br>
+            투자자: <strong>엔비디아, AMD, 미디어텍, 알칩</strong><br>
+            (AI 반도체 경쟁사들이 공동 투자 — 대규모 클러스터에서 광학 효율은 공통 과제)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 6: 전력 문제 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">전력 문제 — AI 데이터센터, 일본 국가 전력을 넘본다</div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div style="background: var(--accent-light); border-radius:10px; padding:16px; text-align:center;">
+          <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">2024년 전 세계 데이터센터 전력</div>
+          <div class="big-num">415<span style="font-size:18px;">TWh</span></div>
+        </div>
+        <div style="background: var(--surface); border-radius:10px; padding:16px; text-align:center; border: 2px solid var(--accent);">
+          <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">2030년 IEA 전망</div>
+          <div class="big-num">945<span style="font-size:18px;">TWh</span></div>
+          <div style="font-size:12px; margin-top:4px; color:var(--accent); font-weight:600;">≈ 일본 전체 전력 소비 수준</div>
+        </div>
+      </div>
+      <div style="font-size:13px; margin-bottom:14px;">2.3배 증가. 이제 국가 규모의 전력이 데이터센터 한 분야에 필요. 데이터 <strong>이동에 쓰이는 전력도 비용</strong>이 되는 시대 → 광학 인터커넥트는 더 빠른 연결이 아니라 <strong>AI 공장 전력 효율을 재설계하는 기술</strong>.</div>
+      <div class="caution">
+        <div class="caution-title">아직 검증 과제 남아 있음</div>
+        수율·신뢰성 장기 검증 필요 / 광학 부품은 온도·정렬에 민감 (AI 스위치 주변 고온 환경) / CPO 고장 교체 어려움 / 대량 생산 단가 확인 필요. 기술 키워드는 빠르게 번지지만 고객 인증과 양산 적용은 훨씬 느리게 따라옴.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEC 7: 공급망 구분 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title">"광통신"으로 묶으면 안 된다 — 공급망은 각각 다르다</div>
+    </div>
+    <div class="section-body">
+      <table style="margin-bottom:14px;">
+        <tr><th>구분</th><th>역할</th><th>AI 데이터센터 연관성</th></tr>
+        <tr><td>광섬유 제조사 (코닝 등)</td><td>유리 소재·광케이블</td><td>물리적 기반 — 간접 연관</td></tr>
+        <tr><td>광트랜시버 제조사</td><td>플러그형 광모듈</td><td>단기 수요 증가, 장기 CPO로 대체 압박</td></tr>
+        <tr><td>레이저 소자 제조사 (루멘텀 등)</td><td>광원·레이저 칩</td><td>CPO 핵심 부품</td></tr>
+        <tr><td>실리콘 포토닉스 설계사</td><td>광학 기능 반도체 설계</td><td>CPO 핵심, 전자+광학 통합 능력 필요</td></tr>
+        <tr><td>커스텀 네트워킹 (마벨 등)</td><td>XPU·네트워킹 칩</td><td>AI 인프라 직접 연결</td></tr>
+      </table>
+      <div style="font-size:13px; color:var(--muted);">장기적으로 광학 엔진, 패키징, 스위치 에이징, 시스템 업체 사이의 힘의 관계가 재편될 수 있음. 광트랜시버 업체는 단기 수요 증가 기회면서 동시에 CPO 전환 압박.</div>
+    </div>
+  </div>
+
+  <!-- SEC 8: 시사점 -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="section-title">핵심 시사점 — AI 인프라를 보는 질문이 바뀐다</div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="card card-accent">
+          <div class="card-title">기존 질문</div>
+          <div class="card-body" style="font-size:15px; font-weight:600;">"가장 빠른 칩을 누가 만드느냐?"</div>
+        </div>
+        <div class="card" style="border: 2px solid var(--accent);">
+          <div class="card-title">새로운 질문</div>
+          <div class="card-body" style="font-size:15px; font-weight:600; color:var(--accent);">"칩 사이의 손실을 누가 가장 작게 만드느냐?"</div>
+        </div>
+      </div>
+      <div style="background: var(--surface); border-radius:10px; padding:16px;">
+        <div style="font-weight:700; margin-bottom:10px;">앞으로 확인해야 할 것</div>
+        <div class="grid-2" style="font-size:13px; gap:10px;">
+          <div>스펙트럼 X / 퀀텀 X 포토닉스가 2026년 이후 실제 고객 시스템에 얼마나 투입되는지</div>
+          <div>광학 부품이 서버 바깥 통신 장비에 머무는지, 스위치 칩 패키지 가까운 곳으로 들어오는지</div>
+        </div>
+      </div>
+      <div class="quote" style="margin-top:14px;">
+        "AI가 커지면 커질수록 진짜 비용은 지금 칩 내부가 아니라 칩 사이사이로 새고 있다."
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  출처: <a href="https://youtu.be/qkSJJT0F5sQ" target="_blank">에러 채널 | 엔비디아 광통신 투자 분석 (2026-05-20)</a> &nbsp;|&nbsp;
+  비주얼 리포트: <a href="https://wootom.github.io/news/2026-05-20-nvidia-photonics-ai-interconnect.html" target="_blank">wootom.github.io/news</a>
+</footer>
+
+</body>
+</html>
