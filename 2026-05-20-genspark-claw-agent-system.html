@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genspark Claw AI 에이전트 3총사 시스템 | 오후다섯씨</title>
+<style>
+  :root {
+    --accent: #2d9162;
+    --accent-light: #e8f5ef;
+    --accent-dark: #1e6644;
+    --bg: #f8fafb;
+    --card: #ffffff;
+    --text: #1a2332;
+    --text-muted: #5a6a7a;
+    --border: #e2e8f0;
+    --tag-bg: #edf7f2;
+    --tag-text: #1e6644;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .header { background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%); color: white; padding: 40px 24px 32px; text-align: center; }
+  .header .channel { font-size: 13px; opacity: 0.85; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+  .header h1 { font-size: clamp(18px, 4vw, 26px); font-weight: 700; margin-bottom: 12px; line-height: 1.4; }
+  .header .meta { font-size: 13px; opacity: 0.8; }
+  .header .watch-btn { display: inline-block; margin-top: 16px; background: rgba(255,255,255,0.2); color: white; padding: 8px 20px; border-radius: 20px; text-decoration: none; font-size: 13px; border: 1px solid rgba(255,255,255,0.4); transition: background 0.2s; }
+  .header .watch-btn:hover { background: rgba(255,255,255,0.3); }
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px 60px; }
+  .section { background: var(--card); border-radius: 14px; padding: 22px; margin-bottom: 18px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+  .section-title { font-size: 13px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--accent-light); }
+  .overview-table { width: 100%; border-collapse: collapse; }
+  .overview-table tr:not(:last-child) td { border-bottom: 1px solid var(--border); }
+  .overview-table td { padding: 9px 4px; font-size: 14px; }
+  .overview-table td:first-child { font-weight: 600; color: var(--text-muted); width: 35%; }
+  .agent-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+  .agent-card { background: var(--accent-light); border-radius: 10px; padding: 16px; border-left: 4px solid var(--accent); }
+  .agent-card .agent-icon { font-size: 24px; margin-bottom: 8px; }
+  .agent-card .agent-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--accent-dark); }
+  .agent-card .agent-model { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; background: white; display: inline-block; padding: 2px 8px; border-radius: 10px; }
+  .agent-card p { font-size: 13px; color: var(--text); }
+  .flow-box { background: var(--accent-light); border-radius: 10px; padding: 18px; font-family: monospace; font-size: 13px; line-height: 2; }
+  .flow-box .arrow { color: var(--accent); font-weight: bold; }
+  .scenario-list { display: grid; gap: 10px; }
+  .scenario-item { background: #f8f9fa; border-radius: 8px; padding: 14px; border-left: 3px solid var(--accent); }
+  .scenario-item .num { font-weight: 700; color: var(--accent); margin-right: 6px; }
+  .scenario-item span { font-size: 14px; }
+  .glossary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .glossary-table th { background: var(--accent); color: white; padding: 10px; text-align: left; }
+  .glossary-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .glossary-table tr:nth-child(even) td { background: var(--accent-light); }
+  .tag { display: inline-block; background: var(--tag-bg); color: var(--tag-text); padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin: 3px 2px; }
+  .price-badge { background: var(--accent); color: white; padding: 4px 12px; border-radius: 12px; font-weight: 700; font-size: 14px; }
+  .key-point { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .key-point:last-child { border-bottom: none; }
+  .key-point::before { content: "✦"; color: var(--accent); font-size: 12px; margin-top: 3px; flex-shrink: 0; }
+  .footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 32px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="channel">오후다섯씨 | 2026-05-20</div>
+  <h1>🤖 AI 에이전트 3총사로 만드는<br>24시간 자동 지식 시스템</h1>
+  <div class="meta">Genspark Claw 완전 활용 가이드</div>
+  <a href="https://youtu.be/LJFnJP4WzmA" class="watch-btn" target="_blank">▶ 영상 보기</a>
+</div>
+<div class="container">
+
+  <div class="section">
+    <div class="section-title">핵심 개요</div>
+    <table class="overview-table">
+      <tr><td>핵심 도구</td><td><strong>Genspark Claw</strong> 데스크탑 앱 (월 $19.99)</td></tr>
+      <tr><td>핵심 개념</td><td>수집·편집·소통 에이전트 분업 구조로 24시간 자동 운영</td></tr>
+      <tr><td>클라우드</td><td>개인 클라우드 컴퓨터 제공 — PC를 켜놓지 않아도 실행</td></tr>
+      <tr><td>에이전트 생성</td><td>자연어로 요청만 하면 자동 생성·연결</td></tr>
+      <tr><td>핵심 메시지</td><td>AI 시대 경쟁력 = 자신만의 <strong>데이터 + 자동화 시스템</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🤖 3 에이전트 아키텍처</div>
+    <div class="agent-grid">
+      <div class="agent-card">
+        <div class="agent-icon">📥</div>
+        <div class="agent-name">수집 에이전트</div>
+        <span class="agent-model">Claude Haiku 권장</span>
+        <p>Raw 폴더의 이메일·링크·파일을 자동 탐지·수집. 매일 아침 하트비트로 스케줄 실행</p>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon">✏️</div>
+        <div class="agent-name">편집 에이전트</div>
+        <span class="agent-model">Claude Sonnet 권장</span>
+        <p>Raw 문서를 분석·요약·재작성해 Wiki 폴더에 정제된 문서로 저장</p>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon">💬</div>
+        <div class="agent-name">소통 에이전트</div>
+        <span class="agent-model">Slack / 이메일 연동</span>
+        <p>사용자 질문에 Wiki 우선 응답. 메신저 채널을 통해 24시간 문서 호출·대화 중재</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">⚙️ 자동화 워크플로우</div>
+    <div class="flow-box">
+      <div>📧 [이메일 · 링크 · 파일] 수집</div>
+      <div class="arrow">  ↓ 수집 에이전트 (Haiku, 매일 9시)</div>
+      <div>📁 Raw 폴더 저장</div>
+      <div class="arrow">  ↓ 편집 에이전트 (Sonnet)</div>
+      <div>📚 Wiki 폴더 (정제 문서)</div>
+      <div class="arrow">  ↓ 소통 에이전트</div>
+      <div>📱 Slack / 이메일 → 사용자 질의응답</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">💡 전략적 포인트</div>
+    <div class="key-point">데이터가 핵심 경쟁력 — AI 시대 차별화는 자신만의 축적된 데이터에서 나온다</div>
+    <div class="key-point">에이전트 분업 — 역할 분리로 정확도·확장성 향상, 토큰 비용 절약</div>
+    <div class="key-point">자연어만으로 에이전트 생성·연결 — 코딩 없이도 자동화 시스템 구축 가능</div>
+    <div class="key-point">에이전트 OS 패러다임 — 단일 AI → 멀티 에이전트 운영 체제 시대로 전환 중</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🎯 활용 시나리오</div>
+    <div class="scenario-list">
+      <div class="scenario-item"><span class="num">1</span><span>콘텐츠 크리에이터: 뉴스 자동 수집 → AI 위키 문서화 → 슬랙 요약 수신</span></div>
+      <div class="scenario-item"><span class="num">2</span><span>지식 노동자: 이메일·회의록 → 주제별 자동 정리 → 검색 가능 Wiki</span></div>
+      <div class="scenario-item"><span class="num">3</span><span>리서처: 경쟁사 웹 모니터링 자동화 + 요약 보고서 자동 생성</span></div>
+      <div class="scenario-item"><span class="num">4</span><span>개인 학습: 아티클·영상 수집 → 주제 분류 → 질문응답 AI 비서</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">📖 용어 사전</div>
+    <table class="glossary-table">
+      <tr><th>용어</th><th>한줄 설명</th><th>비유</th></tr>
+      <tr><td>AI 에이전트</td><td>목표를 주면 스스로 판단해 작업 수행하는 AI</td><td>지시만 하면 알아서 일하는 직원</td></tr>
+      <tr><td>오케스트레이션</td><td>여러 에이전트가 협력하도록 조율하는 것</td><td>오케스트라 지휘자</td></tr>
+      <tr><td>하트비트</td><td>주기적으로 자동 실행되는 예약 작업</td><td>알람처럼 정해진 시간에 자동 실행</td></tr>
+      <tr><td>컨텍스트 엔지니어링</td><td>AI에게 전달하는 배경 정보를 설계해 출력 품질 향상</td><td>의사에게 증상을 자세히 설명할수록 정확한 진단</td></tr>
+      <tr><td>Raw 폴더</td><td>미정리 원본 데이터를 담는 폴더</td><td>책상 위 미분류 서류함</td></tr>
+      <tr><td>Wiki 폴더</td><td>AI가 정제·요약해 저장한 완성 문서 폴더</td><td>정리된 파일 캐비닛</td></tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div><span class="tag">#Genspark</span><span class="tag">#AI에이전트</span><span class="tag">#자동화</span><span class="tag">#지식관리</span><span class="tag">#워크플로우</span></div>
+    <p style="margin-top:12px">자동 생성 · wootom.github.io/news · 2026-05-20</p>
+  </div>
+</div>
+</body>
+</html>
