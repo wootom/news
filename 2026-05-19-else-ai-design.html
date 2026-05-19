@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>AI가 디자인+코드 다 만들어주는 시대 - 토스 출신 디자이너 강영화의 워크플로우</title><style>:root{--bg:#fff;--surface:#f5f5f5;--border:#e0e0e0;--text:#1a1a1a;--muted:#666;--accent:#2d9162;--accent-mid:#52b788;--accent-light:#d8f0e3;--warn:#b06b00;--warn-light:#fff7e6}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;background:var(--bg);color:var(--text);line-height:1.65}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.hero{background:linear-gradient(135deg,#1f6b48 0%,#2d9162 55%,#52b788 100%);color:#fff;padding:48px 24px 40px;text-align:center}
+.hero-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;opacity:.85;margin-bottom:12px}
+.hero-title{font-size:26px;font-weight:800;line-height:1.3;margin-bottom:8px}
+.hero-sub{font-size:13px;opacity:.9;margin-bottom:24px;line-height:1.6}
+.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.stat-box{background:rgba(255,255,255,.16);border-radius:12px;padding:13px 18px;min-width:120px}
+.stat-num{font-size:22px;font-weight:800}
+.stat-label{font-size:11px;opacity:.85;margin-top:2px}
+.container{max-width:980px;margin:0 auto;padding:32px 16px}
+.section-card{background:var(--surface);border-radius:14px;padding:24px;margin-bottom:22px;border:1px solid var(--border)}
+.section-header{display:flex;align-items:center;gap:13px;margin-bottom:18px;flex-wrap:wrap}
+.sec-num{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-title{font-size:17px;font-weight:700}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:760px){.grid-3,.grid-4{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}
+@media(max-width:480px){.grid-3,.grid-4,.grid-2{grid-template-columns:1fr}}
+.mini-card{background:#fff;border-radius:10px;padding:14px;border:1px solid var(--border)}
+.mini-card h4{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.mini-card p{font-size:12px;color:var(--text);line-height:1.6}
+.mini-card .motif{font-size:11px;color:var(--muted);margin-top:6px;font-style:italic}
+table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:8px;overflow:hidden}
+th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left;font-weight:700;font-size:12px}
+td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:#fafafa}
+td.highlight{background:var(--accent-light);font-weight:700;color:var(--accent)}
+.quote{border-left:4px solid var(--accent-mid);padding:12px 16px;background:var(--accent-light);border-radius:0 8px 8px 0;font-size:13px;font-style:italic;margin:12px 0;line-height:1.6}
+.flow{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:14px;background:#fff;border-radius:10px;border:1px solid var(--border)}
+.flow-box{background:var(--accent-light);border:2px solid var(--accent-mid);border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;color:var(--accent);text-align:center;min-width:120px}
+.flow-box.human{background:#fff7e6;border-color:#b06b00;color:#b06b00}
+.flow-arrow{color:var(--accent);font-size:18px;font-weight:700}
+.step-list{counter-reset:step;list-style:none;padding:0}
+.step-list li{counter-increment:step;padding:12px 0 12px 44px;position:relative;font-size:13px;border-bottom:1px dashed var(--border);line-height:1.55}
+.step-list li:before{content:counter(step);position:absolute;left:0;top:12px;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-list li:last-child{border-bottom:none}
+.step-list li strong{color:var(--accent)}
+.vs-split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:480px){.vs-split{grid-template-columns:1fr}}
+.vs-box{border-radius:10px;padding:16px;border:2px solid var(--border);background:#fff}
+.vs-box.before{border-color:var(--muted);background:#fafafa}
+.vs-box.after{border-color:var(--accent);background:var(--accent-light)}
+.vs-box h4{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--accent)}
+.vs-box.before h4{color:var(--muted)}
+.vs-box ul{list-style:none;padding:0}
+.vs-box li{font-size:12px;padding:6px 0;border-bottom:1px dotted var(--border);line-height:1.55}
+.vs-box li:last-child{border-bottom:none}
+.metaphor{background:#fff;border:1px dashed var(--accent-mid);border-radius:10px;padding:14px 16px;margin-top:12px;font-size:13px;line-height:1.65}
+.metaphor strong{color:var(--accent)}
+.footer{text-align:center;padding:24px 16px 40px;font-size:12px;color:var(--muted)}
+.footer a{color:var(--accent)}
+.deeplinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.deeplinks a{display:inline-block;background:var(--accent-light);color:var(--accent);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid var(--accent-mid)}
+.deeplinks a:hover{background:var(--accent-mid);color:#fff;text-decoration:none}
+.persona-card{background:#fff;border-radius:10px;padding:16px;border:1px solid var(--border)}
+.persona-card .role{font-size:11px;color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.persona-card .name{font-size:15px;font-weight:800;margin-bottom:6px}
+.persona-card .desc{font-size:12px;color:var(--text);line-height:1.55}
+.tag{display:inline-block;background:var(--accent-light);color:var(--accent);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:4px;margin-bottom:4px}
+.matrix-table th:first-child,.matrix-table td:first-child{background:var(--accent);color:#fff;font-weight:700;font-size:12px}
+.matrix-table tr:nth-child(even) td:first-child{background:var(--accent-mid)}
+.callout{background:#fff;border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 16px;margin:12px 0;font-size:13px;line-height:1.6}
+.callout strong{color:var(--accent)}
+</style></head><body>
+
+<div class="hero">
+<div class="hero-tag">YouTube · 빌더 조쉬 · 2026-05-19 · 42분 37초</div>
+<h1 class="hero-title">AI가 디자인+코드 다 만들어주는 시대,<br>토스 출신 디자이너는 '이것'을 더 강조하더라고요</h1>
+<p class="hero-sub">Else 공동창업자 강영화 - 워크플로우 전반에 AI를 녹이되, 마감과 공감은 사람이 끝까지 책임진다</p>
+<div class="stats">
+<div class="stat-box"><div class="stat-num">4년</div><div class="stat-label">토스 디자이너 경력</div></div>
+<div class="stat-box"><div class="stat-num">120만</div><div class="stat-label">우주고양이 보라 가입</div></div>
+<div class="stat-box"><div class="stat-num">14,000</div><div class="stat-label">Else 사용자 (현재)</div></div>
+<div class="stat-box"><div class="stat-num">7도구</div><div class="stat-label">AI 워크플로우 스택</div></div>
+</div></div>
+
+<div class="container">
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">1</div><div class="sec-title">한 줄 요약</div></div>
+<div class="quote">"기능을 다 넣으면 다 망한다. 사용자가 어떤 걸 불편하고 어렵게 느끼는지 보는 눈은 사람만 가질 수 있다. 공감력을 가지고 다가가면 더 좋은 제품을 만들 수 있다." - 강영화</div>
+<table>
+<tr><th>구분</th><th>내용</th></tr>
+<tr><td>게스트</td><td><strong>강영화</strong> - Else 공동창업자 (4년차) · 전 토스 프로덕트 디자이너 (4년)</td></tr>
+<tr><td>대표작</td><td>우주고양이 보라(타로/사주 앱, 120만 가입, 2025년 연매출 약 20억) → Else(워홀 영어회화)</td></tr>
+<tr><td>핵심 메시지</td><td class="highlight">AI가 디자인 초안을 빠르게 만들수록, "마감"과 "사용자 공감"이 사람의 차별점이 된다</td></tr>
+<tr><td>출간 도서</td><td>『프로덕트 디자이너로 살아남기』 - 토스에서 배운 것 + 창업 노하우</td></tr>
+<tr><td>방송 채널</td><td>빌더 조쉬 (Builder Josh)</td></tr>
+</table>
+<div class="deeplinks">
+<a href="https://youtu.be/1MMJMDsANrM?t=72">01:12 토스→창업 전환</a>
+<a href="https://youtu.be/1MMJMDsANrM?t=443">07:23 Gemini 상장 디자인</a>
+<a href="https://youtu.be/1MMJMDsANrM?t=778">12:58 Claude Design 도입</a>
+<a href="https://youtu.be/1MMJMDsANrM?t=1633">27:13 미국 진출 실패 사례</a>
+<a href="https://youtu.be/1MMJMDsANrM?t=2003">33:23 토스의 핵심 가르침</a>
+<a href="https://youtu.be/1MMJMDsANrM?t=2424">40:24 마무리 조언</a>
+</div>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">2</div><div class="sec-title">인터뷰 구조 - 42분 인터뷰 5파트</div></div>
+<div class="grid-3">
+<div class="mini-card"><h4>Part 1 - 창업 여정</h4><p>토스 4년 → 우주고양이 보라(120만 가입, 20억 매출) → 동기 약화 → Else 창업. 미국 3개월 도전·복귀.</p><div class="motif">"한 10년 지난 것 같은데 아직 4년"</div></div>
+<div class="mini-card"><h4>Part 2 - AI 워크플로우 시연</h4><p>상장·스티커 굿즈: Gemini 초안 → Figma 마감. PRD → Claude Design → 클릭 가능 시안.</p><div class="motif">Plan Mode 트릭이 핵심</div></div>
+<div class="mini-card"><h4>Part 3 - AI 못 맡기는 영역</h4><p>화이트보드·포스트잇 사고. 핸드오프는 일부러 코믹산스. Heroes AI는 정량분석까지 흡수.</p><div class="motif">"머릿속 정리는 손으로"</div></div>
+<div class="mini-card"><h4>Part 4 - 망한 사례</h4><p>미국 진출 3개월. 기능 잔뜩 만들었지만 사용자 외면. 6월 2차 버전 = "결제도 빼고 가설만".</p><div class="motif">"기능 다 넣으면 다 망한다"</div></div>
+<div class="mini-card"><h4>Part 5 - 바이브 코더 피드백</h4><p>오모님(인스타툰 작가) 사례. Y Combinator "How to Talk to Users" + 인터뷰 10명 → 제품 급발전.</p><div class="motif">"유저를 만나라"</div></div>
+<div class="mini-card"><h4>Outro - 마지막 조언</h4><p>"나만의 길을 가라. 다 같이 가는 방향대로 안 가도 된다. 단, AI는 좀 배우는 게 좋다."</p><div class="motif">+ 책 출간 안내</div></div>
+</div>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">3</div><div class="sec-title">강영화의 AI 디자인 워크플로우 7단계</div></div>
+<ol class="step-list">
+<li><strong>컨셉 정의 (사람)</strong> - 사이즈·목적·타겟 정리. 예: "워킹홀리데이 맞춤 실전 영어 앱" PRD 작성</li>
+<li><strong>레퍼런스 수집 (사람)</strong> - 핀터레스트에서 "힙한 상장" 같은 분위기 이미지 큐레이션</li>
+<li><strong>구조 설계 (AI)</strong> - 핵심 트릭: <em>"이미지 만들지 말고 구성 계획만 텍스트로 짜줘"</em>. Claude Code의 Plan Mode를 디자인 워크플로우에 이식</li>
+<li><strong>시안 생성 (AI)</strong> - 텍스트 컨펌 후 "이 구성으로 이미지 만들어줘". Gemini는 영문 출력이 예쁨</li>
+<li><strong>디테일 마감 (사람)</strong> - Figma에서 영문 폰트 재배치(눈누·구글폰트), 벡터화, 인쇄소 호환 정제. 텍스트 분절 후 각 글자에 다른 폰트 적용</li>
+<li><strong>핸드오프 (사람)</strong> - 의도적으로 코믹산스/네모박스로 와이어프레임 작성. "인간 사고방식 극대화" (Amplitude 디자인 컨퍼런스 사례)</li>
+<li><strong>의사결정 (사람·팀)</strong> - 화이트보드·포스트잇으로 티키타카. 리모트보다 출근 선호. 대화에서 나오는 창의력 중시</li>
+</ol>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">4</div><div class="sec-title">AI 도구 스택 - 강영화가 실제로 쓰는 7가지</div></div>
+<table>
+<tr><th>도구</th><th>역할</th><th>특징·인용</th></tr>
+<tr><td><strong>Gemini</strong></td><td>일러스트·스티커 초안, 텍스트 분절 후 폰트 재배치</td><td>영문이 예쁘게 나옴. 핀터레스트 레퍼런스로 구조 분석</td></tr>
+<tr><td><strong>ChatGPT</strong></td><td>대화·문구·문화 컨텍스트 질문</td><td>"한국엔 도장이 있는데 여긴 없니?" 같은 문화 비교</td></tr>
+<tr><td><strong>Claude Chat UI</strong></td><td>일반 대화·기획</td><td>일상 사고 정리용</td></tr>
+<tr><td><strong>Claude Design</strong></td><td>PRD 입력 → 와이어프레임 → 클릭 가능한 하이파이 시안</td><td class="highlight">촬영 2~3주 전 출시 직후 도입. "AI 대체론"을 일부 수정하게 만든 도구</td></tr>
+<tr><td><strong>Claude Code</strong></td><td>코드 베이스 디자인, Plan Mode 활용</td><td>디자이너도 직접 사용</td></tr>
+<tr><td><strong>Figma</strong></td><td>최종 디자인 마감, 플로우차트, 벡터화</td><td>인쇄용 출력엔 필수. AI 초안 → 옮겨와 모듈식으로 재구성</td></tr>
+<tr><td><strong>Heroes AI</strong></td><td>팀 공용 사내 에이전트, 정량분석·크롤링·Amplitude 권한 부여</td><td>종전 크롤링·로그 분석 워크플로우를 거의 흡수</td></tr>
+</table>
+<div class="callout"><strong>플랜 모드 트릭 (3단계)</strong>: ① "이미지 만들지 말고 구성 계획만 텍스트로" → ② 컨펌 → ③ "이 구성으로 이미지 만들어줘". <em>바로 이미지를 뽑으면 마음에 안 드는 결과가 나온다는 경험에서 나온 디자이너용 Plan Mode.</em></div>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">5</div><div class="sec-title">PRD → 하이파이 시안 자동화 (Claude Design)</div></div>
+<div class="flow">
+<div class="flow-box human">PRD 텍스트<br>(워홀 맞춤 영어)</div>
+<span class="flow-arrow">→</span>
+<div class="flow-box human">Figma 와이어프레임<br>(초안 형태)</div>
+<span class="flow-arrow">→</span>
+<div class="flow-box">Claude Design<br>질문·생성</div>
+<span class="flow-arrow">→</span>
+<div class="flow-box">클릭 가능한<br>하이파이 시안</div>
+<span class="flow-arrow">→</span>
+<div class="flow-box human">Figma 플로우<br>+ 엔지니어 핸드오프</div>
+</div>
+<div class="callout"><strong>강영화 인용</strong> - "PRD에 자세한 내용은 안 넣었는데, 필요하다고 생각한 걸 알아서 구현해버려요. 바리스타·리테일·생존영어 메뉴를 각각 다 만들어서 채워 넣어 줘요. 다 클릭이 되고요. <strong>20분도 안 걸리는 시간에 모든 게 다 나온다</strong>."</div>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">6</div><div class="sec-title">AI 시대 디자이너 역량 - Before / After / 미래 (사람의 영역)</div></div>
+<table class="matrix-table">
+<tr><th>영역</th><th>Before (AI 이전)</th><th>After (AI 활용)</th><th>사람만의 영역</th></tr>
+<tr><td>초안 제작</td><td>수동 시간 투입</td><td>분 단위 자동 생성</td><td>-</td></tr>
+<tr><td>PRD → 하이파이</td><td>수일 소요</td><td class="highlight">20분 내 클릭 가능 시안</td><td>-</td></tr>
+<tr><td>정량 분석</td><td>크롤링·SQL 수동</td><td>Heroes AI가 Amplitude 자동 분석</td><td>-</td></tr>
+<tr><td>레퍼런스 분석</td><td>핀터레스트 수동 큐레이션</td><td>이미지+"구조 분석해줘" 한 번에</td><td>-</td></tr>
+<tr><td>핸드오프</td><td>정제된 Figma 시안</td><td>-</td><td class="highlight">의도적 코믹산스·네모박스</td></tr>
+<tr><td>의사결정</td><td>디자이너 머릿속</td><td>-</td><td class="highlight">화이트보드·포스트잇 손 사고</td></tr>
+<tr><td>디테일 마감</td><td>디자이너</td><td>-</td><td class="highlight">벡터화·폰트·인쇄 정제</td></tr>
+<tr><td>마케팅 콘텐츠</td><td>마케터</td><td>자동화 시도 → 실패</td><td class="highlight">감각·센싱·트렌드 포착</td></tr>
+<tr><td>학습지 큐레이션</td><td>사람</td><td>어드민 도구로 보조</td><td class="highlight">인간 지능 (Else 사례)</td></tr>
+<tr><td>사용자 인터뷰</td><td>디자이너</td><td>AI가 질문지 보조</td><td class="highlight">공감·관찰</td></tr>
+</table>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">7</div><div class="sec-title">전략적 의미 - "기능 더하기"에서 "기능 빼기"로</div></div>
+<div class="vs-split">
+<div class="vs-box before"><h4>1차 버전 - 작년 3~5월 미국 진출</h4>
+<ul>
+<li>기능 다수 탑재</li>
+<li>결제 시스템 포함</li>
+<li>3개월 풀 가동 개발</li>
+<li>퀄리티가 사용자 기대 미달</li>
+<li>사용자가 만족하지 않음 → 외면</li>
+<li><strong>"비싼 수업료" 결과</strong></li>
+</ul></div>
+<div class="vs-box after"><h4>2차 버전 - 6월, 2주 만에 제작</h4>
+<ul>
+<li>핵심 가설 검증만 남김</li>
+<li>결제 기능 제거</li>
+<li>더 빼고 가려는 시도</li>
+<li>사용자 행동 관찰 기반 개선</li>
+<li>매일 학습지 3개 - 인간 큐레이션</li>
+<li><strong>"덜 만들기"가 차별점</strong></li>
+</ul></div>
+</div>
+<div class="callout"><strong>토스에서 배운 핵심</strong> (33:23) - "제품을 만들 수 있다는 임팩트는 작다. 사용자가 이걸 불편하게 생각한다는 발견의 임팩트가 더 크다. <strong>볼 수 있는 눈은 사람만 가진다.</strong>"</div>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">8</div><div class="sec-title">활용 시나리오 4가지</div></div>
+<div class="grid-2">
+<div class="mini-card"><h4>시나리오 1 - 1인 창업가의 굿즈 제작</h4><p>핀터레스트 레퍼런스 + Gemini Plan Mode → 텍스트 컨펌 → 이미지 생성 → Figma에서 영문 폰트 재배치 → 벡터화 → 인쇄소 전송. 디자인 리소스 없는 팀도 "힙한 출력물" 제작 가능.</p></div>
+<div class="mini-card"><h4>시나리오 2 - 비디자이너 바이브 코더 (오모님)</h4><p>인스타툰 작가가 Claude Code로 인게이지랭크 도구 제작·사전판매 성공. 한계 부딪힘 → 강영화 처방: YC "How to Talk to Users" + 인터뷰 10명 → 제품이 급격히 디벨롭.</p></div>
+<div class="mini-card"><h4>시나리오 3 - Else 워홀 영어회화 앱</h4><p>PRD ("바리스타·리테일·생존영어") → Claude Design → 클릭 가능한 하이파이 시안. 학습지 큐레이션은 마케터가 어드민에서 직접. 사용자 인터뷰는 사람이 직접.</p></div>
+<div class="mini-card"><h4>시나리오 4 - 콘텐츠 자동화 포기</h4><p>Else 인스타 카드뉴스 AI 자동화 시도. 결과: 마케터의 감각이 빠지면 사용자에게 닿지 않음. <strong>프로젝트 포기</strong> - 감각 영역은 사람 유지.</p></div>
+</div>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">9</div><div class="sec-title">디자이너 생존 가설 - "당분간은 살아남는다"</div></div>
+<div class="grid-3">
+<div class="mini-card"><h4>이전 입장 (비관)</h4><p>"AI가 디자이너를 곧 대체하겠다." Claude Design 등장 이전엔 일반적 회의론.</p></div>
+<div class="mini-card"><h4>현재 입장 (수정)</h4><p>"언젠가는 가능하지만 당분간 아닐 것." Claude Design 시연 경험 후 일부 수정.</p></div>
+<div class="mini-card"><h4>Jenny Wen (Anthropic Head of Design) 인용</h4><p>"디자이너는 당분간 살아남는다. 단, 잘하는 사람과 열정 있는 주니어만 채용된다."</p></div>
+</div>
+<div class="metaphor"><strong>핵심</strong> - AI 기반 디자인이 큰 변화를 만든다는 건 의심의 여지가 없음. 다만 단기에는 "디자이너의 룸"이 남아있고, 그 룸을 채우는 건 <strong>공감력·마감 능력·의사결정 감각</strong>. 개발자가 1년 만에 거의 다 AI에게 코딩을 맡긴 것처럼, 디자인도 따라가지만 시점·범위가 다를 뿐이다.</div>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">10</div><div class="sec-title">사람만의 영역 - 왜 공감력인가</div></div>
+<div class="grid-2">
+<div class="mini-card"><h4>강영화의 진단</h4><p>"디지털 제품을 쓰는 건 결국 인간. 사람에 대한 이해가 얼마나 높은가가 성공을 결정한다. <strong>'딸각의 함정'</strong> - AI로 만들어지니까 도움이 될 것 같이 느껴지지만 실제로 사람들이 원하는 건 어느 정도 완성도 있는 제품·기능."</p></div>
+<div class="mini-card"><h4>바이브 코더에게 주는 처방</h4><p>"기능을 다 넣으면 다 망한다." 만들기 전 <strong>유저 10명 인터뷰</strong>. AI가 질문지를 만들어주니 진입 장벽이 매우 낮아짐. Y Combinator의 "how to talk to users" 영상이 입문 교과서.</p></div>
+<div class="mini-card"><h4>감각·센싱 키우는 방법</h4><p>"좋은 작품·앱을 많이 보고, <strong>왜 좋아했는지를 분석적으로 텍스트로 정리하라.</strong> 디테일하게 생각해보는 연습을 반복하라. 좋은 크리에이터의 글을 자주 읽어라."</p></div>
+<div class="mini-card"><h4>의사결정 과정의 문서화</h4><p>"디자이너의 의사결정 과정은 블러리(blurry)해서 텍스트로 변환이 안 되는 게 문제. <strong>완전히 텍스트로 변환할 수 있다면 오히려 AI가 더 잘 도울 수 있다</strong>는 역설."</p></div>
+</div>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">11</div><div class="sec-title">현황 및 전망</div></div>
+<table>
+<tr><th>시점</th><th>예상 변화</th><th>사람의 역할</th></tr>
+<tr><td>단기 (~1년)</td><td>디자이너 워크플로우 80%가 AI로 가속</td><td>마감·디테일·의사결정은 사람</td></tr>
+<tr><td>중기 (1~3년)</td><td>AI 기반 디자인의 큰 변화 (확실)</td><td>"룸"이 좁아지되 여전히 존재</td></tr>
+<tr><td>장기</td><td>"기능 추가" 자체의 임팩트 감소</td><td class="highlight">"사용자 공감"이 본질적 차별점</td></tr>
+</table>
+<div class="callout"><strong>강영화의 마무리 (40:24)</strong> - "이거 아닌 것 같다고 생각하면 그냥 안 해도 되고, 꼭 모든 사람이 간다는 방향대로 안 가도 된다. 그래도 된다. <strong>단, AI는 좀 배우시는 게 좋습니다.</strong>"</div>
+</section>
+
+<section class="section-card">
+<div class="section-header"><div class="sec-num">12</div><div class="sec-title">용어 사전</div></div>
+<table>
+<tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr>
+<tr><td>PRD</td><td>Product Requirements Document, 제품 요건 문서</td><td>건물 짓기 전 설계 요구사항서</td></tr>
+<tr><td>와이어프레임</td><td>구조만 보여주는 디자인 초안</td><td>집 도면의 골조 그림</td></tr>
+<tr><td>하이파이 시안</td><td>실제 제품에 가까운 정교한 시안</td><td>모델하우스 같은 미리보기</td></tr>
+<tr><td>핸드오프</td><td>디자인을 개발자에게 넘기는 단계</td><td>요리사가 서버에게 접시를 넘기는 순간</td></tr>
+<tr><td>Plan Mode</td><td>Claude Code의 사전 계획 모드</td><td>요리 전 레시피 정리</td></tr>
+<tr><td>바이브 코딩</td><td>코딩 지식 없이 AI와 대화로 제품 제작</td><td>셰프와 손님이 대화하며 즉흥 요리</td></tr>
+<tr><td>유닛 이코노믹스</td><td>고객 1명 단위 수익성 지표</td><td>사과 1개 팔 때 남는 마진</td></tr>
+<tr><td>트랙션</td><td>제품이 시장에서 반응 얻는 속도</td><td>입소문이 산불처럼 번지는 상태</td></tr>
+<tr><td>Heroes AI</td><td>강영화 팀이 쓰는 사내 AI 에이전트</td><td>팀의 만능 비서</td></tr>
+<tr><td>Amplitude</td><td>사용자 행동 분석 SaaS</td><td>가게 CCTV로 동선 보는 것</td></tr>
+<tr><td>Principal Designer</td><td>시니어보다 높은 디자인 직급</td><td>디자인 팀의 수석급</td></tr>
+<tr><td>Jenny Wen</td><td>Anthropic의 Head of Design</td><td>(인물명)</td></tr>
+<tr><td>워홀(워킹홀리데이)</td><td>해외에서 일하며 거주하는 비자</td><td>호주·캐나다 단기 취업 비자</td></tr>
+<tr><td>Y Combinator</td><td>미국 대표 스타트업 액셀러레이터</td><td>스타트업 사관학교</td></tr>
+<tr><td>how to talk to users</td><td>YC의 사용자 인터뷰 가이드 영상</td><td>인터뷰 입문 교과서</td></tr>
+<tr><td>코믹산스</td><td>일부러 캐주얼한 폰트</td><td>진지함을 빼기 위한 의도된 농담</td></tr>
+<tr><td>눈누</td><td>한국어 무료 폰트 큐레이션 사이트</td><td>폰트 도서관</td></tr>
+<tr><td>딸각의 함정</td><td>AI로 만들어지니 도움 될 듯 느껴지지만 실제론 사용 안 되는 함정</td><td>모형 도구를 진짜 도구로 착각</td></tr>
+</table>
+</section>
+
+<div class="footer">
+원본: <a href="https://youtu.be/1MMJMDsANrM">빌더 조쉬 - AI가 디자인+코드 다 만들어주는 시대, 토스 출신 디자이너는 '이것'을 더 강조하더라고요 (Else 강영화님)</a><br>
+강영화 저서: 『프로덕트 디자이너로 살아남기』<br>
+발행일: 2026-05-19 · 빌더 조쉬 채널
+</div>
+
+</div>
+</body></html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPS에서 Claude Code를 사용하는 건 정말 미친 짓입니다 | 비주얼 리포트</title>
+<style>
+:root{
+  --bg:#ffffff; --surface:#f5f5f5; --border:#e0e0e0;
+  --text:#1a1a1a; --muted:#666666;
+  --accent:#2d9162; --accent-mid:#52b788; --accent-light:#d8f0e3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;background:var(--bg);color:var(--text);line-height:1.65;font-size:15px}
+.wrap{max-width:960px;margin:0 auto;padding:24px}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-mid) 100%);color:#fff;border-radius:14px;padding:32px 28px;margin-bottom:28px}
+.hero h1{font-size:26px;font-weight:800;line-height:1.35;margin-bottom:10px}
+.hero .meta{font-size:13px;opacity:.9;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.stat{background:rgba(255,255,255,.16);border-radius:10px;padding:14px 10px;text-align:center;backdrop-filter:blur(4px)}
+.stat .v{font-size:22px;font-weight:800;display:block;line-height:1.1}
+.stat .l{font-size:11px;opacity:.92;margin-top:5px;display:block}
+
+/* Section */
+.section{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px}
+.section-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.num{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.section-head h2{font-size:19px;font-weight:700;color:var(--text)}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:14px}
+th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left;font-weight:600;font-size:13px}
+td{padding:10px 12px;border-top:1px solid var(--border);vertical-align:top}
+tr:nth-child(even) td{background:#fafbfa}
+
+/* Flow */
+.flow{display:flex;flex-direction:column;gap:10px}
+.flow-step{background:#fff;border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:8px;padding:14px 16px}
+.flow-step .t{font-weight:700;color:var(--accent);font-size:14px;margin-bottom:4px}
+.flow-step .d{font-size:14px;color:var(--text)}
+
+/* Grid cards */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px}
+.card .ct{font-weight:700;color:var(--accent);font-size:14px;margin-bottom:6px}
+.card .cb{font-size:14px;color:var(--text)}
+
+/* Bullets */
+ul.clean{list-style:none;padding-left:0}
+ul.clean li{position:relative;padding-left:18px;margin-bottom:8px;font-size:14px}
+ul.clean li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;background:var(--accent);border-radius:50%}
+
+/* Pill */
+.pill{display:inline-block;background:var(--accent-light);color:var(--accent);padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;margin-right:4px}
+
+/* Footer */
+.footer{text-align:center;padding:24px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);margin-top:24px}
+.footer a{color:var(--accent);text-decoration:none;font-weight:600}
+
+/* Responsive */
+@media (max-width:760px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:1fr}
+  .hero h1{font-size:21px}
+  table{font-size:12.5px}
+  th,td{padding:8px}
+}
+@media (max-width:480px){
+  .wrap{padding:14px}
+  .stats{grid-template-columns:1fr}
+  .section{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>VPS에서 Claude Code를 사용하는 건 정말 미친 짓입니다<br>전체 설정 및 워크플로우</h1>
+    <div class="meta">Astro K Joseph · 2026-05-19 · 영상 길이 9:13</div>
+    <div class="stats">
+      <div class="stat"><span class="v">5분</span><span class="l">셋업 소요 시간</span></div>
+      <div class="stat"><span class="v">24/7</span><span class="l">VPS 가동</span></div>
+      <div class="stat"><span class="v">10%</span><span class="l">쿠폰 Astro 할인</span></div>
+      <div class="stat"><span class="v">386줄</span><span class="l">자동 생성 스크립트</span></div>
+    </div>
+  </div>
+
+  <!-- 1. 핵심 개요 -->
+  <div class="section">
+    <div class="section-head"><div class="num">01</div><h2>핵심 개요</h2></div>
+    <table>
+      <tr><th style="width:30%">항목</th><th>내용</th></tr>
+      <tr><td>주제</td><td>Claude Code를 로컬 노트북이 아닌 VPS(가상 서버)에 설치해 24/7 실행하는 워크플로우</td></tr>
+      <tr><td>발표자</td><td>Astro K Joseph (YouTube 채널)</td></tr>
+      <tr><td>모티브</td><td>Peter Levels의 X 스레드 — VPS 위 Claude Code를 폰에서 제어</td></tr>
+      <tr><td>추천 인프라</td><td>Hostinger VPS · KVM 1/2/4/8 · 원클릭 Claude Code 템플릿</td></tr>
+      <tr><td>전제 조건</td><td>Claude Code 구독 + VPS 1대</td></tr>
+      <tr><td>핵심 가치</td><td>노트북 OFF 상태에서도 폰만으로 백그라운드 코딩·크론잡 가능</td></tr>
+    </table>
+  </div>
+
+  <!-- 2. 핵심 워크플로우 구조 -->
+  <div class="section">
+    <div class="section-head"><div class="num">02</div><h2>핵심 워크플로우 구조 (5단계)</h2></div>
+    <div class="flow">
+      <div class="flow-step"><div class="t">STEP 1 · 플랜 선택</div><div class="d">Hostinger 가입 → KVM 2 플랜 + 12개월 · 무료 도메인 1년 · 쿠폰 "Astro"로 10% 할인.</div></div>
+      <div class="flow-step"><div class="t">STEP 2 · 원클릭 템플릿</div><div class="d">애플리케이션 선택 화면에서 "Claude Code" 체크 → 결제 시점에 사전 설치 완료.</div></div>
+      <div class="flow-step"><div class="t">STEP 3 · 터미널 접속</div><div class="d">hPanel의 Terminal 버튼(웹 터미널) 또는 SSH로 접속. <code>claude --version</code> → 2.1.143 확인.</div></div>
+      <div class="flow-step"><div class="t">STEP 4 · 헤드리스 인증</div><div class="d">터미널이 보여주는 인증 URL을 로컬 브라우저에 붙여넣기 → Authorize → 발급된 코드를 다시 터미널에 붙여 넣어 페어링.</div></div>
+      <div class="flow-step"><div class="t">STEP 5 · 실행 & 모델 전환</div><div class="d"><code>claude</code> 실행 → <code>/model</code> 명령으로 Sonnet 4.6 ↔ Opus 4.7 전환 → 프롬프트 입력.</div></div>
+    </div>
+    <div style="margin-top:14px;font-size:13px;color:var(--muted)">데모 1: <a href="https://youtu.be/VYzw7WaSHC8?t=300" style="color:var(--accent)">[05:00]</a> 터미널 날씨 대시보드 (386 라인 bash) · 데모 2: <a href="https://youtu.be/VYzw7WaSHC8?t=456" style="color:var(--accent)">[07:36]</a> 포트폴리오 페이지 HTTPS 공개 URL 자동 발급</div>
+  </div>
+
+  <!-- 3. 기술적 맥락 -->
+  <div class="section">
+    <div class="section-head"><div class="num">03</div><h2>기술적 맥락</h2></div>
+    <table>
+      <tr><th style="width:32%">구성요소</th><th>설명</th></tr>
+      <tr><td>VPS (Virtual Private Server)</td><td>클라우드 위 24/7 가상 머신, 사용자당 독립 OS 환경</td></tr>
+      <tr><td>KVM 가상화</td><td>리눅스 표준 하드웨어 가상화. KVM 1/2/4/8은 vCPU·RAM 등급</td></tr>
+      <tr><td>원클릭 템플릿</td><td>VPS 생성 시 Claude Code가 사전 설치된 이미지</td></tr>
+      <tr><td>Claude Code</td><td>Anthropic의 터미널 기반 AI 코딩 에이전트, 파일 생성·명령 실행 직접 수행</td></tr>
+      <tr><td>Sonnet 4.6 / Opus 4.7</td><td>Claude 모델 등급, <code>/model</code>로 전환 (Opus가 상위)</td></tr>
+      <tr><td>Termux</td><td>안드로이드 리눅스 터미널 — 폰에서 VPS SSH 접속용</td></tr>
+      <tr><td>root 실행 주의</td><td>영상은 시연 편의로 root 사용 — 운영 시 user + sudo 권장</td></tr>
+    </table>
+  </div>
+
+  <!-- 4. 전략적 의미 -->
+  <div class="section">
+    <div class="section-head"><div class="num">04</div><h2>전략적 의미</h2></div>
+    <div class="grid">
+      <div class="card"><div class="ct">로컬 의존 탈피</div><div class="cb">노트북 전원·네트워크에 더 이상 묶이지 않음. 비행 중에도 폰만으로 코드 작업.</div></div>
+      <div class="card"><div class="ct">백그라운드 작업의 일상화</div><div class="cb">긴 빌드·테스트·스크래핑·크론잡을 VPS의 Claude 세션이 대신 끌고 간다.</div></div>
+      <div class="card"><div class="ct">입력기 vs 컴퓨팅 분리</div><div class="cb">폰/태블릿(입력기) + VPS(연산) — 모바일 우선 개발 워크플로우의 시작점.</div></div>
+      <div class="card"><div class="ct">에이전트 호스팅 카테고리</div><div class="cb">클라우드 IDE가 아닌 "AI 에이전트 자체를 호스팅"하는 새로운 인프라 영역.</div></div>
+      <div class="card"><div class="ct">비용 구조 단순화</div><div class="cb">월정액 VPS + Claude 구독 두 가지로 끝. AWS 종량제 학습곡선 불필요.</div></div>
+      <div class="card"><div class="ct">리스크</div><div class="cb">AI가 임의로 외부 공개 URL을 발급하는 행위는 보안·비용 폭발 위험. 영상 발표자도 경고.</div></div>
+    </div>
+  </div>
+
+  <!-- 5. 비교표 -->
+  <div class="section">
+    <div class="section-head"><div class="num">05</div><h2>로컬 vs VPS vs 클라우드 IDE</h2></div>
+    <table>
+      <tr><th>항목</th><th>로컬 노트북</th><th>VPS + Claude Code</th><th>클라우드 IDE</th></tr>
+      <tr><td>가용성</td><td>노트북 ON 시에만</td><td>24/7 상시 가동</td><td>세션 동안만</td></tr>
+      <tr><td>비용 구조</td><td>하드웨어 + 전기</td><td>월정액 VPS + 구독</td><td>사용 시간 과금</td></tr>
+      <tr><td>폰에서 제어</td><td>사실상 불가</td><td>SSH/Termux 즉시 가능</td><td>웹 IDE로 부분 가능</td></tr>
+      <tr><td>백그라운드 작업</td><td>OFF 시 중단</td><td>끊김 없음</td><td>휴면 시 중단</td></tr>
+      <tr><td>AI 에이전트 호스팅</td><td>OFF 시 중단</td><td>핵심 강점</td><td>대화 단위만 제한적</td></tr>
+      <tr><td>외부 포트 노출</td><td>NAT 우회 필요</td><td>즉시 가능 (공인 IP)</td><td>자동 터널</td></tr>
+      <tr><td>진입 장벽</td><td>낮음</td><td>중간 (SSH·sudo)</td><td>낮음</td></tr>
+    </table>
+  </div>
+
+  <!-- 6. 활용 시나리오 -->
+  <div class="section">
+    <div class="section-head"><div class="num">06</div><h2>활용 시나리오</h2></div>
+    <div class="grid">
+      <div class="card"><div class="ct">A · 출장 중 폰으로 핫픽스</div><div class="cb">공항에서 GitHub 이슈 발견 → Termux로 VPS SSH → "이 리포 클론해서 X 버그 고치고 PR 올려" 한 줄로 처리.</div></div>
+      <div class="card"><div class="ct">B · 24시간 데이터 수집 봇</div><div class="cb">VPS에 Claude Code 상주 + 크론으로 매일 새벽 3시 뉴스 크롤링·요약·텔레그램 알림. 노트북 OFF 무관.</div></div>
+      <div class="card"><div class="ct">C · 프로토타입 즉시 공유</div><div class="cb">"포트폴리오 만들고 인터넷에 공개해줘" → HTTPS URL 자동 발급 → 클라이언트 공유. ngrok 셋업 불필요(단, 보안 검토 필수).</div></div>
+      <div class="card"><div class="ct">D · 팀 공용 AI 게이트웨이</div><div class="cb">팀 VPS에 Claude Code + 표준 도구·MCP 사전 구성 → 모든 팀원이 동일 컨텍스트로 작업.</div></div>
+    </div>
+  </div>
+
+  <!-- 7. 현황 및 전망 -->
+  <div class="section">
+    <div class="section-head"><div class="num">07</div><h2>현황 및 전망</h2></div>
+    <ul class="clean">
+      <li><span class="pill">현황</span> Hostinger가 Claude Code 원클릭 템플릿 공식 제공 — VPS 업체들이 AI 에이전트 호스팅을 마케팅 포인트로 채택.</li>
+      <li><span class="pill">확산 신호</span> Peter Levels(@levelsio) 등 인플루언서가 "노트북 없는 코딩" 워크플로우를 X에서 시연 → 모방 확산.</li>
+      <li><span class="pill">전망 1</span> 에이전트 친화 OS 이미지가 별도 카테고리로 성장 가능.</li>
+      <li><span class="pill">전망 2</span> 폰 + VPS 조합이 코딩 신규 진입자의 표준 환경이 될 가능성 (특히 신흥국).</li>
+      <li><span class="pill">전망 3</span> AI의 자율 포트 개방·공개 URL 발급에 대응한 권한 가드레일·감사 로그가 필수 인프라화.</li>
+      <li><span class="pill">주의</span> root 실행, 자동 공개 URL 발급 같은 시연 패턴을 운영에 그대로 옮기면 위험.</li>
+    </ul>
+  </div>
+
+  <!-- 8. 용어 사전 -->
+  <div class="section">
+    <div class="section-head"><div class="num">08</div><h2>용어 사전</h2></div>
+    <table>
+      <tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr>
+      <tr><td>VPS</td><td>클라우드에서 1인용으로 빌리는 가상 서버</td><td>공유 사무실의 독립 부스를 월세로 빌리는 것</td></tr>
+      <tr><td>Claude Code</td><td>터미널에서 동작하는 Anthropic의 AI 코딩 에이전트</td><td>옆자리에 앉아 명령을 받는 신입 개발자</td></tr>
+      <tr><td>KVM</td><td>리눅스 표준 하드웨어 가상화 기술</td><td>한 건물에 완전 독립된 객실들을 만드는 골조</td></tr>
+      <tr><td>Hostinger</td><td>저가형 호스팅·VPS 업체</td><td>인터넷판 임대 부동산 중개소</td></tr>
+      <tr><td>SSH</td><td>원격 서버에 암호화 터미널 접속을 여는 프로토콜</td><td>멀리 있는 컴퓨터 키보드를 안전한 케이블로 끌어오는 것</td></tr>
+      <tr><td>Sonnet 4.6 / Opus 4.7</td><td>Claude의 모델 등급 (Opus가 상위)</td><td>같은 모델의 일반형 vs 프리미엄 트림</td></tr>
+      <tr><td>/model 커맨드</td><td>Claude Code에서 모델을 즉시 전환하는 슬래시 명령</td><td>자동차 주행 모드(에코/스포츠) 토글</td></tr>
+      <tr><td>Termux</td><td>안드로이드에서 동작하는 리눅스 터미널 앱</td><td>폰 안의 미니 리눅스 콘솔</td></tr>
+      <tr><td>root</td><td>시스템 전체 권한의 최고 관리자 계정</td><td>건물 마스터 키 — 분실 시 전체 위험</td></tr>
+      <tr><td>크론잡</td><td>정해진 시간에 자동 실행되는 예약 작업</td><td>매일 아침 7시 알람 시계</td></tr>
+      <tr><td>원클릭 템플릿</td><td>OS와 앱이 미리 설치된 VPS 이미지</td><td>풀옵션 원룸</td></tr>
+      <tr><td>Peter Levels</td><td>1인 개발자 인플루언서, 모바일 코딩 전도사</td><td>노트북 없는 디지털 노마드의 상징</td></tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    출처: <a href="https://youtu.be/VYzw7WaSHC8" target="_blank">VPS에서 Claude Code를 사용하는 건 정말 미친 짓입니다 | 전체 설정 및 워크플로우</a><br>
+    채널: Astro K Joseph · 영상 길이 9:13 · 정리 2026-05-19
+  </div>
+
+</div>
+</body>
+</html>
