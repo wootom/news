@@ -12,6 +12,7 @@
     --text-muted: #666666;
     --accent: #004D40;
     --border: #EEEEEE;
+    --danger: #C53030;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -64,6 +65,113 @@
     text-decoration: none;
   }
   .item a:hover { color: var(--accent); }
+
+  /* --- toolbar (search + edit toggle) --- */
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .search-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.15s;
+    min-width: 0;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .count-pill {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .edit-toggle {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .edit-toggle.active {
+    color: #fff;
+    background: var(--danger);
+    border-color: var(--danger);
+  }
+
+  /* --- per-item delete button + hidden state --- */
+  .item a { flex: 1; }
+  .delete-btn {
+    display: none;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .delete-btn:hover { background: rgba(197, 48, 48, 0.1); }
+  body.edit-mode .delete-btn { display: inline-block; }
+  .item.hidden { display: none; }
+
+  .empty {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 40px 0;
+    display: none;
+  }
+  .empty.show { display: block; }
+
+  /* --- floating panel for download / undo --- */
+  .floating-panel {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-primary);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    display: none;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+    font-size: 13px;
+    max-width: calc(100% - 32px);
+  }
+  .floating-panel.show { display: flex; }
+  .floating-panel button {
+    background: #fff;
+    color: var(--text-primary);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .floating-panel button.secondary {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
 </style>
 </head>
 <body>
@@ -73,7 +181,30 @@
     <p>AI 동향 분석 비주얼 리포트 모음 — 최신 순 정렬</p>
   </div>
 
+  <div class="toolbar">
+    <input type="search" class="search-input" id="search" placeholder="제목·날짜 검색 ( / 키로 포커스, ESC 초기화 )" autocomplete="off">
+    <span class="count-pill" id="count"></span>
+    <button class="edit-toggle" id="editToggle" title="삭제 모드 켜기/끄기">관리</button>
+  </div>
 
+  <p class="empty" id="empty">일치하는 항목이 없습니다.</p>
+
+<div class="item">
+  <span class="date-pill">2026-05-20</span>
+  <a href="./2026-05-20-nvidia-photonics-ai-interconnect.html">엔비디아 광통신 투자 — AI 서버의 진짜 병목은 칩 사이에 있다</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-20</span>
+  <a href="./2026-05-20-minicpm-v4-6-vision-model.html">Astro K Joseph — MiniCPM-V 4.6: 클라우드 없이 스마트폰에서 돌아가는 초경량 비전 AI</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-20</span>
+  <a href="./2026-05-20-paperclip-hermes-multi-agent.html">단테랩스 — PaperClip × Hermes × Codex 멀티 에이전트 운영 노하우</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-20</span>
+  <a href="./2026-05-20-genspark-claw-agent-system.html">오후다섯씨 — Genspark Claw로 AI 에이전트 3총사 24시간 자동 지식 시스템 구축</a>
+</div>
 <div class="item">
   <span class="date-pill">2026-05-20</span>
   <a href="./2026-05-20-nvidia-photonics-ai-interconnect.html">엔비디아 광통신 투자 — AI 서버의 진짜 병목은 칩 사이에 있다</a>
@@ -314,5 +445,138 @@
   </div>
 
 </div>
+
+<div class="floating-panel" id="panel">
+  <span id="panelText">0개 항목 삭제됨</span>
+  <button id="downloadBtn">정리된 index.html 다운로드</button>
+  <button class="secondary" id="undoBtn">되돌리기</button>
+</div>
+
+<script>
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  const searchEl = $('#search');
+  const countEl = $('#count');
+  const emptyEl = $('#empty');
+  const editToggle = $('#editToggle');
+  const panel = $('#panel');
+  const panelText = $('#panelText');
+  const downloadBtn = $('#downloadBtn');
+  const undoBtn = $('#undoBtn');
+
+  let items = $$('.item');
+  const removed = []; // {node, parent, nextSibling}
+
+  function injectDeleteButtons() {
+    items.forEach((item) => {
+      if (item.querySelector('.delete-btn')) return;
+      const btn = document.createElement('button');
+      btn.className = 'delete-btn';
+      btn.type = 'button';
+      btn.title = '이 항목 삭제';
+      btn.setAttribute('aria-label', '항목 삭제');
+      btn.textContent = '×';
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        removeItem(item);
+      });
+      item.appendChild(btn);
+    });
+  }
+
+  function removeItem(item) {
+    removed.push({ node: item, parent: item.parentNode, nextSibling: item.nextSibling });
+    item.remove();
+    items = items.filter((i) => i !== item);
+    updateCount();
+    updatePanel();
+  }
+
+  function undoLast() {
+    const last = removed.pop();
+    if (!last) return;
+    last.parent.insertBefore(last.node, last.nextSibling);
+    items.push(last.node);
+    updateCount();
+    updatePanel();
+  }
+
+  function updateCount() {
+    const total = items.length;
+    const visible = items.filter((i) => !i.classList.contains('hidden')).length;
+    countEl.textContent = visible === total ? `${total}건` : `${visible}/${total}건`;
+    emptyEl.classList.toggle('show', total > 0 && visible === 0);
+  }
+
+  function updatePanel() {
+    if (removed.length === 0) {
+      panel.classList.remove('show');
+    } else {
+      panel.classList.add('show');
+      panelText.textContent = `${removed.length}개 항목 삭제 대기`;
+    }
+  }
+
+  function applyFilter() {
+    const q = searchEl.value.trim().toLowerCase();
+    items.forEach((item) => {
+      const text = item.textContent.toLowerCase();
+      item.classList.toggle('hidden', q !== '' && !text.includes(q));
+    });
+    updateCount();
+  }
+
+  function downloadCleaned() {
+    const clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll('.delete-btn').forEach((b) => b.remove());
+    clone.querySelectorAll('.item.hidden').forEach((i) => i.classList.remove('hidden'));
+    const sInput = clone.querySelector('#search');
+    if (sInput) sInput.value = '';
+    const eToggle = clone.querySelector('#editToggle');
+    if (eToggle) eToggle.classList.remove('active');
+    const body = clone.querySelector('body');
+    if (body) body.classList.remove('edit-mode');
+    const panelClone = clone.querySelector('#panel');
+    if (panelClone) panelClone.classList.remove('show');
+    const emptyClone = clone.querySelector('#empty');
+    if (emptyClone) emptyClone.classList.remove('show');
+
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'index.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  searchEl.addEventListener('input', applyFilter);
+  searchEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { searchEl.value = ''; applyFilter(); searchEl.blur(); }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== searchEl && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      searchEl.focus();
+      searchEl.select();
+    }
+  });
+  editToggle.addEventListener('click', () => {
+    document.body.classList.toggle('edit-mode');
+    editToggle.classList.toggle('active');
+  });
+  downloadBtn.addEventListener('click', downloadCleaned);
+  undoBtn.addEventListener('click', undoLast);
+
+  injectDeleteButtons();
+  updateCount();
+})();
+</script>
 </body>
 </html>
