@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>xbot — 현재 형상 인트로 덱</title>
+
+<!-- Fonts: IBM Plex Sans KR (한글·기술 느낌) + JetBrains Mono (ID·코드·경로) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================================
+   THEME — 모노톤 그래파이트 + 녹색 포인트
+   :root 변수만 바꾸면 전체 룩이 바뀝니다.
+   =========================================== */
+:root {
+    --bg:        #0b0d0c;   /* 거의 검정, 살짝 녹색기 도는 차콜 */
+    --bg-2:      #101312;
+    --panel:     #14181600; /* 카드 base (보더로 표현) */
+    --panel-fill:#131715;
+    --line:      #242a27;   /* 1px 구분선 */
+    --line-soft: #1b201e;
+    --text:      #e9efec;
+    --text-dim:  #8b948e;
+    --text-mute: #5f6863;
+    --accent:    #22c55e;   /* 포인트 녹색 */
+    --accent-2:  #16a34a;
+    --accent-soft: rgba(34,197,94,.12);
+    --accent-line: rgba(34,197,94,.35);
+
+    --font-sans: 'IBM Plex Sans KR', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Typography (clamp 필수) */
+    --title-size:   clamp(2rem, 6vw, 4.6rem);
+    --h2-size:      clamp(1.2rem, 3vw, 2.3rem);
+    --kicker-size:  clamp(0.6rem, 0.95vw, 0.78rem);
+    --body-size:    clamp(0.72rem, 1.15vw, 0.98rem);
+    --small-size:   clamp(0.6rem, 0.9vw, 0.8rem);
+    --mono-size:    clamp(0.62rem, 0.92vw, 0.82rem);
+
+    --slide-padding: clamp(1.2rem, 3.5vw, 3.4rem);
+    --content-gap:   clamp(0.6rem, 1.6vw, 1.4rem);
+    --element-gap:   clamp(0.3rem, 0.9vw, 0.8rem);
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur: 0.65s;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* --- viewport-base.css (필수, 전체 포함) --- */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.slide {
+    width: 100vw; height: 100vh; height: 100dvh;
+    overflow: hidden; scroll-snap-align: start;
+    display: flex; flex-direction: column; position: relative;
+}
+.slide-content {
+    flex: 1; display: flex; flex-direction: column; justify-content: center;
+    max-height: 100%; overflow: hidden; padding: var(--slide-padding);
+}
+.card, .container, .content-box { max-width: min(94vw, 1180px); }
+.grid { display: grid; gap: clamp(0.5rem, 1.5vw, 1rem); }
+img { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+@media (max-height: 700px){ :root{ --slide-padding: clamp(1rem,3vw,2rem); --h2-size: clamp(1.1rem,2.6vw,1.8rem);} }
+@media (max-height: 600px){ :root{ --slide-padding: clamp(0.7rem,2.5vw,1.5rem);} .nav-dots,.kbd-hint,.decorative{display:none;} }
+@media (max-height: 500px){ :root{ --title-size: clamp(1.2rem,4vw,2rem); --body-size: clamp(0.62rem,1vw,0.8rem);} }
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{ animation-duration:.01ms!important; transition-duration:.2s!important;} html{scroll-behavior:auto;} }
+
+/* ===========================================
+   BASE
+   =========================================== */
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+}
+/* 분위기: 좌상단 녹색 글로우 + 미세 도트 그리드 */
+.slide::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background:
+        radial-gradient(60vw 50vh at 8% -5%, rgba(34,197,94,.10), transparent 60%),
+        linear-gradient(var(--bg), var(--bg-2));
+}
+.slide::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: .5;
+    background-image: radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+            mask-image: linear-gradient(180deg, transparent, #000 30%, #000 70%, transparent);
+}
+.slide-content { position: relative; z-index: 1; }
+
+/* ===========================================
+   공통 컴포넌트
+   =========================================== */
+.kicker {
+    font-family: var(--font-mono);
+    font-size: var(--kicker-size);
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--accent); display: inline-flex; align-items: center; gap: .55em;
+    margin-bottom: clamp(.5rem,1.4vh,1rem);
+}
+.kicker::before { content: ""; width: 1.6em; height: 2px; background: var(--accent); display: inline-block; }
+
+h2.title {
+    font-size: var(--h2-size); font-weight: 600; line-height: 1.12; letter-spacing: -.01em;
+    padding-left: clamp(.6rem,1.2vw,1rem);
+    border-left: 3px solid var(--accent);
+    margin-bottom: clamp(.6rem,1.6vh,1.3rem);
+}
+h2.title small { display:block; font-family: var(--font-sans); font-weight:400; font-size: var(--small-size); color: var(--text-dim); letter-spacing:0; margin-top:.35em; }
+
+.lead { color: var(--text-dim); font-size: var(--body-size); line-height: 1.55; max-width: 70ch; }
+
+.mono { font-family: var(--font-mono); }
+.g { color: var(--accent); }
+.dim { color: var(--text-dim); }
+.tag-mono {
+    font-family: var(--font-mono); font-size: var(--mono-size);
+    background: var(--accent-soft); color: var(--accent);
+    border: 1px solid var(--accent-line); border-radius: 5px;
+    padding: .1em .5em; white-space: nowrap;
+}
+
+/* 카드 그리드 */
+.cards { display: grid; gap: clamp(.5rem,1.1vw,.85rem); }
+.card-i {
+    border: 1px solid var(--line); border-radius: 12px; background: var(--panel-fill);
+    padding: clamp(.7rem,1.5vw,1.15rem);
+    display: flex; flex-direction: column; gap: .35rem;
+    transition: border-color .3s var(--ease), transform .3s var(--ease), background .3s;
+}
+.card-i:hover { border-color: var(--accent-line); transform: translateY(-3px); background: #161b18; }
+.card-i .ct { font-family: var(--font-mono); font-size: var(--small-size); color: var(--accent); letter-spacing:.04em; }
+.card-i .ch { font-weight: 600; font-size: var(--body-size); }
+.card-i .cd { font-size: var(--small-size); color: var(--text-dim); line-height: 1.45; }
+
+/* 데이터 테이블 (고밀도) */
+.tbl { width: 100%; border-collapse: collapse; font-size: var(--small-size); }
+.tbl th { text-align: left; font-family: var(--font-mono); font-weight: 500; text-transform: uppercase;
+    letter-spacing: .08em; font-size: var(--mono-size); color: var(--text-mute);
+    padding: .45em .7em; border-bottom: 1px solid var(--line); }
+.tbl td { padding: .42em .7em; border-bottom: 1px solid var(--line-soft); color: var(--text); vertical-align: top; line-height: 1.4; }
+.tbl tr:hover td { background: rgba(34,197,94,.05); }
+.tbl td.m, .tbl th.m { font-family: var(--font-mono); color: var(--text-dim); }
+.tbl td .pill { font-family: var(--font-mono); font-size: var(--mono-size); color: var(--accent); }
+
+/* 흐름 다이어그램 박스 */
+.flow { display: flex; flex-direction: column; gap: .5rem; font-size: var(--small-size); }
+.frow { display: flex; align-items: stretch; gap: .55rem; flex-wrap: wrap; }
+.fbox {
+    border: 1px solid var(--line); border-radius: 10px; background: var(--panel-fill);
+    padding: clamp(.5rem,1vw,.8rem) clamp(.6rem,1.2vw,1rem); flex: 1; min-width: 0;
+}
+.fbox.accent { border-color: var(--accent-line); background: var(--accent-soft); }
+.fbox .fl { font-family: var(--font-mono); font-size: var(--mono-size); color: var(--accent); letter-spacing:.05em; }
+.fbox .ft { font-weight: 600; margin-top: .15rem; }
+.fbox .fs { color: var(--text-dim); font-size: var(--mono-size); margin-top: .15rem; }
+.fdown { color: var(--accent); text-align: center; font-family: var(--font-mono); font-size: .9em; line-height: 1; }
+
+/* 2단 레이아웃 */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(.7rem,2vw,1.6rem); align-items: start; }
+@media (max-width: 760px){ .two { grid-template-columns: 1fr; } }
+
+.panel { border: 1px solid var(--line); border-radius: 12px; padding: clamp(.7rem,1.5vw,1.1rem); background: var(--panel-fill); }
+.panel h3 { font-size: var(--body-size); font-weight: 600; margin-bottom: .5rem; display:flex; align-items:center; gap:.5em; }
+.panel h3 .dot { width:7px;height:7px;border-radius:50%;background:var(--accent); }
+
+.list { list-style: none; display: flex; flex-direction: column; gap: clamp(.28rem,.9vh,.6rem); }
+.list li { font-size: var(--small-size); color: var(--text); line-height: 1.45; padding-left: 1.1em; position: relative; }
+.list li::before { content: "▍"; color: var(--accent); position: absolute; left: 0; font-size: .85em; }
+.list li b { color: var(--text); font-weight: 600; }
+.list li .dim { color: var(--text-dim); }
+
+/* 모델 3층 */
+.layers { display: flex; flex-direction: column; gap: clamp(.5rem,1.3vw,.9rem); }
+.layer { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center;
+    border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: 11px;
+    padding: clamp(.6rem,1.3vw,1rem) clamp(.7rem,1.5vw,1.2rem); background: var(--panel-fill); }
+.layer.main { border-left-color: var(--accent); }
+.layer.fb1  { border-left-color: var(--accent-2); }
+.layer.fb2  { border-left-color: var(--text-mute); }
+.layer .lnum { font-family: var(--font-mono); font-size: clamp(1.1rem,2.6vw,1.9rem); color: var(--accent); font-weight: 700; line-height:1; }
+.layer .lbody .lh { font-weight: 600; font-size: var(--body-size); }
+.layer .lbody .ls { font-size: var(--small-size); color: var(--text-dim); margin-top:.15rem; }
+.layer .lmodel { font-family: var(--font-mono); font-size: var(--mono-size); color: var(--accent); text-align: right; white-space: nowrap; }
+@media (max-width:700px){ .layer{ grid-template-columns:auto 1fr; } .layer .lmodel{ grid-column:1/-1; text-align:left; } }
+
+/* 전체 아키텍처 — 계층 밴드 + 컴포넌트 칩 */
+.arch { display: flex; flex-direction: column; gap: clamp(.28rem,.7vh,.55rem); }
+.band { display: grid; grid-template-columns: clamp(64px,8vw,108px) 1fr; align-items: center; gap: clamp(.5rem,1.2vw,.9rem);
+    border: 1px solid var(--line); border-radius: 11px; background: var(--panel-fill);
+    padding: clamp(.4rem,.9vw,.72rem) clamp(.55rem,1.1vw,.95rem); transition: border-color .3s var(--ease); }
+.band:hover { border-color: var(--accent-line); }
+.band.brain { border-color: var(--accent-line); background: var(--accent-soft); }
+.band .blab { font-family: var(--font-mono); font-size: var(--mono-size); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); line-height: 1.2; }
+.band .blab small { display: block; color: var(--text-mute); letter-spacing: 0; font-size: .82em; }
+.band .bchips { display: flex; flex-wrap: wrap; gap: clamp(.3rem,.7vw,.45rem); }
+.chip { font-size: var(--small-size); border: 1px solid var(--line); border-radius: 7px; padding: .16em .55em;
+    background: var(--bg-2); color: var(--text); white-space: nowrap; }
+.chip b { font-weight: 600; }
+.chip .port { font-family: var(--font-mono); color: var(--accent); font-size: var(--mono-size); }
+.chip.lead-chip { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.arch-sep { text-align: center; color: var(--accent); font-family: var(--font-mono); font-size: .8em; line-height: .5; opacity: .8; }
+@media (max-width:700px){ .band{ grid-template-columns: 1fr; gap:.3rem; } }
+
+/* 통계/뱃지 행 */
+.stats { display: flex; gap: clamp(.6rem,2vw,1.6rem); flex-wrap: wrap; }
+.stat { display: flex; flex-direction: column; }
+.stat .sv { font-family: var(--font-mono); font-weight: 700; font-size: clamp(1.2rem,3vw,2.2rem); color: var(--accent); line-height: 1; }
+.stat .sl { font-size: var(--small-size); color: var(--text-dim); margin-top: .35rem; letter-spacing:.02em; }
+
+/* ===========================================
+   타이틀 슬라이드
+   =========================================== */
+.title-slide .slide-content { justify-content: center; }
+.brand-mark { display:flex; align-items:center; gap:.6rem; margin-bottom: clamp(1rem,3vh,2rem); }
+.brand-mark .pdot { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 var(--accent-line); animation: pulse 2.4s infinite; }
+.brand-mark .wm { font-family: var(--font-mono); letter-spacing: .3em; text-transform: uppercase; font-size: var(--kicker-size); color: var(--text-dim); }
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,.5);} 70%{box-shadow:0 0 0 12px rgba(34,197,94,0);} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0);} }
+.title-slide h1 { font-size: var(--title-size); font-weight: 700; line-height: .98; letter-spacing: -.03em; }
+.title-slide h1 .accent { color: var(--accent); }
+.title-slide .sub { margin-top: clamp(.8rem,2vh,1.4rem); font-size: clamp(.9rem,1.8vw,1.4rem); color: var(--text); font-weight: 300; }
+.title-slide .meta { margin-top: clamp(1.2rem,3vh,2.2rem); display:flex; gap:.6rem; flex-wrap:wrap; }
+
+/* ===========================================
+   ANIMATION — .visible 토글로 트리거
+   =========================================== */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.slide.visible .reveal:nth-child(1){transition-delay:.05s;}
+.slide.visible .reveal:nth-child(2){transition-delay:.13s;}
+.slide.visible .reveal:nth-child(3){transition-delay:.21s;}
+.slide.visible .reveal:nth-child(4){transition-delay:.29s;}
+.slide.visible .reveal:nth-child(5){transition-delay:.37s;}
+.slide.visible .reveal:nth-child(6){transition-delay:.45s;}
+.r2 .reveal { transition-delay: 0s; }
+.slide.visible .stagger > * { animation: rise .6s var(--ease) both; }
+.slide.visible .stagger > *:nth-child(1){animation-delay:.08s;}
+.slide.visible .stagger > *:nth-child(2){animation-delay:.14s;}
+.slide.visible .stagger > *:nth-child(3){animation-delay:.20s;}
+.slide.visible .stagger > *:nth-child(4){animation-delay:.26s;}
+.slide.visible .stagger > *:nth-child(5){animation-delay:.32s;}
+.slide.visible .stagger > *:nth-child(6){animation-delay:.38s;}
+.slide.visible .stagger > *:nth-child(7){animation-delay:.44s;}
+.slide.visible .stagger > *:nth-child(8){animation-delay:.50s;}
+@keyframes rise { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+
+/* ===========================================
+   CHROME — 헤더/진행바/내비게이션 닷/페이지번호
+   =========================================== */
+.topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: clamp(.6rem,1.5vh,1rem) clamp(1rem,3vw,2.4rem); pointer-events: none; }
+.topbar .tb-brand { display:flex; align-items:center; gap:.5rem; font-family: var(--font-mono); font-size: var(--kicker-size); letter-spacing:.24em; text-transform:uppercase; color: var(--text-dim); }
+.topbar .tb-brand .pdot { width:8px;height:8px;border-radius:50%;background:var(--accent); animation: pulse 2.4s infinite; }
+.topbar .tb-count { font-family: var(--font-mono); font-size: var(--kicker-size); color: var(--text-mute); letter-spacing:.1em; }
+.topbar .tb-count b { color: var(--accent); }
+
+.progress-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--accent); z-index: 60; transition: width .25s var(--ease); box-shadow: 0 0 8px var(--accent); }
+
+.nav-dots { position: fixed; right: clamp(.7rem,1.6vw,1.4rem); top: 50%; transform: translateY(-50%);
+    z-index: 50; display: flex; flex-direction: column; gap: .55rem; }
+.nav-dots button { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--text-mute);
+    background: transparent; cursor: pointer; padding: 0; transition: all .3s var(--ease); }
+.nav-dots button:hover { border-color: var(--accent); }
+.nav-dots button.active { background: var(--accent); border-color: var(--accent); transform: scale(1.35); box-shadow: 0 0 8px var(--accent-line); }
+
+.kbd-hint { position: fixed; bottom: clamp(.5rem,1.5vh,1rem); left: 50%; transform: translateX(-50%);
+    z-index: 50; font-family: var(--font-mono); font-size: var(--kicker-size); color: var(--text-mute); letter-spacing:.12em; opacity:.7; }
+.kbd-hint kbd { border:1px solid var(--line); border-radius:4px; padding:.05em .4em; color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<header class="topbar">
+    <div class="tb-brand"><span class="pdot"></span> xbot</div>
+    <div class="tb-count"><b id="cur">01</b> / <span id="tot">13</span></div>
+</header>
+<nav class="nav-dots" id="navDots" aria-label="슬라이드 내비게이션"></nav>
+<div class="kbd-hint">← → · SPACE · SCROLL</div>
+
+<!-- =================== 01 · TITLE =================== -->
+<section class="slide title-slide">
+    <div class="slide-content">
+        <div class="brand-mark reveal"><span class="pdot"></span><span class="wm">KakaoTalk × Hermes Agent</span></div>
+        <h1 class="reveal">카카오톡 단톡방<br><span class="accent">LLM 봇 · xbot</span></h1>
+        <p class="sub reveal">방마다 독립된 Hermes 에이전트가 답하는 얇은 라우터 봇</p>
+        <div class="meta reveal">
+            <span class="tag-mono">현재 형상 · 2026-05-21</span>
+            <span class="tag-mono">Python 3.9 · Swift · Bun</span>
+            <span class="tag-mono">방 8개 운영</span>
+        </div>
+    </div>
+</section>
+
+<!-- =================== 02 · 전체 아키텍처 (오버뷰) =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">System Architecture</span>
+        <h2 class="title reveal">전체 아키텍처 한 장<small>채널 → I/O 브릿지 → xbot 라우터 → Hermes 두뇌 → 도구 → 모델 (위→아래로 위임)</small></h2>
+        <div class="arch reveal stagger">
+            <div class="band">
+                <div class="blab">Channels<small>입출력</small></div>
+                <div class="bchips">
+                    <span class="chip"><b>KakaoTalk Mac</b> · SQLCipher DB</span>
+                    <span class="chip"><b>Telegram</b> · 소스 채널</span>
+                </div>
+            </div>
+            <div class="arch-sep">▼</div>
+            <div class="band">
+                <div class="blab">I/O Bridge</div>
+                <div class="bchips">
+                    <span class="chip"><b>kakaocli sync</b> 2초 polling</span>
+                    <span class="chip"><b>kakaocli send</b> AX UI 자동화</span>
+                    <span class="chip"><b>Telethon</b> 리스너 + watchdog</span>
+                </div>
+            </div>
+            <div class="arch-sep">▼</div>
+            <div class="band">
+                <div class="blab">xbot Core<small>Python 3.9</small></div>
+                <div class="bchips">
+                    <span class="chip">webhook <span class="port">:8766</span></span>
+                    <span class="chip">MessageRouter</span>
+                    <span class="chip">CommandHandler</span>
+                    <span class="chip">AIEngine <span class="dim">model=None</span></span>
+                    <span class="chip">forwarding</span>
+                    <span class="chip">web admin <span class="port">:5001</span></span>
+                </div>
+            </div>
+            <div class="arch-sep">▼</div>
+            <div class="band brain">
+                <div class="blab">Brain</div>
+                <div class="bchips">
+                    <span class="chip lead-chip">Hermes 프로필 ×8 + kakao_base</span>
+                    <span class="chip"><b>SOUL.md</b> 정체성</span>
+                    <span class="chip"><b>AGENTS.md</b> 공통규칙</span>
+                    <span class="chip"><b>config.yaml</b> 모델</span>
+                </div>
+            </div>
+            <div class="arch-sep">▼</div>
+            <div class="band">
+                <div class="blab">Tools</div>
+                <div class="bchips">
+                    <span class="chip"><b>K-dexter</b> 주식 <span class="port">:3000</span></span>
+                    <span class="chip"><b>vaax-news</b> MCP 정부과제</span>
+                    <span class="chip"><b>Tavily / Firecrawl</b> 웹검색</span>
+                </div>
+            </div>
+            <div class="arch-sep">▼</div>
+            <div class="band">
+                <div class="blab">Models<small>3층 폴백</small></div>
+                <div class="bchips">
+                    <span class="chip">① <span class="port">codex/gpt-5.4-mini</span></span>
+                    <span class="chip">② <span class="port">deepseek-v4-flash</span></span>
+                    <span class="chip">③ <span class="port">sonnet-4.6</span> <span class="dim">xbot 폴백</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =================== 03 · 한눈에 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Overview</span>
+        <h2 class="title reveal">xbot은 무엇인가</h2>
+        <p class="lead reveal" style="margin-bottom:var(--content-gap)">
+            카카오톡 단톡방용 LLM 봇. <b class="g">방마다 독립된 Hermes 프로필</b>이 정체성·기억·모델을 따로 갖고 답한다.
+            xbot 본체는 카톡 입출력을 중개하는 <b>얇은 라우터</b>일 뿐 — 두뇌·정체성·규칙·모델은 전부 Hermes 프로필이 소유한다.
+        </p>
+        <div class="cards reveal" style="grid-template-columns:repeat(4,1fr)">
+            <div class="card-i"><span class="ct">ROUTER</span><span class="ch">xbot 본체</span><span class="cd">카톡 수신/송신 중개, 모델·프롬프트 미주입</span></div>
+            <div class="card-i"><span class="ct">BRAIN</span><span class="ch">Hermes 프로필</span><span class="cd">방별 정체성·규칙·모델·기억 소유</span></div>
+            <div class="card-i"><span class="ct">TOOLS</span><span class="ch">MCP · 웹검색</span><span class="cd">K-dexter 주식, vaax-news 정부과제, Tavily/Firecrawl</span></div>
+            <div class="card-i"><span class="ct">I/O</span><span class="ch">kakaocli</span><span class="cd">SQLCipher DB 읽기 + AX UI 자동 송신</span></div>
+        </div>
+        <div class="stats reveal" style="margin-top:var(--content-gap)">
+            <div class="stat"><span class="sv">8</span><span class="sl">운영 단톡방</span></div>
+            <div class="stat"><span class="sv">5</span><span class="sl">SOUL 성격</span></div>
+            <div class="stat"><span class="sv">3층</span><span class="sl">모델 폴백</span></div>
+            <div class="stat"><span class="sv">5</span><span class="sl">서비스 포트</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- =================== 03 · 메시지 흐름 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Architecture · Flow</span>
+        <h2 class="title reveal">메시지 한 건이 흐르는 길</h2>
+        <div class="flow reveal">
+            <div class="frow stagger">
+                <div class="fbox"><span class="fl">SOURCE</span><div class="ft">KakaoTalk Mac</div><div class="fs">SQLCipher 로컬 DB</div></div>
+                <div class="fbox"><span class="fl">SYNC</span><div class="ft">kakaocli sync</div><div class="fs">2초 polling → webhook POST</div></div>
+                <div class="fbox accent"><span class="fl">:8766</span><div class="ft">xbot webhook</div><div class="fs">등록 방만 통과 · 자기송신 필터</div></div>
+            </div>
+            <div class="fdown">▼</div>
+            <div class="frow stagger">
+                <div class="fbox"><span class="fl">ROUTE</span><div class="ft">MessageRouter</div><div class="fs">명령 / 멘션 / 1:1 / 일반 분기</div></div>
+                <div class="fbox"><span class="fl">CMD</span><div class="ft">CommandHandler</div><div class="fs">!주가·!요약 등 직답</div></div>
+                <div class="fbox accent"><span class="fl">AI</span><div class="ft">AIEngine → HermesAdapter</div><div class="fs">시각·[질문자] prefix만 부착</div></div>
+            </div>
+            <div class="fdown">▼</div>
+            <div class="frow stagger">
+                <div class="fbox accent"><span class="fl">BRAIN</span><div class="ft">hermes --profile kakao_&lt;id&gt;</div><div class="fs">모델: 그 방 config.yaml · 도구: MCP/웹검색</div></div>
+                <div class="fbox"><span class="fl">SEND</span><div class="ft">kakaocli send</div><div class="fs">AX UI 자동화 → 카톡 게시</div></div>
+            </div>
+        </div>
+        <p class="lead reveal" style="margin-top:var(--content-gap)">
+            Telegram 소스는 <b>Telethon 리스너</b>가 수신해 지정 카톡 방으로 포워딩한다.
+        </p>
+    </div>
+</section>
+
+<!-- =================== 04 · 위치 & 포트 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Topology</span>
+        <h2 class="title reveal">구성요소 위치 · 포트</h2>
+        <div class="two reveal">
+            <div class="panel">
+                <h3><span class="dot"></span>구성요소 경로 / 런타임</h3>
+                <table class="tbl">
+                    <tr><td>xbot 본체</td><td class="m">~/xbot/</td><td class="m">Python 3.9</td></tr>
+                    <tr><td>kakaocli</td><td class="m">~/kakaocli/</td><td class="m">Swift</td></tr>
+                    <tr><td>Hermes Agent</td><td class="m">~/…/OpenClaw/hermes-agent/</td><td class="m">—</td></tr>
+                    <tr><td>방별 프로필</td><td class="m">~/.hermes/profiles/&lt;p&gt;/</td><td class="m">—</td></tr>
+                    <tr><td>K-dexter</td><td class="m">~/…/K-dexter/</td><td class="m">TS · Bun</td></tr>
+                    <tr><td>vaax-news MCP</td><td class="m">~/…/vaax-news-mcp/</td><td class="m">Python 3.11</td></tr>
+                </table>
+            </div>
+            <div class="panel">
+                <h3><span class="dot"></span>리스닝 포트</h3>
+                <table class="tbl">
+                    <tr><td class="m"><span class="pill">8766</span></td><td>xbot webhook (FastAPI)</td><td class="m">127.0.0.1</td></tr>
+                    <tr><td class="m"><span class="pill">5001</span></td><td>web admin (Flask)</td><td class="m">0.0.0.0</td></tr>
+                    <tr><td class="m"><span class="pill">3000</span></td><td>K-dexter</td><td class="m">*</td></tr>
+                    <tr><td class="m"><span class="pill">9119</span></td><td>Hermes dashboard</td><td class="m">127.0.0.1</td></tr>
+                    <tr><td class="m"><span class="pill">9120</span></td><td>Hermes 인증 프록시</td><td class="m">127.0.0.1</td></tr>
+                </table>
+                <p class="lead" style="margin-top:.7rem;font-size:var(--small-size)">핵심 데이터: <span class="mono dim">settings.json</span> · <span class="mono dim">sessions.json</span> · <span class="mono dim">user_tickers.json</span> · <span class="mono dim">~/.xbot/xbot.log</span></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =================== 05 · 방 8개 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Rooms</span>
+        <h2 class="title reveal">등록된 방 8개 · 방별 에이전트<small>각 방 = 독립 Hermes 프로필 <span class="mono">kakao_&lt;chatid&gt;</span> · 정체성·규칙·모델 분리</small></h2>
+        <div class="reveal" style="overflow:hidden">
+            <table class="tbl">
+                <thead><tr><th>방</th><th class="m">chat_id</th><th>SOUL 성격</th><th>역할</th></tr></thead>
+                <tbody class="stagger">
+                    <tr><td>우장훈</td><td class="m">252459469807638</td><td><span class="pill">companion</span></td><td class="dim">1:1 동반자</td></tr>
+                    <tr><td>VAAX</td><td class="m">145333759012101</td><td><span class="pill">community</span></td><td class="dim">600명 커뮤니티 매니저</td></tr>
+                    <tr><td>vaax-test</td><td class="m">469041369346893</td><td><span class="pill">community</span></td><td class="dim">테스트 방</td></tr>
+                    <tr><td>AI-Foundry</td><td class="m">466750472891040</td><td><span class="pill">expert</span></td><td class="dim">전문 탐구</td></tr>
+                    <tr><td>aiot</td><td class="m">428279196939418</td><td><span class="pill">expert</span></td><td class="dim">전문 탐구</td></tr>
+                    <tr><td>김형준</td><td class="m">468864403843749</td><td><span class="pill">explorer</span></td><td class="dim">개구쟁이 탐구</td></tr>
+                    <tr><td>고광호</td><td class="m">469144074241672</td><td><span class="pill">explorer</span></td><td class="dim">개구쟁이 탐구</td></tr>
+                    <tr><td>섬머-토론</td><td class="m">468867380893419</td><td><span class="pill">quant</span></td><td class="dim">퀀트 분석가</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="lead reveal" style="margin-top:.8rem"><span class="mono g">kakao_base</span> = 신규 방이 상속하는 템플릿(차분한 범용 동료). 모든 SOUL에 "이모지·마크다운 미사용" 규칙 포함.</p>
+    </div>
+</section>
+
+<!-- =================== 06 · 기능 ① I/O + 본체 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Components · ①</span>
+        <h2 class="title reveal">입출력 계층 · xbot 본체 모듈</h2>
+        <div class="two reveal">
+            <div class="panel">
+                <h3><span class="dot"></span>kakaocli — 카톡 I/O</h3>
+                <ul class="list">
+                    <li><b>수신</b> <span class="dim">SQLCipher DB를 2초 polling → webhook POST</span></li>
+                    <li><b>송신</b> <span class="dim">macOS AX API로 UI 조작, 표시명 substring 매칭</span></li>
+                    <li><b>복호화</b> <span class="dim">숫자 user-id 필요 (이 Mac <span class="mono">310850988</span>)</span></li>
+                    <li class="g">⚠ send는 AX 권한 상속 필요 → plain Terminal 필수</li>
+                </ul>
+            </div>
+            <div class="panel">
+                <h3><span class="dot"></span>xbot 본체 (Python 3.9)</h3>
+                <table class="tbl">
+                    <tr><td class="m">webhook_receiver</td><td>수신·등록방 게이트·자기송신 필터</td></tr>
+                    <tr><td class="m">message_router</td><td>명령/멘션/1:1/일반 분기</td></tr>
+                    <tr><td class="m">command_handler</td><td>! 명령 직답</td></tr>
+                    <tr><td class="m">ai_engine</td><td>Hermes 라우팅 (model=None)</td></tr>
+                    <tr><td class="m">qa/hermes_adapter</td><td>프로필 호출·lazy 생성·시드</td></tr>
+                    <tr><td class="m">web/ · forwarding/</td><td>admin · Telegram 포워딩</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =================== 07 · 기능 ② Hermes + 도구 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Components · ②</span>
+        <h2 class="title reveal">Hermes 프로필 · 외부 도구</h2>
+        <div class="two reveal">
+            <div class="panel">
+                <h3><span class="dot"></span>한 프로필이 소유하는 것</h3>
+                <ul class="list">
+                    <li><b>SOUL.md</b> <span class="dim">정체성·말투. 매 chat 읽어 즉시 반영</span></li>
+                    <li><b>AGENTS.md</b> <span class="dim">공통 동작 규칙. kakao_base가 원본 → 신규 방 상속</span></li>
+                    <li><b>config.yaml</b> <span class="dim">모델·폴백</span></li>
+                    <li class="dim">호출 <span class="mono">hermes --profile kakao_&lt;id&gt; chat</span> — ephemeral subprocess, gateway 불필요</li>
+                    <li class="dim">세션 키 <span class="mono">profile:&lt;name&gt;</span> 로 방 기억 격리</li>
+                </ul>
+            </div>
+            <div class="panel">
+                <h3><span class="dot"></span>Hermes가 호출하는 도구</h3>
+                <table class="tbl">
+                    <tr><td><b>K-dexter</b></td><td>한·미 종목 분석 (시그널·진입/목표/손절)</td></tr>
+                    <tr><td><b>vaax-news</b></td><td>정부과제 692건 (6h 캐시, 1일 2회 갱신)</td></tr>
+                    <tr><td><b>Tavily<br>Firecrawl</b></td><td>웹 검색·페이지 fetch</td></tr>
+                </table>
+                <p class="lead" style="margin-top:.6rem;font-size:var(--small-size)"><span class="mono g">!주가</span>는 xbot이 K-dexter 직접 호출, 자연어 주식질문은 Hermes가 MCP로 호출.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =================== 08 · admin + 포워딩 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Admin & Forwarding</span>
+        <h2 class="title reveal">web admin · 포워딩</h2>
+        <div class="cards reveal" style="grid-template-columns:repeat(3,1fr)">
+            <div class="card-i"><span class="ct">CARD</span><span class="ch">방별 에이전트</span><span class="cd">방마다 모델·폴백·정체성(SOUL)을 한 카드에서 편집. 첫 행은 kakao_base 템플릿</span></div>
+            <div class="card-i"><span class="ct">CARD</span><span class="ch">카톡 방 관리</span><span class="cd">감지된 미등록 방을 클릭 한 번에 등록</span></div>
+            <div class="card-i"><span class="ct">CARD</span><span class="ch">📨 수동 전달</span><span class="cd">포워딩 실패 복구용. 방 선택+메시지 → 그 방 Hermes 응답 게시</span></div>
+        </div>
+        <div class="two reveal" style="margin-top:var(--content-gap)">
+            <div class="panel">
+                <h3><span class="dot"></span>Telegram → KakaoTalk 포워딩</h3>
+                <ul class="list">
+                    <li>Telethon User Account 리스너가 새 글 수신 → 매핑 방으로 송신</li>
+                    <li>URL만 있으면 <b>웹 요약 + 원문 URL</b>을 400자 안에 (URL 가공 금지)</li>
+                    <li class="dim">현재 매핑: <span class="mono">vaax notifier</span> → vaax-test · VAAX · AI-Foundry</li>
+                    <li class="dim">watchdog: 30분 무이벤트 시 강제 reconnect</li>
+                </ul>
+            </div>
+            <div class="panel">
+                <h3><span class="dot"></span>능동 일일 리포트 (옵션)</h3>
+                <ul class="list">
+                    <li><span class="mono">settings.daily_report</span> — 지정 시각 자동 브리핑</li>
+                    <li>현재 VAAX 정부과제 브리핑 프롬프트 탑재, <b class="g">비활성</b></li>
+                    <li class="dim">켜기: <span class="mono">enabled=true</span> + 시각 설정 후 봇 재시작</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =================== 09 · 명령어 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Usage · Commands</span>
+        <h2 class="title reveal">카톡 명령어<small>그룹 방은 멘션(@bot/@xbot/@xb) 또는 ! 명령에 반응 · 1:1 방은 모든 메시지 자동 응답</small></h2>
+        <div class="reveal">
+            <table class="tbl">
+                <thead><tr><th class="m">명령</th><th>동작</th></tr></thead>
+                <tbody class="stagger">
+                    <tr><td class="m g">!주가 &lt;종목|코드&gt;</td><td>K-dexter 종합 분석 직답 (예: 삼성전자 · 005930 · 삼전)</td></tr>
+                    <tr><td class="m g">!요약</td><td>최근 대화 맥락 요약</td></tr>
+                    <tr><td class="m g">!요약 &lt;URL&gt; · !웹 &lt;URL&gt;</td><td>웹페이지 요약</td></tr>
+                    <tr><td class="m g">!검색 &lt;쿼리&gt;</td><td>웹 검색</td></tr>
+                    <tr><td class="m g">!날씨 [지역]</td><td>날씨</td></tr>
+                    <tr><td class="m g">!도움말</td><td>명령 안내</td></tr>
+                    <tr><td class="m dim">(자연어)</td><td>Hermes 에이전트 답변 · 주식 질문은 K-dexter 데이터 자동 참조</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="lead reveal" style="margin-top:.8rem">종목명은 <span class="mono">user_tickers.json</span> 별칭 lookup, 미등록이면 6자리 코드 입력 안내. Hermes는 신규 종목을 만나면 웹검색→자동등록→분석.</p>
+    </div>
+</section>
+
+<!-- =================== 10 · 운영 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Operations</span>
+        <h2 class="title reveal">시작 · 재시작 · 헬스체크</h2>
+        <div class="panel reveal" style="border-color:var(--accent-line);background:var(--accent-soft);margin-bottom:var(--content-gap)">
+            <h3><span class="dot"></span>⚠ 반드시 plain Terminal.app 에서 실행</h3>
+            <p class="lead" style="color:var(--text)">tmux·SSH·Claude Bash로 띄우면 <span class="mono">kakaocli send</span>가 AX 권한을 상속받지 못해 카톡 송신이 깨진다. 봇이 떠 있는 그 창에서 재시작해야 권한 유지.</p>
+        </div>
+        <div class="two reveal">
+            <div class="panel">
+                <h3><span class="dot"></span>시작 / 재시작</h3>
+                <ul class="list">
+                    <li class="mono dim">cd ~/xbot && python3 main.py</li>
+                    <li class="dim">떠 있으면 그 창에서 <span class="mono">Ctrl+C</span> 후 재실행</li>
+                    <li class="mono dim">kill -INT $(lsof -ti:8766)</li>
+                    <li><b>.py·admin</b> 변경 → <span class="g">봇 재시작</span> 후 반영</li>
+                    <li><b>SOUL·AGENTS·모델</b> → <span class="g">즉시 반영</span> (재시작 불필요)</li>
+                </ul>
+            </div>
+            <div class="panel">
+                <h3><span class="dot"></span>헬스체크</h3>
+                <ul class="list">
+                    <li class="mono dim">curl …:8766/healthz</li>
+                    <li class="mono dim">curl …:5001/</li>
+                    <li class="mono dim">curl …:3000/health</li>
+                    <li class="mono dim">hermes mcp list</li>
+                    <li class="dim">응답 로그: <span class="mono">tail -f ~/.xbot/xbot.log</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =================== 11 · 트러블슈팅 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Troubleshooting</span>
+        <h2 class="title reveal">"봇이 응답 안 함" — 본체부터 확인<small>대개 Python 본체는 멀쩡한데 입출력 계층이 막힌 경우</small></h2>
+        <div class="reveal">
+            <table class="tbl">
+                <thead><tr><th>증상</th><th>원인</th><th>조치</th></tr></thead>
+                <tbody class="stagger">
+                    <tr><td>수신 멈춤 · <span class="mono">-wal</span> mtime 정지</td><td class="g">KakaoTalk App Nap</td><td><span class="mono">open -a KakaoTalk</span> → <span class="mono">NSAppSleepDisabled YES</span> 후 재시작</td></tr>
+                    <tr><td>send: input field 못 찾음</td><td>카톡 비활성/백그라운드</td><td>카톡 활성 유지 + 대상 방 독립 창</td></tr>
+                    <tr><td>로그 <span class="mono">log_id:92233…807</span></td><td>kakaocli cursor poisoning</td><td>Int64.max 필터 패치 확인, 임시 봇 재시작</td></tr>
+                    <tr><td>텔레그램 포워딩 멈춤</td><td>Telethon silent disconnect</td><td>30분 watchdog 자동복구 / 즉시면 재시작</td></tr>
+                    <tr><td>!주가 N/A 다발</td><td>K-dexter 다운</td><td><span class="mono">bun run src/server.ts &</span></td></tr>
+                    <tr><td>응답 톤 이상</td><td>SOUL 문제</td><td>admin에서 SOUL 수정(즉시) · 모델 자기소개는 환각</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- =================== 12 · 모델 3층 폴백 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Configuration · Models</span>
+        <h2 class="title reveal">모델 — 3층 폴백 구조<small>응답 모델 선택권은 Hermes 프로필이 단일 소스 · xbot은 model=None</small></h2>
+        <div class="layers reveal stagger">
+            <div class="layer main">
+                <span class="lnum">①</span>
+                <div class="lbody"><div class="lh">Hermes 메인</div><div class="ls">profile config.yaml <span class="mono">model:</span> · 평상시</div></div>
+                <span class="lmodel">openai-codex / gpt-5.4-mini</span>
+            </div>
+            <div class="layer fb1">
+                <span class="lnum">②</span>
+                <div class="lbody"><div class="lh">Hermes 폴백</div><div class="ls"><span class="mono">fallback_providers:</span> · rate-limit/5xx 시, MCP 도구 유지</div></div>
+                <span class="lmodel">openrouter / deepseek-v4-flash</span>
+            </div>
+            <div class="layer fb2">
+                <span class="lnum">③</span>
+                <div class="lbody"><div class="lh">xbot 폴백</div><div class="ls"><span class="mono">settings.policy.ai_model</span> · Hermes 통째 실패 시 직호출(도구 없음)</div></div>
+                <span class="lmodel">anthropic / claude-sonnet-4.6</span>
+            </div>
+        </div>
+        <p class="lead reveal" style="margin-top:var(--content-gap)">
+            변경은 <b class="g">admin 카드</b> 또는 <span class="mono">config.yaml</span> 직접 편집. <span class="mono">hermes config set</span>은 주석·폴백 파손이라 금지. 글로벌 config는 실사용 안 함(방별 override).
+        </p>
+    </div>
+</section>
+
+<!-- =================== 13 · 설정 소유관계 + 닫기 =================== -->
+<section class="slide">
+    <div class="slide-content">
+        <span class="kicker reveal">Configuration · Source of Truth</span>
+        <h2 class="title reveal">무엇이 어디에 있나</h2>
+        <div class="reveal">
+            <table class="tbl">
+                <thead><tr><th>대상</th><th>소유 위치</th><th>반영</th></tr></thead>
+                <tbody class="stagger">
+                    <tr><td>방별 정체성·말투</td><td class="m">profiles/&lt;p&gt;/SOUL.md</td><td class="g">즉시</td></tr>
+                    <tr><td>공통 동작 규칙</td><td class="m">profiles/&lt;p&gt;/AGENTS.md</td><td class="g">즉시</td></tr>
+                    <tr><td>방별 모델·폴백</td><td class="m">profiles/&lt;p&gt;/config.yaml</td><td class="g">즉시</td></tr>
+                    <tr><td>별칭·등록·포워딩·정책</td><td class="m">~/xbot/settings.json</td><td class="dim">hot-reload</td></tr>
+                    <tr><td>admin·라우터 코드</td><td class="m">~/xbot/xbot/**.py</td><td class="dim">봇 재시작</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="two reveal" style="margin-top:var(--content-gap)">
+            <div class="panel">
+                <h3><span class="dot"></span>AGENTS.md 핵심 규칙</h3>
+                <ul class="list">
+                    <li>도구 선택 · 종목코드 lookup · 주가 포맷 · KST 시각</li>
+                    <li><b>§9 URL 원문 보존</b> <span class="dim">단축·가공 금지</span></li>
+                    <li><b>§14 질문자 인식</b> <span class="dim">[질문자:이름]로 톤·깊이 조절</span></li>
+                </ul>
+            </div>
+            <div class="panel">
+                <h3><span class="dot"></span>원격 접속 (사내망)</h3>
+                <ul class="list">
+                    <li class="mono dim">…ts.net:10000 → admin :5001</li>
+                    <li class="mono dim">…ts.net:8443 → 프록시 :9120 → :9119</li>
+                    <li class="g">⚠ Hermes는 자체 인증 없음 → Basic Auth 프록시 필수</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   - IntersectionObserver로 .visible 토글 (애니메이션)
+   - 키보드(←→ Space PgUp/Dn) · 휠 · 터치 내비게이션
+   - 진행바 · 내비 닷 · 페이지 카운터
+   =========================================== */
+class SlidePresentation {
+    constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.total = this.slides.length;
+        this.current = 0;
+        document.getElementById('tot').textContent = String(this.total).padStart(2,'0');
+        this.buildDots();
+        this.observe();
+        this.keys();
+        this.wheel();
+        this.touch();
+    }
+    buildDots() {
+        const nav = document.getElementById('navDots');
+        this.slides.forEach((_, i) => {
+            const b = document.createElement('button');
+            b.setAttribute('aria-label', `슬라이드 ${i+1}`);
+            b.addEventListener('click', () => this.go(i));
+            nav.appendChild(b);
+        });
+        this.dots = Array.from(nav.children);
+    }
+    observe() {
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    this.current = this.slides.indexOf(e.target);
+                    this.sync();
+                }
+            });
+        }, { threshold: 0.55 });
+        this.slides.forEach(s => io.observe(s));
+    }
+    sync() {
+        const pct = this.total > 1 ? (this.current / (this.total - 1)) * 100 : 100;
+        document.getElementById('progress').style.width = pct + '%';
+        document.getElementById('cur').textContent = String(this.current + 1).padStart(2,'0');
+        this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
+    }
+    go(i) {
+        i = Math.max(0, Math.min(this.total - 1, i));
+        this.slides[i].scrollIntoView({ behavior: 'smooth' });
+    }
+    keys() {
+        document.addEventListener('keydown', (e) => {
+            if (['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); this.go(this.current + 1); }
+            else if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); this.go(this.current - 1); }
+            else if (e.key === 'Home') { e.preventDefault(); this.go(0); }
+            else if (e.key === 'End') { e.preventDefault(); this.go(this.total - 1); }
+        });
+    }
+    wheel() {
+        let lock = false;
+        window.addEventListener('wheel', (e) => {
+            if (lock) return;
+            if (Math.abs(e.deltaY) < 24) return;
+            lock = true;
+            this.go(this.current + (e.deltaY > 0 ? 1 : -1));
+            setTimeout(() => lock = false, 750);
+        }, { passive: true });
+    }
+    touch() {
+        let y0 = null;
+        window.addEventListener('touchstart', (e) => y0 = e.touches[0].clientY, { passive: true });
+        window.addEventListener('touchend', (e) => {
+            if (y0 === null) return;
+            const dy = y0 - e.changedTouches[0].clientY;
+            if (Math.abs(dy) > 50) this.go(this.current + (dy > 0 ? 1 : -1));
+            y0 = null;
+        }, { passive: true });
+    }
+}
+new SlidePresentation();
+</script>
+</body>
+</html>
