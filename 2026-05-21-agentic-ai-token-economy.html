@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>에이전틱 AI란 무엇인가 — 토큰 이코노미와 AI 슈퍼사이클</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2d9162;
+      --accent-mid: #52b788;
+      --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #1a6b48 0%, var(--accent) 60%, var(--accent-mid) 100%);
+      color: #fff;
+      padding: 48px 32px 36px;
+      text-align: center;
+    }
+    .hero-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.75; margin-bottom: 10px; }
+    .hero h1 { font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
+    .hero-sub { font-size: 13px; opacity: 0.8; margin-bottom: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 860px; margin: 0 auto; }
+    .stat { background: rgba(255,255,255,0.15); border-radius: 12px; padding: 16px 12px; }
+    .stat-num { font-size: 28px; font-weight: 800; }
+    .stat-label { font-size: 11px; opacity: 0.85; margin-top: 4px; line-height: 1.3; }
+
+    /* MAIN CONTENT */
+    .container { max-width: 900px; margin: 0 auto; padding: 32px 20px 60px; }
+
+    /* SECTION CARD */
+    .section { background: var(--surface); border-radius: 16px; padding: 28px; margin-bottom: 24px; }
+    .sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .sec-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      font-size: 13px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .sec-title { font-size: 18px; font-weight: 700; flex: 1; }
+    .sec-time {
+      margin-left: auto;
+      font-size: 12px; font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 4px 10px; border-radius: 999px;
+      text-decoration: none; white-space: nowrap;
+      flex-shrink: 0; transition: background .15s, color .15s;
+    }
+    .sec-time::before { content: "▶ "; }
+    .sec-time:hover { background: var(--accent); color: #fff; }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th { background: var(--accent); color: #fff; padding: 10px 14px; text-align: left; font-weight: 700; }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f9fffe; }
+
+    /* GRID */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } .stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 20px; } }
+
+    /* CARDS */
+    .card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .card-title { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+    .card-body { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+    /* FLOW */
+    .flow { display: flex; align-items: stretch; gap: 0; flex-wrap: nowrap; overflow-x: auto; }
+    .flow-item {
+      background: var(--accent-light); border-radius: 10px; padding: 14px 16px;
+      text-align: center; flex: 1; min-width: 100px;
+      border: 2px solid var(--accent-mid);
+    }
+    .flow-num { font-size: 20px; font-weight: 800; color: var(--accent); }
+    .flow-label { font-size: 12px; font-weight: 700; margin-top: 4px; }
+    .flow-desc { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .flow-arrow { display: flex; align-items: center; padding: 0 4px; color: var(--accent); font-size: 18px; font-weight: 700; flex-shrink: 0; }
+
+    /* PYRAMID */
+    .pyramid { display: flex; flex-direction: column; gap: 6px; align-items: center; padding: 8px 0; }
+    .pyramid-row {
+      display: flex; align-items: center; justify-content: center;
+      background: var(--accent-light); border: 2px solid var(--accent-mid);
+      border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 700;
+      text-align: center;
+    }
+    .pyramid-row.top { width: 40%; font-size: 13px; background: var(--accent); color: #fff; border-color: var(--accent); }
+    .pyramid-row.mid { width: 65%; }
+    .pyramid-row.bot { width: 90%; background: #f5f5f5; border-color: var(--border); font-size: 13px; color: var(--muted); }
+    .pyramid-label { font-size: 11px; color: var(--muted); margin-top: 2px; font-weight: 400; }
+
+    /* COMPARE */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .compare-box { background: var(--bg); border: 2px solid var(--border); border-radius: 12px; padding: 18px; }
+    .compare-box.accent { border-color: var(--accent); }
+    .compare-box h4 { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
+    .compare-box ul { list-style: none; padding: 0; }
+    .compare-box ul li { font-size: 13px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+    .compare-box ul li:last-child { border-bottom: none; }
+    .compare-box ul li::before { content: "– "; color: var(--accent); font-weight: 700; }
+
+    /* BADGE */
+    .badge { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-bottom: 4px; }
+
+    /* INSIGHT BOX */
+    .insight { border-left: 4px solid var(--accent); background: var(--accent-light); border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 12px 0; font-size: 14px; }
+    .insight strong { color: var(--accent); }
+
+    /* PIPELINE */
+    .pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    @media (max-width: 600px) { .pipeline { grid-template-columns: repeat(3, 1fr); } .compare { grid-template-columns: 1fr; } }
+    .pipe-step { background: var(--bg); border: 2px solid var(--accent-mid); border-radius: 10px; padding: 12px 8px; text-align: center; }
+    .pipe-step-num { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .pipe-step-label { font-size: 13px; font-weight: 700; color: var(--accent); }
+    .pipe-step-desc { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+    /* SCENARIO */
+    .scenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 600px) { .scenarios { grid-template-columns: 1fr; } }
+    .scenario-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 18px; position: relative; overflow: hidden; }
+    .scenario-card::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent); }
+    .scenario-num { font-size: 24px; font-weight: 800; color: var(--accent-light); position: absolute; top: 10px; right: 14px; }
+    .scenario-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .scenario-body { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* CAKE */
+    .cake { display: flex; flex-direction: column-reverse; gap: 6px; align-items: center; padding: 12px 0; }
+    .cake-layer {
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 700;
+      text-align: center; transition: transform .2s;
+    }
+    .cake-layer:hover { transform: scaleX(1.02); }
+    .cake-layer.l1 { width: 100%; background: #1a6b48; color: #fff; }
+    .cake-layer.l2 { width: 88%; background: var(--accent); color: #fff; }
+    .cake-layer.l3 { width: 76%; background: var(--accent-mid); color: #fff; }
+    .cake-layer.l4 { width: 64%; background: #85c99e; color: var(--text); }
+    .cake-layer.l5 { width: 52%; background: var(--accent-light); color: var(--accent); border: 2px solid var(--accent-mid); }
+    .cake-caption { font-size: 11px; color: var(--muted); margin-top: 6px; text-align: center; }
+
+    /* FOOTER */
+    .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 32px; text-align: center; font-size: 12px; color: var(--muted); }
+    .footer a { color: var(--accent); text-decoration: none; }
+
+    /* MEMORY BOX */
+    .memory-role { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 600px) { .memory-role { grid-template-columns: 1fr; } }
+    .role-box { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .role-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+    .role-box.human h4 { color: #1a1a1a; }
+    .role-box.ai h4 { color: var(--accent); }
+    .role-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-bottom: 8px; }
+    .role-tag.human { background: #e0e0e0; color: #555; }
+    .role-tag.ai { background: var(--accent-light); color: var(--accent); }
+    .role-list { list-style: none; padding: 0; }
+    .role-list li { font-size: 13px; padding: 3px 0; }
+    .role-list li::before { content: "→ "; color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">혁신전파사 | 2026-05-21</div>
+  <h1>에이전틱 AI란 무엇인가<br>토큰 이코노미와 AI 슈퍼사이클</h1>
+  <div class="hero-sub">AI가 스스로 판단·계획·행동·검증하는 시대 — 무엇이 바뀌고 어떻게 준비할 것인가</div>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">5단</div>
+      <div class="stat-label">젠슨황의 AI 케이크<br>(에너지→칩→클라우드→모델→앱)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7가지</div>
+      <div class="stat-label">AI 에이전틱 루프<br>판단·계획·행동·검증·학습·협업·반복</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">1인</div>
+      <div class="stat-label">슈퍼 개인(유니콘)<br>AI 에이전트로 회사 전체 운영</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">역삼각형</div>
+      <div class="stat-label">AI 슈퍼사이클 구조<br>인프라 독점→앱 경쟁 과열</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION 1 — 핵심 개요 -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-num">1</div>
+      <div class="sec-title">핵심 개요 — 에이전틱 AI란 무엇인가</div>
+      <a class="sec-time" href="https://youtu.be/i4seNvv5PG4?t=163" target="_blank" rel="noopener" title="영상 2:43 위치로 이동">2:43</a>
+    </div>
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td><strong>AI 에이전트</strong><br><span style="font-size:12px;color:var(--muted)">Agent</span></td><td>단일 목표를 수행하는 AI. "이 문서를 번역해줘" 같은 1회성 미션 처리</td></tr>
+      <tr><td><strong>에이전틱 AI</strong><br><span style="font-size:12px;color:var(--muted)">Agentic AI</span></td><td>여러 에이전트를 오케스트레이션(지휘·조율)하는 시스템. 미션을 스스로 분해·배분·검증</td></tr>
+      <tr><td><strong>핵심 차이</strong></td><td>에이전트 = 연주자 1명 / 에이전틱 AI = 오케스트라 전체를 지휘하는 지휘자</td></tr>
+      <tr><td><strong>왜 지금 부상?</strong></td><td>LLM 추론 성능 급향상 + MCP/A2A 표준화 + 빅테크 대규모 투자 3박자</td></tr>
+      <tr><td><strong>토큰</strong></td><td>AI가 처리하는 정보 단위 = AI가 일한 결과물 = 미래 핵심 자원</td></tr>
+    </table>
+  </div>
+
+  <!-- SECTION 2 — 작동 구조 -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-num">2</div>
+      <div class="sec-title">에이전틱 AI 작동 루프 — 5단계 반복 사이클</div>
+      <a class="sec-time" href="https://youtu.be/i4seNvv5PG4?t=163" target="_blank" rel="noopener" title="영상 2:43 위치로 이동">2:43</a>
+    </div>
+    <div class="flow">
+      <div class="flow-item">
+        <div class="flow-num">1</div>
+        <div class="flow-label">판단</div>
+        <div class="flow-desc">목표 이해<br>상황 파악</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">2</div>
+        <div class="flow-label">계획</div>
+        <div class="flow-desc">하위 태스크<br>분해·배분</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">3</div>
+        <div class="flow-label">행동</div>
+        <div class="flow-desc">도구·API<br>호출 실행</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">4</div>
+        <div class="flow-label">검증</div>
+        <div class="flow-desc">결과 확인<br>오류 수정</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">5</div>
+        <div class="flow-label">학습</div>
+        <div class="flow-desc">다음번에<br>더 잘하기</div>
+      </div>
+    </div>
+    <div class="insight" style="margin-top:16px;">
+      <strong>핵심:</strong> 이 루프는 사람이 매번 지시하지 않아도 AI가 자율 반복한다. 사람은 최초 목표만 설정하면 된다.
+    </div>
+  </div>
+
+  <!-- SECTION 3 — 기술적 맥락 (MCP/A2A + 5단 케이크) -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-num">3</div>
+      <div class="sec-title">기술적 맥락 — MCP·A2A 프로토콜과 AI 5단 케이크</div>
+      <a class="sec-time" href="https://youtu.be/i4seNvv5PG4?t=410" target="_blank" rel="noopener" title="영상 6:50 위치로 이동">6:50</a>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+      <div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:12px;">표준 프로토콜 2종</div>
+        <table>
+          <tr><th>프로토콜</th><th>역할</th><th>비유</th></tr>
+          <tr>
+            <td><strong>MCP</strong><br><span style="font-size:11px;color:var(--muted)">Model Context Protocol</span></td>
+            <td>AI가 외부 도구·DB·API에 연결하는 표준 인터페이스</td>
+            <td>"AI의 USB"<br>무엇이든 꽂으면 연결됨</td>
+          </tr>
+          <tr>
+            <td><strong>A2A</strong><br><span style="font-size:11px;color:var(--muted)">Agent to Agent</span></td>
+            <td>에이전트끼리 역할을 나누고 메시지를 주고받는 규격</td>
+            <td>"에이전트들의 공용어"</td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:12px;">젠슨황 AI 5단 케이크</div>
+        <a href="https://youtu.be/i4seNvv5PG4?t=887" target="_blank" rel="noopener" style="text-decoration:none;">
+          <div class="cake">
+            <div class="cake-layer l1">1단 — 에너지 (전기·데이터센터)</div>
+            <div class="cake-layer l2">2단 — 반도체 칩 (GPU·HBM)</div>
+            <div class="cake-layer l3">3단 — 클라우드 인프라</div>
+            <div class="cake-layer l4">4단 — AI 모델 (LLM)</div>
+            <div class="cake-layer l5">5단 — AI 앱·서비스</div>
+          </div>
+        </a>
+        <div class="cake-caption">아래에서 쌓아 올리는 케이크 → 인프라 레이어가 먼저, 가장 크게 수혜</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 — 전략적 의미 (삼성·SK하이닉스 + 역삼각형) -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-num">4</div>
+      <div class="sec-title">전략적 의미 — 삼성·SK하이닉스가 뜨는 진짜 이유</div>
+      <a class="sec-time" href="https://youtu.be/i4seNvv5PG4?t=22" target="_blank" rel="noopener" title="영상 0:22 위치로 이동">0:22</a>
+    </div>
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start;">
+      <div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:12px;">메모리 수요 폭증 구조</div>
+        <table>
+          <tr><th>메모리 종류</th><th>쓰이는 곳</th><th>에이전틱 AI 영향</th></tr>
+          <tr>
+            <td><strong>HBM</strong><br><span style="font-size:11px;color:var(--muted)">고대역폭 메모리</span></td>
+            <td>GPU 옆에 붙어 AI 학습·추론 가속</td>
+            <td>데이터센터 GPU 수요 급증 → HBM 직결</td>
+          </tr>
+          <tr>
+            <td><strong>LPDDR·GDDR</strong><br><span style="font-size:11px;color:var(--muted)">CPU용 고속 메모리</span></td>
+            <td>PC·스마트폰·엣지 기기</td>
+            <td>에이전트 상시 구동 → 단말기 메모리 용량 급증</td>
+          </tr>
+        </table>
+        <div class="insight" style="margin-top:12px;">
+          "잘해서가 아니라 <strong>규칙 자체가 바뀐 것</strong>" — 에이전틱 AI 시대에 메모리 없이는 AI가 움직이지 않는다
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:12px;">AI 슈퍼사이클 역삼각형</div>
+        <a href="https://youtu.be/i4seNvv5PG4?t=923" target="_blank" rel="noopener" style="text-decoration:none;">
+          <div class="pyramid">
+            <div class="pyramid-row bot" style="width:100%;text-align:center;">
+              수백만 스타트업·개인 — 경쟁 치열, 수익화 어려움
+            </div>
+            <div class="pyramid-row mid" style="width:75%;text-align:center;">
+              소수 AI 앱 플랫폼 (MS, 구글 Workspace…)
+            </div>
+            <div class="pyramid-row mid" style="width:55%;background:var(--accent-light);border-color:var(--accent-mid);text-align:center;">
+              소수 빅테크 클라우드
+            </div>
+            <div class="pyramid-row top" style="width:38%;text-align:center;">
+              엔비디아 독점
+            </div>
+          </div>
+        </a>
+        <div class="cake-caption" style="margin-top:6px;">꼭짓점 독점 구조 → 위로 갈수록 수익, 아래로 갈수록 경쟁</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 — 워크플로우 -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-num">5</div>
+      <div class="sec-title">에이전틱 AI 핵심 워크플로우 — 5계층 파이프라인</div>
+      <a class="sec-time" href="https://youtu.be/i4seNvv5PG4?t=410" target="_blank" rel="noopener" title="영상 6:50 위치로 이동">6:50</a>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-step-num">STEP 1</div>
+        <div class="pipe-step-label">인식</div>
+        <div class="pipe-step-desc">LLM이 목표를 이해하고 계획 수립<br>(GPT-4o, Claude)</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-step-num">STEP 2</div>
+        <div class="pipe-step-label">연결</div>
+        <div class="pipe-step-desc">MCP로 외부 도구·DB·API에 접속</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-step-num">STEP 3</div>
+        <div class="pipe-step-label">협업</div>
+        <div class="pipe-step-desc">A2A로 에이전트끼리 역할 분담·메시지 교환</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-step-num">STEP 4</div>
+        <div class="pipe-step-label">실행</div>
+        <div class="pipe-step-desc">코드·브라우저·파일 도구로 실제 작업 수행</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-step-num">STEP 5</div>
+        <div class="pipe-step-label">검증</div>
+        <div class="pipe-step-desc">휴먼인더루프<br>사람이 중간 결과 승인·수정</div>
+      </div>
+    </div>
+    <div class="insight" style="margin-top:16px;">
+      <strong>휴먼인더루프(Human-in-the-Loop):</strong> AI가 모든 결정을 혼자 내리는 게 아니라, 핵심 분기점에서 사람이 개입해 방향을 잡아주는 설계. 자율성과 안전성을 동시에 확보하는 핵심 장치.
+    </div>
+  </div>
+
+  <!-- SECTION 6 — 활용 시나리오 -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-num">6</div>
+      <div class="sec-title">활용 시나리오 — 에이전틱 AI가 바꾸는 3가지 현실</div>
+      <a class="sec-time" href="https://youtu.be/i4seNvv5PG4?t=1258" target="_blank" rel="noopener" title="영상 20:58 위치로 이동">20:58</a>
+    </div>
+    <div class="scenarios">
+      <div class="scenario-card">
+        <div class="scenario-num">01</div>
+        <div class="scenario-title">슈퍼 개인 (1인 유니콘)</div>
+        <div class="scenario-body">혼자서 회사 하나를 운영. 기획·마케팅·개발·CS를 각각의 AI 에이전트가 담당하고 사람 1명이 전체 설계·감독. 미국에서 이미 직원 없이 수백만 달러 매출 1인 기업 등장 중.</div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-num">02</div>
+        <div class="scenario-title">조직 중간레이어 소멸</div>
+        <div class="scenario-body">AI가 정보 취합·보고서 작성·일정 조율을 대체. 중간관리자·실무 조율 역할이 줄어들고, 리더(설계자)와 실행 AI만 남는 구조. "실행자"에서 "감시자·설계자"로 역할 전환이 필수.</div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-num">03</div>
+        <div class="scenario-title">토큰 기반 성과 지표</div>
+        <div class="scenario-body">AI가 처리한 토큰 수, 자동화 업무 비율, AI 아웃풋 품질이 새 성과 지표. "얼마나 많은 AI를 잘 설계·감독했느냐"가 핵심 역량이 된다.</div>
+      </div>
+    </div>
+    <div class="insight" style="margin-top:16px;">
+      <strong>권한 위임 + 가드레일(보안 경계):</strong> AI에게 권한을 많이 줄수록 효율이 높아지지만, 오남용 위험도 증가. 적절한 가드레일 설계가 조직 경쟁력을 결정.
+    </div>
+  </div>
+
+  <!-- SECTION 7 — 현황 및 전망 -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-num">7</div>
+      <div class="sec-title">현황 및 전망 — 사람의 역할은 어떻게 달라지나</div>
+      <a class="sec-time" href="https://youtu.be/i4seNvv5PG4?t=1441" target="_blank" rel="noopener" title="영상 24:01 위치로 이동">24:01</a>
+    </div>
+    <div class="memory-role" style="margin-bottom:20px;">
+      <div class="role-box human">
+        <div class="role-tag human">AI에게 아웃소싱 가능</div>
+        <h4>Thinking (사고·계산)</h4>
+        <ul class="role-list">
+          <li>반복적 데이터 처리</li>
+          <li>패턴 인식·분류</li>
+          <li>보고서 초안 작성</li>
+          <li>코드 디버깅</li>
+        </ul>
+      </div>
+      <div class="role-box ai">
+        <div class="role-tag ai">사람만 가능</div>
+        <h4>Understanding (이해·판단)</h4>
+        <ul class="role-list">
+          <li>맥락·의도 파악</li>
+          <li>윤리적 판단</li>
+          <li>전략·방향 결정</li>
+          <li>인간 관계·신뢰 구축</li>
+        </ul>
+      </div>
+    </div>
+    <div style="font-weight:700;font-size:15px;margin-bottom:12px;">피지컬 AI + 에이전틱 AI = 휴머노이드</div>
+    <a href="https://youtu.be/i4seNvv5PG4?t=1495" target="_blank" rel="noopener" style="text-decoration:none;">
+      <div class="grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="card">
+          <div class="card-title">피지컬 AI</div>
+          <div class="card-body">로봇·센서 등 물리 장치를 제어하는 AI. 테슬라 옵티머스, 피규어 AI 등이 개발 중.</div>
+        </div>
+        <div class="card" style="background:var(--accent-light);border-color:var(--accent-mid);">
+          <div class="card-title" style="text-align:center;font-size:22px;color:var(--accent);">+</div>
+          <div class="card-body" style="text-align:center;">디지털·물리 세계 결합</div>
+        </div>
+        <div class="card">
+          <div class="card-title">에이전틱 AI</div>
+          <div class="card-body">자율 계획·행동하는 AI 시스템. 디지털 공간에서의 복잡한 미션 처리.</div>
+        </div>
+      </div>
+    </a>
+    <div class="insight" style="margin-top:16px;">
+      <strong>카파시(Karpathy) 인사이트:</strong> "Thinking은 아웃소싱 가능, Understanding은 불가." 반복적 사고는 AI가, 맥락 이해와 최종 판단은 사람이 담당하는 역할 재편이 불가피하다.
+    </div>
+    <div style="margin-top:20px;">
+      <div style="font-weight:700;font-size:15px;margin-bottom:12px;">투자 관점 — 수혜 순서</div>
+      <div class="flow">
+        <div class="flow-item" style="background:#d1fae5;">
+          <div class="flow-num" style="font-size:14px;">1순위</div>
+          <div class="flow-label">인프라</div>
+          <div class="flow-desc">엔비디아·삼성·SK하이닉스</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item" style="background:var(--accent-light);">
+          <div class="flow-num" style="font-size:14px;">2순위</div>
+          <div class="flow-label">클라우드</div>
+          <div class="flow-desc">MS·아마존·구글</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item" style="background:var(--surface);">
+          <div class="flow-num" style="font-size:14px;">3순위</div>
+          <div class="flow-label">플랫폼 앱</div>
+          <div class="flow-desc">경쟁 과열 주의</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item" style="background:#fff3cd;border-color:#f0c040;">
+          <div class="flow-num" style="font-size:14px;">주의</div>
+          <div class="flow-label">앱 레이어</div>
+          <div class="flow-desc">역삼각형 하단<br>수백만이 경쟁</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>출처: <a href="https://youtu.be/i4seNvv5PG4" target="_blank" rel="noopener">에이전틱 AI란 무엇인가 — 혁신전파사</a></div>
+  <div style="margin-top:6px;">생성일: 2026-05-21 | AI 비주얼 리포트 by Claude</div>
+</div>
+
+</body>
+</html>
