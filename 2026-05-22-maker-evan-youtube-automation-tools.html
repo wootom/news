@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>도구 3개로 끝낸 유튜브 자동화 — 메이커 에반</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+    .hero { background: linear-gradient(135deg,#1a6b48 0%,var(--accent) 60%,var(--accent-mid) 100%); color:#fff; padding:48px 32px 36px; text-align:center; }
+    .hero-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:.75; margin-bottom:10px; }
+    .hero h1 { font-size:26px; font-weight:800; line-height:1.3; margin-bottom:8px; }
+    .hero-sub { font-size:13px; opacity:.85; margin-bottom:28px; max-width:720px; margin-left:auto; margin-right:auto; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:860px; margin:0 auto; }
+    .stat { background:rgba(255,255,255,.15); border-radius:12px; padding:16px 12px; }
+    .stat-num { font-size:26px; font-weight:800; }
+    .stat-label { font-size:11px; opacity:.85; margin-top:4px; line-height:1.3; }
+    .container { max-width:900px; margin:0 auto; padding:32px 20px 60px; }
+    .section { background:var(--surface); border-radius:16px; padding:28px; margin-bottom:24px; }
+    .sec-head { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+    .sec-num { width:36px; height:36px; border-radius:50%; background:var(--accent); color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .sec-title { font-size:18px; font-weight:700; flex:1; }
+    .sec-time { margin-left:auto; font-size:12px; font-weight:700; color:var(--accent); background:var(--accent-light); padding:4px 10px; border-radius:999px; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .15s,color .15s; }
+    .sec-time::before { content:"\25B6 "; }
+    .sec-time:hover { background:var(--accent); color:#fff; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th { background:var(--accent); color:#fff; padding:10px 14px; text-align:left; font-weight:700; }
+    td { padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+    tr:last-child td { border-bottom:none; }
+    tr:nth-child(even) td { background:#f9fffe; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    @media (max-width:760px){ .grid{grid-template-columns:repeat(2,1fr);} .stats{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:480px){ .grid{grid-template-columns:1fr;} .hero h1{font-size:20px;} }
+    .card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:18px; }
+    .card-title { font-size:14px; font-weight:700; color:var(--accent); margin-bottom:8px; }
+    .card-body { font-size:13px; color:var(--text); line-height:1.6; }
+    .flow { display:flex; align-items:stretch; gap:0; flex-wrap:nowrap; overflow-x:auto; }
+    .flow-item { background:var(--accent-light); border-radius:10px; padding:14px 16px; text-align:center; flex:1; min-width:108px; border:2px solid var(--accent-mid); }
+    .flow-num { font-size:18px; font-weight:800; color:var(--accent); }
+    .flow-label { font-size:12px; font-weight:700; margin-top:4px; }
+    .flow-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
+    .flow-arrow { display:flex; align-items:center; padding:0 4px; color:var(--accent); font-size:18px; font-weight:700; flex-shrink:0; }
+    .compare { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .compare-box { background:var(--bg); border:2px solid var(--border); border-radius:12px; padding:18px; }
+    .compare-box.accent { border-color:var(--accent); }
+    .compare-box h4 { font-size:14px; font-weight:700; margin-bottom:10px; color:var(--accent); }
+    .compare-box ul { list-style:none; padding:0; }
+    .compare-box ul li { font-size:13px; padding:5px 0; border-bottom:1px solid var(--border); }
+    .compare-box ul li:last-child { border-bottom:none; }
+    .compare-box ul li::before { content:"\2013 "; color:var(--accent); font-weight:700; }
+    @media (max-width:600px){ .compare{grid-template-columns:1fr;} .pipeline{grid-template-columns:repeat(2,1fr)!important;} .scenarios{grid-template-columns:1fr!important;} }
+    .insight { border-left:4px solid var(--accent); background:var(--accent-light); border-radius:0 10px 10px 0; padding:14px 18px; margin:14px 0 0; font-size:14px; }
+    .insight strong { color:var(--accent); }
+    .pipeline { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+    .pipe-step { background:var(--bg); border:2px solid var(--accent-mid); border-radius:10px; padding:12px 8px; text-align:center; }
+    .pipe-step-num { font-size:11px; color:var(--muted); margin-bottom:4px; }
+    .pipe-step-label { font-size:13px; font-weight:700; color:var(--accent); }
+    .pipe-step-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
+    .scenarios { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .scenario-card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:18px 18px 18px 22px; position:relative; overflow:hidden; }
+    .scenario-card::before { content:""; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--accent); }
+    .scenario-num { font-size:24px; font-weight:800; color:var(--accent-light); position:absolute; top:10px; right:14px; }
+    .scenario-title { font-size:14px; font-weight:700; margin-bottom:8px; }
+    .scenario-body { font-size:13px; color:var(--muted); line-height:1.55; }
+    .footer { background:var(--surface); border-top:1px solid var(--border); padding:20px 32px; text-align:center; font-size:12px; color:var(--muted); }
+    .footer a { color:var(--accent); text-decoration:none; }
+    h3.blocktitle { font-weight:700; font-size:15px; margin-bottom:12px; }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-label">메이커 에반 | 2026-05-22</div>
+  <h1>도구 3개로 끝낸 유튜브 자동화<br>3개월 만에 구독자 3만</h1>
+  <div class="hero-sub">말도 편집도 천재가 아닌 제작자가, 직접 만든 AI 도구 3개로 채널 운영 전체를 한 흐름으로 묶어 하루 1편 체제를 만든 방법</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">3개월</div><div class="stat-label">구독자 3만 명 달성</div></div>
+    <div class="stat"><div class="stat-num">30분~1시간</div><div class="stat-label">영상 1편 완성 시간<br>(기존 3일 → 단축)</div></div>
+    <div class="stat"><div class="stat-num">3개</div><div class="stat-label">직접 만든 도구<br>라이터·퍼블리셔·에디터</div></div>
+    <div class="stat"><div class="stat-num">10분 이내</div><div class="stat-label">대본 작업 시간<br>(기존 1~2일)</div></div>
+  </div>
+</div>
+<div class="container">
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">1</div><div class="sec-title">핵심 개요 — 무엇을, 왜 만들었나</div>
+      <a class="sec-time" href="https://youtu.be/pLuyyV8VMfU?t=0" target="_blank" rel="noopener" title="영상 0:00 위치로 이동">0:00</a></div>
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td><strong>제작자</strong></td><td>원래 글 쓰고 코드 짜던 사람. 말솜씨·편집 실력으로 승부한 게 아님</td></tr>
+      <tr><td><strong>결과</strong></td><td>유튜브 시작 3개월 만에 구독자 3만 명, 하루 최소 1편 업로드 체제</td></tr>
+      <tr><td><strong>비결</strong></td><td>직접 만든 도구 3개로 <strong>채널 운영 전체를 하나의 흐름(파이프라인)으로 연결</strong></td></tr>
+      <tr><td><strong>출발점</strong></td><td>"기존 도구가 내 워크플로우에 안 맞으면 직접 만들면 된다"는 발상의 전환</td></tr>
+      <tr><td><strong>전제</strong></td><td>처음엔 영상 1편에 3일, 업로드 버튼 누르기까지 2시간씩 망설일 만큼 막막했음</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">2</div><div class="sec-title">핵심 기능 — 직접 만든 도구 3종</div>
+      <a class="sec-time" href="https://youtu.be/pLuyyV8VMfU?t=278" target="_blank" rel="noopener" title="영상 4:38 위치로 이동">4:38</a></div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">① 유튜브 스크립트 라이터</div>
+        <div class="card-body">주제만 던지면 후킹·CTA(시청자 행동 유도 문구)·패턴 인터럽트(지루함 방지 전환) 등 검증된 구조가 박힌 완성형 대본을 출력. 파트1 후킹 ~ 파트12 마무리까지 구간별로 생성.<br><strong>효과: 1~2일 → 10분 이내.</strong></div>
+      </div>
+      <div class="card">
+        <div class="card-title">② 유튜브 퍼블리셔</div>
+        <div class="card-body">영상 완성 후 스크립트만 넣으면 4종 결과물 자동 생성: 검색에 잘 걸리는 <strong>제목 후보 5개</strong>, 타임스탬프 포함 설명, 클릭률용 썸네일 문구 3개, 묶을 키워드 세트.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">③ 유튜브 에디터</div>
+        <div class="card-body">녹음한 본인 목소리를 넣으면 그에 맞게 영상을 자동 편집해 주는 도구. 편집 단계의 반복 작업을 줄여 1편 완성 시간을 압축.</div>
+      </div>
+    </div>
+    <div class="insight"><strong>메타데이터의 재발견:</strong> "유튜브는 영상 자체도 중요하지만, 그 영상이 <strong>발견되는 것</strong>이 더 중요하다." 제목·썸네일 문구 한 줄이 클릭률을 좌우하므로 퍼블리셔로 이 부분을 자동화.</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">3</div><div class="sec-title">기술적 맥락 — TTS를 끝내 버린 이유</div>
+      <a class="sec-time" href="https://youtu.be/pLuyyV8VMfU?t=111" target="_blank" rel="noopener" title="영상 1:51 위치로 이동">1:51</a></div>
+    <p style="font-size:14px;margin-bottom:14px;">처음엔 TTS(Text-to-Speech, 글을 AI 음성으로 읽어 주는 기술)로 내레이션을 뽑아 시간을 아끼려 했으나, 유명 한국어 TTS를 모두 들어본 뒤 폐기했다.</p>
+    <div class="compare">
+      <div class="compare-box accent">
+        <h4>TTS 폐기 이유 4가지</h4>
+        <ul>
+          <li>톤이 평평해 감정이 안 실려 1분만 들어도 졸림</li>
+          <li>중요한 단어 강조가 안 되고 모두 같은 무게로 읽음</li>
+          <li>한국어 특유의 호흡·띄어 읽기가 어색함</li>
+          <li>내 목소리가 아니라 "남이 떠드는 느낌" — 영상이 내 것 같지 않음</li>
+        </ul>
+      </div>
+      <div class="compare-box">
+        <h4>대안: 직접 녹음 + 스킬 도구</h4>
+        <ul>
+          <li>TTS 대신 본인 녹음, 대신 녹음 시간을 빠르게 단축</li>
+          <li>도구는 모두 이름을 "유튜브~"로 통일한 <strong>스킬(skill) 형태</strong></li>
+          <li>스킬 = 검증된 작업 절차를 코드로 박아 둔 재사용 도구</li>
+          <li>TTS 고민 중이라면 짧게라도 직접 들어보고 결정하라는 조언</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">4</div><div class="sec-title">전략적 의미 — "안 맞으면 직접 만든다"</div>
+      <a class="sec-time" href="https://youtu.be/pLuyyV8VMfU?t=44" target="_blank" rel="noopener" title="영상 0:44 위치로 이동">0:44</a></div>
+    <div class="grid">
+      <div class="card"><div class="card-title">발상 전환</div><div class="card-body">시판 도구를 억지로 쓰는 대신, 본인 워크플로우에 맞는 도구를 직접 제작. 글·코드 역량이 있다면 "내가 쓸 도구는 내가 만드는 게 빠르다".</div></div>
+      <div class="card"><div class="card-title">노하우의 자산화</div><div class="card-body">"그동안 쌓은 글쓰기 노하우를 작가 한 명으로 만들어 옆에 앉힌 것." 초안은 AI가, 말투 다듬기는 사람이 — 역량이 도구에 영구 축적됨.</div></div>
+      <div class="card"><div class="card-title">지속 가능성</div><div class="card-body">3일 1편의 부담과 의욕 저하를 자동화로 해소. 매주 "그만둘까" 싶던 상태에서 주 2~3편 꾸준한 업로드로 전환.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">5</div><div class="sec-title">핵심 워크플로우 — 한 파이프라인으로 묶기</div>
+      <a class="sec-time" href="https://youtu.be/pLuyyV8VMfU?t=501" target="_blank" rel="noopener" title="영상 8:21 위치로 이동">8:21</a></div>
+    <div class="pipeline">
+      <div class="pipe-step"><div class="pipe-step-num">STEP 1</div><div class="pipe-step-label">주제 입력</div><div class="pipe-step-desc">웹서치 도구로 늘어나는 검색 키워드 탐색</div></div>
+      <div class="pipe-step"><div class="pipe-step-num">STEP 2</div><div class="pipe-step-label">대본 생성</div><div class="pipe-step-desc">스크립트 라이터로 완성형 대본 → 말투만 다듬기</div></div>
+      <div class="pipe-step"><div class="pipe-step-num">STEP 3</div><div class="pipe-step-label">녹음·편집</div><div class="pipe-step-desc">본인 목소리 녹음 → 에디터로 자동 편집</div></div>
+      <div class="pipe-step"><div class="pipe-step-num">STEP 4</div><div class="pipe-step-label">메타데이터</div><div class="pipe-step-desc">퍼블리셔로 제목·설명·썸네일 문구·키워드 생성</div></div>
+      <div class="pipe-step"><div class="pipe-step-num">STEP 5</div><div class="pipe-step-label">업로드</div><div class="pipe-step-desc">결과물이 쌓이며 검색 유입 점증</div></div>
+    </div>
+    <div class="insight"><strong>핵심:</strong> 도구가 각각 좋은 게 아니라 <strong>하나의 흐름으로 연결</strong>됐다는 점이 비결. 월~금 시간 단위 워크플로우가 통째로 자동화돼 하루 1편 체제가 가능해졌다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">6</div><div class="sec-title">활용 시나리오</div>
+      <a class="sec-time" href="https://youtu.be/pLuyyV8VMfU?t=557" target="_blank" rel="noopener" title="영상 9:17 위치로 이동">9:17</a></div>
+    <div class="scenarios">
+      <div class="scenario-card"><div class="scenario-num">01</div><div class="scenario-title">1인 크리에이터</div><div class="scenario-body">기획·대본·편집·메타데이터를 도구가 분담. 콘텐츠 본질에만 집중하고 반복 작업은 자동화해 발행 빈도를 끌어올림.</div></div>
+      <div class="scenario-card"><div class="scenario-num">02</div><div class="scenario-title">검색 최적화 운영</div><div class="scenario-body">퍼블리셔가 제목·썸네일 문구를 다량 제안해 클릭률 테스트. 영상이 쌓일수록 검색 유입이 누적 증가하는 구조.</div></div>
+      <div class="scenario-card"><div class="scenario-num">03</div><div class="scenario-title">개인용 도구 제작</div><div class="scenario-body">시판 도구가 안 맞는 전문직·1인 사업자가, 자기 작업 절차를 스킬 형태로 코드화해 반복 업무를 영구 자동화.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">7</div><div class="sec-title">현황 및 전망</div>
+      <a class="sec-time" href="https://youtu.be/pLuyyV8VMfU?t=570" target="_blank" rel="noopener" title="영상 9:30 위치로 이동">9:30</a></div>
+    <div class="insight" style="margin-top:0;"><strong>요지:</strong> 자동화의 성패는 개별 도구 성능이 아니라 <strong>도구 간 연결(파이프라인)</strong>에 달려 있다. AI 음성처럼 정체성을 해치는 부분은 과감히 빼고, 사람의 고유 자산(목소리·노하우)은 지키되 그것을 증폭하는 방향으로 도구를 설계하는 것이 핵심 메시지다. 누구나 자기 워크플로우를 코드화하면 "1편 3일"을 "1편 30분"으로 바꿀 수 있다.</div>
+  </div>
+
+</div>
+<div class="footer">
+  <div>출처: <a href="https://youtu.be/pLuyyV8VMfU" target="_blank" rel="noopener">사흘 → 30분, 도구 3개로 끝낸 유튜브 자동화 — 메이커 에반</a></div>
+  <div style="margin-top:6px;">생성일: 2026-05-22 | AI 비주얼 리포트 by Claude</div>
+</div>
+
+</body>
+</html>

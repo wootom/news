@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>구글 IO 2026, AI 경쟁의 판을 바꾸다 — 오목교 전자상가</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+    .hero { background: linear-gradient(135deg,#1a6b48 0%,var(--accent) 60%,var(--accent-mid) 100%); color:#fff; padding:48px 32px 36px; text-align:center; }
+    .hero-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:.75; margin-bottom:10px; }
+    .hero h1 { font-size:26px; font-weight:800; line-height:1.3; margin-bottom:8px; }
+    .hero-sub { font-size:13px; opacity:.85; margin-bottom:28px; max-width:720px; margin-left:auto; margin-right:auto; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:860px; margin:0 auto; }
+    .stat { background:rgba(255,255,255,.15); border-radius:12px; padding:16px 12px; }
+    .stat-num { font-size:26px; font-weight:800; }
+    .stat-label { font-size:11px; opacity:.85; margin-top:4px; line-height:1.3; }
+    .container { max-width:900px; margin:0 auto; padding:32px 20px 60px; }
+    .section { background:var(--surface); border-radius:16px; padding:28px; margin-bottom:24px; }
+    .sec-head { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+    .sec-num { width:36px; height:36px; border-radius:50%; background:var(--accent); color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .sec-title { font-size:18px; font-weight:700; flex:1; }
+    .sec-time { margin-left:auto; font-size:12px; font-weight:700; color:var(--accent); background:var(--accent-light); padding:4px 10px; border-radius:999px; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .15s,color .15s; }
+    .sec-time::before { content:"\25B6 "; }
+    .sec-time:hover { background:var(--accent); color:#fff; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th { background:var(--accent); color:#fff; padding:10px 14px; text-align:left; font-weight:700; }
+    td { padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+    tr:last-child td { border-bottom:none; }
+    tr:nth-child(even) td { background:#f9fffe; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    @media (max-width:760px){ .grid{grid-template-columns:repeat(2,1fr);} .stats{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:480px){ .grid{grid-template-columns:1fr;} .hero h1{font-size:20px;} }
+    .card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:18px; }
+    .card-title { font-size:14px; font-weight:700; color:var(--accent); margin-bottom:8px; }
+    .card-body { font-size:13px; color:var(--text); line-height:1.6; }
+    .flow { display:flex; align-items:stretch; gap:0; flex-wrap:nowrap; overflow-x:auto; }
+    .flow-item { background:var(--accent-light); border-radius:10px; padding:14px 16px; text-align:center; flex:1; min-width:108px; border:2px solid var(--accent-mid); }
+    .flow-num { font-size:18px; font-weight:800; color:var(--accent); }
+    .flow-label { font-size:12px; font-weight:700; margin-top:4px; }
+    .flow-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
+    .flow-arrow { display:flex; align-items:center; padding:0 4px; color:var(--accent); font-size:18px; font-weight:700; flex-shrink:0; }
+    .compare { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .compare-box { background:var(--bg); border:2px solid var(--border); border-radius:12px; padding:18px; }
+    .compare-box.accent { border-color:var(--accent); }
+    .compare-box h4 { font-size:14px; font-weight:700; margin-bottom:10px; color:var(--accent); }
+    .compare-box ul { list-style:none; padding:0; }
+    .compare-box ul li { font-size:13px; padding:5px 0; border-bottom:1px solid var(--border); }
+    .compare-box ul li:last-child { border-bottom:none; }
+    .compare-box ul li::before { content:"\2013 "; color:var(--accent); font-weight:700; }
+    @media (max-width:600px){ .compare{grid-template-columns:1fr;} .pipeline{grid-template-columns:repeat(2,1fr)!important;} .scenarios{grid-template-columns:1fr!important;} }
+    .insight { border-left:4px solid var(--accent); background:var(--accent-light); border-radius:0 10px 10px 0; padding:14px 18px; margin:14px 0 0; font-size:14px; }
+    .insight strong { color:var(--accent); }
+    .pipeline { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+    .pipe-step { background:var(--bg); border:2px solid var(--accent-mid); border-radius:10px; padding:12px 8px; text-align:center; }
+    .pipe-step-num { font-size:11px; color:var(--muted); margin-bottom:4px; }
+    .pipe-step-label { font-size:13px; font-weight:700; color:var(--accent); }
+    .pipe-step-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
+    .scenarios { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .scenario-card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:18px 18px 18px 22px; position:relative; overflow:hidden; }
+    .scenario-card::before { content:""; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--accent); }
+    .scenario-num { font-size:24px; font-weight:800; color:var(--accent-light); position:absolute; top:10px; right:14px; }
+    .scenario-title { font-size:14px; font-weight:700; margin-bottom:8px; }
+    .scenario-body { font-size:13px; color:var(--muted); line-height:1.55; }
+    .footer { background:var(--surface); border-top:1px solid var(--border); padding:20px 32px; text-align:center; font-size:12px; color:var(--muted); }
+    .footer a { color:var(--accent); text-decoration:none; }
+    h3.blocktitle { font-weight:700; font-size:15px; margin-bottom:12px; }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-label">오목교 전자상가 | 2026-05-22</div>
+  <h1>샘 알트먼 보고 있나<br>구글 IO 2026, AI 경쟁의 판을 바꾸다</h1>
+  <div class="hero-sub">현장에서 본 구글 IO 2026 — 지능 경쟁은 끝났고 속도·효율·상업화 경쟁이 시작됐다. Gemini 3.5 Flash와 8세대 TPU가 만든 구조적 원가 우위</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">289토큰/초</div><div class="stat-label">Gemini 3.5 Flash<br>출력 속도</div></div>
+    <div class="stat"><div class="stat-num">12배</div><div class="stat-label">같은 품질에서<br>더 빠른 추론(내부 언급)</div></div>
+    <div class="stat"><div class="stat-num">+80%</div><div class="stat-label">8세대 TPU<br>가격 대비 성능 향상</div></div>
+    <div class="stat"><div class="stat-num">25년 만</div><div class="stat-label">구글 검색<br>UI/UX 대전환</div></div>
+  </div>
+</div>
+<div class="container">
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">1</div><div class="sec-title">핵심 개요 — 경쟁의 축이 바뀌었다</div>
+      <a class="sec-time" href="https://youtu.be/-wcdSZywJ1I?t=2" target="_blank" rel="noopener" title="영상 0:02 위치로 이동">0:02</a></div>
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td><strong>현장</strong></td><td>구글 IO 2026 발표 현장. 검색 책임자 부수장에게 직접 질문할 기회도 있었음</td></tr>
+      <tr><td><strong>핵심 주장</strong></td><td>"지금까지의 AI 모델 경쟁(누가 더 똑똑한가)은 끝났다." 이제 <strong>속도·효율성·상업화</strong>가 경쟁의 축</td></tr>
+      <tr><td><strong>지능은 전제</strong></td><td>높은 지능은 당연한 기본값이 되고, 그 위에서 얼마나 빠르고 싸게 굴리느냐가 승부처</td></tr>
+      <tr><td><strong>구글의 의도</strong></td><td>"부자만 가능한 싸움"으로 판을 옮겨 자체 칩(TPU)을 가진 구글이 유리한 전장을 만듦</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">2</div><div class="sec-title">핵심 발표 — Gemini 3.5 Flash</div>
+      <a class="sec-time" href="https://youtu.be/-wcdSZywJ1I?t=59" target="_blank" rel="noopener" title="영상 0:59 위치로 이동">0:59</a></div>
+    <p style="font-size:14px;margin-bottom:14px;"><strong>Flash 모델:</strong> 전작 프로(Pro)급 성능을 훨씬 빠른 속도로 굴리는 경량 모델. 토큰(AI가 처리하는 정보 단위)을 빠르게 쏟아낸다.</p>
+    <div class="grid">
+      <div class="card"><div class="card-title">전작 프로를 능가</div><div class="card-body">경량 Flash인데도 이전 세대의 고성능 Pro 모델을 성능에서 다 이김.</div></div>
+      <div class="card"><div class="card-title">압도적 속도</div><div class="card-body">초당 약 289토큰 출력. 다른 프론티어 모델 대비 네 배가량 빠름.</div></div>
+      <div class="card"><div class="card-title">12배 효율</div><div class="card-body">내부적으로는 같은 품질을 12배 빠르게 내는 추론 품질도 있다고 임원이 언급.</div></div>
+    </div>
+    <div class="insight"><strong>왜 빠른 모델이 필요한가:</strong> AI 글래스(안경형 기기) 때문. 눈에 보이는 걸 물으면 즉시, 그러나 틀리지 않게 답해야 하므로 속도와 품질의 균형이 관건이다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">3</div><div class="sec-title">기술적 맥락 — 8세대 TPU의 분리</div>
+      <a class="sec-time" href="https://youtu.be/-wcdSZywJ1I?t=228" target="_blank" rel="noopener" title="영상 3:48 위치로 이동">3:48</a></div>
+    <p style="font-size:14px;margin-bottom:14px;"><strong>TPU(Tensor Processing Unit):</strong> 구글이 직접 만든 AI 전용 칩. 8세대부터 용도에 따라 둘로 쪼개졌다.</p>
+    <div class="compare">
+      <div class="compare-box accent">
+        <h4>TPU8T — 학습용</h4>
+        <ul>
+          <li>AI 모델을 <strong>훈련(학습)</strong>시킬 때 사용</li>
+          <li>대규모 연산으로 모델을 새로 만드는 단계</li>
+        </ul>
+      </div>
+      <div class="compare-box accent">
+        <h4>TPU8i — 추론용</h4>
+        <ul>
+          <li>완성된 모델이 <strong>답변(추론)</strong>할 때 사용</li>
+          <li>가격 대비 성능이 전작 대비 +80%</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight"><strong>왜 분리가 중요한가:</strong> 그동안 여러 AI 회사는 모델 학습에 박차를 가할 때 추론용 컴퓨팅 자원을 끌어다 써, 특정 기간 답변 품질이 떨어지거나 오류가 났다. 구글은 칩 단계에서 학습·추론 자원을 완전히 분리해 <strong>답변 시 컴퓨팅 파워를 구조적으로 보장</strong>한다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">4</div><div class="sec-title">전략적 의미 — 추론 비용 경쟁의 승자</div>
+      <a class="sec-time" href="https://youtu.be/-wcdSZywJ1I?t=284" target="_blank" rel="noopener" title="영상 4:44 위치로 이동">4:44</a></div>
+    <p style="font-size:14px;margin-bottom:14px;"><strong>추론 비용:</strong> AI가 답변할 때마다 드는 연산 비용. 사용자가 많아질수록 어마어마하게 누적된다.</p>
+    <div class="flow">
+      <div class="flow-item"><div class="flow-num">1</div><div class="flow-label">자체 칩</div><div class="flow-desc">TPU8i로<br>추론 원가 절감</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><div class="flow-num">2</div><div class="flow-label">경쟁사</div><div class="flow-desc">엔비디아 칩 사서<br>추론 → 원가 불리</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><div class="flow-num">3</div><div class="flow-label">결과</div><div class="flow-desc">가벼운 모델 경쟁에서<br>구글 사실상 우위</div></div>
+    </div>
+    <div class="insight"><strong>핵심:</strong> 글래스를 끼면 단순한 질문을 수십 개씩 던지게 된다. 이런 대량의 가벼운 질문에 답하는 연산 비용 경쟁에서, 자체 칩을 가진 구글은 더 싸게 더 많이 공급할 수 있어 다른 기업이 이기기 어려운 판이 만들어졌다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">5</div><div class="sec-title">경쟁 환경 — 글래스와 검색의 변화</div>
+      <a class="sec-time" href="https://youtu.be/-wcdSZywJ1I?t=398" target="_blank" rel="noopener" title="영상 6:38 위치로 이동">6:38</a></div>
+    <div class="compare">
+      <div class="compare-box accent">
+        <h4>AI 글래스</h4>
+        <ul>
+          <li>반응 속도가 실시간에 가까움(체험 인상)</li>
+          <li>안드로이드·애플 iOS 모두에서 작동</li>
+          <li>입력이 한정적이라 명령 1번에 끝까지 자율 수행이 중요</li>
+          <li>젠틀몬스터·와비파커 신제품은 없었고 작년과 동일 하드웨어</li>
+        </ul>
+      </div>
+      <div class="compare-box accent">
+        <h4>구글 검색의 전환 (25년 만)</h4>
+        <ul>
+          <li>AI 친화적 UI/UX로 검색 경험 재설계</li>
+          <li>필요한 정보를 즉석에서 생성해 보여줌</li>
+          <li>검색·구매·장바구니가 한 자리에서 통합</li>
+          <li>가격 이력 등 쇼핑 데이터도 알아서 제공</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">6</div><div class="sec-title">활용 시나리오</div>
+      <a class="sec-time" href="https://youtu.be/-wcdSZywJ1I?t=620" target="_blank" rel="noopener" title="영상 10:20 위치로 이동">10:20</a></div>
+    <div class="scenarios">
+      <div class="scenario-card"><div class="scenario-num">01</div><div class="scenario-title">글래스 일상 검색</div><div class="scenario-body">눈에 보이는 사물을 즉시 질문. 빠르고 한정적 입력에 맞춰 AI가 끝까지 자율 수행해 결과를 내준다.</div></div>
+      <div class="scenario-card"><div class="scenario-num">02</div><div class="scenario-title">검색→구매 통합</div><div class="scenario-body">검색·장바구니·가격 이력이 한 화면에서 연결돼, 정보 탐색에서 구매까지의 동선이 짧아진다.</div></div>
+      <div class="scenario-card"><div class="scenario-num">03</div><div class="scenario-title">대량 경량 질의 서비스</div><div class="scenario-body">초당 수백 토큰·저비용 추론을 무기로, 사용자 수십만이 가벼운 질문을 쏟아내는 서비스를 저가에 공급.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">7</div><div class="sec-title">현황 및 전망</div>
+      <a class="sec-time" href="https://youtu.be/-wcdSZywJ1I?t=1137" target="_blank" rel="noopener" title="영상 18:57 위치로 이동">18:57</a></div>
+    <div class="insight" style="margin-top:0;"><strong>요지:</strong> 구글 IO 2026은 AI 경쟁의 무게중심을 "더 똑똑한 모델"에서 "더 빠르고 싼 모델"로 옮긴 분기점이다. 자체 칩(TPU)으로 학습·추론을 분리해 답변 품질과 원가를 동시에 잡은 구글은, 글래스·검색 등 대량 경량 질의가 폭증할 영역에서 구조적 우위를 확보했다. 엔비디아 칩에 의존하는 경쟁사들은 추론 원가 경쟁에서 불리해지는 국면이다.</div>
+  </div>
+
+</div>
+<div class="footer">
+  <div>출처: <a href="https://youtu.be/-wcdSZywJ1I" target="_blank" rel="noopener">샘 알트먼 보고 있나? AI로 돈은 이렇게 버는거야 — 오목교 전자상가</a></div>
+  <div style="margin-top:6px;">생성일: 2026-05-22 | AI 비주얼 리포트 by Claude</div>
+</div>
+
+</body>
+</html>

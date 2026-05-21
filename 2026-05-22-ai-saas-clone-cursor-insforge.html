@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI로 월 $79K SaaS 복제하기 — Astro K Joseph</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+    .hero { background: linear-gradient(135deg,#1a6b48 0%,var(--accent) 60%,var(--accent-mid) 100%); color:#fff; padding:48px 32px 36px; text-align:center; }
+    .hero-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:.75; margin-bottom:10px; }
+    .hero h1 { font-size:26px; font-weight:800; line-height:1.3; margin-bottom:8px; }
+    .hero-sub { font-size:13px; opacity:.85; margin-bottom:28px; max-width:720px; margin-left:auto; margin-right:auto; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:860px; margin:0 auto; }
+    .stat { background:rgba(255,255,255,.15); border-radius:12px; padding:16px 12px; }
+    .stat-num { font-size:26px; font-weight:800; }
+    .stat-label { font-size:11px; opacity:.85; margin-top:4px; line-height:1.3; }
+    .container { max-width:900px; margin:0 auto; padding:32px 20px 60px; }
+    .section { background:var(--surface); border-radius:16px; padding:28px; margin-bottom:24px; }
+    .sec-head { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+    .sec-num { width:36px; height:36px; border-radius:50%; background:var(--accent); color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .sec-title { font-size:18px; font-weight:700; flex:1; }
+    .sec-time { margin-left:auto; font-size:12px; font-weight:700; color:var(--accent); background:var(--accent-light); padding:4px 10px; border-radius:999px; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .15s,color .15s; }
+    .sec-time::before { content:"\25B6 "; }
+    .sec-time:hover { background:var(--accent); color:#fff; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th { background:var(--accent); color:#fff; padding:10px 14px; text-align:left; font-weight:700; }
+    td { padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+    tr:last-child td { border-bottom:none; }
+    tr:nth-child(even) td { background:#f9fffe; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    @media (max-width:760px){ .grid{grid-template-columns:repeat(2,1fr);} .stats{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:480px){ .grid{grid-template-columns:1fr;} .hero h1{font-size:20px;} }
+    .card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:18px; }
+    .card-title { font-size:14px; font-weight:700; color:var(--accent); margin-bottom:8px; }
+    .card-body { font-size:13px; color:var(--text); line-height:1.6; }
+    .flow { display:flex; align-items:stretch; gap:0; flex-wrap:nowrap; overflow-x:auto; }
+    .flow-item { background:var(--accent-light); border-radius:10px; padding:14px 16px; text-align:center; flex:1; min-width:108px; border:2px solid var(--accent-mid); }
+    .flow-num { font-size:18px; font-weight:800; color:var(--accent); }
+    .flow-label { font-size:12px; font-weight:700; margin-top:4px; }
+    .flow-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
+    .flow-arrow { display:flex; align-items:center; padding:0 4px; color:var(--accent); font-size:18px; font-weight:700; flex-shrink:0; }
+    .compare { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .compare-box { background:var(--bg); border:2px solid var(--border); border-radius:12px; padding:18px; }
+    .compare-box.accent { border-color:var(--accent); }
+    .compare-box h4 { font-size:14px; font-weight:700; margin-bottom:10px; color:var(--accent); }
+    .compare-box ul { list-style:none; padding:0; }
+    .compare-box ul li { font-size:13px; padding:5px 0; border-bottom:1px solid var(--border); }
+    .compare-box ul li:last-child { border-bottom:none; }
+    .compare-box ul li::before { content:"\2013 "; color:var(--accent); font-weight:700; }
+    @media (max-width:600px){ .compare{grid-template-columns:1fr;} .pipeline{grid-template-columns:repeat(2,1fr)!important;} .scenarios{grid-template-columns:1fr!important;} }
+    .insight { border-left:4px solid var(--accent); background:var(--accent-light); border-radius:0 10px 10px 0; padding:14px 18px; margin:14px 0 0; font-size:14px; }
+    .insight strong { color:var(--accent); }
+    .pipeline { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+    .pipe-step { background:var(--bg); border:2px solid var(--accent-mid); border-radius:10px; padding:12px 8px; text-align:center; }
+    .pipe-step-num { font-size:11px; color:var(--muted); margin-bottom:4px; }
+    .pipe-step-label { font-size:13px; font-weight:700; color:var(--accent); }
+    .pipe-step-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
+    .scenarios { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .scenario-card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:18px 18px 18px 22px; position:relative; overflow:hidden; }
+    .scenario-card::before { content:""; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--accent); }
+    .scenario-num { font-size:24px; font-weight:800; color:var(--accent-light); position:absolute; top:10px; right:14px; }
+    .scenario-title { font-size:14px; font-weight:700; margin-bottom:8px; }
+    .scenario-body { font-size:13px; color:var(--muted); line-height:1.55; }
+    .footer { background:var(--surface); border-top:1px solid var(--border); padding:20px 32px; text-align:center; font-size:12px; color:var(--muted); }
+    .footer a { color:var(--accent); text-decoration:none; }
+    h3.blocktitle { font-weight:700; font-size:15px; margin-bottom:12px; }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-label">Astro K Joseph | 2026-05-22</div>
+  <h1>AI로 월 $79K SaaS를 복제하다<br>3~4시간 만에 풀스택 클론</h1>
+  <div class="hero-sub">월 매출 $79,000의 링크드인 자동화 SaaS(supergrow.ai)를, 코드 한 줄 직접 안 짜고 AI 도구 5종으로 3~4시간에 클론한 전 과정</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">$79,479</div><div class="stat-label">복제 대상 SaaS<br>월 매출(MRR, 2월 기준)</div></div>
+    <div class="stat"><div class="stat-num">3~4시간</div><div class="stat-label">프론트+백엔드<br>전체 구축 시간</div></div>
+    <div class="stat"><div class="stat-num">도구 5종</div><div class="stat-label">Cursor·InsForge·Usercentrics<br>LinkedIn API·TestSprite</div></div>
+    <div class="stat"><div class="stat-num">GPT 5.4</div><div class="stat-label">콘텐츠 생성 모델<br>(InsForge 게이트웨이 경유)</div></div>
+  </div>
+</div>
+<div class="container">
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">1</div><div class="sec-title">핵심 개요 — 무엇을 복제했나</div>
+      <a class="sec-time" href="https://youtu.be/CcnZ411M5HE?t=0" target="_blank" rel="noopener" title="영상 0:00 위치로 이동">0:00</a></div>
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td><strong>복제 대상</strong></td><td>supergrow.ai — 월 매출 약 $79,479(MRR)의 링크드인 콘텐츠 자동화 SaaS</td></tr>
+      <tr><td><strong>SaaS란</strong></td><td>Software as a Service. 설치 없이 웹에서 구독해 쓰는 소프트웨어</td></tr>
+      <tr><td><strong>MRR이란</strong></td><td>Monthly Recurring Revenue, 매달 반복 발생하는 구독 매출</td></tr>
+      <tr><td><strong>핵심 성과</strong></td><td>인증·DB·AI 통합·스케줄링·OAuth·배포·테스트까지 풀스택을 AI 프롬프트만으로 3~4시간에 구축</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">2</div><div class="sec-title">핵심 기능 — 만든 앱의 구성</div>
+      <a class="sec-time" href="https://youtu.be/CcnZ411M5HE?t=56" target="_blank" rel="noopener" title="영상 0:56 위치로 이동">0:56</a></div>
+    <div class="grid">
+      <div class="card"><div class="card-title">랜딩 + 인증</div><div class="card-body">세련된 랜딩 페이지 자동 생성. 이메일·비밀번호 또는 구글·깃허브 계정으로 회원가입.</div></div>
+      <div class="card"><div class="card-title">온보딩</div><div class="card-body">콘텐츠 취향 설정(카테고리·타깃 독자·톤·작성 스타일)을 안내 흐름으로 수집.</div></div>
+      <div class="card"><div class="card-title">링크드인 연결</div><div class="card-body">OAuth(권한 위임 로그인)로 한 번 클릭해 링크드인 계정을 안전하게 연결.</div></div>
+      <div class="card"><div class="card-title">AI 콘텐츠 생성</div><div class="card-body">취향에 맞춘 링크드인 글을 AI가 작성. 앱을 떠나지 않고 바로 게시 가능.</div></div>
+      <div class="card"><div class="card-title">스케줄링·크론</div><div class="card-body">시간대·게시 날짜·간격·빈도 설정. 큐(대기열)를 자동 관리해 계정을 꾸준히 활성 상태로 유지.</div></div>
+      <div class="card"><div class="card-title">자동 게시</div><div class="card-body">AI가 콘텐츠를 계속 생성하고, 예약대로 링크드인에 자동 발행.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">3</div><div class="sec-title">기술적 맥락 — 도구 5종과 MCP</div>
+      <a class="sec-time" href="https://youtu.be/CcnZ411M5HE?t=168" target="_blank" rel="noopener" title="영상 2:48 위치로 이동">2:48</a></div>
+    <table>
+      <tr><th>도구</th><th>역할</th></tr>
+      <tr><td><strong>Cursor</strong></td><td>메인 AI 코딩 에이전트(프롬프트로 코드를 짜 주는 에디터). Antigravity 등 대체 가능</td></tr>
+      <tr><td><strong>InsForge</strong></td><td>백엔드 전담 — PostgreSQL DB·인증·AI 모델 통합·크론/스케줄링·배포까지. AI 네이티브 개발자용 백엔드 플랫폼</td></tr>
+      <tr><td><strong>Usercentrics CookieBot</strong></td><td>쿠키 동의 배너(CMP, 동의 관리 플랫폼). GDPR·CCPA 등 EU 개인정보 규정 준수용</td></tr>
+      <tr><td><strong>LinkedIn API</strong></td><td>공식 API. 사용자 대신 글을 게시하는 OAuth 흐름과 Post API 제공</td></tr>
+      <tr><td><strong>TestSprite</strong></td><td>자동 테스트 도구. 코드 붙여넣기만으로 테스트 수행</td></tr>
+    </table>
+    <div class="insight"><strong>MCP(Model Context Protocol):</strong> AI 에이전트가 외부 도구·서비스에 연결되는 표준 통로. InsForge MCP를 Cursor에 연결하면, 프롬프트만으로 DB 생성·테이블 변경·인증 구현·AI 모델 통합·배포까지 에이전트가 알아서 처리한다. 대시보드에서 수동 설정·코드 복사가 불필요.</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">4</div><div class="sec-title">전략적 의미 — 백엔드 프로비저닝의 자동화</div>
+      <a class="sec-time" href="https://youtu.be/CcnZ411M5HE?t=280" target="_blank" rel="noopener" title="영상 4:40 위치로 이동">4:40</a></div>
+    <div class="grid">
+      <div class="card"><div class="card-title">수동 → 프롬프트</div><div class="card-body">기존엔 DB·인증·배포를 대시보드에서 손수 설정하고 코드를 복붙해야 했다. 이제 "데이터베이스 만들어", "배포해" 한 줄이면 에이전트가 수행.</div></div>
+      <div class="card"><div class="card-title">진입 장벽 붕괴</div><div class="card-body">코드를 모르거나 풀스택 경험이 없어도, 월 수만 달러를 버는 SaaS의 핵심 기능을 몇 시간에 재현 가능.</div></div>
+      <div class="card"><div class="card-title">컴플라이언스 내장</div><div class="card-body">CookieBot으로 쿠키 동의·개인정보 규정 준수까지 클릭 몇 번에 통합 — 출시 준비도가 높음.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">5</div><div class="sec-title">핵심 워크플로우 — 구축 파이프라인</div>
+      <a class="sec-time" href="https://youtu.be/CcnZ411M5HE?t=954" target="_blank" rel="noopener" title="영상 15:54 위치로 이동">15:54</a></div>
+    <div class="pipeline">
+      <div class="pipe-step"><div class="pipe-step-num">STEP 1</div><div class="pipe-step-label">프로젝트 생성</div><div class="pipe-step-desc">Cursor로 Next.js 프로젝트(프론트+백엔드 한 코드베이스)</div></div>
+      <div class="pipe-step"><div class="pipe-step-num">STEP 2</div><div class="pipe-step-label">백엔드·인증</div><div class="pipe-step-desc">InsForge MCP로 DB·인증·쿠키 배너 구성</div></div>
+      <div class="pipe-step"><div class="pipe-step-num">STEP 3</div><div class="pipe-step-label">링크드인 OAuth</div><div class="pipe-step-desc">계정 연결·게시 권한 흐름 구현</div></div>
+      <div class="pipe-step"><div class="pipe-step-num">STEP 4</div><div class="pipe-step-label">AI·스케줄링</div><div class="pipe-step-desc">GPT 5.4로 콘텐츠 생성 + 크론 예약 게시</div></div>
+      <div class="pipe-step"><div class="pipe-step-num">STEP 5</div><div class="pipe-step-label">배포·테스트</div><div class="pipe-step-desc">InsForge로 배포해 라이브 URL, TestSprite로 테스트</div></div>
+    </div>
+    <div class="insight"><strong>OAuth(권한 위임):</strong> 사용자가 비밀번호를 넘기지 않고, 링크드인 화면에서 권한만 허용해 우리 앱이 대신 글을 올릴 수 있게 하는 표준 방식. 보안과 편의를 동시에 확보한다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">6</div><div class="sec-title">활용 시나리오</div>
+      <a class="sec-time" href="https://youtu.be/CcnZ411M5HE?t=2347" target="_blank" rel="noopener" title="영상 39:07 위치로 이동">39:07</a></div>
+    <div class="scenarios">
+      <div class="scenario-card"><div class="scenario-num">01</div><div class="scenario-title">검증된 SaaS 클론</div><div class="scenario-body">이미 수익을 내는 서비스의 기능을 빠르게 재현해, 틈새 시장이나 다른 지역·언어로 변형 출시.</div></div>
+      <div class="scenario-card"><div class="scenario-num">02</div><div class="scenario-title">MVP 초고속 프로토타이핑</div><div class="scenario-body">인증·DB·배포·결제 전 단계를 프롬프트로 며칠이 아닌 몇 시간에 세워 아이디어를 빠르게 검증.</div></div>
+      <div class="scenario-card"><div class="scenario-num">03</div><div class="scenario-title">SNS 자동화 서비스</div><div class="scenario-body">링크드인 외 다른 플랫폼에도 OAuth+예약 게시 패턴을 적용해 콘텐츠 자동화 SaaS를 구성.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">7</div><div class="sec-title">현황 및 전망</div>
+      <a class="sec-time" href="https://youtu.be/CcnZ411M5HE?t=2569" target="_blank" rel="noopener" title="영상 42:49 위치로 이동">42:49</a></div>
+    <div class="insight" style="margin-top:0;"><strong>요지:</strong> AI 코딩 에이전트(Cursor)와 MCP로 연결된 백엔드 플랫폼(InsForge)의 결합은, 풀스택 SaaS 구축의 진입 장벽을 시간·기술 양면에서 무너뜨린다. 인증·DB·AI 통합·스케줄링·OAuth·배포·테스트·법규 준수까지 한 흐름에서 프롬프트로 처리되며, 월 수만 달러 SaaS의 기능 복제가 반나절 작업이 됐다. 다만 영상은 "기능 복제"의 기술 시연이며, 실제 사업화에는 차별화·마케팅·운영이 별도로 필요하다는 점은 원문에 명시되지 않은 부분이다.</div>
+  </div>
+
+</div>
+<div class="footer">
+  <div>출처: <a href="https://youtu.be/CcnZ411M5HE" target="_blank" rel="noopener">I Used AI To Build This $69K/mo App In A Day — Astro K Joseph</a></div>
+  <div style="margin-top:6px;">생성일: 2026-05-22 | AI 비주얼 리포트 by Claude</div>
+</div>
+
+</body>
+</html>

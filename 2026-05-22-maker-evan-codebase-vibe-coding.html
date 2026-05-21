@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>바이브 코딩 결국 무너집니다 — 메이커 에반</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+    .hero { background: linear-gradient(135deg,#1a6b48 0%,var(--accent) 60%,var(--accent-mid) 100%); color:#fff; padding:48px 32px 36px; text-align:center; }
+    .hero-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:.75; margin-bottom:10px; }
+    .hero h1 { font-size:26px; font-weight:800; line-height:1.3; margin-bottom:8px; }
+    .hero-sub { font-size:13px; opacity:.85; margin-bottom:28px; max-width:720px; margin-left:auto; margin-right:auto; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; max-width:860px; margin:0 auto; }
+    .stat { background:rgba(255,255,255,.15); border-radius:12px; padding:16px 12px; }
+    .stat-num { font-size:26px; font-weight:800; }
+    .stat-label { font-size:11px; opacity:.85; margin-top:4px; line-height:1.3; }
+    .container { max-width:900px; margin:0 auto; padding:32px 20px 60px; }
+    .section { background:var(--surface); border-radius:16px; padding:28px; margin-bottom:24px; }
+    .sec-head { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+    .sec-num { width:36px; height:36px; border-radius:50%; background:var(--accent); color:#fff; font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .sec-title { font-size:18px; font-weight:700; flex:1; }
+    .sec-time { margin-left:auto; font-size:12px; font-weight:700; color:var(--accent); background:var(--accent-light); padding:4px 10px; border-radius:999px; text-decoration:none; white-space:nowrap; flex-shrink:0; transition:background .15s,color .15s; }
+    .sec-time::before { content:"\25B6 "; }
+    .sec-time:hover { background:var(--accent); color:#fff; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th { background:var(--accent); color:#fff; padding:10px 14px; text-align:left; font-weight:700; }
+    td { padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+    tr:last-child td { border-bottom:none; }
+    tr:nth-child(even) td { background:#f9fffe; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    @media (max-width:760px){ .grid{grid-template-columns:repeat(2,1fr);} .stats{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:480px){ .grid{grid-template-columns:1fr;} .hero h1{font-size:20px;} }
+    .card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:18px; }
+    .card-title { font-size:14px; font-weight:700; color:var(--accent); margin-bottom:8px; }
+    .card-body { font-size:13px; color:var(--text); line-height:1.6; }
+    .flow { display:flex; align-items:stretch; gap:0; flex-wrap:nowrap; overflow-x:auto; }
+    .flow-item { background:var(--accent-light); border-radius:10px; padding:14px 16px; text-align:center; flex:1; min-width:108px; border:2px solid var(--accent-mid); }
+    .flow-num { font-size:18px; font-weight:800; color:var(--accent); }
+    .flow-label { font-size:12px; font-weight:700; margin-top:4px; }
+    .flow-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
+    .flow-arrow { display:flex; align-items:center; padding:0 4px; color:var(--accent); font-size:18px; font-weight:700; flex-shrink:0; }
+    .compare { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .compare-box { background:var(--bg); border:2px solid var(--border); border-radius:12px; padding:18px; }
+    .compare-box.accent { border-color:var(--accent); }
+    .compare-box h4 { font-size:14px; font-weight:700; margin-bottom:10px; color:var(--accent); }
+    .compare-box ul { list-style:none; padding:0; }
+    .compare-box ul li { font-size:13px; padding:5px 0; border-bottom:1px solid var(--border); }
+    .compare-box ul li:last-child { border-bottom:none; }
+    .compare-box ul li::before { content:"\2013 "; color:var(--accent); font-weight:700; }
+    @media (max-width:600px){ .compare{grid-template-columns:1fr;} .pipeline{grid-template-columns:repeat(2,1fr)!important;} .scenarios{grid-template-columns:1fr!important;} }
+    .insight { border-left:4px solid var(--accent); background:var(--accent-light); border-radius:0 10px 10px 0; padding:14px 18px; margin:14px 0 0; font-size:14px; }
+    .insight strong { color:var(--accent); }
+    .pipeline { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+    .pipe-step { background:var(--bg); border:2px solid var(--accent-mid); border-radius:10px; padding:12px 8px; text-align:center; }
+    .pipe-step-num { font-size:11px; color:var(--muted); margin-bottom:4px; }
+    .pipe-step-label { font-size:13px; font-weight:700; color:var(--accent); }
+    .pipe-step-desc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
+    .scenarios { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .scenario-card { background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:18px 18px 18px 22px; position:relative; overflow:hidden; }
+    .scenario-card::before { content:""; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--accent); }
+    .scenario-num { font-size:24px; font-weight:800; color:var(--accent-light); position:absolute; top:10px; right:14px; }
+    .scenario-title { font-size:14px; font-weight:700; margin-bottom:8px; }
+    .scenario-body { font-size:13px; color:var(--muted); line-height:1.55; }
+    .footer { background:var(--surface); border-top:1px solid var(--border); padding:20px 32px; text-align:center; font-size:12px; color:var(--muted); }
+    .footer a { color:var(--accent); text-decoration:none; }
+    h3.blocktitle { font-weight:700; font-size:15px; margin-bottom:12px; }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-label">메이커 에반 | 2026-05-22</div>
+  <h1>바이브 코딩, 결국 무너집니다<br>잘 짜인 코드베이스가 답인 이유</h1>
+  <div class="hero-sub">기획부터 동작 화면까지 빠르게 끝낸 비결은 실력이 아니라 잘 깔린 코드베이스 — 감으로만 짜는 코딩이 왜 위험한지 정리</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">DDD</div><div class="stat-label">도메인 주도 설계<br>비즈니스 단위로 코드 분리</div></div>
+    <div class="stat"><div class="stat-num">Next.js+Python</div><div class="stat-label">프론트·백엔드 분리<br>각자 잘하는 일에 집중</div></div>
+    <div class="stat"><div class="stat-num">레고 블록</div><div class="stat-label">기능 추가 방식<br>기반 위에 얹기만</div></div>
+    <div class="stat"><div class="stat-num">1주일</div><div class="stat-label">엉망 코드베이스의 대가<br>작은 기능 하나에 걸리는 시간</div></div>
+  </div>
+</div>
+<div class="container">
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">1</div><div class="sec-title">핵심 개요 — 빠른 개발의 진짜 비결</div>
+      <a class="sec-time" href="https://youtu.be/sSIkZ4-gSrc?t=0" target="_blank" rel="noopener" title="영상 0:00 위치로 이동">0:00</a></div>
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td><strong>주장</strong></td><td>새 프로젝트가 기획→동작 화면까지 빨랐던 건 실력이 아니라 <strong>코드베이스가 잘 깔려 있어서</strong></td></tr>
+      <tr><td><strong>코드베이스</strong></td><td>프로젝트 전체 소스코드의 구조·기반. 잘 정리돼 있으면 새 기능을 끼울 "자리"가 명확함</td></tr>
+      <tr><td><strong>핵심 비유</strong></td><td>도면 잘 나온 집 vs. 벽돌 막 쌓은 집 — 살아보면 동선·콘센트 위치에서 완전히 갈림</td></tr>
+      <tr><td><strong>경고 대상</strong></td><td>바이브 코딩(분위기·느낌대로, 계획 없이 짜는 코딩)의 구조적 위험</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">2</div><div class="sec-title">핵심 구조 — 좋은 코드베이스의 두 기둥</div>
+      <a class="sec-time" href="https://youtu.be/sSIkZ4-gSrc?t=56" target="_blank" rel="noopener" title="영상 0:56 위치로 이동">0:56</a></div>
+    <div class="compare">
+      <div class="compare-box accent">
+        <h4>기둥 ① DDD (도메인 분리)</h4>
+        <ul>
+          <li>코드를 결제·회원·주문 등 <strong>비즈니스 단위</strong>로 나눔</li>
+          <li>결제 로직은 결제 도메인, 회원 로직은 회원 도메인 안에</li>
+          <li>새 개발자도 "결제 문제면 결제 폴더만" 보면 됨</li>
+        </ul>
+      </div>
+      <div class="compare-box accent">
+        <h4>기둥 ② 기술 스택 분리</h4>
+        <ul>
+          <li>프론트엔드 = Next.js(화면 그리기에 강함, 서버사이드 렌더링·자동 라우팅)</li>
+          <li>백엔드 = Python(데이터 처리·머신러닝·외부 API에 강함)</li>
+          <li>제작자는 둘을 한 저장소에 모은 <strong>모노레포</strong> 사용</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">3</div><div class="sec-title">기술적 맥락 — DDD를 회사 부서에 비유하면</div>
+      <a class="sec-time" href="https://youtu.be/sSIkZ4-gSrc?t=112" target="_blank" rel="noopener" title="영상 1:52 위치로 이동">1:52</a></div>
+    <p style="font-size:14px;margin-bottom:14px;"><strong>DDD(Domain-Driven Design, 도메인 주도 설계):</strong> 코드를 업무 영역별로 나누는 설계 방식. 회사로 치면 인사팀·재무팀·영업팀처럼 부서를 나누는 것과 같다.</p>
+    <div class="compare">
+      <div class="compare-box">
+        <h4>한 사무실에 다 섞인 경우 (분리 X)</h4>
+        <ul>
+          <li>누가 무슨 일 하는지 모름</li>
+          <li>책임 소재가 흐릿함</li>
+          <li>하나 고치면 엉뚱한 데가 터짐</li>
+        </ul>
+      </div>
+      <div class="compare-box accent">
+        <h4>부서로 나눈 경우 (DDD 적용)</h4>
+        <ul>
+          <li>각 팀이 자기 일에만 집중</li>
+          <li>필요할 때만 다른 팀과 협업</li>
+          <li>결제 코드 고쳐도 회원 가입이 안 망가짐</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight"><strong>왜 Python을 백엔드로?</strong> 데이터 처리·AI 모델 구동·API 통신에 유리하고, 코드량이 적어 AI가 코드를 짤 때 더 효율적이며 읽고 쓰기도 편하다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">4</div><div class="sec-title">전략적 의미 — 바이브 코딩이 무너지는 지점</div>
+      <a class="sec-time" href="https://youtu.be/sSIkZ4-gSrc?t=250" target="_blank" rel="noopener" title="영상 4:10 위치로 이동">4:10</a></div>
+    <p style="font-size:14px;margin-bottom:14px;"><strong>바이브 코딩(Vibe Coding):</strong> 아무런 기반 없이 맨땅에서 분위기·느낌대로, 계획 없이 코드를 짜는 방식. 처음엔 정말 빠르지만 시간이 갈수록 무너진다.</p>
+    <div class="compare">
+      <div class="compare-box accent">
+        <h4>잘 짜인 코드베이스 (시간이 갈수록 안정)</h4>
+        <ul>
+          <li>초반 속도는 다소 느려도 기반이 탄탄</li>
+          <li>한 달 뒤에도 속도 유지, 디버깅 쉬움</li>
+          <li>버그가 한 영역에 갇혀 번지지 않음</li>
+        </ul>
+      </div>
+      <div class="compare-box">
+        <h4>바이브 코딩 (처음만 빠름)</h4>
+        <ul>
+          <li>초반엔 빠르지만 한 달 뒤 급격히 느려짐</li>
+          <li>어디 건드리면 어디 터질지 모름 → 디버깅 지옥</li>
+          <li>버그 하나가 전체로 번짐, 작은 기능에 1주일</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">5</div><div class="sec-title">핵심 워크플로우 — 기능 하나 추가하는 흐름</div>
+      <a class="sec-time" href="https://youtu.be/sSIkZ4-gSrc?t=169" target="_blank" rel="noopener" title="영상 2:49 위치로 이동">2:49</a></div>
+    <p style="font-size:14px;margin-bottom:12px;">예시: "회원이 결제하면 알림 보내기" 기능 추가 — 잘 깔린 코드베이스에서는 다른 영역을 거의 건드리지 않는다.</p>
+    <div class="flow">
+      <div class="flow-item"><div class="flow-num">1</div><div class="flow-label">결제 도메인</div><div class="flow-desc">결제 완료 시<br>이벤트 발생</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><div class="flow-num">2</div><div class="flow-label">알림 도메인</div><div class="flow-desc">그 이벤트를<br>받아서 처리</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item"><div class="flow-num">3</div><div class="flow-label">완료</div><div class="flow-desc">다른 영역<br>건드릴 일 없음</div></div>
+    </div>
+    <div class="insight"><strong>레고 블록 원리:</strong> 결제·알림 도메인이 이미 잘 정리돼 있으니 그 위에 기능만 살짝 얹으면 끝. 기반 블록이 깔려 있으면 새 모양 만들기는 금방이다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">6</div><div class="sec-title">활용 시나리오</div>
+      <a class="sec-time" href="https://youtu.be/sSIkZ4-gSrc?t=393" target="_blank" rel="noopener" title="영상 6:33 위치로 이동">6:33</a></div>
+    <div class="scenarios">
+      <div class="scenario-card"><div class="scenario-num">01</div><div class="scenario-title">신규 프로젝트 셋업</div><div class="scenario-body">시작 단계에서 DDD로 도메인을 나누고 Next.js+Python 스택을 깔아 두면, 이후 기능 추가 속도가 근본적으로 빨라진다.</div></div>
+      <div class="scenario-card"><div class="scenario-num">02</div><div class="scenario-title">레거시 리팩터링</div><div class="scenario-body">작은 기능에 1주일씩 걸리기 시작하면 코드베이스 자체를 다시 짜야 할 신호. 영역 분리부터 손대 디버깅 비용을 줄인다.</div></div>
+      <div class="scenario-card"><div class="scenario-num">03</div><div class="scenario-title">팀 협업</div><div class="scenario-body">프론트 담당은 백엔드를, 백엔드 담당은 화면을 신경 안 써도 됨. 영역이 분리돼 각자 빠르게 움직일 수 있다.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><div class="sec-num">7</div><div class="sec-title">현황 및 전망</div>
+      <a class="sec-time" href="https://youtu.be/sSIkZ4-gSrc?t=415" target="_blank" rel="noopener" title="영상 6:55 위치로 이동">6:55</a></div>
+    <div class="insight" style="margin-top:0;"><strong>요지:</strong> AI 코딩 시대에도 속도의 본질은 "빨리 치는 것"이 아니라 <strong>잘 정리된 기반</strong>에 있다. 감으로만 가는 바이브 코딩은 처음만 빠를 뿐, 기반이 없으면 디버깅·확장에서 반드시 무너진다. 바이브 코딩을 하더라도 DDD로 영역을 나누고 검증된 스택을 까는 등 "조금 더 잘 짜인" 방식으로 가야 지속 가능하다.</div>
+  </div>
+
+</div>
+<div class="footer">
+  <div>출처: <a href="https://youtu.be/sSIkZ4-gSrc" target="_blank" rel="noopener">바이브 코딩 결국 무너집니다 — 메이커 에반</a></div>
+  <div style="margin-top:6px;">생성일: 2026-05-22 | AI 비주얼 리포트 by Claude</div>
+</div>
+
+</body>
+</html>
