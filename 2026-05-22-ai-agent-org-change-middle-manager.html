@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 에이전트가 중간관리자를 없앤다 — 조직 구조는 어떻게 바뀌는가</title>
+<style>
+  :root {
+    --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+    --text: #1a1a1a; --muted: #666666;
+    --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    line-height: 1.65; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 18px 64px; }
+
+  /* 히어로 */
+  .hero { background: linear-gradient(135deg, #2d9162 0%, #52b788 100%); color: #fff; border-radius: 0 0 20px 20px; padding: 40px 28px 30px; }
+  .hero .wrap2 { max-width: 880px; margin: 0 auto; }
+  .hero h1 { font-size: 26px; font-weight: 800; line-height: 1.35; }
+  .hero .meta { font-size: 13px; opacity: .9; margin-top: 10px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
+  .stat { background: rgba(255,255,255,.14); border-radius: 12px; padding: 14px 10px; text-align: center; }
+  .stat .num { font-size: 28px; font-weight: 800; line-height: 1.1; }
+  .stat .lbl { font-size: 11.5px; opacity: .92; margin-top: 5px; }
+  @media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } .hero h1 { font-size: 21px; } }
+
+  /* 섹션 */
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px 22px 24px; margin-top: 20px; }
+  .sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .sec-num { flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+  .sec-title { font-size: 19px; font-weight: 800; }
+  .lead { color: var(--text); font-size: 14.5px; }
+  .muted { color: var(--muted); font-size: 13px; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 13.5px; background: #fff; border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--accent); color: #fff; font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+  td b { color: var(--accent); }
+
+  /* 흐름도 */
+  .flow { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .node { flex: 1; min-width: 120px; background: #fff; border: 1.5px solid var(--accent-mid); border-radius: 12px; padding: 12px; text-align: center; }
+  .node .t { font-weight: 800; font-size: 14px; color: var(--accent); }
+  .node .d { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .arrow { display: flex; align-items: center; font-size: 22px; color: var(--accent-mid); font-weight: 800; }
+  @media (max-width: 600px) { .arrow { transform: rotate(90deg); } .flow { flex-direction: column; } }
+
+  /* 3대 기능 카드 */
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; }
+  @media (max-width: 760px) { .grid3 { grid-template-columns: 1fr; } }
+  .fc { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 14px; border-top: 4px solid var(--accent); }
+  .fc .h { font-weight: 800; font-size: 14.5px; }
+  .fc .b { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+  .fc .tag { display: inline-block; margin-top: 9px; font-size: 11.5px; font-weight: 700; color: var(--accent); background: var(--accent-light); padding: 3px 9px; border-radius: 999px; }
+
+  ul.clean { list-style: none; margin-top: 6px; }
+  ul.clean li { position: relative; padding-left: 18px; margin: 7px 0; font-size: 14px; }
+  ul.clean li::before { content: ""; position: absolute; left: 2px; top: 8px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent-mid); }
+
+  .callout { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 8px; padding: 12px 14px; margin-top: 12px; font-size: 13.5px; }
+
+  /* HR 5과제 */
+  .hr5 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; }
+  @media (max-width: 600px) { .hr5 { grid-template-columns: 1fr; } }
+  .hr5 .item { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 13px 14px; display: flex; gap: 11px; }
+  .hr5 .item .n { flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px; background: var(--accent); color: #fff; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+  .hr5 .item .h { font-weight: 800; font-size: 13.5px; }
+  .hr5 .item .d { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  .summary { background: var(--accent); color: #fff; border-radius: 16px; padding: 22px; margin-top: 20px; }
+  .summary h2 { font-size: 18px; margin-bottom: 10px; }
+  .summary ol { padding-left: 20px; }
+  .summary li { margin: 8px 0; font-size: 14px; }
+
+  footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 12.5px; color: var(--muted); }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="wrap2">
+      <h1>AI 에이전트가 중간관리자를 없앤다<br>— 조직 구조는 어떻게 바뀌는가</h1>
+      <div class="meta">People Strategy Lab · 2026-04-28 · AI for HR</div>
+      <div class="stats">
+        <div class="stat"><div class="num">30%</div><div class="lbl">중간관리 업무<br>이미 자동화 가능 (McKinsey '24)</div></div>
+        <div class="stat"><div class="num">3 → 6</div><div class="lbl">관리자 1인당<br>직접 보고 인원 ('19→'24)</div></div>
+        <div class="stat"><div class="num">3.3만+</div><div class="lbl">Meta 누적 감원<br>(2022년 이후)</div></div>
+        <div class="stat"><div class="num">-12.3%</div><div class="lbl">중간관리직 채용<br>(Indeed, 2025)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="section">
+      <div class="sec-head"><div class="sec-num">1</div><div class="sec-title">핵심 개요</div></div>
+      <p class="lead">AI 에이전트(사람 지시 없이도 스스로 업무를 수행하는 자동화 프로그램)가 들어오면 같은 시간에 보고서가 50~100개씩 쏟아진다. 그러나 이를 검토·피드백할 중간관리자의 처리 용량은 그대로다. 게다가 더 근본적인 질문 — "AI가 만든 산출물에 인간이 AI보다 나은 피드백을 줄 수 있는가?" — 이 조직 구조의 대전환을 예고한다.</p>
+      <table>
+        <tr><th>변화 방향</th><th>내용</th></tr>
+        <tr><td><b>구조</b></td><td>소팀제 → 대팀제 + 목적 기반 애자일 파트</td></tr>
+        <tr><td><b>위계</b></td><td>5~7단계 → 3단계(의사결정권자 — AI 에이전트 — 실무 인력)</td></tr>
+        <tr><td><b>새 인프라</b></td><td>Executive Agent(의사결정 지원 에이전트)</td></tr>
+        <tr><td><b>주체</b></td><td>기술팀이 아니라 <b>HR</b>이 주도해야 할 전략적 재설계 과제</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="sec-head"><div class="sec-num">2</div><div class="sec-title">중간관리자의 3대 기능, 이미 AI가 한다</div></div>
+      <p class="muted">중간관리자가 해온 핵심 기능을 분해하면 세 가지. 모두 AI 에이전트가 잠식 중이다.</p>
+      <div class="grid3">
+        <div class="fc"><div class="h">① 정보의 번역·전달</div><div class="b">위의 전략을 실무 언어로 바꾸고, 아래 보고를 요약해 위로 올린다.</div><span class="tag">AI 상당 부분 수행</span></div>
+        <div class="fc"><div class="h">② 업무 조율·진척 관리</div><div class="b">업무 배분, 마감 체크, 병목 제거.</div><span class="tag">AI 상당 부분 수행</span></div>
+        <div class="fc"><div class="h">③ 피드백·품질 검수</div><div class="b">결과물 검토, 방향 제시, 보완.</div><span class="tag">AI 산출물 앞에선 역전</span></div>
+      </div>
+      <div class="callout">GPT-4 코드 리뷰 에이전트, Claude 문서 검수 에이전트가 이미 현장에서 작동 중. McKinsey 2024 분석: 중간관리 업무의 <b>약 30%</b>가 이미 자동화 가능 수준이며 비율은 빠르게 상승.</div>
+    </div>
+
+    <div class="section">
+      <div class="sec-head"><div class="sec-num">3</div><div class="sec-title">기술적 맥락 — 생성 ⟷ 검수의 비대칭</div></div>
+      <p class="lead">핵심 동인은 "생성 속도와 검수 속도의 불균형"이다.</p>
+      <div class="flow" style="margin-top:14px">
+        <div class="node"><div class="t">AI 생성</div><div class="d">산출물 폭증<br>50~100개 / 시간</div></div>
+        <div class="arrow">≠</div>
+        <div class="node"><div class="t">인간 검수</div><div class="d">처리 용량 정체<br>그대로 유지</div></div>
+        <div class="arrow">→</div>
+        <div class="node" style="border-color:var(--accent)"><div class="t">구조 압력</div><div class="d">인력 추가가 아닌<br>구조 재설계 요구</div></div>
+      </div>
+      <p class="muted" style="margin-top:12px">관리 폭(Span of Control = 한 관리자가 직접 관리하는 인원)과 위계 단계 수 자체를 바꾸는 압력으로 작동한다.</p>
+    </div>
+
+    <div class="section">
+      <div class="sec-head"><div class="sec-num">4</div><div class="sec-title">이미 진행 중 — 빅테크의 조직 해체</div></div>
+      <table>
+        <tr><th>주체</th><th>움직임</th><th>수치</th></tr>
+        <tr><td><b>Meta</b><br>(저커버그)</td><td>2025.1 실적 콜에서 "AI 네이티브 도구로 조직을 납작하게" 명시. 내부 도구 'MyClaw'·'Second Brain' 가동</td><td>2026년 약 <b>8,000개</b> 감축<br>2022년 이후 누적 <b>3.3만+</b>명</td></tr>
+        <tr><td><b>Block</b><br>(잭 도시)</td><td>"영구적 중간관리 레이어는 더 이상 필요 없다" 선언. 본인~6,000명 사이 레이어 축소·궁극적 제거</td><td>5단계 → <b>2~3단계</b></td></tr>
+        <tr><td><b>채용시장</b><br>(Indeed)</td><td>중간관리직 채용 공고 감소 — 전반적 둔화를 크게 상회, 의도적 타깃 시사</td><td>2025년 전년比 <b>-12.3%</b></td></tr>
+      </table>
+      <div class="callout">단순 비용 절감이 아니라 <b>AI 인프라 중심 조직으로의 구조적 재설계</b>다.</div>
+    </div>
+
+    <div class="section">
+      <div class="sec-head"><div class="sec-num">5</div><div class="sec-title">새로운 조직 형태 — 대팀제 + 애자일 파트</div></div>
+      <p class="lead" style="font-weight:700; margin-bottom:6px">소팀제 → 대팀제(Large Team Structure)</p>
+      <div class="flow">
+        <div class="node"><div class="t">의사결정권자</div><div class="d">팀장 / 본부장</div></div>
+        <div class="arrow">→</div>
+        <div class="node" style="border-color:var(--accent)"><div class="t">AI 에이전트</div><div class="d">조율·진척추적·1차 검수</div></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="t">실무 인력</div><div class="d">스킬 기반 다수</div></div>
+      </div>
+      <ul class="clean">
+        <li>기존 소팀: 팀장 1명이 5~8명 직접 관리(관리 폭 제약)</li>
+        <li>관리자 1인당 직접 보고 인원: 2019년 <b>3명</b> → 2024년 <b>6명</b> (2배)</li>
+        <li>위계 압축: 과거 5~7단계 → <b>3단 구조</b></li>
+      </ul>
+      <p class="lead" style="font-weight:700; margin:14px 0 4px">대팀 내 애자일 파트(Agile Part)</p>
+      <p class="muted">프로젝트·이슈 발생 시 임시 파트(Temporary Part)가 결성되고 목적 완수 시 해체된다. 구성 기준은 직급·연차가 아닌 <b>스킬·역할 기반</b>. 직무 간 이동 장벽이 낮아지며 조직이 살아있는 유기체처럼 움직인다.</p>
+    </div>
+
+    <div class="section">
+      <div class="sec-head"><div class="sec-num">6</div><div class="sec-title">활용 시나리오 — 'Executive Agent'의 등장</div></div>
+      <p class="lead">대팀제에서 의사결정권자의 부담은 역설적으로 더 커진다(팀원↑, 산출물 속도·양↑). 이를 지원하는 'Executive Agent(의사결정 지원 에이전트)'의 역할:</p>
+      <ul class="clean">
+        <li>팀 전체 산출물·보고서를 <b>실시간 요약·분류</b>해 제공</li>
+        <li>유사 사례·데이터·외부 정보를 취합해 <b>의사결정 옵션과 근거</b> 제시</li>
+        <li>우선순위 높은 이슈를 <b>자동 필터링·알림</b></li>
+        <li>구성원 진척·병목 현황을 <b>대시보드</b>로 시각화</li>
+      </ul>
+      <div class="callout">저커버그의 <b>'Second Brain'</b>이 실제 구현체. PwC도 위계가 부서를 가로지르는 <b>'Agent-First' 동적 네트워크</b>로 대체되는 미래를 전망한다.</div>
+    </div>
+
+    <div class="section">
+      <div class="sec-head"><div class="sec-num">7</div><div class="sec-title">현황 및 전망 — HR의 5대 과제</div></div>
+      <p class="muted">조직 구조 변화는 자동으로 일어나지 않는다. HR이 지금 설계해야 할 과제.</p>
+      <div class="hr5">
+        <div class="item"><div class="n">1</div><div><div class="h">직무 아키텍처 전면 재설계</div><div class="d">'관리 vs 실무' 이분법 해체, 의사결정 권한·스킬 레벨 기반 재구축</div></div></div>
+        <div class="item"><div class="n">2</div><div><div class="h">중간관리자 역할 전환</div><div class="d">감원이 아닌 진화: 의사결정권자 / 고도 전문 실무자 / AI 에이전트 운영자(Agent Operator)</div></div></div>
+        <div class="item"><div class="n">3</div><div><div class="h">의사결정권자 역량 개발</div><div class="d">리더십·판단력·AI 리터러시 중심의 새 커리큘럼</div></div></div>
+        <div class="item"><div class="n">4</div><div><div class="h">애자일 파트 운영 제도화</div><div class="d">파트 투입·이탈 인사처리, 임시 파트 성과평가, 이동기록, 실시간 HR 시스템</div></div></div>
+        <div class="item" style="grid-column:1/-1"><div class="n">5</div><div><div class="h">새로운 성과 평가 체계</div><div class="d">"얼마나 잘 했는가"보다 "어떤 판단·방향을 제시했는가" — 의사결정·영향력 중심으로 이동</div></div></div>
+      </div>
+      <div class="callout">이 전환을 설계하는 HR은 조직의 핵심 파트너가 되고, 방관하는 HR은 스스로를 구조조정 대상으로 만든다.</div>
+    </div>
+
+    <div class="summary">
+      <h2>이 글의 핵심 5가지</h2>
+      <ol>
+        <li>AI 에이전트는 중간관리자의 3대 기능(정보 번역·업무 조율·피드백)을 구조적으로 대체하고 있다.</li>
+        <li>Meta·Block 등 빅테크는 이미 중간관리 레이어를 해체하고 AI 기반 납작한 조직으로 전환 중이다.</li>
+        <li>조직 형태는 소팀제 → 대팀제로 바뀌고, 내부에서 목적 기반 애자일 파트가 탄생·해산을 반복한다.</li>
+        <li>의사결정권자를 지원하는 Executive Agent가 조직 운영의 새 핵심 인프라가 된다.</li>
+        <li>HR은 직무 아키텍처 재설계, 역할 전환, 의사결정자 역량 개발, 애자일 제도화, 평가 혁신을 지금 설계해야 한다.</li>
+      </ol>
+    </div>
+
+    <footer>
+      출처: <a href="https://peoplethrudata.com/ai-agent-organizational-structure-change/" target="_blank" rel="noopener">People Strategy Lab — AI 에이전트가 중간관리자를 없앤다</a> (2026-04-28)<br>
+      함께 읽기: <a href="https://peoplethrudata.com/ai-agent-internal-mobility/" target="_blank" rel="noopener">Internal Mobility의 장벽이 무너지고 있다</a> · <a href="https://peoplethrudata.com/hr-copilot-vs-agent-ai-2/" target="_blank" rel="noopener">HR Copilot vs HR Agent</a>
+    </footer>
+
+  </div>
+</body>
+</html>
