@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>구글 I/O 2026 — AI 실행 레이어 전략</title>
+<style>
+:root {
+  --bg:#ffffff; --surface:#f5f5f5; --border:#e0e0e0;
+  --text:#1a1a1a; --muted:#666666;
+  --accent:#2d9162; --accent-mid:#52b788; --accent-light:#d8f0e3;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;}
+.hero{background:linear-gradient(135deg,var(--accent),var(--accent-mid));color:#fff;padding:40px 24px 32px;}
+.hero h1{font-size:26px;font-weight:800;margin-bottom:6px;}
+.hero .meta{font-size:13px;opacity:.85;margin-bottom:24px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.stat{background:rgba(255,255,255,.15);border-radius:10px;padding:14px 10px;text-align:center;}
+.stat .num{font-size:28px;font-weight:800;}
+.stat .lbl{font-size:11px;opacity:.9;margin-top:2px;}
+.container{max-width:960px;margin:0 auto;padding:24px 16px;}
+.sec-card{background:var(--surface);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid var(--border);}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.sec-num{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.sec-title{font-size:17px;font-weight:700;flex:1;}
+.sec-time{margin-left:auto;font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-light);padding:4px 10px;border-radius:999px;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:background .15s,color .15s;}
+.sec-time::before{content:"▶ ";}
+.sec-time:hover{background:var(--accent);color:#fff;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:var(--accent);color:#fff;padding:8px 10px;text-align:left;font-weight:600;}
+td{padding:8px 10px;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:rgba(0,0,0,.025);}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.card{background:#fff;border-radius:8px;padding:14px;border:1px solid var(--border);}
+.card h4{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+.card p{font-size:13px;color:var(--text);}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.flow-box{background:var(--accent-light);border-radius:6px;padding:6px 10px;font-size:12px;font-weight:600;color:var(--accent);}
+.flow-arrow{color:var(--accent-mid);font-weight:700;}
+ul{list-style:none;padding:0;}
+ul li{padding:4px 0;font-size:13px;}
+ul li::before{content:"•";color:var(--accent);margin-right:8px;font-weight:700;}
+.tag{display:inline-block;background:var(--accent-light);color:var(--accent);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:600;margin:2px;}
+.highlight{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin:8px 0;}
+footer{text-align:center;padding:24px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);margin-top:24px;}
+footer a{color:var(--accent);text-decoration:none;}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);}.grid{grid-template-columns:repeat(2,1fr);}.hero h1{font-size:20px;}}
+@media(max-width:480px){.grid{grid-template-columns:1fr;}.stats{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>구글 I/O 2026 — AI 실행 레이어 전략</h1>
+  <div class="meta">2026-05-23 | 안될공학 | 약 17분</div>
+  <div class="stats">
+    <div class="stat"><div class="num">25억</div><div class="lbl">AI 오버뷰 월간 사용자</div></div>
+    <div class="stat"><div class="num">10억</div><div class="lbl">AI 모드 월간 사용자</div></div>
+    <div class="stat"><div class="num">600억+</div><div class="lbl">쇼핑 그래프 제품 수</div></div>
+    <div class="stat"><div class="num">8개</div><div class="lbl">주요 발표 핵심 축</div></div>
+  </div>
+</div>
+<div class="container">
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div class="sec-title">핵심 메시지 — 실행 레이어 전쟁의 시작</div>
+      <a class="sec-time" href="https://youtu.be/jH4pZdrn-oU?t=22" target="_blank" rel="noopener" title="영상 00:22 위치로 이동">00:22</a>
+    </div>
+    <div class="highlight">구글 I/O 2026은 AI 신기능 발표가 아닙니다. 검색·쇼핑·유튜브·Gmail·드라이브·안드로이드·클라우드를 하나의 <strong>에이전트 실행 레이어</strong>(AI가 대신 작업을 수행하는 통합 플랫폼)로 묶겠다는 선언입니다.</div>
+    <table>
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td>AI 오버뷰(AI가 검색 결과를 요약해 주는 기능)</td><td>월간 사용자 25억 명 돌파</td></tr>
+      <tr><td>AI 모드(AI와 대화하며 검색하는 방식)</td><td>출시 1년 만에 월간 사용자 10억 명</td></tr>
+      <tr><td>기존 인터넷</td><td>사람이 앱을 열고 → 검색 → 비교 → 클릭 → 예약</td></tr>
+      <tr><td>구글이 본 미래</td><td>AI가 사용자 허락을 받아 앱 사이를 대신 이동하며 실행</td></tr>
+    </table>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div class="sec-title">검색의 진화 — 링크 클릭 → 에이전트 실행</div>
+      <a class="sec-time" href="https://youtu.be/jH4pZdrn-oU?t=103" target="_blank" rel="noopener" title="영상 01:43 위치로 이동">01:43</a>
+    </div>
+    <div class="flow">
+      <div class="flow-box">기존: 키워드 입력</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">링크 목록 클릭</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">사이트 이동</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">비교·예약 (사람이 직접)</div>
+    </div>
+    <div class="flow" style="margin-top:10px;">
+      <div class="flow-box" style="background:var(--accent);color:#fff;">AI 검색: 질문</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:var(--accent);color:#fff;">항공권 탐색</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:var(--accent);color:#fff;">좌석 비교</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="background:var(--accent);color:#fff;">조건 맞으면 예약까지</div>
+    </div>
+    <p style="margin-top:10px;font-size:13px;">구글은 이를 <strong>"25년 검색 역사에서 가장 큰 업그레이드"</strong>라고 직접 표현. 링크가 목적지였던 구조에서 링크·답변·예약·에이전트 실행이 한 화면에서 통합됩니다.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div class="sec-title">Gemini 3.5 Flash — 반복 실행 엔진</div>
+      <a class="sec-time" href="https://youtu.be/jH4pZdrn-oU?t=252" target="_blank" rel="noopener" title="영상 04:12 위치로 이동">04:12</a>
+    </div>
+    <div class="grid">
+      <div class="card"><h4>에이전트 시대 중요 지표</h4><p>1번 질문에 대한 답변 정확도 → <strong>반복 실행 속도·비용</strong>으로 전환</p></div>
+      <div class="card"><h4>비유: 식당 예약 비서</h4><p>원하는 시간대가 없으면 스스로 여러 식당을 찾아 옵션을 제시하는 능력</p></div>
+      <div class="card"><h4>탑재 범위</h4><p>Google Search, Gemini 앱, Antigravity(코딩 도구), 엔터프라이즈 전반에 동시 적용</p></div>
+    </div>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div class="sec-title">Gemini Omni — 영상 편집 AI</div>
+      <a class="sec-time" href="https://youtu.be/jH4pZdrn-oU?t=357" target="_blank" rel="noopener" title="영상 05:57 위치로 이동">05:57</a>
+    </div>
+    <table>
+      <tr><th>이전</th><th>Gemini Omni 이후</th></tr>
+      <tr><td>텍스트 → 영상 생성 (한 번에 뽑기)</td><td>기존 영상을 원하는 방향으로 수정·편집</td></tr>
+      <tr><td>카메라 앵글 변경이 어려움</td><td>대화로 "이 장면만 앵글 바꿔줘" 가능</td></tr>
+      <tr><td>타임라인/컷/레이어 기반 편집</td><td>"이 쇼츠를 내 스타일대로 리믹스해줘"</td></tr>
+    </table>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">05</div>
+      <div class="sec-title">디지털 신뢰 인프라 — SynthID · C2PA</div>
+      <a class="sec-time" href="https://youtu.be/jH4pZdrn-oU?t=481" target="_blank" rel="noopener" title="영상 08:01 위치로 이동">08:01</a>
+    </div>
+    <div class="grid">
+      <div class="card"><h4>문제</h4><p>AI 영상·이미지 생성이 쉬워지면 "이게 진짜인가?"를 구분하기 어려워짐</p></div>
+      <div class="card"><h4>SynthID</h4><p>눈에 보이지 않는 워터마크(디지털 도장). AI가 만든 콘텐츠에 자동 삽입</p></div>
+      <div class="card"><h4>C2PA</h4><p>콘텐츠 출처·편집 이력을 확인하는 국제 표준. Search·Chrome·Pixel·Cloud 전반 적용</p></div>
+    </div>
+    <div class="highlight" style="margin-top:12px;">고속도로가 생기면 과속 단속 시스템이 필요하듯, AI 미디어 일상화 → <strong>신뢰 표준화 경쟁</strong>이 시작됩니다.</div>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">06</div>
+      <div class="sec-title">Gemini Spark — 개인 에이전트</div>
+      <a class="sec-time" href="https://youtu.be/jH4pZdrn-oU?t=567" target="_blank" rel="noopener" title="영상 09:27 위치로 이동">09:27</a>
+    </div>
+    <ul>
+      <li>대화창을 닫아도 백그라운드에서 계속 작업 → 클라우드에서 완료</li>
+      <li>에이전트 = 질문-답변이 아닌 <strong>일을 위임받아 끝까지 완수</strong>하는 AI</li>
+      <li>고위험 행동(결제·이메일 발송) 전에는 반드시 사용자 승인 요구</li>
+      <li>구글 강점: Gmail·Docs·Drive·Calendar·Search·Chrome·Android·YouTube 모두 보유 → 에이전트가 움직일 통로가 이미 존재</li>
+    </ul>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">07</div>
+      <div class="sec-title">Antigravity 2.0 + 에이전트 커머스</div>
+      <a class="sec-time" href="https://youtu.be/jH4pZdrn-oU?t=685" target="_blank" rel="noopener" title="영상 11:25 위치로 이동">11:25</a>
+    </div>
+    <div class="grid">
+      <div class="card"><h4>Antigravity 2.0</h4><p>코딩 보조 도구 → 다수 에이전트 배치·병렬 실행·백그라운드 예약·결과 관리 전체 <strong>개발 플랫폼</strong></p></div>
+      <div class="card"><h4>Universal Cart(범용 장바구니)</h4><p>여러 쇼핑몰의 상품 규격 호환 확인 + 가격 감시 + 재고 알림을 에이전트가 대신 처리</p></div>
+      <div class="card"><h4>AP2(에이전트 결제 프로토콜)</h4><p>AI 대리 결제 시 권한·기록·환불 규칙을 정의. 에이전트 경제의 결제 인프라 선점</p></div>
+    </div>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">08</div>
+      <div class="sec-title">결론 — 실행 레이어 전쟁의 본질</div>
+      <a class="sec-time" href="https://youtu.be/jH4pZdrn-oU?t=886" target="_blank" rel="noopener" title="영상 14:46 위치로 이동">14:46</a>
+    </div>
+    <table>
+      <tr><th>구글 제품</th><th>이전</th><th>변화 방향</th></tr>
+      <tr><td>검색</td><td>질문을 받는 곳</td><td>작업이 시작되는 실행 인터페이스</td></tr>
+      <tr><td>Gemini</td><td>답변하는 모델</td><td>실행하는 에이전트 엔진</td></tr>
+      <tr><td>유튜브/Flow</td><td>콘텐츠를 보는 곳</td><td>콘텐츠를 다시 만드는 곳</td></tr>
+      <tr><td>쇼핑</td><td>가격 비교 제공</td><td>조건 감시 + 결제까지 이어지는 에이전트 커머스</td></tr>
+    </table>
+    <div class="highlight" style="margin-top:12px;">"앞으로 우리는 AI에게 답을 물어보게 될까요? 아니면 진짜로 일을 맡길 수 있을까요?"</div>
+  </div>
+
+</div>
+<footer>
+  출처: <a href="https://youtu.be/jH4pZdrn-oU" target="_blank">안될공학 — 모든 곳에 구글이 있었다</a> | 2026-05-23
+</footer>
+</body>
+</html>

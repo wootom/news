@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antigravity 2.0 + Gemini 3.5 Flash 완전 분석</title>
+<style>
+:root {
+  --bg:#ffffff; --surface:#f5f5f5; --border:#e0e0e0;
+  --text:#1a1a1a; --muted:#666666;
+  --accent:#2d9162; --accent-mid:#52b788; --accent-light:#d8f0e3;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;}
+.hero{background:linear-gradient(135deg,var(--accent),var(--accent-mid));color:#fff;padding:40px 24px 32px;}
+.hero h1{font-size:24px;font-weight:800;margin-bottom:6px;}
+.hero .meta{font-size:13px;opacity:.85;margin-bottom:24px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.stat{background:rgba(255,255,255,.15);border-radius:10px;padding:14px 10px;text-align:center;}
+.stat .num{font-size:24px;font-weight:800;}
+.stat .lbl{font-size:11px;opacity:.9;margin-top:2px;}
+.container{max-width:960px;margin:0 auto;padding:24px 16px;}
+.sec-card{background:var(--surface);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid var(--border);}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.sec-num{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.sec-title{font-size:17px;font-weight:700;flex:1;}
+.sec-time{margin-left:auto;font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-light);padding:4px 10px;border-radius:999px;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:background .15s,color .15s;}
+.sec-time::before{content:"▶ ";}
+.sec-time:hover{background:var(--accent);color:#fff;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:var(--accent);color:#fff;padding:8px 10px;text-align:left;font-weight:600;}
+td{padding:8px 10px;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:rgba(0,0,0,.025);}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.card{background:#fff;border-radius:8px;padding:14px;border:1px solid var(--border);}
+.card h4{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+.card p{font-size:13px;color:var(--text);}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.flow-box{background:var(--accent-light);border-radius:6px;padding:6px 10px;font-size:12px;font-weight:600;color:var(--accent);}
+.flow-arrow{color:var(--accent-mid);font-weight:700;font-size:16px;}
+ul{list-style:none;padding:0;}
+ul li{padding:4px 0;font-size:13px;}
+ul li::before{content:"•";color:var(--accent);margin-right:8px;font-weight:700;}
+.highlight{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin:8px 0;}
+.warn{background:#fff3cd;border-left:3px solid #f59e0b;padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin:8px 0;}
+footer{text-align:center;padding:24px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);margin-top:24px;}
+footer a{color:var(--accent);text-decoration:none;}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);}.grid{grid-template-columns:repeat(2,1fr);}.hero h1{font-size:19px;}}
+@media(max-width:480px){.grid{grid-template-columns:1fr;}.stats{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>Antigravity 2.0 + Gemini 3.5 Flash 완전 분석</h1>
+  <div class="meta">2026-05-23 | Astro K Joseph | 약 19분 (영어)</div>
+  <div class="stats">
+    <div class="stat"><div class="num">1위</div><div class="lbl">벤치마크 다수 (Gemini 3.5 Flash)</div></div>
+    <div class="stat"><div class="num">에이전트 퍼스트</div><div class="lbl">Antigravity 2.0 핵심 변화</div></div>
+    <div class="stat"><div class="num">19개</div><div class="lbl">자율 테스트 자동 생성</div></div>
+    <div class="stat"><div class="num">가격 인상</div><div class="lbl">Flash 이전 대비 9배 출력 비용</div></div>
+  </div>
+</div>
+<div class="container">
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">01</div>
+      <div class="sec-title">Gemini 3.5 Flash — 성능 개요</div>
+      <a class="sec-time" href="https://youtu.be/hxdjLpQXw0I?t=41" target="_blank" rel="noopener" title="영상 00:41 위치로 이동">00:41</a>
+    </div>
+    <div class="highlight">Gemini 3.5 Flash는 "빠르고 저렴한 모델"로 알려진 Flash 시리즈인데, 성능이 <strong>Claude Opus 4.7과 GPT 5.5를 일부 벤치마크에서 능가</strong>하는 수준으로 크게 향상됐습니다.</div>
+    <ul>
+      <li>Terminal Bench 2.1, SWE-Bench Pro (소프트웨어 엔지니어링 벤치마크), MCP Atlas, Finance Agent 등 다수 1위</li>
+      <li>특히 AI 코딩·에이전트 실행·도구 사용 영역 강세</li>
+      <li>Google I/O 2026에서 Antigravity(구 Firebase) 통합 발표</li>
+    </ul>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">02</div>
+      <div class="sec-title">가격 분석 — 주의 필요</div>
+      <a class="sec-time" href="https://youtu.be/hxdjLpQXw0I?t=248" target="_blank" rel="noopener" title="영상 04:08 위치로 이동">04:08</a>
+    </div>
+    <div class="warn">주의: Flash 시리즈는 원래 저렴한 모델이었으나 3.5 Flash에서 출력 비용이 대폭 인상됐습니다. 대량 사용 전 비용 계산 필수.</div>
+    <table>
+      <tr><th>모델</th><th>입력 (백만 토큰당)</th><th>출력 (백만 토큰당)</th></tr>
+      <tr><td>Gemini 2.5 Flash (이전)</td><td>$0.30</td><td>$2.50</td></tr>
+      <tr><td>Gemini 3.5 Flash (신규)</td><td>미공개</td><td>약 $9 (추정)</td></tr>
+      <tr><td>Claude Opus 4.7 (참고)</td><td>약 $15</td><td>약 $75</td></tr>
+    </table>
+    <p style="margin-top:8px;font-size:12px;color:var(--muted);">토큰(token): AI가 텍스트를 처리하는 기본 단위. 대략 한국어 단어 1~2개에 해당.</p>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">03</div>
+      <div class="sec-title">Antigravity 2.0 — 에이전트 퍼스트로 전환</div>
+      <a class="sec-time" href="https://youtu.be/hxdjLpQXw0I?t=357" target="_blank" rel="noopener" title="영상 05:57 위치로 이동">05:57</a>
+    </div>
+    <table>
+      <tr><th>항목</th><th>이전 버전</th><th>Antigravity 2.0</th></tr>
+      <tr><td>메인 화면</td><td>코드 편집기 중심</td><td>에이전트 패널 중심</td></tr>
+      <tr><td>AI 사용 방식</td><td>편집기 안에서 AI 보조</td><td>에이전트가 계획 수립 → 승인 → 실행</td></tr>
+      <tr><td>편집기 접근</td><td>기본 포함</td><td>별도 IDE 다운로드·설치 필요</td></tr>
+      <tr><td>핵심 철학</td><td>AI가 도와주는 코딩</td><td>에이전트가 알아서 하는 개발</td></tr>
+    </table>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">04</div>
+      <div class="sec-title">에이전트 퍼스트 워크플로우</div>
+      <a class="sec-time" href="https://youtu.be/hxdjLpQXw0I?t=463" target="_blank" rel="noopener" title="영상 07:43 위치로 이동">07:43</a>
+    </div>
+    <div class="flow">
+      <div class="flow-box">프롬프트 입력</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">구현 계획(Plan) 자동 생성</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">사용자 승인 (Proceed)</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">파일 수정 실행</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Diff 모드에서 변경 확인</div>
+    </div>
+    <ul style="margin-top:12px;">
+      <li>매 프롬프트마다 계획을 먼저 보여주고 사용자 확인 후 실행 (안전장치)</li>
+      <li>예약 실행(Scheduled Tasks): 이름·프로젝트·일정·프롬프트 설정 → 자동 반복</li>
+      <li>CLI(명령줄 인터페이스): 터미널에서 claude 명령어로 바로 사용 가능</li>
+    </ul>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">05</div>
+      <div class="sec-title">자율 테스트 에이전트 (QA 자동화)</div>
+      <a class="sec-time" href="https://youtu.be/hxdjLpQXw0I?t=823" target="_blank" rel="noopener" title="영상 13:43 위치로 이동">13:43</a>
+    </div>
+    <div class="highlight">QA(Quality Assurance, 품질 검사)를 사람 대신 AI 에이전트가 자동으로 수행합니다. 웹앱 전체를 직접 탐색하며 테스트 항목을 스스로 생성하고 실행합니다.</div>
+    <div class="grid">
+      <div class="card"><h4>MCP 테스트</h4><p>API(앱 간 통신 인터페이스) 연결 상태와 기능을 자동으로 테스트</p></div>
+      <div class="card"><h4>웹 테스트</h4><p>실제 배포된 웹사이트를 AI가 직접 클릭·탐색하며 오류 발견</p></div>
+      <div class="card"><h4>리포트</h4><p>19개 테스트 자동 생성 → 화면 녹화 + 합격/실패 분류 + 상세 리포트</p></div>
+    </div>
+  </div>
+
+  <div class="sec-card">
+    <div class="sec-head">
+      <div class="sec-num">06</div>
+      <div class="sec-title">결론 — 장점과 주의사항</div>
+      <a class="sec-time" href="https://youtu.be/hxdjLpQXw0I?t=1155" target="_blank" rel="noopener" title="영상 19:15 위치로 이동">19:15</a>
+    </div>
+    <div class="grid">
+      <div class="card"><h4>긍정: 에이전트 설계</h4><p>복잡한 개발 워크플로우를 계획→승인→실행으로 자동화. 전체 개발 프로세스 운영 가능</p></div>
+      <div class="card"><h4>긍정: QA 자동화</h4><p>테스트 항목 생성부터 실행·리포트까지 자동. 품질 검사 시간 대폭 단축</p></div>
+      <div class="card"><h4>주의: 가격·UX</h4><p>출력 비용 9배 인상, IDE 별도 설치 필요, 신규 출시로 실전 검증 필요</p></div>
+    </div>
+  </div>
+
+</div>
+<footer>
+  출처: <a href="https://youtu.be/hxdjLpQXw0I" target="_blank">Astro K Joseph — Antigravity 2.0 Just Changed AI Coding Forever!</a> | 2026-05-23
+</footer>
+</body>
+</html>
