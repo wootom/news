@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paperclip × Bright Data — AI 에이전트로 시장조사 보고서 자동 생성</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .hero { background: var(--accent); color: #fff; padding: 40px 24px 32px; }
+    .hero h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .hero .meta { font-size: 13px; opacity: 0.85; margin-bottom: 24px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .stat { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 12px; text-align: center; }
+    .stat .num { font-size: 28px; font-weight: 700; }
+    .stat .label { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 16px; }
+    .section { background: var(--surface); border-radius: 12px; padding: 24px; margin-bottom: 20px; border: 1px solid var(--border); }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .num-circle { width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .section-title { font-size: 18px; font-weight: 700; }
+    /* 계층 구조 */
+    .hierarchy { display: flex; flex-direction: column; gap: 0; }
+    .h-level { display: flex; align-items: center; gap: 0; }
+    .h-box { flex: 1; background: var(--bg); border: 2px solid var(--accent); border-radius: 8px; padding: 10px 14px; text-align: center; }
+    .h-box .h-label { font-size: 11px; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+    .h-box .h-title { font-size: 14px; font-weight: 700; margin: 2px 0; }
+    .h-box .h-desc { font-size: 12px; color: var(--muted); }
+    .h-arrow { text-align: center; padding: 6px 0; color: var(--accent-mid); font-size: 20px; }
+    /* 직원 카드 */
+    .employee-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .employee-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; border-top: 3px solid var(--accent); }
+    .emp-num { width: 28px; height: 28px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+    .emp-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .emp-role { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    .emp-skill { font-size: 12px; color: var(--text); background: var(--accent-light); padding: 3px 8px; border-radius: 12px; display: inline-block; margin: 2px 2px 0 0; }
+    /* 워크플로 */
+    .workflow { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding-bottom: 8px; }
+    .wf-step { flex: 1; min-width: 140px; }
+    .wf-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; margin: 0 4px; }
+    .wf-num { font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
+    .wf-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .wf-desc { font-size: 11px; color: var(--muted); }
+    .wf-arrow { display: flex; align-items: center; padding-top: 16px; color: var(--accent-mid); font-size: 18px; flex-shrink: 0; }
+    /* Bright Data 비교 */
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .compare-table th { background: var(--accent); color: #fff; padding: 10px 12px; text-align: left; }
+    .compare-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:nth-child(even) td { background: var(--surface); }
+    .good { color: var(--accent); font-weight: 600; }
+    .bad { color: #e55; }
+    /* 인사이트 */
+    .insight-list { list-style: none; }
+    .insight-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; display: flex; gap: 10px; align-items: flex-start; }
+    .insight-list li:last-child { border-bottom: none; }
+    .bullet { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 8px; flex-shrink: 0; }
+    .footer { text-align: center; padding: 24px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
+    @media (max-width: 760px) { .stats { grid-template-columns: repeat(2,1fr); } .employee-grid { grid-template-columns: 1fr; } .workflow { flex-direction: column; } .wf-arrow { transform: rotate(90deg); align-self: center; padding: 4px 0; } }
+    @media (max-width: 480px) { .stats { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div style="max-width:960px;margin:0 auto;">
+    <div style="font-size:12px;opacity:0.7;margin-bottom:6px;">단테랩스 | 2026-05-24</div>
+    <h1>Paperclip × Bright Data<br>AI 에이전트로 시장조사 보고서 자동 생성</h1>
+    <div class="meta">3명의 AI 직원이 무신사·29cm 브랜드 보고서를 처음부터 끝까지 자동 생산 — 브랜드만 바꿔 무한 재사용</div>
+    <div class="stats">
+      <div class="stat"><div class="num">66K</div><div class="label">GitHub Stars (2개월)</div></div>
+      <div class="stat"><div class="num">3</div><div class="label">AI 직원 (리서처·분석가·슬라이드)</div></div>
+      <div class="stat"><div class="num">4</div><div class="label">회사 계층 구조</div></div>
+      <div class="stat"><div class="num">2</div><div class="label">브랜드 보고서 자동 생성</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 섹션 1: 4계층 회사 구조 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num-circle">01</div>
+      <div class="section-title">Paperclip 4계층 회사 구조</div>
+    </div>
+    <div class="hierarchy">
+      <div class="h-level"><div class="h-box"><div class="h-label">Goal</div><div class="h-title">WHY — 목표</div><div class="h-desc">이커머스·패션 시장 데이터를 수집해 임원 보고서 생성</div></div></div>
+      <div class="h-arrow">↓</div>
+      <div class="h-level"><div class="h-box"><div class="h-label">Sub Goal</div><div class="h-title">WHAT — 달성 대상</div><div class="h-desc">무신사, 29cm 브랜드 인텔리전스 워크플로 구축</div></div></div>
+      <div class="h-arrow">↓</div>
+      <div class="h-level"><div class="h-box"><div class="h-label">Project</div><div class="h-title">HOW — 방법론</div><div class="h-desc">브랜드 리서치 → 데이터 분석 → 슬라이드 제작 (3개 프로젝트)</div></div></div>
+      <div class="h-arrow">↓</div>
+      <div class="h-level"><div class="h-box"><div class="h-label">Issue / Task</div><div class="h-title">DO — 실행 액션</div><div class="h-desc">에이전트에게 할당되는 개별 업무 단위 (Jira 티켓과 동일)</div></div></div>
+    </div>
+  </div>
+
+  <!-- 섹션 2: AI 직원 3명 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num-circle">02</div>
+      <div class="section-title">3명의 AI 직원</div>
+    </div>
+    <div class="employee-grid">
+      <div class="employee-card">
+        <div class="emp-num">1</div>
+        <div class="emp-name">브랜드 리서처</div>
+        <div class="emp-role">웹 데이터 수집 및 구조화</div>
+        <span class="emp-skill">Bright Data CLI</span>
+        <span class="emp-skill">Web Unlocker</span>
+        <span class="emp-skill">브랜드 리서치 글로서리</span>
+      </div>
+      <div class="employee-card">
+        <div class="emp-num">2</div>
+        <div class="emp-name">데이터 분석가</div>
+        <div class="emp-role">SWOT 분석 및 시각화</div>
+        <span class="emp-skill">SWOT 분석</span>
+        <span class="emp-skill">차트 생성</span>
+        <span class="emp-skill">팩트체크</span>
+      </div>
+      <div class="employee-card">
+        <div class="emp-num">3</div>
+        <div class="emp-name">슬라이드 제작자</div>
+        <div class="emp-role">보고서 생성 및 자동 배포</div>
+        <span class="emp-skill">Next.js</span>
+        <span class="emp-skill">Vercel 배포</span>
+        <span class="emp-skill">리포트 스킬</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 3: 자동 워크플로 실행 흐름 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num-circle">03</div>
+      <div class="section-title">자동 워크플로 실행 흐름</div>
+    </div>
+    <div class="workflow">
+      <div class="wf-step"><div class="wf-box"><div class="wf-num">Step 1</div><div class="wf-title">CEO에게 이슈 발행</div><div class="wf-desc">목표+지침을 한 번에 전달</div></div></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-step"><div class="wf-box"><div class="wf-num">Step 2</div><div class="wf-title">CEO → 서브 이슈 생성</div><div class="wf-desc">각 직원에게 자동 위임</div></div></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-step"><div class="wf-box"><div class="wf-num">Step 3</div><div class="wf-title">브랜드 리서처 수집</div><div class="wf-desc">Bright Data로 데이터 6종 수집</div></div></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-step"><div class="wf-box"><div class="wf-num">Step 4</div><div class="wf-title">사람 승인</div><div class="wf-desc">수집 결과 확인 후 Confirm</div></div></div>
+      <div class="wf-arrow">→</div>
+      <div class="wf-step"><div class="wf-box"><div class="wf-num">Step 5</div><div class="wf-title">분석 → 배포</div><div class="wf-desc">SWOT·차트 → Vercel 자동 배포</div></div></div>
+    </div>
+  </div>
+
+  <!-- 섹션 4: Bright Data 필요성 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num-circle">04</div>
+      <div class="section-title">Bright Data가 필요한 이유 — 데이터 접근 전쟁</div>
+    </div>
+    <table class="compare-table">
+      <tr><th>방식</th><th>접근 가능 데이터</th><th>차단 우회</th><th>품질</th></tr>
+      <tr><td>일반 Python 크롤러</td><td>정적 페이지만</td><td class="bad">차단됨</td><td class="bad">낮음</td></tr>
+      <tr><td>Playwright/Puppeteer</td><td>동적 페이지 일부</td><td class="bad">IP 추적 차단</td><td>중간</td></tr>
+      <tr><td>Bright Data Web Unlocker</td><td>거의 모든 사이트</td><td class="good">헤더·JS·캡챠 우회</td><td class="good">높음</td></tr>
+      <tr><td>Bright Data Datasets</td><td>사전 정제 데이터셋</td><td class="good">크롤링 불필요</td><td class="good">최고</td></tr>
+    </table>
+  </div>
+
+  <!-- 섹션 5: 핵심 메시지 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num-circle">05</div>
+      <div class="section-title">핵심 메시지 — 에이전트 운영 체제 시대</div>
+    </div>
+    <ul class="insight-list">
+      <li><div class="bullet"></div><div>Paperclip의 진짜 가치는 단발성이 아닌 반복·절차 업무에 있음 — 루틴 설정 후 브랜드명만 바꿔 무한 재사용</div></li>
+      <li><div class="bullet"></div><div>AI 에이전트 성능보다 데이터 접근 품질이 결과를 결정함 — "Garbage in, Garbage out"</div></li>
+      <li><div class="bullet"></div><div>조직 구성도(거버넌스) + 사람 승인 단계가 AI 환각 및 오류를 효과적으로 제어</div></li>
+      <li><div class="bullet"></div><div>코딩·리서치·분석·배포를 각각 전문화된 AI 직원에게 분담 → 전체 워크플로 완성도 향상</div></li>
+    </ul>
+  </div>
+
+</div>
+<div class="footer">
+  출처: <a href="https://youtu.be/vclOMBLqVEQ" style="color:var(--accent);">[Paperclip × Bright Data] 시장조사 보고서 자동 생성 풀 가이드 — 단테랩스</a> | 2026-05-24
+</div>
+</body>
+</html>

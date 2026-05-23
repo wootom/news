@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>에반의 첫 브이로그 — 빌더리 필더레이데이 AI 실전 활용</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .hero { background: var(--accent); color: #fff; padding: 40px 24px 32px; }
+    .hero h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .hero .meta { font-size: 13px; opacity: 0.85; margin-bottom: 24px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .stat { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 12px; text-align: center; }
+    .stat .num { font-size: 28px; font-weight: 700; }
+    .stat .label { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 16px; }
+    .section { background: var(--surface); border-radius: 12px; padding: 24px; margin-bottom: 20px; border: 1px solid var(--border); }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .num-circle { width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .section-title { font-size: 18px; font-weight: 700; color: var(--text); }
+    .pipeline { display: flex; flex-direction: column; gap: 0; }
+    .pipe-step { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .pipe-step:last-child { border-bottom: none; }
+    .pipe-num { width: 28px; height: 28px; background: var(--accent-light); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .pipe-content { flex: 1; }
+    .pipe-title { font-weight: 600; font-size: 14px; color: var(--text); }
+    .pipe-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .tool-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .tool-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .tool-name { font-weight: 700; font-size: 14px; color: var(--accent); margin-bottom: 4px; }
+    .tool-role { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+    .tool-detail { font-size: 12px; color: var(--text); }
+    .insight-list { list-style: none; }
+    .insight-list li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; display: flex; gap: 8px; align-items: flex-start; }
+    .insight-list li:last-child { border-bottom: none; }
+    .bullet { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+    .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .scenario-card { background: var(--bg); border: 1px solid var(--accent-light); border-radius: 8px; padding: 14px; }
+    .scenario-num { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; }
+    .scenario-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .scenario-desc { font-size: 12px; color: var(--muted); }
+    .footer { text-align: center; padding: 24px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); }
+    .tag { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 11px; padding: 2px 8px; border-radius: 12px; margin-right: 4px; }
+    @media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } .tool-grid { grid-template-columns: 1fr; } .scenario-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .stats { grid-template-columns: repeat(2, 1fr); } .scenario-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div style="max-width:960px;margin:0 auto;">
+    <div style="font-size:12px;opacity:0.7;margin-bottom:6px;">메이커 에반 | 2026-05-24</div>
+    <h1>에반의 첫 브이로그<br>빌더리 필더레이데이 AI 실전 활용</h1>
+    <div class="meta">빌더 100명이 모이는 AI 커뮤니티 행사 현장 — 이커머스 이미지 생성·인스타 카드뉴스 자동화 워크플로 공개</div>
+    <div class="stats">
+      <div class="stat"><div class="num">100</div><div class="label">참가 빌더 수</div></div>
+      <div class="stat"><div class="num">8</div><div class="label">Spfield 동시 생성 수</div></div>
+      <div class="stat"><div class="num">3</div><div class="label">핵심 AI 도구</div></div>
+      <div class="stat"><div class="num">1</div><div class="label">OpenAI API 키로 자막 완성</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 섹션 1: 이커머스 AI 이미지 생성 파이프라인 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num-circle">01</div>
+      <div class="section-title">이커머스 AI 이미지 생성 파이프라인</div>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-num">1</div>
+        <div class="pipe-content">
+          <div class="pipe-title">Pinterest 레퍼런스 수집</div>
+          <div class="pipe-desc">원하는 감성·색감의 이미지를 Pinterest에서 저장. 블루&그레이, 러블리, 페어리 등 컨셉 키워드로 탐색</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">2</div>
+        <div class="pipe-content">
+          <div class="pipe-title">저작권 안전 프롬프트 작성</div>
+          <div class="pipe-desc">"절대 표절 금지 — 이 느낌만 참고해서 네가 새롭게 재창조해줘" 원칙 준수</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">3</div>
+        <div class="pipe-content">
+          <div class="pipe-title">Spfield로 병렬 대량 생성</div>
+          <div class="pipe-desc">Nanobana 모델 선택 (빠른 속도·적은 토큰), 동시 8개 이미지 병렬 처리</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">4</div>
+        <div class="pipe-content">
+          <div class="pipe-title">제품 컨셉 사진 완성</div>
+          <div class="pipe-desc">귀걸이·악세서리 등 제품 이미지를 스튜디오 없이 자동 생성, 즉시 상세페이지 활용</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 2: 핵심 AI 도구 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num-circle">02</div>
+      <div class="section-title">현장 공개 AI 도구 스택</div>
+    </div>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="tool-name">Spfield</div>
+        <div class="tool-role">AI 이미지 대량 생성</div>
+        <div class="tool-detail">Nanobana 모델 · 동시 8개 병렬 생성 · 빠른 속도·저토큰</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Cowork 스킬</div>
+        <div class="tool-role">인스타 카드뉴스 자동화</div>
+        <div class="tool-detail">음성 명령으로 스킬 실시간 수정 · YouTube 콘텐츠 → 카드뉴스 자동 변환</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">OpenAI API</div>
+        <div class="tool-role">음성 → 자막 자동 생성</div>
+        <div class="tool-detail">Whisper 기반 · 녹음 파일 직접 입력 · 별도 텍스트 추출 불필요</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Pinterest</div>
+        <div class="tool-role">비주얼 레퍼런스 수집</div>
+        <div class="tool-detail">감성·색감 참고 · 표절 금지 원칙 · 프롬프트에 "재창조" 명시</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 3: 전략적 인사이트 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num-circle">03</div>
+      <div class="section-title">전략적 인사이트</div>
+    </div>
+    <ul class="insight-list">
+      <li><div class="bullet"></div><div>AI 이미지 생성으로 이커머스 제품 사진 비용이 사실상 0원 수준으로 하락 — 전문 스튜디오 없이도 무한 생산 가능</div></li>
+      <li><div class="bullet"></div><div>빌더 커뮤니티(100명)의 집단 지성 공유가 개인 학습 속도를 급격히 높임 — 커뮤니티 기반 AI 학습의 효율성 입증</div></li>
+      <li><div class="bullet"></div><div>음성 명령으로 스킬을 수정하는 방식은 비개발자의 AI 커스터마이징 진입 장벽을 사실상 제거</div></li>
+      <li><div class="bullet"></div><div>저작권 안전 원칙("느낌만 참고, 표절 금지")이 AI 이미지 활용의 핵심 가이드라인으로 자리잡고 있음</div></li>
+    </ul>
+  </div>
+
+  <!-- 섹션 4: 활용 시나리오 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="num-circle">04</div>
+      <div class="section-title">활용 시나리오</div>
+    </div>
+    <div class="scenario-grid">
+      <div class="scenario-card">
+        <div class="scenario-num">시나리오 01</div>
+        <div class="scenario-title">SNS 마케터</div>
+        <div class="scenario-desc">브랜드 감성에 맞는 인스타그램 카드뉴스를 Cowork 스킬로 자동 제작</div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-num">시나리오 02</div>
+        <div class="scenario-title">이커머스 사업자</div>
+        <div class="scenario-desc">Pinterest 레퍼런스 기반으로 제품 컨셉 사진을 비용 없이 대량 생산</div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-num">시나리오 03</div>
+        <div class="scenario-title">유튜버·크리에이터</div>
+        <div class="scenario-desc">녹음 파일 + OpenAI API로 자막 자동 생성 → 편집 시간 대폭 단축</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="footer">
+  출처: <a href="https://youtu.be/MPbNO8jhByU" style="color:var(--accent);">에반의 첫 브이로그 ✌️ — 메이커 에반</a> | 2026-05-24
+</div>
+</body>
+</html>
