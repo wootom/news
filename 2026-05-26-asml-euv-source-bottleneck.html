@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASML EUV 광원과 반도체 병목의 진짜 이야기 | 안될공학</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2d9162;
+      --accent-mid: #52b788;
+      --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Hero Banner */
+    .hero { background: var(--accent); color: white; padding: 36px 24px 28px; }
+    .hero-channel { font-size: 12px; opacity: 0.8; margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero-title { font-size: 22px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+    .hero-date { font-size: 13px; opacity: 0.75; margin-bottom: 20px; }
+    .hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .hero-stat { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 12px 10px; text-align: center; }
+    .hero-stat-num { font-size: 26px; font-weight: 700; display: block; }
+    .hero-stat-label { font-size: 11px; opacity: 0.85; }
+    @media(max-width: 560px) { .hero-stats { grid-template-columns: repeat(2,1fr); } .hero-stat-num { font-size: 20px; } }
+
+    /* Main content */
+    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+
+    /* Section */
+    .section { margin-bottom: 28px; }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .section-num { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: white; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .section-title { font-size: 17px; font-weight: 700; }
+
+    /* Cards grid */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    @media(max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width: 480px) { .grid, .grid-2 { grid-template-columns: 1fr; } }
+    .card { background: var(--surface); border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
+    .card-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .card-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .card-body { font-size: 13px; color: var(--text); }
+    .card-accent { border-left: 3px solid var(--accent); padding-left: 12px; }
+
+    /* Highlight box */
+    .highlight { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 16px; margin: 12px 0; font-size: 14px; }
+    .highlight strong { color: var(--accent); }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--accent); color: white; padding: 9px 12px; text-align: left; }
+    td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: var(--surface); }
+
+    /* Flow diagram */
+    .flow { display: flex; flex-direction: column; gap: 0; }
+    .flow-step { display: flex; align-items: stretch; }
+    .flow-box { background: var(--accent); color: white; border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 600; flex: 1; }
+    .flow-arrow { display: flex; align-items: center; justify-content: center; padding: 4px 0; color: var(--accent); font-size: 18px; }
+    .flow-desc { background: var(--surface); border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--muted); flex: 2; margin-left: 10px; display: flex; align-items: center; }
+
+    /* Badge */
+    .badge { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+    .badge-new { background: var(--accent); color: white; }
+
+    /* Timeline link */
+    .ts-link { font-size: 11px; color: var(--accent-mid); margin-top: 4px; }
+
+    /* Footer */
+    .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px; text-align: center; font-size: 12px; color: var(--muted); margin-top: 32px; }
+    .footer a { color: var(--accent); }
+
+    /* Two-column comparison */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media(max-width: 560px) { .compare { grid-template-columns: 1fr; } }
+    .compare-card { border-radius: 10px; padding: 14px; }
+    .compare-old { background: #fff3e0; border: 1px solid #ffcc80; }
+    .compare-new { background: var(--accent-light); border: 1px solid var(--accent-mid); }
+    .compare-tag { font-size: 11px; font-weight: 700; margin-bottom: 8px; }
+    .tag-old { color: #e65100; }
+    .tag-new { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- Hero Banner -->
+<div class="hero">
+  <div class="hero-channel">안될공학 · 2026-05-26</div>
+  <div class="hero-title">ASML 출신에게 직접 들었습니다<br>EUV 광원과 반도체 병목의 진짜 이야기</div>
+  <div class="hero-date">
+    <a href="https://youtu.be/Lj_e4nPxt6A" style="color:rgba(255,255,255,0.85)">youtube.com/watch?v=Lj_e4nPxt6A</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-num">13.5nm</span>
+      <span class="hero-stat-label">EUV 파장</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">2x</span>
+      <span class="hero-stat-label">DUV 대비 실제 해상도</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">1.5kW</span>
+      <span class="hero-stat-label">트리플 펄스 목표 출력</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">50,000/s</span>
+      <span class="hero-stat-label">레이저 타격 반복 횟수</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Section 1: 왜 병목인가 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">EUV가 반도체 산업의 병목인 두 가지 이유</div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card card-accent">
+        <div class="card-label">이유 1</div>
+        <div class="card-title">공급망의 복잡성</div>
+        <div class="card-body">ASML은 혼자 만들지 않는다. 수백 개 협력사가 공장을 증설하려면 "ASML이 계속 구매할 것인가"라는 수요 보장이 필요하다. 이 설득과 물리적 시간이 7~8년간 지속됐다.</div>
+        <div class="ts-link"><a href="https://youtu.be/Lj_e4nPxt6A?t=48">00:48에서 확인</a></div>
+      </div>
+      <div class="card card-accent">
+        <div class="card-label">이유 2</div>
+        <div class="card-title">경제성 검증 시간</div>
+        <div class="card-body">수천억짜리 장비가 "남는 장사인지" 칩 메이커가 확신하는 데 시간이 걸린다. TSMC가 2018~19년 선도 도입 후 시장에서 증명되며 다른 업체들이 따라오기 시작했다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: 두 가지 오해 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">대중의 두 가지 오해 교정</div>
+    </div>
+    <div class="compare">
+      <div class="compare-card compare-old">
+        <div class="compare-tag tag-old">오해</div>
+        <div class="card-title">파장이 14배 짧으니 해상도 14배?</div>
+        <div class="card-body" style="font-size:13px; margin-top:6px;">DUV 193nm vs EUV 13.5nm — 계산상 14배 차이</div>
+      </div>
+      <div class="compare-card compare-new">
+        <div class="compare-tag tag-new">사실</div>
+        <div class="card-title">실제 해상도는 약 2배</div>
+        <div class="card-body" style="font-size:13px; margin-top:6px;">DUV는 이머전(물 채우기) + 극한 광학계로 ~40nm, EUV는 ~20nm 구현. 파장 외 광학 설계가 결정적.</div>
+        <div class="ts-link"><a href="https://youtu.be/Lj_e4nPxt6A?t=197">03:17에서 확인</a></div>
+      </div>
+      <div class="compare-card compare-old">
+        <div class="compare-tag tag-old">오해</div>
+        <div class="card-title">EUV 없으면 미세공정 불가능?</div>
+        <div class="card-body" style="font-size:13px; margin-top:6px;">EUV가 없으면 첨단 반도체를 만들 수 없다</div>
+      </div>
+      <div class="compare-card compare-new">
+        <div class="compare-tag tag-new">사실</div>
+        <div class="card-title">EUV의 진짜 가치 = 경제성</div>
+        <div class="card-body" style="font-size:13px; margin-top:6px;">DUV + 멀티패터닝으로도 가능. 다만 공정 단계가 수배 늘어난다. EUV는 한 번에 찍어 단계를 줄이는 <strong>'경제성 장비'</strong>.</div>
+      </div>
+    </div>
+    <div class="highlight">
+      <strong>핵심 통찰:</strong> 수천억짜리 장비를 구매하는 것이 사실 결과적으로 가장 싼 방법이다 — EUV가 없으면 불가능한 것이 아니라 <strong>훨씬 더 비싸지는 것</strong>이다.
+    </div>
+  </div>
+
+  <!-- Section 3: 왜 주석 플라즈마인가 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">왜 액체 주석 + 레이저인가 — 공학적 필연</div>
+    </div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-box">1. 렌즈 불가</div>
+        <div class="flow-desc">13nm 이하에서 모든 물질이 빛을 흡수 → 유리 렌즈 제작 불가능</div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-step">
+        <div class="flow-box">2. 다층막 거울 발견</div>
+        <div class="flow-desc">Si/Mo를 nm 단위로 교대 증착 → 13.5nm에서 반사율 ~70% 달성 (1970s 발견)</div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-step">
+        <div class="flow-box">3. 광원 탐색</div>
+        <div class="flow-desc">거울이 13.5nm에 맞춰져 있으니 → 그 파장의 빛을 내는 광원을 역으로 탐색</div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-step">
+        <div class="flow-box">4. 주석 선택</div>
+        <div class="flow-desc">같은 에너지 투입 시 제논 대비 5~10배 높은 13.5nm 방출 효율 → 주석 채택</div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-step">
+        <div class="flow-box">5. 방울 방식</div>
+        <div class="flow-desc">주석 증기가 광학계 오염 → 30µm 액체 방울을 레이저로 타격, 플라즈마 후 챔버 외부로 배출</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: 사이머 + ASML 해자 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">사이머 인수와 ASML의 진짜 해자</div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-label">사이머(Cymer) 인수 스토리</div>
+        <div class="card-body">
+          <div style="margin-bottom:8px;">UCSD 교수 창업 → DUV 광원 공급사 → EUV 개발 비용 급증</div>
+          <div style="font-size:22px; font-weight:700; color:var(--accent); margin:8px 0;">2013년</div>
+          <div>ASML이 사이머를 통째 인수 → 샌디에고가 EUV 광원 본거지</div>
+          <div style="margin-top:10px; font-size:13px; color:var(--muted);">결과: 미국 기술이 핵심 → 미국의 대중국 EUV 수출 규제의 법적 근거</div>
+        </div>
+        <div class="ts-link"><a href="https://youtu.be/Lj_e4nPxt6A?t=957">15:57에서 확인</a></div>
+      </div>
+      <div class="card">
+        <div class="card-label">ASML의 진짜 해자</div>
+        <div class="card-body">
+          <div class="highlight" style="margin-bottom:10px; margin-top:0;">단일 도면이나 부품이 아닌<br><strong>시스템 통합 능력 + 시간의 격차</strong></div>
+          <div style="font-size:13px; margin-bottom:8px;">도면을 복사해도 수십 개 정밀 모듈이 상호 작용하는 전체 시스템을 안정적으로 재현하는 데 수년이 필요하다.</div>
+          <div style="font-size:13px; color:var(--accent); font-weight:600;">진짜 경쟁자 = DUV 멀티패터닝 / 3D 수직 구조 등 패러다임 변화</div>
+        </div>
+        <div class="ts-link"><a href="https://youtu.be/Lj_e4nPxt6A?t=1114">18:34에서 확인</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: 트리플 펄스 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">트리플 펄스 아키텍처 — 이미 상용화 완료</div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <tr>
+          <th>항목</th>
+          <th>더블 펄스 (기존)</th>
+          <th>트리플 펄스 <span class="badge badge-new">NEW</span></th>
+        </tr>
+        <tr>
+          <td>레이저 수</td>
+          <td>2개</td>
+          <td><strong>3개</strong></td>
+        </tr>
+        <tr>
+          <td>방식</td>
+          <td>프리펄스 → 메인 펄스</td>
+          <td>프리펄스 → <strong>증발 펄스</strong> → 메인 펄스</td>
+        </tr>
+        <tr>
+          <td>주요 장점</td>
+          <td>단순 제어</td>
+          <td>자유도(조절 노브) 대폭 증가</td>
+        </tr>
+        <tr>
+          <td>어려움</td>
+          <td>—</td>
+          <td>제어 시스템 복잡도 증가</td>
+        </tr>
+        <tr>
+          <td>현황</td>
+          <td>이전 표준</td>
+          <td><strong>상용화 출하 완료</strong></td>
+        </tr>
+      </table>
+    </div>
+    <div class="highlight" style="margin-top:14px;">
+      초속 100m 이상으로 날아가는 30µm 방울에 나노초 정밀도로 3개 레이저를 <strong>초당 50,000번</strong> 이상 타격 — 24시간 무정지 운영
+    </div>
+    <div class="ts-link" style="margin-top:6px;"><a href="https://youtu.be/Lj_e4nPxt6A?t=1293">21:33에서 확인</a></div>
+  </div>
+
+  <!-- Section 6: 1.5kW 효과 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">1.5kW 고출력화의 반도체 현장 변화</div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div style="font-size:28px; font-weight:700; color:var(--accent);">웨이퍼 생산</div>
+        <div class="card-label" style="margin-top:4px;">시간당 생산량 급증</div>
+        <div class="card-body">현 500~600W → 1.5kW. 스루풋 향상 → 칩 1개당 생산 단가 하락</div>
+      </div>
+      <div class="card">
+        <div style="font-size:28px; font-weight:700; color:var(--accent);">레이어 10→20</div>
+        <div class="card-label" style="margin-top:4px;">고성능 반도체 설계 여력</div>
+        <div class="card-body">아낀 비용으로 EUV 레이어를 2배 늘릴 수 있는 여력 → 더 고성능 칩</div>
+      </div>
+      <div class="card">
+        <div style="font-size:28px; font-weight:700; color:var(--accent);">새 병목</div>
+        <div class="card-label" style="margin-top:4px;">스테이지 기계 속도</div>
+        <div class="card-body">가속도 ~20g, 위치 정밀도 1nm 이내로 움직이는 스테이지가 다음 한계. 출력을 높여도 기계가 못 따라가면 무의미.</div>
+      </div>
+    </div>
+    <div class="ts-link" style="margin-top:8px;"><a href="https://youtu.be/Lj_e4nPxt6A?t=1497">24:57에서 확인</a></div>
+  </div>
+
+  <!-- Section 7: 미래 패러다임 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title">다음 패러다임 — 미세화의 한계와 계측 장비의 부상</div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-label">지금까지의 패러다임</div>
+        <div class="card-title">더 작게 — 미세화 경쟁</div>
+        <div class="card-body">작을수록 빠르고 전력 절감 → ASML 노광기 해상도 극한까지 향상. High-NA EUV로 물리적 한계 근접 중.</div>
+      </div>
+      <div class="card" style="border: 1px solid var(--accent-mid);">
+        <div class="card-label">앞으로의 패러다임</div>
+        <div class="card-title">3D 적층 + 수율 극대화</div>
+        <div class="card-body">웨이퍼당 칩 수 감소 → 불량 1개가 더 비싸짐 → <strong>어디가 불량인지 찾고 회로를 우회하는 계측 장비</strong>가 핵심.</div>
+      </div>
+    </div>
+    <div class="highlight" style="margin-top:14px;">
+      인터뷰이가 ASML에서 <strong>KLA(계측·검사 장비 1위)</strong>로 이직한 이유 — EUV 소스 전문성을 유지하면서 다음 패러다임을 선점하기 위해
+      <div class="ts-link" style="margin-top:4px;"><a href="https://youtu.be/Lj_e4nPxt6A?t=1687">28:07에서 확인</a></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  출처: <a href="https://youtu.be/Lj_e4nPxt6A">안될공학 — ASML 출신에게 직접 들었습니다</a> &nbsp;|&nbsp; 생성일: 2026-05-26 &nbsp;|&nbsp;
+  <a href="./index.html">전체 리포트 목록</a>
+</div>
+
+</body>
+</html>

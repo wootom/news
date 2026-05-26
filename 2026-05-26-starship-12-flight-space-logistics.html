@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스타십 12차 발사 — 우주 물류의 시작 | 안될공학</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2d9162;
+      --accent-mid: #52b788;
+      --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .hero { background: var(--accent); color: white; padding: 36px 24px 28px; }
+    .hero-channel { font-size: 12px; opacity: 0.8; margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero-title { font-size: 22px; font-weight: 700; line-height: 1.4; margin-bottom: 6px; }
+    .hero-date { font-size: 13px; opacity: 0.75; margin-bottom: 20px; }
+    .hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .hero-stat { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 12px 10px; text-align: center; }
+    .hero-stat-num { font-size: 24px; font-weight: 700; display: block; }
+    .hero-stat-label { font-size: 11px; opacity: 0.85; }
+    @media(max-width: 560px) { .hero-stats { grid-template-columns: repeat(2,1fr); } .hero-stat-num { font-size: 20px; } }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+
+    .section { margin-bottom: 28px; }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .section-num { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: white; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .section-title { font-size: 17px; font-weight: 700; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    @media(max-width: 760px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width: 480px) { .grid, .grid-2 { grid-template-columns: 1fr; } }
+    .card { background: var(--surface); border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
+    .card-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .card-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .card-body { font-size: 13px; }
+    .card-accent { border-left: 3px solid var(--accent); padding-left: 12px; }
+    .card-highlight { border: 1px solid var(--accent-mid); background: var(--accent-light); }
+
+    .highlight { background: var(--accent-light); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 16px; margin: 12px 0; font-size: 14px; }
+    .highlight strong { color: var(--accent); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--accent); color: white; padding: 9px 12px; text-align: left; }
+    td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: var(--surface); }
+
+    .flow { display: flex; gap: 0; align-items: stretch; }
+    .flow-v { display: flex; flex-direction: column; gap: 0; }
+    .flow-box { background: var(--accent); color: white; border-radius: 8px; padding: 10px 14px; font-size: 13px; font-weight: 600; text-align: center; }
+    .flow-arrow-h { display: flex; align-items: center; justify-content: center; padding: 0 6px; color: var(--accent); font-size: 20px; }
+    .flow-arrow-v { display: flex; align-items: center; justify-content: center; padding: 4px 0; color: var(--accent); font-size: 18px; }
+    .flow-desc { background: var(--surface); border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--muted); flex: 2; margin-left: 10px; display: flex; align-items: center; }
+
+    .ts-link { font-size: 11px; color: var(--accent-mid); margin-top: 6px; }
+    .badge { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+
+    /* Milestone checklist */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .checklist li:last-child { border-bottom: none; }
+    .check-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .check-done { background: var(--accent); color: white; }
+    .check-todo { background: var(--border); color: var(--muted); }
+
+    .footer { background: var(--surface); border-top: 1px solid var(--border); padding: 20px; text-align: center; font-size: 12px; color: var(--muted); margin-top: 32px; }
+    .footer a { color: var(--accent); }
+
+    /* Loop diagram */
+    .loop-box { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: center; margin: 16px 0; }
+    .loop-item { background: var(--surface); border-radius: 10px; padding: 14px; text-align: center; border: 1px solid var(--border); }
+    .loop-item.accent { background: var(--accent-light); border-color: var(--accent-mid); }
+    .loop-arrow-mid { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 8px; color: var(--accent); font-size: 20px; }
+    @media(max-width:480px) { .loop-box { grid-template-columns: 1fr; } .loop-arrow-mid { flex-direction: row; } }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-channel">안될공학 · 2026-05-26</div>
+  <div class="hero-title">스타십 12차 발사, 엔진 꺼졌는데도 갔다<br>우주 물류의 시작을 보여주다</div>
+  <div class="hero-date">
+    발사일: 2026년 5월 22일 &nbsp;|&nbsp;
+    <a href="https://youtu.be/v4M6PLrcbgk" style="color:rgba(255,255,255,0.85)">youtube.com/watch?v=v4M6PLrcbgk</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-num">124m</span>
+      <span class="hero-stat-label">스타십 V3 전체 높이</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">33개</span>
+      <span class="hero-stat-label">슈퍼헤비 랩터 3 엔진</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">22개</span>
+      <span class="hero-stat-label">배출된 탑재체</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">$10M</span>
+      <span class="hero-stat-label">장기 발사 비용 목표</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Section 1: 핵심 수치 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">이번 비행에서 봐야 할 핵심 숫자 3가지</div>
+    </div>
+    <div class="grid">
+      <div class="card card-accent">
+        <div style="font-size:36px; font-weight:700; color:var(--accent);">124m</div>
+        <div class="card-label">아파트 약 30층</div>
+        <div class="card-body">완전 연료 탑재 상태로 이륙하는 구조물. V3는 기존 대비 더 강력한 엔진 + 재사용 설계 반영.</div>
+        <div class="ts-link"><a href="https://youtu.be/v4M6PLrcbgk?t=36">00:36에서 확인</a></div>
+      </div>
+      <div class="card card-accent">
+        <div style="font-size:36px; font-weight:700; color:var(--accent);">33개</div>
+        <div class="card-label">랩터 3 엔진</div>
+        <div class="card-body">엔진이 많으면 1개 꺼져도 보정 여지가 있다. 반면 관리 복잡도는 GPU 수천 개 네트워킹 수준.</div>
+      </div>
+      <div class="card card-accent">
+        <div style="font-size:36px; font-weight:700; color:var(--accent);">22개</div>
+        <div class="card-label">배출 탑재체</div>
+        <div class="card-body">스타링크 모형 20개 + 실제 스타링크 위성 2개. PEG 디스펜서로 하나씩 배출.</div>
+        <div class="ts-link"><a href="https://youtu.be/v4M6PLrcbgk?t=68">01:08에서 확인</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: 결함 허용 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">이 비행이 중요한 진짜 이유 — 결함 허용 시스템 입증</div>
+    </div>
+    <div class="highlight">
+      엔진 1개가 꺼졌다 = 실패가 아니다. <strong>꺼졌는데도 계속 갔다</strong> = 상용 운송 시스템의 핵심 요건 충족
+    </div>
+    <div class="grid grid-2" style="margin-top:14px;">
+      <div class="card">
+        <div class="card-label">완벽해서 성공한 로켓</div>
+        <div class="card-title" style="color:var(--muted);">실험용 장비에 가깝다</div>
+        <div class="card-body">이상적 조건에서만 작동하는 시스템은 반복 운송 인프라가 될 수 없다.</div>
+      </div>
+      <div class="card card-highlight">
+        <div class="card-label">불완전해도 임무를 이어가는 시스템</div>
+        <div class="card-title">상용 물류가 요구하는 것</div>
+        <div class="card-body">문제가 생겼을 때 남은 엔진·연료·자세 제어·소프트웨어가 실시간 적응해 임무를 이어간다.</div>
+        <div class="ts-link"><a href="https://youtu.be/v4M6PLrcbgk?t=133">02:13에서 확인</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: SpaceX 구조 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">SpaceX가 다른 이유 — 내부 피드백 루프</div>
+    </div>
+    <div class="loop-box">
+      <div class="loop-item accent">
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">스타십</div>
+        <div style="font-size:12px; margin-top:4px;">대용량 발사체<br>발사 비용 절감</div>
+      </div>
+      <div class="loop-arrow-mid">
+        <div style="font-size:11px; color:var(--muted);">위성 배치</div>
+        <div>&#8594;</div>
+        <div style="font-size:11px; color:var(--muted);">수익 재투자</div>
+        <div>&#8592;</div>
+      </div>
+      <div class="loop-item accent">
+        <div style="font-size:15px; font-weight:700; color:var(--accent);">스타링크</div>
+        <div style="font-size:12px; margin-top:4px;">위성 인터넷 서비스<br>내부 수요 창출</div>
+      </div>
+    </div>
+    <div class="highlight">
+      일반 발사사는 외부 고객을 기다린다. SpaceX는 <strong>내부 수요(스타링크)가 항상 있다</strong> — 물류 트럭과 자체 이커머스를 동시에 가진 구조.
+    </div>
+    <div class="ts-link"><a href="https://youtu.be/v4M6PLrcbgk?t=292">04:52에서 확인</a></div>
+  </div>
+
+  <!-- Section 4: NASA 아르테미스 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">NASA 아르테미스에서의 역할과 과제</div>
+    </div>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-label">스타십 HLS 역할</div>
+        <div class="card-title">달 표면 착륙선</div>
+        <div class="card-body">
+          <div style="margin-bottom:8px;">지구 발사 → 궤도 집결 → <strong>탱커 스타십으로 우주 급유</strong> → 달 이동</div>
+          <div style="font-size:12px; color:var(--muted);">단순히 한 번에 달에 가는 것이 아닌 복잡한 다단계 구조</div>
+        </div>
+        <div class="ts-link"><a href="https://youtu.be/v4M6PLrcbgk?t=620">10:20에서 확인</a></div>
+      </div>
+      <div class="card">
+        <div class="card-label">이번 비행의 아쉬운 점</div>
+        <div class="card-title">우주 엔진 재점화 건너뜀</div>
+        <div class="card-body">엔진 1개 손실로 비행팀이 우주 공간 엔진 재점화 테스트를 생략. 달·화성 비행의 필수 기본 동작이며 NASA 요구 사항.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: 앞으로 봐야 할 것 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">앞으로 확인해야 할 4가지 관문</div>
+    </div>
+    <ul class="checklist">
+      <li>
+        <div class="check-icon check-todo">1</div>
+        <div>
+          <strong>우주 공간 엔진 재점화</strong>
+          <div style="color:var(--muted); font-size:12px; margin-top:2px;">달·화성 비행의 기본 동작. 고속도로 주행 중 시동을 껐다 재시동하는 것과 유사. 이번에 건너뜀.</div>
+          <div class="ts-link"><a href="https://youtu.be/v4M6PLrcbgk?t=772">12:52에서 확인</a></div>
+        </div>
+      </li>
+      <li>
+        <div class="check-icon check-todo">2</div>
+        <div>
+          <strong>완전 재사용 회수</strong>
+          <div style="color:var(--muted); font-size:12px; margin-top:2px;">부스터 + 상단 우주선 모두 회수 후 얼마나 빨리 재비행 가능한지가 핵심 지표.</div>
+        </div>
+      </li>
+      <li>
+        <div class="check-icon check-todo">3</div>
+        <div>
+          <strong>우주 급유 (궤도 연료 이송)</strong>
+          <div style="color:var(--muted); font-size:12px; margin-top:2px;">아르테미스에서 스타십이 맡은 역할의 핵심 관문. 공중 급유기처럼 우주에서 연료를 보충.</div>
+          <div class="ts-link"><a href="https://youtu.be/v4M6PLrcbgk?t=639">10:39에서 확인</a></div>
+        </div>
+      </li>
+      <li>
+        <div class="check-icon check-todo">4</div>
+        <div>
+          <strong>스타링크 실전 운영 투입</strong>
+          <div style="color:var(--muted); font-size:12px; margin-top:2px;">이 순간부터 스타십이 시험 장비 → SpaceX 사업 인프라로 전환.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Section 6: 팔콘9 vs 스타십 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">팔콘 9에서 스타십으로 — 우주 발사의 패러다임 전환</div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <tr>
+          <th>항목</th>
+          <th>팔콘 9</th>
+          <th>스타십 V3</th>
+        </tr>
+        <tr>
+          <td>핵심 혁신</td>
+          <td>1단 부스터 재사용</td>
+          <td>전체 시스템 완전 재사용</td>
+        </tr>
+        <tr>
+          <td>방향성</td>
+          <td>"한 번 쓰고 버리지 말자"</td>
+          <td>"더 자주, 더 많이, 더 싸게"</td>
+        </tr>
+        <tr>
+          <td>발사 비용 방향</td>
+          <td>기존 대비 수배 절감</td>
+          <td>장기 목표: 1,000만 달러 이하</td>
+        </tr>
+        <tr>
+          <td>우주 인식</td>
+          <td>발사 비용 구조 혁신</td>
+          <td>반복 가능한 물류 인프라로 전환</td>
+        </tr>
+      </table>
+    </div>
+    <div class="highlight" style="margin-top:14px;">
+      <strong>우주가 VIP석에서 대중 교통으로</strong> — 스타십이 흔드는 질서는 발사 비용이 아니라 <strong>우주 접근성 자체</strong>다.
+    </div>
+    <div class="ts-link"><a href="https://youtu.be/v4M6PLrcbgk?t=430">07:10에서 확인</a></div>
+  </div>
+
+  <!-- Section 7: 현황 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title">객관적 현황 — 어디까지 왔고 어디까지 남았나</div>
+    </div>
+    <div class="grid">
+      <div class="card card-highlight">
+        <div class="card-label">이번 비행에서 입증</div>
+        <div class="card-body">
+          <div style="margin-bottom:6px;">V3 첫 비행 우주 도달</div>
+          <div style="margin-bottom:6px;">결함 허용 비행 (엔진 1개 손실 후 계속)</div>
+          <div>22개 탑재체 배출 (PEG 디스펜서)</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">아직 미증명</div>
+        <div class="card-body">
+          <div style="margin-bottom:6px;">우주 공간 엔진 재점화</div>
+          <div style="margin-bottom:6px;">완전 재사용 회수</div>
+          <div>궤도 급유 / 완전 지구 궤도 도달</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">산업적 영향</div>
+        <div class="card-body">
+          <div style="margin-bottom:6px;">위성 설계자: 더 큰 위성 가능</div>
+          <div style="margin-bottom:6px;">정부: 우주를 전략 인프라로 재정의</div>
+          <div>경쟁사: 가격·일정 전략 재수립 필요</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  출처: <a href="https://youtu.be/v4M6PLrcbgk">안될공학 — 스타십 12차 발사, 엔진 꺼졌는데도 갔다</a> &nbsp;|&nbsp; 생성일: 2026-05-26 &nbsp;|&nbsp;
+  <a href="./index.html">전체 리포트 목록</a>
+</div>
+
+</body>
+</html>
