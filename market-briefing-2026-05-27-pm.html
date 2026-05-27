@@ -17,8 +17,9 @@ body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans 
 .shead .htxt h1{font-size:29px;font-weight:900;line-height:1.2;letter-spacing:-.01em}
 .shead .ey{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;white-space:nowrap;align-self:flex-end;padding-bottom:3px}
 .body{flex:1;min-height:0;overflow:auto;display:block}
-.cols2{column-count:2;column-gap:18px}
-.sec-panel{break-inside:avoid;-webkit-column-break-inside:avoid;border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0 0 16px;background:var(--surface)}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:stretch}
+.cols2.one{grid-template-columns:1fr}
+.sec-panel{border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column}
 .sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
 .sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
 .sec-panel table{font-size:13px}
@@ -163,7 +164,7 @@ hr{display:none}
 <hr></div></div></div><div class="foot"><span class="fd"></span>시황 브리핑 &middot; 2026-05-27 &middot; 미장 &middot; 정보 제공 목적 · 투자 권유 아님</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 5</span><button id="next">&rsaquo;</button></div><script>
 var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
 var c=document.getElementById('counter'),pr=document.getElementById('prog');
-function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;if(b.scrollHeight>b.clientHeight+1){var z=b.clientHeight/b.scrollHeight;b.style.zoom=Math.max(0.66,z-0.01);}}
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight;if(sh<1)return;var z=ch/sh;z=Math.max(0.6,Math.min(1.32,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
 function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
 document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
 document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
