@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>무료 오픈소스 WhatsApp CRM 완전 셋업 가이드 | 2026-05-25</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .hero { background: linear-gradient(135deg, #1a5c3a 0%, var(--accent) 100%); color: white; padding: 40px 24px 32px; }
+    .hero h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+    .hero .meta { font-size: 13px; opacity: 0.8; margin-bottom: 24px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .stat { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 14px 12px; text-align: center; }
+    .stat .val { font-size: 26px; font-weight: 700; }
+    .stat .lbl { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px 40px; }
+    .section { margin-bottom: 28px; background: var(--surface); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .num { width: 32px; height: 32px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .section-title { font-size: 17px; font-weight: 700; color: var(--text); }
+    .table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .table th { background: var(--accent-light); color: var(--accent); padding: 8px 12px; text-align: left; font-weight: 600; }
+    .table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    .table tr:last-child td { border-bottom: none; }
+    .pipeline { display: flex; flex-direction: column; gap: 0; }
+    .pipe-step { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .pipe-step:last-child { border-bottom: none; }
+    .pipe-num { width: 28px; height: 28px; background: var(--accent-mid); color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+    .pipe-content .pipe-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .pipe-content .pipe-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .arch-box { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: monospace; font-size: 13px; line-height: 1.8; color: var(--text); }
+    .arch-box .arrow { color: var(--accent); }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .card-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+    .card-body { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .tag { display: inline-block; background: var(--accent-light); color: var(--accent); border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 600; margin-right: 4px; }
+    .warn { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 13px; color: #92400e; margin-top: 8px; }
+    .ts-list { list-style: none; }
+    .ts-list li { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .ts-list li:last-child { border-bottom: none; }
+    .ts-time { color: var(--accent); font-weight: 600; min-width: 50px; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .footer { text-align: center; font-size: 12px; color: var(--muted); padding: 16px; border-top: 1px solid var(--border); margin-top: 20px; }
+    @media (max-width: 640px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .grid2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>무료 오픈소스 WhatsApp CRM & 자동화</h1>
+  <div class="meta">2026-05-25 | Astro K Joseph | <a href="https://youtu.be/Zu0PwZF6VEA" style="color:rgba(255,255,255,0.9)">youtu.be/Zu0PwZF6VEA</a></div>
+  <div class="stats">
+    <div class="stat"><div class="val">$0</div><div class="lbl">월 비용</div></div>
+    <div class="stat"><div class="val">6</div><div class="lbl">셋업 단계</div></div>
+    <div class="stat"><div class="val">12</div><div class="lbl">SQL 마이그레이션</div></div>
+    <div class="stat"><div class="val">4+</div><div class="lbl">자동화 트리거</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="num">01</div>
+      <div class="section-title">핵심 개요 — 왜 무료 오픈소스인가?</div>
+    </div>
+    <table class="table">
+      <tr><th>항목</th><th>내용</th></tr>
+      <tr><td>프로젝트명</td><td><strong>WACM</strong> (WhatsApp CRM)</td></tr>
+      <tr><td>비용</td><td>완전 무료 (호스팅 별도)</td></tr>
+      <tr><td>API</td><td>Meta 공식 WhatsApp Business API — <span class="tag">밴 위험 없음</span></td></tr>
+      <tr><td>주요 스택</td><td>Next.js + Supabase + ngrok</td></tr>
+      <tr><td>핵심 차이점</td><td>제3자 API 없이 공식 Meta API 직접 사용</td></tr>
+    </table>
+    <div class="warn">상용 솔루션은 월 수십~수백만 원이지만, WACM은 Meta 공식 API를 직접 활용해 완전 무료로 동일 기능을 구현한다.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="num">02</div>
+      <div class="section-title">시스템 아키텍처</div>
+    </div>
+    <div class="arch-box">
+      [사용자 WhatsApp 앱]<br>
+      <span class="arrow">        ↓ 메시지 전송</span><br>
+      [Meta WhatsApp Business API]<br>
+      <span class="arrow">        ↓ Webhook 이벤트</span><br>
+      [ngrok 터널 / Hostinger 서버] <span class="arrow">→</span> [WACM Next.js 앱]<br>
+      <span class="arrow">                                          ↓</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Supabase DB + Auth]<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(연락처·메시지·자동화 규칙 저장)
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="num">03</div>
+      <div class="section-title">단계별 설치 절차</div>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-num">1</div>
+        <div class="pipe-content">
+          <div class="pipe-title">GitHub 레포 클론 및 의존성 설치</div>
+          <div class="pipe-desc">git clone → cd wacm → npm install → cp .env.example .env.local</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">2</div>
+        <div class="pipe-content">
+          <div class="pipe-title">Supabase 프로젝트 생성 및 SQL 마이그레이션</div>
+          <div class="pipe-desc">supabase.com에서 프로젝트 생성 → URL/키 복사 → SQL Editor에서 12개 파일 순서대로 실행</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">3</div>
+        <div class="pipe-content">
+          <div class="pipe-title">Meta 개발자 앱 생성 및 WhatsApp API 설정</div>
+          <div class="pipe-desc">developers.facebook.com → 앱 생성 → 시스템 사용자로 영구 액세스 토큰 발급</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">4</div>
+        <div class="pipe-content">
+          <div class="pipe-title">WACM 대시보드에 자격증명 입력</div>
+          <div class="pipe-desc">Settings → WhatsApp Configure: 토큰·Phone Number ID·Business Account ID·Verify Token 입력</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">5</div>
+        <div class="pipe-content">
+          <div class="pipe-title">ngrok Webhook 연결 (로컬 개발)</div>
+          <div class="pipe-desc">ngrok http 3003 → 생성된 https URL을 Meta 개발자 포털 Webhook callback에 등록</div>
+        </div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-num">6</div>
+        <div class="pipe-content">
+          <div class="pipe-title">Hostinger 클라우드 배포 (24/7 상시 운영)</div>
+          <div class="pipe-desc">GitHub 레포 → Hostinger Node.js 웹앱 → 환경 변수 복사 → 배포 완료</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="num">04</div>
+      <div class="section-title">자동화 기능 및 활용 시나리오</div>
+    </div>
+    <div class="grid2">
+      <div>
+        <table class="table">
+          <tr><th>트리거</th><th>액션</th></tr>
+          <tr><td>키워드 포함</td><td>자동 응답 메시지</td></tr>
+          <tr><td>새 메시지</td><td>태그 추가/제거</td></tr>
+          <tr><td>키워드 매칭</td><td>담당자 배정</td></tr>
+          <tr><td>키워드 매칭</td><td>템플릿 발송</td></tr>
+        </table>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div class="card">
+          <div class="card-title">소상공인 응대 자동화</div>
+          <div class="card-body">영업 시간 외 자동 응답 + FAQ 키워드 매핑으로 응대 부담 제거</div>
+        </div>
+        <div class="card">
+          <div class="card-title">리드 관리</div>
+          <div class="card-body">문의 고객 자동 CRM 등록 + 태그로 단계 분류 (신규/상담중/완료)</div>
+        </div>
+        <div class="card">
+          <div class="card-title">팀 협업 인박스</div>
+          <div class="card-body">여러 담당자 공동 관리, 대화 배정 기능으로 역할 분리</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="num">05</div>
+      <div class="section-title">핵심 타임스탬프</div>
+    </div>
+    <ul class="ts-list">
+      <li><span class="ts-time"><a href="https://youtu.be/Zu0PwZF6VEA?t=0">0:00</a></span><span>소개 및 비용 절감 포인트 — 상용 대비 무료의 의미</span></li>
+      <li><span class="ts-time"><a href="https://youtu.be/Zu0PwZF6VEA?t=90">1:30</a></span><span>GitHub 클론 및 npm install 실습</span></li>
+      <li><span class="ts-time"><a href="https://youtu.be/Zu0PwZF6VEA?t=210">3:30</a></span><span>Supabase 프로젝트 생성 및 12개 SQL 마이그레이션</span></li>
+      <li><span class="ts-time"><a href="https://youtu.be/Zu0PwZF6VEA?t=390">6:30</a></span><span>Meta 개발자 앱 생성, 영구 액세스 토큰 발급</span></li>
+      <li><span class="ts-time"><a href="https://youtu.be/Zu0PwZF6VEA?t=660">11:00</a></span><span>ngrok Webhook 연결 및 실제 메시지 수신 테스트</span></li>
+      <li><span class="ts-time"><a href="https://youtu.be/Zu0PwZF6VEA?t=780">13:00</a></span><span>키워드 자동화 규칙 생성 및 실시간 데모</span></li>
+      <li><span class="ts-time"><a href="https://youtu.be/Zu0PwZF6VEA?t=900">15:00</a></span><span>Hostinger 클라우드 배포 완료</span></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="num">06</div>
+      <div class="section-title">보안 주의사항</div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div class="warn"><strong>Service Role Key</strong>: Supabase 행 수준 보안(RLS)을 우회해 DB에 직접 접근 가능한 마스터 키 — 절대 외부 공유 금지</div>
+      <div class="warn"><strong>Meta App Secret</strong>: 동일하게 외부 공유 금지 — 노출 시 즉시 재발급</div>
+      <div class="warn">테스트 전화번호는 <strong>90일간만 유효</strong> — 실서비스 전 실제 번호 등록 필수</div>
+    </div>
+  </div>
+
+</div>
+<div class="footer">AI 비주얼 리포트 | Obsidian Vault 자동 저장 | 2026-05-25</div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI로 프로덕션급 풀스택 앱 초고속 제작 — Astro K Joseph</title>
+  <style>
+    :root {
+      --bg:#ffffff; --surface:#f5f5f5; --border:#e0e0e0;
+      --text:#1a1a1a; --muted:#666666;
+      --accent:#2d9162; --accent-mid:#52b788; --accent-light:#d8f0e3;
+      --red:#c0392b; --red-light:#fdecea;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+    .hero { background:var(--accent); color:#fff; padding:36px 24px 28px; }
+    .hero-label { font-size:12px; font-weight:700; letter-spacing:0.1em; opacity:0.85; margin-bottom:8px; }
+    .hero h1 { font-size:24px; font-weight:800; line-height:1.3; margin-bottom:6px; }
+    .hero-meta { font-size:13px; opacity:0.85; margin-bottom:20px; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:20px; }
+    .stat { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:8px; padding:12px; text-align:center; }
+    .stat-num { font-size:26px; font-weight:800; display:block; }
+    .stat-label { font-size:11px; opacity:0.9; }
+    .container { max-width:860px; margin:0 auto; padding:32px 20px 60px; }
+    .section { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:20px; }
+    .section-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+    .section-num { width:32px; height:32px; background:var(--accent); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex-shrink:0; }
+    .section-title { font-size:18px; font-weight:700; }
+    .flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:6px 0; }
+    .flow-step { flex:1; min-width:150px; background:#fff; border:1px solid var(--border); border-radius:8px; padding:14px; }
+    .flow-step .fs-tool { font-size:14px; font-weight:800; color:var(--accent); margin-bottom:4px; }
+    .flow-step .fs-desc { font-size:12.5px; color:var(--muted); }
+    .flow-arrow { align-self:center; color:var(--accent); font-size:20px; font-weight:800; }
+    .method-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .method-card { background:#fff; border:1px solid var(--border); border-radius:8px; padding:14px; }
+    .method-badge { display:inline-block; background:var(--accent-light); color:var(--accent); font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px; margin-bottom:8px; }
+    .method-name { font-size:14px; font-weight:700; margin-bottom:4px; }
+    .method-desc { font-size:13px; color:var(--muted); }
+    .compare-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .compare-table th { background:var(--accent); color:#fff; padding:10px 12px; text-align:left; font-weight:700; }
+    .compare-table td { padding:10px 12px; border-bottom:1px solid var(--border); }
+    .compare-table tr:last-child td { border-bottom:none; }
+    .compare-table tr:nth-child(even) td { background:var(--surface); }
+    .scenario-list { list-style:none; }
+    .scenario-list li { padding:10px 0; border-bottom:1px solid var(--border); font-size:14px; display:flex; align-items:flex-start; gap:10px; }
+    .scenario-list li:last-child { border-bottom:none; }
+    .scenario-icon { width:28px; height:28px; background:var(--accent-light); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:var(--accent); flex-shrink:0; }
+    .note-box { background:var(--red-light); border:1px solid var(--red); border-radius:6px; padding:14px; margin-top:12px; font-size:13px; color:var(--text); }
+    .note-box b { color:var(--red); }
+    .term-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .term-table th { background:var(--surface); padding:8px 12px; text-align:left; font-weight:700; border-bottom:2px solid var(--border); }
+    .term-table td { padding:10px 12px; border-bottom:1px solid var(--border); }
+    .term-table td:first-child { font-weight:700; color:var(--accent); white-space:nowrap; }
+    .footer { text-align:center; padding:24px; font-size:12px; color:var(--muted); border-top:1px solid var(--border); margin-top:20px; }
+    .footer a { color:var(--accent); }
+    @media (max-width:760px){ .stats{grid-template-columns:repeat(2,1fr);} .method-grid{grid-template-columns:1fr;} .flow-arrow{display:none;} }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">ASTRO K JOSEPH · 2026-05-27</div>
+  <h1>AI로 프로덕션급 풀스택 앱 초고속 제작</h1>
+  <div class="hero-meta">Moment + Cursor + TestSprite — 백엔드 코딩 없이 AI 이미지 편집 SaaS 완성 워크플로우</div>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">3</span><span class="stat-label">핵심 AI 도구</span></div>
+    <div class="stat"><span class="stat-num">3~4분</span><span class="stat-label">프론트엔드 생성</span></div>
+    <div class="stat"><span class="stat-num">0</span><span class="stat-label">수작업 백엔드 코딩</span></div>
+    <div class="stat"><span class="stat-num">1</span><span class="stat-label">텍스트 프롬프트</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-header"><div class="section-num">01</div><div class="section-title">전체 워크플로우 — 3단계 도구 릴레이</div></div>
+    <div class="flow">
+      <div class="flow-step"><div class="fs-tool">① Moment</div><div class="fs-desc">비주얼 빌더로 백엔드 구축 · AI 에이전트 · DB · Gemini Flash 통합</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-tool">② Cursor</div><div class="fs-desc">Moment MCP 연결 · 단일 프롬프트로 React 프론트 + 인증 생성</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="fs-tool">③ TestSprite</div><div class="fs-desc">자율 AI 테스트 에이전트로 버그 자동 점검</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-num">02</div><div class="section-title">단계별 핵심 역할</div></div>
+    <div class="method-grid">
+      <div class="method-card"><div class="method-badge">백엔드</div><div class="method-name">Moment — 비주얼 빌더</div><div class="method-desc">수작업 코딩 대신 AI 에이전트 생성, AI 코파일럿으로 DB 테이블 즉시 구성, 복잡한 액션 플로우 설계.</div></div>
+      <div class="method-card"><div class="method-badge">AI 모델</div><div class="method-name">Gemini Flash 통합</div><div class="method-desc">이미지 업로드 후 텍스트 프롬프트로 편집하는 기능 처리. 백엔드에 결합.</div></div>
+      <div class="method-card"><div class="method-badge">프론트엔드</div><div class="method-name">Cursor + Moment MCP</div><div class="method-desc">MCP 연결로 백엔드 인지 상태에서 단일 프롬프트로 완전한 React 프로젝트·UI·사용자 인증 생성.</div></div>
+      <div class="method-card"><div class="method-badge">품질</div><div class="method-name">TestSprite — 자율 테스트</div><div class="method-desc">사람 개입 없이 자동 테스트 실행해 버그 없는 앱 보증.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-num">03</div><div class="section-title">도구별 비교 — 역할·산출물</div></div>
+    <table class="compare-table">
+      <thead><tr><th>도구</th><th>담당 영역</th><th>핵심 산출물</th></tr></thead>
+      <tbody>
+        <tr><td>Moment</td><td>백엔드 · 데이터 · AI 에이전트</td><td>DB · 액션 플로우 · Gemini 연동 API</td></tr>
+        <tr><td>Cursor</td><td>프론트엔드 · UI</td><td>React 프로젝트 · 사용자 인증</td></tr>
+        <tr><td>TestSprite</td><td>QA · 테스트</td><td>자동 테스트 리포트</td></tr>
+      </tbody>
+    </table>
+    <div class="note-box"><b>유의:</b> 본 영상은 약 65초 분량의 요약 티저로, 세부 구현 단계는 채널의 풀 튜토리얼 영상에서 단계별로 다룬다.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-num">04</div><div class="section-title">활용 시나리오</div></div>
+    <ul class="scenario-list">
+      <li><span class="scenario-icon">A</span><div>AI 기능(이미지·텍스트 처리) 포함 SaaS MVP를 주말 안에 프로토타이핑</div></li>
+      <li><span class="scenario-icon">B</span><div>백엔드 개발 리소스 없이 1인 개발자가 인증·DB 포함 앱을 빠르게 검증</div></li>
+      <li><span class="scenario-icon">C</span><div>비개발 직군이 비주얼 빌더로 사내 도구 초안 구성 후 개발자가 고도화</div></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-num">05</div><div class="section-title">용어 사전</div></div>
+    <table class="term-table">
+      <thead><tr><th>용어</th><th>한줄 설명</th><th>비유</th></tr></thead>
+      <tbody>
+        <tr><td>MCP</td><td>AI 도구가 외부 서비스·데이터에 표준 방식으로 연결되는 프로토콜</td><td>여러 가전을 한 규격 콘센트에 꽂기</td></tr>
+        <tr><td>Moment</td><td>비주얼 빌더로 백엔드·AI 에이전트·DB를 만드는 플랫폼</td><td>레고 블록으로 서버 조립</td></tr>
+        <tr><td>Cursor</td><td>AI가 코드를 생성·수정해 주는 코드 에디터</td><td>받아쓰는 코딩 비서</td></tr>
+        <tr><td>Gemini Flash</td><td>구글의 빠른 경량 멀티모달 AI 모델</td><td>이미지·글 즉석 처리 일꾼</td></tr>
+        <tr><td>TestSprite</td><td>자율적으로 앱을 테스트하는 AI 에이전트</td><td>스스로 눌러보는 QA 로봇</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="footer">
+  Astro K Joseph · 2026-05-27 · <a href="https://youtu.be/tJmCKIiKAUQ">원본 영상 보기</a>
+</div>
+
+</body>
+</html>

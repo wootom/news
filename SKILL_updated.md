@@ -301,7 +301,7 @@ Step 6의 200 검증 게이트를 통과한 뒤에만 텔레그램 봇을 경유
 ```
 Claude (샌드박스) → Telegram Bot API (@vaax_fovea_bot, chat_id: 8378388303)
   → vaax-telegram 릴레이 (Mac mini 상시 실행)
-  → KakaoTalk VAAX 방 (vaaxbot이 telegram_listener를 통해 다중 forward)
+  → KakaoTalk VAAX 방 (xbot이 telegram_listener를 통해 다중 forward)
 ```
 
 ### 알림 발송 코드 (샌드박스에서 직접 실행)

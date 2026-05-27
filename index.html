@@ -1,1251 +1,622 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="시황브리핑·AI 뉴스·커뮤니티 리포트 아카이브 — AI Foundry">
-  <title>리포트 아카이브 | AI Foundry</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-:root{--accent:#2d9162;--bg:#f4f6f9;--surface:#fff;--text:#1a202c;--muted:#64748b;--border:#e2e8f0}
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
-body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
-/* HEADER */
-header{background:linear-gradient(135deg,#0a3320 0%,#155c38 55%,#2d9162 100%);color:#fff;padding:30px 20px 26px}
-.hdr-inner{max-width:920px;margin:0 auto}
-header h1{font-size:clamp(1.2rem,5vw,1.55rem);font-weight:800;margin-bottom:5px}
-header p{font-size:12.5px;opacity:.8}
-.hdr-stats{display:flex;gap:20px;margin-top:14px;flex-wrap:wrap}
-.hdr-stat{font-size:12px;opacity:.75;font-weight:600}
-.hdr-stat span{font-size:1.1rem;font-weight:800;opacity:1;margin-right:4px}
-/* TOOLBAR */
-.toolbar{max-width:920px;margin:0 auto;padding:14px 16px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.search{flex:1;min-width:150px;padding:9px 14px;border:1.5px solid var(--border);
-  border-radius:8px;font-size:14px;background:var(--surface);outline:none;
-  font-family:inherit;transition:border-color .2s}
-.search:focus{border-color:var(--accent)}
-.tabs{display:flex;gap:6px;flex-wrap:wrap}
-.tab{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);
-  background:var(--surface);font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);
-  transition:all .18s;font-family:inherit}
-.tab.active,.tab:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
-/* CONTENT */
-.content{max-width:920px;margin:0 auto;padding:16px 16px 64px}
-.cat-section{margin-bottom:36px}
-.cat-section.hidden{display:none}
-.cat-label{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.09em;
-  text-transform:uppercase;margin-bottom:12px;padding:10px 0 8px;
-  border-bottom:2px solid var(--border);display:flex;align-items:center;gap:8px}
-.cnt{background:var(--border);color:var(--muted);font-size:10px;font-weight:700;
-  padding:2px 7px;border-radius:10px}
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:13px}
-/* CARD */
-.card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;
-  padding:16px 16px 14px;text-decoration:none;color:inherit;
-  box-shadow:0 1px 3px rgba(0,0,0,.05);transition:all .2s;display:block}
-.card:hover{box-shadow:0 5px 18px rgba(45,145,98,.18);border-color:var(--accent);
-  transform:translateY(-2px)}
-.card.hidden{display:none}
-.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
-.date{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.04em;flex-shrink:0}
-.badge{font-size:10px;font-weight:800;color:#fff;padding:3px 9px;border-radius:12px;
-  white-space:nowrap;flex-shrink:0}
-.card-title{font-size:.88rem;font-weight:700;color:var(--text);line-height:1.45;margin-bottom:6px;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card-summary{font-size:.78rem;color:var(--muted);line-height:1.55;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-/* EMPTY */
-.empty{text-align:center;color:var(--muted);padding:48px 20px;font-size:14px;display:none}
-/* MOBILE */
-@media(max-width:500px){
-  header{padding:22px 14px 20px}
-  .toolbar{padding:10px 12px 0;gap:6px}
-  .grid{grid-template-columns:1fr}
-  .content{padding:12px 12px 56px}
-  .tab{font-size:11px;padding:6px 11px}
-}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 비주얼 리포트 아카이브</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --text-muted: #666666;
+    --accent: #004D40;
+    --border: #EEEEEE;
+    --danger: #C53030;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px 80px;
+  }
+  .portal-header {
+    border-bottom: 2px solid var(--text-primary);
+    padding-bottom: 24px;
+    margin-bottom: 40px;
+  }
+  .portal-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .portal-header h1 span { color: var(--accent); }
+  .portal-header p {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .item {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .item:last-child { border-bottom: none; }
+  .date-pill {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    width: 90px;
+  }
+  .item a {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+  .item a:hover { color: var(--accent); }
+
+  /* --- toolbar (search + edit toggle) --- */
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .search-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.15s;
+    min-width: 0;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .count-pill {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .edit-toggle {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .edit-toggle.active {
+    color: #fff;
+    background: var(--danger);
+    border-color: var(--danger);
+  }
+
+  /* --- per-item delete button + hidden state --- */
+  .item a { flex: 1; }
+  .delete-btn {
+    display: none;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .delete-btn:hover { background: rgba(197, 48, 48, 0.1); }
+  body.edit-mode .delete-btn { display: inline-block; }
+  .item.hidden { display: none; }
+
+  .empty {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 40px 0;
+    display: none;
+  }
+  .empty.show { display: block; }
+
+  /* --- floating panel for download / undo --- */
+  .floating-panel {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-primary);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    display: none;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+    font-size: 13px;
+    max-width: calc(100% - 32px);
+  }
+  .floating-panel.show { display: flex; }
+  .floating-panel button {
+    background: #fff;
+    color: var(--text-primary);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .floating-panel button.secondary {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+</style>
 </head>
 <body>
-<header>
-  <div class="hdr-inner">
-    <h1>📰 리포트 아카이브</h1>
-    <p>시황브리핑 · AI 뉴스 · 커뮤니티 요약 — AI Foundry</p>
-    <div class="hdr-stats">
-      <div class="hdr-stat"><span>2</span>시황브리핑</div>
-      <div class="hdr-stat"><span>117</span>AI 뉴스</div>
-      <div class="hdr-stat"><span>15</span>커뮤니티</div>
-      <div class="hdr-stat"><span>134</span>전체</div>
-    </div>
+<div class="container">
+  <div class="portal-header">
+    <h1>AI <span>비주얼 리포트</span> 아카이브</h1>
+    <p>AI 동향 분석 비주얼 리포트 모음 — 최신 순 정렬</p>
   </div>
-</header>
-<div class="toolbar">
-  <input class="search" type="search" placeholder="🔍 제목·내용 검색..." oninput="filter()">
-  <div class="tabs">
-    <button class="tab active" data-cat="">전체</button>
-    <button class="tab" data-cat="시황브리핑">📊 시황</button>
-    <button class="tab" data-cat="AI 뉴스">🤖 AI</button>
-    <button class="tab" data-cat="커뮤니티">💬 커뮤니티</button>
+
+  <div class="toolbar">
+    <input type="search" class="search-input" id="search" placeholder="제목·날짜 검색 ( / 키로 포커스, ESC 초기화 )" autocomplete="off">
+    <span class="count-pill" id="count"></span>
+    <button class="edit-toggle" id="editToggle" title="삭제 모드 켜기/끄기">관리</button>
   </div>
+
+  <p class="empty" id="empty">일치하는 항목이 없습니다.</p>
+
+                        <div class="item">
+              <span class="date-pill">2026-05-27</span>
+              <a href="./2026-05-27-astro-moment-cursor-fullstack-ai.html">AI로 프로덕션급 풀스택 앱 초고속 제작 — Moment + Cursor + TestSprite (Astro K Joseph)</a>
+            </div>
+                        <div class="item">
+              <span class="date-pill">2026-05-25</span>
+              <a href="./2026-05-25-jocoding-itnews-googleio-glasswing.html">IT뉴스 — Google IO 총정리, Project Glasswing 성과, OpenAI 이산기하학 반증, Composer 2.5 (조코딩)</a>
+            </div>
+<div class="item">
+              <span class="date-pill">2026-05-25</span>
+              <a href="./2026-05-25-whatsapp-crm-opensource.html">무료 오픈소스 WhatsApp CRM & 자동화 완전 셋업 가이드 (Astro K Joseph)</a>
+            </div>
+<div class="item">
+              <span class="date-pill">2026-05-24</span>
+              <a href="./gpters-2026-05-24.html">GPTers x 뽀짝이 — 2026-05-24 AI 커뮤니티 핵심 요약</a>
+            </div>
+<div class="item">
+              <span class="date-pill">2026-05-24</span>
+              <a href="./2026-05-24-okara-ai-cmo.html">Okara AI CMO — $99로 마케팅팀을 대체하는 AI 에이전트 (Astro K Joseph)</a>
+            </div>
+            <div class="item">
+              <span class="date-pill">2026-05-24</span>
+              <a href="./2026-05-24-paperclip-bright-data.html">Paperclip × Bright Data — AI 에이전트로 시장조사 보고서 자동 생성 (단테랩스)</a>
+            </div>
+            <div class="item">
+              <span class="date-pill">2026-05-24</span>
+              <a href="./2026-05-24-maker-evan-vlog.html">에반의 첫 브이로그 — 빌더리 필더레이데이 AI 실전 활용 (메이커 에반)</a>
+            </div>
+<div class="item">
+  <span class="date-pill">2026-05-21</span>
+  <a href="./gpters-2026-05-21.html">GPTers x 뽀짝이 — 2026-05-21 AI 커뮤니티 핵심 요약</a>
 </div>
-<div class="content">
-  <div class="empty" id="empty">검색 결과가 없습니다.</div>
-  
-<section class="cat-section" data-cat="시황브리핑">
-  <div class="cat-label">📊 시황브리핑 <span class="cnt">2</span></div>
-  <div class="grid"><a class="card" href="./market-briefing-2026-05-26-pm.html" data-cat="시황브리핑">
-  <div class="card-top">
-    <span class="date">2026-05-26</span>
-    <span class="badge" style="background:#1a5c8a">📊 미장</span>
-  </div>
-  <div class="card-title">📊 시황 브리핑 — 2026-05-26 (화요일) 저녁 [미장 집중]</div>
-  <div class="card-summary">미국·이란 종전 협상 낙관론에 코스피 8,000 역사적 첫 돌파, 오늘밤 미국 증시 개장은 호르무즈 재개방 기대로 강세 출발 전망</div>
-</a>
-<a class="card" href="./market-briefing-2026-05-26-am.html" data-cat="시황브리핑">
-  <div class="card-top">
-    <span class="date">2026-05-26</span>
-    <span class="badge" style="background:#0f4c30">📊 국장</span>
-  </div>
-  <div class="card-title">📊 시황 브리핑 — 2026-05-26 (화) · 국장 아침 에디션</div>
-  <div class="card-summary">** 미·이란 휴전 기대로 유가가 급락(WTI -5.9%)하며 위험선호가 살아난 가운데, 코스피는 7,847(5/22)에서 8,000선 재도전에 나선다. 다만 외국인 순매도 지속과 5/27 삼전·하닉 레버리지 ETF 상장 변수가 변동성을 키울 수 있다</div>
-</a></div>
-</section>
-<section class="cat-section" data-cat="AI 뉴스">
-  <div class="cat-label">🤖 AI 뉴스 <span class="cnt">121</span></div>
-  <div class="grid"><a class="card" href="./2026-05-27-google-cloud-2030-ai-future.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-27</span>
-    <span class="badge" style="background:#2d9162">지식인사이드</span>
-  </div>
-  <div class="card-title">구글 클라우드 부사장이 예측한 2030년 AI로 달라질 미래 (모에 압둘라)</div>
-  <div class="card-summary">AI는 사람 아닌 '작업'을 대체. 2030년 일상화 전망, TPU·AI 하이퍼컴퓨터, Model Armor·SynthID 보안, 한국 협력 전략</div>
-</a>
-<a class="card" href="./2026-05-27-google-cloud-2030-ai-future-slides.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-27</span>
-    <span class="badge" style="background:#1a6b45">슬라이드덱</span>
-  </div>
-  <div class="card-title">[슬라이드] 구글 클라우드 부사장이 예측한 2030년 AI 미래 (모에 압둘라)</div>
-  <div class="card-summary">발표용 13장 슬라이드덱 — 키보드 ←/→ 또는 Space로 넘김. 일자리·2030 전망·TPU·보안·한국 협력</div>
-</a>
-<a class="card" href="./2026-05-26-asml-euv-source-bottleneck.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-26</span>
-    <span class="badge" style="background:#2d9162">안될공학</span>
-  </div>
-  <div class="card-title">ASML 출신에게 직접 들었습니다 | EUV 광원과 반도체 병목의 진짜 이야기</div>
-  <div class="card-summary">EUV 진짜 가치는 경제성. 주석 플라즈마, 트리플 펄스 상용화, 1.5kW 목표 및 계측 장비 패러다임 전환</div>
-</a>
-<a class="card" href="./2026-05-26-starship-12-flight-space-logistics.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-26</span>
-    <span class="badge" style="background:#2d9162">안될공학</span>
-  </div>
-  <div class="card-title">스타십 12차 발사, 엔진 꺼졌는데도 갔다 | 우주 물류의 시작을 보여주다</div>
-  <div class="card-summary">스타십 V3 첫 비행. 결함 허용 시스템 입증, 22개 탑재체 배출, SpaceX 피드백 루프 분석</div>
-</a>
-<a class="card" href="./xbot-intro.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">—</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">xbot — 카카오톡 단톡방 LLM 봇 아키텍처 인트로 (슬라이드 덱)</div>
-  <div class="card-summary">카카오톡 단톡방 LLM 봇 아키텍처 인트로 (슬라이드 덱)</div>
-</a>
-<a class="card" href="./2026-05-25-whatsapp-crm-opensource.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-25</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">무료 오픈소스 WhatsApp CRM &amp; 자동화 완전 셋업 가이드 (Astro K Joseph)</div>
-  
-</a>
-<a class="card" href="./2026-05-25-jocoding-itnews-googleio-glasswing.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-25</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">IT뉴스 — Google IO 총정리, Project Glasswing 성과, OpenAI 이산기하학 반증, Composer 2.5 (조코딩)</div>
-  <div class="card-summary">Google IO 총정리, Project Glasswing 성과, OpenAI 이산기하학 반증, Composer 2.5 (조코딩)</div>
-</a>
-<a class="card" href="./2026-05-25-astro-claude-opus-free-access.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-25</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Unlimited FREE Claude Opus 4.7 Access 완전 가이드 (Astro K Joseph)</div>
-  
-</a>
-<a class="card" href="./2026-05-24-paperclip-bright-data.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-24</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Paperclip × Bright Data — AI 에이전트로 시장조사 보고서 자동 생성 (단테랩스)</div>
-  <div class="card-summary">AI 에이전트로 시장조사 보고서 자동 생성 (단테랩스)</div>
-</a>
-<a class="card" href="./2026-05-24-okara-ai-cmo.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-24</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Okara AI CMO — $99로 마케팅팀을 대체하는 AI 에이전트 (Astro K Joseph)</div>
-  <div class="card-summary">$99로 마케팅팀을 대체하는 AI 에이전트 (Astro K Joseph)</div>
-</a>
-<a class="card" href="./2026-05-24-maker-evan-vlog.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-24</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">에반의 첫 브이로그 — 빌더리 필더레이데이 AI 실전 활용 (메이커 에반)</div>
-  <div class="card-summary">빌더리 필더레이데이 AI 실전 활용 (메이커 에반)</div>
-</a>
-<a class="card" href="./2026-05-23-yunjaedong-ai-native-erp.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-23</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-23-yunjaedong-ai-native-erp.html</div>
-  
-</a>
-<a class="card" href="./2026-05-23-google-io-2026-execution-layer.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-23</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-23-google-io-2026-execution-layer.html</div>
-  
-</a>
-<a class="card" href="./2026-05-23-antigravity-2-gemini-flash.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-23</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-23-antigravity-2-gemini-flash.html</div>
-  
-</a>
-<a class="card" href="./2026-05-22-maker-evan-youtube-automation-tools.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-22</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-22-maker-evan-youtube-automation-tools.html</div>
-  
-</a>
-<a class="card" href="./2026-05-22-maker-evan-codebase-vibe-coding.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-22</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-22-maker-evan-codebase-vibe-coding.html</div>
-  
-</a>
-<a class="card" href="./2026-05-22-google-io-2026-flash-tpu.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-22</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-22-google-io-2026-flash-tpu.html</div>
-  
-</a>
-<a class="card" href="./2026-05-22-ai-saas-clone-cursor-insforge.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-22</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-22-ai-saas-clone-cursor-insforge.html</div>
-  
-</a>
-<a class="card" href="./2026-05-22-ai-agent-org-change-middle-manager.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-22</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-22-ai-agent-org-change-middle-manager.html</div>
-  
-</a>
-<a class="card" href="./2026-05-21-rocket-1-0-vibe-solutioning-platform.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-21</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Astro K Joseph — Rocket 1.0 '바이브 솔루셔닝': 리서치부터 제품까지 한 흐름에</div>
-  <div class="card-summary">Rocket 1.0 '바이브 솔루셔닝': 리서치부터 제품까지 한 흐름에</div>
-</a>
-<a class="card" href="./2026-05-21-harness-more-important-than-model.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-21</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">메이커 에반 — 모델보다 중요한 건 '하니스(Harness)'입니다</div>
-  <div class="card-summary">모델보다 중요한 건 '하니스(Harness)'입니다</div>
-</a>
-<a class="card" href="./2026-05-21-google-io-2026-tpu-agentic.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-21</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">안될공학 — 구글 IO 2026: 검색 회사에서 'AI 에이전트 운영체제' 회사로</div>
-  <div class="card-summary">구글 IO 2026: 검색 회사에서 'AI 에이전트 운영체제' 회사로</div>
-</a>
-<a class="card" href="./2026-05-21-codex-cli-setup-vibe-coding.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-21</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">빌더 조쉬 — Codex 직접 검증: 세팅부터 스킬·하니스·실전 바이브 코딩까지</div>
-  <div class="card-summary">Codex 직접 검증: 세팅부터 스킬·하니스·실전 바이브 코딩까지</div>
-</a>
-<a class="card" href="./2026-05-21-anthropic-claude-code-5-tools-enterprise.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-21</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">메이커 에반 — Anthropic이 공개한 5가지 비밀: 큰 회사에서 클로드 코드 쓰는 법</div>
-  <div class="card-summary">Anthropic이 공개한 5가지 비밀: 큰 회사에서 클로드 코드 쓰는 법</div>
-</a>
-<a class="card" href="./2026-05-21-agentic-ai-token-economy.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-21</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-21-agentic-ai-token-economy.html</div>
-  
-</a>
-<a class="card" href="./2026-05-20-paperclip-hermes-multi-agent.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-20</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">단테랩스 — PaperClip × Hermes × Codex 멀티 에이전트 운영 노하우</div>
-  <div class="card-summary">PaperClip × Hermes × Codex 멀티 에이전트 운영 노하우</div>
-</a>
-<a class="card" href="./2026-05-20-nvidia-photonics-ai-interconnect.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-20</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">엔비디아 광통신 투자 — AI 서버의 진짜 병목은 칩 사이에 있다</div>
-  <div class="card-summary">AI 서버의 진짜 병목은 칩 사이에 있다</div>
-</a>
-<a class="card" href="./2026-05-20-minicpm-v4-6-vision-model.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-20</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Astro K Joseph — MiniCPM-V 4.6: 클라우드 없이 스마트폰에서 돌아가는 초경량 비전 AI</div>
-  <div class="card-summary">MiniCPM-V 4.6: 클라우드 없이 스마트폰에서 돌아가는 초경량 비전 AI</div>
-</a>
-<a class="card" href="./2026-05-20-genspark-claw-agent-system.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-20</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">오후다섯씨 — Genspark Claw로 AI 에이전트 3총사 24시간 자동 지식 시스템 구축</div>
-  <div class="card-summary">Genspark Claw로 AI 에이전트 3총사 24시간 자동 지식 시스템 구축</div>
-</a>
-<a class="card" href="./2026-05-19-nvidia-silicon-photonics.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-19</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-19-nvidia-silicon-photonics.html</div>
-  
-</a>
-<a class="card" href="./2026-05-19-n8n-vs-claude-code.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-19</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-19-n8n-vs-claude-code.html</div>
-  
-</a>
-<a class="card" href="./2026-05-19-jocoding-ai-news.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-19</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-19-jocoding-ai-news.html</div>
-  
-</a>
-<a class="card" href="./2026-05-19-else-ai-design.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-19</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-19-else-ai-design.html</div>
-  
-</a>
-<a class="card" href="./2026-05-19-claude-developers-exodus-pricing.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-19</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-19-claude-developers-exodus-pricing.html</div>
-  
-</a>
-<a class="card" href="./2026-05-19-claude-code-vps.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-19</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-19-claude-code-vps.html</div>
-  
-</a>
-<a class="card" href="./2026-05-17-konektor-12-ai-agents.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">티타임즈 — AI 에이전트 12명으로 일하는 1인 기업 (고영혁 고넥터 대표)</div>
-  <div class="card-summary">AI 에이전트 12명으로 일하는 1인 기업 (고영혁 고넥터 대표)</div>
-</a>
-<a class="card" href="./2026-05-17-kim-daeshik-book-brain-reading.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">뇌과학자 김대식 교수의 독서론 — 책은 세상에서 가장 좋은 친구</div>
-  <div class="card-summary">책은 세상에서 가장 좋은 친구</div>
-</a>
-<a class="card" href="./2026-05-17-jocoding-it-news-2026-05-17.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">조코딩 — IT뉴스 (Google IO 유출·미소스·클로드 Agent View·Codex 모바일·Grok Build·뮤스파크)</div>
-  <div class="card-summary">IT뉴스 (Google IO 유출·미소스·클로드 Agent View·Codex 모바일·Grok Build·뮤스파크)</div>
-</a>
-<a class="card" href="./2026-05-17-gonector-ai-agent-team.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-17-gonector-ai-agent-team.html</div>
-  
-</a>
-<a class="card" href="./2026-05-17-evan-youtube-automation-skill.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">메이커 에반 — 3개월 구독자 3만 유튜브 자동화 스킬 (스텁)</div>
-  <div class="card-summary">3개월 구독자 3만 유튜브 자동화 스킬 (스텁)</div>
-</a>
-<a class="card" href="./2026-05-17-evan-kakao-cowork-demo-67s.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">메이커 에반 — 클로드 코워크 카카오톡 연동 67초 데모</div>
-  <div class="card-summary">클로드 코워크 카카오톡 연동 67초 데모</div>
-</a>
-<a class="card" href="./2026-05-17-evan-kakao-claude-morning-brief.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">메이커 에반 — 카카오톡으로 클로드가 들어왔습니다 (매일 아침 경제 브리핑 자동화)</div>
-  <div class="card-summary">카카오톡으로 클로드가 들어왔습니다 (매일 아침 경제 브리핑 자동화)</div>
-</a>
-<a class="card" href="./2026-05-17-evan-cowork-tutorial-19min.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">메이커 에반 — 클로드 코워크 입문→실전 19분 정리</div>
-  <div class="card-summary">클로드 코워크 입문→실전 19분 정리</div>
-</a>
-<a class="card" href="./2026-05-17-evan-ai-9sec-data-wipe.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">메이커 에반 — AI가 9초 만에 회사 데이터 통째로 지웠습니다 (백업까지 같이)</div>
-  <div class="card-summary">AI가 9초 만에 회사 데이터 통째로 지웠습니다 (백업까지 같이)</div>
-</a>
-<a class="card" href="./2026-05-17-claude-html-not-markdown.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">마크다운은 죽었다 — Claude Code 엔지니어가 HTML로 갈아탄 이유 (타릭 시파 + 카파시)</div>
-  <div class="card-summary">Claude Code 엔지니어가 HTML로 갈아탄 이유 (타릭 시파 + 카파시)</div>
-</a>
-<a class="card" href="./2026-05-15-vuzix-realwear-industrial-ar-glasses.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-15-vuzix-realwear-industrial-ar-glasses.html</div>
-  
-</a>
-<a class="card" href="./2026-05-15-tsmc-samsung-intel-foundry-robot.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">안될공학 — TSMC 대신 삼성·인텔, 파운드리와 로봇 제조의 새로운 질서</div>
-  <div class="card-summary">TSMC 대신 삼성·인텔, 파운드리와 로봇 제조의 새로운 질서</div>
-</a>
-<a class="card" href="./2026-05-15-thinking-machines-interaction-model.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-15-thinking-machines-interaction-model.html</div>
-  
-</a>
-<a class="card" href="./2026-05-15-mac-pro-2013-review.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">오목교 전자상가 — 천만원짜리 애플 맥프로 2013 연탄맥 리뷰</div>
-  <div class="card-summary">천만원짜리 애플 맥프로 2013 연탄맥 리뷰</div>
-</a>
-<a class="card" href="./2026-05-15-figure03-live-humanoid.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">안될공학 — Figure 03 라이브 — 휴머노이드 20시간 택배 분류 생중계</div>
-  <div class="card-summary">Figure 03 라이브 — 휴머노이드 20시간 택배 분류 생중계</div>
-</a>
-<a class="card" href="./2026-05-15-figure-f03-robot-collaboration.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">조코딩 — Figure AI F03 로봇 두 대가 협업 — 눈빛으로 의도 파악</div>
-  <div class="card-summary">Figure AI F03 로봇 두 대가 협업 — 눈빛으로 의도 파악</div>
-</a>
-<a class="card" href="./2026-05-15-claude-code-product-page.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">메이커 에반 — Claude Code로 상세페이지 자동 생성</div>
-  <div class="card-summary">Claude Code로 상세페이지 자동 생성</div>
-</a>
-<a class="card" href="./2026-05-15-astro-cursor-momen-fullstack-ai.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Astro K Joseph — Cursor + Momen, 풀스택 AI 앱을 짓는 가장 미친 워크플로우</div>
-  <div class="card-summary">Cursor + Momen, 풀스택 AI 앱을 짓는 가장 미친 워크플로우</div>
-</a>
-<a class="card" href="./2026-05-15-ai-surpasses-expert-16hours.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">조코딩 — AI가 인간 전문가 16시간 작업 수행 — 성능 가속의 공포</div>
-  <div class="card-summary">AI가 인간 전문가 16시간 작업 수행 — 성능 가속의 공포</div>
-</a>
-<a class="card" href="./2026-05-15-ai-skill-selection-criteria.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">메이커 에반 — AI 스킬 절반은 안 써도 됩니다 — 진짜 고르는 기준 6가지</div>
-  <div class="card-summary">AI 스킬 절반은 안 써도 됩니다 — 진짜 고르는 기준 6가지</div>
-</a>
-<a class="card" href="./2026-05-15-ai-next-bottleneck.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">안될공학 — GPU·메모리 다음 AI 병목은 무엇인가</div>
-  <div class="card-summary">GPU·메모리 다음 AI 병목은 무엇인가</div>
-</a>
-<a class="card" href="./2026-05-14-maker-evan-claude-code-6-tools.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-14</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-14-maker-evan-claude-code-6-tools.html</div>
-  
-</a>
-<a class="card" href="./2026-05-14-jocoding-opensource-model-3x-faster.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-14</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-14-jocoding-opensource-model-3x-faster.html</div>
-  
-</a>
-<a class="card" href="./2026-05-14-jocoding-chrome-update-controversy.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-14</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-14-jocoding-chrome-update-controversy.html</div>
-  
-</a>
-<a class="card" href="./2026-05-14-dantelabs-hermes-codex-usage-2.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-14</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-14-dantelabs-hermes-codex-usage-2.html</div>
-  
-</a>
-<a class="card" href="./2026-05-14-dantelabs-hermes-codex-install-1.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-14</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-14-dantelabs-hermes-codex-install-1.html</div>
-  
-</a>
-<a class="card" href="./2026-05-14-andoel-ai-glass-mira-murati.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-14</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-14-andoel-ai-glass-mira-murati.html</div>
-  
-</a>
-<a class="card" href="./2026-05-13-claude-code-agent-view.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-13</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-13-claude-code-agent-view.html</div>
-  
-</a>
-<a class="card" href="./2026-05-13-builderjosh-openai-codex-review.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-13</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">빌더 조쉬 — 요즘 개발자들이 다 갈아탄 Codex, 얼마나 좋은지 전부 써보겠습니다</div>
-  <div class="card-summary">요즘 개발자들이 다 갈아탄 Codex, 얼마나 좋은지 전부 써보겠습니다</div>
-</a>
-<a class="card" href="./2026-05-13-andoel-ai-infra-bottleneck.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-13</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">안될공학 — GPU/메모리 이후, '이것'이 다음 병목입니다</div>
-  <div class="card-summary">GPU/메모리 이후, '이것'이 다음 병목입니다</div>
-</a>
-<a class="card" href="./2026-05-12-whisper-flow-voice-coding.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-12</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-12-whisper-flow-voice-coding.html</div>
-  
-</a>
-<a class="card" href="./2026-05-12-vibe-video-edit-deepseek-v4.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-12</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-12-vibe-video-edit-deepseek-v4.html</div>
-  
-</a>
-<a class="card" href="./2026-05-12-ufo-apollo-mission.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-12</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-12-ufo-apollo-mission.html</div>
-  
-</a>
-<a class="card" href="./2026-05-12-dokploy-vps-deploy.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-12</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-12-dokploy-vps-deploy.html</div>
-  
-</a>
-<a class="card" href="./2026-05-12-claude-code-50-tips.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-12</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-12-claude-code-50-tips.html</div>
-  
-</a>
-<a class="card" href="./2026-05-12-caveman-token-reduction.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-12</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-12-caveman-token-reduction.html</div>
-  
-</a>
-<a class="card" href="./2026-05-12-ai-news-gpt-realtime2.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-12</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-12-ai-news-gpt-realtime2.html</div>
-  
-</a>
-<a class="card" href="./2026-05-11-maker-evan-ai-token-kpi.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-11</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-11-maker-evan-ai-token-kpi.html</div>
-  
-</a>
-<a class="card" href="./2026-05-11-andoegonghak-ufo-disclosure.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-11</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-11-andoegonghak-ufo-disclosure.html</div>
-  
-</a>
-<a class="card" href="./2026-05-11-ai-golden-age-11-heroes.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-11</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-11-ai-golden-age-11-heroes.html</div>
-  
-</a>
-<a class="card" href="./2026-05-10-recall-personal-llm-wiki.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-10</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-10-recall-personal-llm-wiki.html</div>
-  
-</a>
-<a class="card" href="./2026-05-10-openai-codex-pets.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-10</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-10-openai-codex-pets.html</div>
-  
-</a>
-<a class="card" href="./2026-05-10-jocoding-it-news-0510.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-10</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-10-jocoding-it-news-0510.html</div>
-  
-</a>
-<a class="card" href="./2026-05-08-openai-week-news-matt-wolfe.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-08</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-08-openai-week-news-matt-wolfe.html</div>
-  
-</a>
-<a class="card" href="./2026-05-08-apple-samsung-foundry-comeback.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-08</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">[안될공학] 애플이 삼성을 찾은 진짜 이유, 진짜 때가 되었다</div>
-  
-</a>
-<a class="card" href="./2026-05-08-anthropic-spacex-ai-infra.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-08</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-08-anthropic-spacex-ai-infra.html</div>
-  
-</a>
-<a class="card" href="./2026-05-07-omokgyo-food-live.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-07</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-07-omokgyo-food-live.html</div>
-  
-</a>
-<a class="card" href="./2026-05-07-heygen-ai-avatar-video.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-07</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-07-heygen-ai-avatar-video.html</div>
-  
-</a>
-<a class="card" href="./2026-05-07-ai-second-brain-codex-obsidian.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-07</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-07-ai-second-brain-codex-obsidian.html</div>
-  
-</a>
-<a class="card" href="./2026-05-07-ai-product-design-system.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-07</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-07-ai-product-design-system.html</div>
-  
-</a>
-<a class="card" href="./2026-05-06-ontology-ai-agent-saltlux.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-06</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-06-ontology-ai-agent-saltlux.html</div>
-  
-</a>
-<a class="card" href="./2026-05-06-evan-matt-pocock-skills.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-06</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-06-evan-matt-pocock-skills.html</div>
-  
-</a>
-<a class="card" href="./2026-05-06-evan-claude-codex-workflow.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-06</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-06-evan-claude-codex-workflow.html</div>
-  
-</a>
-<a class="card" href="./2026-05-06-evan-ai-workflow.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-06</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-06-evan-ai-workflow.html</div>
-  
-</a>
-<a class="card" href="./2026-05-05-jensen-huang-jobs-ai-revolution.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-05</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-05-jensen-huang-jobs-ai-revolution.html</div>
-  
-</a>
-<a class="card" href="./2026-05-05-battery-charging-science.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-05</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-05-battery-charging-science.html</div>
-  
-</a>
-<a class="card" href="./2026-05-05-anthropic-openclaw-pricing.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-05</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-05-anthropic-openclaw-pricing.html</div>
-  
-</a>
-<a class="card" href="./2026-05-05-ai-era-equal-opportunity.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-05</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-05-ai-era-equal-opportunity.html</div>
-  
-</a>
-<a class="card" href="./2026-05-05-ai-adobe-apple-cost-structure.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-05</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-05-ai-adobe-apple-cost-structure.html</div>
-  
-</a>
-<a class="card" href="./2026-05-04-jocoding-it-news-google-claude-codex.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-04</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-04-jocoding-it-news-google-claude-codex.html</div>
-  
-</a>
-<a class="card" href="./2026-05-04-hogwarts-legacy-mac-gptk.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-04</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-04-hogwarts-legacy-mac-gptk.html</div>
-  
-</a>
-<a class="card" href="./2026-05-04-google-pentagon-ai-deal.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-04</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-04-google-pentagon-ai-deal.html</div>
-  
-</a>
-<a class="card" href="./2026-05-03-obsidian-claude-code.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-03</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-03-obsidian-claude-code.html</div>
-  
-</a>
-<a class="card" href="./2026-05-03-claude-cowork-beginner-guide.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-03</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">클로드 코워크 15분만에 마스터하기 — 비개발자도 클릭 한 번으로 AI 자동화 에이전트 구축</div>
-  <div class="card-summary">비개발자도 클릭 한 번으로 AI 자동화 에이전트 구축</div>
-</a>
-<a class="card" href="./2026-05-03-adobe-apple-ai-winner-omg.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-03</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">오목교 전자상가 — AI 때문에 어도비·애플 망한다 vs 오히려 승자다 (구독·비용 역발상 분석)</div>
-  <div class="card-summary">AI 때문에 어도비·애플 망한다 vs 오히려 승자다 (구독·비용 역발상 분석)</div>
-</a>
-<a class="card" href="./2026-05-02-rokid-even-realities-smart-glasses.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-02</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">혁신 전파사 — 로키드(Rokid) &amp; 이분 리얼리티스(Even Realities): 공간 컴퓨팅 스마트 글래스 두 혁신 기업</div>
-  <div class="card-summary">로키드(Rokid) &amp; 이분 리얼리티스(Even Realities): 공간 컴퓨팅 스마트 글래스 두 혁신 기업</div>
-</a>
-<a class="card" href="./2026-05-02-rokid-even-realities-a3-infographic.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-02</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">2026-05-02-rokid-even-realities-a3-infographic.html</div>
-  
-</a>
-<a class="card" href="./2026-05-02-openclaw-agent-personality.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-02</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">일잘러 장피엠 — OpenClaw AI 팀 에이전트 개성 설계법 (GPTers 발표)</div>
-  <div class="card-summary">OpenClaw AI 팀 에이전트 개성 설계법 (GPTers 발표)</div>
-</a>
-<a class="card" href="./2026-05-02-google-anthropic-ai-revolution.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-02</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">혁신 전파사 — 구글(딥마인드) &amp; 앤트로픽: AI 혁명의 두 주역 (트랜스포머·알파폴드·MCP·미토스)</div>
-  <div class="card-summary">구글(딥마인드) &amp; 앤트로픽: AI 혁명의 두 주역 (트랜스포머·알파폴드·MCP·미토스)</div>
-</a>
-<a class="card" href="./2026-05-02-figure03-robot-mass-production.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-02</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">안될공학 — Figure 03 로봇 대량생산 &amp; AI 데이터 전략 (24x 속도·350+ 기술)</div>
-  <div class="card-summary">Figure 03 로봇 대량생산 &amp; AI 데이터 전략 (24x 속도·350+ 기술)</div>
-</a>
-<a class="card" href="./2026-05-01-viral-saas-claude-antigravity.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-01</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Astro K Joseph — AI로 1시간 만에 바이럴 영상 분석 SaaS 만들기 (Claude Design + Antigravity)</div>
-  <div class="card-summary">AI로 1시간 만에 바이럴 영상 분석 SaaS 만들기 (Claude Design + Antigravity)</div>
-</a>
-<a class="card" href="./2026-05-01-matt-wolfe-weekly-ai-news.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-01</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Matt Wolfe 주간 AI 뉴스 — DeepSeek V4·Anthropic 빌링 버그·Elon vs OpenAI·MS 재편 (18건)</div>
-  <div class="card-summary">DeepSeek V4·Anthropic 빌링 버그·Elon vs OpenAI·MS 재편 (18건)</div>
-</a>
-<a class="card" href="./2026-05-01-google-anthropic-ai-revolution.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-05-01</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">혁신 전파사 — 구글 &amp; 앤트로픽: AI 혁명의 두 주역 (트랜스포머·알파폴드·MCP·미토스)</div>
-  <div class="card-summary">구글 &amp; 앤트로픽: AI 혁명의 두 주역 (트랜스포머·알파폴드·MCP·미토스)</div>
-</a>
-<a class="card" href="./2026-04-29-harness-engineering-vibe-mafia.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-29</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">하네스 엔지니어링 — AI 에이전트 자율주행 설계 철학과 실전 구축법 (빌더조씨 x 바이브마피아)</div>
-  <div class="card-summary">AI 에이전트 자율주행 설계 철학과 실전 구축법 (빌더조씨 x 바이브마피아)</div>
-</a>
-<a class="card" href="./2026-04-27-jocoding-ai-weekly-news-0427.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-27</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">조코딩 AI 주간 뉴스 — 2026-04-27 (GPT 5.5 1위, DeepSeek V4 오픈소스 반란, 메타 10% 감원, 바퀴 달린 휴머노이드)</div>
-  <div class="card-summary">2026-04-27 (GPT 5.5 1위, DeepSeek V4 오픈소스 반란, 메타 10% 감원, 바퀴 달린 휴머노이드)</div>
-</a>
-<a class="card" href="./2026-04-22-ai-video-auto-editor-bgm-opensource.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-22</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">AI 동영상 자동편집·BGM 추가 오픈소스 비교분석 — OpenMontage·auto-editor 등 6종</div>
-  <div class="card-summary">OpenMontage·auto-editor 등 6종</div>
-</a>
-<a class="card" href="./2026-04-21-twelvelabs-pegasus-1-5-video-ai.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-21</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">트웰브랩스 페가수스 1.5 — 영상 구조 자동 설계 AI (TBM 업계 최초)</div>
-  <div class="card-summary">영상 구조 자동 설계 AI (TBM 업계 최초)</div>
-</a>
-<a class="card" href="./2026-04-21-ai-weekly-news.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-21</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">AI 주간 뉴스 — 2026-04-21 (30개 소식: Claude, OpenAI, Google, 오픈소스, 로보틱스)</div>
-  <div class="card-summary">2026-04-21 (30개 소식: Claude, OpenAI, Google, 오픈소스, 로보틱스)</div>
-</a>
-<a class="card" href="./2026-04-20-openclaude-claude-code-leak.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-20</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">OpenClaude — Claude Code 소스 유출 기반 멀티모델 코딩 에이전트 (22.8k stars)</div>
-  <div class="card-summary">Claude Code 소스 유출 기반 멀티모델 코딩 에이전트 (22.8k stars)</div>
-</a>
-<a class="card" href="./2026-04-19-claude-code-marketing-agent-team.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-19</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Claude Code 마케팅 에이전트 팀 — 서브에이전트+스킬+MCP 100% 자동화 (Builder Josh)</div>
-  <div class="card-summary">서브에이전트+스킬+MCP 100% 자동화 (Builder Josh)</div>
-</a>
-<a class="card" href="./2026-04-17-space-datacenter-challenges.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">우주 데이터센터 — 궤도 컴퓨팅 실현을 위한 4대 기술 과제 (MIT Technology Review)</div>
-  <div class="card-summary">궤도 컴퓨팅 실현을 위한 4대 기술 과제 (MIT Technology Review)</div>
-</a>
-<a class="card" href="./2026-04-17-claude-47-ecosystem.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-17</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Claude 4.7 생태계 — Design 출시, 토큰 비용 변화, 이미지 벤치마크 (GeekNews 3건 종합)</div>
-  <div class="card-summary">Design 출시, 토큰 비용 변화, 이미지 벤치마크 (GeekNews 3건 종합)</div>
-</a>
-<a class="card" href="./2026-04-16-claude-code-usage-drain.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-16</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">Claude Code 사용량 급소진 이슈 — 원인 분석 + 대처법 4가지 (@freainer)</div>
-  <div class="card-summary">원인 분석 + 대처법 4가지 (@freainer)</div>
-</a>
-<a class="card" href="./2026-04-15-medvi-matthew-gallagher.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-15</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">MEDVi — 직원 2명이 만든 $1.8B AI 텔레헬스 기업 (Matthew Gallagher)</div>
-  <div class="card-summary">직원 2명이 만든 $1.8B AI 텔레헬스 기업 (Matthew Gallagher)</div>
-</a>
-<a class="card" href="./2026-04-14-kaist-hbm-memory-centric.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-14</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">KAIST HBM Memory-Centric Computing — 메모리 중심 컴퓨팅 아키텍처 분석</div>
-  <div class="card-summary">메모리 중심 컴퓨팅 아키텍처 분석</div>
-</a>
-<a class="card" href="./2026-04-14-jocoding-ai-news.html" data-cat="AI 뉴스">
-  <div class="card-top">
-    <span class="date">2026-04-14</span>
-    <span class="badge" style="background:#b45309">🤖 분석</span>
-  </div>
-  <div class="card-title">조코딩 AI 뉴스 — 2026년 4월 14일 주요 소식 (31개 뉴스꼭지)</div>
-  <div class="card-summary">2026년 4월 14일 주요 소식 (31개 뉴스꼭지)</div>
-</a></div>
-</section>
-<section class="cat-section" data-cat="커뮤니티">
-  <div class="cat-label">💬 커뮤니티 <span class="cnt">15</span></div>
-  <div class="grid"><a class="card" href="./gpters-2026-05-26.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-26</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 — 2026-05-26 AI 커뮤니티 핵심 요약</div>
-  <div class="card-summary">2026-05-26 AI 커뮤니티 핵심 요약</div>
-</a>
-<a class="card" href="./gpters-2026-05-24.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-24</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 — 2026-05-24 AI 커뮤니티 핵심 요약</div>
-  <div class="card-summary">2026-05-24 AI 커뮤니티 핵심 요약</div>
-</a>
-<a class="card" href="./gpters-2026-05-22.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-22</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">gpters-2026-05-22.html</div>
-  
-</a>
-<a class="card" href="./gpters-2026-05-21.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-21</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 — 2026-05-21 AI 커뮤니티 핵심 요약</div>
-  <div class="card-summary">2026-05-21 AI 커뮤니티 핵심 요약</div>
-</a>
-<a class="card" href="./gpters-2026-05-18.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-18</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 — 2026-05-18 AI 커뮤니티 핵심 요약</div>
-  <div class="card-summary">2026-05-18 AI 커뮤니티 핵심 요약</div>
-</a>
-<a class="card" href="./gpters-2026-05-17.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-17</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 — 2026-05-17 AI 커뮤니티 핵심 요약</div>
-  <div class="card-summary">2026-05-17 AI 커뮤니티 핵심 요약</div>
-</a>
-<a class="card" href="./gpters-2026-05-16.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-16</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 — 2026-05-16 AI 커뮤니티 핵심 요약</div>
-  <div class="card-summary">2026-05-16 AI 커뮤니티 핵심 요약</div>
-</a>
-<a class="card" href="./gpters-2026-05-15.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-15</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 — 2026-05-15 AI 커뮤니티 핵심 요약</div>
-  <div class="card-summary">2026-05-15 AI 커뮤니티 핵심 요약</div>
-</a>
-<a class="card" href="./gpters-2026-05-13.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-13</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">gpters-2026-05-13.html</div>
-  
-</a>
-<a class="card" href="./gpters-2026-05-12.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-12</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 — 2026-05-12 AI 커뮤니티 핵심 요약</div>
-  <div class="card-summary">2026-05-12 AI 커뮤니티 핵심 요약</div>
-</a>
-<a class="card" href="./gpters-2026-05-11.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-11</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">gpters-2026-05-11.html</div>
-  
-</a>
-<a class="card" href="./gpters-2026-05-08.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-08</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">gpters-2026-05-08.html</div>
-  
-</a>
-<a class="card" href="./gpters-2026-05-07.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-07</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 — 2026-05-07 AI 커뮤니티 핵심 요약</div>
-  <div class="card-summary">2026-05-07 AI 커뮤니티 핵심 요약</div>
-</a>
-<a class="card" href="./gpters-2026-05-06.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-06</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">gpters-2026-05-06.html</div>
-  
-</a>
-<a class="card" href="./gpters-2026-05-01.html" data-cat="커뮤니티">
-  <div class="card-top">
-    <span class="date">2026-05-01</span>
-    <span class="badge" style="background:#6d28d9">💬 GPTers</span>
-  </div>
-  <div class="card-title">GPTers x 뽀짝이 AI 커뮤니티 핵심 요약 — 2026-05-01 (412건)</div>
-  <div class="card-summary">2026-05-01 (412건)</div>
-</a></div>
-</section>
+<div class="item">
+  <span class="date-pill">2026-05-21</span>
+  <a href="./2026-05-21-google-io-2026-tpu-agentic.html">안될공학 — 구글 IO 2026: 검색 회사에서 'AI 에이전트 운영체제' 회사로</a>
 </div>
+<div class="item">
+  <span class="date-pill">2026-05-21</span>
+  <a href="./2026-05-21-harness-more-important-than-model.html">메이커 에반 — 모델보다 중요한 건 '하니스(Harness)'입니다</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-21</span>
+  <a href="./2026-05-21-anthropic-claude-code-5-tools-enterprise.html">메이커 에반 — Anthropic이 공개한 5가지 비밀: 큰 회사에서 클로드 코드 쓰는 법</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-21</span>
+  <a href="./2026-05-21-codex-cli-setup-vibe-coding.html">빌더 조쉬 — Codex 직접 검증: 세팅부터 스킬·하니스·실전 바이브 코딩까지</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-21</span>
+  <a href="./2026-05-21-rocket-1-0-vibe-solutioning-platform.html">Astro K Joseph — Rocket 1.0 '바이브 솔루셔닝': 리서치부터 제품까지 한 흐름에</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-21</span>
+  <a href="./xbot-intro.html">xbot — 카카오톡 단톡방 LLM 봇 아키텍처 인트로 (슬라이드 덱)</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-20</span>
+  <a href="./2026-05-20-nvidia-photonics-ai-interconnect.html">엔비디아 광통신 투자 — AI 서버의 진짜 병목은 칩 사이에 있다</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-20</span>
+  <a href="./2026-05-20-minicpm-v4-6-vision-model.html">Astro K Joseph — MiniCPM-V 4.6: 클라우드 없이 스마트폰에서 돌아가는 초경량 비전 AI</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-20</span>
+  <a href="./2026-05-20-paperclip-hermes-multi-agent.html">단테랩스 — PaperClip × Hermes × Codex 멀티 에이전트 운영 노하우</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-20</span>
+  <a href="./2026-05-20-genspark-claw-agent-system.html">오후다섯씨 — Genspark Claw로 AI 에이전트 3총사 24시간 자동 지식 시스템 구축</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-18</span>
+  <a href="./gpters-2026-05-18.html">GPTers x 뽀짝이 — 2026-05-18 AI 커뮤니티 핵심 요약</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./2026-05-17-evan-ai-9sec-data-wipe.html">메이커 에반 — AI가 9초 만에 회사 데이터 통째로 지웠습니다 (백업까지 같이)</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./2026-05-17-evan-cowork-tutorial-19min.html">메이커 에반 — 클로드 코워크 입문→실전 19분 정리</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./2026-05-17-evan-kakao-claude-morning-brief.html">메이커 에반 — 카카오톡으로 클로드가 들어왔습니다 (매일 아침 경제 브리핑 자동화)</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./2026-05-17-evan-kakao-cowork-demo-67s.html">메이커 에반 — 클로드 코워크 카카오톡 연동 67초 데모</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./2026-05-17-evan-youtube-automation-skill.html">메이커 에반 — 3개월 구독자 3만 유튜브 자동화 스킬 (스텁)</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./2026-05-17-jocoding-it-news-2026-05-17.html">조코딩 — IT뉴스 (Google IO 유출·미소스·클로드 Agent View·Codex 모바일·Grok Build·뮤스파크)</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./gpters-2026-05-17.html">GPTers x 뽀짝이 — 2026-05-17 AI 커뮤니티 핵심 요약</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./2026-05-17-konektor-12-ai-agents.html">티타임즈 — AI 에이전트 12명으로 일하는 1인 기업 (고영혁 고넥터 대표)</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./2026-05-17-kim-daeshik-book-brain-reading.html">뇌과학자 김대식 교수의 독서론 — 책은 세상에서 가장 좋은 친구</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-17</span>
+  <a href="./2026-05-17-claude-html-not-markdown.html">마크다운은 죽었다 — Claude Code 엔지니어가 HTML로 갈아탄 이유 (타릭 시파 + 카파시)</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-16</span>
+  <a href="./gpters-2026-05-16.html">GPTers x 뽀짝이 — 2026-05-16 AI 커뮤니티 핵심 요약</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./2026-05-15-tsmc-samsung-intel-foundry-robot.html">안될공학 — TSMC 대신 삼성·인텔, 파운드리와 로봇 제조의 새로운 질서</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./2026-05-15-astro-cursor-momen-fullstack-ai.html">Astro K Joseph — Cursor + Momen, 풀스택 AI 앱을 짓는 가장 미친 워크플로우</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./gpters-2026-05-15.html">GPTers x 뽀짝이 — 2026-05-15 AI 커뮤니티 핵심 요약</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./2026-05-15-figure03-live-humanoid.html">안될공학 — Figure 03 라이브 — 휴머노이드 20시간 택배 분류 생중계</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./2026-05-15-ai-next-bottleneck.html">안될공학 — GPU·메모리 다음 AI 병목은 무엇인가</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./2026-05-15-mac-pro-2013-review.html">오목교 전자상가 — 천만원짜리 애플 맥프로 2013 연탄맥 리뷰</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./2026-05-15-claude-code-product-page.html">메이커 에반 — Claude Code로 상세페이지 자동 생성</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./2026-05-15-ai-skill-selection-criteria.html">메이커 에반 — AI 스킬 절반은 안 써도 됩니다 — 진짜 고르는 기준 6가지</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./2026-05-15-figure-f03-robot-collaboration.html">조코딩 — Figure AI F03 로봇 두 대가 협업 — 눈빛으로 의도 파악</a>
+</div>
+<div class="item">
+  <span class="date-pill">2026-05-15</span>
+  <a href="./2026-05-15-ai-surpasses-expert-16hours.html">조코딩 — AI가 인간 전문가 16시간 작업 수행 — 성능 가속의 공포</a>
+</div>
+                                            <div class="item">
+            <span class="date-pill">2026-05-13</span>
+            <a href="./2026-05-13-andoel-ai-infra-bottleneck.html">안될공학 — GPU/메모리 이후, '이것'이 다음 병목입니다</a>
+          </div>
+                      <div class="item">
+            <span class="date-pill">2026-05-13</span>
+            <a href="./2026-05-13-builderjosh-openai-codex-review.html">빌더 조쉬 — 요즘 개발자들이 다 갈아탄 Codex, 얼마나 좋은지 전부 써보겠습니다</a>
+          </div>
+                      <div class="item">
+            <span class="date-pill">2026-05-12</span>
+            <a href="./gpters-2026-05-12.html">GPTers x 뽀짝이 — 2026-05-12 AI 커뮤니티 핵심 요약</a>
+          </div>
+<div class="item">
+            <span class="date-pill">2026-05-07</span>
+            <a href="./gpters-2026-05-07.html">GPTers x 뽀짝이 — 2026-05-07 AI 커뮤니티 핵심 요약</a>
+          </div>
+          <div class="item">
+            <span class="date-pill">2026-05-08</span>
+            <a href="./2026-05-08-apple-samsung-foundry-comeback.html">[안될공학] 애플이 삼성을 찾은 진짜 이유, 진짜 때가 되었다</a>
+          </div>
+          <div class="item">
+    <span class="date-pill">2026-05-03</span>
+    <a href="./2026-05-03-claude-cowork-beginner-guide.html">클로드 코워크 15분만에 마스터하기 — 비개발자도 클릭 한 번으로 AI 자동화 에이전트 구축</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-05-03</span>
+    <a href="./2026-05-03-adobe-apple-ai-winner-omg.html">오목교 전자상가 — AI 때문에 어도비·애플 망한다 vs 오히려 승자다 (구독·비용 역발상 분석)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-05-02</span>
+    <a href="./2026-05-02-figure03-robot-mass-production.html">안될공학 — Figure 03 로봇 대량생산 & AI 데이터 전략 (24x 속도·350+ 기술)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-05-02</span>
+    <a href="./2026-05-02-openclaw-agent-personality.html">일잘러 장피엠 — OpenClaw AI 팀 에이전트 개성 설계법 (GPTers 발표)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-05-02</span>
+    <a href="./2026-05-02-google-anthropic-ai-revolution.html">혁신 전파사 — 구글(딥마인드) & 앤트로픽: AI 혁명의 두 주역 (트랜스포머·알파폴드·MCP·미토스)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-05-01</span>
+    <a href="./gpters-2026-05-01.html">GPTers x 뽀짝이 AI 커뮤니티 핵심 요약 — 2026-05-01 (412건)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-05-01</span>
+    <a href="./2026-05-01-matt-wolfe-weekly-ai-news.html">Matt Wolfe 주간 AI 뉴스 — DeepSeek V4·Anthropic 빌링 버그·Elon vs OpenAI·MS 재편 (18건)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-05-01</span>
+    <a href="./2026-05-01-viral-saas-claude-antigravity.html">Astro K Joseph — AI로 1시간 만에 바이럴 영상 분석 SaaS 만들기 (Claude Design + Antigravity)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-05-02</span>
+    <a href="./2026-05-02-rokid-even-realities-smart-glasses.html">혁신 전파사 — 로키드(Rokid) & 이분 리얼리티스(Even Realities): 공간 컴퓨팅 스마트 글래스 두 혁신 기업</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-05-01</span>
+    <a href="./2026-05-01-google-anthropic-ai-revolution.html">혁신 전파사 — 구글 & 앤트로픽: AI 혁명의 두 주역 (트랜스포머·알파폴드·MCP·미토스)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-29</span>
+    <a href="./2026-04-29-harness-engineering-vibe-mafia.html">하네스 엔지니어링 — AI 에이전트 자율주행 설계 철학과 실전 구축법 (빌더조씨 x 바이브마피아)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-27</span>
+    <a href="./2026-04-27-jocoding-ai-weekly-news-0427.html">조코딩 AI 주간 뉴스 — 2026-04-27 (GPT 5.5 1위, DeepSeek V4 오픈소스 반란, 메타 10% 감원, 바퀴 달린 휴머노이드)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-22</span>
+    <a href="./2026-04-22-ai-video-auto-editor-bgm-opensource.html">AI 동영상 자동편집·BGM 추가 오픈소스 비교분석 — OpenMontage·auto-editor 등 6종</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-21</span>
+    <a href="./2026-04-21-twelvelabs-pegasus-1-5-video-ai.html">트웰브랩스 페가수스 1.5 — 영상 구조 자동 설계 AI (TBM 업계 최초)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-21</span>
+    <a href="./2026-04-21-ai-weekly-news.html">AI 주간 뉴스 — 2026-04-21 (30개 소식: Claude, OpenAI, Google, 오픈소스, 로보틱스)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-20</span>
+    <a href="./2026-04-20-openclaude-claude-code-leak.html">OpenClaude — Claude Code 소스 유출 기반 멀티모델 코딩 에이전트 (22.8k stars)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-19</span>
+    <a href="./2026-04-19-claude-code-marketing-agent-team.html">Claude Code 마케팅 에이전트 팀 — 서브에이전트+스킬+MCP 100% 자동화 (Builder Josh)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-17</span>
+    <a href="./2026-04-17-claude-47-ecosystem.html">Claude 4.7 생태계 — Design 출시, 토큰 비용 변화, 이미지 벤치마크 (GeekNews 3건 종합)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-17</span>
+    <a href="./2026-04-17-space-datacenter-challenges.html">우주 데이터센터 — 궤도 컴퓨팅 실현을 위한 4대 기술 과제 (MIT Technology Review)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-16</span>
+    <a href="./2026-04-16-claude-code-usage-drain.html">Claude Code 사용량 급소진 이슈 — 원인 분석 + 대처법 4가지 (@freainer)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-15</span>
+    <a href="./2026-04-15-medvi-matthew-gallagher.html">MEDVi — 직원 2명이 만든 $1.8B AI 텔레헬스 기업 (Matthew Gallagher)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-14</span>
+    <a href="./2026-04-14-jocoding-ai-news.html">조코딩 AI 뉴스 — 2026년 4월 14일 주요 소식 (31개 뉴스꼭지)</a>
+  </div>
+
+  <div class="item">
+    <span class="date-pill">2026-04-14</span>
+    <a href="./2026-04-14-kaist-hbm-memory-centric.html">KAIST HBM Memory-Centric Computing — 메모리 중심 컴퓨팅 아키텍처 분석</a>
+  </div>
+
+</div>
+
+<div class="floating-panel" id="panel">
+  <span id="panelText">0개 항목 삭제됨</span>
+  <button id="downloadBtn">정리된 index.html 다운로드</button>
+  <button class="secondary" id="undoBtn">되돌리기</button>
+</div>
+
 <script>
-var activeCat='';
-document.querySelectorAll('.tab').forEach(function(t){
-  t.addEventListener('click',function(){
-    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
-    t.classList.add('active');
-    activeCat=t.dataset.cat;
-    filter();
-  });
-});
-function filter(){
-  var q=(document.querySelector('.search').value||'').toLowerCase();
-  var anyVisible=false;
-  document.querySelectorAll('.cat-section').forEach(function(sec){
-    var catMatch=!activeCat||sec.dataset.cat===activeCat;
-    if(!catMatch){sec.classList.add('hidden');return;}
-    sec.classList.remove('hidden');
-    var secAny=false;
-    sec.querySelectorAll('.card').forEach(function(card){
-      var ok=!q||card.textContent.toLowerCase().indexOf(q)>=0;
-      card.classList.toggle('hidden',!ok);
-      if(ok){secAny=true;anyVisible=true;}
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  const searchEl = $('#search');
+  const countEl = $('#count');
+  const emptyEl = $('#empty');
+  const editToggle = $('#editToggle');
+  const panel = $('#panel');
+  const panelText = $('#panelText');
+  const downloadBtn = $('#downloadBtn');
+  const undoBtn = $('#undoBtn');
+
+  let items = $$('.item');
+  const removed = []; // {node, parent, nextSibling}
+
+  function injectDeleteButtons() {
+    items.forEach((item) => {
+      if (item.querySelector('.delete-btn')) return;
+      const btn = document.createElement('button');
+      btn.className = 'delete-btn';
+      btn.type = 'button';
+      btn.title = '이 항목 삭제';
+      btn.setAttribute('aria-label', '항목 삭제');
+      btn.textContent = '×';
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        removeItem(item);
+      });
+      item.appendChild(btn);
     });
-    if(!secAny&&q)sec.classList.add('hidden');
+  }
+
+  function removeItem(item) {
+    removed.push({ node: item, parent: item.parentNode, nextSibling: item.nextSibling });
+    item.remove();
+    items = items.filter((i) => i !== item);
+    updateCount();
+    updatePanel();
+  }
+
+  function undoLast() {
+    const last = removed.pop();
+    if (!last) return;
+    last.parent.insertBefore(last.node, last.nextSibling);
+    items.push(last.node);
+    updateCount();
+    updatePanel();
+  }
+
+  function updateCount() {
+    const total = items.length;
+    const visible = items.filter((i) => !i.classList.contains('hidden')).length;
+    countEl.textContent = visible === total ? `${total}건` : `${visible}/${total}건`;
+    emptyEl.classList.toggle('show', total > 0 && visible === 0);
+  }
+
+  function updatePanel() {
+    if (removed.length === 0) {
+      panel.classList.remove('show');
+    } else {
+      panel.classList.add('show');
+      panelText.textContent = `${removed.length}개 항목 삭제 대기`;
+    }
+  }
+
+  function applyFilter() {
+    const q = searchEl.value.trim().toLowerCase();
+    items.forEach((item) => {
+      const text = item.textContent.toLowerCase();
+      item.classList.toggle('hidden', q !== '' && !text.includes(q));
+    });
+    updateCount();
+  }
+
+  function downloadCleaned() {
+    const clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll('.delete-btn').forEach((b) => b.remove());
+    clone.querySelectorAll('.item.hidden').forEach((i) => i.classList.remove('hidden'));
+    const sInput = clone.querySelector('#search');
+    if (sInput) sInput.value = '';
+    const eToggle = clone.querySelector('#editToggle');
+    if (eToggle) eToggle.classList.remove('active');
+    const body = clone.querySelector('body');
+    if (body) body.classList.remove('edit-mode');
+    const panelClone = clone.querySelector('#panel');
+    if (panelClone) panelClone.classList.remove('show');
+    const emptyClone = clone.querySelector('#empty');
+    if (emptyClone) emptyClone.classList.remove('show');
+
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'index.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  searchEl.addEventListener('input', applyFilter);
+  searchEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { searchEl.value = ''; applyFilter(); searchEl.blur(); }
   });
-  document.getElementById('empty').style.display=(anyVisible||!q)?'none':'block';
-}
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== searchEl && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      searchEl.focus();
+      searchEl.select();
+    }
+  });
+  editToggle.addEventListener('click', () => {
+    document.body.classList.toggle('edit-mode');
+    editToggle.classList.toggle('active');
+  });
+  downloadBtn.addEventListener('click', downloadCleaned);
+  undoBtn.addEventListener('click', undoLast);
+
+  injectDeleteButtons();
+  updateCount();
+})();
 </script>
 </body>
 </html>
-<div class="item">
-  <span class="date-pill">2026-05-27</span>
-  <a href="./market-briefing-2026-05-27-am.html">📊 시황 브리핑 — 2026-05-27 · 국장(아침)</a>
-</div>
-<div class="item">
-  <span class="date-pill">2026-05-27</span>
-  <a href="./market-briefing-2026-05-27-am.html">📊 시황 브리핑 — 2026-05-27 · 국장(아침)</a>
-</div>
-<div class="item">
-  <span class="date-pill">2026-05-26</span>
-  <a href="./market-briefing-2026-05-26-pm.html">📊 시황 브리핑 — 2026-05-26 · 미장(저녁)</a>
-</div>
