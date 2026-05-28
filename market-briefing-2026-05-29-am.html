@@ -4,8 +4,8 @@
   --up:#1f9d57;--dn:#c0392b;--text:#1a1a1a;--muted:#666666;--border:#e0e0e0;--surface:#f5f7f6;--bg:#ffffff}
 html,body{height:100%}
 body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Apple SD Gothic Neo','Segoe UI',sans-serif;color:var(--text);overflow:hidden}
-#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
-.stage{position:relative;width:1280px;height:720px;transform-origin:center center}
+#deck{position:fixed;inset:0;overflow:hidden}
+.stage{position:absolute;top:50%;left:50%;width:1280px;height:720px;transform-origin:0 0;will-change:transform}
 .slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--bg);overflow:hidden;display:none;flex-direction:column;padding:30px 44px 26px}
 .slide.active{display:flex}
 .chip{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:12px}
@@ -160,6 +160,6 @@ document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur
 document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(cur+1);e.preventDefault();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault();}else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}});
 document.getElementById('deck').addEventListener('click',function(e){if(e.target.closest('.nav')||e.target.closest('a'))return;var x=e.clientX/window.innerWidth;if(x>0.5){show(cur+1);}else{show(cur-1);}});
-function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);document.getElementById('stage').style.transform='scale('+s+')';}
-window.addEventListener('resize',fit);fit();show(0);
+function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);var st=document.getElementById('stage');st.style.transform='scale('+s+') translate(-50%,-50%)';}
+window.addEventListener('resize',fit);window.addEventListener('orientationchange',function(){setTimeout(fit,80);});fit();show(0);
 </script></body></html>
