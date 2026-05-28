@@ -20,7 +20,66 @@ body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans 
 .body{flex:1;min-width:0;min-height:0;max-width:100%;overflow-x:hidden;overflow-y:auto;display:flex;flex-direction:column}
 .cols2{flex:1;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-content:stretch}
 .cols2.one{grid-template-columns:minmax(0,1fr)}
-.sec-panel{min-width:0;max-width:100%;border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column;overflow:hidden}
+.sec-panel{min-width:0;max-width:100%;border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.sec-panel .pslot{flex:1;min-height:0;position:relative;width:100%;overflow:hidden}
+.sec-panel .pcontent{position:absolute;top:0;left:0;width:100%;transform-origin:top left;display:flex;flex-direction:column;gap:8px}
+/* ── 컴포넌트: KPI 카드 그리드 ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.kpi-card{border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.kpi-card .num{display:inline-block;width:22px;height:22px;border-radius:6px;background:var(--accent);color:#fff;font-weight:800;font-size:12px;text-align:center;line-height:22px;margin-bottom:5px}
+.kpi-card .pt{font-weight:800;font-size:13px;line-height:1.3;color:var(--accent-d);margin-bottom:4px}
+.kpi-card .rs{font-size:11.5px;line-height:1.4;color:#333}
+/* ── 컴포넌트: 매크로/거시 KPI 타일 ── */
+.macro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.macro-tile{border:1px solid var(--border);border-radius:10px;padding:9px 10px;background:#fff;display:flex;flex-direction:column;justify-content:space-between}
+.macro-tile .l{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.04em;margin-bottom:3px}
+.macro-tile .v{font-size:18px;font-weight:900;color:var(--text);line-height:1.2}
+.macro-tile .d{font-size:12px;font-weight:700;margin-top:2px}
+.macro-tile .imp{font-size:11px;color:#555;line-height:1.35;margin-top:5px;border-top:1px solid var(--border);padding-top:5px}
+/* ── 컴포넌트: 섹터 카드 ── */
+.sector-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.sector-card{border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;display:flex;flex-direction:column;gap:4px}
+.sector-card .head{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.sector-card .nm{font-weight:800;font-size:13px;color:var(--accent-d);line-height:1.25}
+.sector-card .bd{font-size:11px;font-weight:700;padding:2px 7px;border-radius:11px;white-space:nowrap}
+.sector-card .bd.up{background:#e3f4ea;color:var(--up);border:1px solid var(--up)}
+.sector-card .bd.dn{background:#fbe7e3;color:var(--dn);border:1px solid var(--dn)}
+.sector-card .bd.nu{background:#eef0ef;color:#555;border:1px solid #bbb}
+.sector-card .tg{font-size:11px;color:#222;font-weight:600;margin-top:2px}
+.sector-card .bg{font-size:11px;color:#444;line-height:1.4}
+/* ── 컴포넌트: 종목 카드 ── */
+.stock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
+.stock-card{border:1px solid var(--border);border-radius:11px;padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:4px}
+.stock-card .head{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.stock-card .nm{font-weight:900;font-size:14px;color:var(--accent-d);line-height:1.2}
+.stock-card .pr{font-size:12.5px;color:#333;font-weight:700}
+.stock-card .tg{font-size:11.5px;color:#555}
+.stock-card .pt{font-size:11.5px;color:var(--accent-d);font-weight:700;border-top:1px solid var(--border);padding-top:5px;margin-top:3px}
+.stock-card .rs{font-size:11px;color:#333;line-height:1.4}
+/* ── 컴포넌트: 시나리오 박스 (강세/약세) ── */
+.scen-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.scen-box{border:1px solid var(--border);border-radius:11px;padding:10px 12px;display:flex;flex-direction:column;gap:5px}
+.scen-box.strong{background:#e3f4ea;border-color:var(--up)}
+.scen-box.weak{background:#fbe7e3;border-color:var(--dn)}
+.scen-box .lbl{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.scen-box.strong .lbl{color:var(--up)}
+.scen-box.weak .lbl{color:var(--dn)}
+.scen-box .ttl{font-size:13px;font-weight:800;line-height:1.3;color:var(--text)}
+.scen-box .bd{font-size:12px;line-height:1.45;color:#222}
+/* ── 컴포넌트: 체크포인트 4분할 카드 ── */
+.check-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.check-card{border:1px solid var(--border);border-radius:10px;padding:9px 11px;background:#fff;display:flex;flex-direction:column;gap:3px}
+.check-card .ix{display:inline-block;width:22px;height:22px;border-radius:6px;background:var(--accent);color:#fff;font-weight:800;font-size:12px;text-align:center;line-height:22px}
+.check-card .ti{font-size:12.5px;font-weight:800;color:var(--accent-d);line-height:1.3}
+.check-card .ds{font-size:11px;color:#333;line-height:1.4}
+/* ── 컴포넌트: 전문가 채널 카드 ── */
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+.exp-card{border:1px solid var(--border);border-radius:11px;padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:4px}
+.exp-card .ch{font-size:12.5px;font-weight:800;color:var(--accent-d);line-height:1.25}
+.exp-card .qt{font-size:11.5px;background:var(--accent-light);border:1px solid var(--accent-mid);padding:6px 9px;border-radius:6px;font-style:italic;color:#143a2a;line-height:1.4}
+.exp-card .pt{font-size:11px;color:#222;line-height:1.4;margin:2px 0}
+.exp-card .lk{font-size:10.5px;color:var(--accent);font-weight:700;margin-top:auto}
+.exp-card .lk a{color:var(--accent)}
 .sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
 .sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
 .sec-panel table{font-size:13px}
@@ -67,34 +126,9 @@ hr{display:none}
 .nav .counter{background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:7px 13px;border-radius:9px;font-weight:600}
 .progress{position:fixed;top:0;left:0;height:4px;background:var(--accent-mid);z-index:60;transition:width .25s}
 .hint{position:fixed;bottom:18px;left:20px;color:rgba(255,255,255,.45);font-size:12px;z-index:50}
-</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">미장</span></div><div class="cv-ey">MARKET BRIEFING &middot; <b>2026-05-28</b> &middot; 미장(저녁)</div><h1>📊 시황 브리핑 — 2026-05-28 (목요일) 저녁 [미장 집중]</h1><div class="cv-sum">호르무즈 인근 미군 이란 군사시설 공습 + 4월 PCE 발표 직전 + 마벨 실적·스노우플레이크 폭등이 겹친 복합 변동성 — 트리플 신고가(5/27) 직후 오늘밤 미장은 신고가 추격 모멘텀과 지정학 리스크의 줄다리기</div><div class="cv-stats"><div class="cv-stat"><div class="l">포인트 1</div><div class="v">간밤(5/27) 미 3대 지수 트리플 신고가</div></div><div class="cv-stat"><div class="l">포인트 2</div><div class="v">오늘밤 최대 변수 = 4월 PCE 물가지수 (KST 21:30 발</div></div><div class="cv-stat"><div class="l">포인트 3</div><div class="v">호르무즈發 지정학 리스크 재점화</div></div><div class="cv-stat"><div class="l">포인트 4</div><div class="v">마벨(MRVL) 실적</div></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>📊 2026-05-28 시황 브리핑</div><span class="pg">02 / 05</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>핵심 요약 &amp; 집중 종목</h1></div><span class="ey">🌎 미장 · 2026-05-28</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">🎯 핵심 요약</div><div class="tbl-wrap"><table>
-<thead><tr><th>#</th><th>포인트</th><th>이유·수치</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>간밤(5/27) 미 3대 지수 트리플 신고가 — 강보합</td><td>S&amp;P500 7,520.36(<span class="up">+0.02%</span>), 나스닥 26,674.73(<span class="up">+0.07%</span>), 다우 50,644.28(<span class="up">+0.36%</span>). 모두 종가 기준 사상 최고. AI 반도체 차익(NVDA <span class="dn">-1.05%</span>·AMD <span class="dn">-1.7%</span>) 속 헬스케어·소비주가 지지</td></tr>
-<tr><td>2</td><td>오늘밤 최대 변수 = 4월 PCE 물가지수 (KST 21:30 발표)</td><td>연준 선호 지표. 시장 예상 헤드라인 0.5% MoM·근원 0.3% MoM. 마크 잔디 등 일부는 헤드라인 4% 근처·근원 3% 상회 우려. 부합·하회 시 랠리 연장, 상회 시 차익 빌미</td></tr>
-<tr><td>3</td><td>호르무즈發 지정학 리스크 재점화 — 유가 급등</td><td>미군 호르무즈 인근 이란 군사시설 추가 공습 + 이란 보복 → WTI $91.37 (<span class="up">+3.03%</span>) 급반등. 어제(<span class="dn">-3.5%</span>) 대비 V자. 미 증시 선물 하락 압력</td></tr>
-<tr><td>4</td><td>마벨(MRVL) 실적 — 매출 예상치 상회·시간외 안정</td><td>5/27 정규장 <span class="dn">-4.59%</span>($198.70) 마감 후 발표, AI 데이터센터 호조. PRE <span class="up">+1.66%</span>($202.00)로 회복. 다만 PER 64배 부담·평균목표가($162) 상회</td></tr>
-<tr><td>5</td><td>스노우플레이크(SNOW) AWS 9조원 계약 + 호실적 → 시간외 <span class="up">+37%</span></td><td>AWS 그래비톤 CPU 5년 60억달러 공급계약 + FY27 매출 가이던스 31% 증가. PRE $242.26 (<span class="up">+38.19%</span>) 폭등 — 데이터 클라우드·AI 인프라 테마 점화</td></tr>
-</tbody></table></div>
-<hr></div><div class="sec-panel"><div class="ph">🔍 집중 섹터·종목 [애널리스트 컨센서스]</div><blockquote>복수 출처(뉴스·유튜브·실적·수급)에서 중복 언급된 미국 종목 위주 선별. 목표가는 UsStockInfo 애널리스트 평균(targetMeanPrice) 기준.</blockquote>
+</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">미장</span></div><div class="cv-ey">MARKET BRIEFING &middot; <b>2026-05-28</b> &middot; 미장(저녁)</div><h1>📊 시황 브리핑 — 2026-05-28 (목요일) 저녁 [미장 집중]</h1><div class="cv-sum">호르무즈 인근 미군 이란 군사시설 공습 + 4월 PCE 발표 직전 + 마벨 실적·스노우플레이크 폭등이 겹친 복합 변동성 — 트리플 신고가(5/27) 직후 오늘밤 미장은 신고가 추격 모멘텀과 지정학 리스크의 줄다리기</div><div class="cv-stats"><div class="cv-stat"><div class="l">포인트 1</div><div class="v">간밤(5/27) 미 3대 지수 트리플 신고가</div></div><div class="cv-stat"><div class="l">포인트 2</div><div class="v">오늘밤 최대 변수 = 4월 PCE 물가지수 (KST 21:30 발</div></div><div class="cv-stat"><div class="l">포인트 3</div><div class="v">호르무즈發 지정학 리스크 재점화</div></div><div class="cv-stat"><div class="l">포인트 4</div><div class="v">마벨(MRVL) 실적</div></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>📊 2026-05-28 시황 브리핑</div><span class="pg">02 / 05</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>핵심 요약 &amp; 집중 종목</h1></div><span class="ey">🌎 미장 · 2026-05-28</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">🎯 핵심 요약</div><div class="pslot"><div class="pcontent"><div class="kpi-grid"><div class="kpi-card"><span class="num">1</span><div class="pt">간밤(5/27) 미 3대 지수 트리플 신고가 — 강보합</div><div class="rs">S&amp;P500 7,520.36(<span class="up">+0.02%</span>), 나스닥 26,674.73(<span class="up">+0.07%</span>), 다우 50,644.28(<span class="up">+0.36%</span>). 모두 종가 기준 사상 최고. AI 반도체 차익(NVDA <span class="dn">-1.05%</span>·AMD <span class="dn">-1.7%</span>) 속 헬스케어·소비주가 지지</div></div><div class="kpi-card"><span class="num">2</span><div class="pt">오늘밤 최대 변수 = 4월 PCE 물가지수 (KST 21:30 발표)</div><div class="rs">연준 선호 지표. 시장 예상 헤드라인 0.5% MoM·근원 0.3% MoM. 마크 잔디 등 일부는 헤드라인 4% 근처·근원 3% 상회 우려. 부합·하회 시 랠리 연장, 상회 시 차익 빌미</div></div><div class="kpi-card"><span class="num">3</span><div class="pt">호르무즈發 지정학 리스크 재점화 — 유가 급등</div><div class="rs">미군 호르무즈 인근 이란 군사시설 추가 공습 + 이란 보복 → WTI $91.37 (<span class="up">+3.03%</span>) 급반등. 어제(<span class="dn">-3.5%</span>) 대비 V자. 미 증시 선물 하락 압력</div></div><div class="kpi-card"><span class="num">4</span><div class="pt">마벨(MRVL) 실적 — 매출 예상치 상회·시간외 안정</div><div class="rs">5/27 정규장 <span class="dn">-4.59%</span>($198.70) 마감 후 발표, AI 데이터센터 호조. PRE <span class="up">+1.66%</span>($202.00)로 회복. 다만 PER 64배 부담·평균목표가($162) 상회</div></div><div class="kpi-card"><span class="num">5</span><div class="pt">스노우플레이크(SNOW) AWS 9조원 계약 + 호실적 → 시간외 <span class="up">+37%</span></div><div class="rs">AWS 그래비톤 CPU 5년 60억달러 공급계약 + FY27 매출 가이던스 31% 증가. PRE $242.26 (<span class="up">+38.19%</span>) 폭등 — 데이터 클라우드·AI 인프라 테마 점화</div></div></div><hr></div></div></div><div class="sec-panel"><div class="ph">🔍 집중 섹터·종목 [애널리스트 컨센서스]</div><div class="pslot"><div class="pcontent"><div class="stock-grid"><div class="stock-card"><div class="head"><div class="nm">스노우플레이크 (SNOW)</div><div class="pr">$175.26 (<span class="dn">-1.32%</span>) / PRE $242.26 (<span class="up">+38.19%</span>)</div></div><div class="tg">목표 평균 $229 · 최고 $500</div><div class="pt">📌 결과 확인 후 대응 — 호실적·계약 공시로 갭상승, 시초 변동성 큼</div><div class="rs">AWS 그래비톤 5년 60억달러 공급계약 + FY27 매출 가이던스 <span class="up">+31%</span>. AI 데이터 클라우드 테마 재점화</div></div><div class="stock-card"><div class="head"><div class="nm">마벨 (MRVL)</div><div class="pr">$198.70 (<span class="dn">-4.59%</span>) / PRE $202.00 (<span class="up">+1.66%</span>)</div></div><div class="tg">목표 평균 $162 · 최고 $300</div><div class="pt">📌 가이던스 확인 후 대응 — 평균목표가 상회, 추격 신중</div><div class="rs">5/27 장 마감 후 1Q 실적 발표. AI 데이터센터·커스텀 ASIC 수요 호조. PER 64배 부담</div></div><div class="stock-card"><div class="head"><div class="nm">마이크론 (MU)</div><div class="pr">$928.41 (<span class="up">+3.63%</span>) / PRE $915.05 (<span class="dn">-1.44%</span>)</div></div><div class="tg">목표 평균 $653 · 최고 $1,625</div><div class="pt">📌 관망 — 5월 <span class="up">+77%</span> 폭등 후 과열, 단기 차익 주의</div><div class="rs">메모리 초호황·시총 1조달러. 5월 들어 77% 상승(1987년 이후 최대). 강세 vs 평균목표가($653) 괴리 큼</div></div><div class="stock-card"><div class="head"><div class="nm">엔비디아 (NVDA)</div><div class="pr">$212.60 (<span class="dn">-1.05%</span>) / PRE $210.50 (<span class="dn">-0.99%</span>)</div></div><div class="tg">목표 평균 $296 · 최고 $500</div><div class="pt">📌 모니터링 — 실적 후 차익 조정 구간</div><div class="rs">AI 대장주, 5/27 <span class="dn">-1.05%</span> 차익매물. 단기 주도권은 메모리·데이터 클라우드로 이동</div></div></div><blockquote>복수 출처(뉴스·유튜브·실적·수급)에서 중복 언급된 미국 종목 위주 선별. 목표가는 UsStockInfo 애널리스트 평균(targetMeanPrice) 기준.</blockquote>
 <blockquote>⚠️ 마이크론·마벨은 현재가가 평균 목표가를 이미 상회 — 단정 추격 시 차익실현 변동성 유의.</blockquote>
-<div class="tbl-wrap"><table>
-<thead><tr><th>종목 (티커)</th><th>현재가(5/27 종가 / 5/28 PRE)</th><th>목표가(평균 · 최고)</th><th>매매포인트</th><th>핵심 이유</th></tr></thead>
-<tbody>
-<tr><td>스노우플레이크 (SNOW)</td><td>$175.26 (<span class="dn">-1.32%</span>) / PRE $242.26 (<span class="up">+38.19%</span>)</td><td>평균 $229 · 최고 $500</td><td>결과 확인 후 대응 — 호실적·계약 공시로 갭상승, 시초 변동성 큼</td><td>AWS 그래비톤 5년 60억달러 공급계약 + FY27 매출 가이던스 <span class="up">+31%</span>. AI 데이터 클라우드 테마 재점화</td></tr>
-<tr><td>마벨 (MRVL)</td><td>$198.70 (<span class="dn">-4.59%</span>) / PRE $202.00 (<span class="up">+1.66%</span>)</td><td>평균 $162 · 최고 $300</td><td>가이던스 확인 후 대응 — 평균목표가 상회, 추격 신중</td><td>5/27 장 마감 후 1Q 실적 발표. AI 데이터센터·커스텀 ASIC 수요 호조. PER 64배 부담</td></tr>
-<tr><td>마이크론 (MU)</td><td>$928.41 (<span class="up">+3.63%</span>) / PRE $915.05 (<span class="dn">-1.44%</span>)</td><td>평균 $653 · 최고 $1,625</td><td>관망 — 5월 <span class="up">+77%</span> 폭등 후 과열, 단기 차익 주의</td><td>메모리 초호황·시총 1조달러. 5월 들어 77% 상승(1987년 이후 최대). 강세 vs 평균목표가($653) 괴리 큼</td></tr>
-<tr><td>엔비디아 (NVDA)</td><td>$212.60 (<span class="dn">-1.05%</span>) / PRE $210.50 (<span class="dn">-0.99%</span>)</td><td>평균 $296 · 최고 $500</td><td>모니터링 — 실적 후 차익 조정 구간</td><td>AI 대장주, 5/27 <span class="dn">-1.05%</span> 차익매물. 단기 주도권은 메모리·데이터 클라우드로 이동</td></tr>
-</tbody></table></div>
-<hr></div></div></div><div class="foot"><span class="fd"></span>시황 브리핑 &middot; 2026-05-28 &middot; 미장 &middot; 정보 제공 목적 · 투자 권유 아님</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>📊 2026-05-28 시황 브리핑</div><span class="pg">03 / 05</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>미국 · 국내 증시</h1></div><span class="ey">🌎 미장 · 2026-05-28</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">🌎 미국 증시 (5/27 현지 마감 + 오늘밤 5/28 개장 전망) [비중 확대]</div><div class="tbl-wrap"><table>
-<thead><tr><th>지수</th><th>종가(5/27)</th><th>등락</th><th>등락률</th><th>한 줄 코멘트</th></tr></thead>
-<tbody>
-<tr><td>S&amp;P 500</td><td>7,520.36</td><td>+1.24</td><td><span class="up">+0.02%</span></td><td>종가 기준 사상 최고 — 강보합·관망</td></tr>
-<tr><td>나스닥</td><td>26,674.73</td><td>+18.55</td><td><span class="up">+0.07%</span></td><td>종가 기준 사상 최고 — 장 막판 반등</td></tr>
-<tr><td>다우존스</td><td>50,644.28</td><td>+182.60</td><td><span class="up">+0.36%</span></td><td>종가 기준 사상 최고 — 소비·헬스케어 견인</td></tr>
-<tr><td>VIX</td><td>16.29 → 16.74</td><td>+0.45(현재)</td><td><span class="up">+2.76%</span>(현재)</td><td>어제 16.29(<span class="dn">-4.23%</span>) → 호르무즈 리스크에 PRE 반등</td></tr>
-</tbody></table></div>
-<ul>
+<hr></div></div></div></div></div><div class="foot"><span class="fd"></span>시황 브리핑 &middot; 2026-05-28 &middot; 미장 &middot; 정보 제공 목적 · 투자 권유 아님</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>📊 2026-05-28 시황 브리핑</div><span class="pg">03 / 05</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>미국 · 국내 증시</h1></div><span class="ey">🌎 미장 · 2026-05-28</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">🌎 미국 증시 (5/27 현지 마감 + 오늘밤 5/28 개장 전망) [비중 확대]</div><div class="pslot"><div class="pcontent"><div class="macro-grid"><div class="macro-tile"><div class="l">S&amp;P 500</div><div class="v">7,520.36</div><div class="d up">+1.24 (<span class="up">+0.02%</span>)</div><div class="imp">종가 기준 사상 최고 — 강보합·관망</div></div><div class="macro-tile"><div class="l">나스닥</div><div class="v">26,674.73</div><div class="d up">+18.55 (<span class="up">+0.07%</span>)</div><div class="imp">종가 기준 사상 최고 — 장 막판 반등</div></div><div class="macro-tile"><div class="l">다우존스</div><div class="v">50,644.28</div><div class="d up">+182.60 (<span class="up">+0.36%</span>)</div><div class="imp">종가 기준 사상 최고 — 소비·헬스케어 견인</div></div><div class="macro-tile"><div class="l">VIX</div><div class="v">16.29 → 16.74</div><div class="d up">+0.45(현재) (<span class="up">+2.76%</span>(현재))</div><div class="imp">어제 16.29(<span class="dn">-4.23%</span>) → 호르무즈 리스크에 PRE 반등</div></div></div><ul>
 <li><strong>간밤(5/27) 주도 요인</strong>: PCE 발표 대기 + 미-이란 종전 MOU 초안 보도로 위험선호 우위. 다만 AI 반도체는 차익실현 숨고르기. 메타 <span class="up">+3.7%</span>(유료 AI 구독), 마이크론 <span class="up">+3.6%</span>(목표가 상향), 헬스케어·소비주로 매기 순환 → 트리플 신고가.</li>
 <li><strong>오늘밤(5/28 정규장) 핵심 변수</strong>:</li>
 </ul>
@@ -102,80 +136,16 @@ hr{display:none}
 <ul>
 <li><strong>PRE 마켓 방향</strong>: SNOW <span class="up">+38%</span>·MRVL <span class="up">+1.7%</span>로 개별 호재 종목은 강세, 그러나 NVDA·MU 등 반도체 대형주는 약보합. 지수 선물은 호르무즈 충격에 하락 출발 우세.</li>
 </ul>
-<hr></div><div class="sec-panel"><div class="ph">🇰🇷 국내 증시 (오늘 5/28 마감)</div><div class="tbl-wrap"><table>
-<thead><tr><th>지수</th><th>종가</th><th>등락</th><th>등락률</th><th>비고</th></tr></thead>
-<tbody>
-<tr><td>코스피</td><td>8,185.29</td><td>-43.41</td><td><span class="dn">-0.53%</span></td><td>장중 7,841~8,253 폭(<span class="up">+5.3%</span>p) 극심한 변동성, 8,200선 사수</td></tr>
-<tr><td>코스닥</td><td>1,104.36</td><td>-28.77</td><td><span class="dn">-2.54%</span></td><td>반도체 쏠림 후폭풍·중소형주 약세 지속</td></tr>
-</tbody></table></div>
-<ul>
+<hr></div></div></div><div class="sec-panel"><div class="ph">🇰🇷 국내 증시 (오늘 5/28 마감)</div><div class="pslot"><div class="pcontent"><div class="macro-grid"><div class="macro-tile"><div class="l">코스피</div><div class="v">8,185.29</div><div class="d dn">-43.41 (<span class="dn">-0.53%</span>)</div><div class="imp">장중 7,841~8,253 폭(<span class="up">+5.3%</span>p) 극심한 변동성, 8,200선 사수</div></div><div class="macro-tile"><div class="l">코스닥</div><div class="v">1,104.36</div><div class="d dn">-28.77 (<span class="dn">-2.54%</span>)</div><div class="imp">반도체 쏠림 후폭풍·중소형주 약세 지속</div></div></div><ul>
 <li><strong>오늘 특징</strong>: 한국은행 금통위 동결(8회 연속 2.50%)이나 <strong>매파적 동결</strong> — 금통위원 2명 인상 소수의견, 신현송 신임 총재 첫 메시지 &quot;적절한 시기 인상&quot; 시사. 7월 인상 가능성 부각 → 금리 부담 + 코스피 단기 급등 후 차익실현 + 호르무즈 리스크가 겹치며 장중 7,841까지 4.7% 급락 후 회복.</li>
 <li><strong>수급·환율</strong>: 원/달러 1,502.65원(KST 12:10 기준, <span class="dn">-0.19%</span>) — 1,500선 공방. 호르무즈 충격으로 저녁 시점 추가 변동 가능.</li>
 <li><strong>미장 연동 포인트</strong>: 오늘밤 미 PCE 결과 + 호르무즈 추이가 내일(5/29) 국장 방향 좌우. <strong>PCE 안정·유가 급등 진정 → 반도체 대형주 반등 시도</strong>, <strong>PCE 상회·유가 추가 급등 → 금리 매파 강화 + 위험회피로 코스피 추가 변동성</strong>.</li>
 </ul>
-<hr></div></div></div><div class="foot"><span class="fd"></span>시황 브리핑 &middot; 2026-05-28 &middot; 미장 &middot; 정보 제공 목적 · 투자 권유 아님</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>📊 2026-05-28 시황 브리핑</div><span class="pg">04 / 05</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>섹터 동향 &amp; 거시 지표</h1></div><span class="ey">🌎 미장 · 2026-05-28</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">🧭 섹터 동향</div><div class="tbl-wrap"><table>
-<thead><tr><th>섹터</th><th>강/약세</th><th>주요 종목</th><th>배경</th></tr></thead>
-<tbody>
-<tr><td>데이터 클라우드·AI 인프라</td><td>강세 ↑↑</td><td>SNOW (PRE <span class="up">+38%</span>)</td><td>AWS 60억달러 5년 공급계약 + FY27 매출 가이던스 <span class="up">+31%</span> — 시간외 폭등</td></tr>
-<tr><td>AI 반도체 (커스텀 ASIC)</td><td>강세 ↑</td><td>MRVL (PRE <span class="up">+1.66%</span>)</td><td>1Q 실적 매출 예상치 상회. AI 데이터센터·옵티컬 수혜</td></tr>
-<tr><td>AI 반도체 (GPU·메모리)</td><td>중립 → 약세 ↓</td><td>NVDA, MU</td><td>신고가 부담 + 차익실현. NVDA PRE <span class="dn">-0.99%</span>, MU PRE <span class="dn">-1.44%</span></td></tr>
-<tr><td>에너지</td><td>강세 ↑</td><td>WTI</td><td>호르무즈 미·이란 군사 충돌 재점화 → 유가 <span class="up">+3.03%</span> V자 반등</td></tr>
-<tr><td>안전자산</td><td>약세 → 혼조</td><td>금</td><td>어제 <span class="dn">-0.93%</span> 후 오늘 $4,419.20 (<span class="dn">-0.64%</span>). PCE·지정학 결과 대기</td></tr>
-</tbody></table></div>
-<hr></div><div class="sec-panel"><div class="ph">💱 거시 지표</div><div class="tbl-wrap"><table>
-<thead><tr><th>지표</th><th>현재</th><th>전일비</th><th>시사점</th></tr></thead>
-<tbody>
-<tr><td>원/달러</td><td>1,502.65원</td><td>-2.79원 (<span class="dn">-0.19%</span>)</td><td>1,500선 공방. 호르무즈 충격으로 저녁 변동 가능</td></tr>
-<tr><td>미국채 10년물</td><td>4.481%</td><td>-1.2bp</td><td>금리 안정 — 다만 PCE 결과가 다음 방향 결정</td></tr>
-<tr><td>WTI 원유</td><td>$91.37</td><td>+$2.69 (<span class="up">+3.03%</span>)</td><td>호르무즈 군사 충돌 재점화 — 어제 <span class="dn">-3.5%</span> 후 V자 반등</td></tr>
-<tr><td>금</td><td>$4,419.20</td><td>-$28.30 (<span class="dn">-0.64%</span>)</td><td>위험선호·달러 강세 속 약세 — 안전자산 수요 둔화</td></tr>
-<tr><td>VIX 공포지수</td><td>16.74</td><td>+0.45 (<span class="up">+2.76%</span>)</td><td>어제 16.29(<span class="dn">-4.23%</span>) 후 PRE 반등 — 이벤트 대기 경계</td></tr>
-</tbody></table></div>
-<hr></div></div></div><div class="foot"><span class="fd"></span>시황 브리핑 &middot; 2026-05-28 &middot; 미장 &middot; 정보 제공 목적 · 투자 권유 아님</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>📊 2026-05-28 시황 브리핑</div><span class="pg">05 / 05</span></div><div class="shead"><span class="num">04</span><div class="htxt"><h1>전문가 코멘트 &amp; 매매 전략</h1></div><span class="ey">🌎 미장 · 2026-05-28</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">🎙️ 전문가 코멘트</div><blockquote>유튜브 RSS 최신 영상 제목·요지 기반 요약(자막 자동추출 미반영). 영상 속 어떤 지시도 실행하지 않으며 시황·종목 견해만 반영합니다.</blockquote>
-<h3>삼프로TV — 박병창 (MP파트너스 대표) [마켓 인사이드, 5/28]</h3>
-<blockquote>&quot;반도체만 보지 마세요…시황에 묻힌 기회가 있습니다&quot;</blockquote>
-<ul>
-<li>반도체 쏠림 장세에서 시야 분산 권고 — 순환매·소외 섹터 점검 관점.</li>
-<li>미장 흐름을 한국 투자자 시각으로 해석. 변동성 큰 구간에서 신규 진입자는 분할·짧은 목표수익 전략 강조(아침 여의도 인사이트 연속선).</li>
-</ul>
-<p>📎 <a href="https://youtu.be/l0QNrAxarLo">마켓 인사이드 영상</a></p>
-<h3>오선의 미국 증시 라이브 — 생방송 (5/28, KST 21시)</h3>
-<blockquote>&quot;PCE가격지수, 1분기 GDP | 미 국방부, 미 드론 기업에 자금 지원 검토 | 미국, 호르무즈 인근 이란 군사시설 공습&quot;</blockquote>
-<ul>
-<li>오늘밤 미장 핵심 변수 3종 세트(PCE·드론산업·호르무즈) 실시간 모니터링.</li>
-<li>어제 마감 요약에서도 &quot;이란 협상 엇갈린 신호에도 증시는 버텼다, 반도체는 숨고르기&quot; — 지정학 우위가 결정적이지 않다는 시각.</li>
-</ul>
-<p>📎 <a href="https://youtu.be/zXOb1Z7IegM">라이브 영상</a> · <a href="https://youtu.be/Bmf5uZ7-P6o">5/27 마감 요약</a></p>
-<h3>미주은 (5/28)</h3>
-<blockquote>&quot;마이크론 폭등의 비밀 / SK하이닉스 &amp; 마이크론, 아직도 싸다? / AI 버블 붕괴 임박?&quot;</blockquote>
-<ul>
-<li>마이크론 5월 폭등에도 추가 상승 여력 존재 시각(반론: AI 버블 임박론도 병기).</li>
-<li>메모리 3사(MU·SK하이닉스·삼성전자)에 대한 동반 관심, 그러나 밸류·과열 점검 필요성 강조.</li>
-</ul>
-<p>📎 <a href="https://youtu.be/zHXm5VxLudQ">영상 링크</a></p>
-<h3>이효석아카데미 (5/28)</h3>
-<blockquote>&quot;바람에 흔들리지 말고 꽉 붙잡으세요!&quot;</blockquote>
-<ul>
-<li>변동성 장세에서 핵심 보유 종목 흔들리지 말 것 — 중기 추세 신뢰 관점.</li>
-<li>전날(5/27): &quot;메인 디쉬는 SK하이닉스&quot; — 메모리 3사 중 HBM 경쟁력으로 SK하이닉스 선호 유지.</li>
-</ul>
-<p>📎 <a href="https://youtu.be/ksD8OQd4Y1c">영상 링크</a> · <a href="https://youtu.be/r5k7nc727lU">전날 SK하이닉스 견해</a></p>
-<h3>소수몽키 (5/27)</h3>
-<blockquote>&quot;트럼프의 밀어주기는 계속된다, 다음 후보가 될 주식들&quot;</blockquote>
-<ul>
-<li>트럼프 정책 수혜주 발굴 관점 — AI·반도체 외 정책 모멘텀 종목 탐색.</li>
-</ul>
-<p>📎 <a href="https://youtu.be/JLTyoWL5t6k">영상 링크</a></p>
-<hr></div><div class="sec-panel"><div class="ph">🎲 매매 전략 / 오늘밤 관전 포인트</div><ul>
-<li><strong>강세 시나리오</strong>: 4월 PCE 예상 부합·하회(헤드라인 ≤0.5%·근원 ≤0.3%) + 호르무즈 추가 확전 없음 + 마벨·스노우 모멘텀 확산 → 나스닥·S&amp;P 추가 신고가 시도, 메모리에서 데이터 클라우드·AI 인프라로 매기 확산.</li>
-<li><strong>약세 시나리오</strong>: PCE 상회(인플레 재점화) + 호르무즈 군사 충돌 확전 + 유가 추가 급등 → 고밸류 기술주 차익실현, 마이크론·마벨 평균목표가 상회 종목 되돌림 변동성 확대.</li>
-<li><strong>오늘밤 체크포인트</strong>:</li>
-</ul>
-<p>  1. <strong>4월 PCE 물가지수(KST 21:30 = 미 ET 08:30)</strong> — 연준 정책 경로 핵심.   2. <strong>호르무즈 추가 확전 여부 + WTI $91 안착·이탈</strong> — 인플레·위험선호 영향.   3. <strong>스노우플레이크 시초 갭상승 안착 vs 차익매물</strong> — 데이터 클라우드 테마 추세 결정.   4. <strong>마벨 가이던스 컨퍼런스콜 반응</strong> — AI 커스텀 칩 수요 가시성.   5. <strong>마이크론 PRE <span class="dn">-1.4%</span> 추가 조정 여부</strong> — 5월 <span class="up">+77%</span> 폭등 후 과열 점검.   6. <strong>VIX 16.74 → 18 돌파 여부</strong> — 공포지수 임계점.</p>
-<hr></div></div></div><div class="foot"><span class="fd"></span>시황 브리핑 &middot; 2026-05-28 &middot; 미장 &middot; 정보 제공 목적 · 투자 권유 아님</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 5</span><button id="next">&rsaquo;</button></div><script>
+<hr></div></div></div></div></div><div class="foot"><span class="fd"></span>시황 브리핑 &middot; 2026-05-28 &middot; 미장 &middot; 정보 제공 목적 · 투자 권유 아님</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>📊 2026-05-28 시황 브리핑</div><span class="pg">04 / 05</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>섹터 동향 &amp; 거시 지표</h1></div><span class="ey">🌎 미장 · 2026-05-28</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">🧭 섹터 동향</div><div class="pslot"><div class="pcontent"><div class="sector-grid"><div class="sector-card"><div class="head"><div class="nm">데이터 클라우드·AI 인프라</div><div class="bd up">강세 ↑↑</div></div><div class="tg">SNOW (PRE <span class="up">+38%</span>)</div><div class="bg">AWS 60억달러 5년 공급계약 + FY27 매출 가이던스 <span class="up">+31%</span> — 시간외 폭등</div></div><div class="sector-card"><div class="head"><div class="nm">AI 반도체 (커스텀 ASIC)</div><div class="bd up">강세 ↑</div></div><div class="tg">MRVL (PRE <span class="up">+1.66%</span>)</div><div class="bg">1Q 실적 매출 예상치 상회. AI 데이터센터·옵티컬 수혜</div></div><div class="sector-card"><div class="head"><div class="nm">AI 반도체 (GPU·메모리)</div><div class="bd dn">중립 → 약세 ↓</div></div><div class="tg">NVDA, MU</div><div class="bg">신고가 부담 + 차익실현. NVDA PRE <span class="dn">-0.99%</span>, MU PRE <span class="dn">-1.44%</span></div></div><div class="sector-card"><div class="head"><div class="nm">에너지</div><div class="bd up">강세 ↑</div></div><div class="tg">WTI</div><div class="bg">호르무즈 미·이란 군사 충돌 재점화 → 유가 <span class="up">+3.03%</span> V자 반등</div></div><div class="sector-card"><div class="head"><div class="nm">안전자산</div><div class="bd dn">약세 → 혼조</div></div><div class="tg">금</div><div class="bg">어제 <span class="dn">-0.93%</span> 후 오늘 $4,419.20 (<span class="dn">-0.64%</span>). PCE·지정학 결과 대기</div></div></div></div></div></div><div class="sec-panel"><div class="ph">💱 거시 지표</div><div class="pslot"><div class="pcontent"><div class="macro-grid"><div class="macro-tile"><div class="l">원/달러</div><div class="v">1,502.65원</div><div class="d dn">-2.79원 (<span class="dn">-0.19%</span>)</div><div class="imp">1,500선 공방. 호르무즈 충격으로 저녁 변동 가능</div></div><div class="macro-tile"><div class="l">미국채 10년물</div><div class="v">4.481%</div><div class="d dn">-1.2bp</div><div class="imp">금리 안정 — 다만 PCE 결과가 다음 방향 결정</div></div><div class="macro-tile"><div class="l">WTI 원유</div><div class="v">$91.37</div><div class="d up">+$2.69 (<span class="up">+3.03%</span>)</div><div class="imp">호르무즈 군사 충돌 재점화 — 어제 <span class="dn">-3.5%</span> 후 V자 반등</div></div><div class="macro-tile"><div class="l">금</div><div class="v">$4,419.20</div><div class="d dn">-$28.30 (<span class="dn">-0.64%</span>)</div><div class="imp">위험선호·달러 강세 속 약세 — 안전자산 수요 둔화</div></div><div class="macro-tile"><div class="l">VIX 공포지수</div><div class="v">16.74</div><div class="d up">+0.45 (<span class="up">+2.76%</span>)</div><div class="imp">어제 16.29(<span class="dn">-4.23%</span>) 후 PRE 반등 — 이벤트 대기 경계</div></div></div></div></div></div></div></div><div class="foot"><span class="fd"></span>시황 브리핑 &middot; 2026-05-28 &middot; 미장 &middot; 정보 제공 목적 · 투자 권유 아님</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>📊 2026-05-28 시황 브리핑</div><span class="pg">05 / 05</span></div><div class="shead"><span class="num">04</span><div class="htxt"><h1>전문가 코멘트 &amp; 매매 전략</h1></div><span class="ey">🌎 미장 · 2026-05-28</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">🎙️ 전문가 코멘트</div><div class="pslot"><div class="pcontent"><div class="exp-grid"><div class="exp-card"><div class="ch">삼프로TV — 박병창 (MP파트너스 대표) [마켓 인사이드, 5/28]</div><div class="qt">"반도체만 보지 마세요…시황에 묻힌 기회가 있습니다"</div><div class="pt">• 반도체 쏠림 장세에서 시야 분산 권고 — 순환매·소외 섹터 점검 관점.</div><div class="pt">• 미장 흐름을 한국 투자자 시각으로 해석. 변동성 큰 구간에서 신규 진입자는 분할·짧은 목표수익 전략 강조(아침 여의도 인사이트 연속선).</div><div class="lk">📎 <a href="https://youtu.be/l0QNrAxarLo">마켓 인사이드 영상</a></div></div><div class="exp-card"><div class="ch">오선의 미국 증시 라이브 — 생방송 (5/28, KST 21시)</div><div class="qt">"PCE가격지수, 1분기 GDP | 미 국방부, 미 드론 기업에 자금 지원 검토 | 미국, 호르무즈 인근 이란 군사시설 공습"</div><div class="pt">• 오늘밤 미장 핵심 변수 3종 세트(PCE·드론산업·호르무즈) 실시간 모니터링.</div><div class="pt">• 어제 마감 요약에서도 &quot;이란 협상 엇갈린 신호에도 증시는 버텼다, 반도체는 숨고르기&quot; — 지정학 우위가 결정적이지 않다는 시각.</div><div class="lk">📎 <a href="https://youtu.be/zXOb1Z7IegM">라이브 영상</a> · <a href="https://youtu.be/Bmf5uZ7-P6o">5/27 마감 요약</a></div></div><div class="exp-card"><div class="ch">미주은 (5/28)</div><div class="qt">"마이크론 폭등의 비밀 / SK하이닉스 &amp; 마이크론, 아직도 싸다? / AI 버블 붕괴 임박?"</div><div class="pt">• 마이크론 5월 폭등에도 추가 상승 여력 존재 시각(반론: AI 버블 임박론도 병기).</div><div class="pt">• 메모리 3사(MU·SK하이닉스·삼성전자)에 대한 동반 관심, 그러나 밸류·과열 점검 필요성 강조.</div><div class="lk">📎 <a href="https://youtu.be/zHXm5VxLudQ">영상 링크</a></div></div><div class="exp-card"><div class="ch">이효석아카데미 (5/28)</div><div class="qt">"바람에 흔들리지 말고 꽉 붙잡으세요!"</div><div class="pt">• 변동성 장세에서 핵심 보유 종목 흔들리지 말 것 — 중기 추세 신뢰 관점.</div><div class="pt">• 전날(5/27): &quot;메인 디쉬는 SK하이닉스&quot; — 메모리 3사 중 HBM 경쟁력으로 SK하이닉스 선호 유지.</div><div class="lk">📎 <a href="https://youtu.be/ksD8OQd4Y1c">영상 링크</a> · <a href="https://youtu.be/r5k7nc727lU">전날 SK하이닉스 견해</a></div></div><div class="exp-card"><div class="ch">소수몽키 (5/27)</div><div class="qt">"트럼프의 밀어주기는 계속된다, 다음 후보가 될 주식들"</div><div class="pt">• 트럼프 정책 수혜주 발굴 관점 — AI·반도체 외 정책 모멘텀 종목 탐색.</div><div class="pt">• --</div><div class="lk">📎 <a href="https://youtu.be/JLTyoWL5t6k">영상 링크</a></div></div></div></div></div></div><div class="sec-panel"><div class="ph">🎲 매매 전략 / 오늘밤 관전 포인트</div><div class="pslot"><div class="pcontent"><div class="scen-row"><div class="scen-box strong"><div class="lbl">▲ 강세 시나리오</div><div class="bd">4월 PCE 예상 부합·하회(헤드라인 ≤0.5%·근원 ≤0.3%) + 호르무즈 추가 확전 없음 + 마벨·스노우 모멘텀 확산 → 나스닥·S&amp;P 추가 신고가 시도, 메모리에서 데이터 클라우드·AI 인프라로 매기 확산.</div></div><div class="scen-box weak"><div class="lbl">▼ 약세 시나리오</div><div class="bd">PCE 상회(인플레 재점화) + 호르무즈 군사 충돌 확전 + 유가 추가 급등 → 고밸류 기술주 차익실현, 마이크론·마벨 평균목표가 상회 종목 되돌림 변동성 확대.</div></div></div><div class="check-grid"><div class="check-card"><span class="ix">1</span><div class="ti">4월 PCE 물가지수(KST 21:30 = 미 ET 08:30)</div><div class="ds">연준 정책 경로 핵심</div></div><div class="check-card"><span class="ix">2</span><div class="ti">호르무즈 추가 확전 여부 + WTI $91 안착·이탈</div><div class="ds">인플레·위험선호 영향</div></div><div class="check-card"><span class="ix">3</span><div class="ti">스노우플레이크 시초 갭상승 안착 vs 차익매물</div><div class="ds">데이터 클라우드 테마 추세 결정</div></div><div class="check-card"><span class="ix">4</span><div class="ti">마벨 가이던스 컨퍼런스콜 반응</div><div class="ds">AI 커스텀 칩 수요 가시성</div></div><div class="check-card"><span class="ix">5</span><div class="ti">마이크론 PRE <span class="dn">-1.4%</span> 추가 조정 여부</div><div class="ds">5월 <span class="up">+77%</span> 폭등 후 과열 점검</div></div><div class="check-card"><span class="ix">6</span><div class="ti">VIX 16.74 → 18 돌파 여부</div><div class="ds">공포지수 임계점</div></div></div></div></div></div></div></div><div class="foot"><span class="fd"></span>시황 브리핑 &middot; 2026-05-28 &middot; 미장 &middot; 정보 제공 목적 · 투자 권유 아님</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 5</span><button id="next">&rsaquo;</button></div><script>
 var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
 var c=document.getElementById('counter'),pr=document.getElementById('prog');
-function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight,cw=b.clientWidth,sw=b.scrollWidth;if(sh<1||cw<1)return;var zh=ch/sh,zw=cw/sw,z=Math.min(zh,zw);z=Math.max(0.6,Math.min(1.32,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
+function fitPanel(p){var slot=p.querySelector('.pslot'),c=p.querySelector('.pcontent');if(!slot||!c)return;c.style.transform='none';c.style.width='100%';var sh=c.scrollHeight,sw=c.scrollWidth,ah=slot.clientHeight,aw=slot.clientWidth;if(sh<1||sw<1||ah<1)return;var z=Math.min(ah/sh,aw/sw);z=Math.max(0.6,Math.min(2.2,z));if(z>0.985&&z<1.04)z=1;c.style.transform='scale('+z+')';c.style.transformOrigin='top left';c.style.width=(100/z)+'%';}
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var panels=b.querySelectorAll('.sec-panel');if(panels.length>0){for(var i=0;i<panels.length;i++)fitPanel(panels[i]);return;}var ch=b.clientHeight,sh=b.scrollHeight,cw=b.clientWidth,sw=b.scrollWidth;if(sh<1||cw<1)return;var zh=ch/sh,zw=cw/sw,z=Math.min(zh,zw);z=Math.max(0.55,Math.min(1.5,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
 function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
 document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
 document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
