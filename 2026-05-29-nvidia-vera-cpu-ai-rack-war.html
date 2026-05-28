@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content=""><title>엔비디아 Vera CPU와 AI 랙 전쟁</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;--up:#1f9d57;--dn:#c0392b;--text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f7f6;--bg:#fff}
+html,body{height:100%}
+body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Apple SD Gothic Neo','Segoe UI',sans-serif;color:var(--text);overflow:hidden}
+#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--bg);overflow:hidden;display:none;flex-direction:column;padding:30px 44px 26px}
+.slide.active{display:flex}
+.chip{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.chip .brand{display:flex;align-items:center;gap:9px;text-transform:uppercase}
+.chip .dot{width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.chip .pg{color:var(--accent);font-weight:700}
+.shead{display:flex;align-items:flex-start;gap:13px;border-bottom:3px solid var(--accent);padding-bottom:10px;margin-bottom:14px}
+.shead .num{background:var(--accent);color:#fff;font-size:15px;font-weight:800;border-radius:8px;padding:6px 11px;flex:none}
+.shead .htxt h1{font-size:27px;font-weight:900;line-height:1.2;letter-spacing:-.01em}
+.shead .ey{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;white-space:nowrap;align-self:flex-end;padding-bottom:3px}
+.body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column}
+.cols2{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:stretch}
+.cols2.one{grid-template-columns:1fr}
+.sec-panel{border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column}
+.sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
+.sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
+.sec-panel table{font-size:13px}.sec-panel th{font-size:12px;padding:7px 9px}
+.sec-panel td{padding:6px 9px;font-size:12.5px;line-height:1.4}
+.sec-panel li{font-size:13px;margin:4px 0;line-height:1.45}.sec-panel p{font-size:13px;line-height:1.5}
+.sec-panel h3{font-size:14px;margin:5px 0 2px}.sec-panel blockquote{font-size:12.5px;padding:9px 12px;line-height:1.45}
+.foot{margin-top:9px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.foot .fd{width:8px;height:8px;border-radius:50%;background:var(--accent-mid)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:#fff}
+th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;font-weight:700;font-size:14px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;word-break:keep-all}
+td:first-child{font-weight:700;white-space:nowrap}tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f8faf9}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}.hl{color:var(--accent);font-weight:700}
+ul,ol{margin:2px 0 2px 20px}li{margin:5px 0;font-size:15px;line-height:1.5}
+h3{font-size:17px;font-weight:800;color:var(--accent-d);margin:6px 0 2px}
+p{font-size:15px;line-height:1.55;margin:4px 0}
+blockquote{border:1px solid var(--accent-mid);background:var(--accent-light);border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.55;color:#1f3d30}
+code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.9em}
+a{color:var(--accent);text-decoration:none}strong{color:#1a1a1a}hr{display:none}
+.cover{background:radial-gradient(120% 140% at 80% 8%,#2b6f4e,#163d2b 52%,#0c241a);color:#eef6f0;padding:0;position:relative}
+.cover .cv{padding:52px 56px;display:flex;flex-direction:column;height:100%;width:100%}
+.cv-ey{font-size:14px;letter-spacing:.16em;color:#9fe0bd;font-weight:700;text-transform:uppercase}
+.cover .cv h1{font-size:40px;font-weight:900;line-height:1.22;margin-top:18px;letter-spacing:-.02em;max-width:90%;color:#eef6f0}
+.cv-sum{font-size:17px;color:#cfeadd;border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:14px 18px;margin-top:18px;line-height:1.55;max-width:92%}
+.cv-toc{margin-top:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cv-toc .it{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 13px;font-size:13px;color:#eef6f0;display:flex;gap:9px}
+.cv-toc .it b{color:#7ee3ad}
+.cv-badge{position:absolute;top:46px;right:54px;width:94px;height:94px;border-radius:50%;background:#eef6f0;color:#163d2b;border:2px solid #7ee3ad;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.cv-badge .i{font-size:22px}.cv-badge .t{font-size:14px;margin-top:2px}
+.nav{position:fixed;bottom:16px;right:20px;display:flex;align-items:center;gap:9px;z-index:50}
+.nav button{background:rgba(45,145,98,.92);color:#fff;border:none;width:36px;height:36px;border-radius:9px;font-size:17px;cursor:pointer}
+.nav .counter{background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:7px 13px;border-radius:9px;font-weight:600}
+.progress{position:fixed;top:0;left:0;height:4px;background:var(--accent-mid);z-index:60;transition:width .25s}
+.hint{position:fixed;bottom:18px;left:20px;color:rgba(255,255,255,.45);font-size:12px;z-index:50}
+</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">🎬 영상</span></div><div class="cv-ey">MORNING DIGEST · 2026-05-29 · 안될공학</div><h1>엔비디아 Vera CPU와 AI 랙 전쟁</h1><div class="cv-toc"><div class="it"><b>01</b><span>1. 핵심 개요 · 2. 핵심 내용 구조 · 3. 기술적 맥락 · 4. 전략적 의미</span></div><div class="it"><b>02</b><span>5. 검증 과제 (남은 의문점) · 6. 활용 시나리오 · 7. 현황 및 전망</span></div><div class="it"><b>03</b><span>용어 사전 · 비주얼 리포트</span></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>안될공학</div><span class="pg">02 / 04</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>1. 핵심 개요 &amp; 2. 핵심 내용 구조</h1></div><span class="ey">🎬 영상</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">1. 핵심 개요</div><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>엔비디아 Vera CPU 벤치마크 공개와 AI 인프라 전략</td></tr><tr><td>핵심 인물·기관</td><td>엔비디아 · TSMC · 폭스콘 · AMD · 인텔</td></tr><tr><td>베라 성능</td><td>전작 Grace 대비 약 63% 향상, AMD·인텔 상위 서버 CPU 추월</td></tr><tr><td>플랫폼</td><td>차세대 AI 시스템 &#x27;Vera Rubin&#x27; 랙에 탑재</td></tr><tr><td>다음 검증 무대</td><td>GTC 타이페이 — 실제 랙 스케일 병목 감소 확인</td></tr></tbody></table></div></div><div class="sec-panel"><div class="ph">2. 핵심 내용 구조</div><p>베라는 단순한 CPU 경쟁이 아니라 엔비디아의 풀스택 플랫폼 전략의 마지막 퍼즐. <a href="https://youtu.be/NP5L2Ba7zlY?t=80">핵심 구간</a></p>
+<ul>
+<li><strong>벤치마크 결과</strong> — Phoronix 초도 벤치마크에서 그레이스 대비 63% 향상, AMD/인텔 하이엔드 추월. 단 사전 생산 하드웨어 기반, 전력 효율 미공개.</li>
+<li><strong>CPU의 역할 재정의</strong> — GPU 옆에서 데이터 준비·메모리 관리·네트워크 조율을 담당하는 &#x27;도우미&#x27;. 무대 뒤 조명·음향 같은 존재.</li>
+<li><strong>AI 추론 병목 이동</strong> — 대화 길이·사용자 수·에이전트 도구 호출 증가로 GPU HBM만으로 부족, CPU가 데이터 흐름을 끌고 가야 함.</li>
+</ul></div><div class="sec-panel"><div class="ph">3. 기술적 맥락</div><p>엔비디아의 베라는 ARM 기반 서버 CPU로, Grace 후속이자 차세대 Vera Rubin AI 시스템의 핵심 부품이다. AI 데이터센터에서 병목이 GPU 내부에서 벗어나 GPU 주변의 메모리·네트워크·CPU·랙 시스템으로 번지고 있다는 신호다. 엔비디아는 이미 GPU·DPU(BlueField)·네트워크(ConnectX·Spectrum)·랙스케일 연결(NVLink·NVSwitch)을 확보했고, 베라로 마지막 CPU 퍼즐을 채우게 된다.</p></div><div class="sec-panel"><div class="ph">4. 전략적 의미</div><p>엔비디아가 한때 ARM 통째 인수에 실패했지만, AI 인프라 주도권 확보로 CPU 시장의 우회로를 뚫었다. 고객은 이제 &#x27;CPU 하나가 몇 % 빠른가&#x27;가 아니라 &#x27;어떤 플랫폼이 GPU를 가장 오래·많이·효율적으로 돌리는가&#x27;로 의사결정 기준이 바뀐다. AMD 에픽과 인텔 제온은 단일 CPU 경쟁을 넘어 AI 인프라 통합 설계로 대응 필요.</p></div></div></div><div class="foot"><span class="fd"></span>안될공학 · 2026-05-29</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>안될공학</div><span class="pg">03 / 04</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>5. 검증 과제 (남은 의문점) &amp; 6. 활용 시나리오</h1></div><span class="ey">🎬 영상</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">5. 검증 과제 (남은 의문점)</div><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>질문</th></tr></thead><tbody><tr><td>전력 효율</td><td>같은 와트로 얼마나 더 많은 AI 작업을 처리하는가</td></tr><tr><td>양산성</td><td>보드·냉각·네트워크·전력 공급망 정합성</td></tr><tr><td>고객 채택</td><td>대형 클라우드 사업자의 실제 도입 속도</td></tr><tr><td>독립 검증</td><td>제3자 벤치마크에서 동일 방향 재현 여부</td></tr><tr><td>AMD·인텔 대응</td><td>에픽+Instinct, 제온+Gaudi+Foundry 통합 전략</td></tr></tbody></table></div></div><div class="sec-panel"><div class="ph">6. 활용 시나리오</div><ul>
+<li>AI 인프라 투자 판단 시 &#x27;플랫폼 단위&#x27; 의사결정 프레임 적용</li>
+<li>데이터센터 설계 시 CPU·GPU·메모리·네트워크 통합 병목 분석</li>
+<li>AMD·인텔 주가 분석 시 단일 칩 점유율보다 플랫폼 전략 평가</li>
+</ul></div><div class="sec-panel"><div class="ph">7. 현황 및 전망</div><p>CPU 시장의 경쟁이 &#x27;코어와 클럭 싸움&#x27;에서 &#x27;AI 인프라 전체 설계 싸움&#x27;으로 이동. 베라는 단일 칩 뉴스가 아니라 엔비디아가 데이터센터의 모든 층을 자기 아키텍처로 끌어들이는 과정. GTC 타이페이에서 대만 공급망(TSMC·Foxconn·Quanta·Wistron) 위 실제 양산 가능성 확인이 다음 분기점.</p></div></div></div><div class="foot"><span class="fd"></span>안될공학 · 2026-05-29</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>안될공학</div><span class="pg">04 / 04</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>용어 사전 &amp; 비주얼 리포트</h1></div><span class="ey">🎬 영상</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">용어 사전</div><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Vera</td><td>엔비디아 차세대 ARM 기반 서버 CPU</td><td>무대 뒤 조명·음향을 맡는 매니저</td></tr><tr><td>Grace</td><td>엔비디아 1세대 서버 CPU, 베라의 전작</td><td>베라의 형 모델</td></tr><tr><td>Vera Rubin</td><td>차세대 엔비디아 AI 시스템 플랫폼명</td><td>차세대 AI 데이터센터 패키지</td></tr><tr><td>HBM</td><td>GPU 곁에 붙는 초고속 메모리</td><td>GPU의 단기 기억장치</td></tr><tr><td>NVLink/NVSwitch</td><td>GPU 간 초고속 연결 기술</td><td>무대 위 배우들 사이 인터컴</td></tr><tr><td>랙 스케일</td><td>서버 한 대가 아닌 랙(캐비닛) 단위 시스템</td><td>한 동의 빌딩을 통째로 배송</td></tr><tr><td>ARM 아키텍처</td><td>저전력·고효율 CPU 설계 방식</td><td>스마트폰부터 서버까지 쓰이는 설계도</td></tr></tbody></table></div></div><div class="sec-panel"><div class="ph">비주얼 리포트</div><ul>
+<li>로컬: ~/Sites/ai-infographic/2026-05-29-nvidia-vera-cpu-ai-rack-war.html</li>
+<li>외부: https://wootom.github.io/news/2026-05-29-nvidia-vera-cpu-ai-rack-war.html</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>안될공학 · 2026-05-29</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 4</span><button id="next">&rsaquo;</button></div><script>
+var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
+var c=document.getElementById('counter'),pr=document.getElementById('prog');
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight;if(sh<1)return;var z=ch/sh;z=Math.max(0.6,Math.min(1.45,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
+function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
+document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
+document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(cur+1);e.preventDefault();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault();}else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}});
+document.getElementById('deck').addEventListener('click',function(e){if(e.target.closest('.nav')||e.target.closest('a'))return;var x=e.clientX/window.innerWidth;if(x>0.5){show(cur+1);}else{show(cur-1);}});
+function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);document.getElementById('stage').style.transform='scale('+s+')';}
+window.addEventListener('resize',fit);fit();show(0);
+</script></body></html>

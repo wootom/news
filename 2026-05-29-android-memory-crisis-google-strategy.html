@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content=""><title>안드로이드 메모리 위기와 구글 Gemini Intelligence 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;--up:#1f9d57;--dn:#c0392b;--text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f7f6;--bg:#fff}
+html,body{height:100%}
+body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Apple SD Gothic Neo','Segoe UI',sans-serif;color:var(--text);overflow:hidden}
+#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--bg);overflow:hidden;display:none;flex-direction:column;padding:30px 44px 26px}
+.slide.active{display:flex}
+.chip{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.chip .brand{display:flex;align-items:center;gap:9px;text-transform:uppercase}
+.chip .dot{width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.chip .pg{color:var(--accent);font-weight:700}
+.shead{display:flex;align-items:flex-start;gap:13px;border-bottom:3px solid var(--accent);padding-bottom:10px;margin-bottom:14px}
+.shead .num{background:var(--accent);color:#fff;font-size:15px;font-weight:800;border-radius:8px;padding:6px 11px;flex:none}
+.shead .htxt h1{font-size:27px;font-weight:900;line-height:1.2;letter-spacing:-.01em}
+.shead .ey{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;white-space:nowrap;align-self:flex-end;padding-bottom:3px}
+.body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column}
+.cols2{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:stretch}
+.cols2.one{grid-template-columns:1fr}
+.sec-panel{border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column}
+.sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
+.sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
+.sec-panel table{font-size:13px}.sec-panel th{font-size:12px;padding:7px 9px}
+.sec-panel td{padding:6px 9px;font-size:12.5px;line-height:1.4}
+.sec-panel li{font-size:13px;margin:4px 0;line-height:1.45}.sec-panel p{font-size:13px;line-height:1.5}
+.sec-panel h3{font-size:14px;margin:5px 0 2px}.sec-panel blockquote{font-size:12.5px;padding:9px 12px;line-height:1.45}
+.foot{margin-top:9px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.foot .fd{width:8px;height:8px;border-radius:50%;background:var(--accent-mid)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:#fff}
+th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;font-weight:700;font-size:14px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;word-break:keep-all}
+td:first-child{font-weight:700;white-space:nowrap}tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f8faf9}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}.hl{color:var(--accent);font-weight:700}
+ul,ol{margin:2px 0 2px 20px}li{margin:5px 0;font-size:15px;line-height:1.5}
+h3{font-size:17px;font-weight:800;color:var(--accent-d);margin:6px 0 2px}
+p{font-size:15px;line-height:1.55;margin:4px 0}
+blockquote{border:1px solid var(--accent-mid);background:var(--accent-light);border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.55;color:#1f3d30}
+code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.9em}
+a{color:var(--accent);text-decoration:none}strong{color:#1a1a1a}hr{display:none}
+.cover{background:radial-gradient(120% 140% at 80% 8%,#2b6f4e,#163d2b 52%,#0c241a);color:#eef6f0;padding:0;position:relative}
+.cover .cv{padding:52px 56px;display:flex;flex-direction:column;height:100%;width:100%}
+.cv-ey{font-size:14px;letter-spacing:.16em;color:#9fe0bd;font-weight:700;text-transform:uppercase}
+.cover .cv h1{font-size:40px;font-weight:900;line-height:1.22;margin-top:18px;letter-spacing:-.02em;max-width:90%;color:#eef6f0}
+.cv-sum{font-size:17px;color:#cfeadd;border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:14px 18px;margin-top:18px;line-height:1.55;max-width:92%}
+.cv-toc{margin-top:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cv-toc .it{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 13px;font-size:13px;color:#eef6f0;display:flex;gap:9px}
+.cv-toc .it b{color:#7ee3ad}
+.cv-badge{position:absolute;top:46px;right:54px;width:94px;height:94px;border-radius:50%;background:#eef6f0;color:#163d2b;border:2px solid #7ee3ad;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.cv-badge .i{font-size:22px}.cv-badge .t{font-size:14px;margin-top:2px}
+.nav{position:fixed;bottom:16px;right:20px;display:flex;align-items:center;gap:9px;z-index:50}
+.nav button{background:rgba(45,145,98,.92);color:#fff;border:none;width:36px;height:36px;border-radius:9px;font-size:17px;cursor:pointer}
+.nav .counter{background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:7px 13px;border-radius:9px;font-weight:600}
+.progress{position:fixed;top:0;left:0;height:4px;background:var(--accent-mid);z-index:60;transition:width .25s}
+.hint{position:fixed;bottom:18px;left:20px;color:rgba(255,255,255,.45);font-size:12px;z-index:50}
+</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">🎬 영상</span></div><div class="cv-ey">MORNING DIGEST · 2026-05-29 · 오목교 전자상가</div><h1>안드로이드 메모리 위기와 구글 Gemini Intelligence 전략</h1><div class="cv-toc"><div class="it"><b>01</b><span>1. 핵심 개요 · 2. 핵심 내용 구조 · 3. 기술적 맥락</span></div><div class="it"><b>02</b><span>4. 전략적 의미 — 삼성은 &#x27;최 · 5. 구글의 &#x27;관대함&#x27;에 숨은 플 · 6. 활용 시나리오 · 7. 현황 및 전망</span></div><div class="it"><b>03</b><span>용어 사전 · 비주얼 리포트</span></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>오목교 전자상가</div><span class="pg">02 / 04</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>1. 핵심 개요 &amp; 2. 핵심 내용 구조</h1></div><span class="ey">🎬 영상</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">1. 핵심 개요</div><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>시장 상황</td><td>글로벌 스마트폰 판매 전년 대비 12.9%↓, 안드로이드 15%↓</td></tr><tr><td>메모리 위기</td><td>AI 서버용 고마진 디램 쏠림 → 모바일 범용 메모리 급등</td></tr><tr><td>제조사 대응</td><td>샤오미·오포·비보, 가격 인상 + 신제품 램 다운그레이드</td></tr><tr><td>구글 입장</td><td>AI 메모리값 끌어올린 당사자이자 안드로이드 책임자 — 양가성</td></tr><tr><td>최우선 수혜자</td><td>삼성 갤럭시 S26 (Gemini Intelligence 최초 탑재)</td></tr></tbody></table></div></div><div class="sec-panel"><div class="ph">2. 핵심 내용 구조</div><p>구글이 메모리 위기 한복판에서 Gemini Intelligence를 12GB+ 플래그십부터 푸는 이유와 삼성을 1순위 파트너로 삼는 전략. <a href="https://youtu.be/j4hjUdZl8BE?t=180">관련 구간</a></p>
+<ul>
+<li><strong>Gemini Intelligence란</strong> — 능동적 에이전트 AI 내장 OS. 사용자가 앱을 일일이 누르지 않아도 검색·쇼핑·위젯 생성을 자율 수행. 화면·앱 상태·사용자 명령을 가로지르는 OS 레벨 AI.</li>
+<li><strong>온디바이스 모델 &#x27;Gemini Nano V3&#x27;</strong> — 개인정보·지연·연결 안정성 문제로 일부는 기기 내부 실행 필수. 12GB 램 최소 사양 — &#x27;지금&#x27;이 아닌 &#x27;앞으로 몇 년&#x27;을 위한 여유.</li>
+<li><strong>삼성 우선 탑재 이유</strong> — 갤럭시 S26 우선권. 삼성은 2030년까지 Gemini 탑재 기기 8억 대 목표. 픽셀 출하량은 삼성의 한 줌도 못 됨. <a href="https://youtu.be/j4hjUdZl8BE?t=380">관련 구간</a></li>
+</ul></div><div class="sec-panel"><div class="ph">3. 기술적 맥락</div><p>Gemini Intelligence는 단일 앱이 아니라 OS 레벨 에이전트. 클라우드 의존을 줄여야 하므로 온디바이스 모델(Nano V3) 실행 가능한 12GB 이상 램이 필수. 구글은 이 모델 탑재를 위한 별도 인증 절차를 운영 — &#x27;하드웨어만 좋아도 안 됨&#x27;, 구글이 정한 정책 기준 통과 필요.</p></div></div></div><div class="foot"><span class="fd"></span>오목교 전자상가 · 2026-05-29</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>오목교 전자상가</div><span class="pg">03 / 04</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>4. 전략적 의미 — 삼성은 &#x27;최후의 &amp; 5. 구글의 &#x27;관대함&#x27;에 숨은 플랫폼</h1></div><span class="ey">🎬 영상</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">4. 전략적 의미 — 삼성은 &#x27;최후의 방어선&#x27;</div><div class="tbl-wrap"><table><thead><tr><th>축</th><th>내용</th></tr></thead><tbody><tr><td>물량 압도</td><td>삼성 외에는 안드로이드 글로벌 대량 배포 가능한 기업 거의 없음</td></tr><tr><td>중국 변수</td><td>중국 내수 안드로이드는 GMS 미탑재 → 자체 AI 에이전트 개발 중</td></tr><tr><td>위협 시나리오</td><td>중국 해외 수출폰이 Gemini가 아닌 자체 AI 탑재 시 구글 생태계 약화</td></tr><tr><td>동맹 확장</td><td>스마트폰 넘어 Android XR · Galaxy XR · 미래 AI 디바이스까지</td></tr><tr><td>한국 위상</td><td>모바일 앱 시장 세계 4위, 구글에 핵심 생태계 파트너</td></tr></tbody></table></div></div><div class="sec-panel"><div class="ph">5. 구글의 &#x27;관대함&#x27;에 숨은 플랫폼 파워</div><ul>
+<li><strong>저가형까지 풀겠다</strong> — 순서를 정하는 권한은 구글에 있음 (Gemini Nano V3 탑재 인증제)</li>
+<li><strong>타사 AI 에이전트 허용</strong> — 단, 앱과 잘 맞물려야 동작 → 앱스토어·OS를 가진 구글만 최적화 가능</li>
+<li><strong>개방의 진짜 의미</strong> — 인심이 아니라 &#x27;개방이 곧 안드로이드를 살릴 것&#x27;이라는 계산</li>
+</ul></div><div class="sec-panel"><div class="ph">6. 활용 시나리오</div><ul>
+<li>삼성전자·구글 동맹 강도를 평가하는 투자 관점 분석</li>
+<li>안드로이드 스마트폰 구매 시 Gemini Intelligence 지원 등급 확인</li>
+<li>중국 vs 글로벌 AI 에이전트 생태계 분기 추적</li>
+</ul></div><div class="sec-panel"><div class="ph">7. 현황 및 전망</div><p>메모리 가격 상승·중국 공세가 클수록 역설적으로 삼성의 입지는 강화. 삼성 플래그십이 Gemini Intelligence의 글로벌 표준 탑재처로 자리매김하면서 구글-삼성 동맹은 AI 디바이스 전 영역으로 확장. 단, 삼성전자 스마트폰 사업부 자체는 메모리값 상승으로 어려움 — &#x27;지위 뽕&#x27;으로 분위기 전환 필요.</p></div></div></div><div class="foot"><span class="fd"></span>오목교 전자상가 · 2026-05-29</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>오목교 전자상가</div><span class="pg">04 / 04</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>용어 사전 &amp; 비주얼 리포트</h1></div><span class="ey">🎬 영상</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">용어 사전</div><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Gemini Intelligence</td><td>구글의 에이전트 AI를 내장한 안드로이드 OS</td><td>비서가 핸드폰 안에 상주</td></tr><tr><td>Gemini Nano V3</td><td>기기 안에서 직접 도는 경량 온디바이스 모델</td><td>인터넷 없이 작동하는 동네 점원</td></tr><tr><td>온디바이스 AI</td><td>클라우드 없이 기기 내부에서 실행하는 AI</td><td>내 집에서 직접 요리</td></tr><tr><td>GMS</td><td>Google Mobile Services, 안드로이드의 구글 앱 묶음</td><td>안드로이드의 구글 패키지</td></tr><tr><td>OS 레벨 AI</td><td>앱 위에서가 아닌 운영체제 단계에서 동작하는 AI</td><td>앱 모두를 부리는 집사</td></tr><tr><td>에이전트 AI</td><td>사용자 대신 여러 단계 작업을 자율 수행</td><td>명령 하나로 쇼핑까지 마치는 비서</td></tr><tr><td>Android XR</td><td>구글의 확장현실(XR) 운영체제</td><td>안드로이드의 VR/AR 버전</td></tr></tbody></table></div></div><div class="sec-panel"><div class="ph">비주얼 리포트</div><ul>
+<li>로컬: ~/Sites/ai-infographic/2026-05-29-android-memory-crisis-google-strategy.html</li>
+<li>외부: https://wootom.github.io/news/2026-05-29-android-memory-crisis-google-strategy.html</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>오목교 전자상가 · 2026-05-29</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 4</span><button id="next">&rsaquo;</button></div><script>
+var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
+var c=document.getElementById('counter'),pr=document.getElementById('prog');
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight;if(sh<1)return;var z=ch/sh;z=Math.max(0.6,Math.min(1.45,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
+function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
+document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
+document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(cur+1);e.preventDefault();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault();}else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}});
+document.getElementById('deck').addEventListener('click',function(e){if(e.target.closest('.nav')||e.target.closest('a'))return;var x=e.clientX/window.innerWidth;if(x>0.5){show(cur+1);}else{show(cur-1);}});
+function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);document.getElementById('stage').style.transform='scale('+s+')';}
+window.addEventListener('resize',fit);fit();show(0);
+</script></body></html>
