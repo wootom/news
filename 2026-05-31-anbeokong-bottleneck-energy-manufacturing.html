@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="안될공학 단편. 핵심: **AI 경쟁의 병목이 &quot;더 똑똑한 모델&quot; → &quot;GPU&quot; → 이제 &quot;파운드리·패키징·HBM·전력·냉각·부지·네트워크&quot;로 이동**. 소프트웨어가 커질수록 역설적으로 **제조업의 중요성**이 다시 올라간다."><title>AI 병목, 모델에서 에너지·제조업으로 이동한다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-05-31 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>AI 병목, 모델에서 에너지·제조업으로 이동한다</h1><p class="lead">안될공학 단편. 핵심: <strong>AI 경쟁의 병목이 &quot;더 똑똑한 모델&quot; → &quot;GPU&quot; → 이제 &quot;파운드리·패키징·HBM·전력·냉각·부지·네트워크&quot;로 이동</strong>. 소프트웨어가 커질수록 역설적으로 <strong>제조업의 중요성</strong>이 다시 올라간다.</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">병목 이동의 3단계</a><a href="#s3">기술적 맥락 — &quot;칩을 돌리려면 전기가 필요하다&quot;</a><a href="#s4">전략적 의미 — &quot;산업의 줄세우기가 바뀐다&quot;</a><a href="#s5">핵심 논리 — 소프트웨어가 커질수록 제조가 중요해진다</a><a href="#s6">활용 시나리오 (투자·관찰 관점)</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>AI 산업의 병목 이동과 &quot;산업 줄세우기&quot; 재편</td></tr><tr><td>1세대 병목</td><td>모델 성능 (ChatGPT·Gemini·Grok·Claude 비교 경쟁)</td></tr><tr><td>2세대 병목</td><td>GPU 확보</td></tr><tr><td>3세대 병목</td><td>파운드리·첨단 패키징·HBM·전력·냉각·부지·네트워크</td></tr><tr><td>신호</td><td>ASML·TSMC 강세 전망 = &quot;AI 지출 붐 아직 살아있다&quot;(로이터), 인피니언 2026 전망 상향</td></tr><tr><td>결론</td><td>설계자(팹리스) 중심 → <strong>제조·전력 인프라 중심</strong>으로 무게추 이동</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>병목 이동의 3단계</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>병목</th><th>경쟁 초점</th></tr></thead><tbody><tr><td>1세대</td><td><strong>모델</strong></td><td>누가 더 똑똑한 모델을 만드나 (GPT·Gemini·Grok·Claude)</td></tr><tr><td>2세대</td><td><strong>GPU</strong></td><td>연산 칩 물량 확보</td></tr><tr><td>3세대</td><td><strong>인프라 전반</strong></td><td>파운드리, 첨단 패키징, HBM, 전력, 냉각, 부지, 네트워크</td></tr></tbody></table></div></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — &quot;칩을 돌리려면 전기가 필요하다&quot;</h2><p><a href="https://youtu.be/pxoEHd1Slyg?t=37" target="_blank" rel="noopener">전력 반도체·전원 시스템 부각 ▶</a>: 칩을 구동하려면 전기가 필요하고, 전기를 안정적으로 공급하려면 전력 반도체와 전원 시스템이 필수다. 독일 인피니언은 <strong>AI 데이터센터용 전력 공급 솔루션 수요 증가</strong>를 근거로 2026년 전망을 상향했다. ASML(장비)·TSMC(파운드리)의 강세 전망은 AI 지출 붐의 생존 신호로 해석된다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미 — &quot;산업의 줄세우기가 바뀐다&quot;</h2><p><a href="https://youtu.be/pxoEHd1Slyg?t=42" target="_blank" rel="noopener">기술 계산이 아니라 산업 구조의 사건 ▶</a>: 과거 주인공은 설계 회사였다. 애플(앱 칩 설계), 엔비디아(GPU 설계), 테슬라(자율주행 칩·AI 시스템 설계)가 그 위에 소프트웨어·생태계를 얹었다. 그래서 사람들은 <strong>설계자·플랫폼 기업</strong> 중심으로 산업을 봤다. 그러나 AI·로봇은 화면 안에서 끝나지 않는다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 논리 — 소프트웨어가 커질수록 제조가 중요해진다</h2><div class="tbl-wrap"><table><thead><tr><th>AI/로봇 요소</th><th>필요한 물리 인프라</th></tr></thead><tbody><tr><td>AI 서비스</td><td>데이터센터</td></tr><tr><td>데이터센터</td><td>전력 + 냉각</td></tr><tr><td>AI 칩</td><td>첨단 공정 + 패키징(HBM 등)</td></tr><tr><td>로봇</td><td>모터·감속기·액추에이터·배터리·센서·조립 라인</td></tr></tbody></table></div>
+<p>→ <strong>소프트웨어 확장의 역설</strong>: 디지털이 커질수록 그것을 떠받치는 제조·전력·소재의 중요성이 다시 부상한다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오 (투자·관찰 관점)</h2><div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>장비·파운드리</b><span>ASML·TSMC 등 전공정 핵심 밸류체인 동시 강세 주시.</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>전력 반도체</b><span>인피니언 등 데이터센터 전력 공급 솔루션 수요 확대.</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>로봇 하드웨어</b><span>모터·감속기·액추에이터·배터리 등 물리 부품 수요 연동.</span></div></div></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>병목이 모델·GPU를 넘어 <strong>에너지와 제조업</strong>으로 확장되면서, AI 투자 테마의 무게중심이 &quot;설계·플랫폼&quot;에서 &quot;제조·전력 인프라&quot;로 옮겨가고 있다. 장비사와 파운드리, 전력 반도체가 동시에 움직인다는 점이 이번 사이클의 특징이다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>병목(Bottleneck)</td><td>전체 성장을 제한하는 가장 좁은 구간</td><td>병의 좁은 목이 물 흐름을 결정하듯</td></tr><tr><td>파운드리</td><td>칩 설계도를 받아 실제로 생산하는 위탁 제조사</td><td>건축 설계도를 받아 짓는 시공사</td></tr><tr><td>첨단 패키징</td><td>여러 칩을 한 패키지로 고밀도 결합하는 후공정</td><td>부품을 한 케이스에 촘촘히 모아 담는 작업</td></tr><tr><td>HBM</td><td>GPU에 붙는 고대역폭 메모리</td><td>연산기에 바짝 붙인 초고속 창고</td></tr><tr><td>전력 반도체</td><td>전기를 효율적으로 변환·제어하는 반도체</td><td>전기의 수도꼭지·변압기 역할</td></tr><tr><td>팹리스</td><td>공장 없이 칩 설계만 하는 회사</td><td>레시피만 만들고 조리는 위탁하는 셰프</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-05-31</div></div></body></html>
