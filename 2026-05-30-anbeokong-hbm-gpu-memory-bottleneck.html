@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: AI 모델이 커질수록 진짜 비싸지는 이것 (HBM 병목)"><title>AI 모델이 커질수록 진짜 비싸지는 이것 (HBM 병목)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-05-30 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>AI 모델이 커질수록 진짜 비싸지는 이것 (HBM 병목)</h1><p class="lead">title: AI 모델이 커질수록 진짜 비싸지는 이것 (HBM 병목)</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 내용 구조</a><a href="#s3">기술적 맥락</a><a href="#s4">전략적 의미</a><a href="#s5">활용 시나리오</a><a href="#s6">현황 및 전망</a><a href="#s7">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>안될공학</td></tr><tr><td>길이</td><td>약 1분 (요약 영상)</td></tr><tr><td>핵심 주장</td><td>AI 비용 병목 = GPU 연산이 아닌 메모리 대역폭</td></tr><tr><td>결론</td><td>HBM 좌석 예약 경쟁이 AI 인프라 진짜 승부처</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>AI 비용 병목 재정의</strong> — GPU 연산 순간이 아닌 데이터 대기 순간이 가장 비쌈</li>
+<li><strong>메모리 대역폭 병목</strong> — 모델 커지고 컨텍스트 길어지며 메모리 수요 폭증</li>
+<li><strong>HBM 공급 부족</strong> — SK하이닉스 2026년 생산분 완판</li>
+<li><strong>삼성도 줄서기</strong> — 다음 HBM 고객 대기열 형성</li>
+<li><strong>공급 증가 시점</strong> — 의미 있는 생산 확대는 2027~2028년 이후</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>GPU vs 메모리</strong> — 연산속도 아무리 빨라도 데이터 못 밀어넣으면 대기</li>
+<li><strong>모델 규모 효과</strong> — 파라미터·컨텍스트 폭증 → 메모리 대역폭·용량 동시 압박</li>
+<li><strong>HBM 핵심성</strong> — High Bandwidth Memory가 AI 칩 옆에서 데이터 공급</li>
+<li><strong>AI 캡스 핵심 변수</strong> — 누가 먼저, 얼마나, 어떤 가격에 HBM 확보하느냐</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>시장 패러다임 전환</strong> — &quot;모델 출시 경쟁&quot;이 아닌 &quot;메모리 좌석 예약 경쟁&quot;</li>
+<li><strong>메모리 3사 가치 재평가</strong> — SK하이닉스·삼성·마이크론 공급력이 AI 경쟁력 결정</li>
+<li><strong>공급 부족 장기화</strong> — 2027~2028년까지 타이트한 수급 지속 전망</li>
+<li><strong>로이터 보도 인용</strong> — 외신이 한국 메모리 업체 공급 상황 주목</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 시나리오</h2><ul>
+<li><strong>투자 관점</strong> — 메모리 반도체 주식 비중 확대 근거</li>
+<li><strong>AI 인프라 기획</strong> — GPU 확보보다 HBM 사전 계약 우선순위</li>
+<li><strong>반도체 산업 분석</strong> — 2027~2028 증설 시점이 공급 정상화 기점</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><ul>
+<li><strong>현재 상황</strong> — SK하이닉스 2026 생산분 완판, 삼성 대기열 형성</li>
+<li><strong>단기(2026)</strong> — 공급 부족 지속, 가격 강세</li>
+<li><strong>중기(2027~2028)</strong> — 신규 공장 가동, 공급 증가 본격화</li>
+<li><strong>장기 전망</strong> — 에이전틱 AI 확산이 KV 캐시 수요를 추가로 견인</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>HBM</td><td>High Bandwidth Memory, 고대역폭 메모리</td><td>GPU 옆에 붙어 빠른 식자재 공급하는 보조 주방</td></tr><tr><td>GPU 대역폭</td><td>메모리에서 GPU로 데이터 옮기는 속도</td><td>식당 손님은 빠른데 주방 전달이 막힌 상태</td></tr><tr><td>AI 캡스</td><td>AI 인프라 자본투자 (Capital Expenditure)</td><td>데이터센터 설립·확장 자본</td></tr><tr><td>좌석 예약 경쟁</td><td>HBM 생산 물량을 미리 사재기하는 경쟁</td><td>인기 공연 티켓을 몇 년치 미리 잡아두는 것</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-05-30</div></div></body></html>

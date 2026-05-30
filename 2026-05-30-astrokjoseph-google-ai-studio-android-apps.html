@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: Google AI Studio가 브라우저에서 Android 앱을 만든다 (무료 티어)"><title>Google AI Studio가 브라우저에서 Android 앱을 만든다 (무료 티어)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Astro K Joseph</span><span class="ey">MORNING DIGEST · 2026-05-30 · Astro K Joseph</span><span class="chip">🎬 영상</span></div><h1>Google AI Studio가 브라우저에서 Android 앱을 만든다 (무료 티어)</h1><p class="lead">title: Google AI Studio가 브라우저에서 Android 앱을 만든다 (무료 티어)</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 내용 구조</a><a href="#s3">기술적 맥락</a><a href="#s4">전략적 의미</a><a href="#s5">핵심 워크플로우</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Astro K Joseph</td></tr><tr><td>도구</td><td>Google AI Studio (aistudio.google.com)</td></tr><tr><td>가격</td><td>무료 티어 (Gemini 기반)</td></tr><tr><td>결과물</td><td>텍스트 프롬프트만으로 Android 앱 생성</td></tr><tr><td>특징</td><td>브라우저 내장 Android 시뮬레이터 + APK 다운로드</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>No 안드로이드 스튜디오</strong> — IDE·에뮬레이터 설치 불필요, 브라우저 완결</li>
+<li><strong>프롬프트 기반 생성</strong> — &quot;습관 추적 앱 만들어줘&quot; 같은 자연어 입력</li>
+<li><strong>인앱 시뮬레이터</strong> — 생성된 앱을 브라우저 안 가상 기기에서 즉시 테스트</li>
+<li><strong>풀 백엔드 연동</strong> — Firebase / Supabase 인증·DB 연결 가능</li>
+<li><strong>APK 다운로드</strong> — 완성 앱 파일 받기 가능</li>
+<li><strong>GitHub 동기화</strong> — 변경사항 자동 커밋·푸시 옵션</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>Google AI Studio</strong> — Gemini 모델 기반 빌더 플랫폼</li>
+<li><strong>Build 탭 활용</strong> — Build an Android app 옵션 선택</li>
+<li><strong>첨부 지원</strong> — 디자인 참조 이미지·스크린샷 업로드</li>
+<li><strong>Speech-to-Text 입력</strong> — 음성 프롬프트 작성 가능</li>
+<li><strong>로컬 SQL DB</strong> — 초기 앱은 Room SQL로 로컬 저장</li>
+<li><strong>클라우드 백엔드 옵션</strong> — Firebase/Supabase 선택 단계</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>모바일 앱 진입 장벽 붕괴</strong> — 안드로이드 개발 환경 셋업 없이 시작</li>
+<li><strong>무료 티어 전략</strong> — 사용자 확보 → 유료 전환 Funnel</li>
+<li><strong>Google 생태계 락인</strong> — AI Studio + Firebase + Play Store 연계</li>
+<li><strong>Cursor·Bolt와 경쟁</strong> — 모바일 영역에서 Google이 차별화 시도</li>
+<li><strong>AI 빌더 표준화</strong> — 웹·모바일 빌더가 한 인터페이스로 통합</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>내용</th></tr></thead><tbody><tr><td>1. 접속</td><td>aistudio.google.com 로그인 (구글 계정)</td></tr><tr><td>2. Build 탭</td><td>&quot;Build an Android app&quot; 선택</td></tr><tr><td>3. 프롬프트</td><td>앱 설명 입력 + 참조 이미지 첨부</td></tr><tr><td>4. 생성</td><td>Build 클릭 → AI가 파일 자동 생성</td></tr><tr><td>5. 테스트</td><td>브라우저 내 Android 시뮬레이터로 즉시 실행</td></tr><tr><td>6. 기능 추가</td><td>인증·DB 옵션 선택 (Firebase/Supabase)</td></tr><tr><td>7. 다운로드</td><td>APK 다운로드 또는 GitHub 동기화</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>MVP 모바일 앱</strong> — 아이디어를 1시간 내 시연 가능한 앱으로</li>
+<li><strong>습관 추적·가계부</strong> — 개인용 미니 도구 즉시 제작</li>
+<li><strong>클라이언트 시연</strong> — 클라이언트에게 프로토타입 즉시 공유</li>
+<li><strong>학습용 첫 모바일 앱</strong> — 비개발자가 모바일 앱 구조 학습</li>
+<li><strong>사내 도구</strong> — 간단한 사내용 안드로이드 도구 빠른 제작</li>
+<li><strong>이벤트 앱</strong> — 행사·캠페인용 일회성 앱 신속 배포</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li><strong>AI Studio 인지도</strong> — 기능 추가는 활발하나 사용자 인지는 낮음</li>
+<li><strong>무료 티어 유지</strong> — 별도 유료 구독 없이 시작 가능</li>
+<li><strong>iOS 미지원</strong> — 현재 Android 전용 (iOS 확장 가능성 있음)</li>
+<li><strong>Firebase 통합 강화</strong> — 인증·DB·Push까지 한 번에 연결</li>
+<li><strong>노코드 모바일 시장 확장</strong> — Bubble·Adalo와 정면 경쟁</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Google AI Studio</td><td>Gemini 기반 AI 빌더 플랫폼</td><td>구글판 OpenAI Playground + 빌더</td></tr><tr><td>Gemini</td><td>Google의 멀티모달 LLM</td><td>GPT·Claude와 경쟁하는 구글 AI</td></tr><tr><td>Android Studio</td><td>Google의 안드로이드 개발 IDE</td><td>모바일 개발자용 작업대</td></tr><tr><td>Android Emulator</td><td>PC에서 안드로이드를 흉내내는 가상 기기</td><td>PC 안에서 도는 가상 스마트폰</td></tr><tr><td>APK</td><td>Android Package, 앱 설치 파일</td><td>안드로이드용 설치파일(exe와 유사)</td></tr><tr><td>Firebase</td><td>Google의 모바일 백엔드 서비스</td><td>인증·DB·Push 통합 서비스</td></tr><tr><td>Supabase</td><td>오픈소스 Firebase 대안</td><td>Postgres 기반 백엔드</td></tr><tr><td>Room SQL</td><td>Android 로컬 DB 라이브러리</td><td>폰 내부 저장 데이터베이스</td></tr><tr><td>인증(Authentication)</td><td>사용자 로그인 처리</td><td>회원가입·로그인 시스템</td></tr><tr><td>노코드 모바일 빌더</td><td>코드 없이 모바일 앱 만드는 도구</td><td>레고처럼 조립하는 앱 빌더</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>Astro K Joseph · 2026-05-30</div></div></body></html>
