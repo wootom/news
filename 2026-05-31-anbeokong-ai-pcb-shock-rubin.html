@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 경쟁의 병목이 GPU 성능표 안에서 끝나지 않고, GPU를 연결·급전·방열하는 **PCB(인쇄회로기판)** 로 이동. 일부 증권사는 AI 렉 내 PCB 가치가 전년 대비 233% 급등 추정."><title>초록색 판 PCB가 AI 핵심 부품으로 — 엔비디아 루빈·카이버 PCB 쇼크</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-05-31 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>초록색 판 PCB가 AI 핵심 부품으로 — 엔비디아 루빈·카이버 PCB 쇼크</h1><p class="lead">AI 경쟁의 병목이 GPU 성능표 안에서 끝나지 않고, GPU를 연결·급전·방열하는 <strong>PCB(인쇄회로기판)</strong> 로 이동. 일부 증권사는 AI 렉 내 PCB 가치가 전년 대비 233% 급등 추정.</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">왜 PCB가 핵심이 되었나 (구조 변화)</a><a href="#s3">기술적 맥락 — 케이블리스와 고층화</a><a href="#s4">전략적 의미 — 전력과 패키징 융합</a><a href="#s5">수혜 밸류체인 4축 비교</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a><a href="#s9">타임스탬프 딥링크</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>AI 서버용 PCB가 단순 부품에서 시스템 핵심 인프라로 격상</td></tr><tr><td>촉발 요인</td><td>엔비디아 베라루빈·카이버 렉, 케이블리스 설계, 800VDC 전력 구조</td></tr><tr><td>핵심 변화</td><td>케이블 → PCB 내부 라우팅, 층수 20~30층 → 최대 100층대</td></tr><tr><td>시장 의미</td><td>&quot;싸게 많이 찍는 산업&quot; → &quot;정밀도·수율 관리하는 반도체형 산업&quot;</td></tr><tr><td>수혜 밸류체인</td><td>완성기판·CCL 소재·HVLP 동박·패키지 기판 4축으로 분화</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>왜 PCB가 핵심이 되었나 (구조 변화)</h2><p>GPU가 많아질수록 진짜 병목은 GPU 안이 아니라 <strong>GPU 바깥</strong>(GPU↔스위치, 전원부↔연산부 경로)에서 발생. 신호는 더 빨라지고, 전력은 더 커지고, 발열은 더 심해짐. 질문이 &quot;GPU가 얼마나 빠른가&quot;에서 &quot;그 빠른 칩을 어떻게 하나의 시스템으로 묶는가&quot;로 이동.</p>
+<blockquote>예전 서버 PCB가 한적한 2차선 도로였다면, AI PCB는 신호·전력·접지·차폐층이 수십 겹 쌓인 입체 고속도로 망.</blockquote></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 케이블리스와 고층화</h2><div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>케이블리스 구조</b><span>렉 뒤 구리 케이블(국수 다발)을 스위치 트레이·미드플레인·CX9/CPX 보드 같은 다층 PCB 내부 라우팅으로 대체. 신호손실·조립시간·냉각복잡도·고장진단 문제 해소.</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>초고다층화</b><span>한정된 두께 안에 신호·전원·접지·차폐층을 더 촘촘히. 루빈 세대 스위치 트레이 24층 HDI, 미드플레인·CX9/CPX 보드는 최대 104층 추정(트렌드포스).</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>고급 소재 전환</b><span>신호가 빨라지며 재료 자체가 성능 좌우. M8/M9급 저손실 CCL, 표면 거칠기 낮은 HVLP4 동박(표피효과 대응), Q글래스.</span></div></div></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미 — 전력과 패키징 융합</h2><div class="tbl-wrap"><table><thead><tr><th>변화</th><th>내용</th></tr></thead><tbody><tr><td>800VDC 전력</td><td>기존 54VDC로는 차세대 AI 서버 전력 부족. 고전압으로 전류·손실·발열 제곱 <span class="dn">감소</span></td></tr><tr><td>렉당 전력</td><td>차세대 하이퍼렉 최대 600KW급(2027 하반기 이후 목표치) — 중소형 건물 전력 수준</td></tr><tr><td>CoP 패키징</td><td>패키지 기판·인터포저·메인 PCB 경계가 가까워짐. PCB가 반도체 패키징 정밀도로 수렴</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>수혜 밸류체인 4축 비교</h2><div class="tbl-wrap"><table><thead><tr><th>기업(예시)</th><th>전공 분야</th><th>관전 포인트</th></tr></thead><tbody><tr><td>이수페타시스</td><td>초고다층 MLB(서버·네트워크용)</td><td>케이블→PCB 연결 전환의 직접 수혜</td></tr><tr><td>두산전자BG</td><td>CCL 소재</td><td>M8/M9급 저손실 소재 병목</td></tr><tr><td>롯데에너지머티리얼즈</td><td>HVLP 동박</td><td>일본계가 강한 고부가 회로박 시장 진입 여부</td></tr><tr><td>대덕전자·심텍·코리아써키트</td><td>패키지 기판(플립칩 BGA·ABF)</td><td>AI 가속기 칩 자체 낙수 효과</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>투자 관점</b><span>Q(물량)뿐 아니라 P(단가) <span class="up">상승</span>. PCB의 &#x27;신분 <span class="up">상승</span>&#x27;에 따른 밸류체인 분화 추적.</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>산업 분석</b><span>AI 인프라 병목이 GPU→전력→냉각→네트워크→기판으로 이동하는 흐름 파악.</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>기술 검증</b><span>루빈·카이버 실제 양산 사양, 미드플레인 케이블 대체율, 소재 공급 타이트함, 한국 기업 고다층 매출·수율 모니터링.</span></div></div></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>진짜 승자는 &#x27;기술을 말하는 기업&#x27;이 아니라 <strong>고객 요구 품질을 반복해서 찍어낼 수 있는(수율 확보) 기업</strong>일 가능성이 높음. 층수 100층·600KW·CoP 등은 모두 특정 보드·세대·리포트의 추정이 섞여 있어 확정 양산 기술처럼 단정 금지. 다만 방향성(고속·고전력·고밀도)은 분명.</p>
+<blockquote>핵심: PCB 가격이 올랐다가 아니라, 초록색 판이 AI의 성능·전력·신뢰성을 좌우하는 핵심 인프라로 올라왔다는 것 — 병목이 어디로 이동하는지를 보여주는 사건.</blockquote></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>PCB</td><td>칩·부품을 얹고 전기 길을 새긴 인쇄회로기판</td><td>도시의 도로망</td></tr><tr><td>CCL</td><td>유리섬유·수지·동박을 압착한 PCB 핵심 원재료</td><td>기판의 뼈대</td></tr><tr><td>HVLP 동박</td><td>표면 거칠기가 매우 낮은 고속신호용 구리박</td><td>매끈한 고속도로 노면</td></tr><tr><td>표피효과</td><td>고주파 전류가 구리 표면으로 몰리는 현상</td><td>빠른 차가 좁은 차선만 타고 달림</td></tr><tr><td>800VDC</td><td>800V 직류 전력 구조</td><td>같은 전력을 더 적은 전류로 보내 손실 <span class="dn">감소</span></td></tr><tr><td>CoP</td><td>칩·패키지·시스템 PCB 경계를 좁히는 차세대 패키징</td><td>중간 단계를 줄여 신호 경로 단축</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>타임스탬프 딥링크</h2><ul>
+<li><a href="https://youtu.be/9l63X6T7Zmc?t=125" target="_blank" rel="noopener">베라루빈 렉 구조</a></li>
+<li><a href="https://youtu.be/9l63X6T7Zmc?t=410" target="_blank" rel="noopener">고급 소재(HVLP·CCL) 설명</a></li>
+<li><a href="https://youtu.be/9l63X6T7Zmc?t=705" target="_blank" rel="noopener">시장이 뜨거운 이유 — P <span class="up">상승</span></a></li>
+<li><a href="https://youtu.be/9l63X6T7Zmc?t=975" target="_blank" rel="noopener">기판 전쟁 결론</a></li>
+</ul></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-05-31</div></div></body></html>

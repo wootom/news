@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="옛날 스킬은 지식 덩어리(재료만)였지만, 요즘 스킬은 레시피(워크플로우)와 보안까지 통째로 담아 숙련도와 무관하게 누구나 완성품을 만들게 한다."><title>AI 스킬은 &#x27;기능&#x27;이 아니라 &#x27;워크플로우+보안&#x27;을 본다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-05-31 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>AI 스킬은 &#x27;기능&#x27;이 아니라 &#x27;워크플로우+보안&#x27;을 본다</h1><p class="lead">옛날 스킬은 지식 덩어리(재료만)였지만, 요즘 스킬은 레시피(워크플로우)와 보안까지 통째로 담아 숙련도와 무관하게 누구나 완성품을 만들게 한다.</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">변화의 핵심 — 재료에서 레시피로</a><a href="#s3">두 가지 장점</a><a href="#s4">실행 가이드</a><a href="#s5">전망</a><a href="#s6">용어 사전</a><a href="#s7">타임스탬프 딥링크</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>스킬의 진화: 지식 제공 → 워크플로우+보안 내장</td></tr><tr><td>핵심 주장</td><td>좋은 스킬은 &quot;무엇을 아는가&quot;가 아니라 &quot;나를 어디까지 데려다 주는가&quot;</td></tr><tr><td>예시</td><td>&#x27;바이브 코딩 스타트업 키트&#x27; 스킬(Supabase·Vercel 가이드 내장)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>변화의 핵심 — 재료에서 레시피로</h2><p>옛 스킬은 &quot;이 도구는 이런 기능이 있습니다&quot;에서 끝났음 — 재료(당근·양파·고기)만 받고 레시피가 없는 상태. 요리 잘하는 사람만 완성. 요즘 스킬은 &quot;1단계 양파 볶기, 2단계 고기 넣기&quot;처럼 순서를 깔아줘 처음 하는 사람도 같은 결과물에 도달.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>두 가지 장점</h2><div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>편함(완성 보장)</b><span>워크플로우가 스킬 안에 들어 있어 숙련도와 상관없이 끝까지 도착. 내비게이션처럼 시키는 대로만 따라가면 목적지 도착.</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>안전(보안 내장)</b><span>초보자가 자기도 모르게 만드는 보안 구멍(키값 노출, 데이터 전체 공개)을 스킬이 안전한 방식으로 유도. 위험한 길로 가면 안전한 쪽으로 자연스럽게 가이드. 공장 검수 라인처럼 불량품이 걸러짐.</span></div></div></div>
+<blockquote>예전엔 &#x27;잘 만드는 것&#x27;과 &#x27;안전하게 만드는 것&#x27;이 따로였지만, 이제 둘이 하나로 합쳐짐.</blockquote></section><section class="card s6" id="s4"><h2><span class="seq">04</span>실행 가이드</h2><div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>만들 것 정하기</b><span>서비스를 만들고 싶으면 &#x27;스타트업 키트&#x27; 류 스킬 탐색.</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>스킬 트리거</b><span>첫 단계부터 순서대로 안내 시작.</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>순서 지키기</b><span>임의로 건너뛰지 말 것. 특히 보안 단계는 귀찮아도 건너뛰지 않기.</span></div></div></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>전망</h2><p>기능 설명만 잔뜩 하는 스킬은 사라지고, 지식+가이드라인+워크플로우를 통째로 담는 방향으로 진화 중. 안정적이고 온보딩에 유리하기 때문.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>스킬</td><td>클로드에 워크플로우·지식을 담아 트리거하는 기능 묶음</td><td>레시피가 든 도구 박스</td></tr><tr><td>워크플로우</td><td>작업을 끝까지 이끄는 단계별 절차</td><td>내비게이션 경로</td></tr><tr><td>트리거</td><td>스킬을 작동시키는 것</td><td>앱 실행 버튼</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>타임스탬프 딥링크</h2><ul>
+<li><a href="https://youtu.be/1UtKYwSeUf0?t=33" target="_blank" rel="noopener">재료만 주던 옛 스킬</a></li>
+<li><a href="https://youtu.be/1UtKYwSeUf0?t=121" target="_blank" rel="noopener">숙련도와 무관한 완성</a></li>
+<li><a href="https://youtu.be/1UtKYwSeUf0?t=297" target="_blank" rel="noopener">보안 단계는 건너뛰지 말 것</a></li>
+</ul></section></main><div class="foot"><span class="dot"></span>메이커 에반 · 2026-05-31</div></div></body></html>
