@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spatial AI(공간 지능) — Physical AI의 핵심 기술 | 혁신전파사</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800;900&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --surface:#f5f7f6; --border:#e3e8e5;
+  --text:#16201b; --muted:#5f6b64;
+  --accent:#1f7a4d; --accent2:#34a06a; --accent3:#7fd1a5; --light:#dff3e8;
+  --ink:#0d2a1c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR','Manrope',sans-serif;background:var(--bg);color:var(--text);line-height:1.65}
+a{color:inherit}
+.hero{background:linear-gradient(140deg,#0d3d27 0%,var(--accent) 55%,var(--accent2) 100%);color:#fff;padding:52px 22px 44px;text-align:center}
+.hero .tag{display:inline-block;background:rgba(255,255,255,.18);border-radius:20px;padding:5px 15px;font-size:12px;font-weight:700;letter-spacing:.1em;margin-bottom:18px}
+.hero h1{font-size:28px;font-weight:900;line-height:1.32;letter-spacing:-.02em;max-width:760px;margin:0 auto 12px}
+.hero .sub{font-size:14px;opacity:.9;max-width:620px;margin:0 auto 30px}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:680px;margin:0 auto}
+.stat{background:rgba(255,255,255,.14);border-radius:12px;padding:16px 8px}
+.stat .v{font-size:22px;font-weight:900;display:block;line-height:1.1}
+.stat .l{font-size:11px;opacity:.85;margin-top:5px}
+.container{max-width:920px;margin:0 auto;padding:40px 20px 70px}
+.section{margin-bottom:40px}
+.sh{display:flex;align-items:center;gap:13px;margin-bottom:18px}
+.num{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sh h2{font-size:19px;font-weight:800}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px}
+.lead{font-size:15px;background:var(--light);border-left:4px solid var(--accent);border-radius:8px;padding:16px 18px;color:var(--ink)}
+/* definition split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.def{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}
+.def h3{font-size:14px;color:var(--accent);font-weight:800;margin-bottom:8px}
+.def p{font-size:13px;color:var(--muted)}
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{background:#fff;border:1px solid var(--border);border-radius:18px;padding:7px 14px;font-size:12.5px;font-weight:600}
+/* flow */
+.flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
+.flow .step{flex:1;min-width:120px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.flow .step .ic{font-size:22px}
+.flow .step .t{font-size:13px;font-weight:800;margin:6px 0 3px}
+.flow .step .d{font-size:11.5px;color:var(--muted)}
+.arrow{display:flex;align-items:center;color:var(--accent2);font-size:20px;font-weight:800}
+/* sensor grid */
+.grid2{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.scell{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px}
+.scell .h{font-size:13px;font-weight:800;color:var(--accent)}
+.scell .b{font-size:12px;color:var(--muted);margin-top:4px}
+/* tech cards */
+.tech{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tcard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:15px;position:relative}
+.tcard .nm{font-size:13.5px;font-weight:800}
+.tcard .ds{font-size:12.5px;color:var(--muted);margin-top:5px}
+.ts{position:absolute;top:13px;right:13px;font-size:11px;font-weight:700;color:var(--accent2);text-decoration:none;background:var(--light);padding:2px 8px;border-radius:10px}
+/* industry */
+.ind{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.icard{border-radius:14px;padding:18px;color:#fff}
+.icard:nth-child(1){background:linear-gradient(150deg,#1f7a4d,#34a06a)}
+.icard:nth-child(2){background:linear-gradient(150deg,#176b6b,#2a9d9d)}
+.icard:nth-child(3){background:linear-gradient(150deg,#3a5a9c,#5b7fc4)}
+.icard .e{font-size:26px}
+.icard h3{font-size:15px;font-weight:800;margin:8px 0 8px}
+.icard ul{list-style:none;font-size:12px;opacity:.95}
+.icard li{margin-bottom:5px;padding-left:14px;position:relative}
+.icard li:before{content:'›';position:absolute;left:0;font-weight:800}
+/* company table */
+.ctable{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:13px}
+.ctable td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.ctable tr:last-child td{border-bottom:none}
+.ctable td:first-child{font-weight:800;color:var(--accent);width:34%;white-space:nowrap}
+/* insights */
+.ins{display:grid;gap:13px}
+.icrd{display:flex;gap:15px;background:#fff;border:1px solid var(--border);border-left:5px solid var(--accent);border-radius:12px;padding:18px}
+.icrd .big{font-size:30px;font-weight:900;color:var(--accent3);line-height:1}
+.icrd .tt{font-size:14.5px;font-weight:800;margin-bottom:5px}
+.icrd .dd{font-size:12.5px;color:var(--muted)}
+/* outlook */
+.out{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ocard{background:var(--ink);color:#dff3e8;border-radius:12px;padding:16px}
+.ocard .e{font-size:20px}
+.ocard .t{font-size:13px;font-weight:800;margin:6px 0 4px;color:#fff}
+.ocard .d{font-size:11.5px;opacity:.85}
+.footer{text-align:center;font-size:12px;color:var(--muted);padding:24px;border-top:1px solid var(--border);margin-top:10px}
+.footer a{color:var(--accent);font-weight:700;text-decoration:none}
+@media(max-width:680px){
+  .hero-stats{grid-template-columns:repeat(2,1fr)}
+  .split,.tech{grid-template-columns:1fr}
+  .grid2,.ind,.out{grid-template-columns:1fr}
+  .hero h1{font-size:23px}
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <span class="tag">혁신전파사 · AI 시리즈</span>
+  <h1>Spatial AI(공간 지능)<br>왜 Physical AI의 핵심 기술인가?</h1>
+  <p class="sub">현실의 공간·객체 관계·물리 법칙을 이해하는 AI. 공간 컴퓨팅·로봇·자율주행이 공유하는 기반 기술이자, AI 경쟁의 다음 전장.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="v">3</span><span class="l">현실 이해 요소<br>공간·관계·물리</span></div>
+    <div class="stat"><span class="v">LLM→<br>월드모델</span><span class="l">경쟁축 이동</span></div>
+    <div class="stat"><span class="v">3대</span><span class="l">산업: 공간컴퓨팅<br>로봇·자율주행</span></div>
+    <div class="stat"><span class="v">초기</span><span class="l">"여정은<br>이제 시작"</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="lead"><b>핵심 메시지</b> — 에이전틱 AI·피지컬 AI에 이어, 잘 알려지지 않았지만 결정적인 기술이 <b>공간 지능(Spatial AI)</b>이다. AI가 화면을 넘어 현실 공간으로 들어오면서, 경쟁의 축이 <b>언어 모델 → 월드 모델</b>로 옮겨가고 있다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div class="num">1</div><h2>공간 지능이란? — 두 가지 의미</h2></div>
+    <div class="split">
+      <div class="def"><h3>① 인간의 공간 지능</h3><p>가드너 다중지능이론의 한 축. 길찾기·방향감각·비율감각·평면도를 3D로 상상하는 능력. 잘하면 길눈이 밝고, 못하면 "길치".</p></div>
+      <div class="def"><h3>② 스페이셜 AI (오늘 주제)</h3><p>사람의 공간 지능을 <b>인공지능에 닮게</b> 만드는 것. 현실 공간 정보 + 객체 간 상호관계 + 물리 법칙을 이해하는 AI.</p></div>
+    </div>
+    <div class="chips">
+      <span class="chip">🗺️ 길찾기·방향</span>
+      <span class="chip">📐 비율·배치(인테리어)</span>
+      <span class="chip">🧊 평면도 → 3D 상상</span>
+      <span class="chip">⚖️ 무게·질감·물리 예측</span>
+      <span class="chip">📷 사진 한 장으로 공간 파악</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div class="num">2</div><h2>사람은 공간을 어떻게 이해하나</h2></div>
+    <div class="card">
+      <div class="flow">
+        <div class="step"><div class="ic">👁️</div><div class="t">인식(감각)</div><div class="d">오감 + 전정·고유수용성 감각</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="ic">📚</div><div class="t">학습된 지식</div><div class="d">컵·책상을 구분하는 배움</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="ic">🔁</div><div class="t">경험</div><div class="d">정보와 결합된 반복 경험</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="ic">🧠</div><div class="t">공간 이해</div><div class="d">인간 중심의 상호작용 인지</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div class="num">3</div><h2>AI의 구현 — 센서 → 인식 → 이해</h2></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px">사람의 "감각기관 → 뇌 처리"를 AI는 "<b>센서 → 프로세싱</b>"으로 모사한다.</p>
+
+    <h3 style="font-size:14px;margin:0 0 10px;font-weight:800">🔌 센서 = AI의 감각 기관</h3>
+    <div class="grid2">
+      <div class="scell"><div class="h">📷 카메라 / 이미지센서</div><div class="b">시각 정보 입수</div></div>
+      <div class="scell"><div class="h">📏 LiDAR·레이다·TOF·Depth</div><div class="b">정확한 거리(예: 17.81m)</div></div>
+      <div class="scell"><div class="h">💡 조도 센서</div><div class="b">정밀 밝기 측정</div></div>
+      <div class="scell"><div class="h">🎙️ 마이크</div><div class="b">소리·방향(청각)</div></div>
+      <div class="scell"><div class="h">🧭 자이로·가속도</div><div class="b">기울기·움직임·회전</div></div>
+      <div class="scell"><div class="h">✋ 텍타일 센서</div><div class="b">질감·반발력(촉각)</div></div>
+    </div>
+
+    <h3 style="font-size:14px;margin:22px 0 10px;font-weight:800">⚙️ 핵심 처리 기술</h3>
+    <div class="tech">
+      <div class="tcard"><a class="ts" href="https://youtu.be/RryPjjRNvFk?t=537">8:57</a><div class="nm">Depth Perception</div><div class="ds">벽·물체까지의 거리(깊이)를 인식</div></div>
+      <div class="tcard"><a class="ts" href="https://youtu.be/RryPjjRNvFk?t=549">9:09</a><div class="nm">SLAM</div><div class="ds">실시간 지도 작성 + 내 위치 추정</div></div>
+      <div class="tcard"><a class="ts" href="https://youtu.be/RryPjjRNvFk?t=558">9:18</a><div class="nm">VPS (시각 측위)</div><div class="ds">카메라로 위치 파악 → GPS 없는 실내 내비(코엑스 길찾기)</div></div>
+      <div class="tcard"><a class="ts" href="https://youtu.be/RryPjjRNvFk?t=578">9:38</a><div class="nm">3D Reconstruction</div><div class="ds">센서 정보로 현실을 3D로 복원(양안 시차 원리)</div></div>
+      <div class="tcard"><a class="ts" href="https://youtu.be/RryPjjRNvFk?t=603">10:03</a><div class="nm">Object Pose + Occlusion</div><div class="ds">물체 위치·자세 인식, 가려진 객체 처리</div></div>
+      <div class="tcard"><a class="ts" href="https://youtu.be/RryPjjRNvFk?t=639">10:39</a><div class="nm">Scene Understanding + 멀티모달 LLM</div><div class="ds">객체 관계·쓰임을 종합 이해 → 시뮬레이션으로 미래 예측</div></div>
+    </div>
+
+    <div class="lead" style="margin-top:16px">🌐 <b>월드 모델(World Model)</b> — LLM이 텍스트로 똑똑해졌듯, 현실의 이미지·영상·움직임으로 3D·물리 환경을 시뮬레이션하는 모델. LLM 대비 <b>매우 초기 단계</b>(표준·데이터 부족)이며, 이것이 발전해야 공간 지능도 도약한다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div class="num">4</div><h2>활용 산업 3대 영역</h2></div>
+    <div class="ind">
+      <div class="icard"><div class="e">🥽</div><h3>공간 컴퓨팅 <span style="font-size:11px;opacity:.8">(No.1)</span></h3>
+        <ul><li>현실 위에 스크린·앱 배치</li><li>Vision Pro: 벽에 시계·날씨 고정</li><li>"다음에 켜도 같은 자리" = 정밀 공간 인지</li><li>AR글래스·MR로 확장</li></ul></div>
+      <div class="icard"><div class="e">🤖</div><h3>로봇 · 휴머노이드</h3>
+        <ul><li>서빙 로봇·로봇청소기</li><li>집안 청소·빨래·설거지</li><li>공장: 변하는 환경 대응</li><li>사람과 공존·협력</li></ul></div>
+      <div class="icard"><div class="e">🚗</div><h3>자율주행</h3>
+        <ul><li>보행자·장애물 미리 인지</li><li>안전·고속·급변 환경</li><li>Tesla FSD·로보택시</li><li>센서 퓨전으로 급성장</li></ul></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div class="num">5</div><h2>공간 지능을 주도하는 기업</h2></div>
+    <table class="ctable">
+      <tr><td>NVIDIA</td><td>그래픽 기반 3D 강점. 피지컬 AI용 시뮬레이션 <b>Omniverse</b>, 월드 모델 <b>Cosmos</b> 개발</td></tr>
+      <tr><td>페이페이 리 · 얀 르쿤</td><td>월드 모델 스타트업 — 현실 공간 이해(공간 지능)에 집중</td></tr>
+      <tr><td>Apple</td><td>하드웨어 강자. Vision Pro → AI 글래스 재편 루머. 컴퓨팅 플랫폼·NUI 회사로 주목</td></tr>
+      <tr><td>Niantic (나이언틱)</td><td>포켓몬고로 모은 방대한 <b>지오스페이셜(실외) 데이터</b> → 지구 전체 공간 지능 비전</td></tr>
+      <tr><td>Tesla · 중국 기업</td><td>로봇·로보택시로 공간 지능 기반 확장 중</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div class="num">6</div><h2>핵심 인사이트 3</h2></div>
+    <div class="ins">
+      <div class="icrd"><div class="big">1</div><div><div class="tt">경쟁축 이동: 언어 모델 → 월드 모델</div><div class="dd">LLM은 대화형에 집중했지만, 이제 AI가 현실 공간으로 직접 들어오고 있다.</div></div></div>
+      <div class="icrd"><div class="big">2</div><div><div class="tt">공간 컴퓨팅·피지컬 AI의 핵심 허들 = 공간 지능</div><div class="dd">월드 모델뿐 아니라 하드웨어·센서·컴퓨팅 플랫폼의 발전도 함께 중요.</div></div></div>
+      <div class="icrd"><div class="big">3</div><div><div class="tt">3D·공간 데이터 = 미래 AI의 전략적 자산</div><div class="dd">로봇 훈련엔 막대한 공간 데이터가 필요 → 데이터를 가진 회사가 주도권.</div></div></div>
+    </div>
+    <div class="lead" style="margin-top:14px">세 인사이트는 하나로 수렴 — <b>공간 데이터 + 학습 투자 + 기술 발전</b>. 모멘트가 오면 공간 컴퓨터·자율주행·휴머노이드가 비로소 쓸모 있어진다.</div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><div class="num">7</div><h2>전망</h2></div>
+    <div class="out">
+      <div class="ocard"><div class="e">🌌</div><div class="t">메타버스의 현실화</div><div class="d">가상·현실 오버레이로 멀리 있는 사람과 휴먼 스케일 협업</div></div>
+      <div class="ocard"><div class="e">🖐️</div><div class="t">공간 = 인터페이스</div><div class="d">ChatGPT가 언어를, 공간 지능이 현실 공간 자체를 인터페이스로</div></div>
+      <div class="ocard"><div class="e">🎮</div><div class="t">생성형 시뮬레이션</div><div class="d">구글 Genie처럼 공간·시나리오를 즉석 생성, 각자 다른 경험</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  출처: <a href="https://youtu.be/RryPjjRNvFk">Spatial AI, 왜 Physical AI의 핵심 기술인가? — 혁신전파사</a><br>
+  2026-05-31 · 자동 생성 비주얼 리포트
+</div>
+</body>
+</html>
