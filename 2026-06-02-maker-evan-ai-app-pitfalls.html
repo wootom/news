@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="메이커 에반의 비개발자 대상 실전 경고. AI로 만든 앱이 무너지는 순서(코드 구조→보안→UX→AI 슬롭→안목 격차)와, 비개발자도 따라할 수 있는 4단계 해법."><title>AI로 30분 만에 앱 완성? 한 달 뒤 폐허되는 이유와 해법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-06-02 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>AI로 30분 만에 앱 완성? 한 달 뒤 폐허되는 이유와 해법</h1><p class="lead">메이커 에반의 비개발자 대상 실전 경고. AI로 만든 앱이 무너지는 순서(코드 구조→보안→UX→AI 슬롭→안목 격차)와, 비개발자도 따라할 수 있는 4단계 해법.</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">망하는 순서 — 4가지 함정 + 1</a><a href="#s3">기술적 맥락 — 왜 무너지나</a><a href="#s4">전략적 의미</a><a href="#s5">핵심 해법 — 비개발자 4단계</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>대상</td><td>AI로 앱을 만드는 비개발자(non-developer)</td></tr><tr><td>핵심 메시지</td><td>문제는 &quot;AI가 못 해서&quot;가 아니라 &quot;AI한테 안 시켜서&quot; 발생</td></tr><tr><td>망하는 5단계</td><td>코드 구조 → 보안 → UX → AI 슬롭(만족 함정) → 안목 격차</td></tr><tr><td>해법</td><td>정리 지시 / 보안 별도 확인 / 타인 테스트 / 리팩토링 반복</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>망하는 순서 — 4가지 함정 + 1</h2><ul>
+<li><strong>함정1 코드 구조</strong>: 한 파일에 몽땅 때려넣기 → 나중에 고치면 AI조차 위치를 못 찾아 멀쩡한 곳을 부숨(두더지 잡기)</li>
+<li><strong>함정2 보안</strong>: 결제 키·비밀번호를 코드에 그대로 노출, 관리자 페이지 잠금 누락 → 누구나 회원정보 열람·삭제 가능</li>
+<li><strong>함정3 UX</strong>: 기능은 되지만 안내 부재·에러 메시지 없음·모바일 버튼 이탈 → 사용자 한 번 불편하면 이탈</li>
+<li><strong>함정4 AI 슬롭(slop)</strong>: AI가 평균적으로 영혼 없이 찍어낸 결과물 → 만든 본인만 만족하고 정작 사용자는 거부감</li>
+<li><strong>+ 안목 격차</strong>: 개발자는 이상한 코드를 알아채지만, 비개발자는 검사할 기준이 없어 위험을 못 봄</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 왜 무너지나</h2><ul>
+<li>&quot;겉모습은 완성품, 벽 안쪽(배선·수도관)은 아무도 안 본 집&quot;과 동일</li>
+<li>혼자 쓸 때 기준으로 만들어진 코드 → 사용자 50명만 들어와도 느려지거나 멈춤</li>
+<li>잘못된 입력(빈칸·엉뚱한 값) 미대비 → 앱 정지</li>
+<li>코드 정리 미흡 → 수정할 때마다 새 버그 발생 → 결국 처음부터 다시가 빠른 상황</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>핵심 통찰: 네 함정 전부 &quot;AI 한계&quot;가 아니라 &quot;지시 누락&quot; → 알면 피할 수 있는 함정</li>
+<li>그럼에도 외주 대신 직접 만들어야 하는 이유 = <strong>속도</strong> (아이디어를 당일 구현하는 무기)</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 해법 — 비개발자 4단계</h2><ol>
+<li><strong>정리 지시</strong>: &quot;그냥 만들어 줘&quot;가 아니라 &quot;기능별로 파일 나눠서 나중에 고치기 쉽게&quot; 한 마디 추가 → 두더지 잡기 절반 제거</li>
+<li><strong>보안 별도 확인</strong>: &quot;비밀번호·중요 키가 코드에 노출됐어? 관리자 페이지는 잠겨 있어?&quot; 질문 → 개인정보 유출 사고 예방</li>
+<li><strong>타인 테스트</strong>: 친구에게 설명 없이 써보게 → 막히는 지점이 곧 고칠 곳(가장 싸고 빠른 UX <span class="up">개선</span>)</li>
+<li><strong>리팩토링 반복</strong>: &quot;더 좋게 할 수 있어 / 리팩토링 해 줘&quot;로 2~3회 더 굴리기 → 평균값을 한 단계 끌어올림</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>MVP 제작 비개발자</strong>: 4단계 체크리스트로 사이드 프로젝트의 구조·보안 리스크 사전 차단</li>
+<li><strong>1인 창업가</strong>: 출시 전 지인 테스트로 UX 함정 발견, 리팩토링으로 완성도 제고</li>
+<li><strong>AI 코딩 입문자</strong>: &quot;안목 키우기&quot;를 목표로 AI 결과물을 의심·검증하는 습관 형성</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>바이브 코딩(vibe coding) 확산 → 신나서 시작했다가 함정에 빠져 포기하는 비개발자 급증</li>
+<li>작은 습관(지시 한 줄·검증 질문)이 &quot;AI티 나는 앱&quot;과 &quot;진짜 제품&quot;을 가르는 분기점</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>AI 슬롭(slop)</td><td>AI가 평균적으로 영혼 없이 찍어낸 결과물</td><td>라면에 계란만 푼 요리를 손님에게 파는 격</td></tr><tr><td>리팩토링(refactoring)</td><td>동작은 유지한 채 코드 구조를 정리·<span class="up">개선</span></td><td>어질러진 방을 라벨 붙여 재정리</td></tr><tr><td>코드 구조</td><td>코드를 기능별로 나눠 정리한 상태</td><td>박스에 라벨 붙여 이사하기</td></tr><tr><td>관리자 페이지 잠금</td><td>주인만 들어가도록 접근을 막는 보안 설정</td><td>현관문 잠그기(비번을 대문에 안 붙이기)</td></tr><tr><td>바이브 코딩</td><td>AI에게 자연어로 시켜 앱을 만드는 방식</td><td>말로 시키면 뚝딱 나오는 코딩</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>메이커 에반 · 2026-06-02</div></div></body></html>

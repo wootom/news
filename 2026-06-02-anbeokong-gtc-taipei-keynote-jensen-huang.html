@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="안될공학(에러)이 GTC Taipei 키노트 현장에서 직접 청취·정리한 발표 핵심. 젠슨 황의 핵심 프레임은 &quot;컴퓨트 = 매출(Compute is Revenue)&quot;이며, 베라루빈(Vera Rubin)을 단일 GPU가 아닌 **랙 스케일 AI 팩토리 플랫폼**으로 포지셔"><title>젠슨황 GTC Taipei 키노트 핵심 — AI Agent가 인프라 모든 걸 바꾸다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-06-02 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>젠슨황 GTC Taipei 키노트 핵심 — AI Agent가 인프라 모든 걸 바꾸다</h1><p class="lead">안될공학(에러)이 GTC Taipei 키노트 현장에서 직접 청취·정리한 발표 핵심. 젠슨 황의 핵심 프레임은 &quot;컴퓨트 = 매출(Compute is Revenue)&quot;이며, 베라루빈(Vera Rubin)을 단일 GPU가 아닌 <strong>랙 스케일 AI 팩토리 플랫폼</strong>으로 포지셔닝.</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 내용 구조 — &quot;컴퓨트 = 매출&quot; 프레임</a><a href="#s3">기술적 맥락 — 베라루빈 = 랙 스케일 플랫폼</a><a href="#s4">전략적 의미 — 엔비디아의 &quot;풀 패키지&quot; 지배</a><a href="#s5">핵심 워크플로우 — 에이전트 정의와 케이던스 협력</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>행사</td><td>NVIDIA GTC Taipei 키노트 (대만, 타이페이 뮤직센터)</td></tr><tr><td>핵심 메시지</td><td>&quot;Useful AI has arrived&quot; — AI가 실제로 돈을 벌기 시작</td></tr><tr><td>중심 프레임</td><td>컴퓨트 = 비용(Cost) → 컴퓨트 = 매출(Revenue) 전환</td></tr><tr><td>대표 제품</td><td>베라루빈(Vera Rubin) 랙, 베라 CPU, 블루필드4(STX), 스펙트럼X 포토닉스, AI PC</td></tr><tr><td>양산 선언</td><td>베라루빈 풀 프로덕션(full production) 진입 — 30개국·350개 공장 가동</td></tr><tr><td>수혜 키워드</td><td>케이던스(칩 설계), HBM4, NAND 플래시, 실리콘 포토닉스, 유니트리(로봇)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조 — &quot;컴퓨트 = 매출&quot; 프레임</h2><ul>
+<li>AI 추론(inference)·에이전트 시대 진입 → 사용자가 AI를 쓸수록 토큰 생산 → 토큰이 곧 서비스 매출</li>
+<li>컴퓨터의 의미 전환: &quot;돈 쓰는 기계(코스트 센터)&quot; → &quot;24시간 토큰 찍어내는 디지털 프린터(매출 센터)&quot;</li>
+<li>AI 팩토리(AI Factory) 비유: 일반 공장이 자동차·반도체 생산하듯, AI 팩토리는 토큰·코드·이미지·영상·검색결과 등 &quot;지능&quot; 생산</li>
+<li>성능 지표 전환: 기존 FLOPS·추론 레이턴시 → <strong>와트당 토큰 수(token per watt)·에이전트 스루풋·토큰 코스트</strong></li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 베라루빈 = 랙 스케일 플랫폼</h2><ul>
+<li>베라루빈은 단일 GPU 아님 → GPU + 베라 CPU + 블루필드4(DPU) + 스토리지 + 시큐리티 + 네트워크 통합 시스템</li>
+<li>DSX: AI 팩토리 전체 설계·배치·운용 플랫폼(PC의 OS에 해당) — 전력당 토큰 극대화 목표</li>
+<li>베라 CPU: 88코어, 초당 1.2TB 대역폭, 올림푸스 코어(스페이셜 멀티스레딩) — X86 대비 1.8배, SQL 데이터 처리 3배, 실시간 스트리밍(뉴욕증권거래소 사례) 6배 빠름</li>
+<li>스펙트럼X 포토닉스(CPO, 코패키지드 옵틱스): 전기→광신호 이동 거리 단축 → 100만 GPU AI 팩토리 연결 기반 (TSMC 협력)</li>
+<li>블루필드4 STX: NAND 플래시 기반 KV 캐시 저장 → 긴 멀티턴 대화·장기 컨텍스트 대응 (키옥시아·샌디스크 수혜)</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미 — 엔비디아의 &quot;풀 패키지&quot; 지배</h2><ul>
+<li>메시지: GPU 하나가 빠르냐가 아니라, <strong>같은 전력으로 랙 전체가 얼마나 많은 매출 작업을 하느냐</strong></li>
+<li>CPU까지 자체 설계 → 고객은 &quot;부품 선택&quot;이 아니라 &quot;AI 공장 전체를 패키지로 구매&quot;</li>
+<li>AI 버블론 반박: 스탠퍼드 공대 출신답게 &quot;컴퓨트→매출&quot; 그래프로 숫자 제시, 지속가능성 강조</li>
+<li>디바이스 시장 진출: AI PC(마이크로소프트·미디어텍 협력), 노트북·디지털 스테이션 — 맥미니/맥스튜디오 타겟</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 — 에이전트 정의와 케이던스 협력</h2><ul>
+<li>엔비디아의 에이전트 정의: <strong>LLM(두뇌) + 하네스(harness)의 결합</strong></li>
+</ul>
+<p>- 하네스 = 메모리 관리 + 컨텍스트 + 툴 사용 + 코드 실행 + 권한·보안 + 반복 구조 설계</p>
+<ul>
+<li>엔터프라이즈 에이전트 툴키트 공개 (openclaw·Claude Code 등 + CUDA-X 라이브러리 + Nemotron 오픈모델 결합)</li>
+<li>케이던스(Cadence) 협력: 반도체 칩 설계·검증(RTL·타이밍·테스트벤치) 워크플로우를 에이전트화</li>
+</ul>
+<p>- 엔비디아가 자사 칩 설계·검증의 첫 고객 → 발표 직후 케이던스 주가 급등</p>
+<ul>
+<li>AI PC 코어: 블랙웰 RTX GPU + 그레이스 CPU 20코어 + LPDDR5X 128GB + 1페타플롭스</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>AI 데이터센터 구축사</strong>: 베라루빈 랙 단위 도입으로 전력당 토큰 효율 극대화, 단일 벤더 통합 운용</li>
+<li><strong>반도체 기업</strong>: 케이던스 에이전트 솔루션 도입으로 RTL 설계·검증 자동화, 자체 EDA 구축 부담 절감</li>
+<li><strong>금융 트레이딩(HFT/MFT)</strong>: 베라 CPU 초저지연 실시간 스트리밍으로 초당 단타·데이터 파이프라인 가속</li>
+<li><strong>개인 개발자</strong>: AI PC·디지털 스테이션으로 데이터센터 없이 로컬 고성능 AI 워크로드 실행</li>
+<li><strong>로보틱스</strong>: 아이작 그루트·유니트리(31 자유도) 레퍼런스 모델 기반 휴머노이드·자율주행 개발</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>베라루빈 풀 프로덕션 선언 → 최태원 회장 참석(삼성 콜), HBM4 SK하이닉스는 아직 콜(qualification) 미완 단계</li>
+<li>엔비디아는 GPU→CPU→네트워크→스토리지→디바이스→로봇까지 <strong>에이전트 시대 인프라 전 영역 수직 장악</strong> 시도</li>
+<li>차세대 플랫폼: 블랙웰 → 루빈 파밀리아 → AI PC·피지컬 AI(코스모스) 로드맵 확장</li>
+<li>향후 컴퓨텍스에서 세부 발표 예정 — 안될공학은 추가 정리 영상 예고</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>AI 팩토리(AI Factory)</td><td>전기를 넣으면 24시간 토큰·지능을 생산하는 데이터센터</td><td>자동차 공장처럼, 원료(전력) 넣고 제품(토큰) 찍어내는 공장</td></tr><tr><td>컴퓨트 = 매출</td><td>AI 추론이 늘수록 토큰·서비스 매출이 발생한다는 프레임</td><td>동전 넣으면 돈을 찍어내는 자판기</td></tr><tr><td>베라루빈(Vera Rubin)</td><td>엔비디아 차세대 랙 스케일 AI 시스템 전체</td><td>GPU 하나가 아니라 공장 생산라인 통째</td></tr><tr><td>베라 CPU</td><td>엔비디아 자체 설계 88코어 서버 CPU</td><td>GPU 옆에서 데이터를 빨리 날라주는 조수</td></tr><tr><td>하네스(Harness)</td><td>LLM이 실제 업무를 하도록 묶어주는 실행 구조</td><td>두뇌(LLM)에 손발(메모리·툴·권한)을 달아주는 장치</td></tr><tr><td>CPO(코패키지드 옵틱스)</td><td>칩 옆에 광통신을 붙여 전기→광 이동거리를 줄이는 기술</td><td>데이터 고속도로를 빛으로 깔기</td></tr><tr><td>KV 캐시</td><td>긴 대화·컨텍스트를 기억하기 위한 임시 저장 데이터</td><td>대화 내용을 적어두는 메모장</td></tr><tr><td>콜(Qualification)</td><td>부품이 시스템에 결합됐을 때 정상 작동하는지 검증</td><td>부품 합격 후에도 완성차 조립 테스트 통과 필요</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-06-02</div></div></body></html>
