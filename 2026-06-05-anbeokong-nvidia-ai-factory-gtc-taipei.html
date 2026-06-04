@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 모든 AI 병목에 NVIDIA가 있다 — 젠슨황 GTC 타이페이 키노트 해설"><title>모든 AI 병목에 NVIDIA가 있다 (안될공학)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-06-05 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>모든 AI 병목에 NVIDIA가 있다 (안될공학)</h1><p class="lead">title: 모든 AI 병목에 NVIDIA가 있다 — 젠슨황 GTC 타이페이 키노트 해설</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 내용 구조 — 공장 비유로 본 발표</a><a href="#s3">기술적 맥락</a><a href="#s4">전략적 의미</a><a href="#s5">핵심 포인트 비교 — 관점 전환</a><a href="#s6">활용 시나리오 (투자·산업 시사점)</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>안될공학</td></tr><tr><td>소재</td><td>GTC 타이페이 젠슨황 키노트 현장 해설</td></tr><tr><td>핵심 명제</td><td>&quot;Compute is revenue&quot; — AI는 비용이 아니라 매출을 찍어내는 인프라</td></tr><tr><td>전환</td><td>경쟁이 모델 성능표 밖으로 이동 → 누가 더 싸게·많이·안정적으로 AI로 돈 벌게 하느냐</td></tr><tr><td>결론</td><td>GPU 전쟁 → &quot;AI 팩토리(공장) 전쟁&quot; — 주변 병목 전체를 NVIDIA가 직접 설계</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조 — 공장 비유로 본 발표</h2><div class="tbl-wrap"><table><thead><tr><th>구성</th><th>역할</th><th>발표 제품/사례</th></tr></thead><tbody><tr><td>두뇌(GPU)</td><td>추론·생성 핵심 연산</td><td>Vera Rubin (Grace Blackwell 대비 에이전트 처리량 10배)</td></tr><tr><td>작업 조율(CPU)</td><td>에이전트 다중 실행·데이터 공급</td><td>Vera CPU (x86 대비 에이전틱 1.8배, NYSE 1.1조 메시지/일)</td></tr><tr><td>신경망(네트워크)</td><td>GPU 간 초고속 통신</td><td>Spectrum-X 이더넷 포토닉스/CPO (전력효율·업타임 5배)</td></tr><tr><td>관문(보안)</td><td>데이터 격리·권한 통제</td><td>BlueField-4 DPU</td></tr><tr><td>운영체계</td><td>공장 전체 관리</td><td>DGX</td></tr><tr><td>검증 사례</td><td>자율 칩 설계 검증</td><td>Cadence 칩스택 AI 슈퍼에이전트(검증 5주→하루 미만)</td></tr></tbody></table></div></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>AI 팩토리</strong>: 저장 창고가 아니라 토큰·결과물을 찍어내는 공장. 전기를 넣으면 24시간 매출을 생산. <a href="https://youtu.be/zOUUFrMGwEg?t=102" target="_blank" rel="noopener">딥링크 1:42</a></li>
+<li><strong>에이전트 = LLM + 하네스</strong>: 두뇌(추론·계획)에 메모리·툴 호출·권한·샌드박스·검증 루프가 붙어야 일을 돌리는 에이전트가 됨.</li>
+<li><strong>병목 이동</strong>: 하나의 프롬프트가 수천 단계 여정(retriever→tool→generation)으로 확장 → 병목이 GPU 밖(CPU·네트워크·보안)으로 분산. <a href="https://youtu.be/zOUUFrMGwEg?t=421" target="_blank" rel="noopener">딥링크 7:01</a></li>
+<li><strong>Vera CPU</strong>: 88코어, OoO SMT, 최대 1.2TB/s LPDDR5X, NVLink C2C 코히어런트 — 파이썬 기반 에이전트 오케스트레이션의 GPU 발목잡기 방지. <a href="https://youtu.be/zOUUFrMGwEg?t=59" target="_blank" rel="noopener">딥링크 0:59</a></li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>NVIDIA는 &quot;더 빠른 칩 파는 회사&quot;라는 정체성을 버리고 <strong>돈이 만들어지는 생산라인 전체를 설계하는 회사</strong>로 포지셔닝.</li>
+<li>Vera CPU는 GPU 대체가 아니라 GPU가 더 오래·바쁘게·수익성 있게 일하도록 만드는 보조 장치.</li>
+<li>로봇: Isaac GR00T 레퍼런스 휴머노이드(Unitree H2+ 바디, Sharpa 손, Jetson Thor) — 완제품이 아닌 &quot;로봇 산업의 두뇌·신경계 플랫폼&quot; 선점. <a href="https://youtu.be/zOUUFrMGwEg?t=826" target="_blank" rel="noopener">딥링크 13:46</a></li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 포인트 비교 — 관점 전환</h2><div class="tbl-wrap"><table><thead><tr><th>기존 관점</th><th>키노트가 제시한 관점</th></tr></thead><tbody><tr><td>데이터센터 = 서버 창고</td><td>AI 팩토리 = 매출 생산 공장</td></tr><tr><td>GPU가 유일한 핵심</td><td>GPU·CPU·네트워크·보안 전체가 생산 설비</td></tr><tr><td>컴퓨팅 = 비용</td><td>컴퓨팅 = 매출(compute is revenue)</td></tr><tr><td>PC 기준 = CPU·배터리</td><td>PC 기준 = 로컬 에이전트 구동력(RTX 스파크)</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오 (투자·산업 시사점)</h2><ul>
+<li><strong>반도체 검증</strong>: AI 에이전트가 이메일 작성을 넘어 칩 설계·검증 등 고부가 엔지니어링으로 진입(Cadence).</li>
+<li><strong>금융 인프라</strong>: NYSE가 Vera CPU로 초저지연 마켓 인프라 확장 — 안정성·지연이 핵심.</li>
+<li><strong>로컬 PC AI</strong>: RTX 스파크로 프라이버시 중요 작업을 PC 내 로컬 에이전트로 수행(MS·Dell·HP·Lenovo 생태계).</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>지켜볼 포인트: Vera Rubin 실제 양산·공급, Vera CPU의 엔터프라이즈 채택 속도, Cadence류 에이전트 신뢰성, CPO/Spectrum-X 실제 배치.</li>
+<li>대만 서플라이체인이 반복 강조 — AI 팩토리는 칩 하나가 아닌 서버·냉각·전력·네트워크·제조 전체가 결합돼야 작동.</li>
+<li>과장 경계: 레퍼런스 디자인이 곧 대량 상용화는 아니며, 로봇 대중화도 내년 즉시는 아님. 다만 피지컬 AI 플랫폼 주도권 경쟁은 이미 시작.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>AI 팩토리</td><td>토큰·결과물을 찍어내 매출을 만드는 AI 인프라</td><td>전기를 넣는 24시간 공장</td></tr><tr><td>Compute is revenue</td><td>컴퓨팅이 비용이 아니라 매출이라는 명제</td><td>기계가 돌수록 돈이 나옴</td></tr><tr><td>하네스(harness)</td><td>LLM 두뇌를 일하게 만드는 주변 장치 묶음</td><td>두뇌에 붙는 손발·기억</td></tr><tr><td>Vera CPU</td><td>에이전트용으로 설계된 NVIDIA의 첫 CPU</td><td>공장의 작업 반장</td></tr><tr><td>CPO</td><td>광모듈을 스위치 칩에 밀착시킨 광통신 방식</td><td>전선 대신 빛으로 배달</td></tr><tr><td>BlueField DPU</td><td>데이터 길목에서 보안·격리를 담당하는 장치</td><td>공장 출입 검문소</td></tr><tr><td>Isaac GR00T</td><td>휴머노이드 로봇용 소프트웨어·모델 스택</td><td>로봇의 두뇌 OS</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-06-05</div></div></body></html>
