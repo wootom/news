@@ -1,0 +1,400 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="구내통신 영업 공백 대응을 위한 헤르메스 AI 에이전트 기반 AX 적용 검토안"><title>구내통신 영업 공백 대응을 위한 헤르메스 AI 에이전트 기반 AX 적용 검토안</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>xbot</span><span class="ey">xbot · 2026-06-05</span><span class="chip">🖥 웹리포트</span></div><h1>구내통신 영업 공백 대응을 위한 헤르메스 AI 에이전트 기반 AX 적용 검토안</h1></header><nav class="toc"><span class="ti">목차</span><a href="#s1">제안 배경</a><a href="#s2">영상 기반 핵심 인사이트</a><a href="#s3">헤르메스 학습 구조</a><a href="#s4">전용 프로필 설정 방향</a><a href="#s5">Skill MD로 분해할 업무</a><a href="#s6">학습시킬 상품·업무 지식</a><a href="#s7">Memory에 저장할 고객 맥락</a><a href="#s8">템플릿화할 문서</a><a href="#s9">즉시 대체 가능한 업무</a><a href="#s10">사람 확인이 필요한 업무</a><a href="#s11">반복 피드백 운영 방식</a><a href="#s12">크론잡 자동화 후보</a><a href="#s13">3개월 추진 범위</a><a href="#s14">기대 효과</a><a href="#s15">리스크 및 대응 방안</a><a href="#s16">수도권고객5팀 전달용 핵심 문구</a><a href="#s17">최종 결론</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>제안 배경</h2><ul>
+<li>엘지유플러스 김창민 책임님의 내년 원래팀 복귀 가능성</li>
+</ul>
+<ul>
+<li>김창민 책임님 이동 시 수도권고객5팀 구내통신 SEG의 영업 업무 공백 발생 우려</li>
+</ul>
+<ul>
+<li>인원 보충이 없을 경우 백운선 책임님에게 구내통신 영업 업무 부담 집중 가능성</li>
+</ul>
+<ul>
+<li>구내통신 영업 업무의 연속성 확보 및 업무 공백 최소화를 위한 AI 에이전트 활용 필요성</li>
+</ul>
+<ul>
+<li>헤르메스 AI 에이전트를 백운선 책임님의 구내통신 영업 보조 에이전트로 활용하는 AX 과제 검토 필요성</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>영상 기반 핵심 인사이트</h2><ul>
+<li>분석 대상 영상: 김효율의 AI 개발단, 「99.9%가 모르는 AI 에이전트를 학습시키는 천재적 방법」</li>
+</ul>
+<ul>
+<li>영상 길이: 14분 19초</li>
+</ul>
+<ul>
+<li>영상 핵심 주제: 헤르메스 에이전트를 업무 수행과 반복 피드백을 통해 점진적으로 학습시키는 방법</li>
+</ul>
+<ul>
+<li>핵심 메시지: AI 에이전트를 한 번 설정하고 끝내는 것이 아니라, 일을 시키고 피드백을 주면서 계속 <span class="up">개선</span>하는 방식</li>
+</ul>
+<ul>
+<li>적용 방향: 모델 자체를 재학습시키는 방식이 아니라 Skill MD, Memory, Profile/SOUL, 반복 피드백을 통해 업무 습관을 학습시키는 방식</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>헤르메스 학습 구조</h2><div class="tbl-wrap"><table><thead><tr><th>구성 요소</th><th>역할</th><th>구내통신 영업 적용 예시</th></tr></thead><tbody><tr><td>Profile / SOUL</td><td>에이전트 역할, 말투, 판단 기준 고정</td><td>“LG U+ 구내통신 영업 보조 에이전트” 설정</td></tr><tr><td>Skill MD</td><td>특정 업무 수행 절차 문서화</td><td>고객 문의 응대, 견적 초안, 미팅록, 후속 메일</td></tr><tr><td>Memory</td><td>반복적으로 기억해야 할 고객·업무 맥락 저장</td><td>고객사명, 담당자 성향, 기존 통신사, 계약 만료일</td></tr><tr><td>Template</td><td>반복 산출물 형식 표준화</td><td>견적서, 제안서, 미팅록, 주간 보고서</td></tr><tr><td>Feedback</td><td>결과물 검토 후 Skill <span class="up">개선</span></td><td>“답변이 길다”, “견적 항목이 빠졌다” 등 수정 지시</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전용 프로필 설정 방향</h2><ul>
+<li>프로필명: LG U+ 구내통신 영업 보조 에이전트</li>
+</ul>
+<ul>
+<li>역할: 백운선 책임님의 구내통신 영업 업무 보조</li>
+</ul>
+<ul>
+<li>말투: 실무자처럼 간결하고 정중한 표현</li>
+</ul>
+<ul>
+<li>응대 기준: 고객 문의에 대해 빠른 1차 응대 초안 작성</li>
+</ul>
+<ul>
+<li>판단 기준: 확정 답변이 어려운 경우 “확인 후 회신” 처리</li>
+</ul>
+<ul>
+<li>금지 기준: 계약 금액, 법적 문구, SLA 관련 약속에 대한 단독 확정 금지</li>
+</ul>
+<ul>
+<li>업무 초점: 자료 정리, 초안 작성, 고객 맥락 기억, 후속조치 관리</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>Skill MD로 분해할 업무</h2><div class="tbl-wrap"><table><thead><tr><th>Skill 명</th><th>입력값</th><th>수행 내용</th><th>출력물</th></tr></thead><tbody><tr><td>고객 문의 1차 응대</td><td>고객명, 연락처, 요청사항</td><td>문의 요약, 추가 확인사항 도출, 답변 초안 작성</td><td>고객 답변 문안</td></tr><tr><td>구내 회선 견적</td><td>건물 정보, 요구 회선 수, 용도</td><td>요금·구성 비교, 2~3개 안 제시</td><td>견적 비교표</td></tr><tr><td>미팅록 작성</td><td>회의 메모, 녹취 요약</td><td>핵심 논의 정리, 액션 아이템 도출</td><td>미팅록</td></tr><tr><td>후속 메일 자동화</td><td>고객명, 논의 사항, 다음 단계</td><td>후속 안내, 필요자료 요청, 일정 확인</td><td>후속 메일 초안</td></tr><tr><td>주간 파이프라인 정리</td><td>금주 영업 활동</td><td>진행 단계, 리스크, 다음 액션 정리</td><td>주간 보고서</td></tr><tr><td>반론 대응</td><td>고객 우려사항</td><td>가격, 품질, 설치 일정 등 반론 대응</td><td>응대 스크립트</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>학습시킬 상품·업무 지식</h2><ul>
+<li>구내통신 상품 구조</li>
+</ul>
+<ul>
+<li>인터넷 회선 종류</li>
+</ul>
+<ul>
+<li>기업전화, 구내전화, IP전화 관련 기본 지식</li>
+</ul>
+<ul>
+<li>장비 구성</li>
+</ul>
+<ul>
+<li>설치 조건</li>
+</ul>
+<ul>
+<li>약정 기간</li>
+</ul>
+<ul>
+<li>요금 구조</li>
+</ul>
+<ul>
+<li>장애 접수 및 처리 절차</li>
+</ul>
+<ul>
+<li>이전 설치, 해지, 증설 절차</li>
+</ul>
+<ul>
+<li>내부 상신 기준</li>
+</ul>
+<ul>
+<li>고객 문의 유형별 응대 기준</li>
+</ul></section><section class="card s12" id="s7"><h2><span class="seq">07</span>Memory에 저장할 고객 맥락</h2><ul>
+<li>고객사명</li>
+</ul>
+<ul>
+<li>담당자명</li>
+</ul>
+<ul>
+<li>담당자 성향</li>
+</ul>
+<ul>
+<li>기존 통신사</li>
+</ul>
+<ul>
+<li>현재 사용 회선</li>
+</ul>
+<ul>
+<li>계약 만료일</li>
+</ul>
+<ul>
+<li>예산 시기</li>
+</ul>
+<ul>
+<li>민감 이슈</li>
+</ul>
+<ul>
+<li>의사결정 구조</li>
+</ul>
+<ul>
+<li>선호 연락 방식</li>
+</ul>
+<ul>
+<li>다음 액션</li>
+</ul>
+<ul>
+<li>과거 미팅 이력</li>
+</ul>
+<ul>
+<li>진행 중 이슈</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>템플릿화할 문서</h2><ul>
+<li>고객 문의 답변 템플릿</li>
+</ul>
+<ul>
+<li>견적 요청 메일 템플릿</li>
+</ul>
+<ul>
+<li>견적 비교표 템플릿</li>
+</ul>
+<ul>
+<li>미팅록 템플릿</li>
+</ul>
+<ul>
+<li>제안서 목차 템플릿</li>
+</ul>
+<ul>
+<li>장애 보고 템플릿</li>
+</ul>
+<ul>
+<li>내부 상신 메모 템플릿</li>
+</ul>
+<ul>
+<li>주간 영업 보고서 템플릿</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>즉시 대체 가능한 업무</h2><ul>
+<li>고객 문의 요약</li>
+</ul>
+<ul>
+<li>고객 답변 초안 작성</li>
+</ul>
+<ul>
+<li>미팅록 작성</li>
+</ul>
+<ul>
+<li>후속 메일 작성</li>
+</ul>
+<ul>
+<li>제안서 목차 작성</li>
+</ul>
+<ul>
+<li>견적 비교표 초안 작성</li>
+</ul>
+<ul>
+<li>주간 보고서 작성</li>
+</ul>
+<ul>
+<li>고객별 진행 현황 정리</li>
+</ul>
+<ul>
+<li>미처리 후속조치 리스트업</li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>사람 확인이 필요한 업무</h2><ul>
+<li>최종 견적 확정</li>
+</ul>
+<ul>
+<li>계약 조건 확정</li>
+</ul>
+<ul>
+<li>고객사와의 민감한 협상</li>
+</ul>
+<ul>
+<li>장애 책임 소재 판단</li>
+</ul>
+<ul>
+<li>내부 승인 및 상신</li>
+</ul>
+<ul>
+<li>개인정보 포함 문서 처리</li>
+</ul>
+<ul>
+<li>법적 효력 문구 검토</li>
+</ul>
+<ul>
+<li>SLA 관련 약속</li>
+</ul></section><section class="card s6" id="s11"><h2><span class="seq">11</span>반복 피드백 운영 방식</h2><ul>
+<li>초기 2주: 매 건 피드백 기반 수정</li>
+</ul>
+<ul>
+<li>2~4주차: 결과물 검토 후 주요 오류 중심 피드백</li>
+</ul>
+<ul>
+<li>4주 이후: 자율 운영 및 간헐적 샘플링 검토</li>
+</ul>
+<ul>
+<li>피드백 예시: “답변이 너무 길다”</li>
+</ul>
+<ul>
+<li>피드백 예시: “고객에게 바로 가격을 말하지 말고 현황 파악 질문부터 해라”</li>
+</ul>
+<ul>
+<li>피드백 예시: “견적 비교표에 설치비와 약정 조건을 추가해라”</li>
+</ul>
+<ul>
+<li>피드백 예시: “메일 톤을 더 부드럽게 바꿔라”</li>
+</ul>
+<ul>
+<li>피드백 예시: “상신용 문구로 다시 써라”</li>
+</ul></section><section class="card s6" id="s12"><h2><span class="seq">12</span>크론잡 자동화 후보</h2><div class="tbl-wrap"><table><thead><tr><th>주기</th><th>자동화 업무</th></tr></thead><tbody><tr><td>매일 오전 9시</td><td>전일 미처리 문의 정리</td></tr><tr><td>매일 오후 5시</td><td>당일 고객 후속 조치 리스트 정리</td></tr><tr><td>매주 금요일 오후 3시</td><td>주간 파이프라인 리포트 생성</td></tr><tr><td>매월 1일</td><td>약정 만료 예정 고객 리스트업</td></tr><tr><td>매월 말</td><td>다음 달 집중 공략 고객 후보 정리</td></tr></tbody></table></div></section><section class="card s6" id="s13"><h2><span class="seq">13</span>3개월 추진 범위</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>기간</th><th>주요 내용</th></tr></thead><tbody><tr><td>1단계</td><td>1~2주차</td><td>전용 프로필 생성, 업무 Skill 초안 작성, 문서 템플릿 정리</td></tr><tr><td>2단계</td><td>3~4주차</td><td>상품 지식 입력, 고객 정보 Memory 저장, 실제 업무 파일럿 적용</td></tr><tr><td>3단계</td><td>5~8주차</td><td>매 건 피드백 기반 Skill 고도화, 반론 대응 스크립트 추가</td></tr><tr><td>4단계</td><td>9~12주차</td><td>크론잡 자동화, 자율 운영 전환, 성과 측정 및 보고</td></tr></tbody></table></div></section><section class="card s6" id="s14"><h2><span class="seq">14</span>기대 효과</h2><ul>
+<li>김창민 책임님의 업무 노하우 보존</li>
+</ul>
+<ul>
+<li>김창민 책임님 이동 후에도 구내통신 영업 업무 방식 유지</li>
+</ul>
+<ul>
+<li>백운선 책임님의 직접 작성 업무 <span class="dn">감소</span></li>
+</ul>
+<ul>
+<li>백운선 책임님의 역할을 검토·판단·승인 중심으로 전환</li>
+</ul>
+<ul>
+<li>단순 문의, 미팅록, 메일, 견적 초안 작성 시간 절감</li>
+</ul>
+<ul>
+<li>신규 인원 미충원 리스크 완화</li>
+</ul>
+<ul>
+<li>고객 응대 속도 <span class="up">개선</span></li>
+</ul>
+<ul>
+<li>현장형 AX 과제 사례 확보</li>
+</ul>
+<ul>
+<li>향후 타 SEG 또는 타 팀 확장 가능성 확보</li>
+</ul></section><section class="card s6" id="s15"><h2><span class="seq">15</span>리스크 및 대응 방안</h2><div class="tbl-wrap"><table><thead><tr><th>리스크</th><th>대응 방안</th></tr></thead><tbody><tr><td>초기 2~4주 피드백 부담 증가</td><td>주 5회 15분 피드백 세션 고정</td></tr><tr><td>AI의 견적·계약 오류 가능성</td><td>최종 견적 및 계약 조건은 사람 승인 필수</td></tr><tr><td>개인정보 처리 이슈</td><td>처리 대상 정보 범위 사전 정의 및 내부 보안 기준 준수</td></tr><tr><td>고객 민감 이슈 오판 가능성</td><td>민감 고객·클레임·장애 책임 판단은 사람 직접 처리</td></tr><tr><td>AI 답변 품질 편차</td><td>Skill MD 지속 보정 및 샘플링 검토</td></tr></tbody></table></div></section><section class="card s6" id="s16"><h2><span class="seq">16</span>수도권고객5팀 전달용 핵심 문구</h2><ul>
+<li>구내통신 영업 업무의 인력 공백 리스크를 줄이기 위해, 헤르메스 AI 에이전트에 김창민 책임님의 업무 노하우, 고객 응대 패턴, 견적·제안·보고 템플릿을 학습시켜 백운선 책임님의 영업 보조 에이전트로 활용하는 AX 과제 검토 필요성</li>
+</ul></section><section class="card s6" id="s17"><h2><span class="seq">17</span>최종 결론</h2><ul>
+<li>헤르메스는 김창민 책임님을 완전히 대체하는 도구가 아니라, 백운선 책임님 옆에서 자료 정리, 초안 작성, 고객 맥락 기억, 후속조치 관리를 맡는 구내통신 영업 보조 직원 역할</li>
+</ul>
+<ul>
+<li>AI가 사람을 대체하는 구조가 아니라, 사람이 더 중요한 고객 판단·협상·승인 업무에 집중하도록 기초 업무를 받치는 구조</li>
+</ul>
+<ul>
+<li>수도권고객5팀 구내통신 SEG의 인력 공백 리스크를 AX 과제로 전환할 수 있는 현실적 적용안</li>
+</ul></section></main><div class="foot"><span class="dot"></span>xbot · 2026-06-05</div></div></body></html>
