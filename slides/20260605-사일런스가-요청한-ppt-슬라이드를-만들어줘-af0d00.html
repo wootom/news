@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사일런스가 요청한 슬라이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;700;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* VIEWPORT FITTING: MANDATORY BASE STYLES */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.slide { width: 100vw; height: 100vh; height: 100dvh; overflow: hidden;
+  scroll-snap-align: start; display: flex; flex-direction: column; position: relative; }
+.slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center;
+  max-height: 100%; overflow: hidden; padding: var(--slide-padding); }
+:root {
+  --title-size: clamp(1.5rem, 5vw, 4rem); --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+  --h3-size: clamp(1rem, 2.5vw, 1.75rem); --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+  --small-size: clamp(0.65rem, 1vw, 0.875rem); --slide-padding: clamp(1rem, 4vw, 4rem);
+  --content-gap: clamp(0.5rem, 2vw, 2rem); --element-gap: clamp(0.25rem, 1vw, 1rem); }
+.card, .container, .content-box { max-width: min(90vw, 1000px); max-height: min(80vh, 700px); }
+.feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+.feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: clamp(0.5rem, 1.5vw, 1rem); }
+img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+@media (max-height: 700px) { :root { --slide-padding: clamp(0.75rem, 3vw, 2rem);
+  --content-gap: clamp(0.4rem, 1.5vw, 1rem); --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+  --h2-size: clamp(1rem, 3vw, 1.75rem); } }
+@media (max-height: 600px) { :root { --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+  --content-gap: clamp(0.3rem, 1vw, 0.75rem); --title-size: clamp(1.1rem, 4vw, 2rem);
+  --body-size: clamp(0.7rem, 1.2vw, 0.95rem); }
+  .nav-dots, .keyboard-hint, .decorative { display: none; } }
+@media (max-height: 500px) { :root { --slide-padding: clamp(0.4rem, 2vw, 1rem);
+  --title-size: clamp(1rem, 3.5vw, 1.5rem); --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+  --body-size: clamp(0.65rem, 1vw, 0.85rem); } }
+@media (max-width: 600px) { :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+  .grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after {
+  animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+  html { scroll-behavior: auto; } }
+
+/* ── 전역 디자인 토큰 ── */
+:root {
+  --ink:    #0d0d0d;
+  --paper:  #f5f0e8;
+  --rust:   #c0392b;
+  --gold:   #b8860b;
+  --dim:    #6b6560;
+  --serif:  'Noto Serif KR', serif;
+  --sans:   'Noto Sans KR', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--ink); font-family: var(--sans); color: var(--ink); }
+
+/* ── 네비게이션 도트 ── */
+.nav-dots {
+  position: fixed;
+  right: clamp(0.6rem, 2vw, 1.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 100;
+}
+.nav-dots span {
+  width: clamp(5px, 1vw, 8px);
+  height: clamp(5px, 1vw, 8px);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.nav-dots span.active { background: #fff; transform: scale(1.4); }
+
+/* ── 공통 애니메이션 ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(2rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes lineGrow {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes pulseRing {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+@keyframes rotateClockwise {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes strikeThrough {
+  from { width: 0; }
+  to   { width: 105%; }
+}
+@keyframes glitch {
+  0%   { clip-path: inset(0 0 95% 0); transform: translateX(-4px); }
+  20%  { clip-path: inset(30% 0 50% 0); transform: translateX(4px); }
+  40%  { clip-path: inset(60% 0 20% 0); transform: translateX(-2px); }
+  60%  { clip-path: inset(80% 0 5%  0); transform: translateX(2px); }
+  80%  { clip-path: inset(10% 0 80% 0); transform: translateX(-4px); }
+  100% { clip-path: inset(95% 0 0  0); transform: translateX(0); }
+}
+
+/* ════════════════════════════════════════
+   슬라이드 1 — 표지
+════════════════════════════════════════ */
+#slide1 {
+  background: var(--ink);
+  color: #fff;
+  overflow: hidden;
+}
+#slide1::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg,
+      transparent,
+      transparent 39px,
+      rgba(255,255,255,0.04) 39px,
+      rgba(255,255,255,0.04) 40px),
+    repeating-linear-gradient(90deg,
+      transparent,
+      transparent 39px,
+      rgba(255,255,255,0.04) 39px,
+      rgba(255,255,255,0.04) 40px);
+}
+.cover-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--content-gap);
+}
+.cover-eyebrow {
+  font-family: var(--sans);
+  font-size: var(--small-size);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  animation: fadeIn 0.8s ease both;
+}
+.cover-title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 12vw, 7rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: #fff;
+  animation: fadeUp 0.9s 0.2s ease both;
+}
+.cover-title em {
+  font-style: normal;
+  color: var(--rust);
+  display: block;
+  font-size: clamp(1.4rem, 6vw, 3.5rem);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  margin-top: 0.2em;
+}
+.cover-line {
+  height: 2px;
+  background: var(--rust);
+  animation: lineGrow 0.8s 0.8s ease both;
+  animation-fill-mode: both;
+  width: 0;
+}
+.cover-sub {
+  font-size: var(--body-size);
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  animation: fadeUp 0.8s 1s ease both;
+}
+.cover-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  background: var(--rust);
+  vertical-align: middle;
+  margin-left: 0.15em;
+  animation: blink 1s 1.5s step-end infinite;
+}
+.cover-corner {
+  position: absolute;
+  bottom: clamp(1rem, 3vw, 2.5rem);
+  right: clamp(1rem, 3vw, 2.5rem);
+  font-size: var(--small-size);
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.2em;
+  font-family: var(--sans);
+  animation: fadeIn 1s 1.5s both;
+}
+
+/* ════════════════════════════════════════
+   슬라이드 2 — 발단: 요청의 시작
+════════════════════════════════════════ */
+#slide2 {
+  background: var(--paper);
+  color: var(--ink);
+}
+.s2-label {
+  font-family: var(--sans);
+  font-size: var(--small-size);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 700;
+  animation: fadeIn 0.6s 0.1s both;
+}
+.s2-heading {
+  font-family: var(--serif);
+  font-size: var(--h2-size);
+  font-weight: 900;
+  line-height: 1.15;
+  margin: var(--element-gap) 0;
+  animation: fadeUp 0.7s 0.2s both;
+}
+.s2-heading span {
+  border-bottom: 3px solid var(--rust);
+}
+.chat-bubble-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--element-gap);
+  margin-top: var(--content-gap);
+}
+.bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  animation: fadeUp 0.6s both;
+}
+.bubble.left  { flex-direction: row; }
+.bubble.right { flex-direction: row-reverse; }
+.avatar {
+  flex-shrink: 0;
+  width: clamp(2rem, 5vw, 2.8rem);
+  height: clamp(2rem, 5vw, 2.8rem);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
+  font-weight: 700;
+}
+.avatar.silence { background: var(--ink); color: #fff; font-family: var(--serif); }
+.avatar.ai      { background: var(--rust); color: #fff; }
+.btext {
+  background: #fff;
+  border: 1.5px solid rgba(0,0,0,0.08);
+  border-radius: clamp(0.8rem, 2vw, 1.2rem);
+  padding: clamp(0.5rem, 1.5vw, 0.9rem) clamp(0.75rem, 2vw, 1.2rem);
+  font-size: var(--body-size);
+  line-height: 1.5;
+  max-width: 80%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.bubble.right .btext {
+  background: var(--ink);
+  color: #fff;
+  border-color: transparent;
+}
+.bubble:nth-child(1) { animation-delay: 0.4s; }
+.bubble:nth-child(2) { animation-delay: 0.7s; }
+.bubble:nth-child(3) { animation-delay: 1.0s; }
+
+/* ════════════════════════════════════════
+   슬라이드 3 — 문제: 슬라이드란 무엇인가
+════════════════════════════════════════ */
+#slide3 {
+  background: #1a1a2e;
+  color: #fff;
+}
+.s3-kicker {
+  font-size: var(--small-size);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  animation: fadeIn 0.5s 0.1s both;
+}
+.s3-title {
+  font-family: var(--serif);
+  font-size: var(--h2-size);
+  font-weight: 900;
+  margin: var(--element-gap) 0 var(--content-gap);
+  animation: fadeUp 0.6s 0.2s both;
+}
+.def-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: clamp(0.5rem, 2vw, 1rem);
+}
+.def-card {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 0.75rem;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(4px);
+  animation: fadeUp 0.6s both;
+}
+.def-card:nth-child(1) { animation-delay: 0.35s; }
+.def-card:nth-child(2) { animation-delay: 0.5s;  }
+.def-card:nth-child(3) { animation-delay: 0.65s; }
+.def-card:nth-child(4) { animation-delay: 0.8s;  }
+.def-icon {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  margin-bottom: 0.4em;
+}
+.def-card h3 {
+  font-family: var(--serif);
+  font-size: var(--h3-size);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.3em;
+}
+.def-card p {
+  font-size: var(--small-size);
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+/* ════════════════════════════════════════
+   슬라이드 4 — 슬라이드 제작 5원칙
+════════════════════════════════════════ */
+#slide4 {
+  background: var(--paper);
+  color: var(--ink);
+}
+.s4-tag {
+  font-size: var(--small-size);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  animation: fadeIn 0.5s 0.1s both;
+}
+.s4-title {
+  font-family: var(--serif);
+  font-size: var(--h2-size);
+  font-weight: 900;
+  margin: var(--element-gap) 0 var(--content-gap);
+  animation: fadeUp 0.6s 0.2s both;
+}
+.principle-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1.2vh, 0.9rem);
+}
+.principle-list li {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.6rem, 2vw, 1.2rem);
+  animation: fadeUp 0.5s both;
+  border-left: 3px solid transparent;
+  padding-left: clamp(0.5rem, 1.5vw, 1rem);
+  transition: border-color 0.3s;
+}
+.principle-list li:hover { border-color: var(--rust); }
+.principle-list li:nth-child(1) { animation-delay: 0.3s; border-color: var(--rust); }
+.principle-list li:nth-child(2) { animation-delay: 0.45s; }
+.principle-list li:nth-child(3) { animation-delay: 0.6s; }
+.principle-list li:nth-child(4) { animation-delay: 0.75s; }
+.principle-list li:nth-child(5) { animation-delay: 0.9s; }
+.p-num {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  color: rgba(0,0,0,0.08);
+  min-width: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+}
+.p-body strong {
+  display: block;
+  font-size: var(--body-size);
+  font-weight: 700;
+  font-family: var(--serif);
+}
+.p-body span {
+  font-size: var(--small-size);
+  color: var(--dim);
+}
+
+/* ════════════════════════════════════════
+   슬라이드 5 — 나쁜 슬라이드 vs 좋은 슬라이드
+════════════════════════════════════════ */
+#slide5 {
+  background: #111;
+  color: #fff;
+}
+.versus-wrap {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: clamp(0.5rem, 2vw, 1.5rem);
+  align-items: start;
+  width: 100%;
+  margin-top: var(--content-gap);
+}
+.vs-col { display: flex; flex-direction: column; gap: clamp(0.4rem, 1vw, 0.8rem); }
+.vs-col-title {
+  font-family: var(--serif);
+  font-size: var(--h3-size);
+  font-weight: 700;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid;
+}
+.bad .vs-col-title  { color: #e74c3c; border-color: #e74c3c; }
+.good .vs-col-title { color: #2ecc71; border-color: #2ecc71; }
+.vs-item {
+  font-size: var(--small-size);
+  line-height: 1.5;
+  padding: clamp(0.3rem, 1vw, 0.6rem) clamp(0.4rem, 1vw, 0.75rem);
+  border-radius: 0.4rem;
+  animation: fadeUp 0.5s both;
+}
+.bad  .vs-item { background: rgba(231,76,60,0.12); color: rgba(255,255,255,0.8); }
+.good .vs-item { background: rgba(46,204,113,0.12); color: rgba(255,255,255,0.8); }
+.bad  .vs-item::before { content: '✕  '; color: #e74c3c; font-weight: 700; }
+.good .vs-item::before { content: '✓  '; color: #2ecc71; font-weight: 700; }
+.vs-divider {
+  font-family: var(--serif);
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+  font-weight: 900;
+  color: rgba(255,255,255,0.2);
+  align-self: center;
+  text-align: center;
+}
+.s5-kicker {
+  font-size: var(--small-size);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  animation: fadeIn 0.5s 0.1s both;
+}
+.s5-title {
+  font-family: var(--serif);
+  font-size: var(--h2-size);
+  font-weight: 900;
+  animation: fadeUp 0.6s 0.2s both;
+}
+.bad .vs-item:nth-child(2)  { animation-delay: 0.4s; }
+.bad .vs-item:nth-child(3)  { animation-delay: 0.55s; }
+.bad .vs-item:nth-child(4)  { animation-delay: 0.7s; }
+.good .vs-item:nth-child(2) { animation-delay: 0.45s; }
+.good .vs-item:nth-child(3) { animation-delay: 0.6s; }
+.good .vs-item:nth-child(4) { animation-delay: 0.75s; }
+
+/* ════════════════════════════════════════
+   슬라이드 6 — 좋은 슬라이드의 구조
+════════════════════════════════════════ */
+#slide6 {
+  background: #f9f4ec;
+  color: var(--ink);
+}
+.s6-kicker {
+  font-size: var(--small-size);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 700;
+  animation: fadeIn 0.5s 0.1s both;
+}
+.s6-title {
+  font-family: var(--serif);
+  font-size: var(--h2-size);
+  font-weight: 900;
+  margin: var(--element-gap) 0 var(--content-gap);
+  animation: fadeUp 0.6s 0.2s both;
+}
+.structure-row {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(0.4rem, 1.5vw, 1rem);
+  animation: fadeUp 0.6s 0.4s both;
+}
+.struct-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+}
+.struct-box {
+  width: 100%;
+  border-radius: 0.6rem;
+  padding: clamp(0.6rem, 2vw, 1rem) clamp(0.4rem, 1vw, 0.8rem);
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: var(--body-size);
+  position: relative;
+}
+.struct-box.cover   { background: var(--ink);  color: #fff; }
+.struct-box.body    { background: var(--rust);  color: #fff; }
+.struct-box.data    { background: var(--gold);  color: #fff; }
+.struct-box.action  { background: #2c3e50;       color: #fff; }
+.struct-label {
+  font-size: var(--small-size);
+  color: var(--dim);
+  font-weight: 500;
+}
+.struct-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  color: rgba(0,0,0,0.2);
+  padding-top: 0.5rem;
+}
+.flow-tip {
+  margin-top: var(--content-gap);
+  background: rgba(0,0,0,0.04);
+  border-left: 3px solid var(--rust);
+  padding: clamp(0.5rem, 1.5vw, 0.9rem) clamp(0.75rem, 2vw, 1.2rem);
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-size: var(--body-size);
+  color: var(--dim);
+  animation: fadeUp 0.6s 0.7s both;
+}
+
+/* ════════════════════════════════════════
+   슬라이드 7 — 사일런스를 위한 맞춤 팁
+════════════════════════════════════════ */
+#slide7 {
+  background: #0d0d0d;
+  color: #fff;
+  overflow: hidden;
+}
+#slide7::after {
+  content: 'S';
+  position: absolute;
+  right: -0.15em;
+  bottom: -0.2em;
+  font-family: var(--serif);
+  font-size: clamp(10rem, 40vw, 25rem);
+  font-weight: 900;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  pointer-events: none;
+  animation: float 6s ease-in-out infinite;
+}
+.s7-kicker {
+  font-size: var(--small-size);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--rust);
+  font-weight: 700;
+  animation: fadeIn 0.5s 0.1s both;
+}
+.s7-title {
+  font-family: var(--serif);
+  font-size: var(--h2-size);
+  font-weight: 900;
+  margin: var(--element-gap) 0 var(--content-gap);
+  animation: fadeUp 0.6s 0.2s both;
+}
+.tip-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.5vh, 1rem);
+}
+.tip-list li {
+  display: flex;
+  gap: clamp(0.6rem, 2vw, 1rem);
+  align-items: flex-start;
+  animation: fadeUp 0.5s both;
+}
+.tip-list li:nth-child(1) { animation-delay: 0.3s; }
+.tip-list li:nth-child(2) { animation-delay: 0.45s; }
+.tip-list li:nth-child(3) { animation-delay: 0.6s; }
+.tip-list li:nth-child(4) { animation-delay: 0.75s; }
+.tip-list li:nth-child(5) { animation-delay: 0.9s; }
+.tip-icon {
+  flex-shrink: 0;
+  width: clamp(2rem, 5vw, 2.5rem);
+  height: clamp(2rem, 5vw, 2.5rem);
+  border-radius: 50%;
+  background: rgba(192,57,43,0.18);
+  border: 1.5px solid var(--rust);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
+}
+.tip-text strong {
+  display: block;
+  font-size: var(--body-size);
+  font-weight: 700;
+  margin-bottom: 0.1em;
+}
+.tip-text span {
+  font-size: var(--small-size);
+  color: rgba(255,255,255,0.5);
+  line-height: 1.4;
+}
+
+/* ════════════════════════════════════════
+   슬라이드 8 — 마무리
+════════════════════════════════════════ */
+#slide8 {
+  background: var(--rust);
+  color: #fff;
+  overflow: hidden;
+}
+#slide8::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -20%;
+  width: 70vw;
+  height: 70vw;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  animation: pulseRing 4s ease-out infinite;
+}
+.s8-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--content-gap);
+}
+.s8-label {
+  font-size: var(--small-size);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  animation: fadeIn 0.6s 0.1s both;
+}
+.s8-big {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 10vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  animation: fadeUp 0.8s 0.3s both;
+}
+.s8-sub {
+  font-size: var(--body-size);
+  color: rgba(255,255,255,0.75);
+  max-width: 36ch;
+  line-height: 1.6;
+  animation: fadeUp 0.7s 0.6s both;
+}
+.s8-sig {
+  margin-top: var(--content-gap);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  animation: fadeUp 0.6s 0.9s both;
+}
+.sig-line {
+  height: 1px;
+  width: clamp(2rem, 8vw, 4rem);
+  background: rgba(255,255,255,0.4);
+}
+.sig-text {
+  font-family: var(--serif);
+  font-size: var(--body-size);
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.05em;
+}
+.corner-deco {
+  position: absolute;
+  bottom: clamp(1rem, 3vw, 2rem);
+  right: clamp(1rem, 3vw, 2rem);
+  font-size: clamp(4rem, 15vw, 8rem);
+  font-family: var(--serif);
+  font-weight: 900;
+  color: rgba(255,255,255,0.08);
+  line-height: 1;
+  animation: float 5s ease-in-out infinite;
+}
+</style>
+</head>
+<body>
+
+<!-- 네비게이션 도트 -->
+<nav class="nav-dots" id="navDots">
+  <span class="active" data-idx="0" onclick="goSlide(0)"></span>
+  <span data-idx="1" onclick="goSlide(1)"></span>
+  <span data-idx="2" onclick="goSlide(2)"></span>
+  <span data-idx="3" onclick="goSlide(3)"></span>
+  <span data-idx="4" onclick="goSlide(4)"></span>
+  <span data-idx="5" onclick="goSlide(5)"></span>
+  <span data-idx="6" onclick="goSlide(6)"></span>
+  <span data-idx="7" onclick="goSlide(7)"></span>
+</nav>
+
+<!-- ══ 슬라이드 1: 표지 ══ -->
+<section class="slide" id="slide1">
+  <div class="slide-content cover-inner">
+    <p class="cover-eyebrow">Silence Requested Slides · 2025</p>
+    <h1 class="cover-title">
+      슬라이드,<br>제대로<br>만들기
+      <em>by 사일런스</em>
+    </h1>
+    <div class="cover-line"></div>
+    <p class="cover-sub">
+      "PPT 만들어줘"라는 한 마디에서<br>
+      시작된 프레젠테이션 가이드<span class="cover-cursor"></span>
+    </p>
+  </div>
+  <p class="cover-corner">SLIDE&nbsp;01&nbsp;/&nbsp;08</p>
+</section>
+
+<!-- ══ 슬라이드 2: 발단 ══ -->
+<section class="slide" id="slide2">
+  <div class="slide-content">
+    <p class="s2-label">배경 · 발단</p>
+    <h2 class="s2-heading">모든 것은<br><span>한 줄의 요청</span>에서</h2>
+    <div class="chat-bubble-wrap">
+      <div class="bubble left">
+        <div class="avatar silence">沈</div>
+        <div class="btext">야, PPT 슬라이드 하나만 만들어줘. 주제는 내가 정할게.</div>
+      </div>
+      <div class="bubble right">
+        <div class="avatar ai">AI</div>
+        <div class="btext">알겠습니다! 어떤 내용으로 만들까요? 목적과 청중을 알면 더 잘 만들 수 있어요.</div>
+      </div>
+      <div class="bubble left">
+        <div class="avatar silence">沈</div>
+        <div class="btext">그냥 사일런스가 요청한 PPT 슬라이드를 만들어줘. 주제가 그거야.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 슬라이드 3: 슬라이드란 무엇인가 ══ -->
+<section class="slide" id="slide3">
+  <div class="slide-content">
+    <p class="s3-kicker">Definition</p>
+    <h2 class="s3-title">슬라이드란 무엇인가</h2>
+    <div class="def-grid">
+      <div class="def-card">
+        <div class="def-icon">📄</div>
+        <h3>시각적 언어</h3>
+        <p>말보다 먼저 눈에 닿는 첫 번째 메시지</p>
+      </div>
+      <div class="def-card">
+        <div class="def-icon">🎯</div>
+        <h3>집중의 도구</h3>
+        <p>청중의 시선을 한 곳으로 모으는 프레임</p>
+      </div>
+      <div class="def-card">
+        <div class="def-icon">🧠</div>
+        <h3>기억의 앵커</h3>
+        <p>발표 후에도 남는 핵심 인상을 설계</p>
+      </div>
+      <div class="def-card">
+        <div class="def-icon">✂️</div>
+        <h3>편집의 예술</h3>
+        <p>뺄수록 강해지는 밀도의 게임</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 슬라이드 4: 5원칙 ══ -->
+<section class="slide" id="slide4">
+  <div class="slide-content">
+    <p class="s4-tag">핵심 원칙</p>
+    <h2 class="s4-title">좋은 슬라이드의 5원칙</h2>
+    <ul class="principle-list">
+      <li>
+        <span class="p-num">01</span>
+        <div class="p-body">
+          <strong>한 슬라이드, 한 메시지</strong>
+          <span>두 개의 요점은 두 장의 슬라이드다</span>
+        </div>
+      </li>
+      <li>
+        <span class="p-num">02</span>
+        <div class="p-body">
+          <strong>제목이 곧 결론이다</strong>
+          <span>제목만 읽어도 요지를 알 수 있어야 한다</span>
+        </div>
+      </li>
+      <li>
+        <span class="p-num">03</span>
+        <div class="p-body">
+          <strong>데이터는 맥락과 함께</strong>
+          <span>숫자 단독은 의미 없다. 비교·변화·기준이 필요하다</span>
+        </div>
+      </li>
+      <li>
+        <span class="p-num">04</span>
+        <div class="p-body">
+          <strong>여백은 쉬는 게 아니다</strong>
+          <span>여백이 콘텐츠를 더 크게 보이게 한다</span>
+        </div>
+      </li>
+      <li>
+        <span class="p-num">05</span>
+        <div class="p-body">
+          <strong>일관성이 신뢰를 만든다</strong>
+          <span>색·폰트·정렬이 흔들리면 내용도 흔들려 보인다</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ 슬라이드 5: 나쁜 vs 좋은 ══ -->
+<section class="slide" id="slide5">
+  <div class="slide-content">
+    <p class="s5-kicker">Comparison</p>
+    <h2 class="s5-title">나쁜 슬라이드 vs 좋은 슬라이드</h2>
+    <div class="versus-wrap">
+      <div class="vs-col bad">
+        <div class="vs-col-title">나쁜 슬라이드</div>
+        <div class="vs-item">글자가 빼곡히 가득 차 있음</div>
+        <div class="vs-item">폰트가 슬라이드마다 다름</div>
+        <div class="vs-item">클립아트·워드아트 남발</div>
+        <div class="vs-item">제목 없이 표만 덜렁 있음</div>
+      </div>
+      <div class="vs-divider">VS</div>
+      <div class="vs-col good">
+        <div class="vs-col-title">좋은 슬라이드</div>
+        <div class="vs-item">키워드 3~5개만 노출</div>
+        <div class="vs-item">폰트 2종, 색 3색 이하</div>
+        <div class="vs-item">이미지는 메시지를 강화</div>
+        <div class="vs-item">제목이 곧 인사이트 문장</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 슬라이드 6: 구조 ══ -->
+<section class="slide" id="slide6">
+  <div class="slide-content">
+    <p class="s6-kicker">Structure</p>
+    <h2 class="s6-title">슬라이드덱의 황금 구조</h2>
+    <div class="structure-row">
+      <div class="struct-step">
+        <div class="struct-box cover">표지</div>
+        <div class="struct-label">Who & Why</div>
+      </div>
+      <div class="struct-arrow">→</div>
+      <div class="struct-step">
+        <div class="struct-box body">문제 정의</div>
+        <div class="struct-label">상황·배경</div>
+      </div>
+      <div class="struct-arrow">→</div>
+      <div class="struct-step">
+        <div class="struct-box data">근거·데이터</div>
+        <div class="struct-label">증거 제시</div>
+      </div>
+      <div class="struct-arrow">→</div>
+      <div class="struct-step">
+        <div class="struct-box action">행동 촉구</div>
+        <div class="struct-label">Next Step</div>
+      </div>
+    </div>
+    <div class="flow-tip">
+      💡 <strong>핵심:</strong> 청중은 "그래서 나한테 왜?"를 항상 묻는다.
+      모든 슬라이드는 그 질문에 답해야 한다.
+    </div>
+  </div>
+</section>
+
+<!-- ══ 슬라이드 7: 사일런스 맞춤 팁 ══ -->
+<section class="slide" id="slide7">
+  <div class="slide-content" style="position:relative; z-index:2;">
+    <p class="s7-kicker">For Silence Only</p>
+    <h2 class="s7-title">사일런스를 위한<br>맞춤 팁 5</h2>
+    <ul class="tip-list">
+      <li>
+        <div class="tip-icon">🎨</div>
+        <div class="tip-text">
+          <strong>주제가 곧 디자인 방향이다</strong>
+          <span>모호한 주제도 분위기만 잡으면 슬라이드가 살아난다</span>
+        </div>
+      </li>
+      <li>
+        <div class="tip-icon">✍️</div>
+        <div class="tip-text">
+          <strong>초안을 빠르게, 퇴고를 길게</strong>
+          <span>첫 슬라이드는 1시간 안에. 다듬는 데 나머지 시간 투자</span>
+        </div>
+      </li>
+      <li>
+        <div class="tip-icon">📱</div>
+        <div class="tip-text">
+          <strong>모바일에서 먼저 확인</strong>
+          <span>폰에서 읽힌다면 어디서든 읽힌다</span>
+        </div>
+      </li>
+      <li>
+        <div class="tip-icon">🔇</div>
+        <div class="tip-text">
+          <strong>침묵(沈默)도 슬라이드다</strong>
+          <span>빈 슬라이드 한 장이 가장 강한 전환점이 될 수 있다</span>
+        </div>
+      </li>
+      <li>
+        <div class="tip-icon">🔁</div>
+        <div class="tip-text">
+          <strong>3번 보여줘라</strong>
+          <span>핵심 메시지는 처음·중간·끝에 반복이 기억을 만든다</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ 슬라이드 8: 마무리 ══ -->
+<section class="slide" id="slide8">
+  <div class="slide-content s8-inner">
+    <p class="s8-label">Fin · 마무리</p>
+    <h2 class="s8-big">
+      슬라이드는<br>결국<br>설득이다
+    </h2>
+    <p class="s8-sub">
+      좋은 슬라이드 한 장이 긴 보고서보다<br>더 많은 것을 바꾼다.<br>
+      사일런스, 이제 당신 차례다.
+    </p>
+    <div class="s8-sig">
+      <div class="sig-line"></div>
+      <div class="sig-text">Made for 사일런스 · 2025</div>
+    </div>
+  </div>
+  <div class="corner-deco">沈</div>
+</section>
+
+<script>
+  // 네비게이션 도트 업데이트
+  const slides = document.querySelectorAll('.slide');
+  const dots   = document.querySelectorAll('.nav-dots span');
+
+  function goSlide(idx) {
+    slides[idx].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = [...slides].indexOf(entry.target);
+        dots.forEach(d => d.classList.remove('active'));
+        if (dots[idx]) dots[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // 키보드 네비게이션
+  document.addEventListener('keydown', e => {
+    const current = [...slides].findIndex(s => {
+      const r = s.getBoundingClientRect();
+      return r.top >= -10 && r.top < window.innerHeight / 2;
+    });
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+      e.preventDefault();
+      const next = Math.min(current + 1, slides.length - 1);
+      goSlide(next);
+    }
+    if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      const prev = Math.max(current - 1, 0);
+      goSlide(prev);
+    }
+  });
+</script>
+</body>
+</html>
