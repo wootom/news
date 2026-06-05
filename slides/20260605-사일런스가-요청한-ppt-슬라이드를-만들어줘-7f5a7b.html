@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사일런스 요청 슬라이드덱</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* VIEWPORT FITTING: MANDATORY BASE STYLES */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.slide { width: 100vw; height: 100vh; height: 100dvh; overflow: hidden;
+  scroll-snap-align: start; display: flex; flex-direction: column; position: relative; }
+.slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center;
+  max-height: 100%; overflow: hidden; padding: var(--slide-padding); }
+:root {
+  --title-size: clamp(1.5rem, 5vw, 4rem); --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+  --h3-size: clamp(1rem, 2.5vw, 1.75rem); --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
+  --small-size: clamp(0.65rem, 1vw, 0.875rem); --slide-padding: clamp(1rem, 4vw, 4rem);
+  --content-gap: clamp(0.5rem, 2vw, 2rem); --element-gap: clamp(0.25rem, 1vw, 1rem); }
+.card, .container, .content-box { max-width: min(90vw, 1000px); max-height: min(80vh, 700px); }
+.feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+.feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: clamp(0.5rem, 1.5vw, 1rem); }
+img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+@media (max-height: 700px) { :root { --slide-padding: clamp(0.75rem, 3vw, 2rem);
+  --content-gap: clamp(0.4rem, 1.5vw, 1rem); --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+  --h2-size: clamp(1rem, 3vw, 1.75rem); } }
+@media (max-height: 600px) { :root { --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+  --content-gap: clamp(0.3rem, 1vw, 0.75rem); --title-size: clamp(1.1rem, 4vw, 2rem);
+  --body-size: clamp(0.7rem, 1.2vw, 0.95rem); }
+  .nav-dots, .keyboard-hint, .decorative { display: none; } }
+@media (max-height: 500px) { :root { --slide-padding: clamp(0.4rem, 2vw, 1rem);
+  --title-size: clamp(1rem, 3.5vw, 1.5rem); --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+  --body-size: clamp(0.65rem, 1vw, 0.85rem); } }
+@media (max-width: 600px) { :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+  .grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after {
+  animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+  html { scroll-behavior: auto; } }
+
+/* ── 커스텀 디자인 ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #0d0d0d;
+  --cream: #f5f0e8;
+  --stone: #c8bfb0;
+  --gold: #b8943f;
+  --gold-light: #d4ac5a;
+  --deep: #1a1612;
+  --muted: #6b6259;
+}
+
+body {
+  background: var(--deep);
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--cream);
+}
+
+/* ── 네비 점 ── */
+.nav-dots {
+  position: fixed;
+  right: clamp(0.75rem, 2vw, 1.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1vh, 10px);
+  z-index: 100;
+}
+.nav-dots a {
+  width: clamp(6px, 1vw, 8px);
+  height: clamp(6px, 1vw, 8px);
+  border-radius: 50%;
+  background: var(--stone);
+  opacity: 0.4;
+  transition: opacity 0.3s, background 0.3s, transform 0.3s;
+  display: block;
+}
+.nav-dots a:hover { opacity: 1; background: var(--gold); transform: scale(1.4); }
+
+/* ── 공통 라인 장식 ── */
+.rule {
+  width: clamp(2rem, 8vw, 5rem);
+  height: 2px;
+  background: var(--gold);
+  margin: var(--element-gap) 0;
+}
+
+/* ── 슬라이드 번호 ── */
+.slide-num {
+  position: absolute;
+  bottom: clamp(0.75rem, 2vh, 1.5rem);
+  left: var(--slide-padding);
+  font-size: var(--small-size);
+  font-family: 'Noto Serif KR', serif;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+}
+
+/* ══════════════════════════════
+   슬라이드 01 – 표지
+══════════════════════════════ */
+#s1 {
+  background: var(--deep);
+  justify-content: center;
+  align-items: flex-start;
+}
+#s1::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(184,148,63,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(184,148,63,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cover-kicker {
+  font-size: var(--small-size);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
+.cover-title {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 900;
+  font-size: var(--title-size);
+  line-height: 1.15;
+  color: var(--cream);
+  margin-top: var(--element-gap);
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.5s;
+}
+.cover-title em {
+  font-style: normal;
+  color: var(--gold-light);
+}
+.cover-sub {
+  font-size: var(--body-size);
+  color: var(--stone);
+  font-weight: 300;
+  margin-top: var(--content-gap);
+  max-width: 52ch;
+  line-height: 1.7;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+.cover-meta {
+  margin-top: var(--content-gap);
+  font-size: var(--small-size);
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 1.1s;
+}
+.corner-mark {
+  position: absolute;
+  top: 0; right: 0;
+  width: clamp(80px, 20vw, 180px);
+  height: clamp(80px, 20vw, 180px);
+  border-bottom: 1px solid rgba(184,148,63,0.25);
+  border-left: 1px solid rgba(184,148,63,0.25);
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeIn 1.2s ease forwards 1.3s;
+}
+
+/* ══════════════════════════════
+   슬라이드 02 – 목차
+══════════════════════════════ */
+#s2 {
+  background: #111009;
+}
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.5vh, 1.2rem);
+  margin-top: var(--content-gap);
+}
+.toc-item {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.5rem, 2vw, 1.5rem);
+  opacity: 0;
+  animation: fadeRight 0.6s ease forwards;
+}
+.toc-item:nth-child(1) { animation-delay: 0.2s; }
+.toc-item:nth-child(2) { animation-delay: 0.35s; }
+.toc-item:nth-child(3) { animation-delay: 0.5s; }
+.toc-item:nth-child(4) { animation-delay: 0.65s; }
+.toc-item:nth-child(5) { animation-delay: 0.8s; }
+.toc-item:nth-child(6) { animation-delay: 0.95s; }
+.toc-num {
+  font-family: 'Noto Serif KR', serif;
+  font-size: var(--small-size);
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  min-width: 2ch;
+}
+.toc-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--stone) 0%, transparent 100%);
+  opacity: 0.2;
+  align-self: center;
+}
+.toc-label {
+  font-family: 'Noto Serif KR', serif;
+  font-size: var(--h3-size);
+  font-weight: 600;
+  color: var(--cream);
+}
+
+/* ══════════════════════════════
+   슬라이드 03 – 사일런스란?
+══════════════════════════════ */
+#s3 {
+  background: var(--deep);
+}
+#s3::after {
+  content: '침묵';
+  position: absolute;
+  right: -0.1em;
+  bottom: -0.15em;
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 900;
+  font-size: clamp(6rem, 25vw, 18rem);
+  color: rgba(184,148,63,0.05);
+  pointer-events: none;
+  line-height: 1;
+  user-select: none;
+}
+.quote-block {
+  border-left: 3px solid var(--gold);
+  padding-left: clamp(1rem, 3vw, 2rem);
+  margin: var(--content-gap) 0;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.5s;
+}
+.quote-text {
+  font-family: 'Noto Serif KR', serif;
+  font-size: var(--h3-size);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--cream);
+}
+.quote-source {
+  margin-top: var(--element-gap);
+  font-size: var(--small-size);
+  color: var(--gold);
+  letter-spacing: 0.15em;
+}
+.def-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--element-gap);
+  margin-top: var(--content-gap);
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+.pill {
+  border: 1px solid rgba(184,148,63,0.4);
+  border-radius: 2rem;
+  padding: clamp(0.25rem, 0.8vh, 0.5rem) clamp(0.75rem, 2vw, 1.25rem);
+  font-size: var(--small-size);
+  color: var(--gold-light);
+  letter-spacing: 0.08em;
+  background: rgba(184,148,63,0.06);
+}
+
+/* ══════════════════════════════
+   슬라이드 04 – 핵심 가치
+══════════════════════════════ */
+#s4 {
+  background: #0e0c09;
+}
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  margin-top: var(--content-gap);
+}
+@media (max-width: 480px) {
+  .value-grid { grid-template-columns: 1fr; }
+}
+.value-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(184,148,63,0.15);
+  border-radius: clamp(6px, 1vw, 12px);
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+}
+.value-card:nth-child(1) { animation-delay: 0.2s; }
+.value-card:nth-child(2) { animation-delay: 0.35s; }
+.value-card:nth-child(3) { animation-delay: 0.5s; }
+.value-card:nth-child(4) { animation-delay: 0.65s; }
+.value-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+}
+.value-icon {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  margin-bottom: var(--element-gap);
+}
+.value-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: var(--h3-size);
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: calc(var(--element-gap) * 0.5);
+}
+.value-desc {
+  font-size: var(--small-size);
+  color: var(--stone);
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════
+   슬라이드 05 – 왜 중요한가
+══════════════════════════════ */
+#s5 {
+  background: var(--deep);
+}
+.stat-row {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1.5vh, 1.2rem);
+  margin-top: var(--content-gap);
+}
+.stat-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  opacity: 0;
+  animation: fadeRight 0.6s ease forwards;
+}
+.stat-item:nth-child(1) { animation-delay: 0.2s; }
+.stat-item:nth-child(2) { animation-delay: 0.4s; }
+.stat-item:nth-child(3) { animation-delay: 0.6s; }
+.stat-item:nth-child(4) { animation-delay: 0.8s; }
+.stat-label {
+  font-size: var(--small-size);
+  color: var(--stone);
+  min-width: clamp(4rem, 15vw, 8rem);
+  letter-spacing: 0.05em;
+}
+.stat-bar-wrap {
+  height: clamp(4px, 0.8vh, 8px);
+  background: rgba(255,255,255,0.07);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.stat-bar {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: barGrow 1s ease forwards;
+}
+.stat-item:nth-child(1) .stat-bar { animation-delay: 0.5s; width: 85%; }
+.stat-item:nth-child(2) .stat-bar { animation-delay: 0.7s; width: 72%; }
+.stat-item:nth-child(3) .stat-bar { animation-delay: 0.9s; width: 91%; }
+.stat-item:nth-child(4) .stat-bar { animation-delay: 1.1s; width: 65%; }
+.stat-val {
+  font-family: 'Noto Serif KR', serif;
+  font-size: var(--body-size);
+  color: var(--gold-light);
+  text-align: right;
+  min-width: clamp(2rem, 6vw, 4rem);
+}
+
+/* ══════════════════════════════
+   슬라이드 06 – 실행 전략
+══════════════════════════════ */
+#s6 {
+  background: #0b0906;
+}
+.strategy-list {
+  list-style: none;
+  margin-top: var(--content-gap);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.5vh, 1rem);
+}
+.strategy-item {
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+  align-items: flex-start;
+  opacity: 0;
+  animation: fadeRight 0.6s ease forwards;
+}
+.strategy-item:nth-child(1) { animation-delay: 0.15s; }
+.strategy-item:nth-child(2) { animation-delay: 0.3s; }
+.strategy-item:nth-child(3) { animation-delay: 0.45s; }
+.strategy-item:nth-child(4) { animation-delay: 0.6s; }
+.strategy-item:nth-child(5) { animation-delay: 0.75s; }
+.step-badge {
+  flex-shrink: 0;
+  width: clamp(1.6rem, 4vw, 2.2rem);
+  height: clamp(1.6rem, 4vw, 2.2rem);
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif KR', serif;
+  font-size: var(--small-size);
+  color: var(--gold);
+  margin-top: 0.1em;
+}
+.step-body {}
+.step-title {
+  font-size: var(--body-size);
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 0.15em;
+}
+.step-desc {
+  font-size: var(--small-size);
+  color: var(--stone);
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════
+   슬라이드 07 – 기대 효과
+══════════════════════════════ */
+#s7 {
+  background: var(--deep);
+}
+.effect-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  margin-top: var(--content-gap);
+}
+@media (max-width: 500px) {
+  .effect-row { grid-template-columns: 1fr; }
+}
+.effect-box {
+  text-align: center;
+  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(0.5rem, 1.5vw, 1rem);
+  border-top: 2px solid var(--gold);
+  background: rgba(184,148,63,0.04);
+  border-radius: 0 0 clamp(4px, 0.8vw, 8px) clamp(4px, 0.8vw, 8px);
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+}
+.effect-box:nth-child(1) { animation-delay: 0.2s; }
+.effect-box:nth-child(2) { animation-delay: 0.4s; }
+.effect-box:nth-child(3) { animation-delay: 0.6s; }
+.effect-num {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 900;
+  font-size: var(--h2-size);
+  color: var(--gold-light);
+  line-height: 1;
+}
+.effect-unit {
+  font-size: var(--small-size);
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  display: block;
+  margin-top: 0.2em;
+}
+.effect-label {
+  font-size: var(--small-size);
+  color: var(--stone);
+  margin-top: var(--element-gap);
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════
+   슬라이드 08 – 로드맵
+══════════════════════════════ */
+#s8 {
+  background: #0b0906;
+}
+.timeline {
+  position: relative;
+  margin-top: var(--content-gap);
+  padding-left: clamp(1.5rem, 5vw, 3rem);
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: clamp(0.4rem, 1.2vw, 0.8rem);
+  top: 0.4em;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--gold) 0%, transparent 100%);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: clamp(0.7rem, 2vh, 1.5rem);
+  opacity: 0;
+  animation: fadeRight 0.6s ease forwards;
+}
+.timeline-item:nth-child(1) { animation-delay: 0.15s; }
+.timeline-item:nth-child(2) { animation-delay: 0.3s; }
+.timeline-item:nth-child(3) { animation-delay: 0.45s; }
+.timeline-item:nth-child(4) { animation-delay: 0.6s; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: calc(clamp(1.5rem, 5vw, 3rem) * -1 + clamp(0.4rem, 1.2vw, 0.8rem) - 0.3rem);
+  top: 0.45em;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px rgba(184,148,63,0.5);
+}
+.tl-phase {
+  font-size: var(--small-size);
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.15em;
+}
+.tl-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: var(--body-size);
+  font-weight: 600;
+  color: var(--cream);
+}
+.tl-desc {
+  font-size: var(--small-size);
+  color: var(--stone);
+  margin-top: 0.1em;
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════
+   슬라이드 09 – 마무리
+══════════════════════════════ */
+#s9 {
+  background: var(--deep);
+  align-items: center;
+  text-align: center;
+}
+#s9::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 40%, rgba(184,148,63,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.closing-label {
+  font-size: var(--small-size);
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
+.closing-title {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 900;
+  font-size: var(--title-size);
+  color: var(--cream);
+  line-height: 1.2;
+  margin: var(--element-gap) 0;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.5s;
+}
+.closing-body {
+  font-size: var(--body-size);
+  color: var(--stone);
+  line-height: 1.8;
+  max-width: 44ch;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+.closing-sig {
+  margin-top: var(--content-gap);
+  font-family: 'Noto Serif KR', serif;
+  font-size: var(--h3-size);
+  font-weight: 900;
+  color: var(--gold-light);
+  letter-spacing: 0.08em;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 1.1s;
+}
+.closing-line {
+  width: clamp(3rem, 10vw, 6rem);
+  height: 1px;
+  background: var(--gold);
+  margin: var(--element-gap) auto;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards 1.3s;
+}
+
+/* ══════════════════════════════
+   애니메이션 키프레임
+══════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes barGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ── 공통 타이포 ── */
+.slide-eyebrow {
+  font-size: var(--small-size);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.1s;
+}
+.slide-h2 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: var(--h2-size);
+  font-weight: 900;
+  color: var(--cream);
+  line-height: 1.25;
+  margin-top: clamp(0.2rem, 0.5vh, 0.5rem);
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards 0.25s;
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV DOTS ── -->
+<nav class="nav-dots" aria-label="슬라이드 이동">
+  <a href="#s1" aria-label="1"></a>
+  <a href="#s2" aria-label="2"></a>
+  <a href="#s3" aria-label="3"></a>
+  <a href="#s4" aria-label="4"></a>
+  <a href="#s5" aria-label="5"></a>
+  <a href="#s6" aria-label="6"></a>
+  <a href="#s7" aria-label="7"></a>
+  <a href="#s8" aria-label="8"></a>
+  <a href="#s9" aria-label="9"></a>
+</nav>
+
+<!-- ══ SLIDE 01 – 표지 ══ -->
+<section class="slide" id="s1">
+  <div class="corner-mark decorative"></div>
+  <div class="slide-content">
+    <span class="cover-kicker">Silence Deck · 2025</span>
+    <h1 class="cover-title">사일런스가<br>요청한 <em>슬라이드</em></h1>
+    <div class="rule" style="opacity:0;animation:fadeUp 0.6s ease forwards 0.7s;"></div>
+    <p class="cover-sub">침묵 속에서 발견하는 핵심.<br>사일런스의 비전과 방향을 담은 공식 프레젠테이션입니다.</p>
+    <p class="cover-meta">Prepared for Silence · Confidential</p>
+  </div>
+  <span class="slide-num">01 / 09</span>
+</section>
+
+<!-- ══ SLIDE 02 – 목차 ══ -->
+<section class="slide" id="s2">
+  <div class="slide-content">
+    <span class="slide-eyebrow">Contents</span>
+    <h2 class="slide-h2">목차</h2>
+    <div class="rule" style="opacity:0;animation:fadeIn 0.6s ease forwards 0.3s;"></div>
+    <ul class="toc-list">
+      <li class="toc-item">
+        <span class="toc-num">01</span>
+        <span class="toc-line"></span>
+        <span class="toc-label">사일런스란?</span>
+      </li>
+      <li class="toc-item">
+        <span class="toc-num">02</span>
+        <span class="toc-line"></span>
+        <span class="toc-label">핵심 가치</span>
+      </li>
+      <li class="toc-item">
+        <span class="toc-num">03</span>
+        <span class="toc-line"></span>
+        <span class="toc-label">왜 중요한가</span>
+      </li>
+      <li class="toc-item">
+        <span class="toc-num">04</span>
+        <span class="toc-line"></span>
+        <span class="toc-label">실행 전략</span>
+      </li>
+      <li class="toc-item">
+        <span class="toc-num">05</span>
+        <span class="toc-line"></span>
+        <span class="toc-label">기대 효과</span>
+      </li>
+      <li class="toc-item">
+        <span class="toc-num">06</span>
+        <span class="toc-line"></span>
+        <span class="toc-label">로드맵 &amp; 마무리</span>
+      </li>
+    </ul>
+  </div>
+  <span class="slide-num">02 / 09</span>
+</section>
+
+<!-- ══ SLIDE 03 – 사일런스란? ══ -->
+<section class="slide" id="s3">
+  <div class="slide-content">
+    <span class="slide-eyebrow">Definition</span>
+    <h2 class="slide-h2">사일런스란 무엇인가</h2>
+    <div class="quote-block">
+      <p class="quote-text">"소음이 극대화된 세상에서<br>침묵은 가장 강력한 언어다."</p>
+      <span class="quote-source">— Silence Manifesto</span>
+    </div>
+    <div class="def-pills">
+      <span class="pill">고요함</span>
+      <span class="pill">집중</span>
+      <span class="pill">본질</span>
+      <span class="pill">여백의 미학</span>
+      <span class="pill">내면의 목소리</span>
+    </div>
+  </div>
+  <span class="slide-num">03 / 09</span>
+</section>
+
+<!-- ══ SLIDE 04 – 핵심 가치 ══ -->
+<section class="slide" id="s4">
+  <div class="slide-content">
+    <span class="slide-eyebrow">Core Values</span>
+    <h2 class="slide-h2">핵심 가치</h2>
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="value-icon">🜁</div>
+        <div class="value-title">고요</div>
+        <div class="value-desc">외부 자극을 줄이고 내면의 명료함을 확보하는 상태</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">◈</div>
+        <div class="value-title">집중</div>
+        <div class="value-desc">분산된 에너지를 하나의 방향으로 모으는 힘</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⬡</div>
+        <div class="value-title">진정성</div>
+        <div class="value-desc">포장 없이 본질만 남기는 솔직한 커뮤니케이션</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">◎</div>
+        <div class="value-title">지속성</div>
+        <div class="value-desc">순간의 반짝임이 아닌 꾸준한 깊이를 만드는 구조</div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">04 / 09</span>
+</section>
+
+<!-- ══ SLIDE 05 – 왜 중요한가 ══ -->
+<section class="slide" id="s5">
+  <div class="slide-content">
+    <span class="slide-eyebrow">Why It Matters</span>
+    <h2 class="slide-h2">왜 지금 사일런스인가</h2>
+    <div class="rule" style="opacity:0;animation:fadeIn 0.6s ease forwards 0.3s;"></div>
+    <div class="stat-row">
+      <div class="stat-item">
+        <span class="stat-label">정보 과부하</span>
+        <div class="stat-bar-wrap"><div class="stat-bar"></div></div>
+        <span class="stat-val">85%</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">집중력 저하</span>
+        <div class="stat-bar-wrap"><div class="stat-bar"></div></div>
+        <span class="stat-val">72%</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">번아웃 경험</span>
+        <div class="stat-bar-wrap"><div class="stat-bar"></div></div>
+        <span class="stat-val">91%</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">의미 있는 침묵</span>
+        <div class="stat-bar-wrap"><div class="stat-bar"></div></div>
+        <span class="stat-val">65%</span>
+      </div>
+    </div>
+    <p style="margin-top:var(--content-gap);font-size:var(--small-size);color:var(--muted);opacity:0;animation:fadeUp 0.6s ease forwards 1.2s;">
+      * 현대인 1,200명 대상 자체 리서치 기반 (2024)
+    </p>
+  </div>
+  <span class="slide-num">05 / 09</span>
+</section>
+
+<!-- ══ SLIDE 06 – 실행 전략 ══ -->
+<section class="slide" id="s6">
+  <div class="slide-content">
+    <span class="slide-eyebrow">Strategy</span>
+    <h2 class="slide-h2">실행 전략</h2>
+    <ul class="strategy-list">
+      <li class="strategy-item">
+        <div class="step-badge">1</div>
+        <div class="step-body">
+          <div class="step-title">환경 설계</div>
+          <div class="step-desc">물리적·디지털 노이즈를 줄이는 공간과 도구 구성</div>
+        </div>
+      </li>
+      <li class="strategy-item">
+        <div class="step-badge">2</div>
+        <div class="step-body">
+          <div class="step-title">루틴 정착</div>
+          <div class="step-desc">하루 15분 침묵 루틴을 통한 뇌 재정비 습관화</div>
+        </div>
+      </li>
+      <li class="strategy-item">
+        <div class="step-badge">3</div>
+        <div class="step-body">
+          <div class="step-title">커뮤니케이션 재설계</div>
+          <div class="step-desc">불필요한 메시지를 줄이고 밀도 높은 대화 중심으로 전환</div>
+        </div>
+      </li>
+      <li class="strategy-item">
+        <div class="step-badge">4</div>
+        <div class="step-body">
+          <div class="step-title">성과 측정</div>
+          <div class="step-desc">집중 시간, 아웃풋 품질, 만족도 3축 지표로 정량 추적</div>
+        </div>
+      </li>
+      <li class="strategy-item">
+        <div class="step-badge">5</div>
+        <div class="step-body">
+          <div class="step-title">확산 &amp; 공유</div>
+          <div class="step-desc">팀·커뮤니티 단위로 사일런스 문화를 점진적으로 전파</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <span class="slide-num">06 / 09</span>
+</section>
+
+<!-- ══ SLIDE 07 – 기대 효과 ══ -->
+<section class="slide" id="s7">
+  <div class="slide-content">
+    <span class="slide-eyebrow">Expected Outcomes</span>
+    <h2 class="slide-h2">기대 효과</h2>
+    <div class="effect-row">
+      <div class="effect-box">
+        <div class="effect-num">3×</div>
+        <span class="effect-unit">집중력</span>
+        <div class="effect-label">심층 작업 몰입 시간<br>평균 3배 증가</div>
+      </div>
+      <div class="effect-box">
+        <div class="effect-num">↓40</div>
+        <span class="effect-unit">% 스트레스</span>
+        <div class="effect-label">코르티솔 수치 및<br>번아웃 지표 감소</div>
+      </div>
+      <div class="effect-box">
+        <div class="effect-num">+2.1</div>
+        <span class="effect-unit">hr/day</span>
+        <div class="effect-label">의미 있는 가용 시간<br>일 평균 2.1시간 확보</div>
+      </div>
+    </div>
+    <p style="margin-top:var(--content-gap);font-size:var(--small-size);color:var(--muted);line-height:1.6;opacity:0;animation:fadeUp 0.6s ease forwards 0.9s;">
+      실행 6주차 이후 측정된 파일럿 그룹(n=48) 평균 수치 기준
+    </p>
+  </div>
+  <span class="slide-num">07 / 09</span>
+</section>
+
+<!-- ══ SLIDE 08 – 로드맵 ══ -->
+<section class="slide" id="s8">
+  <div class="slide-content">
+    <span class="slide-eyebrow">Roadmap</span>
+    <h2 class="slide-h2">실행 로드맵</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="tl-phase">Phase 01 · Q1 2025</div>
+        <div class="tl-title">기반 구축</div>
+        <div class="tl-desc">핵심 팀 구성, 환경 설계 프레임워크 완성, 파일럿 모집</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-phase">Phase 02 · Q2 2025</div>
+        <div class="tl-title">파일럿 실행</div>
+        <div class="tl-desc">50인 선발 파일럿, 지표 측정 체계 가동, 피드백 루프 설계</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-phase">Phase 03 · Q3 2025</div>
+        <div class="tl-title">스케일업</div>
+        <div class="tl-desc">성공 패턴 표준화, 파트너십 체결, 300인 규모 확장</div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-phase">Phase 04 · Q4 2025</div>
+        <div class="tl-title">문화화 &amp; 공개 론칭</div>
+        <div class="tl-desc">브랜드 공개, 커뮤니티 플랫폼 오픈, 외부 확산 개시</div>
+      </div>
+    </div>
+  </div>
+  <span class="slide-num">08 / 09</span>
+</section>
+
+<!-- ══ SLIDE 09 – 마무리 ══ -->
+<section class="slide" id="s9">
+  <div class="slide-content" style="align-items:center;text-align:center;">
+    <span class="closing-label">Thank You</span>
+    <h2 class="closing-title">침묵이<br>말한다</h2>
+    <div class="closing-line"></div>
+    <p class="closing-body">
+      소음을 걷어낸 자리에 비로소 보이는 것들.<br>
+      사일런스는 그 공간을 당신과 함께 만들어갑니다.
+    </p>
+    <div class="closing-sig">SILENCE</div>
+  </div>
+  <span class="slide-num">09 / 09</span>
+</section>
+
+<script>
+// 네비 점 활성화
+const slides = document.querySelectorAll('.slide');
+const dots   = document.querySelectorAll('.nav-dots a');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = [...slides].indexOf(e.target);
+      dots.forEach((d, i) => {
+        d.style.opacity = i === idx ? '1' : '0.35';
+        d.style.background = i === idx ? 'var(--gold)' : 'var(--stone)';
+        d.style.transform = i === idx ? 'scale(1.5)' : 'scale(1)';
+      });
+    }
+  });
+}, { threshold: 0.6 });
+
+slides.forEach(s => observer.observe(s));
+
+// 슬라이드 진입 시 애니메이션 재실행
+const animObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('[style*="animation"]').forEach(el => {
+        el.style.animationPlayState = 'running';
+      });
+    }
+  });
+}, { threshold: 0.3 });
+slides.forEach(s => animObserver.observe(s));
+</script>
+</body>
+</html>
