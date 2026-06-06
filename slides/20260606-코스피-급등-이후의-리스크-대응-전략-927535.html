@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="한국 증시 시총 86% 급증"><title>코스피 급등 이후의 리스크 대응 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;--up:#1f9d57;--dn:#c0392b;--text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f7f6;--bg:#fff}
+html,body{height:100%}
+body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Apple SD Gothic Neo','Segoe UI',sans-serif;color:var(--text);overflow:hidden}
+#deck{position:fixed;inset:0;overflow:hidden}
+.stage{position:absolute;top:50%;left:50%;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--bg);overflow:hidden;display:none;flex-direction:column;padding:30px 44px 26px}
+.slide.active{display:flex}
+.chip{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.chip .brand{display:flex;align-items:center;gap:9px;text-transform:uppercase}
+.chip .dot{width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.chip .pg{color:var(--accent);font-weight:700}
+.shead{display:flex;align-items:flex-start;gap:13px;border-bottom:3px solid var(--accent);padding-bottom:10px;margin-bottom:14px}
+.shead .num{background:var(--accent);color:#fff;font-size:15px;font-weight:800;border-radius:8px;padding:6px 11px;flex:none}
+.shead .htxt h1{font-size:27px;font-weight:900;line-height:1.2;letter-spacing:-.01em}
+.shead .ey{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;white-space:nowrap;align-self:flex-end;padding-bottom:3px}
+.body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column}
+/* 자유 카드 배치: 2단 고정 대신 내용량(weight)에 따라 카드 너비를 달리하고
+   flex-grow로 행을 꽉 채운다. align-content:stretch로 행들이 세로를 채운다. */
+.cards{flex:1;min-height:0;display:flex;flex-wrap:wrap;gap:14px;align-content:stretch}
+.sec-panel{flex:1 1 30%;min-width:228px;border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column}
+.sec-panel.w-full{flex-basis:100%}
+.sec-panel.w-half{flex-basis:46%}
+.sec-panel.w-third{flex-basis:29%}
+.sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
+.sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
+.sec-panel table{font-size:13px}.sec-panel th{font-size:12px;padding:7px 9px}
+.sec-panel td{padding:6px 9px;font-size:12.5px;line-height:1.4}
+.sec-panel li{font-size:13px;margin:4px 0;line-height:1.45}.sec-panel p{font-size:13px;line-height:1.5}
+.sec-panel h3{font-size:14px;margin:5px 0 2px}.sec-panel blockquote{font-size:12.5px;padding:9px 12px;line-height:1.45}
+.foot{margin-top:9px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.foot .fd{width:8px;height:8px;border-radius:50%;background:var(--accent-mid)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:#fff}
+th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;font-weight:700;font-size:14px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;word-break:keep-all}
+td:first-child{font-weight:700;white-space:nowrap}tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f8faf9}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}.hl{color:var(--accent);font-weight:700}
+ul,ol{margin:2px 0 2px 20px}li{margin:5px 0;font-size:15px;line-height:1.5}
+h3{font-size:17px;font-weight:800;color:var(--accent-d);margin:6px 0 2px}
+p{font-size:15px;line-height:1.55;margin:4px 0}
+blockquote{border:1px solid var(--accent-mid);background:var(--accent-light);border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.55;color:#1f3d30}
+code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.9em}
+a{color:var(--accent);text-decoration:none}strong{color:#1a1a1a}hr{display:none}
+.ig-bars{display:flex;flex-direction:column;gap:6px;margin:7px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(64px,28%) 1fr auto;align-items:center;gap:8px;font-size:12.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:13px;background:var(--surface);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:9px;margin:7px 0}
+.ig-kpi{flex:1;min-width:104px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;gap:2px}
+.igk-v{font-size:22px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:11.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:13px;margin:7px 0;justify-content:flex-start}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:4px}
+.igd-ring{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:40px;height:40px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:13px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:11.5px;color:var(--text);font-weight:600;text-align:center;max-width:88px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:7px 0 7px 4px;border-left:2px solid var(--accent-mid);padding-left:13px}
+.ig-tl{position:relative;padding:4px 0}
+.igt-dot{position:absolute;left:-18px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:12.5px;margin-right:7px}
+.igt-x{font-size:12.5px;color:var(--text);line-height:1.45}
+.ig-raw{font-size:12.5px;color:var(--text);white-space:pre-wrap;line-height:1.5}
+.cover{background:radial-gradient(120% 140% at 80% 8%,#2b6f4e,#163d2b 52%,#0c241a);color:#eef6f0;padding:0;position:relative}
+.cover .cv{padding:52px 56px;display:flex;flex-direction:column;height:100%;width:100%}
+.cv-ey{font-size:14px;letter-spacing:.16em;color:#9fe0bd;font-weight:700;text-transform:uppercase}
+.cover .cv h1{font-size:40px;font-weight:900;line-height:1.22;margin-top:18px;letter-spacing:-.02em;max-width:90%;color:#eef6f0}
+.cv-sum{font-size:17px;color:#cfeadd;border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:14px 18px;margin-top:18px;line-height:1.55;max-width:92%}
+.cv-toc{margin-top:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cv-toc .it{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 13px;font-size:13px;color:#eef6f0;display:flex;gap:9px}
+.cv-toc .it b{color:#7ee3ad}
+.cv-badge{position:absolute;top:46px;right:54px;width:94px;height:94px;border-radius:50%;background:#eef6f0;color:#163d2b;border:2px solid #7ee3ad;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.cv-badge .i{font-size:22px}.cv-badge .t{font-size:14px;margin-top:2px}
+.nav{position:fixed;bottom:16px;right:20px;display:flex;align-items:center;gap:9px;z-index:50}
+.nav button{background:rgba(45,145,98,.92);color:#fff;border:none;width:36px;height:36px;border-radius:9px;font-size:17px;cursor:pointer}
+.nav .counter{background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:7px 13px;border-radius:9px;font-weight:600}
+.progress{position:fixed;top:0;left:0;height:4px;background:var(--accent-mid);z-index:60;transition:width .25s}
+.hint{position:fixed;bottom:18px;left:20px;color:rgba(255,255,255,.45);font-size:12px;z-index:50}
+</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">📊 슬라이드</span></div><div class="cv-ey">xbot · 2026-06-06</div><h1>코스피 급등 이후의 리스크 대응 전략</h1><div class="cv-sum">한국 증시 시총 86% 급증</div><div class="cv-toc"><div class="it"><b>01</b><span>한국 증시 위상 변화 · 인도 증시 급락의 구조적 원인 · 반도체 제조 4국 부상</span></div><div class="it"><b>02</b><span>외국인 19거래일 연속 순매도 · 한국 대비 타국 반도체 상대 모멘 · 환율 변동</span></div><div class="it"><b>03</b><span>현 시장 위험 시그널 · 전시 경제 구조</span></div><div class="it"><b>04</b><span>유가 전망 (8월 시나리오) · 금리 인상 전망</span></div><div class="it"><b>05</b><span>금리 인상의 증시 영향 · ETF 자기 강화 구조</span></div><div class="it"><b>06</b><span>레버리지 ETF의 구조적 문제 · 포트폴리오 전략: 주도주 비중 축 · AI 생태계 확장 순서</span></div><div class="it"><b>07</b><span>에너지 섹터: 양방향 방어주 · 통신사: 경기방어 + AI 수혜 · 최종 포트폴리오 구상</span></div><div class="it"><b>08</b><span>영상 출처</span></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">02 / 09</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>한국 증시 위상 변화 &amp; 인도 증시 급락의 구조적 원인</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-third"><div class="ph">한국 증시 위상 변화</div><ul>
+<li>한국 증시 시총 86% 급증</li>
+<li>인도 제치고 세계 6위 등극</li>
+<li>대만 증시(5위) 추월은 빡센 상황</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">인도 증시 급락의 구조적 원인</div><ul>
+<li>인도는 소프트 회사·석유 기반 경제</li>
+<li>AI 시장 성장 시 기존 소프트 회사 전반 어려움</li>
+<li>인도 콜센터 산업 — 미국과 반대편 시간대 + 영어 사용</li>
+<li>AI 등장 시 콜센터는 문 닫을 수밖에 없는 구조</li>
+<li>인도는 세계 최대 석유 수입국 중 하나</li>
+<li>유가 100달러 상승 시 인플레이션 타격 직접적</li>
+<li>인도는 반도체 제조 국가가 아님</li>
+<li>과거 상승분이 조정을 크게 받을 수밖에 없는 구조</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">반도체 제조 4국 부상</div><ul>
+<li>대만·일본·한국·중국 — 반도체 제조 국가</li>
+<li>4개국 투자: 유망한 상태</li>
+<li>반도체 제조업 사이클 존재</li>
+<li>하락 공포로 멀티플 고평가 어려움</li>
+<li>실적 상승 지속 시 멀플 야금야금 상승 가능</li>
+<li>PER 5배 → 6배 → 7배 → 8배 → 10배 경로</li>
+<li>순익 증가 없이도 주가 상승 가능성 전망</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">03 / 09</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>외국인 19거래일 연속 순매도 &amp; 한국 대비 타국 반도체 상대 모멘텀</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-half"><div class="ph">외국인 19거래일 연속 순매도</div><div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">103조원</span><span class="igk-l">올해 외국인 순매도 누적</span></div><div class="ig-kpi"><span class="igk-v">62조원</span><span class="igk-l">글로벌 금융위기 당시 외국인 순매도</span></div><div class="ig-kpi"><span class="igk-v">25조원</span><span class="igk-l">팬데믹 당시 외국인 순매도</span></div></div>
+<ul>
+<li>기존 패턴: 증시 상승 + 외국인 매수</li>
+<li>현재 패턴: 증시 상승 중 외국인 지속 매도 — 전례 없는 장면</li>
+<li>원인은 한국 이탈이 아닌 리밸런싱</li>
+<li>한국 증시 역대 최고 상승률 기록</li>
+<li>포트폴리오 내 한국 비중 과다 → 매도로 비중 조절</li>
+<li>ETF 단일 종목 비중 과다 시 매도하는 원리와 동일</li>
+<li>삼성전자·SK하이닉스(시총 1·2위) 집중 매도</li>
+<li>HBM 가격 방향성: 아무도 모름</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">한국 대비 타국 반도체 상대 모멘텀</div><ul>
+<li>외국인은 아시아 반도체 제조업을 포트폴리오로 접근</li>
+<li>삼성전자·SK하이닉스에만 투자하는 국내 투자자와 시야 차이</li>
+<li>한국 상승률 상대적으로 낮고 타국 높으면 → 타국 매도 + 한국 매수</li>
+<li>반대 상황이 현재: 한국이 더 많이 올라서 타국 사려고 한국 매도</li>
+<li>외국인 순매수 전환 조건: 중국·대만·일본 반도체가 한국보다 더 많이 올라야</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">환율 변동</div><ul>
+<li>기존 레인지: 1,510원대</li>
+<li>일시 급등: 1,370원까지 상승</li>
+<li>현재: 1,530원대</li>
+<li>단일일 급등은 해석 불필요 — 튀는 경우 존재</li>
+<li>지속성 관찰 필요: 2~3일 연속 밀어올리면 주목</li>
+<li>환율 상승 1차 원인: 외국인 주식 매도 후 달러 환전</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">04 / 09</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>현 시장 위험 시그널 &amp; 전시 경제 구조</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">현 시장 위험 시그널</div><div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">5,530원대</span><span class="igk-l">현재 원/달러 환율</span></div><div class="ig-kpi"><span class="igk-v">19거래일</span><span class="igk-l">외국인 연속 순매도</span></div><div class="ig-kpi"><span class="igk-v">500조원</span><span class="igk-l">국내 ETF 시가총액 돌파</span></div></div>
+<ul>
+<li>코스피200 동일가중지수 하락 — 대형주 쏠림 현상</li>
+<li>단일 종목 레버리지 ETF 과열 — 최대 위험 시그널</li>
+<li>삼성전자·SK하이닉스 ETF 2조원 규모</li>
+<li>일일 거래대금 40조원 — 회전율 2,000%</li>
+<li>하루 동안 동일 자금 20바퀴 회전</li>
+<li>대중 FOMO 상태 진입</li>
+<li>부동산 대기 자금 주식 유입</li>
+<li>개인 저축 자금 주식 유입</li>
+<li>뒤늦은 추격 심리 + 레버리지 진입</li>
+<li>레버리지 과열 이후: 단기 내 조정 패턴 반복</li>
+</ul></div><div class="sec-panel w-full"><div class="ph">전시 경제 구조</div><ul>
+<li>반(半) 전시 경제 체제: 국가 주도 경제 운용</li>
+<li>AI 분야에서 중국과 패권 경쟁 중</li>
+<li>정책 수혜 업종 초호황:</li>
+</ul>
+<p>- AI - 방산 - 전력 - 인프라 - 에너지</p>
+<ul>
+<li>민간 소비 시장 침체:</li>
+</ul>
+<p>- 나이키·요가복 업황 부진 - 크래프트 하인즈(케첩) CEO: 월말 고객에 케첩 살 돈 없음 - 한국 자영업자 장사 안 된다는 목소리 증가</p>
+<ul>
+<li>실업률 하락 + 경제 지표 호전 vs 민간 체감 경기 괴리</li>
+<li>자금 흐름: 건설·소비재 → AI 단일 섹터 집중화</li>
+<li>경기 둔화 ≠ 주식 시장 위험 신호</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">05 / 09</span></div><div class="shead"><span class="num">04</span><div class="htxt"><h1>유가 전망 (8월 시나리오) &amp; 금리 인상 전망</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">유가 전망 (8월 시나리오)</div><div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">이전</span><span class="igt-x">중국 비축량 과다 저장 — 전쟁 전 비축분 확보</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">과도기</span><span class="igt-x">호르무즈 해협 봉쇄 → 중국 비축분 소진</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">현재</span><span class="igt-x">미국 석유 재고 급속 하락</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">8월</span><span class="igt-x">미국 석유 재고 한계치 도달, 수출 축소 불가피</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">여름~8월</span><span class="igt-x">유가 100달러 돌파 가능성</span></div></div>
+<ul>
+<li>호르무즈 해협 뚫려도 정상화에 장시간 소요</li>
+<li>엑손모빌·셰브론 CEO: 구조적 공급 패턴 붕괴</li>
+<li>수개월째 공급 부족 상태 지속</li>
+<li>러시아 검은 선단(어둠의 선단) 석유 양지화</li>
+<li>미국 전략 석유 비축분 방출 지속</li>
+<li>미국 석유 수출로 호르무즈 커버했으나 재고 급감</li>
+<li>중국 전쟁 전 해저 비축 시설까지 건설</li>
+<li>중국 비축분 소진 후 본격 수입 재개</li>
+<li>중국 수요 재개 + 미국 수출 축소 = 공급 차질 장기화</li>
+<li>호르무즈 뚫려도 정상화에 1~2개월 추가 소요</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">금리 인상 전망</div><ul>
+<li>캐나다·호주·유럽: 이미 금리 인상기 진입</li>
+<li>일본: 6월 14일 금리 인상 예정</li>
+<li>이후 추가 2~3회 인상 vs 참을지 우에다 총재 발언 주목</li>
+<li>미국: 연내 금리 인상 압박 (12월 확률 상승)</li>
+<li>유가 100달러 돌파 시 인플레이션 재가속</li>
+<li>8월 이후 인플레이션 추가 상승 압력</li>
+<li>한국: 금리 인상할지 버틸지 논의 중</li>
+<li>전 세계 금리 인상기 복귀 가능성</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">06 / 09</span></div><div class="shead"><span class="num">05</span><div class="htxt"><h1>금리 인상의 증시 영향 &amp; ETF 자기 강화 구조</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-half"><div class="ph">금리 인상의 증시 영향</div><ul>
+<li>2022년 금리 인상기 증시 급락 사례</li>
+<li>AI 기업 자금 조달 부담 증가</li>
+<li>AI 투자 자금 조달에 직접적 악영향</li>
+<li>커머스 시장(이미 침체) 추가 타격</li>
+<li>정책 수혜주 외 모든 업종 부담</li>
+<li>현금 비중 확대 필요성 대두</li>
+<li>신규 매수자와 보유자 전략 분리:</li>
+</ul>
+<p>- 수익률 높은 보유자: 버티기 가능 - 신규 진입자: 매수 부담</p></div><div class="sec-panel w-full"><div class="ph">ETF 자기 강화 구조</div><ul>
+<li>ETF 매수 → 증권사 현물 매수 → 주가 상승 → 추가 ETF 매수</li>
+<li>국내 ETF 시가총액 500조원 돌파</li>
+<li>상승기: 대형주 집중 상승 구조</li>
+<li>미국 Mag7 사례 — 나스닥100 자금 50% 빅테크 집중</li>
+<li>한국: 코스피200 자금 삼성전자·SK하이닉스로만 집중</li>
+<li>대형주 vs 소형주 괴리 확대</li>
+<li>하락기: 역방향 작동</li>
+</ul>
+<p>- 대형주 급락 속도 가속 - 기관, 안 오른 소형주 매도 → 대형주 방어 시도 - 2007년 포스코 사례 유사 - 소형주도 추가 하락 - 대형주·소형주 동반 하락</p>
+<ul>
+<li>하락 전환 시 코스피 역사상 가장 빠른 하락 속도 예상</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">07 / 09</span></div><div class="shead"><span class="num">06</span><div class="htxt"><h1>레버리지 ETF의 구조적 문제 &amp; 포트폴리오 전략: 주도주 비중 축소</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-half"><div class="ph">레버리지 ETF의 구조적 문제</div><ul>
+<li>주사위 비유 — 일반 투자: 홀수 승리·짝수 패배 = 50대50</li>
+<li>레버리지 ETF 비유: 1·2만 승리, 3~6 패배 = 승률 1/6</li>
+<li>계속 던질수록 수익률 악화(음의 복리)</li>
+<li>고정 없이 계속 오를 때만 극대화</li>
+<li>등락 반복 시(횡보): 일반 투자자 본전, 레버리지 투자자 손실</li>
+<li>하락 시 레버리지 이상 손실(음의 복리)</li>
+<li>적합 조건: 단기 조정 없이 지속 상승장</li>
+<li>1조 7,000억원 규모 인버스·곱버스 ETF 81% 손실 사례</li>
+<li>반대 포지션 자체는 과열 제어 기능 존재</li>
+<li>문제는 사용법 이해 없는 진입</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">포트폴리오 전략: 주도주 비중 축소</div><ul>
+<li>코스피 3,000~4,000 시절: 주도주 80%가 정답</li>
+<li>코스피 9,000 바라보는 현재: 주도주 20%로 축소</li>
+<li>삼성전자·SK하이닉스 없으면 시장 분위기 좋지 않음</li>
+<li>주도주 완전 제외 시 FOMO로 투자 망칠 위험</li>
+<li>주도주 20% + 차기 길목 80% 구조 권장</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">AI 생태계 확장 순서</div><div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">1단계</span><span class="igt-x">삼성전자·SK하이닉스(반도체 주도주)</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">2단계</span><span class="igt-x">전공정·후공정(주성엔지니어링, 원인IPS 등 — 상한가 사례)</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">3단계</span><span class="igt-x">AI 데이터센터 건설·운영</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">4단계</span><span class="igt-x">전력장비</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">5단계</span><span class="igt-x">에너지 고속도로(송전)</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">6단계</span><span class="igt-x">냉각</span></div></div>
+<ul>
+<li>한국에 아직 오르지 않은 미국 AI 생태계 복사 형태</li>
+<li>밴더사(벤더)로 과열기 이동 — 상대적으로 저평가 인식</li>
+<li>전공정·후공정 상한가 사례: 주성엔지니어링, 원인IPS</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">08 / 09</span></div><div class="shead"><span class="num">07</span><div class="htxt"><h1>에너지 섹터: 양방향 방어주 &amp; 통신사: 경기방어 + AI 수혜</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-half"><div class="ph">에너지 섹터: 양방향 방어주</div><ul>
+<li>AI 수혜 + 고유가 수혜</li>
+<li>유가 100달러 상승 시 전기료 인상</li>
+<li>태양광·풍력: 유가와 원가 무관</li>
+<li>유가 상승 시 태양광·풍력 경제성 개선</li>
+<li>한국 에너지 고속도로 정책 필요(데이터센터 전력)</li>
+<li>AI 수혜·고유가 수혜·전기료 인상 헤지 3중 구조</li>
+<li>인플레이션 헤지 역할</li>
+<li>어떤 상황이 와도 대처 가능한 유일한 AI 관련주 섹터</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">통신사: 경기방어 + AI 수혜</div><ul>
+<li>배당 수익률 4% 이상</li>
+<li>경기 방어주 본질</li>
+<li>AI 데이터센터 사용료 수익</li>
+<li>6G 시대 도래 시 신규 수익</li>
+<li>로봇 요금제 등장 가능성</li>
+<li>경기 하락기: 다른 주식 대비 하락 리스크 최소</li>
+<li>비쌀 때 매수는 금물</li>
+<li>애매한 구간 매수: 보유 부담 최소</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">최종 포트폴리오 구상</div><div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">20%</span><span class="igk-l">주도주(삼성전자·SK하이닉스)</span></div><div class="ig-kpi"><span class="igk-v">높은 비중</span><span class="igk-l">에너지 섹터(AI 수혜 + 고유가 수혜)</span></div><div class="ig-kpi"><span class="igk-v">높은 비중</span><span class="igk-l">통신사(경기방어 + 배당 + 신규 수혜)</span></div><div class="ig-kpi"><span class="igk-v">나머지</span><span class="igk-l">AI 생태계 길목(전공정·후공정, 데이터센터, 전력장비, 냉각)</span></div></div>
+<ul>
+<li>오르면 좋고 안 올라도 덜 다치는 구조</li>
+<li>신규 매수보다 리스크 대응이 우선인 구간</li>
+<li>리스크 대응을 전제로 한 투자 지속</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">09 / 09</span></div><div class="shead"><span class="num">08</span><div class="htxt"><h1>영상 출처</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">영상 출처</div><ul>
+<li>제목: <a href="https://youtu.be/9Sn1C2RqFI4">역사상 가장 빠른 대폭락 올 수 있다, 잘못하면 계좌 통째로 녹아내린다 (전인구 소장)</a></li>
+<li>채널: 김작가 TV · 게시일: 2026-06-06</li>
+<li>링크: <a href="https://youtu.be/9Sn1C2RqFI4">https://youtu.be/9Sn1C2RqFI4</a></li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭 · F 전체화면(클릭 시 자동)</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 9</span><button id="next">&rsaquo;</button></div><script>
+var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
+var c=document.getElementById('counter'),pr=document.getElementById('prog');
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight;if(sh<1)return;var z=ch/sh;z=Math.max(0.6,Math.min(2.2,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
+function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
+document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
+document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(cur+1);e.preventDefault();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault();}else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}});
+function goFS(){try{var e=document.documentElement;if(!document.fullscreenElement&&e.requestFullscreen){e.requestFullscreen().catch(function(){});}}catch(_){}}
+document.getElementById('deck').addEventListener('click',function(e){if(e.target.closest('.nav')||e.target.closest('a'))return;goFS();var x=e.clientX/window.innerWidth;if(x>0.5){show(cur+1);}else{show(cur-1);}});
+function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+s+')';}
+window.addEventListener('resize',fit);document.addEventListener('fullscreenchange',fit);
+window.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){goFS();}},{once:false});
+window.addEventListener('load',function(){goFS();});
+fit();show(0);
+</script></body></html>
