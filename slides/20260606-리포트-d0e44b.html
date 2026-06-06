@@ -1,0 +1,134 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="카카오톡에서 바로 쓰는 AI 비서"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;--up:#1f9d57;--dn:#c0392b;--text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f7f6;--bg:#fff}
+html,body{height:100%}
+body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Apple SD Gothic Neo','Segoe UI',sans-serif;color:var(--text);overflow:hidden}
+#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--bg);overflow:hidden;display:none;flex-direction:column;padding:30px 44px 26px}
+.slide.active{display:flex}
+.chip{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.chip .brand{display:flex;align-items:center;gap:9px;text-transform:uppercase}
+.chip .dot{width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.chip .pg{color:var(--accent);font-weight:700}
+.shead{display:flex;align-items:flex-start;gap:13px;border-bottom:3px solid var(--accent);padding-bottom:10px;margin-bottom:14px}
+.shead .num{background:var(--accent);color:#fff;font-size:15px;font-weight:800;border-radius:8px;padding:6px 11px;flex:none}
+.shead .htxt h1{font-size:27px;font-weight:900;line-height:1.2;letter-spacing:-.01em}
+.shead .ey{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;white-space:nowrap;align-self:flex-end;padding-bottom:3px}
+.body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column}
+.cols2{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:stretch}
+.cols2.one{grid-template-columns:1fr}
+.sec-panel{border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column}
+.sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
+.sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
+.sec-panel table{font-size:13px}.sec-panel th{font-size:12px;padding:7px 9px}
+.sec-panel td{padding:6px 9px;font-size:12.5px;line-height:1.4}
+.sec-panel li{font-size:13px;margin:4px 0;line-height:1.45}.sec-panel p{font-size:13px;line-height:1.5}
+.sec-panel h3{font-size:14px;margin:5px 0 2px}.sec-panel blockquote{font-size:12.5px;padding:9px 12px;line-height:1.45}
+.foot{margin-top:9px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.foot .fd{width:8px;height:8px;border-radius:50%;background:var(--accent-mid)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:#fff}
+th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;font-weight:700;font-size:14px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;word-break:keep-all}
+td:first-child{font-weight:700;white-space:nowrap}tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f8faf9}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}.hl{color:var(--accent);font-weight:700}
+ul,ol{margin:2px 0 2px 20px}li{margin:5px 0;font-size:15px;line-height:1.5}
+h3{font-size:17px;font-weight:800;color:var(--accent-d);margin:6px 0 2px}
+p{font-size:15px;line-height:1.55;margin:4px 0}
+blockquote{border:1px solid var(--accent-mid);background:var(--accent-light);border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.55;color:#1f3d30}
+code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.9em}
+a{color:var(--accent);text-decoration:none}strong{color:#1a1a1a}hr{display:none}
+.ig-bars{display:flex;flex-direction:column;gap:6px;margin:7px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(64px,28%) 1fr auto;align-items:center;gap:8px;font-size:12.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:13px;background:var(--surface);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:9px;margin:7px 0}
+.ig-kpi{flex:1;min-width:104px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;gap:2px}
+.igk-v{font-size:22px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:11.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:13px;margin:7px 0;justify-content:flex-start}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:4px}
+.igd-ring{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:40px;height:40px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:13px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:11.5px;color:var(--text);font-weight:600;text-align:center;max-width:88px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:7px 0 7px 4px;border-left:2px solid var(--accent-mid);padding-left:13px}
+.ig-tl{position:relative;padding:4px 0}
+.igt-dot{position:absolute;left:-18px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:12.5px;margin-right:7px}
+.igt-x{font-size:12.5px;color:var(--text);line-height:1.45}
+.ig-raw{font-size:12.5px;color:var(--text);white-space:pre-wrap;line-height:1.5}
+.cover{background:radial-gradient(120% 140% at 80% 8%,#2b6f4e,#163d2b 52%,#0c241a);color:#eef6f0;padding:0;position:relative}
+.cover .cv{padding:52px 56px;display:flex;flex-direction:column;height:100%;width:100%}
+.cv-ey{font-size:14px;letter-spacing:.16em;color:#9fe0bd;font-weight:700;text-transform:uppercase}
+.cover .cv h1{font-size:40px;font-weight:900;line-height:1.22;margin-top:18px;letter-spacing:-.02em;max-width:90%;color:#eef6f0}
+.cv-sum{font-size:17px;color:#cfeadd;border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:14px 18px;margin-top:18px;line-height:1.55;max-width:92%}
+.cv-toc{margin-top:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cv-toc .it{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 13px;font-size:13px;color:#eef6f0;display:flex;gap:9px}
+.cv-toc .it b{color:#7ee3ad}
+.cv-badge{position:absolute;top:46px;right:54px;width:94px;height:94px;border-radius:50%;background:#eef6f0;color:#163d2b;border:2px solid #7ee3ad;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.cv-badge .i{font-size:22px}.cv-badge .t{font-size:14px;margin-top:2px}
+.nav{position:fixed;bottom:16px;right:20px;display:flex;align-items:center;gap:9px;z-index:50}
+.nav button{background:rgba(45,145,98,.92);color:#fff;border:none;width:36px;height:36px;border-radius:9px;font-size:17px;cursor:pointer}
+.nav .counter{background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:7px 13px;border-radius:9px;font-weight:600}
+.progress{position:fixed;top:0;left:0;height:4px;background:var(--accent-mid);z-index:60;transition:width .25s}
+.hint{position:fixed;bottom:18px;left:20px;color:rgba(255,255,255,.45);font-size:12px;z-index:50}
+</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">📊 슬라이드</span></div><div class="cv-ey">xbot · 2026-06-06</div><h1>리포트</h1><div class="cv-sum">카카오톡에서 바로 쓰는 AI 비서</div><div class="cv-toc"><div class="it"><b>01</b><span>xbot 개요</span></div><div class="it"><b>02</b><span>명령어 전체 목록 · 추가 입력 방식</span></div><div class="it"><b>03</b><span>슬라이드 / 웹 리포트 생성 상세</span></div><div class="it"><b>04</b><span>답변 첫 줄 (⏱) 읽는 법 · 알아두면 좋은 점</span></div><div class="it"><b>05</b><span>한눈에 요약 · 원문 출처</span></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">02 / 06</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>xbot 개요</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2 one"><div class="sec-panel"><div class="ph">xbot 개요</div><ul>
+<li>카카오톡에서 바로 쓰는 AI 비서</li>
+<li>제공 기능: 한국 주식 분석, 웹 검색, 날씨 조회, 대화·링크 요약, 슬라이드·웹 리포트 생성</li>
+<li>반응 방식:</li>
+</ul>
+<p>그룹방 — 명령어 <code>!</code> 또는 멘션(<code>@봇이름</code>)에만 반응 1:1 방 — 명령어 없이 말 걸어도 반응</p>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">카카오톡</span><span class="igk-l">사용 플랫폼</span></div><div class="ig-kpi"><span class="igk-v">한국 주식 분석</span><span class="igk-l">핵심 기능 #1</span></div><div class="ig-kpi"><span class="igk-v">웹 검색·날씨</span><span class="igk-l">핵심 기능 #2</span></div><div class="ig-kpi"><span class="igk-v">슬라이드·웹 리포트 생성</span><span class="igk-l">핵심 기능 #3</span></div></div>
+<ul>
+<li>방마다 성격(페르소나)과 기억이 독립 — 같은 질문도 방마다 톤 다를 수 있음</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">03 / 06</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>명령어 전체 목록 &amp; 추가 입력 방식</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">명령어 전체 목록</div><div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">!주가</span><span class="igk-l">한국 주식 분석 (시그널·진입·목표·손절)</span></div><div class="ig-kpi"><span class="igk-v">!검색</span><span class="igk-l">웹 검색 후 요약</span></div><div class="ig-kpi"><span class="igk-v">!날씨</span><span class="igk-l">날씨 조회</span></div><div class="ig-kpi"><span class="igk-v">!요약</span><span class="igk-l">최근 대화 20개 요약</span></div><div class="ig-kpi"><span class="igk-v">!요약 [URL]</span><span class="igk-l">웹페이지 본문 요약</span></div><div class="ig-kpi"><span class="igk-v">!슬라이드</span><span class="igk-l">16:9 발표용 슬라이드덱 생성·게시</span></div><div class="ig-kpi"><span class="igk-v">!웹</span><span class="igk-l">스크롤형 웹 리포트 생성·게시</span></div><div class="ig-kpi"><span class="igk-v">!도움말</span><span class="igk-l">명령어 목록 출력</span></div></div>
+<ul>
+<li>사용 예시</li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>명령어</th><th>예시</th></tr></thead><tbody><tr><td><code>!주가</code></td><td><code>!주가 삼성전자</code> <code>!주가 005930</code></td></tr><tr><td><code>!검색</code></td><td><code>!검색 엔비디아 실적</code></td></tr><tr><td><code>!날씨</code></td><td><code>!날씨 서울</code></td></tr><tr><td><code>!요약</code></td><td><code>!요약</code> <code>!요약 https://...</code></td></tr><tr><td><code>!슬라이드</code></td><td><code>!슬라이드 https://youtu.be/...</code></td></tr><tr><td><code>!웹</code></td><td><code>!웹 2026 AI 트렌드</code></td></tr></tbody></table></div></div><div class="sec-panel"><div class="ph">추가 입력 방식</div><ul>
+<li>URL만 붙여넣기: <code>!요약</code> 명령어 없이 링크만 보내도 자동 요약</li>
+<li>자연어 멘션: 그룹방에서 <code>@봇이름</code> 다음에 질문 입력 가능</li>
+<li>슬라이드 전환: 대화 중 &quot;이거 슬라이드로 만들어줘&quot; 입력 → 형식(슬라이드/웹) 되묻고 생성</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">04 / 06</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>슬라이드 / 웹 리포트 생성 상세</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2 one"><div class="sec-panel"><div class="ph">슬라이드 / 웹 리포트 생성 상세</div><div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">1. 명령어 입력</span><span class="igt-x">!슬라이드 [주제] 또는 !웹 [주제]</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">2. 주제 생략 시</span><span class="igt-x">직전 대화 내용을 자료로 자동 활용</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">3. 유튜브 링크 입력</span><span class="igt-x">자막/음성 분석 → 핵심 정리 (자막 없는 영상도 음성 인식 처리)</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">4. 생성 완료</span><span class="igt-x">공개 링크 발행</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">5. 링크 전달</span><span class="igt-x">wootom.github.io/news/slides/... 형식 URL → 폰 브라우저에서 열람 가능</span></div></div>
+<ul>
+<li>게시 반영 소요 시간: 최대 1분</li>
+<li>리포트 포함 구성 요소</li>
+</ul>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">영상 출처</span><span class="igk-l">원본 제목·채널·게시일·링크 포함</span></div><div class="ig-kpi"><span class="igk-v">인포그래픽</span><span class="igk-l">수치 비교 막대·핵심 지표 카드·비율·시간순 타임라인</span></div><div class="ig-kpi"><span class="igk-v">전수 정보</span><span class="igk-l">빠짐없이 빼곡히 담는 것을 목표</span></div></div>
+<ul>
+<li>인포그래픽 조건: 내용에 수치가 있을 때만 포함</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">05 / 06</span></div><div class="shead"><span class="num">04</span><div class="htxt"><h1>답변 첫 줄 (⏱) 읽는 법 &amp; 알아두면 좋은 점</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">답변 첫 줄 (⏱) 읽는 법</div><ul>
+<li>답변 맨 위 한 줄은 처리 정보 표시</li>
+<li>예시: <code>⏱ 12.4s · Hermes · 🤖 gpt-5.5</code></li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>항목</th><th>설명</th><th>예시</th></tr></thead><tbody><tr><td>⏱ 시간</td><td>답변 생성까지 걸린 시간</td><td><code>12.4s</code> = 12.4초</td></tr><tr><td>주체</td><td>도구 사용 가능 여부</td><td><code>Hermes</code> = 도구 사용 가능</td></tr><tr><td></td><td></td><td><code>폴백·OpenRouter</code> = 도구 없음, 비상 경로</td></tr><tr><td>🤖 모델</td><td>실제 답변 생성 AI 모델</td><td><code>gpt-5.5</code></td></tr></tbody></table></div>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">Hermes</span><span class="igt-x">도구 사용 가능 — 정상 상태 (주식·검색·요약·슬라이드 생성)</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">폴백·OpenRouter</span><span class="igt-x">도구 없음 — 비상 경로 (제한된 응답만 가능)</span></div></div></div><div class="sec-panel"><div class="ph">알아두면 좋은 점</div><ul>
+<li>종목 별칭 인식: <code>삼전</code> → <code>삼성전자</code> 등 흔한 줄임말 자동 인식</li>
+<li>정확성 주의</li>
+</ul>
+<p>AI가 가끔 틀릴 수 있음 투자·중요 결정은 반드시 직접 확인 필수 종목 코드가 헷갈릴 경우 6자리 코드로 입력하는 것이 가장 정확</p>
+<ul>
+<li>시간 소요 안내</li>
+</ul>
+<p>슬라이드·웹 리포트: 수십 초~수 분 소요 가능 (특히 긴 영상) 게시 반영: 최대 1분</p>
+<ul>
+<li>응답 없을 때</li>
+</ul>
+<p>잠시 후 재시도 지속 불가 시 운영자에게 문의</p></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">06 / 06</span></div><div class="shead"><span class="num">05</span><div class="htxt"><h1>한눈에 요약 &amp; 원문 출처</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">한눈에 요약</div><div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">카카오톡 내</span><span class="igk-l">사용 장소 (그룹방·1:1)</span></div><div class="ig-kpi"><span class="igk-v">주식·검색·날씨·요약·슬라이드·웹</span><span class="igk-l">사용 가능 기능</span></div><div class="ig-kpi"><span class="igk-v">!명령어</span><span class="igk-l">그룹방 호출 방식</span></div><div class="ig-kpi"><span class="igk-v">자연어·멘션</span><span class="igk-l">1:1방 호출 방식</span></div><div class="ig-kpi"><span class="igk-v">방별 독립</span><span class="igk-l">페르소나·기억 분리</span></div></div></div><div class="sec-panel"><div class="ph">원문 출처</div><ul>
+<li>링크: <a href="https://wootom.github.io/news/xbot-manual-user.html">https://wootom.github.io/news/xbot-manual-user.html</a></li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 6</span><button id="next">&rsaquo;</button></div><script>
+var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
+var c=document.getElementById('counter'),pr=document.getElementById('prog');
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight;if(sh<1)return;var z=ch/sh;z=Math.max(0.6,Math.min(1.45,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
+function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
+document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
+document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(cur+1);e.preventDefault();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault();}else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}});
+document.getElementById('deck').addEventListener('click',function(e){if(e.target.closest('.nav')||e.target.closest('a'))return;var x=e.clientX/window.innerWidth;if(x>0.5){show(cur+1);}else{show(cur-1);}});
+function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);document.getElementById('stage').style.transform='scale('+s+')';}
+window.addEventListener('resize',fit);fit();show(0);
+</script></body></html>
