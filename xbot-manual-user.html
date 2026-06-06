@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="카카오톡에서 바로 쓰는 AI 비서. 주식·검색·날씨·요약은 물론, 대화나 유튜브 영상을 **슬라이드/웹 리포트**로 만들어 줍니다. 이 문서는 **카톡 사용자**를 위한 안내입니다(운영·설치는 별도 [운영자 매뉴얼] 참고)."><title>xbot 사용자 매뉴얼</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>xbot</span><span class="ey">xbot · 사용자 매뉴얼</span></div><h1>xbot 사용자 매뉴얼</h1><p class="lead">카카오톡에서 바로 쓰는 AI 비서. 주식·검색·날씨·요약은 물론, 대화나 유튜브 영상을 <strong>슬라이드/웹 리포트</strong>로 만들어 줍니다. 이 문서는 <strong>카톡 사용자</strong>를 위한 안내입니다(운영·설치는 별도 [운영자 매뉴얼] 참고).</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">한눈에</a><a href="#s2">명령어</a><a href="#s3">슬라이드 / 웹 리포트 만들기</a><a href="#s4">답변 첫 줄(⏱) 읽는 법</a><a href="#s5">알아두면 좋은 점</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>한눈에</h2><ul>
+<li><strong>어디서 쓰나</strong>: 봇이 들어와 있는 카카오톡 방. 그룹방은 <strong>명령어(<code>!</code>)나 멘션</strong>에만 반응하고, 1:1 방은 그냥 말 걸어도 됩니다.</li>
+<li><strong>무엇을 하나</strong>: 한국 주식 분석, 웹 검색, 날씨, 대화/링크 요약, 슬라이드·웹 리포트 생성.</li>
+<li><strong>누가 답하나</strong>: 방마다 성격(페르소나)과 기억이 <strong>독립</strong>입니다. 같은 질문도 방마다 톤이 다를 수 있습니다.</li>
+</ul></section><section class="card s12" id="s2"><h2><span class="seq">02</span>명령어</h2><div class="tbl-wrap"><table><thead><tr><th>명령</th><th>설명</th><th>예시</th></tr></thead><tbody><tr><td><code>!주가 [종목]</code></td><td>한국 주식 분석(시그널·진입·목표·손절)</td><td><code>!주가 삼성전자</code> · <code>!주가 005930</code></td></tr><tr><td><code>!검색 [키워드]</code></td><td>웹 검색 후 요약</td><td><code>!검색 엔비디아 실적</code></td></tr><tr><td><code>!날씨 [도시]</code></td><td>날씨 조회</td><td><code>!날씨 서울</code></td></tr><tr><td><code>!요약</code></td><td>최근 대화 20개 요약</td><td><code>!요약</code></td></tr><tr><td><code>!요약 [URL]</code></td><td>웹페이지 본문 요약</td><td><code>!요약 https://...</code></td></tr><tr><td><code>!슬라이드 [주제/URL]</code></td><td><strong>16:9 발표용 슬라이드덱</strong> 생성·게시</td><td><code>!슬라이드 https://youtu.be/...</code></td></tr><tr><td><code>!웹 [주제/URL]</code></td><td><strong>스크롤형 웹 리포트</strong> 생성·게시</td><td><code>!웹 2026 AI 트렌드</code></td></tr><tr><td><code>!도움말</code></td><td>명령어 목록</td><td><code>!도움말</code></td></tr></tbody></table></div>
+<ul>
+<li><strong>URL만 붙여넣기</strong>: <code>!요약</code> 없이 링크만 보내도 요약해 줍니다.</li>
+<li><strong>멘션·자연어</strong>: 그룹방에서 <code>@봇이름 ...</code> 또는 1:1에서는 그냥 질문해도 됩니다. 대화 중 *&quot;이거 슬라이드로 만들어줘&quot;* 라고 하면 형식(웹/슬라이드)을 되묻고 만들어 줍니다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>슬라이드 / 웹 리포트 만들기</h2><ol>
+<li><code>!슬라이드 [주제]</code> 또는 <code>!웹 [주제]</code> — 주제를 생략하면 <strong>직전 대화</strong>를 자료로 만듭니다.</li>
+<li><strong>유튜브 링크</strong>를 주면 자막/음성을 분석해 핵심을 정리합니다(자막 없는 영상도 음성 인식으로 처리).</li>
+<li>결과로 <strong>공개 링크</strong>(<code>wootom.github.io/news/slides/...</code>)를 보내드립니다. 폰 브라우저에서 열어보세요. *(게시 반영에 최대 1분)*</li>
+</ol>
+<p>리포트에는 다음이 포함됩니다:</p>
+<ul>
+<li><strong>영상 출처</strong> — 원본 제목·채널·게시일·링크</li>
+<li><strong>인포그래픽</strong> — 수치 비교 막대, 핵심 지표 카드, 비율, 시간순 타임라인 (내용에 수치가 있을 때)</li>
+<li>정보를 <strong>빠짐없이 빼곡히</strong> 담는 것을 목표로 합니다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>답변 첫 줄(⏱) 읽는 법</h2><p>답변 맨 위 한 줄은 <strong>처리 정보</strong>입니다. 예) <code>⏱ 12.4s · Hermes · 🤖 gpt-5.5</code></p>
+<ul>
+<li><strong>⏱ 시간</strong> — 답하기까지 걸린 시간</li>
+<li><strong>주체</strong> — <code>Hermes</code>(도구 사용 가능) 또는 <code>폴백·OpenRouter</code>(도구 없음, 비상 경로)</li>
+<li><strong>🤖 모델</strong> — 실제로 답을 만든 AI 모델</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>알아두면 좋은 점</h2><ul>
+<li><strong>종목 별칭</strong> OK: <code>삼전 → 삼성전자</code> 처럼 흔한 줄임말도 인식합니다.</li>
+<li><strong>정확성</strong>: AI라 가끔 틀릴 수 있습니다. <strong>투자·중요 결정은 반드시 직접 확인</strong>하세요. 종목 코드가 헷갈리면 6자리 코드로 주는 게 가장 정확합니다.</li>
+<li><strong>시간이 걸리는 작업</strong>: 슬라이드/웹 리포트는 수십 초~수 분 걸릴 수 있습니다(특히 긴 영상).</li>
+<li><strong>응답이 없을 때</strong>: 잠시 후 다시 시도하거나 운영자에게 문의하세요.</li>
+</ul></section></main><div class="foot"><span class="dot"></span>xbot · 사용자 매뉴얼</div></div></body></html>

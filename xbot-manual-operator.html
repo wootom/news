@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="xbot 실행·설정·게시·장애 대응을 위한 **운영자 전용** 문서. 카톡 사용법은 [[xbot-사용자-매뉴얼]] 참고. 본 문서는 형상 변화 시 갱신합니다."><title>xbot 운영자 매뉴얼</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>xbot</span><span class="ey">xbot · 운영자 매뉴얼</span></div><h1>xbot 운영자 매뉴얼</h1><p class="lead">xbot 실행·설정·게시·장애 대응을 위한 <strong>운영자 전용</strong> 문서. 카톡 사용법은 [[xbot-사용자-매뉴얼]] 참고. 본 문서는 형상 변화 시 갱신합니다.</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">시스템 구성</a><a href="#s2">봇 실행·종료·재시작</a><a href="#s3">설정: hot-reload vs 재시작</a><a href="#s4">방별 에이전트 = Hermes profile</a><a href="#s5">모델 설정 (자주 혼동)</a><a href="#s6">관리자 웹 (Flask :5001)</a><a href="#s7">출판 파이프라인 (슬라이드/웹 리포트)</a><a href="#s8">MCP 서버 (Hermes 등록)</a><a href="#s9">Watchdog / 자동 복구</a><a href="#s10">주요 데이터·로그 경로</a><a href="#s11">트러블슈팅</a><a href="#s12">자주 쓰는 진단 명령</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>시스템 구성</h2><p>카카오톡 → kakaocli 동기화(Swift) → 웹훅 수신(FastAPI :8766) → MessageRouter(방별 페르소나 lookup, <code>!명령</code> 정규화) → 분기:</p>
+<ul>
+<li><strong><code>!주가</code>/<code>!도움말</code></strong> → CommandHandler 전단 직답(K-dexter 직접 호출, 1–2초)</li>
+<li><strong>그 외</strong> → AIEngine.ask → 방별 Hermes profile(<code>kakao_&lt;chatid&gt;</code>)로 라우팅 → Hermes(LLM)가 MCP 도구 자동 호출(kdexter·dart·macro·brave·gmail) → 응답 → kakaocli send(AX UI 자동화)</li>
+</ul>
+<p>병렬 백그라운드: Telegram→KakaoTalk 포워더 · Flask 관리자 웹(:5001) · watchdog(무응답 자동 재기동) · daily_report 스케줄러.</p></section><section class="card s6" id="s2"><h2><span class="seq">02</span>봇 실행·종료·재시작</h2><ul>
+<li><strong>실행(중요)</strong>: 반드시 <strong>plain Terminal.app</strong>에서 <code>cd ~/xbot &amp;&amp; python3 main.py</code></li>
+</ul>
+<p>- 이유: <code>kakaocli send</code>는 macOS 접근성(AX)으로 카톡 UI를 자동화 → Terminal.app에서 띄운 프로세스만 AX 권한을 상속. tmux/SSH/원격 셸에서 띄우면 <strong>전송 실패</strong>.</p>
+<ul>
+<li><strong>정상 종료</strong>: <code>kill -INT $(lsof -ti:8766 | head <span class="dn">-1</span>)</code> 또는 봇 띄운 터미널에서 <code>Ctrl+C</code></li>
+<li><strong>재시작이 필요한 경우</strong>: <code>.py</code> 코드 변경 시 <strong>반드시 재시작</strong>(모듈 import 시점에 값 캡처). 설정(<code>settings.json</code>)만 바꿨으면 재시작 대신 hot-reload.</li>
+<li><strong>헬스 체크</strong>: 봇 <code>curl http://127.0.0.1:8766/healthz</code> · 관리자 <code>curl http://127.0.0.1:5001/</code> · K-dexter <code>curl http://localhost:3000/health</code> · Hermes <code>hermes status</code></li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>설정: hot-reload vs 재시작</h2><div class="tbl-wrap"><table><thead><tr><th>변경 대상</th><th>반영 방법</th></tr></thead><tbody><tr><td><code>settings.json</code>(포워딩·페르소나·정책)</td><td><code>curl -X POST http://127.0.0.1:5001/apply</code> 또는 SIGHUP (재시작 불필요)</td></tr><tr><td><code>.py</code> 코드</td><td>봇 재시작 필수</td></tr><tr><td>방 Hermes profile(<code>config.yaml</code>·SOUL·AGENTS)</td><td>다음 호출부터 자동 반영(재시작 불필요)</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>방별 에이전트 = Hermes profile</h2><ul>
+<li>방마다 독립 profile <code>kakao_&lt;chatid&gt;</code> — 자체 <code>config.yaml</code>(모델)·<code>SOUL.md</code>(정체성)·<code>AGENTS.md</code>(공통 규칙)·기억. 미존재 방은 첫 메시지에 <code>kakao_base</code> 복제로 생성.</li>
+<li><strong>공통 동작 규칙</strong>은 <code>~/.hermes/profiles/kakao_base/AGENTS.md</code>가 소유(Hermes 자동 주입). 갱신은 거기 + 이미 생성된 방 profile의 AGENTS.md.</li>
+<li><strong>안정 키는 <code>chat_id</code></strong> (chat_name은 UI rename으로 바뀜). 페르소나·세션 매핑은 항상 chat_id 기반.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>모델 설정 (자주 혼동)</h2><ul>
+<li><strong>방 대화 모델 = 단일 진실원천 = 그 방 profile <code>config.yaml</code></strong>: <code>~/.hermes/profiles/kakao_&lt;chatid&gt;/config.yaml</code> 의 <code>model.provider</code> / <code>model.default</code>. 모델명을 단언할 때는 <strong>메모리·문서가 아니라 이 파일을 직접</strong> 읽을 것(값이 표류함).</li>
+</ul>
+<p>- 예) vaax-test(469041369346893) = <code>openai-codex / gpt-5.5</code> + fallback(openrouter <code>deepseek/deepseek-v4-flash</code>).</p>
+<ul>
+<li><strong>관리자 웹의 &quot;폴백&quot;은 두 종류 — 헷갈리지 말 것</strong>:</li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>위치</th><th>저장처</th><th>의미</th><th>올바른 값 형식</th></tr></thead><tbody><tr><td>운영설정 탭 &quot;폴백 모델&quot;(<code>ai_model</code>)</td><td><code>settings.json</code> policy</td><td>Hermes 실패 시 <strong>OpenRouter</strong> 직호출 모델</td><td>OpenRouter id (예 <code>anthropic/claude-sonnet-4.6</code>)</td></tr><tr><td>에이전트설정 탭 방별 &quot;폴백&quot;</td><td>방 <code>config.yaml</code> <code>fallback_providers</code></td><td>방 모델 실패 시 <strong>Hermes 내부</strong> 폴백</td><td>provider/model (예 <code>openai-codex</code>/<code>gpt-5.4-mini</code>)</td></tr></tbody></table></div>
+<p>⚠️ 운영설정 폴백칸에 <code>openai-codex/...</code> 같은 Hermes 모델명을 넣으면 OpenRouter가 그 모델을 못 찾아 폴백이 깨집니다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>관리자 웹 (Flask :5001)</h2><ul>
+<li><strong>4탭</strong>: ① 포워딩 ② 방 관리 ③ 에이전트 설정(방별 모델·폴백·페르소나 모달 편집) ④ 운영설정(정책).</li>
+<li>외부 접근: Tailscale로 노출(예 <code>https://macmini.tail*.ts.net:10000/</code>). 사내망 합류는 Tailscale 클라이언트.</li>
+<li>페르소나 라벨은 SOUL 내용 기반 자동 분류(<code>soul_personas.classify_soul</code>).</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>출판 파이프라인 (슬라이드/웹 리포트)</h2><p>흐름: 콘텐츠 원고 생성 → 렌더 → 경량 검수 → git push → 공개 URL.</p>
+<ol>
+<li><strong>원고</strong>: 대화/주제/URL → <code>ai_engine.compose_report</code>(<strong>방 모델</strong>이 마크다운 원고 생성). 유튜브는 자막/전사(<code>transcribe.py</code> 스킬)를 source로 주입. ⏱줄 🤖에 실사용 모델 노출.</li>
+<li><strong>영상 출처</strong>: 유튜브 URL이면 <code>yt-dlp</code>로 제목·채널·게시일을 가져와 <code>## 영상 출처</code> 섹션으로 본문에 자동 삽입(메타 조회 실패해도 링크는 들어감).</li>
+<li><strong>인포그래픽</strong>: 원고에 펜스 블록(<code>bars</code>/<code>kpi</code>/<code>donut</code>/<code>timeline</code>)이 있으면 공용 렌더러가 막대·카드·도넛·타임라인으로 변환. 색상은 스타일가이드 팔레트(녹/적)만 사용.</li>
+<li><strong>렌더</strong>: 공용 생성기 — 웹=<code>~/Documents/Claude/Scheduled/_shared/md_to_deck.py</code>(스크롤 리포트), 덱=<code>md_to_deck_16x9.py</code>(16:9). <strong>morning-digest 등과 공유</strong>되므로 수정 시 회귀 주의.</li>
+<li><strong>검수</strong>(<code>self_review</code>): 경량 lint(색상·테두리·구조) + LLM 자가검토. 검수 프롬프트에 <strong>현재 KST 날짜를 주입</strong>해 과거 날짜를 &quot;미래&quot;로 오탐하지 않게 함.</li>
+<li><strong>게시</strong>: <code>~/Sites/ai-infographic</code> 로컬 → git push(<code>origin</code>, PAT 내장) → <code>wootom.github.io/news/slides/...</code>. 충돌 시 untracked 백업-비키기 self-heal.</li>
+</ol>
+<blockquote>주의: 원고 생성 모델이 <code>openai-codex</code>(gpt-5.x)인 방은 <strong>간헐적 stall</strong>로 빈 원고(2슬라이드)가 나올 수 있음 — 재생성하면 대개 정상. (참고: 주가 응답 지연과 동일 원인)</blockquote></section><section class="card s12" id="s8"><h2><span class="seq">08</span>MCP 서버 (Hermes 등록)</h2><div class="tbl-wrap"><table><thead><tr><th>서버</th><th>도구</th></tr></thead><tbody><tr><td>kdexter-mcp</td><td>한·미 주식 분석, 가격, 수급, 사용자 종목 매핑</td></tr><tr><td>dart-mcp</td><td>한국 공시·재무·배당·최대주주</td></tr><tr><td>macro-mcp</td><td>FRED 거시 + Finnhub 글로벌 주식</td></tr><tr><td>brave-mcp</td><td>웹·뉴스 검색</td></tr><tr><td>gmail-mcp</td><td>이메일 발송/조회/회신 (OAuth 최초 설정 필요, 발송 전 승인 엄수)</td></tr></tbody></table></div>
+<ul>
+<li>MCP에 API 키 전달은 <code>~/.hermes/config.yaml</code>의 <code>mcp_servers.&lt;name&gt;.env</code>에 명시(Hermes는 기본적으로 환경변수 미상속).</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>Watchdog / 자동 복구</h2><ul>
+<li>kakaocli silent-dead(30분 웹훅 0건) + Telethon silent-dead(30분 이벤트 0건) 감시 → 자동 재기동.</li>
+<li>포워딩 부분 실패 시 실패한 방만 지연 재전송 큐(기본 30/90/300초).</li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>주요 데이터·로그 경로</h2><ul>
+<li><code>~/.xbot/xbot.log</code> — 메인 로그</li>
+<li><code>~/.xbot/user_tickers.json</code> — 사용자 종목 매핑(xbot + kdexter-mcp 공유)</li>
+<li><code>~/.hermes-xbot/sessions.json</code> — chat_id ↔ hermes 세션 캐시</li>
+<li><code>~/xbot/settings.json</code> — 포워딩/페르소나/정책/일일리포트</li>
+<li><code>~/xbot/.env</code> — API 키(OPENROUTER, TELEGRAM, KAKAO, TAVILY, FIRECRAWL, OPENDART, FRED, FINNHUB, BRAVE)</li>
+</ul></section><section class="card s12" id="s11"><h2><span class="seq">11</span>트러블슈팅</h2><div class="tbl-wrap"><table><thead><tr><th>증상</th><th>원인 / 조치</th></tr></thead><tbody><tr><td>봇이 응답 안 함</td><td>kakaocli sync wedge(파이썬은 정상). <code>curl :8766/healthz</code>로 파이썬 측 확인 → 봇 재시작</td></tr><tr><td>1:1인데 트리거 필요로 동작</td><td>stale metadata로 <code>is_direct_chat=False</code>. <code>chats --json</code> 주기 갱신으로 복구</td></tr><tr><td><code>!주가</code> 200초 지연</td><td><code>openai-codex</code> 턴당 stall. profile config provider 타임아웃(90/60)→openrouter flash 폴백</td></tr><tr><td>게시 실패(rebase checkout)</td><td><code>~/Sites/ai-infographic</code> 루트 원격 동명 untracked 충돌 → self-heal 백업 후 재시도</td></tr><tr><td>유튜브 자막 429</td><td>curl_cffi 내장 yt-dlp(<code>~/.local/bin</code>)로 impersonation. <code>--impersonate chrome</code> 견고화</td></tr><tr><td>슬라이드 2장/빈 내용</td><td>방 모델(codex) 간헐 stall — 재생성</td></tr><tr><td><code>403 multipart</code> 로그</td><td>OpenRouter 일부 vision 호출 실패 추정, 응답엔 영향 없음</td></tr></tbody></table></div></section><section class="card s6" id="s12"><h2><span class="seq">12</span>자주 쓰는 진단 명령</h2><ul>
+<li>전체 회귀: <code>python3 -m pytest tests/ -q</code> (인터프리터 <code>/usr/bin/python3</code>)</li>
+<li>Hermes 설정: <code>hermes status</code> · MCP: <code>hermes mcp list</code></li>
+<li>합성 웹훅(디버그): <code>:8766/kakao</code>에 메시지 JSON 배열 POST (chat_id·log_id·text·is_from_me 포함)</li>
+<li>방 모델 확인: <code>~/.hermes/profiles/kakao_&lt;chatid&gt;/config.yaml</code> 직접 열람</li>
+</ul></section></main><div class="foot"><span class="dot"></span>xbot · 운영자 매뉴얼</div></div></body></html>
