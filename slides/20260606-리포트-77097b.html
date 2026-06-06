@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Google 공식 발표, Gemma 4 패밀리의 일원"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;--up:#1f9d57;--dn:#c0392b;--text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f7f6;--bg:#fff}
+html,body{height:100%}
+body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Apple SD Gothic Neo','Segoe UI',sans-serif;color:var(--text);overflow:hidden}
+#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--bg);overflow:hidden;display:none;flex-direction:column;padding:30px 44px 26px}
+.slide.active{display:flex}
+.chip{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.chip .brand{display:flex;align-items:center;gap:9px;text-transform:uppercase}
+.chip .dot{width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.chip .pg{color:var(--accent);font-weight:700}
+.shead{display:flex;align-items:flex-start;gap:13px;border-bottom:3px solid var(--accent);padding-bottom:10px;margin-bottom:14px}
+.shead .num{background:var(--accent);color:#fff;font-size:15px;font-weight:800;border-radius:8px;padding:6px 11px;flex:none}
+.shead .htxt h1{font-size:27px;font-weight:900;line-height:1.2;letter-spacing:-.01em}
+.shead .ey{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;white-space:nowrap;align-self:flex-end;padding-bottom:3px}
+.body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column}
+.cols2{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:stretch}
+.cols2.one{grid-template-columns:1fr}
+.sec-panel{border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column}
+.sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
+.sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
+.sec-panel table{font-size:13px}.sec-panel th{font-size:12px;padding:7px 9px}
+.sec-panel td{padding:6px 9px;font-size:12.5px;line-height:1.4}
+.sec-panel li{font-size:13px;margin:4px 0;line-height:1.45}.sec-panel p{font-size:13px;line-height:1.5}
+.sec-panel h3{font-size:14px;margin:5px 0 2px}.sec-panel blockquote{font-size:12.5px;padding:9px 12px;line-height:1.45}
+.foot{margin-top:9px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.foot .fd{width:8px;height:8px;border-radius:50%;background:var(--accent-mid)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:#fff}
+th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;font-weight:700;font-size:14px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;word-break:keep-all}
+td:first-child{font-weight:700;white-space:nowrap}tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f8faf9}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}.hl{color:var(--accent);font-weight:700}
+ul,ol{margin:2px 0 2px 20px}li{margin:5px 0;font-size:15px;line-height:1.5}
+h3{font-size:17px;font-weight:800;color:var(--accent-d);margin:6px 0 2px}
+p{font-size:15px;line-height:1.55;margin:4px 0}
+blockquote{border:1px solid var(--accent-mid);background:var(--accent-light);border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.55;color:#1f3d30}
+code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.9em}
+a{color:var(--accent);text-decoration:none}strong{color:#1a1a1a}hr{display:none}
+.ig-bars{display:flex;flex-direction:column;gap:6px;margin:7px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(64px,28%) 1fr auto;align-items:center;gap:8px;font-size:12.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:13px;background:var(--surface);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:9px;margin:7px 0}
+.ig-kpi{flex:1;min-width:104px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;gap:2px}
+.igk-v{font-size:22px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:11.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:13px;margin:7px 0;justify-content:flex-start}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:4px}
+.igd-ring{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:40px;height:40px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:13px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:11.5px;color:var(--text);font-weight:600;text-align:center;max-width:88px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:7px 0 7px 4px;border-left:2px solid var(--accent-mid);padding-left:13px}
+.ig-tl{position:relative;padding:4px 0}
+.igt-dot{position:absolute;left:-18px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:12.5px;margin-right:7px}
+.igt-x{font-size:12.5px;color:var(--text);line-height:1.45}
+.ig-raw{font-size:12.5px;color:var(--text);white-space:pre-wrap;line-height:1.5}
+.cover{background:radial-gradient(120% 140% at 80% 8%,#2b6f4e,#163d2b 52%,#0c241a);color:#eef6f0;padding:0;position:relative}
+.cover .cv{padding:52px 56px;display:flex;flex-direction:column;height:100%;width:100%}
+.cv-ey{font-size:14px;letter-spacing:.16em;color:#9fe0bd;font-weight:700;text-transform:uppercase}
+.cover .cv h1{font-size:40px;font-weight:900;line-height:1.22;margin-top:18px;letter-spacing:-.02em;max-width:90%;color:#eef6f0}
+.cv-sum{font-size:17px;color:#cfeadd;border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:14px 18px;margin-top:18px;line-height:1.55;max-width:92%}
+.cv-toc{margin-top:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cv-toc .it{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 13px;font-size:13px;color:#eef6f0;display:flex;gap:9px}
+.cv-toc .it b{color:#7ee3ad}
+.cv-badge{position:absolute;top:46px;right:54px;width:94px;height:94px;border-radius:50%;background:#eef6f0;color:#163d2b;border:2px solid #7ee3ad;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.cv-badge .i{font-size:22px}.cv-badge .t{font-size:14px;margin-top:2px}
+.nav{position:fixed;bottom:16px;right:20px;display:flex;align-items:center;gap:9px;z-index:50}
+.nav button{background:rgba(45,145,98,.92);color:#fff;border:none;width:36px;height:36px;border-radius:9px;font-size:17px;cursor:pointer}
+.nav .counter{background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:7px 13px;border-radius:9px;font-weight:600}
+.progress{position:fixed;top:0;left:0;height:4px;background:var(--accent-mid);z-index:60;transition:width .25s}
+.hint{position:fixed;bottom:18px;left:20px;color:rgba(255,255,255,.45);font-size:12px;z-index:50}
+</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">📊 슬라이드</span></div><div class="cv-ey">xbot · 2026-06-06</div><h1>리포트</h1><div class="cv-sum">Google 공식 발표, Gemma 4 패밀리의 일원</div><div class="cv-toc"><div class="it"><b>01</b><span>모델 개요 · 다운로드 사이즈 vs 구동 사이즈</span></div><div class="it"><b>02</b><span>컨텍스트 길이별 RAM 요구량 · 성능: 12B vs 26B 벤치마</span></div><div class="it"><b>03</b><span>인퍼런스 속도 · MTP — Multi-Token </span></div><div class="it"><b>04</b><span>멀티모달 — 인코더 제거 아키텍처 · 실전 테스트 — 인보이스 OCR</span></div><div class="it"><b>05</b><span>LM Studio 셋업 포인트 · 실용 워크플로우 — 이메일 + 인</span></div><div class="it"><b>06</b><span>주요 시사점 · 영상 출처</span></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">02 / 07</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>모델 개요 &amp; 다운로드 사이즈 vs 구동 사이즈</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">모델 개요</div><ul>
+<li>Google 공식 발표, Gemma 4 패밀리의 일원</li>
+<li>12B(12 Billion) 파라미터, 오픈소스·무료·로컬 실행 가능</li>
+<li>Gemma 4 패밀리 라인업</li>
+</ul>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">2B</span><span class="igk-l">Gemma 4 2B (모바일 구동)</span></div><div class="ig-kpi"><span class="igk-v">4B</span><span class="igk-l">Gemma 4 4B (모바일 구동)</span></div><div class="ig-kpi"><span class="igk-v">12B</span><span class="igk-l">Gemma 4 12B (본 모델 — 16GB 디바이스)</span></div><div class="ig-kpi"><span class="igk-v">26B</span><span class="igk-l">Gemma 4 26B (고성능, 16GB 초과)</span></div><div class="ig-kpi"><span class="igk-v">31B</span><span class="igk-l">Gemma 4 31B (고성능, 16GB 초과)</span></div></div>
+<ul>
+<li>2B·4B: 모바일 구동 가능, 상대적으로 제한된 성능</li>
+<li>26B·31B: 성능 우수하나 16GB 디바이스에는 너무 큼</li>
+<li>12B: 26B 대비 동등 수준 성능 유지 + 16GB 디바이스 실행 가능 — Google 주장</li>
+</ul></div><div class="sec-panel"><div class="ph">다운로드 사이즈 vs 구동 사이즈</div><ul>
+<li>파일 다운로드: 7.56 GB</li>
+<li>모델 메모리 로드 (4K context): 8 GB</li>
+<li>풀 컨텍스트 (131,072 tokens): 26 GB+ 필요</li>
+</ul>
+<div class="ig-bars"><div class="ig-bar"><span class="igb-l">모델 용량 비교</span><span class="igb-track"><span class="igb-fill" style="width:29.1%"></span></span><span class="igb-v">7.56 다운로드 크기</span></div><div class="ig-bar"><span class="igb-l">로드 시 필요 RAM</span><span class="igb-track"><span class="igb-fill" style="width:30.8%"></span></span><span class="igb-v">8.0 기본 4K context</span></div><div class="ig-bar"><span class="igb-l">권장 실사용 (31K context)</span><span class="igb-track"><span class="igb-fill" style="width:46.2%"></span></span><span class="igb-v">12.0 sweet spot</span></div><div class="ig-bar"><span class="igb-l">OS 점유 RAM</span><span class="igb-track"><span class="igb-fill" style="width:7.7%"></span></span><span class="igb-v">2~3 macOS/Windows 기본</span></div><div class="ig-bar"><span class="igb-l">최대 컨텍스트 (131K)</span><span class="igb-track"><span class="igb-fill" style="width:100.0%"></span></span><span class="igb-v">26.0 초과</span></div></div>
+<ul>
+<li>OS (macOS/Windows)가 기본 2~3 GB 점유</li>
+<li>16GB 머신에서 실제 가용 RAM: 약 13~14 GB</li>
+<li>15 GB 이상 점유 시 시스템 크래시 위험</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">03 / 07</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>컨텍스트 길이별 RAM 요구량 &amp; 성능: 12B vs 26B 벤치마크 </h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">컨텍스트 길이별 RAM 요구량</div><div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">4,000 tokens</span><span class="igk-l">8 GB</span></div><div class="ig-kpi"><span class="igk-v">8,000 tokens</span><span class="igk-l">약 9 GB</span></div><div class="ig-kpi"><span class="igk-v">16,000 tokens</span><span class="igk-l">약 10 GB</span></div><div class="ig-kpi"><span class="igk-v">31,000 tokens</span><span class="igk-l">12 GB</span></div><div class="ig-kpi"><span class="igk-v">65,536 tokens</span><span class="igk-l">약 17 GB</span></div><div class="ig-kpi"><span class="igk-v">131,072 tokens</span><span class="igk-l">26 GB+</span></div></div>
+<ul>
+<li>31,000 tokens = 16GB 장비 한계선 (12 GB 소모 — 애매한 여유)</li>
+<li>AI 에이전트 시스템(Claude Code, Codex, OpenClaw) 연동 시 베이스 프롬프트만 30,000~32,000 tokens</li>
+<li>기본 컨텍스트로는 Claude Code 등에서 첫 메시지부터 오류 발생 가능</li>
+</ul></div><div class="sec-panel"><div class="ph">성능: 12B vs 26B 벤치마크 비교 (지식창고 참조)</div><ul>
+<li>평가 지표 (3대 축): 코딩 능력, 에이전틱 툴 콜링, 추론(Reasoning)</li>
+<li>12B 모델(연한 파랑)이 26B(진한 파랑) 대비 다수 지표에서 10% 이내 격차</li>
+</ul>
+<div class="ig-bars"><div class="ig-bar"><span class="igb-l">Coding</span><span class="igb-track"><span class="igb-fill" style="width:100.0%"></span></span><span class="igb-v">10 12B vs 26B 격차 (%), 낮을수록 근접</span></div><div class="ig-bar"><span class="igb-l">Agentic Tool Calling</span><span class="igb-track"><span class="igb-fill" style="width:100.0%"></span></span><span class="igb-v">10 동일 (화자 강조 — 가장 중요한 지표)</span></div><div class="ig-bar"><span class="igb-l">Reasoning</span><span class="igb-track"><span class="igb-fill" style="width:100.0%"></span></span><span class="igb-v">10 동일 수준</span></div></div>
+<ul>
+<li>파라미터 수는 절반 이하이나 성능 격차 10% 내외</li>
+<li>로컬 16GB 환경에서 이 수준 유지가 의미 있는 돌파구</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">04 / 07</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>인퍼런스 속도 &amp; MTP — Multi-Token Pr</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">인퍼런스 속도</div><ul>
+<li>토큰 생성 속도: 11.69 tokens/sec (M4 Mac Mini, 16GB)</li>
+<li>첫 응답 처리: 92 tokens</li>
+<li>인퍼런스 2단계 구조</li>
+</ul>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">1. Pre-fill</span><span class="igt-x">사용자 입력(프롬프트)을 모델이 읽고 소화하는 단계 — 메모리·연산 집중</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">2. Decoding</span><span class="igt-x">소화 완료 후 응답 생성 단계 — 생성 속도 체감</span></div></div>
+<ul>
+<li>M3 Ultra 관찰: Pre-fill은 느림, Decoding은 빠름</li>
+<li>M4 Mac Mini: 실측 11.69 tokens/sec (대화용으로 무난)</li>
+</ul></div><div class="sec-panel"><div class="ph">MTP — Multi-Token Prediction</div><ul>
+<li>Gemma 4 12B의 핵심 신기술</li>
+<li>Decoding 단계에만 적용 (Pre-fill 가속 없음)</li>
+<li>원리: 메인 모델(12B)과 함께 초소형 보조 모델 동봉</li>
+<li>보조 모델이 &quot;다음 토큰&quot;을 미리 예측, 메인 모델의 작업 부담 경감</li>
+</ul>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">Speedup</span><span class="igk-l">1.5x ~ 1.8x</span></div><div class="ig-kpi"><span class="igk-v">Acceptance Rate</span><span class="igk-l">60~70%</span></div></div>
+<ul>
+<li>보조 모델 예측이 맞으면(60~70%) 메인 모델 생략 → 응답 시간 단축</li>
+<li>보조 모델이 틀리면 메인 모델이 정답 생성 (기존 방식 유지)</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">05 / 07</span></div><div class="shead"><span class="num">04</span><div class="htxt"><h1>멀티모달 — 인코더 제거 아키텍처 &amp; 실전 테스트 — 인보이스 OCR</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">멀티모달 — 인코더 제거 아키텍처</div><ul>
+<li>입력 지원: 텍스트 + 이미지 + 오디오</li>
+<li>기존 파이프라인 문제점</li>
+</ul>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">1. 인코더 분리 구조</span><span class="igt-x">이미지 → 별도 Vision Encoder → 텍스트 변환 → LLM 입력 (지연·정확도 손실)</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">2. Gemma 4</span><span class="igt-x">인코더 레이어 제거 → 입력이 직접 LLM으로 (속도·정확도 향상)</span></div></div>
+<ul>
+<li>별도의 Vision Encoder·Audio Encoder 파일 불필요</li>
+<li>종래 구조: 이미지 → Encoder(변환·지연) → LLM</li>
+<li>Gemma 4: 이미지 → 바로 LLM</li>
+<li>화자 전언: &quot;완전히 기술적이진 않지만, 이 구조가 더 빠르고 정확하다는 이해&quot;</li>
+</ul></div><div class="sec-panel"><div class="ph">실전 테스트 — 인보이스 OCR</div><ul>
+<li>테스트 이미지: Google 예시 인보이스</li>
+<li>요청: 인보이스 업로드 → 금액·Balance 추출</li>
+<li>LM Studio 로컬 서버 연동 + VS Code HTML 앱 빌드</li>
+<li>HTML 기반 Invoice Parser 데모 구현</li>
+</ul>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">Subtotal 실제 값</span><span class="igk-l">13</span></div><div class="ig-kpi"><span class="igk-v">Balance 실제 값</span><span class="igk-l">1,298</span></div><div class="ig-kpi"><span class="igk-v">Balance Gemma 추출</span><span class="igk-l">1,296</span></div><div class="ig-kpi"><span class="igk-v">판정</span><span class="igk-l">부정확</span></div></div>
+<ul>
+<li>Subtotal은 일치 (13)</li>
+<li>Balance는 1,298 → 1,296으로 오차</li>
+<li>오픈소스 OCR 전용 모델(문서 텍스트 추출 특화)과 병렬 실행 → 검증 루틴 권장</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">06 / 07</span></div><div class="shead"><span class="num">05</span><div class="htxt"><h1>LM Studio 셋업 포인트 &amp; 실용 워크플로우 — 이메일 + 인보이</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">LM Studio 셋업 포인트</div><ul>
+<li>LM Studio에서 모델 다운로드 (7.56 GB) → 서버 활성화</li>
+<li>로컬 서버 URL: <code>http://localhost:1234</code> (LM Studio 기본)</li>
+<li>동적 로드 비활성화 → 수동 설정 권장</li>
+<li>멀티모달 토글 ON 필요 (이미지·오디오 처리용)</li>
+<li>컨텍스트 길이를 31,000 tokens 이하로 제한 → 16GB 환경 안정</li>
+</ul>
+<div class="ig-bars"><div class="ig-bar"><span class="igb-l">기본 컨텍스트 (4K)</span><span class="igb-track"><span class="igb-fill" style="width:30.8%"></span></span><span class="igb-v">8.0 RAM 소모 (GB)</span></div><div class="ig-bar"><span class="igb-l">실사용 권장 (31K)</span><span class="igb-track"><span class="igb-fill" style="width:46.2%"></span></span><span class="igb-v">12.0 16GB 머신 한계</span></div><div class="ig-bar"><span class="igb-l">풀 컨텍스트 (131K)</span><span class="igb-track"><span class="igb-fill" style="width:100.0%"></span></span><span class="igb-v">26.0 16GB 불가</span></div><div class="ig-bar"><span class="igb-l">OS 기본 점유</span><span class="igb-track"><span class="igb-fill" style="width:7.7%"></span></span><span class="igb-v">2~3 macOS 최소 필요</span></div></div></div><div class="sec-panel"><div class="ph">실용 워크플로우 — 이메일 + 인보이스 자동화</div><ul>
+<li>화자의 실제 목표: 16GB Mac Mini로 매주 1시간 절약</li>
+<li>인바운드 이메일 → 인보이스 첨부파일 → Gemma 4 OCR → DB 자동 기록</li>
+<li>스팸 필터링: 중요 클라이언트 메일 식별 및 우선 처리</li>
+<li>복수 모델 병렬 실행 전략</li>
+</ul>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">1. 인보이스 수신</span><span class="igt-x">이메일 인박스 도착</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">2. Gemma 4 처리</span><span class="igt-x">이미지 OCR + 금액 추출</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">3. 전용 OCR 모델</span><span class="igt-x">병렬 실행 — 텍스트 검증</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">4. Python 스크립트</span><span class="igt-x">규칙 기반 추가 검증</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">5. DB 기록</span><span class="igt-x">검증 완료 후 자동 저장</span></div></div>
+<ul>
+<li>단일 모델 의존 대신 다중 모델+스크립트 검증 체인</li>
+<li>사람 개입(Human-in-the-loop) 없이 Self-validation 가능</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">07 / 07</span></div><div class="shead"><span class="num">06</span><div class="htxt"><h1>주요 시사점 &amp; 영상 출처</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cols2"><div class="sec-panel"><div class="ph">주요 시사점</div><ul>
+<li>16GB M4 Mac Mini에서 구동되는 최초의 의미 있는 오픈소스 LLM</li>
+<li>기존 &quot;작은 하드웨어로는 진지한 작업 불가&quot; 통념 깨는 이정표</li>
+<li>12B 모델로 Agentic AI, 로컬 코딩 어시스턴트, 멀티모달 작업 실현 가능</li>
+<li>컨텍스트 제약(31K tokens 한계) 인지하고 사용해야 안정적</li>
+<li>전용 OCR·에이전트 워크플로우는 복수 모델 병렬 구조 권장</li>
+<li>진입 장벽: 모델 다운로드 + LM Studio 서버 설정 + Python/HTML 연동 (초보자 진입 가능)</li>
+<li>화자 후속 예고: &quot;16GB Mac Mini에서 이메일 처리 자동화 구현 — 구독 요청&quot;</li>
+</ul></div><div class="sec-panel"><div class="ph">영상 출처</div><ul>
+<li>제목: <a href="https://youtu.be/PDxKrp-dTDA">Gemma 4 12B on a 16GB Mac Mini Is Surprisingly Capable</a></li>
+<li>채널: Bart Slodyczka · 게시일: 2026-06-04</li>
+<li>링크: <a href="https://youtu.be/PDxKrp-dTDA">https://youtu.be/PDxKrp-dTDA</a></li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 7</span><button id="next">&rsaquo;</button></div><script>
+var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
+var c=document.getElementById('counter'),pr=document.getElementById('prog');
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight;if(sh<1)return;var z=ch/sh;z=Math.max(0.6,Math.min(1.45,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
+function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
+document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
+document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(cur+1);e.preventDefault();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault();}else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}});
+document.getElementById('deck').addEventListener('click',function(e){if(e.target.closest('.nav')||e.target.closest('a'))return;var x=e.clientX/window.innerWidth;if(x>0.5){show(cur+1);}else{show(cur-1);}});
+function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);document.getElementById('stage').style.transform='scale('+s+')';}
+window.addEventListener('resize',fit);fit();show(0);
+</script></body></html>
