@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="매체: AI타임스"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;--up:#1f9d57;--dn:#c0392b;--text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f7f6;--bg:#fff}
+html,body{height:100%}
+body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Apple SD Gothic Neo','Segoe UI',sans-serif;color:var(--text);overflow:hidden}
+#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--bg);overflow:hidden;display:none;flex-direction:column;padding:30px 44px 26px}
+.slide.active{display:flex}
+.chip{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.chip .brand{display:flex;align-items:center;gap:9px;text-transform:uppercase}
+.chip .dot{width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.chip .pg{color:var(--accent);font-weight:700}
+.shead{display:flex;align-items:flex-start;gap:13px;border-bottom:3px solid var(--accent);padding-bottom:10px;margin-bottom:14px}
+.shead .num{background:var(--accent);color:#fff;font-size:15px;font-weight:800;border-radius:8px;padding:6px 11px;flex:none}
+.shead .htxt h1{font-size:27px;font-weight:900;line-height:1.2;letter-spacing:-.01em}
+.shead .ey{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;white-space:nowrap;align-self:flex-end;padding-bottom:3px}
+.body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column}
+/* 자유 카드 배치: 2단 고정 대신 내용량(weight)에 따라 카드 너비를 달리하고
+   flex-grow로 행을 꽉 채운다. align-content:stretch로 행들이 세로를 채운다. */
+.cards{flex:1;min-height:0;display:flex;flex-wrap:wrap;gap:14px;align-content:stretch}
+.sec-panel{flex:1 1 30%;min-width:228px;border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column}
+.sec-panel.w-full{flex-basis:100%}
+.sec-panel.w-half{flex-basis:46%}
+.sec-panel.w-third{flex-basis:29%}
+.sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
+.sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
+.sec-panel table{font-size:13px}.sec-panel th{font-size:12px;padding:7px 9px}
+.sec-panel td{padding:6px 9px;font-size:12.5px;line-height:1.4}
+.sec-panel li{font-size:13px;margin:4px 0;line-height:1.45}.sec-panel p{font-size:13px;line-height:1.5}
+.sec-panel h3{font-size:14px;margin:5px 0 2px}.sec-panel blockquote{font-size:12.5px;padding:9px 12px;line-height:1.45}
+.foot{margin-top:9px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.foot .fd{width:8px;height:8px;border-radius:50%;background:var(--accent-mid)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:#fff}
+th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;font-weight:700;font-size:14px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;word-break:keep-all}
+td:first-child{font-weight:700;white-space:nowrap}tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f8faf9}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}.hl{color:var(--accent);font-weight:700}
+ul,ol{margin:2px 0 2px 20px}li{margin:5px 0;font-size:15px;line-height:1.5}
+h3{font-size:17px;font-weight:800;color:var(--accent-d);margin:6px 0 2px}
+p{font-size:15px;line-height:1.55;margin:4px 0}
+blockquote{border:1px solid var(--accent-mid);background:var(--accent-light);border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.55;color:#1f3d30}
+code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.9em}
+a{color:var(--accent);text-decoration:none}strong{color:#1a1a1a}hr{display:none}
+.ig-bars{display:flex;flex-direction:column;gap:6px;margin:7px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(64px,28%) 1fr auto;align-items:center;gap:8px;font-size:12.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:13px;background:var(--surface);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:9px;margin:7px 0}
+.ig-kpi{flex:1;min-width:104px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;gap:2px}
+.igk-v{font-size:22px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:11.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:13px;margin:7px 0;justify-content:flex-start}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:4px}
+.igd-ring{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:40px;height:40px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:13px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:11.5px;color:var(--text);font-weight:600;text-align:center;max-width:88px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:7px 0 7px 4px;border-left:2px solid var(--accent-mid);padding-left:13px}
+.ig-tl{position:relative;padding:4px 0}
+.igt-dot{position:absolute;left:-18px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:12.5px;margin-right:7px}
+.igt-x{font-size:12.5px;color:var(--text);line-height:1.45}
+.ig-raw{font-size:12.5px;color:var(--text);white-space:pre-wrap;line-height:1.5}
+.cover{background:radial-gradient(120% 140% at 80% 8%,#2b6f4e,#163d2b 52%,#0c241a);color:#eef6f0;padding:0;position:relative}
+.cover .cv{padding:52px 56px;display:flex;flex-direction:column;height:100%;width:100%}
+.cv-ey{font-size:14px;letter-spacing:.16em;color:#9fe0bd;font-weight:700;text-transform:uppercase}
+.cover .cv h1{font-size:40px;font-weight:900;line-height:1.22;margin-top:18px;letter-spacing:-.02em;max-width:90%;color:#eef6f0}
+.cv-sum{font-size:17px;color:#cfeadd;border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:14px 18px;margin-top:18px;line-height:1.55;max-width:92%}
+.cv-toc{margin-top:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cv-toc .it{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 13px;font-size:13px;color:#eef6f0;display:flex;gap:9px}
+.cv-toc .it b{color:#7ee3ad}
+.cv-badge{position:absolute;top:46px;right:54px;width:94px;height:94px;border-radius:50%;background:#eef6f0;color:#163d2b;border:2px solid #7ee3ad;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.cv-badge .i{font-size:22px}.cv-badge .t{font-size:14px;margin-top:2px}
+.nav{position:fixed;bottom:16px;right:20px;display:flex;align-items:center;gap:9px;z-index:50}
+.nav button{background:rgba(45,145,98,.92);color:#fff;border:none;width:36px;height:36px;border-radius:9px;font-size:17px;cursor:pointer}
+.nav .counter{background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:7px 13px;border-radius:9px;font-weight:600}
+.progress{position:fixed;top:0;left:0;height:4px;background:var(--accent-mid);z-index:60;transition:width .25s}
+.hint{position:fixed;bottom:18px;left:20px;color:rgba(255,255,255,.45);font-size:12px;z-index:50}
+</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">📊 슬라이드</span></div><div class="cv-ey">xbot · 2026-06-06</div><h1>리포트</h1><div class="cv-sum">매체: AI타임스</div><div class="cv-toc"><div class="it"><b>01</b><span>기사 정보 · 핵심 요약 · 공개 배경 · QAT vs PTQ 기술 비교</span></div><div class="it"><b>02</b><span>3가지 제공 포맷 · 모바일 QAT 4대 핵심 기술</span></div><div class="it"><b>03</b><span>온디바이스 AI 생태계 확대 전망 · 주의사항 및 한계 · 관련 기사</span></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">02 / 04</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>기사 정보 &amp; 핵심 요약</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-third"><div class="ph">기사 정보</div><ul>
+<li>매체: AI타임스</li>
+<li>기자: 박찬 기자</li>
+<li>입력: 2026.06.06 19:14</li>
+<li>업데이트: 2026.06.06 19:53</li>
+<li>URL: aitimes.com/news/articleView.html?idxno=211418</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">핵심 요약</div><ul>
+<li>구글, 오픈소스 AI 모델 젬마 4(Gemma 4) QAT 버전 공개</li>
+<li>스마트폰·엣지 기기에서도 원활 구동 가능</li>
+<li>모바일 전용 양자화 기술로 모델 크기 1GB 수준 압축</li>
+<li>성능 저하 최소화 성공</li>
+</ul>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">1GB</span><span class="igk-l">모바일 QAT E2B 모델 크기</span></div><div class="ig-kpi"><span class="igk-v">5,000 스텝</span><span class="igk-l">QAT 추가 학습량</span></div><div class="ig-kpi"><span class="igk-v">54%</span><span class="igk-l">Perplexity 상승 감소율 (Q4_0 기준)</span></div><div class="ig-kpi"><span class="igk-v">3가지</span><span class="igk-l">제공 포맷 수</span></div></div></div><div class="sec-panel w-third"><div class="ph">공개 배경</div><ul>
+<li>지난 4월 젬마 4 출시 이후 후속 업데이트</li>
+<li>최근 120억 매개변수(12B) 규모 모델 공개 이후 추가 공개</li>
+<li>타겟 사용자: 로컬 환경 AI 실행 개발자·기업</li>
+<li>목표: 성능 저하 최소화 + 모델 크기 대폭 축소</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">QAT vs PTQ 기술 비교</div><div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">PTQ (사후 양자화)</span><span class="igt-x">학습 완료 모델 압축 → 성능 저하 발생 가능</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">QAT (양자화 인식 학습)</span><span class="igt-x">학습 과정에서 양자화 시뮬레이션 → 모델이 정밀도 손실 자체 보정</span></div></div>
+<ul>
+<li>QAT 결과: 동일 크기 PTQ 모델보다 더 높은 품질</li>
+<li>5,000 스텝 추가 학습 → Q4_0 압축 시 Perplexity 상승 54% 감소</li>
+<li>단, 구체적 성능 벤치마크 수치는 공개되지 않음</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">03 / 04</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>3가지 제공 포맷 &amp; 모바일 QAT 4대 핵심 기술</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">3가지 제공 포맷</div><div class="ig-bars"><div class="ig-bar"><span class="igb-l">BF16 E2B</span><span class="igb-track"><span class="igb-fill" style="width:64.0%"></span></span><span class="igb-v">9.6 서버·고성능 PC (기본 포맷)</span></div><div class="ig-bar"><span class="igb-l">BF16 E4B</span><span class="igb-track"><span class="igb-fill" style="width:100.0%"></span></span><span class="igb-v">15.0 서버·고성능 PC (기본 포맷)</span></div><div class="ig-bar"><span class="igb-l">Q4_0 QAT E2B</span><span class="igb-track"><span class="igb-fill" style="width:21.3%"></span></span><span class="igb-v">3.2 소비자 GPU 구동 가능</span></div><div class="ig-bar"><span class="igb-l">Q4_0 QAT E4B</span><span class="igb-track"><span class="igb-fill" style="width:33.3%"></span></span><span class="igb-v">5.0 소비자 GPU 구동 가능</span></div><div class="ig-bar"><span class="igb-l">모바일 QAT E2B</span><span class="igb-track"><span class="igb-fill" style="width:6.7%"></span></span><span class="igb-v">1.0 스마트폰·엣지 디바이스</span></div></div>
+<h3>BF16 (기본 포맷)</h3>
+<ul>
+<li>품질 기준 기본 포맷</li>
+<li>E2B: 9.6GB, E4B: 15GB 메모리 필요</li>
+<li>서버나 고성능 PC 환경에 적합</li>
+<li>스마트폰 환경에는 부적합</li>
+</ul>
+<h3>Q4_0 QAT (로컬 실행 포맷)</h3>
+<ul>
+<li>일반적 로컬 실행 표준</li>
+<li>E2B: 3.2GB, E4B: 5GB로 축소</li>
+<li>소비자용 GPU에서 충분히 구동 가능</li>
+<li>E2B 모델: INT4 환경 라즈베리파이 5에서도 실행 사례 존재</li>
+</ul>
+<h3>모바일 QAT (가장 주목)</h3>
+<ul>
+<li>E2B 모델 약 1GB 수준으로 압축</li>
+<li>오디오·비전 인코더 제거 시 1GB 이하 운영 가능</li>
+<li>스마트폰·모바일 AI 가속기 최적화</li>
+<li>Q4_0 QAT: 노트북·소비자 GPU에 가장 실용적</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">모바일 QAT 4대 핵심 기술</div><div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">기술 1</span><span class="igt-x">정적 활성화(Static Activations) — 학습 단계 스케일 값 사전 계산 → 모바일 연산 부담 감소</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">기술 2</span><span class="igt-x">채널 단위 양자화(Channel-wise Quantization) — 모바일 AI 가속기 최적화</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">기술 3</span><span class="igt-x">2비트 압축 — 토큰 생성 계층에만 선택적 적용</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">기술 4</span><span class="igt-x">임베딩·KV 캐시 최적화 — 메모리 사용량 추가 절감</span></div></div>
+<ul>
+<li>핵심 추론 계층: 상대적 높은 정밀도 유지 → 성능 저하 최소화</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">04 / 04</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>온디바이스 AI 생태계 확대 전망 &amp; 주의사항 및 한계</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-half"><div class="ph">온디바이스 AI 생태계 확대 전망</div><ul>
+<li>스마트폰·노트북·엣지 디바이스 실행 가능</li>
+<li>Hugging Face 컬렉션 공개:</li>
+</ul>
+<p>모바일 QAT: huggingface.co/collections/google/gemma-4-qat-mobile Q4_0 QAT: huggingface.co/collections/google/gemma-4-qat-q4-0</p>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">모바일 QAT</span><span class="igk-l">스마트폰·모바일 AI 가속기 전용</span></div><div class="ig-kpi"><span class="igk-v">Q4_0 QAT</span><span class="igk-l">노트북·소비자 GPU 최적 선택</span></div></div></div><div class="sec-panel w-third"><div class="ph">주의사항 및 한계</div><ul>
+<li>현재 공개 자료: 설계 목표와 내부 평가 기반</li>
+<li>독립적 성능 검증 결과: 아직 공개되지 않음</li>
+<li>개발자 과제: 실제 서비스 구축 전 하드웨어 환경·활용 목적에 맞춰 자체 성능 검증 필요</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">관련 기사</div><ul>
+<li>구글, 노트북용 멀티모달 젬마 4 출시 — 인코더 빼고 경량화 성공</li>
+<li>구글, 로컬 에이전트 위한 젬마 4 4종 아파치 2.0 라이선스 출시</li>
+<li>구글 젬마 4, 챗봇 아레나 테스트 중 — 120B MoE 모델 포함</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-06</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭 · F 전체화면(클릭 시 자동)</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 4</span><button id="next">&rsaquo;</button></div><script>
+var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
+var c=document.getElementById('counter'),pr=document.getElementById('prog');
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight;if(sh<1)return;var z=ch/sh;z=Math.max(0.6,Math.min(2.2,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
+function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
+document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
+document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(cur+1);e.preventDefault();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault();}else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}});
+function goFS(){try{var e=document.documentElement;if(!document.fullscreenElement&&e.requestFullscreen){e.requestFullscreen().catch(function(){});}}catch(_){}}
+document.getElementById('deck').addEventListener('click',function(e){if(e.target.closest('.nav')||e.target.closest('a'))return;goFS();var x=e.clientX/window.innerWidth;if(x>0.5){show(cur+1);}else{show(cur-1);}});
+function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);document.getElementById('stage').style.transform='scale('+s+')';}
+window.addEventListener('resize',fit);document.addEventListener('fullscreenchange',fit);
+window.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){goFS();}},{once:false});
+window.addEventListener('load',function(){goFS();});
+fit();show(0);
+</script></body></html>
