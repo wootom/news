@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Dell Optiplex 7020에 macOS Big Sur 설치 완전 가이드"><title>Dell Optiplex 7020에 macOS Big Sur 설치 완전 가이드</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>xbot</span><span class="ey">xbot · 2026-06-07</span><span class="chip">🖥 웹리포트</span></div><h1>Dell Optiplex 7020에 macOS Big Sur 설치 완전 가이드</h1></header><nav class="toc"><span class="ti">목차</span><a href="#s1">사전 준비 및 호환성 확인</a><a href="#s2">EFI 및 설치 미디어 준비</a><a href="#s3">설치 전 BIOS 설정</a><a href="#s4">macOS 설치 프로세스</a><a href="#s5">설치 완료 및 부팅 성능</a><a href="#s6">기본 기능 검증</a><a href="#s7">멀티미디어 및 웹 성능</a><a href="#s8">애플리케이션 및 게임 성능</a><a href="#s9">결론</a><a href="#s10">영상 출처</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>사전 준비 및 호환성 확인</h2><ul>
+<li>OpenCore Simplify 도구로 하드웨어 호환성 사전 확인</li>
+<li>4세대 Intel 기반 Dell — Monterey까지 지원 가능</li>
+<li>Big Sur 선택 이유: 10년 이상 된 PC에서 성능과 경험의 균형</li>
+<li>1,000달러 이상 Mac 구매 없이 macOS 사용 가능</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>EFI 및 설치 미디어 준비</h2><ul>
+<li>EFI(인터프리터) 필요 — PC와 macOS 간 호환성 확보</li>
+<li>OpenCore 메뉴 옵션 6 선택 — Dell 하드웨어와 호환되는 EFI 폴더 자동 생성</li>
+<li>OpenCore PKG 도구로 Big Sur 다운로드 — Mac Recovery 도구 사용</li>
+<li>GitHub에서 macOS 버전별 recovery product code 검색 필요</li>
+<li>com.apple.recovery.boot 폴더 생성 — 운영체제 자체</li>
+<li>8GB 이상 USB 드라이브 필요</li>
+<li>Rufus로 GPT 파티션 및 FAT32 형식 설정</li>
+<li>EFI 및 recovery 폴더를 USB에 복사</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>설치 전 BIOS 설정</h2><ul>
+<li>BIOS에서 Secure Boot 비활성화 필수</li>
+<li>비활성화 미실시 시 부팅 불가 — 2시간 낭비 사례</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>macOS 설치 프로세스</h2><ul>
+<li>USB에서 부팅 선택 — EFI가 Dell 하드웨어를 Apple 언어로 변환</li>
+<li>Disk Utility에서 하드 드라이브를 APFS 표준 및 GUID 파티션 맵으로 포맷</li>
+<li>macOS Big Sur 재설치 선택 — 약 42분 소요</li>
+<li>설치 완료 후 Mount EFI 도구 다운로드 필요 — 메인 드라이브에 EFI 파티션 생성</li>
+<li>USB 제거 전 EFI 파티션 설정 필수 — 미설정 시 macOS 부팅 불가</li>
+<li>EFI 폴더를 USB에서 운영체제의 EFI 파티션으로 복사 — 설치 완료</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>설치 완료 및 부팅 성능</h2><ul>
+<li>macOS Big Sur 부팅 성공 — Apple 로고 표시 → 로그인 화면 진입</li>
+<li>부팅 속도 빠름</li>
+<li>반응성 우수</li>
+<li>모든 윈도우 스케일링 효과 유동적</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>기본 기능 검증</h2><ul>
+<li>기본 기능 완비</li>
+<li>Dock, Launchpad, Control Center, 알림 패널 작동</li>
+<li>마우스 흔들기 시 커서 확대 기능 작동</li>
+<li>App Store 완전 작동 — Apple 생태계 서비스 안정적 운영</li>
+<li>Apple Maps, Safari 즉시 실행</li>
+<li>Spotlight Search 작동 — 애플리케이션 즉시 검색·실행</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>멀티미디어 및 웹 성능</h2><div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">1080p</span><span class="igk-l">YouTube 영상 완벽 재생, 즉각적 타임라인 응답</span></div><div class="ig-kpi"><span class="igk-v">1440p</span><span class="igk-l">CPU 부하 없이 처리</span></div><div class="ig-kpi"><span class="igk-v">2160p(4K)</span><span class="igk-l">프레임 드롭 없이 완벽 재생</span></div><div class="ig-kpi"><span class="igk-v">7개</span><span class="igk-l">YouTube 탭 동시 재생 — 부드러운 전환, 끊김 없음</span></div></div>
+<ul>
+<li>Safari 최소화 시 Genie 애니메이션 완벽 구현</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>애플리케이션 및 게임 성능</h2><ul>
+<li>Telegram 설치 — 즉시 실행</li>
+<li>Homescapes 게임 — 완벽한 성능</li>
+<li>Minecraft 실행 가능 — 1080p, 8청크 렌더 거리에서 평균 40fps</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>결론</h2><ul>
+<li>구형 Dell Optiplex 7020(i5-4590 CPU, 전용 그래픽카드 없음)에서 macOS Big Sur 안정적 운영 성공</li>
+<li>1,000달러 이상 지출 없이 안정적인 Mac 경험 가능</li>
+<li>구형 PC 재활용 가치 입증</li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>영상 출처</h2><ul>
+<li>제목: <a href="https://youtu.be/QLxIWA0tOvE" target="_blank" rel="noopener">Don’t Throw Old PCs — Install macOS and Be Amazed!</a></li>
+<li>채널: Spec Tech · 게시일: 2026-06-05</li>
+<li>링크: <a href="https://youtu.be/QLxIWA0tOvE" target="_blank" rel="noopener">https://youtu.be/QLxIWA0tOvE</a></li>
+</ul></section></main><div class="foot"><span class="dot"></span>xbot · 2026-06-07</div></div></body></html>
