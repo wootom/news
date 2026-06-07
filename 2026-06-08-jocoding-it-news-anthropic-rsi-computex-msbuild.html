@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: &quot;조코딩 IT뉴스 — 앤트로픽 재귀개선·컴퓨텍스·MS Build 총정리&quot;"><title>조코딩 IT뉴스 — 앤트로픽 재귀적 자기개선 · 컴퓨텍스 · MS Build · 모델 러시</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">MORNING DIGEST · 2026-06-08 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>조코딩 IT뉴스 — 앤트로픽 재귀적 자기개선 · 컴퓨텍스 · MS Build · 모델 러시</h1><p class="lead">title: &quot;조코딩 IT뉴스 — 앤트로픽 재귀<span class="up">개선</span>·컴퓨텍스·MS Build 총정리&quot;</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">보안 사고 + 앤트로픽 RSI ([1:53 메타 해킹](https://youtu.be/g9Ag1O4Wavw?t=113) · [5:53 RSI](https://youtu.be/g9Ag1O4Wavw?t=353))</a><a href="#s3">컴퓨텍스 — 엔비디아 ([20:10 RTX Spark](https://youtu.be/g9Ag1O4Wavw?t=1210) · [31:36 Nemotron](https://youtu.be/g9Ag1O4Wavw?t=1896))</a><a href="#s4">젠슨황 한국 방문 ([38:16 딥링크](https://youtu.be/g9Ag1O4Wavw?t=2296))</a><a href="#s5">MS Build ([44:39 신모델](https://youtu.be/g9Ag1O4Wavw?t=2679) · [OpenClaw](https://youtu.be/g9Ag1O4Wavw?t=4350))</a><a href="#s6">구글 · OpenAI ([69:08 Gemma](https://youtu.be/g9Ag1O4Wavw?t=4148) · [87:04 Sites](https://youtu.be/g9Ag1O4Wavw?t=5224))</a><a href="#s7">오픈웨이트 러시 · 로봇 · WWDC 전망 ([109:15 TTS·M3](https://youtu.be/g9Ag1O4Wavw?t=6555) · [119:23 로봇](https://youtu.be/g9Ag1O4Wavw?t=7163))</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>주제</th><th>핵심</th></tr></thead><tbody><tr><td>앤트로픽 RSI</td><td>AI가 다음 세대 AI를 개발하는 재귀적 자기<span class="up">개선</span> 시대 임박 경고</td></tr><tr><td>컴퓨텍스</td><td>엔비디아 RTX Spark(윈도우용 AI PC 칩) + Nemotron 3 Ultra 등 오픈모델</td></tr><tr><td>젠슨황 한국</td><td>한국 AI 기술센터 설립, 삼겹살 회동, 서울대 빌더 클로우 행사</td></tr><tr><td>MS Build</td><td>신모델 7종(MAI Thinking 1 등) + OpenClaw 윈도우 공식 협업</td></tr><tr><td>구글</td><td>Gemma 4 12B, QAT 양자화 모델, NotebookLM 파일 생성</td></tr><tr><td>OpenAI</td><td>Sites(원클릭 배포), iOS 앱 빌드, Gmail 연동, Dreaming 메모리</td></tr><tr><td>오픈웨이트 러시</td><td>Ideogram 4.0, MiniMax M3, BAGEL, 다수 TTS, 로봇 데모</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>보안 사고 + 앤트로픽 RSI ([1:53 메타 해킹](https://youtu.be/g9Ag1O4Wavw?t=113) · [5:53 RSI](https://youtu.be/g9Ag1O4Wavw?t=353))</h2><ul>
+<li>메타 취약점: 계정 복구에서 Meta AI에게 이메일 교체 지시 → 인증코드 가로채기로 오바마 등 유명 계정 탈취 가능(현재 패치) — &quot;고객과 뚫린 AI에 과도한 권한 금지&quot; 교훈</li>
+<li>앤트로픽 블로그 &quot;AI가 스스로를 구축할 때&quot;: RSI(recursive self-improvement) — AI가 다음 세대 AI를 직접 설계·학습·평가</li>
+<li>발전 3단계: ①인간이 만듦 → ②AI가 인간을 도움(현재) → ③AI가 다음 AI를 만듦(임박)</li>
+<li>위험: 인간이 AI 개발 중심에서 밀려남(병목 회피 위해 감시 축소), 모델 동작 불가해</li>
+<li>제안: 글로벌 검증가능 일시정지 체계 — 단 경제·경쟁(중국) 현실상 실효성 의문</li>
+<li>다리오 아모데이·클로드 코드 창시자 보리스: &quot;루프만 만들면 프롬프트조차 안 준다&quot; 발언으로 뒷받침</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>컴퓨텍스 — 엔비디아 ([20:10 RTX Spark](https://youtu.be/g9Ag1O4Wavw?t=1210) · [31:36 Nemotron](https://youtu.be/g9Ag1O4Wavw?t=1896))</h2><ul>
+<li>RTX Spark: 윈도우용 통합칩(GPU+CPU), DGX Spark의 GB10과 사실상 동일 스펙의 윈도우 대중화 버전</li>
+<li>화자 실사용 평가: LPDDR 기반 유니파이드 메모리라 큰 모델 적재 가능하나 속도 답답 → 헤비 코딩엔 결국 클라우드 회귀, 방향성은 명확하나 &quot;지금은 아니다&quot;, 추정가 3,000~7,000달러</li>
+<li>Nemotron 3 Ultra: 550B MoE 오픈소스 모델, GLM·Kimi·Qwen 등 대형 오픈소스 대비 상위권</li>
+<li>추가 오픈소스: Cosmos 3(물리 AI), Alpamayo 2 Super(자율주행 32B), Nemotron 3.5 ASR Streaming(40개 언어, 80ms)</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>젠슨황 한국 방문 ([38:16 딥링크](https://youtu.be/g9Ag1O4Wavw?t=2296))</h2><ul>
+<li>홍대 T1 베이스캠프 PC방 방문, 페이커에게 RTX 5090 선물</li>
+<li>삼겹살 회동: 최태원(SK)·이해진(네이버)·구광모(LG) — HBM·데이터·로봇 협력 시사</li>
+<li>&quot;4가지 사업 선물&quot; 중 한국 AI 기술센터(물리 AI 거점) 설립, 채용 공고 게시</li>
+<li>서울대 &quot;빌더 클로우&quot; 행사(8일) 방문 예정 — 박사급 인재 채용 관계 구축</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>MS Build ([44:39 신모델](https://youtu.be/g9Ag1O4Wavw?t=2679) · [OpenClaw](https://youtu.be/g9Ag1O4Wavw?t=4350))</h2><ul>
+<li>신모델 7종: 이미지/이미지 플래시/트랜스크라이브/씽킹/보이스/보이스 플래시/코드 플래시</li>
+<li>MAI Thinking 1: 플래그십 추론 모델, 성능은 Sonnet 4.6~Opus 4.6 사이(수학 97점)</li>
+<li>MAI Image 2.5: 이미지 에디팅 아레나 2위(나노바나 상회), MAI Transcribe 1.5: 43개국어 1위·1시간 오디오 15초 전사</li>
+<li>OpenClaw × MS 공식 협업: 윈도우 내에서 안전하게 OpenClaw 기본 제공(오픈소스 유지) — 사무직 접근성 대폭 향상</li>
+<li>MS Scout: 항상 작동하는 오토파일럿 에이전트(Teams·Outlook·OneDrive 모니터링)</li>
+<li>유출: 슬라이드에서 클로드 미소스(Mithos) 학습 컴퓨팅 파워 노출</li>
+<li>GitHub Copilot 사용량 기반 요금제 전환(6/1~) — 요금 폭탄 주의</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>구글 · OpenAI ([69:08 Gemma](https://youtu.be/g9Ag1O4Wavw?t=4148) · [87:04 Sites](https://youtu.be/g9Ag1O4Wavw?t=5224))</h2><ul>
+<li>구글 Gemma 4 12B: 중간급 멀티모달(유니파이드 트랜스포머), 16GB램 랩탑 구동</li>
+<li>Gemma 4 QAT: 양자화 인식 훈련 → 4비트에서 메모리 72%<span class="dn">↓</span> 거의 원본 성능 유지</li>
+<li>NotebookLM: PDF·텍스트·마크다운·docx 등 다양한 파일 생성 지원</li>
+<li>스페이스X-구글: 구글이 AI 인프라 부족으로 스페이스X에서 GPU 11만 개 임대(월 9.2억 달러, 약 1.2조원)</li>
+<li>구글 쇼핑 AI 옷 입혀보기(나노바나 기반) 한국 출시 / Magenta RealTime 2 실시간 음악 생성 오픈소스</li>
+<li>OpenAI Sites: 코덱스에서 프롬프트로 웹사이트 즉시 배포(chatgpt.site) — &quot;AI 웹빌더 스타트업 킬러&quot;</li>
+<li>코덱스 iOS 앱 빌드(시뮬레이터 연동), Gmail 연동(맥락 반영 답장·전송), Dreaming 메모리(팩추얼 리콜 31%→83%)</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>오픈웨이트 러시 · 로봇 · WWDC 전망 ([109:15 TTS·M3](https://youtu.be/g9Ag1O4Wavw?t=6555) · [119:23 로봇](https://youtu.be/g9Ag1O4Wavw?t=7163))</h2><ul>
+<li>Ideogram 4.0: 오픈웨이트 이미지 모델(글씨·필기체 강함, 단 논커머셜 라이선스)</li>
+<li>LIBV 2.0: 4K 클로즈소스 이미지, 아레나 2위 / BAGEL: Gemini 옴니의 오픈소스 버전(바이트댄스)</li>
+<li>TTS 대량 출시: Higgs V3(100개 언어·감정표현), Alibaba FunReal-Time(리더보드 1위), Wave TTS(제로샷 음성복제), Maya1</li>
+<li>Alibaba 캐릭터 스트림: 싱글 GPU 실시간 스트리밍 영상(라이브 커머스 활용)</li>
+<li>MiniMax M3: 오픈웨이트 종합 1위(Gemini 3.5 Flash 다음), 1M 컨텍스트 네이티브 멀티모달</li>
+<li>로봇: 유니트리 복싱 로봇(실측 위협적), 실시간 텔레오퍼레이션 군무, UBTECH 바이오닉 휴먼노이드</li>
+<li>WWDC(다음 주): 애플용 1.2T Gemini 온디바이스 탑재 가능성 — 화요일 새벽(한국시간) 공개</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>RSI(재귀적 자기<span class="up">개선</span>)</td><td>AI가 다음 세대 AI를 스스로 개발하는 루프</td><td>스승이 더 뛰어난 제자를 길러내는 반복</td></tr><tr><td>RTX Spark</td><td>엔비디아의 윈도우용 통합 AI PC 칩</td><td>DGX Spark의 윈도우 대중화 버전</td></tr><tr><td>유니파이드 메모리</td><td>CPU·GPU가 함께 쓰는 통합 메모리</td><td>칸막이 없는 공용 작업대</td></tr><tr><td>MoE</td><td>부분 전문가만 활성화하는 대형 모델 구조</td><td>질문마다 담당 전문가만 호출</td></tr><tr><td>QAT(양자화 인식 훈련)</td><td>양자화 후 성능 저하를 줄이는 훈련법</td><td>압축될 걸 미리 알고 연습한 가수</td></tr><tr><td>오픈웨이트</td><td>가중치를 공개해 직접 실행 가능한 모델</td><td>무료로 받아 쓰는 엔진</td></tr><tr><td>OpenClaw</td><td>AI 에이전트 오케스트레이션 프레임워크</td><td>여러 AI를 지휘하는 지휘자</td></tr><tr><td>TTS</td><td>텍스트를 음성으로 변환하는 기술</td><td>글을 읽어주는 성우</td></tr><tr><td>텔레오퍼레이션</td><td>사람 동작을 로봇이 실시간 따라하기</td><td>인형극의 줄 조종</td></tr><tr><td>제로샷 음성복제</td><td>짧은 샘플만으로 목소리를 복제</td><td>4초 듣고 성대모사</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-06-08</div></div></body></html>
