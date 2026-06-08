@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta Business Agent — 공식 출시 정리</title>
+  <style>
+    :root {
+      --bg:#ffffff; --surface:#f5f5f5; --border:#e0e0e0;
+      --text:#1a1a1a; --muted:#666666;
+      --accent:#2d9162; --accent-mid:#52b788; --accent-light:#d8f0e3;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.75;}
+    .site-header{border-bottom:2px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+    .site-brand{font-size:15px;font-weight:700;color:var(--accent);}
+    .site-nav a{font-size:13px;color:var(--muted);text-decoration:none;margin-left:16px;}
+    .article{max-width:800px;margin:0 auto;padding:32px 24px 60px;}
+    .article-meta{font-size:13px;color:var(--muted);margin-bottom:10px;}
+    .article-meta a{color:var(--accent);text-decoration:none;}
+    h1.article-title{font-size:26px;font-weight:700;line-height:1.35;margin:0 0 14px;color:var(--text);}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px;}
+    .tag{background:var(--accent-light);color:var(--accent);font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;}
+    .summary-card{background:var(--accent);border-radius:12px;padding:24px;margin-bottom:32px;}
+    .summary-card .card-title{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em;}
+    .summary-table{width:100%;border-collapse:collapse;}
+    .summary-table tr td:first-child{font-size:12px;font-weight:700;color:rgba(255,255,255,.75);width:110px;padding:6px 12px 6px 0;vertical-align:top;}
+    .summary-table tr td:last-child{font-size:14px;color:#fff;font-weight:500;padding:6px 0;}
+    .summary-table tr{border-bottom:1px solid rgba(255,255,255,.15);}
+    .summary-table tr:last-child{border-bottom:none;}
+    .editors-note{border-left:4px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:32px;}
+    .editors-note .note-label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+    .editors-note h3{font-size:15px;font-weight:700;margin:0 0 8px;}
+    .editors-note p{font-size:14px;color:var(--text);margin:0;line-height:1.7;}
+    .content-section{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border);}
+    .content-section:last-of-type{border-bottom:none;}
+    h2.sec-title{font-size:20px;font-weight:700;margin:0 0 16px;color:var(--text);display:flex;align-items:center;gap:10px;}
+    h2.sec-title .sec-num{background:var(--accent);color:#fff;font-size:12px;font-weight:700;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+    h3.subsec{font-size:15px;font-weight:700;color:var(--accent);margin:22px 0 10px;padding-left:12px;border-left:3px solid var(--accent-mid);}
+    p.body-text{margin:0 0 14px;font-size:14px;}
+    ul.body-list{padding-left:20px;margin:0 0 14px;}
+    ul.body-list li{margin-bottom:8px;font-size:14px;}
+    ul.body-list li strong{color:var(--accent);}
+    .flow-diagram{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0;}
+    .flow-box{background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--accent);}
+    .flow-arrow{color:var(--accent);font-size:18px;font-weight:700;}
+    table.compare{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+    table.compare th{background:var(--accent);color:#fff;font-weight:700;padding:10px 14px;text-align:left;}
+    table.compare td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+    table.compare tr:last-child td{border-bottom:none;}
+    table.compare tr:nth-child(even) td{background:var(--surface);}
+    .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;}
+    @media(max-width:620px){.card-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:400px){.card-grid{grid-template-columns:1fr;}}
+    .info-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;}
+    .info-card .card-label{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+    .info-card .card-value{font-size:13px;line-height:1.55;}
+    .price-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0;}
+    .price-card{border:1px solid var(--border);border-radius:10px;padding:16px;background:#fff;}
+    .price-card.free{border-color:var(--accent-mid);background:var(--accent-light);}
+    .price-card .p-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;}
+    .price-card.free .p-label{color:var(--accent);}
+    .price-card .p-title{font-size:15px;font-weight:700;margin-bottom:8px;}
+    .price-card .p-desc{font-size:13px;color:var(--muted);line-height:1.55;}
+    .highlight-box{background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:10px;padding:16px 20px;margin:16px 0;}
+    .highlight-box p{font-size:14px;margin:0;}
+    .conclusion{background:var(--accent-light);border-radius:12px;padding:24px;margin-bottom:40px;}
+    .conclusion h2{font-size:18px;font-weight:700;color:var(--accent);margin:0 0 12px;}
+    .conclusion p{margin:0;font-size:14px;line-height:1.75;}
+    .article-footer{border-top:1px solid var(--border);padding-top:20px;font-size:12px;color:var(--muted);}
+    .article-footer a{color:var(--accent);}
+    @media(max-width:600px){.article{padding:20px 16px 40px;}h1.article-title{font-size:21px;}h2.sec-title{font-size:17px;}.price-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-brand">AI 비즈니스 동향</div>
+  <nav class="site-nav"><a href="#">홈</a></nav>
+</header>
+
+<div class="article">
+  <div class="article-meta">2026년 6월 8일 · 출처: <a href="https://n.news.naver.com/mnews/article/001/0016117814?sid=104" target="_blank">연합뉴스</a></div>
+  <h1 class="article-title">Meta Business Agent — 글로벌 공식 출시 핵심 정리</h1>
+  <div class="tags">
+    <span class="tag">Meta</span>
+    <span class="tag">WhatsApp</span>
+    <span class="tag">AI 에이전트</span>
+    <span class="tag">비즈니스 자동화</span>
+    <span class="tag">2026년 6월</span>
+  </div>
+
+  <div class="summary-card">
+    <div class="card-title">핵심 요약</div>
+    <table class="summary-table">
+      <tr><td>무엇</td><td>메시징 앱 기반 고객 응대·커머스 자동화 AI 에이전트</td></tr>
+      <tr><td>언제</td><td>2026년 6월 3일 글로벌 공식 출시 (한국·말레이시아 포함)</td></tr>
+      <tr><td>어디서</td><td>WhatsApp · Messenger · Instagram (일간 이용자 합계 약 10억 명)</td></tr>
+      <tr><td>핵심 메시지</td><td>중소기업이 24/7 고객 응대·예약·결제를 채팅 안에서 자동화</td></tr>
+      <tr><td>과금</td><td>현재 무료 → 향후 트래픽 비례 유료 전환 + WABA 발송 단가 별도</td></tr>
+    </table>
+  </div>
+
+  <div class="editors-note">
+    <div class="note-label">Editor's Note</div>
+    <h3>Meta Business Agent란?</h3>
+    <p>기업이 WhatsApp·Messenger·Instagram 채팅창에 AI를 붙여 고객 질문 답변, 예약, 결제까지 자동 처리하는 서비스입니다. 직원 없이도 24시간 운영되며, 처리하기 어려운 상담은 실제 직원에게 넘깁니다. 기존 WhatsApp Business Platform(WABA) 인프라 위에서 동작하며, 2026년 1월부터 Meta가 서드파티 챗봇을 제한하고 자사 AI 생태계로 통합하는 흐름의 일환입니다.</p>
+  </div>
+
+  <!-- 섹션 1 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">1</span>무엇을 할 수 있나 — 핵심 기능</h2>
+    <p class="body-text">세 개 채널(WhatsApp·Messenger·Instagram)에서 동작하며, 채팅창을 벗어나지 않고 구매 여정 전체를 완결합니다. 단, AI 에이전트가 직접 음성·영상 통화를 수행하는 기능은 지원하지 않습니다.</p>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="card-label">24/7 응대</div>
+        <div class="card-value">실시간 질의응답 및 맞춤형 상품 추천. 운영 시간 확인·배송 조회 등 반복 문의 자동 처리</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">예약·결제</div>
+        <div class="card-value">채팅창 안에서 예약 접수 및 결제 처리 완결. 외부 링크 이동 없이 구매 여정 종료</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Human Hand-off</div>
+        <div class="card-value">AI 처리 한계 시 실제 직원에게 상담 자동 인계. 전화 연결 필요 시에도 동일</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 2 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">2</span>기술 구조 — 어떻게 연동하나</h2>
+    <p class="body-text">기존 WABA(WhatsApp Business API) 인프라를 그대로 사용합니다. 기업은 자사 시스템을 Meta 규격에 맞춰 연결해야 하며, 연동 난이도는 시스템 종류에 따라 크게 다릅니다.</p>
+
+    <h3 class="subsec">연동 방식 3가지</h3>
+    <table class="compare">
+      <tr><th>구분</th><th>대상</th><th>방법</th></tr>
+      <tr><td><strong>네이티브 연동</strong></td><td>Shopify, Zendesk 등 글로벌 파트너</td><td>플러그앤플레이, 별도 개발 불필요</td></tr>
+      <tr><td><strong>API 연동</strong></td><td>자체 개발 서비스</td><td>JSON + OAuth 2.0 + 웹훅, Meta 가이드 준수</td></tr>
+      <tr><td><strong>커스텀 연동</strong></td><td>사내 ERP·로컬 CRM</td><td>미들웨어 직접 개발 필요</td></tr>
+    </table>
+
+    <h3 class="subsec">제품 카탈로그 입력 한계</h3>
+    <ul class="body-list">
+      <li><strong>대량 등록</strong> — CSV·TSV·XML 파일 또는 Google 시트 자동 동기화</li>
+      <li><strong>수동 등록 한계</strong> — 단일 제품당 이미지 최대 10장(8MB 이하), 최대 500개 아이템</li>
+    </ul>
+  </div>
+
+  <!-- 섹션 3 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">3</span>운영 시나리오 — 인바운드 vs 아웃바운드</h2>
+    <p class="body-text">Meta Business Agent의 메시지 발송은 누가 먼저 시작하느냐에 따라 규칙이 완전히 달라집니다. 특히 아웃바운드(기업 주도)는 규정 위반 시 계정 차단까지 이어질 수 있어 주의가 필요합니다.</p>
+
+    <h3 class="subsec">인바운드 — 고객이 먼저 연락</h3>
+    <div class="flow-diagram">
+      <div class="flow-box">고객 프로필 방문</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">최초 메시지 발송</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">24시간 서비스 윈도우 활성화</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">AI 자동 응대</div>
+    </div>
+    <p class="body-text">윈도우 내 자유 형식 메시지는 무료입니다. 매장 운영시간 확인·배송 조회·실시간 예약이 주요 활용 사례입니다.</p>
+
+    <h3 class="subsec">아웃바운드 — 기업이 먼저 발송</h3>
+    <div class="highlight-box">
+      <p><strong>필수 규정:</strong> 발송 전 명시적 사전 수신 동의(Opt-in) 확보 + 즉각적인 수신 거부(Opt-out) 시스템 연동. 위반 시 계정 차단.</p>
+    </div>
+    <ul class="body-list">
+      <li><strong>장바구니 방기 알림</strong> — 구매 미완료 고객 재유입</li>
+      <li><strong>타겟 프로모션 쿠폰</strong> — 세그먼트 기반 발송</li>
+      <li><strong>결제 인보이스 전송</strong> — 거래 완료 후 영수증</li>
+    </ul>
+  </div>
+
+  <!-- 섹션 4 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">4</span>과금 구조 — 얼마나 드나</h2>
+    <p class="body-text">비용은 두 레이어로 구성됩니다. AI 소프트웨어 자체는 현재 무료이지만, 메시지를 발송할 때마다 WABA 인프라 비용이 발생합니다. 단, 무료 조건을 잘 활용하면 비용을 크게 낮출 수 있습니다.</p>
+
+    <h3 class="subsec">AI 소프트웨어 사용료</h3>
+    <div class="price-grid">
+      <div class="price-card free">
+        <div class="p-label">현재</div>
+        <div class="p-title">무료</div>
+        <div class="p-desc">가입비·구축비 없음</div>
+      </div>
+      <div class="price-card">
+        <div class="p-label">향후 전환 예정</div>
+        <div class="p-title">트래픽·토큰 비례 과금</div>
+        <div class="p-desc">종량제 또는 유료 구독제로 전환 예정 (시기 미공개)</div>
+      </div>
+    </div>
+
+    <h3 class="subsec">WABA 발송 단가 (건당 부과)</h3>
+    <table class="compare">
+      <tr><th>카테고리</th><th>용도 예시</th><th>단가</th></tr>
+      <tr><td><strong>마케팅</strong></td><td>프로모션 쿠폰, 재구매 유도</td><td>가장 높음</td></tr>
+      <tr><td><strong>유틸리티</strong></td><td>영수증, 인보이스, 배송 알림</td><td>마케팅 대비 낮음</td></tr>
+      <tr><td><strong>인증</strong></td><td>OTP 등 보안 코드</td><td>별도 책정</td></tr>
+    </table>
+
+    <h3 class="subsec">무료 발송 조건 (절약 포인트)</h3>
+    <ul class="body-list">
+      <li><strong>인바운드 24시간 윈도우 내</strong> 자유 형식 서비스 메시지 — 무료</li>
+      <li><strong>24시간 윈도우 내 유틸리티 템플릿</strong> — 무료 (2025년 7월 개편)</li>
+      <li><strong>Click-to-WhatsApp 광고 유입 고객</strong> 대상 최초 72시간 전면 무료</li>
+    </ul>
+  </div>
+
+  <!-- 섹션 5 — 비교 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">5</span>ixi-O Biz vs Meta Business Agent — 무엇이 다른가</h2>
+    <p class="body-text">Meta Business Agent는 텍스트 채팅 자동화에 집중하고, ixi-O Biz는 Meta가 구조적으로 진입하기 어려운 <strong>통화 오디오 처리</strong> 영역을 wedge로 삼습니다. 경쟁 관계가 아닌 공백 채우기 전략입니다.</p>
+    <table class="compare">
+      <tr><th>항목</th><th>Meta Business Agent</th><th>ixi-O Biz (우리)</th></tr>
+      <tr><td><strong>포지셔닝</strong></td><td>중소기업 범용 고객응대·커머스 자동화</td><td>통화요약 wedge → 비즈니스 커뮤니케이션 어시스턴트</td></tr>
+      <tr><td><strong>핵심 차별 기능</strong></td><td>24/7 Q&amp;A, 상품추천, 채팅 내 예약·결제</td><td>통화 오디오 → STT → LLM 요약 → 양측 전달</td></tr>
+      <tr><td><strong>음성·통화</strong></td><td>AI 에이전트 직접 통화 미지원</td><td>WABA Calling API + RTP 브릿지 = 핵심 wedge</td></tr>
+      <tr><td><strong>AI 역할</strong></td><td>Meta 자체 AI가 채팅 응답 생성</td><td>LLM은 통화 요약 특화, 채팅 라우팅은 BSP 담당</td></tr>
+      <tr><td><strong>인프라 주체</strong></td><td>Meta 플랫폼 내 All-in-one</td><td>BSP(Infobip) + 당사 서버 역할 분담</td></tr>
+      <tr><td><strong>데이터 처리</strong></td><td>Meta 에코시스템 내 처리</td><td>당사가 오디오 직접 처리 → PDPA 대응 필수</td></tr>
+      <tr><td><strong>타겟 시장</strong></td><td>글로벌 중소기업</td><td>말레이시아 MVP (부동산·전문직 B2B)</td></tr>
+    </table>
+    <div class="highlight-box">
+      <p><strong>왜 Meta가 통화요약을 직접 못 하나?</strong> WhatsApp은 종단간 암호화(E2EE)를 마케팅 포인트로 사용 중이라 Meta 서버가 오디오에 직접 접근하면 브랜드 훼손 및 각국 개인정보 규제와 충돌합니다. ixi-O Biz는 기업↔사용자 간 명시적 동의(B2B 계약)로 이 제약을 합법적으로 우회합니다.</p>
+    </div>
+  </div>
+
+  <!-- 결론 -->
+  <div class="conclusion">
+    <h2>한 줄 결론</h2>
+    <p>Meta Business Agent는 중소기업이 별도 앱 없이 WhatsApp·Messenger·Instagram 채팅창 안에서 고객 응대·예약·결제를 자동화하는 AI 솔루션입니다. 현재 소프트웨어는 무료이지만 메시지 발송마다 WABA 단가가 부과되며, Opt-in 규정과 커스텀 시스템 연동 준비가 도입의 핵심 선결 조건입니다.</p>
+  </div>
+
+  <div class="article-footer">
+    <div>정리: AI 비즈니스 동향 · 2026-06-08</div>
+    <div style="margin-top:6px;">원본: <a href="https://n.news.naver.com/mnews/article/001/0016117814?sid=104" target="_blank">연합뉴스 — 메타 비즈니스 에이전트 출시</a></div>
+  </div>
+</div>
+
+</body>
+</html>

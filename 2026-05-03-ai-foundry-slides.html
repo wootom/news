@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Foundry 교육 프로그램</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f5f5f5; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #666666;
+      --accent: #2d9162; --accent-mid: #52b788; --accent-light: #d8f0e3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+      background: #111;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ── 슬라이드 컨테이너 ── */
+    .deck { width: 100vw; height: 100vh; position: relative; }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 60px 80px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .slide.active { opacity: 1; pointer-events: all; }
+
+    /* ── 슬라이드 유형별 배경 ── */
+    .slide-title   { background: linear-gradient(140deg, #1a5c3a 0%, #2d9162 60%, #52b788 100%); color: #fff; }
+    .slide-agenda  { background: #ffffff; }
+    .slide-content { background: #ffffff; }
+    .slide-dark    { background: linear-gradient(140deg, #111827 0%, #1a3a28 100%); color: #fff; }
+    .slide-closing { background: linear-gradient(140deg, #1a5c3a 0%, #2d9162 100%); color: #fff; }
+
+    /* ── 슬라이드 번호 ── */
+    .slide-num {
+      position: absolute; top: 24px; right: 32px;
+      font-size: 11px; opacity: 0.35; font-weight: 700; letter-spacing: 1.5px;
+    }
+    .slide-title .slide-num, .slide-dark .slide-num, .slide-closing .slide-num { color: #fff; }
+
+    /* ── 섹션 라벨 ── */
+    .slide-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    .slide-content .slide-label { color: var(--accent); }
+    .slide-agenda .slide-label { color: var(--accent); }
+    .slide-title .slide-label, .slide-dark .slide-label, .slide-closing .slide-label { color: rgba(255,255,255,0.6); }
+
+    /* ── 제목 스타일 ── */
+    h1.main-title {
+      font-size: clamp(30px, 3.8vw, 52px); font-weight: 800;
+      line-height: 1.2; text-align: center; letter-spacing: -0.5px;
+    }
+    h2.sec-title {
+      font-size: clamp(20px, 2.2vw, 30px); font-weight: 700;
+      color: var(--text); margin-bottom: 28px; text-align: center;
+      width: 100%;
+    }
+    .slide-dark h2.sec-title, .slide-closing h2.sec-title { color: #fff; }
+    .subtitle { font-size: 15px; opacity: 0.75; margin-top: 14px; text-align: center; }
+    .presenter { font-size: 12px; opacity: 0.5; margin-top: 10px; letter-spacing: 0.5px; }
+
+    /* ── 구분선 ── */
+    .divider {
+      width: 40px; height: 3px; background: var(--accent-mid);
+      border-radius: 2px; margin: 16px auto;
+    }
+    .slide-title .divider, .slide-closing .divider { background: rgba(255,255,255,0.4); }
+
+    /* ── 3열 카드 ── */
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
+    .card {
+      background: var(--surface); border-radius: 10px; padding: 22px 20px;
+      border-top: 3px solid var(--accent);
+    }
+    .card-dark {
+      background: rgba(255,255,255,0.08); border-radius: 10px; padding: 22px 20px;
+      border-top: 3px solid var(--accent-mid);
+    }
+    .card-num   { font-size: 24px; font-weight: 900; color: var(--accent); margin-bottom: 8px; line-height: 1; }
+    .card-dark .card-num { color: var(--accent-mid); }
+    .card-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+    .card-dark .card-title { color: #fff; }
+    .card-body  { font-size: 12px; color: var(--muted); line-height: 1.7; }
+    .card-dark .card-body { color: rgba(255,255,255,0.6); }
+
+    /* ── 2열 레이아웃 ── */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; align-items: start; }
+
+    /* ── 목차 리스트 ── */
+    .agenda-list { list-style: none; width: 100%; max-width: 640px; }
+    .agenda-list li {
+      display: flex; align-items: center; gap: 18px;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      font-size: 15px; font-weight: 600; color: var(--text);
+    }
+    .ag-num {
+      width: 32px; height: 32px; background: var(--accent); color: #fff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; flex-shrink: 0;
+    }
+    .ag-sub { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: auto; }
+
+    /* ── One Key Message ── */
+    .one-key { text-align: center; max-width: 700px; }
+    .key-headline {
+      font-size: clamp(28px, 3.5vw, 48px); font-weight: 900;
+      color: #fff; line-height: 1.15; letter-spacing: -1px;
+    }
+    .key-sub  { font-size: 15px; color: rgba(255,255,255,0.7); margin-top: 20px; line-height: 1.8; }
+    .key-badge {
+      display: inline-block; background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 20px;
+      padding: 4px 14px; font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(255,255,255,0.8); margin-bottom: 24px;
+    }
+
+    /* ── 흐름도 ── */
+    .flow-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; width: 100%; flex-wrap: nowrap;
+    }
+    .fi {
+      background: var(--accent-light); border: 2px solid var(--accent-mid);
+      border-radius: 8px; padding: 12px 14px; text-align: center;
+      font-size: 12px; font-weight: 700; color: var(--text); flex: 1;
+      max-width: 130px; min-width: 90px;
+    }
+    .fi-sub { font-size: 10px; color: var(--muted); margin-top: 4px; font-weight: 400; }
+    .fa { font-size: 16px; color: var(--accent-mid); margin: 0 4px; flex-shrink: 0; }
+
+    /* ── 불릿 리스트 ── */
+    ul.b { list-style: none; padding: 0; width: 100%; }
+    ul.b li {
+      padding: 9px 0 9px 20px; position: relative;
+      font-size: 14px; line-height: 1.65; border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    ul.b li::before {
+      content: ""; position: absolute; left: 0; top: 17px;
+      width: 7px; height: 7px; background: var(--accent-mid); border-radius: 50%;
+    }
+    ul.b.white li { color: rgba(255,255,255,0.85); border-bottom-color: rgba(255,255,255,0.1); }
+    ul.b.white li::before { background: var(--accent-mid); }
+
+    /* ── 비교 표 ── */
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .compare-table th {
+      background: var(--accent); color: #fff; padding: 10px 16px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-align: left;
+    }
+    .compare-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--surface); }
+    .compare-table .before { color: var(--muted); }
+    .compare-table .after { color: var(--accent); font-weight: 600; }
+    .arrow-col { text-align: center; color: var(--accent); font-weight: 900; }
+
+    /* ── 모듈 타임라인 ── */
+    .module-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+    .module-row {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--surface); border-radius: 8px; padding: 12px 16px;
+      border-left: 4px solid var(--accent);
+    }
+    .module-tag {
+      font-size: 10px; font-weight: 800; letter-spacing: 1px;
+      color: var(--accent); min-width: 60px;
+    }
+    .module-name { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; }
+    .module-desc { font-size: 11px; color: var(--muted); flex: 2; }
+    .module-meta { font-size: 11px; color: var(--muted); min-width: 80px; text-align: right; }
+    .module-stars { color: var(--accent-mid); font-size: 10px; }
+
+    /* ── 수치 강조 ── */
+    .stat-row { display: flex; gap: 32px; justify-content: center; margin: 16px 0; }
+    .stat-box { text-align: center; }
+    .stat-num { font-size: 48px; font-weight: 900; color: var(--accent); line-height: 1; }
+    .stat-unit { font-size: 18px; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+
+    /* ── 네비게이션 ── */
+    .nav {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 16px; z-index: 100;
+      background: rgba(0,0,0,0.5); border-radius: 30px; padding: 8px 20px;
+      backdrop-filter: blur(10px);
+    }
+    .nav button {
+      background: none; border: none; color: #fff; cursor: pointer;
+      font-size: 18px; padding: 4px 10px; border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .nav button:hover { background: rgba(255,255,255,0.15); }
+    .nav-count { color: #fff; font-size: 12px; opacity: 0.6; font-variant-numeric: tabular-nums; min-width: 50px; text-align: center; }
+
+    /* ── 진행 바 ── */
+    .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); transition: width 0.3s ease; z-index: 200; }
+  </style>
+</head>
+<body>
+  <div class="progress" id="prog"></div>
+  <div class="deck" id="deck">
+
+    <!-- SLIDE 01: 표지 -->
+    <div class="slide slide-title active">
+      <div class="slide-num">01 / 13</div>
+      <div class="slide-label">Education Program</div>
+      <h1 class="main-title">AI-Foundry<br>교육 프로그램</h1>
+      <div class="divider"></div>
+      <p class="subtitle">코딩 없이도 AI 에이전트를 지휘하는 오케스트레이터가 된다</p>
+      <p class="presenter">AI-Foundry · 2026</p>
+    </div>
+
+    <!-- SLIDE 02: 목차 -->
+    <div class="slide slide-agenda">
+      <div class="slide-num">02 / 13</div>
+      <div class="slide-label">Agenda</div>
+      <h2 class="sec-title">목차</h2>
+      <ul class="agenda-list">
+        <li>
+          <span class="ag-num">01</span> 왜 지금인가 — 시장 변화
+          <span class="ag-sub">Why Now</span>
+        </li>
+        <li>
+          <span class="ag-num">02</span> 프로그램 개요
+          <span class="ag-sub">Overview</span>
+        </li>
+        <li>
+          <span class="ag-num">03</span> 7대 커리큘럼 상세
+          <span class="ag-sub">Curriculum</span>
+        </li>
+        <li>
+          <span class="ag-num">04</span> 학습 여정 & 기대 효과
+          <span class="ag-sub">Journey & Outcome</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- SLIDE 03: Why Now — 핵심 메시지 -->
+    <div class="slide slide-dark">
+      <div class="slide-num">03 / 13</div>
+      <div class="slide-label">Why Now</div>
+      <div class="one-key">
+        <div class="key-badge">2026 현재</div>
+        <div class="key-headline">"AI를 쓰는 1명<br>= AI를 안 쓰는 팀"</div>
+        <p class="key-sub">
+          개발자 생산성 55% 향상 (GitHub, 2024) ·
+          AI 작성 코드 비율 50% 돌파 (Anthropic, 2025)<br>
+          아이디어가 문서에서 멈추던 시대는 끝났다
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 04: 시장 타임라인 -->
+    <div class="slide slide-content">
+      <div class="slide-num">04 / 13</div>
+      <div class="slide-label">Why Now</div>
+      <h2 class="sec-title">AI 전환 타임라인</h2>
+      <div class="flow-row" style="margin-bottom: 32px;">
+        <div class="fi">
+          2022.11
+          <div class="fi-sub">ChatGPT 출시<br>1억 명 2개월</div>
+        </div>
+        <div class="fa">&#8594;</div>
+        <div class="fi">
+          2024
+          <div class="fi-sub">생산성 +55%<br>(GitHub)</div>
+        </div>
+        <div class="fa">&#8594;</div>
+        <div class="fi">
+          2025
+          <div class="fi-sub">AI 코드 비율<br>50% 돌파</div>
+        </div>
+        <div class="fa">&#8594;</div>
+        <div class="fi" style="border-color: var(--accent); background: var(--accent-light); font-weight: 800; color: var(--accent);">
+          2026
+          <div class="fi-sub" style="color: var(--accent);">1명 = 팀<br>현실화</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">55<span class="stat-unit">%</span></div>
+          <div class="stat-label">개발자 생산성 향상<br>(GitHub 2024)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">20<span class="stat-unit">h</span></div>
+          <div class="stat-label">주당 절약 가능<br>반복 업무 자동화</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">3<span class="stat-unit">일</span></div>
+          <div class="stat-label">아이디어 → 서비스<br>배포 목표</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 05: Before / After -->
+    <div class="slide slide-content">
+      <div class="slide-num">05 / 13</div>
+      <div class="slide-label">Why Now</div>
+      <h2 class="sec-title">수료 전 vs 수료 후</h2>
+      <table class="compare-table" style="max-width: 700px; width: 100%;">
+        <tr>
+          <th style="width: 44%;">수료 전</th>
+          <th style="width: 12%; text-align: center; background: #1a3a28;">→</th>
+          <th style="width: 44%;">수료 후</th>
+        </tr>
+        <tr>
+          <td class="before">개발자에게 부탁해야 해</td>
+          <td class="arrow-col">&#8594;</td>
+          <td class="after">직접 프로토타입 제작·공유</td>
+        </tr>
+        <tr>
+          <td class="before">아이디어가 문서에서 멈춤</td>
+          <td class="arrow-col">&#8594;</td>
+          <td class="after">3일 안에 서비스로 배포</td>
+        </tr>
+        <tr>
+          <td class="before">AI = 검색 대용</td>
+          <td class="arrow-col">&#8594;</td>
+          <td class="after">AI 에이전트 군단 오케스트레이터</td>
+        </tr>
+        <tr>
+          <td class="before">반복 업무에 하루 3시간 소비</td>
+          <td class="arrow-col">&#8594;</td>
+          <td class="after">자동화로 주 20시간 절약</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- SLIDE 06: 프로그램 개요 -->
+    <div class="slide slide-content">
+      <div class="slide-num">06 / 13</div>
+      <div class="slide-label">Overview</div>
+      <h2 class="sec-title">프로그램 개요</h2>
+      <div class="grid3">
+        <div class="card">
+          <div class="card-num">7</div>
+          <div class="card-title">개 모듈</div>
+          <div class="card-body">AI 기초부터 서비스 런칭까지 단계별 커리큘럼. 각 모듈은 독립 완결 구조.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">34h</div>
+          <div class="card-title">총 학습량</div>
+          <div class="card-body">주 3~4시간 학습 기준 4주 완주 가능. 바쁜 경우 8주 분산도 가능.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">0</div>
+          <div class="card-title">코딩 선수지식</div>
+          <div class="card-body">비전공자·기획·PM·영업·운영 직군이 대상. 자연어 의도 설계 능력을 기른다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 07: 7대 모듈 전체 지도 -->
+    <div class="slide slide-content">
+      <div class="slide-num">07 / 13</div>
+      <div class="slide-label">Curriculum</div>
+      <h2 class="sec-title">7대 모듈 커리큘럼</h2>
+      <div class="module-list">
+        <div class="module-row" style="border-color: #52b788;">
+          <div class="module-tag">MOD 01</div>
+          <div class="module-name">AI Fundamentals</div>
+          <div class="module-desc">AI 변천사 · 모델 시장지형 · 요청응답 파이프라인</div>
+          <div class="module-meta">3h <span class="module-stars">&#9733;</span></div>
+        </div>
+        <div class="module-row" style="border-color: #3da876;">
+          <div class="module-tag">MOD 02</div>
+          <div class="module-name">Engineering</div>
+          <div class="module-desc">프롬프트·컨텍스트·하네스 3대 프레임워크 · Andrew Ng 4대 패턴</div>
+          <div class="module-meta">4h <span class="module-stars">&#9733;&#9733;</span></div>
+        </div>
+        <div class="module-row" style="border-color: #2d9162;">
+          <div class="module-tag">MOD 03</div>
+          <div class="module-name">AI 접점 전략</div>
+          <div class="module-desc">웹 · 앱 · 메신저 · 온프레미스 4대 접점 도입 시나리오</div>
+          <div class="module-meta">3h <span class="module-stars">&#9733;&#9733;</span></div>
+        </div>
+        <div class="module-row" style="border-color: #257a52;">
+          <div class="module-tag">MOD 04</div>
+          <div class="module-name">Vibe Planning</div>
+          <div class="module-desc">AI-Native SDLC · AI Readable Data · 조직/개인 지식체계 구축</div>
+          <div class="module-meta">4h <span class="module-stars">&#9733;&#9733;</span></div>
+        </div>
+        <div class="module-row" style="border-color: #1e6343;">
+          <div class="module-tag">MOD 05</div>
+          <div class="module-name">Vibe Coding</div>
+          <div class="module-desc">Cursor + MCP + Bolt.new로 풀스택 MVP 개발·배포</div>
+          <div class="module-meta">6h <span class="module-stars">&#9733;&#9733;&#9733;</span></div>
+        </div>
+        <div class="module-row" style="border-color: #174d34;">
+          <div class="module-tag">MOD 06</div>
+          <div class="module-name">Agent Orchestration</div>
+          <div class="module-desc">Dify RAG · gstack · CrewAI 멀티에이전트 팀 구성</div>
+          <div class="module-meta">6h <span class="module-stars">&#9733;&#9733;&#9733;</span></div>
+        </div>
+        <div class="module-row" style="border-color: #0f3624;">
+          <div class="module-tag">MOD 07</div>
+          <div class="module-name">Final Project</div>
+          <div class="module-desc">1인 기업가 서비스 런칭 · 배포 자동화 · 평가 루브릭</div>
+          <div class="module-meta">8h <span class="module-stars">&#9733;&#9733;&#9733;&#9733;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 08: Module 01–02 상세 -->
+    <div class="slide slide-content">
+      <div class="slide-num">08 / 13</div>
+      <div class="slide-label">Curriculum — Module 01·02</div>
+      <h2 class="sec-title">기초 & 엔지니어링</h2>
+      <div class="grid2">
+        <div>
+          <div style="font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px;">MODULE 01 · AI Fundamentals · 3h</div>
+          <ul class="b">
+            <li>Rule-based → Transformer → Agentic AI 4세대 진화</li>
+            <li>미국 3강 + 글로벌 도전자 모델 시장 비교</li>
+            <li>요청·응답 파이프라인 8개 구간 — 비용·속도 최적화</li>
+          </ul>
+          <div style="margin-top: 14px; background: var(--accent-light); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: var(--accent); font-weight: 600;">
+            핵심: "좋은 모델"보다 "적절한 모델 선택"이 역량이다
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px;">MODULE 02 · Engineering · 4h</div>
+          <ul class="b">
+            <li>프롬프트 · 컨텍스트 · 하네스 3대 프레임워크</li>
+            <li>ReAct · Tool Calling · MCP · A2A · Agentic Loop</li>
+            <li>Reflection · Tool Use · Planning · Multi-Agent 4대 패턴 구현</li>
+            <li>역할별(BizUser/PM/개발자) 에이전트 셋업</li>
+          </ul>
+          <div style="margin-top: 14px; background: var(--accent-light); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: var(--accent); font-weight: 600;">
+            핵심: 프레임워크 없이 Raw 구현 → 프레임워크의 존재 이유를 안다
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 09: Module 03–04 상세 -->
+    <div class="slide slide-content">
+      <div class="slide-num">09 / 13</div>
+      <div class="slide-label">Curriculum — Module 03·04</div>
+      <h2 class="sec-title">접점 전략 & Vibe Planning</h2>
+      <div class="grid2">
+        <div>
+          <div style="font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px;">MODULE 03 · AI 접점 전략 · 3h</div>
+          <ul class="b">
+            <li>웹 → 앱 → 메신저 → 온프레미스 4접점 진화 구조</li>
+            <li>맥락 지속성 · 보안 · 자동화 수준 접점별 비교</li>
+            <li>메신저 접점: 현장직군 침투의 가장 효과적 진입로</li>
+            <li>온프레미스: 규제 산업의 표준 옵션</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px;">MODULE 04 · Vibe Planning · 4h</div>
+          <ul class="b">
+            <li>전통 SDLC vs AI-Native SDLC 5단계 비교</li>
+            <li>AI Readable Data: 데이터 품질이 AI 성능을 결정</li>
+            <li>조직 지식체계 구축 + 개인 PKM Second Brain 연결</li>
+            <li>자연어 의도 → PRD → 아키텍처 자동 변환</li>
+          </ul>
+          <div style="margin-top: 14px; background: var(--accent-light); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: var(--accent); font-weight: 600;">
+            핵심: 지식 자산의 품질 = AI 활용력의 한계
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: Module 05–07 상세 -->
+    <div class="slide slide-content">
+      <div class="slide-num">10 / 13</div>
+      <div class="slide-label">Curriculum — Module 05·06·07</div>
+      <h2 class="sec-title">Vibe Coding · 오케스트레이션 · 런칭</h2>
+      <div class="grid3">
+        <div class="card">
+          <div class="card-num">05</div>
+          <div class="card-title">Vibe Coding · 6h</div>
+          <div class="card-body">
+            Cursor + .cursorrules + Agentic Mode 셋업<br><br>
+            MCP 서버로 파일·GitHub·DB 통합 환경 구성<br><br>
+            Bolt.new로 10분 안에 랜딩 페이지 배포
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">06</div>
+          <div class="card-title">Agent Orchestration · 6h</div>
+          <div class="card-body">
+            9개 에이전트 프레임워크 비교 (Dify / CrewAI / n8n 등)<br><br>
+            Dify로 회사 PDF 기반 RAG 챗봇 직접 구현<br><br>
+            gstack / CrewAI 멀티에이전트 팀 구축
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-num">07</div>
+          <div class="card-title">Final Project · 8h</div>
+          <div class="card-body">
+            아이디어 → PRD → 개발 → 배포 → 피드백 1주 완주<br><br>
+            배포 자동화 파이프라인 구성<br><br>
+            정량 지표 + 사용자 피드백 평가 루브릭
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: 학습 여정 흐름도 -->
+    <div class="slide slide-content">
+      <div class="slide-num">11 / 13</div>
+      <div class="slide-label">Journey</div>
+      <h2 class="sec-title">4주 학습 여정</h2>
+      <div class="flow-row" style="margin-bottom: 28px;">
+        <div class="fi" style="max-width: 150px;">
+          Week 1
+          <div class="fi-sub">M01 · M02<br>기초 + 엔지니어링</div>
+        </div>
+        <div class="fa">&#8594;</div>
+        <div class="fi" style="max-width: 150px;">
+          Week 2
+          <div class="fi-sub">M03 · M04<br>접점 + 플래닝</div>
+        </div>
+        <div class="fa">&#8594;</div>
+        <div class="fi" style="max-width: 150px;">
+          Week 3
+          <div class="fi-sub">M05 · M06<br>코딩 + 오케스트레이션</div>
+        </div>
+        <div class="fa">&#8594;</div>
+        <div class="fi" style="max-width: 150px; border-color: var(--accent); background: var(--accent-light); color: var(--accent);">
+          Week 4
+          <div class="fi-sub" style="color: var(--accent);">M07<br>서비스 런칭</div>
+        </div>
+      </div>
+      <div style="background: var(--surface); border-radius: 10px; padding: 20px 28px; width: 100%; max-width: 700px;">
+        <div style="font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 1.5px; margin-bottom: 12px; text-transform: uppercase;">학습 마인드셋</div>
+        <ul class="b">
+          <li>완벽히 이해하려 하지 말고, 일단 실행 — 100번 읽는 것보다 1번 써보는 게 효과적</li>
+          <li>각 모듈의 "바로 해보기" 과제를 반드시 완수한다</li>
+          <li>실패해도 괜찮다 — AI가 실수를 고쳐줄 준비가 되어 있다</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: Key Takeaways -->
+    <div class="slide slide-dark">
+      <div class="slide-num">12 / 13</div>
+      <div class="slide-label">Key Takeaways</div>
+      <h2 class="sec-title">3가지 핵심 메시지</h2>
+      <div class="grid3" style="max-width: 860px;">
+        <div class="card-dark">
+          <div class="card-num">01</div>
+          <div class="card-title">오케스트레이터가 돼라</div>
+          <div class="card-body">AI를 하나만 쓰는 것이 아니라 여러 에이전트에게 역할을 분배하고 결과를 통합하는 지휘자가 돼라</div>
+        </div>
+        <div class="card-dark">
+          <div class="card-num">02</div>
+          <div class="card-title">데이터 품질이 AI 성능이다</div>
+          <div class="card-body">AI 성능의 한계는 모델이 아니라 데이터 품질이 결정한다. 지식 자산 구축이 곧 AI 역량이다</div>
+        </div>
+        <div class="card-dark">
+          <div class="card-num">03</div>
+          <div class="card-title">3일 안에 배포하라</div>
+          <div class="card-body">직접 프로토타입을 만들어 보여주는 사람이 기회를 잡는다. 배포 자동화 없이 1인 운영은 지속 불가능하다</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13: 마무리 -->
+    <div class="slide slide-closing">
+      <div class="slide-num">13 / 13</div>
+      <div class="slide-label">AI-Foundry · 2026</div>
+      <h1 class="main-title">감사합니다</h1>
+      <div class="divider"></div>
+      <p class="subtitle">aifoundry01@gmail.com</p>
+      <p class="presenter">Q &amp; A</p>
+    </div>
+
+  </div>
+
+  <!-- 네비게이션 -->
+  <div class="nav">
+    <button onclick="move(-1)" title="이전 (←)">&#8592;</button>
+    <span class="nav-count" id="cnt">1 / 13</span>
+    <button onclick="move(1)" title="다음 (→)">&#8594;</button>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const total  = slides.length;
+    let cur = 0;
+
+    function show(n) {
+      slides[cur].classList.remove('active');
+      cur = Math.max(0, Math.min(total - 1, n));
+      slides[cur].classList.add('active');
+      document.getElementById('cnt').textContent = (cur + 1) + ' / ' + total;
+      document.getElementById('prog').style.width = ((cur + 1) / total * 100) + '%';
+    }
+    function move(d) { show(cur + d); }
+
+    document.addEventListener('keydown', e => {
+      if (['ArrowRight', 'ArrowDown'].includes(e.key) || e.code === 'Space') { e.preventDefault(); move(1); }
+      if (['ArrowLeft', 'ArrowUp'].includes(e.key)) { e.preventDefault(); move(-1); }
+    });
+
+    // 초기 진행 바
+    document.getElementById('prog').style.width = (1 / total * 100) + '%';
+  </script>
+</body>
+</html>

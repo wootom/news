@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오픈AI 재반격 — GPT-5.5 · 워크스페이스 에이전트 · Codex API · GPT Image 2</title>
+  <style>
+    :root {
+      --bg:#ffffff; --surface:#f5f5f5; --border:#e0e0e0;
+      --text:#1a1a1a; --muted:#666666;
+      --accent:#2d9162; --accent-mid:#52b788; --accent-light:#d8f0e3;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.75;}
+    .site-header{border-bottom:2px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+    .site-brand{font-size:15px;font-weight:700;color:var(--accent);}
+    .site-nav a{font-size:13px;color:var(--muted);text-decoration:none;margin-left:16px;}
+    .site-nav a:hover{color:var(--accent);}
+    .article{max-width:800px;margin:0 auto;padding:32px 24px 60px;}
+    .article-meta{font-size:13px;color:var(--muted);margin-bottom:10px;}
+    .article-meta a{color:var(--accent);text-decoration:none;}
+    h1.article-title{font-size:26px;font-weight:700;line-height:1.35;margin:0 0 14px;color:var(--text);}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px;}
+    .tag{background:var(--accent-light);color:var(--accent);font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;}
+    .summary-card{background:var(--accent);border-radius:12px;padding:24px;margin-bottom:32px;}
+    .summary-card .card-title{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em;}
+    .summary-table{width:100%;border-collapse:collapse;}
+    .summary-table tr td:first-child{font-size:12px;font-weight:700;color:rgba(255,255,255,.75);width:110px;padding:6px 12px 6px 0;vertical-align:top;}
+    .summary-table tr td:last-child{font-size:14px;color:#fff;font-weight:500;padding:6px 0;}
+    .summary-table tr{border-bottom:1px solid rgba(255,255,255,.15);}
+    .summary-table tr:last-child{border-bottom:none;}
+    .editors-note{border-left:4px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:32px;}
+    .editors-note .note-label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+    .editors-note h3{font-size:15px;font-weight:700;margin:0 0 8px;}
+    .editors-note p{font-size:14px;color:var(--text);margin:0;line-height:1.7;}
+    .content-section{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border);}
+    .content-section:last-of-type{border-bottom:none;}
+    h2.sec-title{font-size:20px;font-weight:700;margin:0 0 16px;color:var(--text);display:flex;align-items:center;gap:10px;}
+    h2.sec-title .sec-num{background:var(--accent);color:#fff;font-size:12px;font-weight:700;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+    h3.subsec{font-size:16px;font-weight:700;color:var(--accent);margin:24px 0 10px;padding-left:12px;border-left:3px solid var(--accent-mid);}
+    p.body-text{margin:0 0 14px;font-size:14px;line-height:1.75;}
+    ul.body-list{padding-left:20px;margin:0 0 14px;}
+    ul.body-list li{margin-bottom:8px;font-size:14px;}
+    ul.body-list li strong{color:var(--accent);}
+    a.deeplink{display:inline-block;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:20px;padding:2px 10px;text-decoration:none;margin-left:8px;}
+    .flow-diagram{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0;}
+    .flow-box{background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--accent);}
+    .flow-arrow{color:var(--accent);font-size:20px;font-weight:700;}
+    table.compare{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+    table.compare th{background:var(--accent);color:#fff;font-weight:700;padding:10px 14px;text-align:left;}
+    table.compare td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+    table.compare tr:last-child td{border-bottom:none;}
+    table.compare tr:nth-child(even) td{background:var(--surface);}
+    .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;}
+    @media(max-width:620px){.card-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:400px){.card-grid{grid-template-columns:1fr;}}
+    .info-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;}
+    .info-card .card-label{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+    .info-card .card-value{font-size:13px;line-height:1.5;}
+    blockquote{border-left:4px solid var(--accent-mid);margin:20px 0;padding:12px 20px;background:var(--surface);border-radius:0 8px 8px 0;}
+    blockquote p{margin:0;font-size:14px;color:var(--text);}
+    blockquote cite{font-size:12px;color:var(--muted);display:block;margin-top:8px;}
+    .stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0;}
+    .stat-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;}
+    .stat-box .stat-num{font-size:32px;font-weight:700;color:var(--accent);}
+    .stat-box .stat-label{font-size:12px;color:var(--muted);margin-top:4px;}
+    .conclusion{background:var(--accent-light);border-radius:12px;padding:24px;margin-bottom:40px;}
+    .conclusion h2{font-size:18px;font-weight:700;color:var(--accent);margin:0 0 12px;}
+    .conclusion p{margin:0;font-size:14px;line-height:1.75;}
+    .video-link{display:block;border:2px solid var(--accent);border-radius:10px;padding:14px 20px;margin-bottom:32px;text-decoration:none;color:var(--text);font-size:14px;font-weight:600;}
+    .video-link:hover{background:var(--accent-light);}
+    .video-link .v-label{font-size:11px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+    .article-footer{border-top:1px solid var(--border);padding-top:20px;font-size:12px;color:var(--muted);}
+    .article-footer a{color:var(--accent);}
+    .source-list{list-style:none;padding:0;margin:10px 0 0;}
+    .source-list li{margin-bottom:6px;}
+    @media(max-width:600px){.article{padding:20px 16px 40px;}h1.article-title{font-size:21px;}h2.sec-title{font-size:17px;}.stat-row{grid-template-columns:1fr 1fr;}}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-brand">AI 비주얼 리포트</div>
+  <nav class="site-nav"><a href="./index.html">홈</a></nav>
+</header>
+
+<div class="article">
+  <div class="article-meta">2026-05-05 · 출처: <a href="https://youtu.be/liL-iUamzl8" target="_blank">YouTube — LA 채널</a></div>
+  <h1 class="article-title">오픈AI 재반격 — GPT-5.5 · 워크스페이스 에이전트 · Codex API · GPT Image 2 총정리</h1>
+  <div class="tags">
+    <span class="tag">OpenAI</span>
+    <span class="tag">GPT-5.5</span>
+    <span class="tag">AI 에이전트</span>
+    <span class="tag">기업용 AI</span>
+    <span class="tag">Codex API</span>
+    <span class="tag">GPT Image 2</span>
+  </div>
+
+  <div class="summary-card">
+    <div class="card-title">핵심 요약</div>
+    <table class="summary-table">
+      <tr><td>주제</td><td>오픈AI의 기업용 AI 플랫폼 전환 선언 — GPT-5.5, 워크스페이스 에이전트, Codex API, GPT Image 2 패키지 발표</td></tr>
+      <tr><td>핵심 메시지</td><td>"모델이 더 똑똑해졌다"가 아닌, "더 긴 작업을 더 적은 비용으로 끝낸다"</td></tr>
+      <tr><td>경쟁 구도</td><td>Anthropic Claude Opus 4.7 대비 에이전트 성능·속도·비용 우위 주장</td></tr>
+      <tr><td>분석 시점</td><td>2026년 5월 (발표 직후)</td></tr>
+    </table>
+  </div>
+
+  <div class="editors-note">
+    <div class="note-label">Editor's Note</div>
+    <h3>AI 에이전트(Agent)란?</h3>
+    <p>AI 에이전트란 사람이 하나하나 지시하지 않아도 목표를 이해하고 스스로 계획을 세우며 외부 도구(검색·파일·이메일 등)를 호출해 작업을 완수하는 AI를 말합니다. 기존 챗봇이 "질문에 답하는 AI"였다면, 에이전트는 "일을 대신 처리하는 AI"입니다. 이번 오픈AI 발표는 이 에이전트를 개인이 아닌 팀·조직 단위로 확장한 것이 핵심입니다.</p>
+  </div>
+
+  <!-- 섹션 1: 워크스페이스 에이전트 -->
+  <div class="content-section">
+    <h2 class="sec-title">
+      <span class="sec-num">1</span>
+      워크스페이스 에이전트 — 팀 단위 AI 워크플로우
+      <a class="deeplink" href="https://youtu.be/liL-iUamzl8?t=80" target="_blank">▶ 1:20</a>
+    </h2>
+    <p class="body-text">기존 GPT는 개인이 프롬프트와 도구를 묶어 만든 커스텀 챗봇에 가까웠습니다. 워크스페이스 에이전트는 이를 팀·조직 수준으로 확장한 것으로, 반복 업무 자동화·권한 통제·메모리 공유가 가능한 기업용 AI 시스템입니다.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-box">슬랙·텔레그램 피드백 수집</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">우선순위 자동 정렬</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">티켓 자동 생성</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">담당자 배정</div>
+    </div>
+
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="card-label">기존 GPT (개인용)</div>
+        <div class="card-value">프롬프트 + 지식 + 도구 묶음. 나만 쓰는 AI 비서.</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">워크스페이스 에이전트 (팀용)</div>
+        <div class="card-value">권한 통제, 메모리 공유, 승인 프로세스. 부서 전체 워크플로우 자동화.</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">활용 예시</div>
+        <div class="card-value">매주 KPI 수집 → 차트 + 보고서 자동 발행, 스프레드시트·캘린더 수정 자동화</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 2: GPT-5.5 -->
+  <div class="content-section">
+    <h2 class="sec-title">
+      <span class="sec-num">2</span>
+      GPT-5.5 — 에이전트 작업 완주 능력
+      <a class="deeplink" href="https://youtu.be/liL-iUamzl8?t=260" target="_blank">▶ 4:20</a>
+    </h2>
+    <p class="body-text">GPT-5.5의 핵심은 "더 똑똑한 모델"이 아니라 "더 잘 완주하는 모델"입니다. AI 생산성은 한 번의 답변 품질보다 긴 업무를 처음부터 끝까지 스스로 처리하는 능력에서 결정되기 때문입니다.</p>
+
+    <blockquote>
+      <p>"GPT-5.5는 사용자가 하는 작업을 더 빠르게 이해하고, 더 많은 작업을 스스로 처리할 수 있습니다."</p>
+      <cite>— OpenAI GPT-5.5 공식 소개</cite>
+    </blockquote>
+
+    <ul class="body-list">
+      <li><strong>의도 해석 강화</strong> — 세부 단계를 지시하지 않아도 목표를 파악하고 계획을 수립. "이거 해줘"만 말해도 전체 흐름을 스스로 설계.</li>
+      <li><strong>도구 호출 안정성 향상</strong> — 검색·파일 읽기·API 호출 등 외부 도구를 쓰는 과정의 오류율 감소. 중간에 멈추지 않고 작업을 이어감.</li>
+      <li><strong>장기 컨텍스트 유지</strong> — 긴 작업 중간에 앞의 지시를 잊지 않음. 컨텍스트(기억 용량)가 늘어나면서 복잡한 프로젝트도 끝까지 완수 가능.</li>
+    </ul>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num">+40%</div>
+        <div class="stat-label">엔드투엔드 처리 속도 향상 (Codex API WebSocket 기준)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">+45%</div>
+        <div class="stat-label">첫 토큰 응답 속도(TTFT) 향상</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹션 3: Codex API / WebSocket -->
+  <div class="content-section">
+    <h2 class="sec-title">
+      <span class="sec-num">3</span>
+      Codex API · WebSocket — 인프라 병목 해소
+      <a class="deeplink" href="https://youtu.be/liL-iUamzl8?t=375" target="_blank">▶ 6:15</a>
+    </h2>
+    <p class="body-text">AI 에이전트는 모델 자체뿐 아니라 API(프로그래밍 연결 통로)를 통해 외부 도구와 끊임없이 주고받습니다. GPU가 아무리 빨라도 이 통로가 느리면 전체 속도가 느려집니다. 오픈AI는 이 병목을 4가지 방법으로 해소했습니다.</p>
+
+    <h3 class="subsec">기존 병목 구조</h3>
+    <div class="flow-diagram">
+      <div class="flow-box">모델 처리</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">HTTP 요청</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">도구 실행</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">결과 반환</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">HTTP 재요청</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">반복...</div>
+    </div>
+
+    <h3 class="subsec">
+      4가지 해결책
+      <a class="deeplink" href="https://youtu.be/liL-iUamzl8?t=471" target="_blank">▶ 7:51</a>
+    </h3>
+    <table class="compare">
+      <tr><th>방법</th><th>설명</th></tr>
+      <tr><td>캐싱</td><td>자주 쓰는 설정값을 미리 저장해두고 재사용 — 매번 처음부터 처리하는 시간 절약</td></tr>
+      <tr><td>중간 단계 축소</td><td>API 호출 경로를 단순화 — 불필요한 중간 서버를 줄여 속도 향상</td></tr>
+      <tr><td>WebSocket 도입 (핵심)</td><td>기존 HTTP: 매번 새 연결 맺음. WebSocket: 연결 유지하며 변경 데이터만 전송 — 마치 전화를 끊지 않고 계속 통화하는 방식</td></tr>
+      <tr><td>통합 최적화</td><td>위 세 방법의 복합 적용으로 전체 파이프라인 개선</td></tr>
+    </table>
+
+    <p class="body-text">이 개선의 의미는 단순한 속도 향상을 넘어섭니다. AI 모델 성능뿐 아니라 서빙 스택(네트워크·서버 인프라) 자체가 경쟁력이 되는 시대가 열렸다는 뜻입니다. 인텔 CPU·네트워크 장비 기업 등 기존 인프라 기업들이 다시 주목받을 가능성이 높습니다.</p>
+  </div>
+
+  <!-- 섹션 4: GPT Image 2 -->
+  <div class="content-section">
+    <h2 class="sec-title">
+      <span class="sec-num">4</span>
+      GPT Image 2 — 업무용 이미지 생성
+      <a class="deeplink" href="https://youtu.be/liL-iUamzl8?t=567" target="_blank">▶ 9:27</a>
+    </h2>
+    <p class="body-text">GPT Image 2의 핵심 변화는 "예쁜 그림"에서 "바로 업무에 쓸 수 있는 결과물"로의 이동입니다. 기존 AI 이미지 생성기가 텍스트를 깨뜨리거나 비현실적인 결과를 냈던 문제가 크게 개선됐습니다.</p>
+
+    <ul class="body-list">
+      <li><strong>텍스트 렌더링 품질 향상</strong> — 이미지 안의 글자가 깨지지 않음. PPT 자료·보고서 이미지·인포그래픽 수준까지 즉시 활용 가능.</li>
+      <li><strong>4K 지원</strong> — 목표로 지원하지만 기본값은 아님. 고해상도 렌더링은 컴퓨팅 비용이 크기 때문.</li>
+      <li><strong>포지셔닝</strong> — Claude Design(Anthropic)과 함께, 미학적 창작보다 생산성 도구로서의 이미지 AI 시장 경쟁.</li>
+    </ul>
+
+    <p class="body-text">PPT 자료, 임원 보고용 문서, 마케팅 소재 제작에 들이던 시간이 대폭 줄어들 것으로 예상됩니다. 이런 변화를 빨리 받아들이는 기업이 그렇지 못한 기업보다 훨씬 빠른 생산성 향상을 경험하게 됩니다.</p>
+  </div>
+
+  <!-- 섹션 5: 비용 구조 -->
+  <div class="content-section">
+    <h2 class="sec-title">
+      <span class="sec-num">5</span>
+      비용 구조 분석 — "단가 말고 완수 비용으로 비교하라"
+      <a class="deeplink" href="https://youtu.be/liL-iUamzl8?t=687" target="_blank">▶ 11:27</a>
+    </h2>
+    <p class="body-text">GPT-5.5의 API 가격은 입력·출력 모두 GPT-5.4 대비 2배 수준입니다. 그러나 오픈AI의 주장은 "원밀당 단가(토큰 1개당 가격)"가 아닌 "작업 1건당 총 비용"으로 비교해야 한다는 것입니다.</p>
+
+    <table class="compare">
+      <tr><th>비교 항목</th><th>GPT-5.4</th><th>GPT-5.5</th></tr>
+      <tr><td>입력 토큰 단가</td><td>기준</td><td>약 2배</td></tr>
+      <tr><td>출력 토큰 단가</td><td>기준</td><td>약 2배</td></tr>
+      <tr><td>작업 당 실사용 토큰</td><td>기준</td><td>더 적음 (효율 튜닝)</td></tr>
+      <tr><td>작업 완수율</td><td>기준</td><td>향상</td></tr>
+      <tr><td>작업 1건당 총 비용</td><td>기준</td><td>비슷하거나 낮다 (오픈AI 주장)</td></tr>
+    </table>
+
+    <p class="body-text">즉, 토큰을 더 효율적으로 써서 더 적게 소비하기 때문에 단가가 올라도 실제 청구 금액은 합리적이라는 논리입니다. 이 주장이 실제로 맞는지는 기업 사용자들의 실무 검증이 필요합니다.</p>
+  </div>
+
+  <!-- 섹션 6: 경쟁사 비교 및 전망 -->
+  <div class="content-section">
+    <h2 class="sec-title">
+      <span class="sec-num">6</span>
+      경쟁사 비교 및 전망
+      <a class="deeplink" href="https://youtu.be/liL-iUamzl8?t=750" target="_blank">▶ 12:30</a>
+    </h2>
+    <p class="body-text">AI 경쟁의 축이 "누가 더 똑똑한 모델을 만드냐"에서 "긴 작업을 얼마나 빠르고 저렴하게 완수하냐"로 이동하고 있습니다. 이 관점에서 세 회사의 위치를 비교할 수 있습니다.</p>
+
+    <table class="compare">
+      <tr><th>회사</th><th>방향성</th><th>핵심 강점</th></tr>
+      <tr><td>OpenAI</td><td>기업용 AI 플랫폼 구축 (Workspace Agent + API 인프라)</td><td>빠른 에이전트 런타임, 이미지 생성 품질</td></tr>
+      <tr><td>Anthropic</td><td>에이전트 + Claude Design + 코딩 특화</td><td>Claude Opus 4.7 깊은 추론 능력, 코딩 생태계</td></tr>
+      <tr><td>Google</td><td>기존 플랫폼(YouTube·Drive·Docs·Cloud) 내 깊은 통합</td><td>광대한 자산 기반, 서두를 필요 없는 구조</td></tr>
+    </table>
+
+    <ul class="body-list">
+      <li><strong>인프라 기업 재부상</strong> — 서빙 스택 최적화가 경쟁력이 되면서 네트워크·서버 기업이 다시 주목받을 전망.</li>
+      <li><strong>업무 자동화 시장 급성장</strong> — Zapier식 규칙 기반 자동화에서 AI 에이전트 기반 워크플로우 자동화로 전환. 도입 기업과 미도입 기업의 생산성 격차 심화.</li>
+      <li><strong>콘텐츠·디자인 시장 변화</strong> — GPT Image 2, Claude Design 등으로 "썸네일·PPT 작업"이 AI의 영역으로 흡수.</li>
+    </ul>
+  </div>
+
+  <div class="conclusion">
+    <h2>결론</h2>
+    <p>오픈AI의 이번 발표는 단순한 모델 업그레이드가 아닙니다. GPT-5.5·워크스페이스 에이전트·Codex API WebSocket·GPT Image 2를 한 패키지로 묶어 기업용 AI 생산성 플랫폼으로의 전환을 선언했습니다. 앞으로의 AI 경쟁은 "얼마나 빠르고 싸게 업무를 끝내냐"로 결판 납니다. 이 흐름을 먼저 받아들이는 기업이 경쟁 우위를 가져갑니다.</p>
+  </div>
+
+  <a class="video-link" href="https://youtu.be/liL-iUamzl8" target="_blank">
+    <div class="v-label">원본 영상</div>
+    LA 채널 — 오픈AI 재반격 전체 분석 영상 보기
+  </a>
+
+  <div class="article-footer">
+    <div>Generated by AI 비주얼 리포트 · 2026-05-05</div>
+    <ul class="source-list">
+      <li>원본: <a href="https://youtu.be/liL-iUamzl8" target="_blank">https://youtu.be/liL-iUamzl8</a></li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

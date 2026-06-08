@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오픈클로 핸즈온 기초 — 에이전트 OS 시작하기 8단계</title>
+  <style>
+    :root {
+      --bg:#ffffff; --surface:#f5f5f5; --border:#e0e0e0;
+      --text:#1a1a1a; --muted:#666666;
+      --accent:#2d9162; --accent-mid:#52b788; --accent-light:#d8f0e3;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.75;}
+    .site-header{border-bottom:2px solid var(--accent);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+    .site-brand{font-size:15px;font-weight:700;color:var(--accent);}
+    .site-nav a{font-size:13px;color:var(--muted);text-decoration:none;margin-left:16px;}
+    .site-nav a:hover{color:var(--accent);}
+    .article{max-width:800px;margin:0 auto;padding:32px 24px 60px;}
+    .article-meta{font-size:13px;color:var(--muted);margin-bottom:10px;}
+    .article-meta a{color:var(--accent);text-decoration:none;}
+    h1.article-title{font-size:26px;font-weight:700;line-height:1.35;margin:0 0 14px;color:var(--text);}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px;}
+    .tag{background:var(--accent-light);color:var(--accent);font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;}
+    .summary-card{background:var(--accent);border-radius:12px;padding:24px;margin-bottom:32px;}
+    .summary-card .card-title{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em;}
+    .summary-table{width:100%;border-collapse:collapse;}
+    .summary-table tr td:first-child{font-size:12px;font-weight:700;color:rgba(255,255,255,.75);width:100px;padding:6px 12px 6px 0;vertical-align:top;}
+    .summary-table tr td:last-child{font-size:14px;color:#fff;font-weight:500;padding:6px 0;}
+    .summary-table tr{border-bottom:1px solid rgba(255,255,255,.15);}
+    .summary-table tr:last-child{border-bottom:none;}
+    .editors-note{border-left:4px solid var(--accent);background:var(--surface);border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:32px;}
+    .editors-note .note-label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+    .editors-note h3{font-size:15px;font-weight:700;margin:0 0 8px;}
+    .editors-note p{font-size:14px;color:var(--text);margin:0;line-height:1.7;}
+    .content-section{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border);}
+    .content-section:last-of-type{border-bottom:none;}
+    h2.sec-title{font-size:20px;font-weight:700;margin:0 0 16px;color:var(--text);display:flex;align-items:center;gap:10px;}
+    h2.sec-title .sec-num{background:var(--accent);color:#fff;font-size:12px;font-weight:700;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+    h3.subsec{font-size:16px;font-weight:700;color:var(--accent);margin:24px 0 10px;padding-left:12px;border-left:3px solid var(--accent-mid);}
+    p.body-text{margin:0 0 14px;}
+    ul.body-list{padding-left:20px;margin:0 0 14px;}
+    ul.body-list li{margin-bottom:8px;font-size:14px;}
+    ul.body-list li strong{color:var(--accent);}
+    a.deeplink{display:inline-block;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:20px;padding:2px 10px;text-decoration:none;margin-left:8px;}
+    a.deeplink:hover{background:var(--accent);color:#fff;}
+    .flow-diagram{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 0;}
+    .flow-box{background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--accent);}
+    .flow-arrow{color:var(--accent);font-size:20px;font-weight:700;}
+    table.compare{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+    table.compare th{background:var(--accent-light);color:var(--accent);font-weight:700;padding:10px 14px;text-align:left;}
+    table.compare td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+    table.compare tr:last-child td{border-bottom:none;}
+    .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;}
+    @media(max-width:620px){.card-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:400px){.card-grid{grid-template-columns:1fr;}}
+    .info-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;}
+    .info-card .card-label{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+    .info-card .card-value{font-size:13px;line-height:1.5;}
+    .step-list{list-style:none;padding:0;margin:16px 0;}
+    .step-list li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start;font-size:14px;}
+    .step-list li:last-child{border-bottom:none;}
+    .step-num{background:var(--accent);color:#fff;font-size:12px;font-weight:700;min-width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+    .step-content strong{color:var(--accent);display:block;margin-bottom:3px;}
+    .cmd-block{background:#1a1a1a;color:#52b788;border-radius:8px;padding:14px 16px;font-family:monospace;font-size:13px;line-height:1.6;margin:12px 0;overflow-x:auto;}
+    .cmd-block .comment{color:#666;}
+    .tip-box{background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:8px;padding:14px 16px;margin:12px 0;font-size:13px;}
+    .tip-box .tip-label{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;}
+    .conclusion{background:var(--accent-light);border-radius:12px;padding:24px;margin-bottom:40px;}
+    .conclusion h2{font-size:18px;font-weight:700;color:var(--accent);margin:0 0 12px;}
+    .conclusion p{margin:0;font-size:14px;line-height:1.75;}
+    .video-link{display:block;border:2px solid var(--accent);border-radius:10px;padding:14px 20px;margin-bottom:32px;text-decoration:none;color:var(--text);font-size:14px;font-weight:600;}
+    .video-link:hover{background:var(--accent-light);}
+    .video-link .v-label{font-size:11px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+    .article-footer{border-top:1px solid var(--border);padding-top:20px;font-size:12px;color:var(--muted);}
+    .article-footer a{color:var(--accent);}
+    .source-list{list-style:none;padding:0;margin:10px 0 0;}
+    .source-list li{margin-bottom:6px;}
+    @media(max-width:600px){.article{padding:20px 16px 40px;}h1.article-title{font-size:21px;}h2.sec-title{font-size:17px;}}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-brand">AI 비주얼 리포트</div>
+  <nav class="site-nav"><a href="./index.html">홈</a></nav>
+</header>
+
+<div class="article">
+  <div class="article-meta">2026-05-04 · 출처: <a href="https://youtu.be/Dr350eM5dK4" target="_blank">YouTube</a></div>
+  <h1 class="article-title">오픈클로 핸즈온 기초 — 에이전트 OS 시작하기 8단계</h1>
+  <div class="tags">
+    <span class="tag">오픈클로</span>
+    <span class="tag">AgentOS</span>
+    <span class="tag">핸즈온</span>
+    <span class="tag">LLM</span>
+    <span class="tag">게이트웨이</span>
+    <span class="tag">블로그자동화</span>
+  </div>
+
+  <div class="summary-card">
+    <div class="card-title">핵심 요약</div>
+    <table class="summary-table">
+      <tr><td>주제</td><td>오픈클로(OpenCLO) 사용을 위한 최소 필수 지식 — 설치부터 블로그 자동화까지</td></tr>
+      <tr><td>핵심 개념</td><td>오픈클로 = 에이전트 OS / LLM(두뇌) + 스킬(손발)</td></tr>
+      <tr><td>추천 모델</td><td>GPT 5.5 (탐색), Claude Opus 4.7 / 컨텍스트: 200K vs 1M</td></tr>
+      <tr><td>분석 시점</td><td>2026-05-04 · 영상 길이 23분</td></tr>
+    </table>
+  </div>
+
+  <div class="editors-note">
+    <div class="note-label">Editor's Note</div>
+    <h3>오픈클로(OpenCLO)란?</h3>
+    <p>오픈클로는 AI를 실행하는 "운영 체제(OS)"입니다. 우리가 컴퓨터에서 Windows나 macOS를 쓰듯, AI 에이전트들이 돌아가는 플랫폼입니다. Claude Code, Codex 같은 코딩 AI들이 이 오픈클로 위에서 앱처럼 실행됩니다. 사람은 지시만 하고 AI가 알아서 작업하는 가장 높은 단계의 AI 활용 방식입니다.</p>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">1</span>AI 도구 진화 단계 이해 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=30" target="_blank">▶ 00:30</a></h2>
+    <p class="body-text">AI 도구는 지금까지 4세대를 거쳐 발전했습니다. 각 세대가 어떻게 다른지 알아야 오픈클로가 어떤 위치에 있는지 이해할 수 있습니다.</p>
+    <table class="compare">
+      <tr><th>세대</th><th>대표 도구</th><th>특징</th></tr>
+      <tr><td>1세대</td><td>ChatGPT</td><td>AI에게 질문하고 답변을 읽는 수준</td></tr>
+      <tr><td>2세대</td><td>Copilot, Gemini</td><td>코딩을 도와주는 조수 역할</td></tr>
+      <tr><td>3세대</td><td>Cursor, Antigravity</td><td>사람과 AI가 나란히 코딩 (같이 작업)</td></tr>
+      <tr><td>4세대</td><td>Claude Code, Codex</td><td>AI가 혼자 코딩, 사람은 결과만 확인</td></tr>
+      <tr><td><strong>최상위</strong></td><td><strong>오픈클로(OpenCLO)</strong></td><td><strong>사람은 지시만, AI가 모든 작업 → 결과만 확인</strong></td></tr>
+    </table>
+
+    <h3 class="subsec">오픈클로 = 에이전트 OS <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=171" target="_blank">▶ 02:51</a></h3>
+    <p class="body-text">오픈클로는 "AI들이 돌아가는 운영 체제"입니다. Windows 위에서 카카오톡·크롬 같은 앱들이 실행되듯, 오픈클로 위에서 Claude Code·Codex CLI가 앱처럼 실행됩니다. "오픈클로 vs Claude Code 뭘 써야 하나요?" 질문이 나오면 "오픈클로는 OS이고 Claude Code는 그 위에서 돌아가는 앱"이라고 이해하면 됩니다.</p>
+    <div class="flow-diagram">
+      <div class="flow-box">오픈클로 (Agent OS)</div>
+      <div class="flow-arrow">→ 위에서 실행</div>
+      <div class="flow-box">Claude Code CLI</div>
+      <div class="flow-arrow">/</div>
+      <div class="flow-box">Codex CLI</div>
+      <div class="flow-arrow">/</div>
+      <div class="flow-box">기타 AI 앱</div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">2</span>LLM + Tool 구조 이해 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=220" target="_blank">▶ 03:40</a></h2>
+    <p class="body-text">오픈클로가 어떻게 일을 하는지 이해하려면 "두뇌"와 "손발" 개념을 알아야 합니다. LLM(대규모 언어 모델)이 두뇌 역할을 하고, Tool(도구)이 손발 역할을 합니다. 두뇌만 있으면 생각만 하고 아무것도 실행 못 합니다. 손발(Tool)이 있어야 실제로 파일을 만들고, 검색하고, 코드를 실행할 수 있습니다.</p>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="card-label">스킬 (Skill)</div>
+        <div class="card-value">2025년 여름 등장. 현재 가장 많이 사용. 미리 정의된 작업 묶음으로 재사용성이 높음.</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">MCP</div>
+        <div class="card-value">2024년 등장. 외부 서비스(Slack, GitHub 등) 연결용 표준 프로토콜. 플러그인처럼 연결.</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">Python 코드 블록</div>
+        <div class="card-value">실행 가능한 코드를 도구처럼 사용. 유연하지만 매번 작성 필요.</div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-label">현재 트렌드</div>
+      스킬 중심으로 작업하고, 특수한 경우에만 MCP·Python 도구 보조 사용.
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">3</span>모델 선택 &amp; ChatGPT 연동 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=305" target="_blank">▶ 05:05</a></h2>
+    <p class="body-text">두뇌 역할을 하는 LLM은 똑똑할수록 좋습니다. 어떤 모델이 똑똑한지 판단할 때는 두 가지 벤치마크(성능 시험)를 봅니다.</p>
+    <table class="compare">
+      <tr><th>벤치마크</th><th>측정 항목</th></tr>
+      <tr><td>BrowseComp</td><td>브라우저를 얼마나 잘 쓰는지 (웹 검색·자동화 능력)</td></tr>
+      <tr><td>SWE-bench Pro</td><td>코딩을 얼마나 잘 하는지 (실제 버그 수정 능력)</td></tr>
+    </table>
+    <p class="body-text">2026년 5월 기준으로 가장 추천하는 모델은 <strong>GPT 5.5</strong>(ChatGPT 유료 계정 필요)와 <strong>Claude Opus 4.7</strong>입니다.</p>
+
+    <h3 class="subsec">탐색 → 워크플로우 전략 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=425" target="_blank">▶ 07:05</a></h3>
+    <p class="body-text">처음 하는 작업과 반복 작업에 모델을 다르게 쓰는 전략입니다. 처음에는 길을 찾아야 하므로 가장 똑똑한 GPT 5.5를 씁니다. 일단 경로가 확정되면 그 흐름을 워크플로우로 저장해 반복 실행할 수 있습니다.</p>
+    <div class="flow-diagram">
+      <div class="flow-box">처음 작업<br><small>GPT 5.5 사용</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">경로 탐색<br><small>최적 방법 발견</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">워크플로우 저장<br><small>재사용 준비</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">반복 실행<br><small>빠르게 처리</small></div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">4</span>컨텍스트 이해 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=512" target="_blank">▶ 08:32</a></h2>
+    <p class="body-text">컨텍스트(Context)는 AI가 한 번에 기억할 수 있는 정보의 양입니다. 사람으로 치면 "단기 기억 용량"입니다. 이 용량을 넘으면 앞에서 했던 내용을 잊어버려 오작동이 납니다.</p>
+    <table class="compare">
+      <tr><th>모델</th><th>컨텍스트 크기</th><th>비고</th></tr>
+      <tr><td>GPT 5.5</td><td>200K 토큰</td><td>기준값 (더 작은 쪽)</td></tr>
+      <tr><td>Claude Opus 4.7</td><td>1M 토큰</td><td>GPT 대비 5배 크다</td></tr>
+    </table>
+    <div class="tip-box">
+      <div class="tip-label">실전 주의사항</div>
+      Opus로 작업하다가 GPT로 모델을 바꾸면, GPT는 앞의 내용을 다 기억 못해 오작동이 날 수 있습니다. 작업 설계는 가장 작은 컨텍스트(200K) 기준으로 하는 것이 안전합니다.
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">5</span>게이트웨이 관리 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=582" target="_blank">▶ 09:42</a></h2>
+    <p class="body-text">게이트웨이(Gateway)는 오픈클로의 핵심 백그라운드 프로세스입니다. 컴퓨터를 켜면 자동으로 실행되어 항상 떠 있어야 합니다. 작업 중 갑자기 멈추거나 오류가 나면 대부분 게이트웨이 문제입니다. 즉시 게이트웨이 상태를 확인하세요.</p>
+
+    <h3 class="subsec">트러블슈팅 순서 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=600" target="_blank">▶ 10:00</a></h3>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><div class="step-content"><strong>업데이트가 안 먹힐 때</strong>openclo doctor 명령어로 자동 수정 시도</div></li>
+      <li><span class="step-num">2</span><div class="step-content"><strong>doctor도 안 될 때</strong>오픈클로 재설치</div></li>
+      <li><span class="step-num">3</span><div class="step-content"><strong>게이트웨이 상태 확인</strong>openclo logs --follow 로 로그 확인 (계속 나와야 정상)</div></li>
+      <li><span class="step-num">4</span><div class="step-content"><strong>게이트웨이 재시작</strong>openclo gateway stop → openclo gateway</div></li>
+      <li><span class="step-num">5</span><div class="step-content"><strong>포트 충돌 오류 시</strong>pkill -f openclo 강제 종료 후 재시작</div></li>
+      <li><span class="step-num">6</span><div class="step-content"><strong>다 안 될 때</strong>컴퓨터 껐다 켜기 (가장 빠름, 윈도우/맥 공통)</div></li>
+    </ul>
+
+    <div class="cmd-block">
+      <span class="comment"># 게이트웨이 실행 (로그가 쭉 나오면 정상)</span><br>
+      openclo gateway<br><br>
+      <span class="comment"># 로그 확인 (실시간 모니터링)</span><br>
+      openclo logs --follow<br><br>
+      <span class="comment"># 게이트웨이 종료</span><br>
+      openclo gateway stop<br><br>
+      <span class="comment"># 강제 종료 (포트 충돌 시)</span><br>
+      pkill -f openclo
+    </div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">6</span>실습 — 파일 정리 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=829" target="_blank">▶ 13:49</a></h2>
+    <p class="body-text">오픈클로의 강점은 내 컴퓨터 파일에 직접 접근한다는 점입니다. 코워크 같은 도구와 달리, 폴더를 일일이 첨부할 필요 없이 경로만 알려주면 됩니다. 파일 경로를 복사하는 단축키를 먼저 익혀두세요.</p>
+    <table class="compare">
+      <tr><th>OS</th><th>경로 복사 단축키</th></tr>
+      <tr><td>Windows</td><td>Ctrl + Shift + C</td></tr>
+      <tr><td>macOS</td><td>Cmd + Option + C</td></tr>
+    </table>
+
+    <h3 class="subsec">중복 파일 정리 프롬프트 예시</h3>
+    <div class="cmd-block">
+      "C:\Users\...\Downloads 폴더를 정리해 줘.<br>
+      해시값이 같은 파일은 완벽한 중복이니<br>
+      중복 파일을 별도 폴더에 따로 모아줘"
+    </div>
+    <div class="tip-box">
+      <div class="tip-label">해시값이란?</div>
+      파일 내용을 기반으로 만드는 고유 코드입니다. 파일 이름이 달라도 내용이 완전히 같으면 해시값이 같습니다. 반대로 내용이 1비트라도 다르면 해시값이 달라집니다. 해시값으로 비교하면 100% 정확한 중복 탐지가 가능합니다.
+    </div>
+  </div>
+
+  <!-- Step 7 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">7</span>에이전트 권한 확인 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=922" target="_blank">▶ 15:22</a></h2>
+    <p class="body-text">오픈클로가 파일 작업을 하려면 적절한 권한이 있어야 합니다. 작업이 갑자기 안 된다면 권한 설정을 먼저 확인하세요.</p>
+    <p class="body-text">확인 위치: <strong>오픈클로 → 에이전트 → 툴(Tool) 섹션</strong></p>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="card-label">읽기 권한</div>
+        <div class="card-value">파일 내용을 읽을 수 있는 권한. 가장 기본.</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">쓰기 권한</div>
+        <div class="card-value">새 파일을 만들 수 있는 권한.</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">수정 권한</div>
+        <div class="card-value">기존 파일을 변경할 수 있는 권한.</div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <div class="tip-label">현재 기본값</div>
+      전체 32개 도구 중 25개만 활성화되어 있습니다. 보안과 컨텍스트 절약 목적입니다. 작업이 안 될 때 권한 부족이 원인인 경우가 많습니다.
+    </div>
+  </div>
+
+  <!-- Step 8 -->
+  <div class="content-section">
+    <h2 class="sec-title"><span class="sec-num">8</span>블로그 자동화 — 스킬 2개 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=1040" target="_blank">▶ 17:20</a></h2>
+    <p class="body-text">오픈클로의 실전 활용 예시입니다. 스킬 2개를 설치하면 뉴스 기사나 유튜브 영상을 한국어 블로그 포스팅으로 자동 변환할 수 있습니다. 매일 아침 7시, 저녁 7시 두 번 자동으로 포스팅도 가능합니다.</p>
+    <ul class="body-list">
+      <li><strong>WordPress Blog Publish 스킬</strong> — SEO(검색엔진 최적화)/AEO(AI 엔진 최적화) 원칙에 따라 구글에 잘 걸리는 글을 작성합니다.</li>
+      <li><strong>블로그 글 다듬기 스킬</strong> — 참고 블로그(예: 네이버 '메르' 스타일) 스타일로 글을 정제합니다.</li>
+    </ul>
+
+    <h3 class="subsec">작업 흐름 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=1080" target="_blank">▶ 18:00</a></h3>
+    <div class="flow-diagram">
+      <div class="flow-box">스킬 2개 설치</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">URL/유튜브<br>링크 제공</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">AI 자막·본문<br>자동 추출</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">한국어 포스팅<br>생성</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">검토 후<br>게시</div>
+    </div>
+
+    <h3 class="subsec">플랫폼 선택</h3>
+    <table class="compare">
+      <tr><th>플랫폼</th><th>비용</th><th>추천 용도</th></tr>
+      <tr><td>Quartz (GitHub 기반)</td><td>무료</td><td>처음 연습할 때 추천</td></tr>
+      <tr><td>WordPress (Railway 서버)</td><td>월 1~2만원</td><td>트래픽 생기면 구글 광고 부착 가능</td></tr>
+    </table>
+
+    <h3 class="subsec">GIF 짤 자동 삽입 팁 <a class="deeplink" href="https://youtu.be/Dr350eM5dK4?t=1261" target="_blank">▶ 21:01</a></h3>
+    <div class="cmd-block">
+      <span class="comment"># 프롬프트에 아래 형식으로 키워드 입력</span><br>
+      "gi {키워드}" 예: "gi artificial intelligence"<br>
+      <span class="comment"># CLI 기반이라 AI가 자동으로 검색해서 글에 삽입</span>
+    </div>
+  </div>
+
+  <div class="conclusion">
+    <h2>오늘 핸즈온 핵심 정리</h2>
+    <p>오픈클로는 ChatGPT보다 한 단계 위의 "AI 운영 체제"입니다. 게이트웨이가 항상 켜져 있어야 하고, 처음 작업은 GPT 5.5로 경로를 찾은 뒤 워크플로우로 저장해 반복 활용하는 것이 핵심 전략입니다. 파일 정리, 블로그 자동화처럼 실생활 작업부터 시작해 점차 활용 범위를 넓혀가면 됩니다.</p>
+  </div>
+
+  <a class="video-link" href="https://youtu.be/Dr350eM5dK4" target="_blank">
+    <div class="v-label">원본 영상</div>
+    오픈클로 핸즈온 기초 — 전체 영상 보기 (23분)
+  </a>
+
+  <div class="article-footer">
+    <div>Generated by AI 비주얼 리포트 · 2026-05-04</div>
+    <ul class="source-list">
+      <li>원본: <a href="https://youtu.be/Dr350eM5dK4" target="_blank">https://youtu.be/Dr350eM5dK4</a></li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
