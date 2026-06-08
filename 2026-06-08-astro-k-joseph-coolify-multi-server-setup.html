@@ -172,7 +172,7 @@ tr:nth-child(even) td{background:var(--surface)}
   .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
   .hdr{break-after:avoid}
 }
-</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Astro K Joseph</span><span class="ey">MORNING DIGEST · 2026-06-08 · Astro K Joseph</span><span class="chip">🎬 영상</span></div><h1>Coolify 멀티 서버 셀프호스팅 셋업 가이드</h1><p class="lead">title: &quot;Coolify 멀티 서버 셀프호스팅 셋업 가이드&quot;</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">왜 멀티 서버인가 ([0:45 딥링크](https://youtu.be/cIoAApJNElY?t=45))</a><a href="#s3">Coolify 설치 — 두 경로</a><a href="#s4">원격 서버 추가 — SSH 키 흐름 ([3:18 딥링크](https://youtu.be/cIoAApJNElY?t=318))</a><a href="#s5">연결 검증 ([6:49](https://youtu.be/cIoAApJNElY?t=409))</a><a href="#s6">앱 배포 — Supabase 셀프호스팅 ([9:00](https://youtu.be/cIoAApJNElY?t=545))</a><a href="#s7">커스텀 도메인 연결 ([12:05](https://youtu.be/cIoAApJNElY?t=725))</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>도구</td><td>Coolify(오픈소스 셀프호스팅 PaaS)</td></tr><tr><td>권장 구조</td><td>Coolify 전용 서버 + DB 서버 + 앱 서버 분리</td></tr><tr><td>호스팅</td><td>Hostinger 공식 Coolify VPS(자동 설치)</td></tr><tr><td>연결 방식</td><td>SSH 키 기반 원격 서버 등록</td></tr><tr><td>시연 배포</td><td>DB 서버에 Supabase 원클릭 셀프호스팅</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>왜 멀티 서버인가 ([0:45 딥링크](https://youtu.be/cIoAApJNElY?t=45))</h2><ul>
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Astro K Joseph</span><span class="ey">MORNING DIGEST · 2026-06-08 · Astro K Joseph</span><span class="chip">🎬 영상</span></div><h1>Coolify 멀티 서버 셀프호스팅 셋업 가이드</h1><p class="lead">title: &quot;Coolify 멀티 서버 셀프호스팅 셋업 가이드&quot;</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">왜 멀티 서버인가</a><a href="#s3">Coolify 설치 — 두 경로</a><a href="#s4">원격 서버 추가 — SSH 키 흐름</a><a href="#s5">연결 검증</a><a href="#s6">앱 배포 — Supabase 셀프호스팅</a><a href="#s7">커스텀 도메인 연결</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>도구</td><td>Coolify(오픈소스 셀프호스팅 PaaS)</td></tr><tr><td>권장 구조</td><td>Coolify 전용 서버 + DB 서버 + 앱 서버 분리</td></tr><tr><td>호스팅</td><td>Hostinger 공식 Coolify VPS(자동 설치)</td></tr><tr><td>연결 방식</td><td>SSH 키 기반 원격 서버 등록</td></tr><tr><td>시연 배포</td><td>DB 서버에 Supabase 원클릭 셀프호스팅</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>왜 멀티 서버인가</h2><ul>
 <li>단일 서버에 Coolify·DB·앱 전부 = 위험(단일 장애점)</li>
 <li>권장: 서버별 단일 책임 — Coolify 전용 / DB 전용 / 앱 전용 / 외부 API 전용</li>
 <li>이점: 관리 용이성 + 확장성(scalability) — Coolify 공식 권장 방식</li>
@@ -180,22 +180,22 @@ tr:nth-child(even) td{background:var(--surface)}
 <li>직접 설치: coolify.io의 self-hosted 명령어 한 줄을 VPS 터미널에 붙여넣기</li>
 <li>Hostinger Coolify VPS: 구매 시 Coolify 자동 설치 — 수동 설정 불필요</li>
 <li>플랜: KVM2(Coolify용) / KVM8(앱·DB용) 등 용도별 선택, 쿠폰으로 10% 할인</li>
-</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>원격 서버 추가 — SSH 키 흐름 ([3:18 딥링크](https://youtu.be/cIoAApJNElY?t=318))</h2><ul>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>원격 서버 추가 — SSH 키 흐름</h2><ul>
 <li>서버 타입에서 &quot;This machine&quot; 대신 &quot;Remote server&quot; 선택</li>
 <li>SSH 인증: &quot;Generate a new key&quot; → 공개키 복사 보관</li>
 <li>새 서버 정보 입력: 이름(예: DB server)·IP·포트·사용자명</li>
 <li>두 번째 VPS의 Settings → SSH keys에 공개키 추가 → 첫 VPS가 인증 가능</li>
 <li>HPanel에 SSH 키 추가 옵션 없으면 터미널에서 파일 직접 편집</li>
-</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>연결 검증 ([6:49](https://youtu.be/cIoAApJNElY?t=409))</h2><ul>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>연결 검증</h2><ul>
 <li>&quot;Validate connection&quot; → SSH 테스트·OS 호환성·Docker 엔진 설치·네트워크 구성 자동 수행</li>
 <li>검증 에러 시 VPS 재부팅 후 키 재생성 → 재시도 → &quot;success, server validated&quot;</li>
 <li>서버 추가 후 servers 메뉴에서 IP·키 입력으로 N대까지 확장 가능</li>
-</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>앱 배포 — Supabase 셀프호스팅 ([9:00](https://youtu.be/cIoAApJNElY?t=545))</h2><ul>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>앱 배포 — Supabase 셀프호스팅</h2><ul>
 <li>Projects → Add → 프로젝트 생성 → Add resource → Supabase 선택</li>
 <li>배포 대상 서버로 DB 서버 지정 → Deploy(메인 서버 Coolify가 원격 DB 서버에 배포)</li>
 <li>중요: 서버 Settings → Proxy → traffic proxy ON이어야 대시보드 접근 가능</li>
 <li>완료 후 자동 발급된 username·password로 셀프호스팅 Supabase 로그인</li>
-</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>커스텀 도메인 연결 ([12:05](https://youtu.be/cIoAApJNElY?t=725))</h2><ul>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>커스텀 도메인 연결</h2><ul>
 <li>Coolify 서버의 wildcard domain에 도메인 입력(예: coolify.example.com)</li>
 <li>DNS에 A 레코드 추가(프록시 OFF) + 서버 IP 지정 → DNS 전파 대기</li>
 <li>설정의 configuration에서 도메인명 갱신 → 커스텀 도메인으로 Coolify 접속</li>
