@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="안될공학이 전봇대 위 둥근 금속통(주상변압기)의 정체와 원리를 설명. 핵심: 전력 손실은 전류의 제곱에 비례(P=I²R)하므로 멀리 보낼 땐 고압·저전류로 보내고 집 앞에서 낮춘다. AI 데이터센터·반도체·전기차 확산으로 변압기 등 전력 기기가 &quot;AI 시대 숨은 인프라"><title>전봇대 위 깡통의 정체 — 주상변압기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-06-10 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>전봇대 위 깡통의 정체 — 주상변압기</h1><p class="lead">안될공학이 전봇대 위 둥근 금속통(주상변압기)의 정체와 원리를 설명. 핵심: 전력 손실은 전류의 제곱에 비례(P=I²R)하므로 멀리 보낼 땐 고압·저전류로 보내고 집 앞에서 낮춘다. AI 데이터센터·반도체·전기차 확산으로 변압기 등 전력 기기가 &quot;AI 시대 숨은 인프라&quot;로 재평가.</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">주상변압기란 — 전력망의 마지막 조절 장치</a><a href="#s3">기술적 맥락 — 왜 고압으로 보내고 낮추나 (P=I²R)</a><a href="#s4">변압기 내부 구조와 원리</a><a href="#s5">여름철 변압기 고장의 진짜 원인 — 열</a><a href="#s6">활용/관찰 시나리오</a><a href="#s7">현황 및 전망 — AI 시대의 숨은 인프라</a><a href="#s8">용어 사전</a><a href="#s9">핵심 타임스탬프</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>전봇대 위 깡통 = 주상변압기(전압을 낮추는 마지막 장치)</td></tr><tr><td>핵심 원리</td><td>옴의 법칙(V=IR), 전력손실 P=I²R(전류 제곱 비례)</td></tr><tr><td>송전 전략</td><td>멀리 보낼 땐 전압<span class="up">↑</span>·전류<span class="dn">↓</span> → 손실 제곱으로 <span class="dn">감소</span></td></tr><tr><td>변압기 역할</td><td>전기 총량은 유지, 전압·전류 비율만 변환(전자기 유도)</td></tr><tr><td>시사점</td><td>AI 데이터센터·반도체·전기차 확산 → 변압기 등 전력 기기 재조명</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>주상변압기란 — 전력망의 마지막 조절 장치</h2><ul>
+<li>정체: 전봇대 위 회색 원통 = 주상변압기(전봇대 위에 설치된 변압기).</li>
+<li>역할: 집 근처까지 온 고압 전기를 가정용(220V)으로 낮춰 주는 장치. 없으면 충전·냉장·에어컨 모두 불가.</li>
+<li>비유: 대형 수도관의 강한 수압을 그대로 수도꼭지에 연결하면 배관이 터지듯, 고압 전기도 집에서 쓸 수준으로 낮춰야 함.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 왜 고압으로 보내고 낮추나 (P=I²R)</h2><ul>
+<li>의문: 처음부터 220V로 보내면 안 되나? → 전기 손실이 너무 커짐.</li>
+<li>옴의 법칙: 전압 = 전류 × 저항. 전선에도 미세 저항이 있어 전류가 흐르면 열이 발생.</li>
+<li>핵심 공식: 전력 손실 = 저항 × 전류². 전류가 2배면 손실은 4배, 3배면 9배(제곱 비례).</li>
+<li>같은 전력(전압×전류)이라도 전압<span class="up">↑</span>·전류<span class="dn">↓</span>로 보내면 열 손실이 급감 → 고압 송전이 가장 효율적·현실적.</li>
+<li>단계적 강하: 발전소(초고압) → 도시 근처(강하) → 동네(강하) → 집 앞 주상변압기(최종 220V).</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>변압기 내부 구조와 원리</h2><ul>
+<li>구성: 철심(자기장 통로) + 코일(전압 변환 핵심) + 절연유(누전 방지·냉각).</li>
+<li>원리: 전자기 유도 — 고압 코일에 전기가 흐르면 자기장 생성 → 철심을 타고 다른 코일에 유도 → 코일 감은 횟수 차이로 전압 변환.</li>
+<li>본질: 전기를 만들거나 없애지 않고 전압·전류의 비율만 변환. 비유 — 10만 원을 만 원 10장 또는 천 원 100장으로 바꾸는 것.</li>
+<li>원통형 이유: 절연유·코일·철심을 안정적으로 담고 외부 충격·온도변화를 고르게 분산하기 위함.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>여름철 변압기 고장의 진짜 원인 — 열</h2><ul>
+<li>뉴스: 폭염으로 변압기 고장·정전·폭발. 핵심 원인은 &quot;열&quot;.</li>
+<li>메커니즘: 손실은 전류 제곱 비례 → 에어컨 급증으로 전력 수요<span class="up">↑</span> → 변압기 통과 전류<span class="up">↑</span> → 열 급증.</li>
+<li>민감도 예시: 전류 20%<span class="up">↑</span> → 손실 1.2²=1.44배(44%<span class="up">↑</span>), 전류 40%<span class="up">↑</span> → 약 96%<span class="up">↑</span>(거의 2배).</li>
+<li>가중 요인: 노후 장비, 절연 불량, 냉각 성능 저하, 용량 대비 과부하 + 외부 폭염.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용/관찰 시나리오</h2><ol>
+<li>동네 전기 수요 읽기: 변압기 크기·개수로 주택가/상가/공장 여부 추정(전봇대는 지역 전기 수요의 단서).</li>
+<li>여름 정전 이해: &quot;전기 많이 써서&quot;가 아니라 &quot;전류 증가 → 내부 열 누적&quot;으로 정확히 해석.</li>
+<li>전력주 투자 관점: AI·반도체·전기차 인프라 확대 = 발전뿐 아니라 송배전 장비(변압기·차단기) 수요 동반 증가.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망 — AI 시대의 숨은 인프라</h2><ul>
+<li>변압기는 매우 오래된 기술이지만 전기 문명이 커질수록 중요성 유지.</li>
+<li>AI 데이터센터·반도체 공장·전기차 충전·재생에너지 확대 모두 전력망 투자를 요구.</li>
+<li>발전소 증설만으로 부족 — 전기를 옮기고·나누고·바꾸고·보호하는 장비(변압기·차단기·배전반)가 핵심.</li>
+<li>결과: 과거 조용한 산업재였던 전력 기기가 &quot;AI 시대 숨은 인프라 기업&quot;으로 재평가.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>주상변압기</td><td>전봇대 위에서 고압을 가정용으로 낮추는 장치</td><td>수압을 낮춰주는 마지막 감압 밸브</td></tr><tr><td>옴의 법칙</td><td>전압 = 전류 × 저항의 관계식</td><td>물의 압력·유량·관저항 관계</td></tr><tr><td>전력 손실(P=I²R)</td><td>전선에서 열로 버려지는 에너지, 전류 제곱 비례</td><td>전류 2배면 손실 4배</td></tr><tr><td>전자기 유도</td><td>변하는 자기장이 다른 코일에 전기를 유도</td><td>발전기·변압기의 기본 원리</td></tr><tr><td>고압 송전</td><td>멀리 보낼 때 전압을 높여 전류·손실을 줄임</td><td>같은 짐을 압축해 보내 길 위 마찰을 줄이기</td></tr><tr><td>배전반/차단기</td><td>전기를 나누고 이상 시 끊어 보호하는 장비</td><td>집 안 두꺼비집의 대형 버전</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>핵심 타임스탬프</h2><ul>
+<li><a href="https://youtu.be/LrVWY6pm1ss?t=0" target="_blank" rel="noopener">0:00 전봇대 위 깡통의 정체 — 주상변압기</a></li>
+<li><a href="https://youtu.be/LrVWY6pm1ss?t=81" target="_blank" rel="noopener">1:21 왜 처음부터 220V로 안 보내나</a></li>
+<li><a href="https://youtu.be/LrVWY6pm1ss?t=167" target="_blank" rel="noopener">2:47 전력 손실 = 전류의 제곱(P=I²R)</a></li>
+<li><a href="https://youtu.be/LrVWY6pm1ss?t=250" target="_blank" rel="noopener">4:10 변압기 내부 구조와 전자기 유도</a></li>
+<li><a href="https://youtu.be/LrVWY6pm1ss?t=328" target="_blank" rel="noopener">5:28 여름철 변압기 고장의 진짜 원인 — 열</a></li>
+<li><a href="https://youtu.be/LrVWY6pm1ss?t=478" target="_blank" rel="noopener">7:58 AI 시대의 숨은 인프라, 전력 기기</a></li>
+</ul></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-06-10</div></div></body></html>
