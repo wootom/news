@@ -1,0 +1,286 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI로 돈 벌기 어려워지는 이유 — 개발자 출신 5년차 창업자의 진단"><title>AI로 돈 벌기 어려워지는 이유 — 개발자 출신 5년차 창업자의 진단</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>xbot</span><span class="ey">xbot · 2026-06-10</span><span class="chip">🖥 웹리포트</span></div><h1>AI로 돈 벌기 어려워지는 이유 — 개발자 출신 5년차 창업자의 진단</h1></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 주장</a><a href="#s2">AI 제작 능력의 민주화 — 진입 장벽 붕괴</a><a href="#s3">현장의 문제 vs 인터넷의 정보</a><a href="#s4">AI 활용 능력 ≠ 문제 해결 능력</a><a href="#s5">고객도 자기 문제를 모를 수 있다</a><a href="#s6">사례 연구 — 청소업 사업가의 AI 활용 성공기</a><a href="#s7">피드백이 곧 돈이다</a><a href="#s8">개발자의 소통 벽을 깨야 한다</a><a href="#s9">지니어스 존 — AI가 대체하지 못하는 인간의 영역</a><a href="#s10">커뮤니티와 공감의 힘</a><a href="#s11">화자의 사명과 비전</a><a href="#s12">영상 출처</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 주장</h2><ul>
+<li>AI로 제품을 만드는 능력 자체는 더 이상 경쟁력이 아니다</li>
+<li>이제는 누구나 AI 도구(클로드 코드, 코덱스, 커서)로 결과물을 낼 수 있기 때문</li>
+<li>진짜 돈이 되는 것은 <strong>고객의 진짜 문제를 현장에서 찾아내고, 빠르게 피드백을 받아 해결하는 능력</strong></li>
+<li>기획과 개발만으로는 절대 돈을 벌 수 없는 시대</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>AI 제작 능력의 민주화 — 진입 장벽 붕괴</h2><ul>
+<li>이제는 일반인도 기획만 할 줄 알면 AI 도구로 누구나 결과물을 낼 수 있는 시대</li>
+<li>누구나 쉽게 만들 수 있으면, 사용자는 남이 만든 제품을 돈 내고 쓰지 않고 직접 만들어 쓸 가능성이 커짐</li>
+</ul>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">과거</span><span class="igt-x">결과물을 내려면 반드시 개발자 필요</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">현재</span><span class="igt-x">기획만 알면 AI 도구(클로드 코드·코덱스·커서)로 누구나 제작 가능</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">미래</span><span class="igt-x">사용자가 직접 만들어 쓰는 비율 지속 증가</span></div></div>
+<ul>
+<li>AI 테크 유튜버들이 제시하는 서비스들은 처음에는 기존에 없는 아이디어로 출시하지만, 시간이 지나면 사용자도 같은 도구로 쉽게 따라 만들 수 있음</li>
+<li>단순한 아이디어와 AI로 만든 구현만으로는 지속적인 수익을 내기 어려워짐</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>현장의 문제 vs 인터넷의 정보</h2><ul>
+<li>시중에 나와 있는 기술만 따라 쓰다 보면, 실제로 기술이 필요한 사람에게는 전달되지 않는 문제 발생</li>
+<li>인터넷에 있는 정보는 정답이 아닐 가능성이 높음</li>
+<li>지식산업센터나 각종 현장에는 아직도 반복 작업으로 일하는 사람들이 많음</li>
+<li>그 사람들에게 직접 문을 열고 들어가서 무엇이 필요한지 물어봐야 함</li>
+<li>단 10분이라도 실제로 도움이 되는 행동을 하면서 피드백을 받아야 그것이 진짜 돈이 됨</li>
+</ul>
+<div class="ig-bars"><div class="ig-bar"><span class="igb-l">인터넷 정보 중심 접근</span><span class="igb-track"><span class="igb-fill" style="width:2.0%"></span></span><span class="igb-v">아이디어는 많지만 현장과 괴리, 수익 연결 어려움 </span></div><div class="ig-bar"><span class="igb-l">현장 직접 침투 접근</span><span class="igb-track"><span class="igb-fill" style="width:2.0%"></span></span><span class="igb-v">반복 작업자 만나고 피드백 받아 문제 정의, 수익으로 연결 </span></div></div>
+<ul>
+<li>SaaS 결제 연결해 출시하고 &quot;마케팅 태우면 돈이 되겠지&quot;라고 기다리는 방식은 더 이상 통하지 않음</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>AI 활용 능력 ≠ 문제 해결 능력</h2><ul>
+<li>AI를 잘 다루는 사람이 문제 해결을 잘하는 것은 아님</li>
+<li><strong>문제를 많이 해결해 본 사람</strong>이 문제를 잘 해결함</li>
+<li>5년 동안 문제 해결에만 집중해 온 창업자는 크몽 서비스 리뷰가 좋은 이유가 기술력 때문이 아니라 고객의 실제 문제를 해결해줬기 때문이라고 설명</li>
+<li>리뷰가 좋다는 것은 그 사람이 가진 문제를 진짜로 해결해줬다는 증거</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>고객도 자기 문제를 모를 수 있다</h2><ul>
+<li>고객이 &quot;이게 문제입니다, 이걸 해결해주세요&quot;라고 말해도, 그 질문자조차 자기 진짜 문제가 무엇인지 모를 수 있음</li>
+<li>고객은 어떤 기술을 도입할 수 있는지 모르기 때문에 문제를 정확히 정의하지 못함</li>
+<li>따라서 창업자는 고객이 말하지 못하는 <strong>암묵지의 영역</strong>을 끄집어낼 수 있는 능력을 키워야 함</li>
+<li>그렇게 끄집어내서 고객 스스로 &quot;내가 이게 진짜 필요했구나&quot;를 느끼게 만들어야 함</li>
+<li>이것이 단순 기술자와 사업가의 차이</li>
+</ul></section><section class="card s12" id="s6"><h2><span class="seq">06</span>사례 연구 — 청소업 사업가의 AI 활용 성공기</h2><ul>
+<li>화자가 1년 전 AI를 가르친 청소업 사업가의 사례</li>
+<li>당시 그 사업가는 챗GPT로 개발을 하고 있었음</li>
+<li>화자가 커서(Cursor)라는 도구를 알려줌</li>
+<li>사업가는 그것만으로도 스스로 학습해 화자(개발자)를 뛰어넘는 순간이 있었음</li>
+</ul>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">청소업</span><span class="igk-l">해당 사업가의 본업</span></div><div class="ig-kpi"><span class="igk-v">커서(Cursor)</span><span class="igk-l">화자가 알려준 유일한 핵심 도구</span></div><div class="ig-kpi"><span class="igk-v">문제 해결 집중</span><span class="igk-l">성공의 진짜 원인</span></div></div>
+<ul>
+<li>처음에는 마케팅 회사에 필요한 ERP 시스템이나 CRM 시스템을 의뢰받아 납품</li>
+<li>단순히 의뢰받은 것만 해주는 데 만족하지 않고, 더 나은 방식을 제안</li>
+<li>&quot;이거보다 이게 더 효율적인데요&quot;, &quot;직원들이 쓰기에는 이게 더 효율적인데&quot;라며 <span class="up">개선</span></li>
+<li>결국 고객사의 모든 직원이 클로드 코드를 쓰도록 시스템을 구축</li>
+<li>고객 문의가 들어오면 클로드 코드가 회사의 지식 데이터베이스를 바라보게 해, CS 직원이 챗봇처럼 바로 답변할 수 있는 구조를 만듦</li>
+<li>그렇게 해서 수익 창출에 성공</li>
+</ul>
+<ul>
+<li>사업가라는 정체성으로 문제 해결에만 집중했기 때문</li>
+<li>&quot;이 사람이 어떤 문제를 가지고 있는지 해결하는 것&quot;에만 초점을 맞춤</li>
+<li>AI 도구 자체가 아니라 문제 해결 마인드가 핵심</li>
+</ul></section><section class="card s12" id="s7"><h2><span class="seq">07</span>피드백이 곧 돈이다</h2><ul>
+<li>완벽한 제품이 돈을 벌어다 주는 것이 아님</li>
+<li><strong>안 좋은 피드백을 빨리 받는 것</strong>이 좋은 제품을 만드는 길</li>
+<li>안 좋은 피드백을 주는 사람일수록 돈이 될 확률이 높음</li>
+<li>불만은 곧 실제 문제를 드러내는 신호이기 때문</li>
+</ul>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">좋은 피드백</span><span class="igt-x">만족은 했지만 <span class="up">개선</span>점을 알기 어려움</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">나쁜 피드백</span><span class="igt-x">불만 속에 진짜 문제와 해결해야 할 과제가 숨어 있음</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">피드백 → 수익</span><span class="igt-x">나쁜 피드백을 해결하면 그 사람이 돈을 낼 의사가 생김</span></div></div>
+<ul>
+<li>무료로 풀어도 사람들이 쓰지 않는 시대</li>
+<li>&quot;제발 써주세요&quot;라고 해도 안 써주는 상황</li>
+<li>피드백을 받는 과정 자체가 어렵고, 그렇기에 피드백을 받는 것이 돈과 같음</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>개발자의 소통 벽을 깨야 한다</h2><ul>
+<li>개발을 좋아하는 사람일수록 논리적인 성향이 강함</li>
+<li>논리적인 사람일수록 비논리적인 대화를 싫어하는 경향이 있음</li>
+<li>하지만 사업을 하려면 이 벽을 반드시 깨야 함</li>
+<li>비논리적인 고객이라도 그 사람을 설득하고, 그 사람이 가진 문제를 해결해준다는 사명이 있어야 돈을 벌 수 있음</li>
+</ul>
+<div class="ig-raw">개발자 성향: 논리 중심 → 비논리적 대화 기피<br>사업가 필요: 고객 설득 → 비논리적 대화 수용 → 문제 해결</div>
+<ul>
+<li>기획하고 개발만 해서는 절대 돈을 벌 수 없음</li>
+<li>사람을 만나고, 피드백을 받고, 그 피드백을 해결하는 과정이 필수</li>
+</ul></section><section class="card s12" id="s9"><h2><span class="seq">09</span>지니어스 존 — AI가 대체하지 못하는 인간의 영역</h2><ul>
+<li>휴식하고 안정감이 있을 때 활성화되는 뇌의 지점</li>
+<li>산책할 때, 샤워할 때, 잠들기 직전이나 잠에서 깨어난 직후에 주로 발현</li>
+<li>이 무의식을 쓸 수 있는 상태를 화자는 <strong>지니어스 존</strong>이라고 명명</li>
+</ul>
+<ul>
+<li>AI는 기존에 만들어진 책이나 인터넷 자료는 탁월하게 학습함</li>
+<li>AI끼리의 대화에서도 창의적인 결과가 나올 수 있음</li>
+<li>하지만 AI끼리 만들어낸 결과물은 인간이 공감하기 어려움</li>
+<li>인간만이 낼 수 있는 지금 이 순간의 감각, 몰입, 공감 능력은 AI가 대체 불가</li>
+</ul>
+<div class="ig-bars"><div class="ig-bar"><span class="igb-l">AI 학습 영역</span><span class="igb-track"><span class="igb-fill" style="width:2.0%"></span></span><span class="igb-v">기존 책·인터넷 자료 기반 — 탁월함 </span></div><div class="ig-bar"><span class="igb-l">인간 고유 영역</span><span class="igb-track"><span class="igb-fill" style="width:2.0%"></span></span><span class="igb-v">지니어스 존(몰입·무의식·공감) — AI 대체 불가 </span></div></div>
+<ul>
+<li>이 상태에 머무는 시간이 길어질수록 인간이 가진 재능을 최대한 발휘할 수 있음</li>
+<li>단기적 쾌락(담배, 유흥 등)과 달리 장기적인 행복감과 몰입 상태를 제공</li>
+<li>이 상태에서 나오는 창의성과 통찰은 AI가 따라올 수 없는 영역</li>
+</ul>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">단기적 쾌락</span><span class="igt-x">담배·유흥 등 — 한 번 하고 나면 현타가 오는 행복감</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">몰입 상태(지니어스 존)</span><span class="igt-x">산책·샤워·수면 전후 — 장기적 행복과 재능 발현</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">AI 한계</span><span class="igt-x">기존 데이터 학습에 강하지만 인간 고유의 감각·공감은 불가</span></div></div></section><section class="card s6" id="s10"><h2><span class="seq">10</span>커뮤니티와 공감의 힘</h2><ul>
+<li>DMN 모드를 공유함으로써 인간이 진짜 좋아하는 <strong>공감 능력</strong>을 함께 키울 수 있음</li>
+<li>몰입 상태에서 서로 대화하고, 생각을 주고받고, 기여하고 기여받는 커뮤니티가 진정한 행복존</li>
+<li>미래에 해결할 문제를 가진 사람들이 커뮤니티에 계속 모이면 솔루션의 종류와 품질도 지속적으로 향상</li>
+</ul>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">몰입 상태 에너지</span><span class="igk-l">강제로 시켰을 때보다 비교 불가 수준으로 큼</span></div><div class="ig-kpi"><span class="igk-v">커뮤니티 효과</span><span class="igk-l">문제 가진 사람 모임 → 솔루션 다양화·고도화</span></div><div class="ig-kpi"><span class="igk-v">공감 능력</span><span class="igk-l">AI가 대체 불가한 인간 고유의 가치</span></div></div></section><section class="card s6" id="s11"><h2><span class="seq">11</span>화자의 사명과 비전</h2><ul>
+<li><strong>사명: &quot;일이 놀이가 되는 것&quot;</strong></li>
+<li>사람들이 클로드 코드나 미래의 AI 기술을 활용해 자신이 좋아하는 놀이처럼 문제를 해결하도록 돕는 것</li>
+<li>놀이를 할 때 나오는 에너지가 엄청나게 큼</li>
+<li>남이 시켜서 억지로 할 때의 에너지와 비교할 수 없을 만큼 큼</li>
+<li>그런 사람들이 모인 커뮤니티는 훨씬 더 큰 성과를 창출</li>
+<li>커뮤니티 구성원의 부정적 마음가짐(부하율 등)을 제거하고, 현금 흐름을 만드는 방법을 연구해 지속적으로 제공</li>
+</ul>
+<ul>
+<li>AI가 모든 것을 대체하는 시대에도 각자가 자신만의 지니어스 존에서 머물며 놀이하듯 일하고 창조할 수 있게 하는 것</li>
+<li>이는 단순한 기술 교육이 아니라, 인간 고유의 몰입과 공감 능력을 키우는 방향</li>
+</ul></section><section class="card s6" id="s12"><h2><span class="seq">12</span>영상 출처</h2><ul>
+<li>제목: <a href="https://youtu.be/KX0wkMhn1gE?si=zXDlhBcBNnqUTMVf" target="_blank" rel="noopener">개발자 출신 창업 5년차가 느낀, AI로 돈 벌기 어려워지는 이유</a></li>
+<li>채널: 김범관 : AI로 일이 놀이가 되는 이야기 · 게시일: 2026-06-07</li>
+<li>링크: <a href="https://youtu.be/KX0wkMhn1gE?si=zXDlhBcBNnqUTMVf" target="_blank" rel="noopener">https://youtu.be/KX0wkMhn1gE?si=zXDlhBcBNnqUTMVf</a></li>
+</ul></section></main><div class="foot"><span class="dot"></span>xbot · 2026-06-10</div></div></body></html>
