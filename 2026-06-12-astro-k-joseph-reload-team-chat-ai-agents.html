@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Astro K Joseph · 2026-06-11 · 17분 · 영어 자막 기반 한국어 정리"><title>Reload — Claude·Cursor·Codex·openclaw 에이전트를 한 팀으로 묶는 &quot;AI 에이전트용 슬랙&quot;</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Astro K Joseph</span><span class="ey">MORNING DIGEST · 2026-06-12 · Astro K Joseph</span><span class="chip">🎬 영상</span></div><h1>Reload — Claude·Cursor·Codex·openclaw 에이전트를 한 팀으로 묶는 &quot;AI 에이전트용 슬랙&quot;</h1><p class="lead">Astro K Joseph · 2026-06-11 · 17분 · 영어 자막 기반 한국어 정리</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 기능 구조</a><a href="#s3">기술적 맥락</a><a href="#s4">전략적 의미</a><a href="#s5">핵심 워크플로우 (영상 데모)</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>영상</td><td>How I Made Claude, Cursor, Codex, Openclaw &amp; Other Agents Work Together</td></tr><tr><td>채널</td><td>Astro K Joseph</td></tr><tr><td>제품</td><td>Reload (reload.chat) — &quot;팀 채팅 형태의 AI 에이전트 협업 워크스페이스&quot;</td></tr><tr><td>문제 의식</td><td>에이전트 개별 성능은 뛰어나지만 사람이 중간에서 컨텍스트 복붙 — 하루 1시간+ 낭비 (<a href="https://youtu.be/zZSD5BFvzUI?t=14" target="_blank" rel="noopener">00:14</a>)</td></tr><tr><td>해결</td><td>채널·태스크·공유 메모리로 에이전트끼리 직접 업무 인계</td></tr><tr><td>연동 방식</td><td>MCP 설정 1개 복사·붙여넣기로 Claude Code·Cursor·openclaw 등 온보딩 (<a href="https://youtu.be/zZSD5BFvzUI?t=262" target="_blank" rel="noopener">04:22</a>)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능 구조</h2><ul>
+<li><strong>채널</strong>: 슬랙처럼 목적별 채널 생성, 사람+에이전트가 멤버로 공존</li>
+<li><strong>@멘션 위임</strong>: 사람이 채널에 요구사항 1회 게시 → 오케스트레이터 에이전트(openclaw)가 태스크 분해·할당</li>
+<li><strong>태스크 보드</strong>: 에이전트가 생성·할당·완료 처리하는 작업 목록, 사람도 직접 태스크 생성 가능 (<a href="https://youtu.be/zZSD5BFvzUI?t=462" target="_blank" rel="noopener">07:42</a>)</li>
+<li><strong>공유 메모리</strong>: 모든 에이전트가 같은 메모리 공간 읽기·쓰기 — 작업·결정·수정 내역 자동 기록, 재브리핑 불필요 (<a href="https://youtu.be/zZSD5BFvzUI?t=899" target="_blank" rel="noopener">14:59</a>)</li>
+<li><strong>자율성 다이얼</strong>: 24/7 완전 자율 실행 ↔ 사람 승인 대기 중 선택, 필요 시 에이전트가 사람을 태그 (<a href="https://youtu.be/zZSD5BFvzUI?t=49" target="_blank" rel="noopener">00:49</a>)</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>연동 = <strong>MCP(Model Context Protocol)</strong> 서버 등록: Reload에서 에이전트 생성 → MCP 설정 복사 → Cursor 설정/Claude Code 프롬프트/openclaw 세션에 붙여넣기</li>
+<li>백그라운드 자동 수신: Claude Code는 loop 명령, openclaw은 cron job으로 미확인 멘션·태스크 폴링 (<a href="https://youtu.be/zZSD5BFvzUI?t=750" target="_blank" rel="noopener">12:30</a>)</li>
+<li>컨텍스트 그래프: 결정·인계 내역이 그래프로 축적 — 오래 쓸수록 스택 전체가 똑똑해지는 구조(제작사 주장)</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>멀티에이전트 병목 = 모델 성능이 아니라 <strong>에이전트 간 컨텍스트 전달</strong>임을 정확히 겨냥</li>
+<li>개인 차원을 넘어 <strong>팀 단위</strong>: 디자이너의 Claude Code + PM의 openclaw + 엔지니어의 Cursor가 한 워크스페이스 공유</li>
+<li>&quot;AI 도구 사용&quot;에서 &quot;AI 팀 매니징&quot;으로 사용자 역할 전환</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 (영상 데모)</h2><ol>
+<li>Reload 가입 → 워크스페이스·채널(product-dev) 생성</li>
+<li>에이전트 온보딩: 이름·핸들 지정 → MCP 설정 복사 → 각 도구에 등록 → 연결 테스트</li>
+<li>채널에 요구사항 게시: 습관 추적 앱에 ① 주간 회고 기능 ② 랜딩 페이지 추가, openclaw 태그</li>
+<li>openclaw이 부모 태스크 + 병렬 서브태스크 생성: 주간 회고=Claude Code, 랜딩+라우팅=Cursor</li>
+<li>양쪽 완료 보고 → openclaw이 검수 후 태스크 종료 → 앱에 두 기능 반영 확인</li>
+<li>후속: 다크/라이트 모드 토글을 Claude Code에 직접 멘션 (<a href="https://youtu.be/zZSD5BFvzUI?t=690" target="_blank" rel="noopener">11:30</a>) → 1차 구현에 React hydration 버그 → 후속 멘션으로 원인 진단·수정 완료</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>1인 개발자</strong>: 리서치 에이전트 → 코딩 에이전트 → QA 에이전트 자동 릴레이, 수면 중 24/7 작업</li>
+<li><strong>스타트업 팀</strong>: 직군별 에이전트를 공용 채널에 모아 기능 개발 스프린트 자동 분배</li>
+<li><strong>사이드 프로젝트</strong>: 버그 리포트를 태스크로 등록하면 담당 에이전트가 자동 수정·보고</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>데모 기준 Claude Code·Cursor·openclaw·Devin·Hermes 에이전트 연동 확인</li>
+<li>한계 신호: 1차 구현 버그(다크모드 토글 미작동)처럼 <strong>사람 검수 루프는 여전히 필요</strong></li>
+<li>협찬성 리뷰 가능성 고려 — &quot;오래 쓸수록 똑똑해진다&quot; 등 효과 주장은 직접 검증 필요</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>MCP</td><td>AI 도구끼리 기능·데이터를 표준으로 주고받는 연결 규약</td><td>어떤 기기든 꽂히는 USB-C 단자</td></tr><tr><td>오케스트레이터</td><td>작업을 분해해 다른 에이전트에 분배하는 지휘 에이전트</td><td>프로젝트 매니저</td></tr><tr><td>openclaw</td><td>AI 에이전트 오케스트레이션 오픈소스 프레임워크</td><td>에이전트들의 사령탑 소프트웨어</td></tr><tr><td>컨텍스트 그래프</td><td>결정·인계 이력을 연결망 형태로 저장한 공유 기억</td><td>팀 전체가 같이 쓰는 업무 일지</td></tr><tr><td>cron job</td><td>정해진 주기마다 자동 실행되는 예약 작업</td><td>매일 아침 울리는 알람</td></tr><tr><td>QA</td><td>결과물 품질을 검사·검증하는 역할</td><td>출고 전 검수원</td></tr><tr><td>React hydration</td><td>서버가 그린 화면과 브라우저 상태를 일치시키는 React 과정</td><td>밑그림에 색을 정확히 맞춰 칠하기</td></tr><tr><td>랜딩 페이지</td><td>방문자가 처음 만나는 소개·마케팅 페이지</td><td>가게 쇼윈도</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>Astro K Joseph · 2026-06-12</div></div></body></html>
