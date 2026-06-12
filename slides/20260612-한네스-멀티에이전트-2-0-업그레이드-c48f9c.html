@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="오케스트레이터 종속성 문제"><title>한네스 멀티에이전트 2.0 업그레이드</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;--up:#1f9d57;--dn:#c0392b;--text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f7f6;--bg:#fff}
+html,body{height:100%}
+body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Apple SD Gothic Neo','Segoe UI',sans-serif;color:var(--text);overflow:hidden}
+#deck{position:fixed;inset:0;overflow:hidden}
+.stage{position:absolute;top:50%;left:50%;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--bg);overflow:hidden;display:none;flex-direction:column;padding:30px 44px 26px}
+.slide.active{display:flex}
+.chip{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.chip .brand{display:flex;align-items:center;gap:9px;text-transform:uppercase}
+.chip .dot{width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.chip .pg{color:var(--accent);font-weight:700}
+.shead{display:flex;align-items:flex-start;gap:13px;border-bottom:3px solid var(--accent);padding-bottom:10px;margin-bottom:14px}
+.shead .num{background:var(--accent);color:#fff;font-size:15px;font-weight:800;border-radius:8px;padding:6px 11px;flex:none}
+.shead .htxt h1{font-size:27px;font-weight:900;line-height:1.2;letter-spacing:-.01em}
+.shead .ey{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;white-space:nowrap;align-self:flex-end;padding-bottom:3px}
+.body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column}
+/* 자유 카드 배치: 2단 고정 대신 내용량(weight)에 따라 카드 너비를 달리하고
+   flex-grow로 행을 꽉 채운다. align-content:stretch로 행들이 세로를 채운다. */
+.cards{flex:1;min-height:0;display:flex;flex-wrap:wrap;gap:14px;align-content:stretch}
+.sec-panel{flex:1 1 30%;min-width:228px;border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column}
+.sec-panel.w-full{flex-basis:100%}
+.sec-panel.w-half{flex-basis:46%}
+.sec-panel.w-third{flex-basis:29%}
+.sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
+.sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
+.sec-panel table{font-size:13px}.sec-panel th{font-size:12px;padding:7px 9px}
+.sec-panel td{padding:6px 9px;font-size:12.5px;line-height:1.4}
+.sec-panel li{font-size:13px;margin:4px 0;line-height:1.45}.sec-panel p{font-size:13px;line-height:1.5}
+.sec-panel h3{font-size:14px;margin:5px 0 2px}.sec-panel blockquote{font-size:12.5px;padding:9px 12px;line-height:1.45}
+.foot{margin-top:9px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.foot .fd{width:8px;height:8px;border-radius:50%;background:var(--accent-mid)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:#fff}
+th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;font-weight:700;font-size:14px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;word-break:keep-all}
+td:first-child{font-weight:700;white-space:nowrap}tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f8faf9}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}.hl{color:var(--accent);font-weight:700}
+ul,ol{margin:2px 0 2px 20px}li{margin:5px 0;font-size:15px;line-height:1.5}
+h3{font-size:17px;font-weight:800;color:var(--accent-d);margin:6px 0 2px}
+p{font-size:15px;line-height:1.55;margin:4px 0}
+blockquote{border:1px solid var(--accent-mid);background:var(--accent-light);border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.55;color:#1f3d30}
+code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.9em}
+a{color:var(--accent);text-decoration:none}strong{color:#1a1a1a}hr{display:none}
+.ig-bars{display:flex;flex-direction:column;gap:6px;margin:7px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(64px,28%) 1fr auto;align-items:center;gap:8px;font-size:12.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:13px;background:var(--surface);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:9px;margin:7px 0}
+.ig-kpi{flex:1;min-width:104px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;gap:2px}
+.igk-v{font-size:22px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:11.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:13px;margin:7px 0;justify-content:flex-start}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:4px}
+.igd-ring{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:40px;height:40px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:13px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:11.5px;color:var(--text);font-weight:600;text-align:center;max-width:88px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:7px 0 7px 4px;border-left:2px solid var(--accent-mid);padding-left:13px}
+.ig-tl{position:relative;padding:4px 0}
+.igt-dot{position:absolute;left:-18px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:12.5px;margin-right:7px}
+.igt-x{font-size:12.5px;color:var(--text);line-height:1.45}
+.ig-raw{font-size:12.5px;color:var(--text);white-space:pre-wrap;line-height:1.5}
+.cover{background:radial-gradient(120% 140% at 80% 8%,#2b6f4e,#163d2b 52%,#0c241a);color:#eef6f0;padding:0;position:relative}
+.cover .cv{padding:52px 56px;display:flex;flex-direction:column;height:100%;width:100%}
+.cv-ey{font-size:14px;letter-spacing:.16em;color:#9fe0bd;font-weight:700;text-transform:uppercase}
+.cover .cv h1{font-size:40px;font-weight:900;line-height:1.22;margin-top:18px;letter-spacing:-.02em;max-width:90%;color:#eef6f0}
+.cv-sum{font-size:17px;color:#cfeadd;border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:14px 18px;margin-top:18px;line-height:1.55;max-width:92%}
+.cv-toc{margin-top:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cv-toc .it{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 13px;font-size:13px;color:#eef6f0;display:flex;gap:9px}
+.cv-toc .it b{color:#7ee3ad}
+.cv-badge{position:absolute;top:46px;right:54px;width:94px;height:94px;border-radius:50%;background:#eef6f0;color:#163d2b;border:2px solid #7ee3ad;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.cv-badge .i{font-size:22px}.cv-badge .t{font-size:14px;margin-top:2px}
+.nav{position:fixed;bottom:16px;right:20px;display:flex;align-items:center;gap:9px;z-index:50}
+.nav button{background:rgba(45,145,98,.92);color:#fff;border:none;width:36px;height:36px;border-radius:9px;font-size:17px;cursor:pointer}
+.nav .counter{background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:7px 13px;border-radius:9px;font-weight:600}
+.progress{position:fixed;top:0;left:0;height:4px;background:var(--accent-mid);z-index:60;transition:width .25s}
+.hint{position:fixed;bottom:18px;left:20px;color:rgba(255,255,255,.45);font-size:12px;z-index:50}
+</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">📊 슬라이드</span></div><div class="cv-ey">xbot · 2026-06-12</div><h1>한네스 멀티에이전트 2.0 업그레이드</h1><div class="cv-sum">오케스트레이터 종속성 문제</div><div class="cv-toc"><div class="it"><b>01</b><span>버전 1.0의 문제점</span></div><div class="it"><b>02</b><span>버전 2.0의 핵심 해결책</span></div><div class="it"><b>03</b><span>기본 용어 및 개념</span></div><div class="it"><b>04</b><span>워커 호출 방식</span></div><div class="it"><b>05</b><span>워커 역할 분담</span></div><div class="it"><b>06</b><span>시스템 구성 및 작업 흐름</span></div><div class="it"><b>07</b><span>시연 내용</span></div><div class="it"><b>08</b><span>컨텍스트 엔지니어링 원칙</span></div><div class="it"><b>09</b><span>영상 출처</span></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">02 / 10</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>버전 1.0의 문제점</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">버전 1.0의 문제점</div><ul>
+<li>오케스트레이터 종속성 문제</li>
+</ul>
+<p>- 클로드 오퍼스 단일 오케스트레이터 고정 - 클로드 자체 약점이 시스템 전체 약점으로 노출 - GPT 5.5가 벤치마크에서 압도하는 상황에도 대응 불가 - 단일 벤더 종속성으로 인한 구조적 리스크</p>
+<ul>
+<li>높은 비용 부담</li>
+</ul>
+<p>- 클로드 기본 구독 필요 - 코덱스 기본 구독 필요 - 제미나이 구독 필요 - 세 가지 플랫폼 구독을 동시에 유지해야 하는 비용 문제</p>
+<ul>
+<li>벤더 독립성 부족</li>
+</ul>
+<p>- 특정 플랫폼에만 작동 - 플랫폼 정책 변화나 가격 인상 시 즉각 대응 불가</p>
+<ul>
+<li>설치 과정의 유연성 부족</li>
+</ul>
+<p>- 환경 변화에 대응하기 어려운 구조 - 변경 시 재설치 부담</p>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">문제 축약</span><span class="igt-x">단일 오케스트레이터 종속 → 벤더 리스크 집중</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">비용 문제</span><span class="igt-x">3개 플랫폼 동시 구독 유지 부담</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">유연성</span><span class="igt-x">플랫폼 종속 + 환경 변화 대응 어려움</span></div></div></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-12</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">03 / 10</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>버전 2.0의 핵심 해결책</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">버전 2.0의 핵심 해결책</div><ul>
+<li>플랫폼별 오케스트레이터 자동 변경 지원</li>
+</ul>
+<p>- 클로드 코드(오퍼스)가 지휘자 역할 수행 - 코덱스(GPT 5.5)가 지휘자 역할 수행 - 앤티그래버티(제미나이 3.1)가 지휘자 역할 수행 - 세 가지 중 상황에 따라 선택 가능</p>
+<ul>
+<li>지휘자(오케스트레이터)만 변경하는 설계</li>
+</ul>
+<p>- 워커 구성 변경 불필요 - 플러그인 구성 변경 불필요 - 폴더 구조 변경 불필요 - 작업 명령 변경 불필요 - 지휘자 교체만으로 전체 시스템 전환 가능</p>
+<ul>
+<li>이 설계의 핵심 가치</li>
+</ul>
+<p>- 한 벤더의 정책 변화 발생 시 다른 벤더로 즉시 전환 - 한 벤더의 가격 인상 발생 시 다른 벤더로 즉시 전환 - 벤더 리스크를 시스템 전체 리스크로 확대하지 않음</p>
+<ul>
+<li>비용 최적화</li>
+</ul>
+<p>- 앤티그래버티 CLI 무료 사용 가능 - 모델 조절 가능 설계로 비용 통제</p>
+<ul>
+<li>벤더 독립적 작동</li>
+</ul>
+<p>- 어느 플랫폼에서나 자유롭게 작동 - 플랫폼 종속성 완전 제거</p>
+<ul>
+<li>플러그인 설치 방식</li>
+</ul>
+<p>- 한 번 설치로 모든 폴더에서 편리하게 사용 - 자동 파일 준비 기능</p>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">3개</span><span class="igk-l">지원 오케스트레이터 수 (클로드·코덱스·제미나이)</span></div><div class="ig-kpi"><span class="igk-v">1개</span><span class="igk-l">변경만 필요한 요소 (지휘자만)</span></div><div class="ig-kpi"><span class="igk-v">0개</span><span class="igk-l">변경 불필요한 요소 (워커·플러그인·폴더·명령)</span></div></div></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-12</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">04 / 10</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>기본 용어 및 개념</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">기본 용어 및 개념</div><ul>
+<li>핵심 역할 정의</li>
+</ul>
+<p>- 한네스: 강력하지만 제어 불가능한 AI를 통제하는 제어 장치 - 오케스트레이터(지휘자): 작업 분배, 워커 지정, 최종 결과 통합 담당 - 워커: 실제 작업을 수행하는 AI 에이전트(클로드, 코덱스, 제미나이)</p>
+<ul>
+<li>작업 분배 패턴</li>
+</ul>
+<p>- 팬아웃(Fan-out): 하나의 작업을 여러 워커에게 동시 분배 - 팬인(Fan-in): 여러 워커의 결과를 하나로 통합</p>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">1단계</span><span class="igt-x">사용자 요청 → 오케스트레이터가 작업 분석</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">2단계</span><span class="igt-x">팬아웃: 다수 워커에 동시 분배</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">3단계</span><span class="igt-x">각 워커 독립적 작업 수행</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">4단계</span><span class="igt-x">팬인: 오케스트레이터가 결과 통합</span></div></div></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-12</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">05 / 10</span></div><div class="shead"><span class="num">04</span><div class="htxt"><h1>워커 호출 방식</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">워커 호출 방식</div><ul>
+<li>세 가지 호출 방식 존재</li>
+</ul>
+<p>- 내장 호출: 같은 벤더 내 서브 에이전트 호출 - CLI 호출: 터미널 명령어로 외부 워커 호출 - MCP 호출: MCP(Model Context Protocol) 규격으로 외부 워커 호출</p>
+<ul>
+<li>MCP 호출의 성격</li>
+</ul>
+<p>- AI용 USB 포트에 비유 가능 - 표준화된 인터페이스로 외부 시스템 연결 - 플러그 앤 플레이 방식</p>
+<ul>
+<li>호출 방식 통합 관리</li>
+</ul>
+<p>- 벤더마다 다른 호출 방식 존재 - 내장 함수 방식 지원 벤더 - MCP 방식 지원 벤더 - CLI 방식 지원 벤더 - API 방식 지원 벤더</p>
+<ul>
+<li>backend.json 파일에 통합</li>
+</ul>
+<p>- 디스패처(Dispatcher)가 자동 선택 - 각 환경에 최적 연결 방식 유지 - 시스템은 동일하게 작동</p>
+<div class="ig-raw">내장 호출 | 같은 벤더 내 서브 에이전트 | 빠름<br>CLI 호출 | 터미널 명령어 기반 | 벤더 독립<br>MCP 호출 | 표준 규격 연결 | AI용 USB 포트</div></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-12</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">06 / 10</span></div><div class="shead"><span class="num">05</span><div class="htxt"><h1>워커 역할 분담</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">워커 역할 분담</div><ul>
+<li>역할별 전문성 할당</li>
+</ul>
+<p>- 클로드 메인 워커: 코딩, 설계, 분석, 테스트, 이미지 생성 - 코덱스 메인 워커: 코딩, 설계, 분석, 테스트, 이미지 생성 - 크리틱 워커: 산출물 공격적 비판 및 검수</p>
+<ul>
+<li>크리틱 워커의 성과</li>
+</ul>
+<p>- 평균 4~5개 문제 발견 - 원 작업자가 2~3개 수정 - 검수 품질이 개발 품질을 높이는 핵심</p>
+<ul>
+<li>제미나이 워커의 특화 역할</li>
+</ul>
+<p>- 비전(Vision) 작업 처리 - 긴 문서 분석 수행 - 제3자 시각 검토 제공</p>
+<div class="ig-kpis"><div class="ig-kpi"><span class="igk-v">4~5개</span><span class="igk-l">크리틱 워커의 평균 문제 발견 수</span></div><div class="ig-kpi"><span class="igk-v">2~3개</span><span class="igk-l">원 작업자의 평균 수정 수</span></div></div>
+<ul>
+<li>검수 원칙</li>
+</ul>
+<p>- 검수는 항상 지휘자(오케스트레이터)와 다른 벤더가 담당 - 자기 산출물 자체 검수 절대 금지 - 다른 개발 주체가 보는 다른 관점 필터링 활용 - 개발 주체가 다르면 놓치는 지점도 상이하다는 원칙</p></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-12</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">07 / 10</span></div><div class="shead"><span class="num">06</span><div class="htxt"><h1>시스템 구성 및 작업 흐름</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">시스템 구성 및 작업 흐름</div><ul>
+<li>시스템 구성</li>
+</ul>
+<p>- 제미나이가 오케스트레이터 역할 수행 - 멀티에이전트 2.0 플러그인 설치 필수 - 기본 설정만으로 시스템 구성 완료</p>
+<ul>
+<li>팬아웃-팬인 작업 방식 예시</li>
+</ul>
+<p>- 주제: 향후 10년 AI 방향 - 팬아웃 단계: 클로드 워커 독립적 의견 제시, 코덱스 워커 독립적 의견 제시 - 팬인 단계: 지휘자(제미나이)가 자신의 관점 추가 후 통합 - 실행 순서: 클로드 먼저 완료, 코덱스 순차 완료</p>
+<ul>
+<li>작업 흐름 전체 구조</li>
+</ul>
+<p>- 사용자 자연어 요청 입력 - 오케스트레이터가 task.md 자동 작성 - 워커 호출 시 사용자 승인 요청 - brief.md 작성 단계 - 워커 실행 단계 - 오케스트레이터가 result.md로 정리</p>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">1</span><span class="igt-x">사용자 자연어 요청</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">2</span><span class="igt-x">오케스트레이터 → task.md 자동 작성</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">3</span><span class="igt-x">워커 호출 → 사용자 승인</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">4</span><span class="igt-x">brief.md 작성</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">5</span><span class="igt-x">워커 실행</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">6</span><span class="igt-x">오케스트레이터 → result.md 정리</span></div></div></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-12</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">08 / 10</span></div><div class="shead"><span class="num">07</span><div class="htxt"><h1>시연 내용</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">시연 내용</div><ul>
+<li>MAP 기능 추가</li>
+</ul>
+<p>- MAP: 멀티에이전트 트래킹 프로그램 - 클로드 코드에서 워커 호출 방식 표시 기능 - 각 워커가 어떤 방식으로 호출되었는지 시각적 확인 가능</p>
+<ul>
+<li>팬아웃-팬인 패턴 시연</li>
+</ul>
+<p>- 팬아웃: 클로드, 코덱스, 제미나이 동시 호출하여 의견 수집 - 팬인: 지휘자(제미나이)가 자신의 관점 추가 후 전체 통합 - 코덱스 크리틱이 검수 단계 수행 - 검수 과정에서 버그 발견 및 수정 완료</p>
+<ul>
+<li>PDF 분석 및 한글 문서 변환 시연</li>
+</ul>
+<p>- 코덱스에서 PDF 수식 분석 수행 - 분석 결과를 한글 HWPX 문서로 변환 - HWPX MCP 이용하여 변환 작업 진행 - 수식 변환 일치 확인 완료 - 조립제법 부분만 미지원 상태 - 미지원 원인: 한글 수식 문법 부재 또는 제미나이 미인식 - 문서 작성에 다양하게 활용 가능</p>
+<div class="ig-timeline"><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">검증 과제</span><span class="igt-x">PDF 내 수식 분석</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">변환 대상</span><span class="igt-x">한글 HWPX 문서</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">검증 결과</span><span class="igt-x">일반 수식 완벽 변환</span></div><div class="ig-tl"><span class="igt-dot"></span><span class="igt-t">미지원 항목</span><span class="igt-x">조립제법 (한글 문법 부재 or 미인식)</span></div></div></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-12</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">09 / 10</span></div><div class="shead"><span class="num">08</span><div class="htxt"><h1>컨텍스트 엔지니어링 원칙</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">컨텍스트 엔지니어링 원칙</div><ul>
+<li>기본 원리(버전 1과 동일)</li>
+</ul>
+<p>- 상태를 파일로 저장 - 승인 단계 거침 - 검증 단계 거침 - 컨텍스트 관리</p>
+<ul>
+<li>컨텍스트 비대화 방지</li>
+</ul>
+<p>- context.md는 1,500자 제한 - brief.md는 1,200자 제한 - 짧고 핵심적인 정보만 유지</p>
+<ul>
+<li>파일 기반 정보 전달</li>
+</ul>
+<p>- 긴 문서와 코드는 파일로 저장 - 컨텍스트에는 파일 경로만 전달 - 모델이 모든 내용을 직접 읽지 않도록 설계</p>
+<ul>
+<li>필요한 것만 필요할 때 호출</li>
+</ul>
+<p>- 책상 위의 모든 서류를 펼쳐놓는 방식 지양 - 필요한 철(파일) 하나만 꺼내는 방식 지향 - 정보 접근의 경제성 원칙</p>
+<ul>
+<li>워커 결과 검증 사이클</li>
+</ul>
+<p>- 워커가 결과 산출 - 다른 워커(크리틱)가 검수 - 검수 통과 시 최종 결과 확정 - 검수 실패 시 재작업</p>
+<ul>
+<li>브리프(brief.md) 작성 원칙</li>
+</ul>
+<p>- 중요 목표는 앞쪽에 배치 - 중요 제약 조건은 앞쪽에 배치 - 금지사항은 끝쪽에 배치 - 이유: 모델이 중간 내용을 놓치는 경향이 있음 - 앞과 끝이 가장 잘 기억되는 위치</p></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-12</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">10 / 10</span></div><div class="shead"><span class="num">09</span><div class="htxt"><h1>영상 출처</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-full"><div class="ph">영상 출처</div><ul>
+<li>제목: <a href="https://youtu.be/HNlBFesXiW8?si=tSjV7qM6-dQo7Pt-">클로드·코덱스·제미나이를 동시에 제어합니다｜하네스 멀티 에이전트 2.0</a></li>
+<li>채널: AI 치트키 · 게시일: 2026-06-07</li>
+<li>링크: <a href="https://youtu.be/HNlBFesXiW8?si=tSjV7qM6-dQo7Pt-">https://youtu.be/HNlBFesXiW8?si=tSjV7qM6-dQo7Pt-</a></li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-12</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭 · F 전체화면(클릭 시 자동)</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 10</span><button id="next">&rsaquo;</button></div><script>
+var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
+var c=document.getElementById('counter'),pr=document.getElementById('prog');
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight;if(sh<1)return;var z=ch/sh;z=Math.max(0.6,Math.min(2.2,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
+function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
+document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
+document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(cur+1);e.preventDefault();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault();}else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}});
+function goFS(){try{var e=document.documentElement;if(!document.fullscreenElement&&e.requestFullscreen){e.requestFullscreen().catch(function(){});}}catch(_){}}
+document.getElementById('deck').addEventListener('click',function(e){if(e.target.closest('.nav')||e.target.closest('a'))return;goFS();var x=e.clientX/window.innerWidth;if(x>0.5){show(cur+1);}else{show(cur-1);}});
+function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+s+')';}
+window.addEventListener('resize',fit);document.addEventListener('fullscreenchange',fit);
+window.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){goFS();}},{once:false});
+window.addEventListener('load',function(){goFS();});
+fit();show(0);
+</script></body></html>
