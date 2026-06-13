@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="메이커 에반 · 2026-06-13 · 업무 자동화 3강. 클로드 코드 스킬로 인스타그램 카드뉴스를 자동 생성하고, 캔바 MCP로 업로드해 편집 가능한 형태로 만드는 실습. GitHub CLI·Replicate API 셋업부터 스킬 트리거·캔바 연동까지 단계별 안내."><title>클로드 코드로 인스타 카드뉴스 자동 생성 — 캔바에서 바로 편집까지</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-06-14 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>클로드 코드로 인스타 카드뉴스 자동 생성 — 캔바에서 바로 편집까지</h1><p class="lead">메이커 에반 · 2026-06-13 · 업무 자동화 3강. 클로드 코드 스킬로 인스타그램 카드뉴스를 자동 생성하고, 캔바 MCP로 업로드해 편집 가능한 형태로 만드는 실습. GitHub CLI·Replicate API 셋업부터 스킬 트리거·캔바 연동까지 단계별 안내.</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">사전 셋업 — 계정·도구 준비</a><a href="#s3">핵심 워크플로우 — 프로젝트 초기화</a><a href="#s4">스킬 트리거 — 카드뉴스 생성</a><a href="#s5">동작 방식 — 생성에서 캔바 업로드까지</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>목표</td><td>클로드 코드로 인스타 카드뉴스 자동 생성 → 캔바에서 편집 가능하게</td></tr><tr><td>사전 셋업</td><td>GitHub 가입·CLI 로그인, Replicate API 키(선택), 캔바 MCP 연결</td></tr><tr><td>핵심 스킬</td><td>인스타 카드뉴스 제너레이터 스킬</td></tr><tr><td>이미지 옵션</td><td>Replicate API 사용(고퀄, $5 충전) / 미사용(무료, 기본 품질)</td></tr><tr><td>산출</td><td>PPT 포맷 카드 → 캔바 업로드 → 표·편집 가능한 슬라이드</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>사전 셋업 — 계정·도구 준비</h2><ul>
+<li>GitHub: 가입·로그인</li>
+<li>GitHub CLI: OS별(맥/윈도우) 버전 다운로드·설치 → 클로드 코드에게 &quot;GitHub CLI로 로그인, 웹 브라우저로 할 거야&quot; 요청</li>
+<li>Replicate(선택): 계정 설정에서 API 토큰 발급 + 빌링에 $5 크레딧 충전(고퀄 이미지용, 없어도 동작)</li>
+<li>캔바 MCP: 설정 → 커넥터 → 맞춤 설정에서 캔바 MCP 연결·로그인 필수</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>핵심 워크플로우 — 프로젝트 초기화</h2><ul>
+<li>작업 폴더 추가: 워크스페이스에 &quot;인스타 카드뉴스&quot; 폴더 생성·열기</li>
+<li>GitHub 연동: &quot;이 프로젝트 GitHub 연동해줘, 깃 레포지토리 초기화 먼저&quot; 명령 → 권한 건너뛰고 git status 확인 후 퍼블릭 레포로 업로드</li>
+<li>이 초기화가 후속 작업의 전제 (맨 처음 필수 단계)</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>스킬 트리거 — 카드뉴스 생성</h2><ul>
+<li>인스타 카드뉴스 제너레이터 스킬 호출</li>
+<li>명령 예: &quot;메이커 에반이고 바이브 코딩 주제로 카드뉴스 만들어줘. 클로드 코드 스킬이면 더 좋아. 카드 8장 만들어줘&quot;</li>
+<li>동작: 웹에서 적절한 내용 조사 → 걸맞는 이미지 검색·수집 → 이미지 밸리데이션 자동 수행</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>동작 방식 — 생성에서 캔바 업로드까지</h2><ul>
+<li>1) 웹에서 주제 관련 내용·이미지 소싱(디스크립션 읽고 관련 이미지 수집)</li>
+<li>2) PPT 스킬로 카드 합성(8장)</li>
+<li>3) 캔바 MCP로 업로드 → 캔바에서 표·이미지 편집 가능한 슬라이드로 전환</li>
+<li>결과 확인: 아웃풋 폴더 슬라이드 → 캔바 업로드 완료 후 편집</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>1인 콘텐츠 운영: 주제만 주면 카드뉴스 8장 자동 제작 → 캔바에서 미세 조정</li>
+<li>채널 일관성: 동일 스킬로 반복 생성해 톤·포맷 통일</li>
+<li>비용 최적화: Replicate API 미사용 시 이미지 비용 0, 캔바 구독료만 소요</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>핵심 메시지: 콘텐츠 제작이 &quot;디자인 노동&quot; → &quot;주제 지정 + 검수&quot;로 단순화</li>
+<li>한계·선택: 고퀄 이미지는 Replicate 유료가 유리하나, 기본 무료로도 충분히 동작</li>
+<li>확장: 캔바 편집 가능 산출이라 자동 생성 후에도 사람 손질 자유로움</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>MCP</td><td>클로드가 외부 앱(캔바 등)과 연결되는 표준 커넥터</td><td>앱끼리 끼우는 공용 어댑터</td></tr><tr><td>GitHub CLI</td><td>터미널에서 깃허브를 다루는 명령줄 도구</td><td>마우스 없이 키보드로 쓰는 깃허브</td></tr><tr><td>Replicate</td><td>AI 이미지 생성 모델을 API로 빌려 쓰는 서비스</td><td>종량제로 그림 그려주는 외주</td></tr><tr><td>카드뉴스 제너레이터</td><td>주제로 카드뉴스를 자동 생성하는 스킬</td><td>한 줄 주문하면 나오는 카드 공장</td></tr><tr><td>밸리데이션</td><td>가져온 이미지가 적절한지 자동 검증</td><td>납품 전 불량품 골라내기</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>메이커 에반 · 2026-06-14</div></div></body></html>
