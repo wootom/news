@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="안될공학 · 구글 TPU &quot;삼성 수주설&quot;의 진짜 의미를 칩 구조 관점에서 해부"><title>삼성 파운드리 부활의 핵심 = 칩렛·메모리 인터페이스</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-06-14 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>삼성 파운드리 부활의 핵심 = 칩렛·메모리 인터페이스</h1><p class="lead">안될공학 · 구글 TPU &quot;삼성 수주설&quot;의 진짜 의미를 칩 구조 관점에서 해부</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 내용 구조</a><a href="#s3">기술적 맥락 — 레티클 한계와 칩렛</a><a href="#s4">칩렛이 유리한 4가지 이유</a><a href="#s5">전략적 의미 — 삼성의 기회</a><a href="#s6">현황 및 전망</a><a href="#s7">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>보도 출처</td><td>디인포메이션 최초 보도 → 로이터 인용 (구글·삼성 모두 코멘트 거부, 미확정)</td></tr><tr><td>실제 거론 범위</td><td>TPU 전체 아님 → <strong>메모리 인터페이스 컴포넌트</strong>를 삼성 2nm로 생산하는 방안</td></tr><tr><td>메인 연산 다이</td><td>여전히 <strong>TSMC</strong> 가능성 높음 (차세대 TPU 코드명 &#x27;아이스피시&#x27;)</td></tr><tr><td>핵심 메시지</td><td>&quot;일부&quot;라도 그 일부가 <strong>병목 구간</strong>이면 전략적 가치 큼</td></tr><tr><td>삼성의 차별점</td><td>HBM·D램·낸드·컨트롤러·파운드리·패키징을 한 회사 안에서 보유</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li>헤드라인 &quot;삼성이 구글 TPU 생산&quot; → 정확히는 <strong>TPU의 한 조각(메모리 인터페이스)</strong> 거론, 수주 확정 아님 (<a href="https://youtu.be/9AIcehpbpgA?t=24" target="_blank" rel="noopener">0:24 딥링크</a>)</li>
+<li>PPA(성능·전력·면적) 관점에서 TSMC가 압도적 → 팹리스가 TSMC 선호 → 메인 컴퓨트 다이 탈환은 비현실적</li>
+<li>그러나 AI 칩의 실제 성능은 <strong>메모리 인터페이스(데이터 통로)</strong> 가 좌우 → 삼성 거론 위치가 정확히 병목 (<a href="https://youtu.be/9AIcehpbpgA?t=87" target="_blank" rel="noopener">1:27 딥링크</a>)</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 레티클 한계와 칩렛</h2><ul>
+<li>레티클 리밋: 노광 장비가 한 번에 찍는 최대 칩 크기 ≈ 858㎟ (<a href="https://youtu.be/9AIcehpbpgA?t=253" target="_blank" rel="noopener">4:13 딥링크</a>)</li>
+<li>엔비디아 볼타(GV100) 다이 815㎟ → 이미 단일 다이가 물리적 한계 근접 → A100·H100·블랙웰 모두 800㎟대</li>
+<li>단일 다이 확대 불가 → 기능별로 칩을 잘게 쪼갠 뒤 다시 붙이는 <strong>칩렛 구조</strong>로 전환</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>칩렛이 유리한 4가지 이유</h2><div class="tbl-wrap"><table><thead><tr><th>이유</th><th>설명</th></tr></thead><tbody><tr><td>수율</td><td>거대 단일 다이는 결함 1개에 전체 폐기 → 작게 쪼개 정상품만 조립 (<a href="https://youtu.be/9AIcehpbpgA?t=153" target="_blank" rel="noopener">2:33 딥링크</a>)</td></tr><tr><td>공정 최적화</td><td>모든 블록에 비싼 2nm 불필요 → 아날로그·IO는 검증된 공정으로 단가 절감</td></tr><tr><td>메모리 병목</td><td>연산 속도만큼 데이터 공급 못 따라옴 → 통로 설계가 실성능 결정 (<a href="https://youtu.be/9AIcehpbpgA?t=601" target="_blank" rel="noopener">10:01 딥링크</a>)</td></tr><tr><td>공급망 분산</td><td>TSMC 한 곳 집중 = 케파 병목 → 삼성·인텔 거론은 공급망 다변화 전략</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>전략적 의미 — 삼성의 기회</h2><ul>
+<li>&quot;왕좌(메인 다이) 탈환&quot;이 아니라 <strong>길목(메모리 인터페이스·IO·베이스 다이·패키징) 선점</strong> 전략</li>
+<li>첨단 패키징(이입비·포베로스)이 후공정 → <strong>시스템 설계 핵심</strong>으로 격상</li>
+<li>삼성 강점: 메모리가 시스템 어디서 막히는지 오래 관찰한 유일한 &quot;메모리 보유 파운드리&quot; (<a href="https://youtu.be/9AIcehpbpgA?t=318" target="_blank" rel="noopener">5:18 딥링크</a>)</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><ul>
+<li>확정된 것 없음 — TSMC가 자사 패키징 내 직접 흡수 가능, 인텔·OSAT도 같은 길목 경쟁</li>
+<li>의미는 &quot;확정 여부&quot;보다 AI 반도체가 <strong>칩렛·메모리 병목 시대로 이동</strong>한다는 방향 신호</li>
+<li>침내 시대에는 &quot;자리(위치)가 곧 값&quot; — 외곽 40평보다 노른자 25평</li>
+</ul></section><section class="card s12" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>TPU</td><td>구글이 만든 AI 전용 연산 칩</td><td>구글판 GPU</td></tr><tr><td>칩렛(Chiplet)</td><td>큰 칩을 기능별로 쪼갠 작은 조각</td><td>레고 블록처럼 나눠 조립</td></tr><tr><td>레티클 리밋</td><td>노광 장비가 한 번에 찍는 최대 칩 크기</td><td>복사기가 찍는 최대 종이 크기</td></tr><tr><td>메모리 인터페이스</td><td>연산부와 메모리를 잇는 데이터 통로</td><td>슈퍼카가 달릴 도로</td></tr><tr><td>HBM</td><td>칩에 바짝 붙인 초고속 적층 메모리</td><td>책상 위 손 닿는 메모지 더미</td></tr><tr><td>PPA</td><td>성능·전력·면적 종합 경쟁력 지표</td><td>연비·출력·크기 종합 점수</td></tr><tr><td>다이(Die)</td><td>웨이퍼에서 잘라낸 칩 한 조각</td><td>와플 한 칸</td></tr><tr><td>첨단 패키징</td><td>여러 다이를 한 칩처럼 묶는 후공정 기술</td><td>조각을 붙여 완성품 만들기</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-06-14</div></div></body></html>

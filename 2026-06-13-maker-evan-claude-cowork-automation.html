@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="메이커 에반 · 코딩 지식 없이 자연어만으로 루틴 업무 자동화 티칭"><title>클로드 코워크로 업무 자동화 끝내기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-06-13 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>클로드 코워크로 업무 자동화 끝내기</h1><p class="lead">메이커 에반 · 코딩 지식 없이 자연어만으로 루틴 업무 자동화 티칭</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">사전 세팅 절차</a><a href="#s3">핵심 워크플로우 — 스케줄 자동화</a><a href="#s4">활용 시나리오 (실제 데모)</a><a href="#s5">기술적 맥락</a><a href="#s6">현황 및 전망</a><a href="#s7">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>코워크 강점</td><td>클로드 코드보다 자유도 높고 챗보다 편리, 스케줄 업무를 자연어로 생성</td></tr><tr><td>필수 세팅</td><td>플레이(Play) MCP + 클로드 인 크롬 확장 프로그램</td></tr><tr><td>사용 도구</td><td>단 2개(플레이 MCP·클로드 인 크롬)만으로 자동화 구현</td></tr><tr><td>권장 구독</td><td>Pro로도 가능하나 대량 작업 시 Max($100) 권장</td></tr><tr><td>핵심 가치</td><td>프롬프트 몇 줄 = 매일 반복 업무 자동 실행</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>사전 세팅 절차</h2><ul>
+<li>설정 → 커넥터 → 맞춤 설정 → <strong>플레이 MCP</strong> 연결 → 카카오톡 로그인 → &quot;나와의 채팅방&quot; 도구함 추가 (<a href="https://youtu.be/ErsFDGqAyQc?t=102" target="_blank" rel="noopener">1:42 딥링크</a>)</li>
+<li>앱 재시작 후 카카오톡 도구 &quot;항상 허용&quot; 설정</li>
+<li>브라우저 확장 <strong>클로드 인 크롬</strong> 설치 → 크롬 창 제어 권한 부여 (<a href="https://youtu.be/ErsFDGqAyQc?t=48" target="_blank" rel="noopener">0:48 딥링크</a>)</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>핵심 워크플로우 — 스케줄 자동화</h2><ul>
+<li>코워크 → 스케줄 → 새 작업 → &quot;질문 대신 묻지 않고 실행&quot; 설정 (<a href="https://youtu.be/ErsFDGqAyQc?t=29" target="_blank" rel="noopener">0:29 딥링크</a>)</li>
+<li>프롬프트로 업무 정의 → 매일 지정 시각 자동 트리거 → 결과 카카오톡 전송</li>
+<li>편집에서 &quot;묻지 않고 실행&quot; 저장 후 테스트 실행 권장</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>활용 시나리오 (실제 데모)</h2><div class="tbl-wrap"><table><thead><tr><th>사례</th><th>동작</th></tr></thead><tbody><tr><td>인스타 모니터링</td><td>매일 9시 특정 계정 신규 게시물 확인 → 요약·링크 카카오톡 발송 (<a href="https://youtu.be/ErsFDGqAyQc?t=211" target="_blank" rel="noopener">3:31 딥링크</a>)</td></tr><tr><td>마케팅 트렌드</td><td>매일 SNS 마케팅 트렌드 웹검색 → 요약 카카오톡 전송</td></tr><tr><td>쓰레드 자동포스팅</td><td>X(엑스) 최신 글 크롤링 → 한글 번역 → 쓰레드 자동 게시 (<a href="https://youtu.be/ErsFDGqAyQc?t=627" target="_blank" rel="noopener">10:27 딥링크</a>)</td></tr><tr><td>이커머스 리뷰 이전</td><td>자사몰 리뷰 → 에이블리 등 타 플랫폼 이전</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>기술적 맥락</h2><ul>
+<li>클로드 인 크롬 MCP가 브라우저를 직접 크롤링·제어 → 스냅샷 기반 페이지 조작</li>
+<li>플레이 MCP가 카카오톡 &quot;나와의 채팅방&quot; 알림 채널 역할</li>
+<li>모든 작업이 자연어 프롬프트로 구성 → 코딩 불필요</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><ul>
+<li>코워크 = 루틴 업무 자동화 필수 요소로 자리매김</li>
+<li>&quot;코워크 쓸 수 있는 사람과 없는 사람의 격차 확대&quot; 전망</li>
+<li>라이브 아티팩트·디스패치·커스터마이즈·스킬·프로젝트 등 추가 기능 후속 강의 예고</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>코워크</td><td>클로드 데스크탑 앱의 업무 자동화 모드</td><td>화면으로 일 시키는 AI 비서</td></tr><tr><td>플레이 MCP</td><td>카카오톡 등과 연결해 주는 커넥터</td><td>알림 보내는 전용 우체통</td></tr><tr><td>클로드 인 크롬</td><td>크롬을 AI가 제어하는 확장 프로그램</td><td>AI에게 마우스 쥐여 주기</td></tr><tr><td>스케줄</td><td>정해진 시각에 반복 실행되는 작업</td><td>매일 울리는 알람</td></tr><tr><td>크롤링</td><td>웹페이지 정보를 자동 수집하는 것</td><td>도서관에서 자료 긁어 모으기</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>메이커 에반 · 2026-06-13</div></div></body></html>
