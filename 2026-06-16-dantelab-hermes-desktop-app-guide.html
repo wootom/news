@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: Hermes 데스크톱 앱 완벽 가이드 — 터미널 에이전트와 GUI 하이브리드 운영"><title>Hermes 데스크톱 앱 — 같은 에이전트를 GUI라는 새 옷으로 입히기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f8faf9;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#163d2b 0%,#1f6745 55%,#2b6f4e 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eef0ee;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#eef6f0;
+  border:1px solid var(--accent-d);border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#eef6f0}
+.hdr-meta .chip.brand{background:#7ee3ad;color:#0c241a;border-color:#7ee3ad}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#1f6745}
+.hdr-meta .ey{color:#9fe0bd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#eef6f0;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#cfeadd;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--accent-mid);background:var(--accent-light);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:#163d2b;margin:7px 0
+}
+.card code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-d);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent)}
+.card strong{color:#0c241a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:#0c241a;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:#0c241a;line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--accent-mid);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;
+  background:var(--accent-light)
+}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>단테랩스</span><span class="ey">MORNING DIGEST · 2026-06-16 · 단테랩스</span><span class="chip">🎬 영상</span></div><h1>Hermes 데스크톱 앱 — 같은 에이전트를 GUI라는 새 옷으로 입히기</h1><p class="lead">title: Hermes 데스크톱 앱 완벽 가이드 — 터미널 에이전트와 GUI 하이브리드 운영</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 기능 구조 — 데스크톱 앱만의 편의</a><a href="#s3">기술적 맥락 — 로컬 vs 원격 게이트웨이</a><a href="#s4">전략적 의미</a><a href="#s5">핵심 워크플로우 — 윈도우+WSL 하이브리드 연동</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a><a href="#s9">타임스탬프 딥링크</a><a href="#s10">검증</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>단테랩스(Dante&#x27;s Datalab, 한국어)</td></tr><tr><td>형식</td><td>실습 위주 설치·연동 가이드</td></tr><tr><td>핵심</td><td>Hermes 0.16.0 업데이트의 공식 데스크톱 앱 설치·연동·기능 정리</td></tr><tr><td>대상</td><td>터미널(TUI)·대시보드·메신저로 Hermes 멀티에이전트 운영 중인 사용자</td></tr><tr><td>차별점</td><td>코어·직원(에이전트)·설정은 그대로, 표면만 GUI로 교체</td></tr></tbody></table></div>
+<blockquote>데스크톱 앱은 윈도우 전용. 맥은 네이티브 로컬 연결, 윈도우는 WSL의 Hermes에 원격 연결하는 하이브리드 권장.</blockquote></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능 구조 — 데스크톱 앱만의 편의</h2><ul>
+<li><strong>신규 세션/대화</strong>: ChatGPT·Claude 데스크톱 앱처럼 즉시 대화, 네이티브 슬래시 명령 전부 사용</li>
+<li><strong>보이스 모드</strong>: 음성으로 명령 입력 지원</li>
+<li><strong>드래그 앤 드롭</strong>: 파일·폴더·이미지 첨부를 위젯으로 간편 제어</li>
+<li><strong>아티팩트</strong>: 에이전트 산출물(이미지·파일·링크)을 갤러리 형태로 한눈에 수집·관리</li>
+<li><strong>상태바</strong>: 컨텍스트 사용량·모델·세션 경과·게이트웨이 상태·스케줄러 즉시 확인</li>
+<li><strong>사이드 패널</strong>: 스킬·툴셋 온오프, 메시징(Slack·Telegram) 토큰 관리, 세션 기록·핀 고정</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 로컬 vs 원격 게이트웨이</h2><ul>
+<li><strong>로컬 게이트웨이</strong>: 데스크톱 앱과 함께 설치된 윈도우 네이티브 Hermes(WSL 인스턴스와 별개)</li>
+<li><strong>원격 게이트웨이</strong>: WSL·VPS·호스팅 등 외부에서 동작하는 Hermes에 연결하는 경로</li>
+<li>윈도우 사용자는 기존 WSL 프로필 유지 위해 원격 게이트웨이 선택 필수</li>
+<li>같은 0.16.0 사용자는 이미 설치 완료 상태 — 터미널 <code>hermes desktop</code> 한 줄 또는 설치 파일로 실행(자동 동기화)</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>터미널의 진입장벽(텍스트 전용·시각성 부족)을 GUI로 보완해 멀티에이전트 관리 대중화</li>
+<li>&quot;같은 에이전트, 다른 옷&quot; — 운영 환경 선택지 추가일 뿐 코어 변경 없음 → 학습비용 최소</li>
+<li>WSL 운영의 윈도우 사용자 고통(재설치 고민)을 원격 연결로 해소</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 — 윈도우+WSL 하이브리드 연동</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>내용</th></tr></thead><tbody><tr><td>설치</td><td>공식 홈페이지에서 OS별 동적 버튼으로 설치 파일 다운로드·실행</td></tr><tr><td>첫 실행</td><td>경고창에서 &quot;로컬 게이트웨이 사용&quot; 선택해 초기 화면 진입</td></tr><tr><td>게이트웨이 전환</td><td>설정 → 게이트웨이 → 원격 게이트웨이 선택</td></tr><tr><td>환경변수</td><td>WSL의 .env에 USERNAME·PASSWORD·SECRET(<code>openssl rand -base64 32</code>) 추가</td></tr><tr><td>대시보드</td><td>host <code>0.0.0.0</code>, port <code>9119</code>로 기동해 외부 접속 허용 + 사용자 인증</td></tr><tr><td>로그인</td><td>데스크톱 앱에서 IP·포트 입력 후 모든 프로필을 개별 로그인(프로필 수만큼)</td></tr><tr><td>사용</td><td>홈의 프로필 레일에서 단축 아이콘으로 프로필 스위치</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>윈도우 GUI + WSL 엔진</strong>: 윈도우에서 보기 좋은 앱을 쓰되 실제 에이전트는 WSL에서 구동</li>
+<li><strong>원격 서버 관리</strong>: VPS·호스팅의 Hermes를 내 PC 데스크톱 앱과 원격 연결해 통합 운영</li>
+<li><strong>맥 로컬 운영</strong>: 맥은 네이티브 설치본을 로컬 게이트웨이로 바로 연결(원격 불필요)</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>데스크톱 앱은 아직 안정화 기간 필요 — 리소스 점유 크고 멀티에이전트 작업 시 병목 가능</li>
+<li>터미널은 가볍고 빠르나 시각성 부족 → 상황별 하이브리드 권장</li>
+<li>다음 편 예고: 데스크톱 앱으로 &quot;딜리게이트 태스크&quot; 기능 다루기</li>
+<li>본 영상은 인프런 &quot;Hermes 코덱스&quot; 강의의 데스크톱 앱 챕터 발췌</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>TUI</td><td>터미널에서 동작하는 텍스트 기반 화면</td><td>그림 없는 검은 명령창</td></tr><tr><td>WSL</td><td>윈도우 안에서 리눅스를 돌리는 환경</td><td>윈도우 속 작은 리눅스 방</td></tr><tr><td>게이트웨이</td><td>앱과 에이전트를 잇는 연결 관문</td><td>앱과 엔진을 잇는 문</td></tr><tr><td>아티팩트</td><td>대화 중 생성된 산출물 모음</td><td>작업 결과물 보관함</td></tr><tr><td>멀티에이전트</td><td>여러 AI 직원을 동시에 운영</td><td>여러 명에게 분업</td></tr><tr><td>프로필</td><td>각기 다른 설정의 에이전트 단위</td><td>직원 한 명의 명함</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>타임스탬프 딥링크</h2><ul>
+<li><a href="https://youtu.be/qA_Kp0Burx8?t=0" target="_blank" rel="noopener">도입 — 데스크톱 앱 등장 배경</a></li>
+<li><a href="https://youtu.be/qA_Kp0Burx8?t=184" target="_blank" rel="noopener">설치 파일 다운로드·실행</a></li>
+<li><a href="https://youtu.be/qA_Kp0Burx8?t=365" target="_blank" rel="noopener">원격 게이트웨이 + .env 환경변수 설정</a></li>
+<li><a href="https://youtu.be/qA_Kp0Burx8?t=458" target="_blank" rel="noopener">대시보드 9119 기동·로그인</a></li>
+<li><a href="https://youtu.be/qA_Kp0Burx8?t=838" target="_blank" rel="noopener">아티팩트·설정 기능 탐색</a></li>
+<li><a href="https://youtu.be/qA_Kp0Burx8?t=1022" target="_blank" rel="noopener">터미널 vs 데스크톱 하이브리드 정리</a></li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>검증</h2><ul>
+<li>V1~V6 전 항목 PASS — 제품·버전·기능은 영상 시연 기준, 설치값(포트 9119 등)은 사용 시점 공식 문서 재확인 권장</li>
+</ul></section></main><div class="foot"><span class="dot"></span>단테랩스 · 2026-06-16</div></div></body></html>
