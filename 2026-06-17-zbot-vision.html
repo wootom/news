@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="zbot — AI+XR 커뮤니티의 협업 도우미. 회원·회사 정보를 모아 지식으로 정리하고, 서로 협력할 수 있는 기회를 찾아 연결해 주는 도우미입니다."><title>zbot — AI+XR 커뮤니티의 협업 도우미</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#5b4bd6;--accent-d:#372a9e;--accent-mid:#8c7cf0;--accent-light:#ebe8fb;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e3e1ee;--surface:#f7f6fd;--bg:#fff;
+  --header-grad:linear-gradient(135deg,#241a5e 0%,#3b2f9e 55%,#5b4bd6 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#eeedfb;background:#efeef6;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* Header */
+.hdr{background:var(--header-grad);color:#efeefb;border:1px solid var(--accent-d);border-radius:16px;padding:32px 36px 26px;margin-bottom:18px;}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.24);padding:5px 11px;border-radius:999px;color:#efeefb}
+.hdr-meta .chip.brand{background:#b7aef7;color:#1c1450;border-color:#b7aef7}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#3b2f9e}
+.hdr-meta .ey{color:#c8c0f5;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:33px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16.5px;line-height:1.65;color:#dcd6f7;max-width:920px;word-break:keep-all}
+@media (max-width:640px){.hdr{padding:22px 20px 18px}.hdr h1{font-size:24px;margin:12px 0 8px}.hdr .lead{font-size:15px}}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:18px 22px;display:flex;flex-direction:column;min-width:0;}
+.card.s4{grid-column:span 4}.card.s6{grid-column:span 6}.card.s8{grid-column:span 8}.card.s12{grid-column:span 12}
+@media (max-width:900px){.card.s4,.card.s6,.card.s8{grid-column:span 12}}
+
+.card>h2{font-size:17px;font-weight:800;color:var(--accent-d);display:flex;align-items:center;gap:9px;padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--accent);word-break:keep-all}
+.card>h2::before{content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none}
+.card>h2 .seq{font-size:11px;font-weight:800;color:#fff;background:var(--accent);padding:3px 8px;border-radius:6px;letter-spacing:.04em}
+.card h3{font-size:14.5px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14.5px;line-height:1.7;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14.5px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card blockquote{border:1px solid var(--accent-mid);background:var(--accent-light);border-radius:10px;padding:11px 15px;font-size:14px;line-height:1.65;color:#241a5e;margin:8px 0}
+.card strong{color:#1c1450}
+.lead-q{font-size:16px;color:var(--accent-d);font-weight:700;word-break:keep-all}
+
+/* Flow diagram */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin:12px 0}
+.flow .fbox{flex:1;min-width:150px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 12px;text-align:center;display:flex;flex-direction:column;gap:3px}
+.flow .fbox .fi{font-size:28px;line-height:1}
+.flow .fbox b{font-size:15px;color:var(--accent-d);margin-top:6px}
+.flow .fbox span{font-size:13px;color:var(--muted);line-height:1.5}
+.flow .farrow{display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--accent-mid);font-weight:800;flex:none}
+@media (max-width:640px){.flow{flex-direction:column}.flow .farrow{transform:rotate(90deg);padding:2px 0}}
+
+/* Three-pillar taxonomy */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0}
+@media (max-width:760px){.pillars{grid-template-columns:1fr}}
+.pillar{background:var(--surface);border:1px solid var(--border);border-top:4px solid var(--accent);border-radius:12px;padding:15px 16px}
+.pillar .pt{font-size:16px;font-weight:900;color:var(--accent-d)}
+.pillar .ps{font-size:12.5px;color:var(--muted);font-weight:700;margin-bottom:7px}
+.pillar ul{margin:0 0 0 17px}.pillar li{font-size:13.5px;margin:4px 0}
+
+/* Council diagram */
+.council{display:flex;flex-direction:column;align-items:center;gap:11px;margin:12px 0}
+.council .ccenter{background:var(--accent);color:#fff;border:1px solid var(--accent-d);border-radius:12px;padding:10px 18px;font-size:15px;font-weight:800;text-align:center}
+.council .crow{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.council .cnode{background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:999px;padding:9px 15px;font-size:13.5px;font-weight:700;color:var(--accent-d);text-align:center}
+.council .cnode small{display:block;font-size:11.5px;font-weight:600;color:var(--muted)}
+
+/* Match pairing */
+.match{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:9px 0}
+.match .mco{flex:1;min-width:150px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+.match .mco b{color:var(--accent-d);font-size:14px}
+.match .mco span{display:block;font-size:13px;color:var(--text);margin-top:3px}
+.match .mlink{flex:none;text-align:center;font-size:13px;font-weight:800;color:var(--accent);background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:999px;padding:6px 12px}
+@media (max-width:640px){.match .mlink{transform:rotate(90deg)}}
+
+/* tag pills */
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
+.tags .tg{font-size:13px;font-weight:700;color:var(--accent-d);background:var(--accent-light);border:1px solid var(--accent-mid);border-radius:999px;padding:6px 12px}
+
+.foot{margin-top:22px;padding:14px 18px;text-align:center;font-size:12.5px;color:var(--muted);border:1px solid var(--border);border-radius:12px;background:#fff}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent-mid);margin-right:7px;vertical-align:middle}
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{font-size:12.5px;font-weight:600;color:var(--accent-d);text-decoration:none;padding:5px 11px;border:1px solid var(--accent-light);border-radius:999px;background:var(--accent-light)}
+.toc a:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (max-width:640px){.grid{gap:11px}.card{padding:14px 15px;border-radius:12px}.card>h2{font-size:15.5px}.card p,.card li{font-size:14.5px}}
+@media print{body{background:#fff}.page{padding:14px}.card,.foot,.toc{break-inside:avoid}.hdr{break-after:avoid}}
+</style></head><body><div class="page">
+
+<header class="hdr">
+<div class="hdr-meta"><span class="chip brand"><span class="dot"></span>zbot</span><span class="ey">AI+XR 커뮤니티 · 협업 도우미 · 비전 한눈에 보기</span><span class="chip">🤝 협업</span><span class="chip">🧠 지식</span></div>
+<h1>zbot — 우리 커뮤니티의 협업 도우미</h1>
+<p class="lead">AI와 XR(가상·증강현실) 분야에서 기술로 성장하려는 회사와 사람들의 정보를 <strong>차곡차곡 지식으로 모으고</strong>, 궁금한 걸 물어보면 <strong>답해 주고</strong>, 누구와 손잡으면 좋을지 <strong>협업 기회를 찾아 연결</strong>해 주는 도우미입니다.</p>
+</header>
+
+<nav class="toc"><span class="ti">목차</span>
+<a href="#s1">한 줄 요약</a><a href="#s2">왜 필요한가</a><a href="#s3">어떻게 작동하나</a><a href="#s4">지식 정리법</a><a href="#s5">협업 찾기</a><a href="#s6">믿을 수 있나</a><a href="#s7">어떻게 받아보나</a><a href="#s8">정기 소식</a><a href="#s9">한 장 요약</a>
+</nav>
+
+<main class="grid">
+
+<section class="card s12" id="s1"><h2><span class="seq">01</span>한 줄로 말하면</h2>
+<p class="lead-q">“우리 커뮤니티의 모든 회사·사람을 잘 아는 똑똑한 비서가, 서로 도울 수 있는 짝을 찾아 줍니다.”</p>
+<blockquote>회원이 늘수록 “누가 뭘 하는지”, “누구랑 협업하면 좋은지”를 사람이 다 기억하기 어렵습니다. zbot이 그 기억과 연결을 대신해 줍니다.</blockquote>
+</section>
+
+<section class="card s6" id="s2"><h2><span class="seq">02</span>왜 필요한가요?</h2>
+<ul>
+<li><strong>정보가 흩어져 있어요</strong> — 회사소개서, 홈페이지, 뉴스에 따로따로 있습니다.</li>
+<li><strong>좋은 짝을 놓쳐요</strong> — 바로 옆 회원이 우리에게 딱 맞는 파트너인데도 모릅니다.</li>
+<li><strong>물어볼 곳이 없어요</strong> — “XR 캡처 잘하는 회사 있어?” 한 번에 답이 안 나옵니다.</li>
+</ul>
+<blockquote>zbot은 이 세 가지를 <strong>한곳에서</strong> 해결합니다.</blockquote>
+</section>
+
+<section class="card s6" id="s2b"><h2><span class="seq">·</span>누구를 위한 건가요?</h2>
+<p>기술로 성장하려는 <strong>AI·XR 스타트업</strong>과, 이들을 모아 키우는 <strong>커뮤니티 운영자</strong>(액셀러레이터·협회·코워킹 등)를 위한 도구입니다.</p>
+<div class="tags"><span class="tg">AI 비전</span><span class="tg">생성형 AI</span><span class="tg">AR·VR·MR</span><span class="tg">공간컴퓨팅</span><span class="tg">아바타·햅틱</span><span class="tg">볼류메트릭</span></div>
+</section>
+
+<section class="card s12" id="s3"><h2><span class="seq">03</span>어떻게 작동하나요? — 딱 3단계</h2>
+<div class="flow">
+<div class="fbox"><span class="fi">📥</span><b>1. 모은다</b><span>회사소개서·홈페이지·뉴스를 올리면 zbot이 읽고 핵심을 뽑아냅니다</span></div>
+<div class="farrow">→</div>
+<div class="fbox"><span class="fi">🧠</span><b>2. 정리한다</b><span>회사·사람마다 깔끔한 ‘지식 위키’ 한 장으로 자동 정리</span></div>
+<div class="farrow">→</div>
+<div class="fbox"><span class="fi">🤝</span><b>3. 연결한다</b><span>질문에 답하고, 서로 도울 수 있는 협업 짝을 찾아 제안</span></div>
+</div>
+<blockquote>전문 지식이 없어도 됩니다. 자료를 올리고, 평소 말로 물어보면 끝입니다.</blockquote>
+</section>
+
+<section class="card s12" id="s4"><h2><span class="seq">04</span>지식은 이렇게 정리됩니다 — 3가지 묶음</h2>
+<p>회사든 사람이든 <strong>똑같은 틀</strong>로 정리해, 누구와도 비교·연결이 쉽습니다.</p>
+<div class="pillars">
+<div class="pillar"><div class="pt">① 포지션</div><div class="ps">지금 무엇을 하는가</div><ul><li><strong>누구에게</strong> 주는가 (고객)</li><li><strong>무엇을</strong> 주는가 (제품·역량)</li><li><strong>어떻게</strong> 주는가 (방식)</li></ul></div>
+<div class="pillar"><div class="pt">② 성과·이력</div><div class="ps">무엇을 이뤘는가</div><ul><li>투자 유치·제품 출시</li><li>수상·주요 레퍼런스</li><li>날짜순으로 차곡차곡</li></ul></div>
+<div class="pillar"><div class="pt">③ 여정</div><div class="ps">어디서 와서 어디로 가는가</div><ul><li><strong>걸어온 길</strong> (배경·경험)</li><li><strong>걸어갈 길</strong> (목표)</li><li>지금 <strong>찾는 것</strong> (needs)</li></ul></div>
+</div>
+<blockquote><strong>모든 자료는 깔끔한 문서(마크다운)로</strong> 저장돼, 사람도 읽기 쉽고 기계도 이해하기 쉽습니다.</blockquote>
+</section>
+
+<section class="card s12" id="s5"><h2><span class="seq">05</span>협업은 이렇게 찾아 줍니다</h2>
+<p>두 회사·사람의 <strong>포지션·성과·여정을 비교</strong>해, 서로 도울 수 있는 지점을 찾습니다.</p>
+<div class="match">
+<div class="mco"><b>A 회사</b><span>“실시간 XR 캡처 기술을 <strong>제공</strong>”</span></div>
+<div class="mlink">딱 맞음 ⟷</div>
+<div class="mco"><b>B 회사</b><span>“전시용 XR 콘텐츠 파트너를 <strong>찾는 중</strong>”</span></div>
+</div>
+<h3>협업 종류</h3>
+<div class="tags"><span class="tg">고객·공급 매칭 (사고팔기)</span><span class="tg">공동사업·R&amp;D (함께 만들기)</span></div>
+<h3>만나는 방법까지 제안</h3>
+<div class="tags"><span class="tg">온라인 — 소개·공동 자료</span><span class="tg">오프라인 — 밋업·데모데이·매치메이킹</span></div>
+</section>
+
+<section class="card s8" id="s6"><h2><span class="seq">06</span>믿을 수 있나요? — 5명의 검토단</h2>
+<p>제안이 사용자에게 가기 <strong>전에</strong>, 서로 다른 관점의 검토단 5명이 “이거 진짜 말 되나?”를 함께 점검합니다. 통과한 제안에만 <strong>검토 완료 배지</strong>가 붙습니다.</p>
+<div class="council">
+<div class="ccenter">zbot의 제안 한 건</div>
+<div class="crow">
+<div class="cnode">기술<small>진짜 맞물리나?</small></div>
+<div class="cnode">고객<small>수요가 실재하나?</small></div>
+<div class="cnode">수익<small>돈이 되나?</small></div>
+<div class="cnode">컴플라이언스<small>규제·동의 문제 없나?</small></div>
+<div class="cnode">생태계<small>건강한 연결인가?</small></div>
+</div>
+</div>
+</section>
+
+<section class="card s4" id="s7"><h2><span class="seq">07</span>어떻게 받아보나요?</h2>
+<div class="flow" style="flex-direction:column">
+<div class="fbox"><span class="fi">💬</span><b>카톡으로 링크</b><span>커뮤니티 단톡방에 링크가 옵니다</span></div>
+<div class="farrow" style="transform:rotate(90deg)">→</div>
+<div class="fbox"><span class="fi">📱</span><b>앱 설치 (PWA)</b><span>스토어 없이 한 번 설치</span></div>
+<div class="farrow" style="transform:rotate(90deg)">→</div>
+<div class="fbox"><span class="fi">🤖</span><b>zbot 등장</b><span>그 화면에서 바로 대화</span></div>
+</div>
+</section>
+
+<section class="card s12" id="s8"><h2><span class="seq">08</span>정기 소식도 자동으로</h2>
+<div class="flow">
+<div class="fbox"><span class="fi">📰</span><b>월간 소식지</b><span>새 회원, 투자·출시 소식, 이달의 협업 제안을 한 장으로</span></div>
+<div class="fbox"><span class="fi">🗺️</span><b>생태계 지도</b><span>누가 누구와 연결돼 있는지 한눈에 보이는 관계 지도</span></div>
+</div>
+<blockquote>구축된 지식이 보기 좋은 <strong>그림·인포그래픽</strong>으로 정리돼 매달 자동 공유됩니다.</blockquote>
+</section>
+
+<section class="card s12" id="s9"><h2><span class="seq">09</span>한 장 요약</h2>
+<div class="flow">
+<div class="fbox"><span class="fi">🧩</span><b>흩어진 정보</b><span>회사소개서·웹·뉴스</span></div>
+<div class="farrow">→</div>
+<div class="fbox"><span class="fi">📚</span><b>하나의 지식</b><span>포지션·성과·여정</span></div>
+<div class="farrow">→</div>
+<div class="fbox"><span class="fi">🤝</span><b>검증된 협업</b><span>5명 검토단 통과</span></div>
+<div class="farrow">→</div>
+<div class="fbox"><span class="fi">📈</span><b>커뮤니티 성장</b><span>소식지·생태계 지도</span></div>
+</div>
+<blockquote class="lead-q">zbot = AI+XR 커뮤니티가 <strong>서로 더 잘 알고, 더 잘 연결되고, 더 빨리 성장</strong>하도록 돕는 협업 도우미.</blockquote>
+</section>
+
+</main>
+<div class="foot"><span class="dot"></span>zbot 비전 한눈에 보기 · 2026-06-17 · 공유용 초안</div>
+</div></body></html>
