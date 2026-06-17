@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 5인 회사 운영하며 직접 헤르메스 에이전트 720시간 돌려본 후기 (feat. Slack, Hostinger)"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>빌더 조쉬</span><span class="ey">MORNING DIGEST · 2026-06-17 · 빌더 조쉬</span><span class="chip">🎬 영상</span></div><h1>리포트</h1><p class="lead">title: 5인 회사 운영하며 직접 헤르메스 에이전트 720시간 돌려본 후기 (feat. Slack, Hostinger)</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 내용 구조</a><a href="#s3">기술적 맥락</a><a href="#s4">전략적 의미</a><a href="#s5">핵심 워크플로우/방법론</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a><a href="#s9">타임스탬프 딥링크</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>빌더 조쉬</td></tr><tr><td>발표자</td><td>조슈아 앤 컴퍼니 대표 (AX 컨설팅 회사, 본인 포함 직원 약 6명)</td></tr><tr><td>주제</td><td>헤르메스(Hermes) AI 에이전트를 Slack에 설치하고 한 달(약 720시간) 운영한 후기</td></tr><tr><td>핵심 메시지</td><td>AI를 단순 챗봇이 아닌 &quot;팀원&quot;으로 만들려면 맥락 데이터 적재와 SOP(회사의 뇌) 구축이 핵심</td></tr><tr><td>추천 대상</td><td>레거시가 적은 소규모·신생 조직 (AI 네이티브 회사 만들기에 적합)</td></tr><tr><td>핵심 결론</td><td>1) 소규모 조직에 적합 2) 코딩 도구처럼 산출물·자동화까지 가능 3) 가장 중요한 건 보안·데이터 거버넌스</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>발표자는 자신이 운영하는 AX 컨설팅 회사(조슈아 앤 컴퍼니)에서 헤르메스 에이전트를 직접 한 달간 굴려본 실전 경험을 공유한다. 큰 흐름은 다음과 같다.</p>
+<ul>
+<li><strong>AI 발전 4단계 소개</strong>: 노션 코리아 행사에서 들은 개념. ① 사고 파트너 → ② 비서 → ③ 팀원 → ④ 시스템으로서의 AI. 발표자는 헤르메스로 &quot;팀원으로서의 AI&quot; 단계를 직접 구현하고자 했다.</li>
+<li><strong>설치 방식 비교</strong>: 맥미니(로컬) vs 호스팅어(VPS, 웹 서버). 공용 운영에는 VPS를 추천.</li>
+<li><strong>활용 5단계 방법론</strong>: 모으기 → 정리하기 → 도구 세팅 → 다듬기 → 자가 학습.</li>
+<li><strong>실제 활용 사례</strong>: 회의록 적재, 데일리 태스크 제안, 이메일 자동 답장, 사내 ERP, 카피라이팅, 회사 소개서 제작 등.</li>
+<li><strong>구성원별 활용 + 한계 + 깨달음</strong>으로 마무리.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>헤르메스(Hermes) 에이전트</strong>: Slack에 설치해 팀원처럼 쓰는 공용 AI 에이전트. 데스크탑(macOS/Windows) 버전도 존재하나, 공용 사용에는 서버 설치가 더 적합.</li>
+<li><strong>설치 환경 두 가지</strong></li>
+</ul>
+<p>- 맥미니(로컬): 24시간 켜둘 수 있으나 야간 업데이트·정전·전기세·자동 업데이트 불가(터미널에서 수동으로 <code>헤르메스 업데이트</code> 입력 필요)·보안 구멍 우려. - 호스팅어(Hostinger) VPS: 24시간 가동, OS 업데이트·전원 차단 위험 적음, 도커 매니저로 설치. 주소만 노출 안 하면 보안도 나쁘지 않음. 본문 쿠폰 링크로 10% 이상 할인.</p>
+<ul>
+<li><strong>연동 도구</strong>: Slack(메인 채널), Gmail API, 노션, 옵시디언(Obsidian), 깃허브(GitHub), 플라우드 노트(Plaud Note) + 재피어(Zapier), GPT 이미지 2.0 API.</li>
+<li><strong>G스택/G브레인</strong>: Y컴비네이터 대표 게리 탠이 만든 오픈소스. G스택은 YC의 사업 SOP·평가 기준, G브레인은 에이전트의 기억(RAG)을 강화하는 도구.</li>
+<li><strong>토큰</strong>: ChatGPT 약 100달러 플랜으로 내부 운영 중이며 초과 사례는 아직 없었음.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>AI 네이티브 컴퍼니</strong>: Y컴비네이터, 블록(Block) CEO 잭 도시 등이 강조. &quot;AI는 회사의 가정을 깨버린다&quot; — AI가 스스로 매일 나아지는 시스템을 만들 수 있기 때문.</li>
+<li><strong>조직 스스로 먼저 바뀌어야 한다</strong>: AX 컨설팅을 제공하는 입장에서, 도와주려면 자기 조직부터 AI 네이티브로 전환해야 한다는 문제의식.</li>
+<li><strong>대표 업무 경감</strong>: AI가 데일리 태스크 정리를 잘 해주니 대표의 업무량도 줄었다.</li>
+<li><strong>레거시 없는 소규모 조직이 유리</strong>: 기존 도구·관성이 적어 데이터 적재와 전환이 쉽다.</li>
+<li><strong>보안 담당자 필요론</strong>: 모든 조직에 데이터 거버넌스·보안을 책임지는 직원 혹은 에이전트가 필요하다고 주장.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><p>발표자가 제시한 <strong>에이전트 활용 5단계</strong>:</p>
+<ol>
+<li><strong>모으기(데이터 적재)</strong>: 회사의 공용 자산(노션, Slack, Gmail, CS 문의 등)을 에이전트에 연동·축적. 단, 헤르메스는 연동 도구 지원이 약해 API로 하나씩 붙여야 해 불편함.</li>
+<li><strong>정리하기(중앙화)</strong>: 매일 적재된 데이터를 하나의 중앙 문서/체계로 압축. → 회사의 뇌 = <strong>SOP(표준 운영 절차서)</strong>.</li>
+<li><strong>도구 세팅</strong>: 옵시디언·깃허브 등 헤르메스와 잘 붙는 도구를 연결.</li>
+<li><strong>다듬기(하네스 세팅)</strong>: 챗봇처럼만 쓰지 말고 코딩·업무 자동화 도구로 쓸 수 있게 환경(harness)을 정비.</li>
+<li><strong>자가 학습</strong>: 에이전트가 스스로 학습·<span class="up">개선</span>하도록 피드백 루프를 환경에 설계.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>회의록 자동 적재 + 이미지 보고</strong>: 플라우드 노트로 데일리 스크럼을 녹음 → 재피어로 Slack·옵시디언·깃허브에 마크다운으로 자동 저장 → GPT 이미지 2.0 API로 회의 요약을 이미지 형태로 구성원에게 공유(긴 글 대신 도표로 보기 편함).</li>
+</ol>
+<ol>
+<li><strong>이메일 자동 답장(B2B)</strong>: 하루 30~50건 메일 중 광고 요청 메일 등을 AI가 회사 맥락에 맞는 답장 초안으로 일괄 작성. 대표가 승인하면 일괄 발송. &quot;1일 요약&quot;으로 놓친 답장도 챙겨줌.</li>
+</ol>
+<ol>
+<li><strong>데일리 태스크 제안</strong>: 회사의 모든 맥락 기반으로 &quot;오늘 할 일·마감·확인 필요 리스크·다음 액션&quot;을 텍스트 + 요약 이미지 도표로 제공. 초기엔 맥락 부족으로 별로였으나 컨텍스트가 쌓이며 품질 급<span class="up">상승</span>.</li>
+</ol>
+<ol>
+<li><strong>사내 ERP 셀프 개발</strong>: 견적서·세금계산서 발행, 프로젝트·휴가 관리를 에이전트가 직접 개발·운영. 대화로 &quot;세금 계산서 발급하자&quot; 입력 시 처리. 비개발자 PD가 유지보수.</li>
+</ol>
+<ol>
+<li><strong>콘텐츠·회사 소개서 제작</strong>: 회사 스타일에 맞는 카피라이팅 추출, 최신화된 회사 소개서를 스크린샷 없이 자동 생성.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li><strong>잘 되고 있는가?</strong>: 되고 있고 매일 나아지는 중. 팀원 모드 클로드 코드를 일상처럼 쓰는 조직이라 에이전트와 병합해 사용.</li>
+<li><strong>한계</strong></li>
+</ul>
+<p>- 외부 커뮤니케이션·고맥락 대화(계약 등)는 여전히 사람 확인 필요. - AI 의사결정 권한은 제한적 — 돈, 견적서 등은 사람 검수 필수, 암묵지 의존 영역이라 신중한 설계 필요. - 팀원별 AI 리터러시 편차 존재. 단, 에이전트가 항상 사내에 존재하고 로깅을 보여줌으로써 리터러시 향상의 간접 효과도 있음.</p>
+<ul>
+<li><strong>보안</strong>: 고객사 정보는 절대 적재하지 않음. 회의록에서도 회사 정보는 제외. 2차 인증·이중 보안 적용. 가급적 DM보다 공개 채널에서 데이터가 쌓이도록 대화 유도. 에이전트 채널은 알림 끄기.</li>
+<li><strong>전망</strong>: 현재 브리핑·요약·태스크·자동화 수준이나 점점 영역이 넓어질 것. &quot;가능성이 무궁무진하다&quot;는 결론.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>헤르메스 에이전트</td><td>Slack에 설치해 팀원처럼 쓰는 공용 AI 에이전트</td><td>회사에 상주하는 디지털 직원</td></tr><tr><td>AX</td><td>AI Transformation, AI 기반 조직 전환</td><td>DX(디지털 전환)의 AI 버전</td></tr><tr><td>AI 네이티브 컴퍼니</td><td>AI를 중심에 두고 운영되는 회사</td><td>처음부터 AI로 설계된 조직</td></tr><tr><td>AI 발전 4단계</td><td>사고파트너→비서→팀원→시스템 순의 AI 활용 성숙도</td><td>신입에서 임원까지 성장하는 단계</td></tr><tr><td>호스팅어(Hostinger)</td><td>24시간 가동되는 웹 서버(VPS) 호스팅 서비스</td><td>항상 켜져 있는 임대 컴퓨터</td></tr><tr><td>VPS</td><td>가상 사설 서버, 인터넷상의 전용 컴퓨터</td><td>클라우드에 빌린 내 PC</td></tr><tr><td>맥미니</td><td>애플의 소형 데스크탑, 로컬 24시간 서버용</td><td>책상 위 작은 상시 가동 PC</td></tr><tr><td>도커(Docker) 매니저</td><td>프로그램을 격리 실행·관리하는 도구</td><td>앱을 담는 표준 컨테이너</td></tr><tr><td>SOP</td><td>표준 운영 절차서, 회사의 매뉴얼+방향성 문서</td><td>회사의 살아있는 뇌</td></tr><tr><td>LLM 위키</td><td>카파시 개념, AI용으로 압축·정리한 지식 문서</td><td>AI 전용 회사 위키백과</td></tr><tr><td>플라우드 노트(Plaud)</td><td>버튼식 자동 녹음 카드형 기기</td><td>명함 크기 회의 녹음기</td></tr><tr><td>재피어(Zapier)</td><td>노드 단위로 앱을 잇는 자동화 도구</td><td>앱 사이를 잇는 배관공</td></tr><tr><td>데일리 스탠드업</td><td>매일 아침 할 일을 공유하는 짧은 회의</td><td>출근 후 조회 시간</td></tr><tr><td>G스택/G브레인</td><td>YC 게리 탠의 오픈소스, 사업 SOP+기억 강화 도구</td><td>외부에서 빌려온 사업 멘토 뇌</td></tr><tr><td>RAG(레그)</td><td>외부 지식을 검색해 답변하는 AI 기법</td><td>책 펴놓고 답하는 학생</td></tr><tr><td>데이터 거버넌스</td><td>데이터를 안전·체계적으로 관리하는 원칙</td><td>데이터 출입을 지키는 경비</td></tr><tr><td>가드레일</td><td>AI가 위험을 넘지 않게 막는 안전 장치</td><td>도로 양옆 가드레일</td></tr><tr><td>암묵지</td><td>문서화되지 않은 경험·노하우</td><td>손맛 같은 비공식 지식</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>타임스탬프 딥링크</h2><ul>
+<li><a href="https://youtu.be/9m8iMzEBuSU?t=102" target="_blank" rel="noopener">AI 발전 4단계: 사고파트너·비서·팀원·시스템 (1:42)</a></li>
+<li><a href="https://youtu.be/9m8iMzEBuSU?t=211" target="_blank" rel="noopener">맥미니 vs 호스팅어 VPS 설치 비교 (3:31)</a></li>
+<li><a href="https://youtu.be/9m8iMzEBuSU?t=751" target="_blank" rel="noopener">에이전트 활용 5단계 방법론 소개 (12:31)</a></li>
+<li><a href="https://youtu.be/9m8iMzEBuSU?t=690" target="_blank" rel="noopener">플라우드 노트로 회의 녹음 자동 적재 (11:30)</a></li>
+<li><a href="https://youtu.be/9m8iMzEBuSU?t=976" target="_blank" rel="noopener">SOP = 회사의 뇌, LLM 위키 개념 (16:16)</a></li>
+<li><a href="https://youtu.be/9m8iMzEBuSU?t=1310" target="_blank" rel="noopener">이메일 자동 답장 일괄 처리 (21:50)</a></li>
+<li><a href="https://youtu.be/9m8iMzEBuSU?t=1791" target="_blank" rel="noopener">한계: 사람 확인 필요 영역과 의사결정 권한 (29:51)</a></li>
+<li><a href="https://youtu.be/9m8iMzEBuSU?t=1883" target="_blank" rel="noopener">깨달음: 소규모 조직 적합·보안이 가장 중요 (31:23)</a></li>
+</ul></section></main><div class="foot"><span class="dot"></span>빌더 조쉬 · 2026-06-17</div></div></body></html>

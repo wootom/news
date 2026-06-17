@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: &#x27;이것까지 가능하겠어?&#x27; 실험하고, &#x27;왜 이렇게 하고 있지?&#x27; 의심하기가 AX 시작 (김성준 국민대 교수)"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-06-17 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>리포트</h1><p class="lead">title: &#x27;이것까지 가능하겠어?&#x27; 실험하고, &#x27;왜 이렇게 하고 있지?&#x27; 의심하기가 AX 시작 (김성준 국민대 교수)</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 내용 구조</a><a href="#s3">기술적 맥락</a><a href="#s4">전략적 의미</a><a href="#s5">핵심 워크플로우/방법론</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a><a href="#s9">타임스탬프 딥링크</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>AI 도입(AX)을 가로막는 조직 문화와, 이를 뚫는 개인·리더의 사고 전환</td></tr><tr><td>핵심 메시지</td><td>&quot;설마 이것까지 가능하겠어?&quot;를 실험하고 &quot;왜 이렇게 하고 있지?&quot;를 의심하는 것이 AX의 출발점</td></tr><tr><td>화자</td><td>김성준 국민대 교수(조직·리더십 연구자, 『AI 조직』 저자)</td></tr><tr><td>진행자</td><td>이중학 (&#x27;사랑과 기술&#x27; 진행)</td></tr><tr><td>채널</td><td>티타임즈TV</td></tr><tr><td>대상 청중</td><td>조직 리더·중간관리자·HR 실무자, AI 도입을 고민하는 직장인</td></tr><tr><td>핵심 결론</td><td>AI 기술은 빠르게 발전하나 조직의 &#x27;일하는 방식&#x27;은 묶여 있음. 격차의 본질은 기술이 아니라 문화와 사고의 전제</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>수렴-이산 현상</strong> — 모든 조직(공기업·정부·학교·민간)이 AI로 수렴하지만, 동시에 활용 수준은 극단적으로 벌어짐(이산)</li>
+</ul>
+<p>- 개인 단위도 동일: ChatGPT/Claude 미사용자 ↔ 단순 챗봇 사용자 ↔ 에이전트로 자동화까지 도달한 사용자</p>
+<ul>
+<li><strong>AI를 못 쓰는 조직의 3가지 유형</strong></li>
+</ul>
+<p>- 보안 이슈: 방산망·그룹 보안망 환경이라 ChatGPT/Claude 접근 자체가 차단 - 자체 LLM만 허용: 사내 모델 성능 아쉬워 집·스마트폰으로 우회 작업 - 보수적 조직 문화: &quot;원래 이 일은 이렇게 해야 한다&quot;는 가정이 굳건해 실험 불가</p>
+<ul>
+<li><strong>심리적 허들</strong> — OpenAI CFO 사라 프라이어 일화. AI를 가장 잘 만드는 회사의 재무부서조차 상당수가 기존 방식대로 일함</li>
+</ul>
+<p>- 재무부서는 정확성·엄밀성이 생명 → 할루시네이션(환각) 1건도 치명적 → AI 도입 장벽 높음 - 최고경영층(빨리 적용하자)과 중간관리층(심리적 장벽 큼)의 온도차</p>
+<ul>
+<li><strong>&quot;누가 했어?&quot; 문화</strong> — 문제 발생 시 책임자부터 찾는 한국 대기업의 지배적 습성이 실험을 가로막음</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>노동의 전제 변화</strong>: &#x27;아는 만큼 할 수 있다&#x27;(과거) → &#x27;AI로 다 가져와 내가 구현한다&#x27;(현재)</li>
+</ul>
+<p>- 과거엔 지식 베이스가 없으면 책·구글링·전문가 강의로 기초 지식을 먼저 쌓아야 했음 - 이제는 모르는 것도 AI로 즉시 가져와 실행 가능 (보안 모르던 사람이 2~3분 만에 실행자로 전환)</p>
+<ul>
+<li><strong>학습의 탑다운 전환</strong>: 안드레 카파시 언급. 배우는 행위 자체가 상향식(기초→응용)에서 하향식(결과부터)으로 변함</li>
+<li><strong>일하는 순서 역전</strong>: 과거 &#x27;질문은 앞단부터&#x27; → 현재 &#x27;AI가 초안·프로토타입 → 인간이 마지막에 검증(밸리데이션)&#x27;</li>
+<li><strong>Anthropic 침투율 데이터(2026년 3월 리포트)</strong></li>
+</ul>
+<p>- 756개 직무, 총 17,998개 하위 과업 분석 - 실제 AI 침투 과업은 약 1,300건뿐 → 전체의 약 <strong>7.3%</strong> - 소프트웨어 프로그래머 약 73%, 고객 서비스 70%로 가장 높음 - 나머지 약 1만 6천여 과업은 침투율 0 (아예 진입 안 됨)</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>7.3%의 양면성</strong>: &quot;겨우 7.3%&quot;로 안심할 수 없음. 한 번 침투가 시작된 과업은 &#x27;적당히&#x27;가 없이 통째로 넘어감</li>
+<li><strong>가능성 ≠ 실제 채택</strong>: 2007년 블라인더의 오프쇼어링 연구처럼, 이론적 가능성과 실제 도입은 완전히 다른 문제 (칼로 자를 수 있어도 바나나는 손으로 자르는 것과 같은 비유)</li>
+<li><strong>재귀적 자기 <span class="up">개선</span>(AI가 스스로 <span class="up">개선</span>)</strong>의 종착점을 아무도 예측 못 함 → 미래 직무 불확실성 극대화</li>
+<li><strong>격차의 본질</strong>: AI 기술 격차가 아니라 &#x27;조직이 문제를 어떻게 다루느냐&#x27;(문화)의 격차가 AX 속도를 좌우</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><ul>
+<li><strong>PAAM 방법론 (과업 중심 AI 재설계)</strong></li>
+</ul>
+<p>- 직무 = 5~7개 과업의 묶음 → 각 과업을 분해해 AI 전환 가능성 진단 - <strong>P (Purpose)</strong>: 이 과업의 목적·고객·만들어야 할 가치는 무엇인가 - <strong>A (Automation)</strong>: 완전 자동화 가능한 활동 - <strong>A (Augmentation)</strong>: 인간을 보조·증강하는 활동 - <strong>M (Manual)</strong>: 오롯이 인간이 해야 하는 활동 - 한계: 사람의 머리로 분석하다 보니 &#x27;내 생각의 한계&#x27;에 갇혀 부분 최적화에 그침 (비트겐슈타인 &#x27;내 언어의 한계가 내 세계의 한계&#x27; → &#x27;내 생각의 한계가 AI 활용의 한계&#x27;)</p>
+<ul>
+<li><strong>AX의 척경(요체) 2단계 사고</strong></li>
+</ul>
+<p>- ① 실험: &quot;설마 이것까지 가능하겠어?&quot;를 직접 해보기 - ② 의심: &quot;내가 반복 작업하고 있네 → 왜 이렇게 하고 있지?&quot;를 즉시 의심하기</p>
+<ul>
+<li><strong>리더의 문제 다루기 3습관 (심리적 안정감 구축)</strong></li>
+</ul>
+<p>- 첫 반응을 &quot;누가 했어?&quot;가 아닌 &quot;빨리 해결합시다, 아이디어 내보세요&quot;로 (첫 댓글이 프레임을 지배) - 비난 시도를 즉시 차단 (&quot;지금 그거 하는 거 아니야, 해결에 집중&quot;) - 양보·해결책 제안자를 즉시 인정·칭찬 → 정보 공유가 투명해지고 새로운 시도 활성화</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>HR 팀장의 재무 학습</strong>: 재무를 모르는 인사 리더가 사업보고서를 ChatGPT에 올리고 &quot;이게 무슨 말이야?&quot;를 반복 질문 → &#x27;반쪽짜리 팀장&#x27;에서 비즈니스 이해를 갖춘 리더로 성장</li>
+<li><strong>&#x27;질문에 대한 질문&#x27; 프롬프트</strong>: 모르는 분야에서 무엇을 물어야 할지조차 모를 때 &quot;내가 X를 모르는데 어떤 질문을 해야 가장 좋을까?&quot;를 던져 핵심 질문 5가지를 역으로 도출</li>
+<li><strong>바이브 코딩 앱 보안 검수</strong>: MVP를 직접 만든 뒤 Claude Code에게 &quot;보안 검수해줘&quot; → 리스크를 로우/미디엄/하이/크리티컬 4단계로 자동 분류받아 우선순위 실행</li>
+<li><strong>UX 반복 검수 자동화</strong>: 웹·모바일을 직접 오가며 반복 점검하던 작업을 의심 → Claude Code에 주소를 던지고 Claude for Chrome으로 마우스 핸들링까지 위임해 UX 리포트 자동 생성</li>
+<li><strong>회의 자기 진단</strong>: 갤럭시 녹취록을 ChatGPT에 넣어 화자별로 분석. &quot;문제 발생 시 내 첫 반응은? 내 발언 비율 vs 참여자 발언 시간은?&quot;을 프롬프트로 자기 운영 스타일 리뷰</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li><strong>현재</strong>: 과업 단위 AI 침투율은 약 7.3%(2026년 초 기준)로 아직 낮지만, 침투가 시작된 영역은 빠르게 통째로 전환 중</li>
+<li><strong>인간에게 남는 역할 (현재 유효)</strong>: 방향 설정 → 검증 → 피드백. &quot;실행은 AI, 검토·검증은 인간&quot;이 공통 메시지(MS 워크트렌드 리포트, 2016 가치오 교수 대담 등). 다만 &quot;도장 찍어 안정감 주는&quot; 이 역할도 언제까지 유효할지는 미지수</li>
+<li><strong>순전히 인간적인 것 (지속될 영역)</strong></li>
+</ul>
+<p>- 정체성 정의: 자기개념(좋고싫음의 정보 집합)과 달리, 정체성은 &#x27;내가 선택·편집한 나만의 길&#x27; → AI가 결정 불가 - 미래를 꿈꾸고 걱정하는 일 (나·자녀·인류의 미래) - <strong>경탄</strong>: AI가 궁극에 올라도 인간은 탁월한 인간(김연아·바둑기사 등)에게 경탄. 바둑계처럼 AI는 접어두고 &#x27;인간 대 인간&#x27;의 경지를 여전히 추앙</p>
+<ul>
+<li><strong>불확실성</strong>: Anthropic조차 자사 기술의 종착점을 모른다고 밝힘 → 재귀적 자기 <span class="up">개선</span>의 미래는 예측 불가</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명(40자 이내)</th><th>비유/예시</th></tr></thead><tbody><tr><td>AX</td><td>AI 트랜스포메이션, 조직·업무의 AI 전환</td><td>DX(디지털 전환)의 AI 버전</td></tr><tr><td>수렴-이산 현상</td><td>모두 AI로 모이나 활용 수준은 극단으로 벌어짐</td><td>같은 출발선, 천차만별 결승선</td></tr><tr><td>LLM(거대언어모델)</td><td>방대한 텍스트로 학습한 언어 생성 AI</td><td>ChatGPT·Claude의 두뇌</td></tr><tr><td>할루시네이션</td><td>AI가 사실이 아닌 내용을 그럴듯하게 지어냄</td><td>자신만만하게 틀린 답을 하는 신입</td></tr><tr><td>심리적 안정감</td><td>틀렸다·실패했다고 말할 수 있는 문화</td><td>손 들어도 핀잔 안 받는 교실</td></tr><tr><td>신상필벌</td><td>잘하면 상, 잘못하면 벌 (변질되면 책임자 색출)</td><td>성과는 칭찬, 횡령은 처벌</td></tr><tr><td>방산망</td><td>군수·국방용 폐쇄 보안 네트워크</td><td>외부 인터넷과 단절된 금고</td></tr><tr><td>PAAM</td><td>과업을 Purpose/Automation/Augmentation/Manual로 분해</td><td>업무를 네 칸에 분류하는 체크리스트</td></tr><tr><td>오토메이션</td><td>완전 자동화, 인간 개입 없이 처리</td><td>자동 세차기</td></tr><tr><td>어그멘테이션</td><td>AI가 인간을 보조·증강하는 방식</td><td>운전 보조 시스템</td></tr><tr><td>MVP</td><td>최소 기능만 갖춘 초기 제품</td><td>뼈대만 세운 시제품</td></tr><tr><td>바이브 코딩</td><td>자연어 지시로 AI가 코드를 짜는 개발 방식</td><td>말로 시키면 만들어주는 코딩</td></tr><tr><td>Claude Code</td><td>코딩·검수를 수행하는 Claude 기반 도구</td><td>AI 페어 프로그래머</td></tr><tr><td>Claude for Chrome</td><td>브라우저를 직접 조작하는 Claude 확장</td><td>마우스를 대신 잡는 AI</td></tr><tr><td>밸리데이션</td><td>결과의 타당성·정확성을 검증하는 행위</td><td>전문가의 최종 도장</td></tr><tr><td>오프쇼어링</td><td>일자리·업무를 해외로 이전</td><td>콜센터 해외 이전</td></tr><tr><td>재귀적 자기 <span class="up">개선</span></td><td>AI가 스스로를 <span class="up">개선</span>해 더 똑똑해짐</td><td>스스로 진화하는 시스템</td></tr><tr><td>경험의 덫</td><td>성공 경험이 굳어 변화를 가로막는 함정</td><td>&quot;예전엔 이게 통했는데&quot;의 늪</td></tr><tr><td>탑다운 학습</td><td>결과부터 보고 거슬러 배우는 하향식 학습</td><td>정답지 먼저 보고 푸는 방식</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>타임스탬프 딥링크</h2><ul>
+<li><a href="https://youtu.be/axGKIooHxac?t=96" target="_blank" rel="noopener">수렴-이산 현상 설명 (1분 36초)</a></li>
+<li><a href="https://youtu.be/axGKIooHxac?t=166" target="_blank" rel="noopener">AI를 못 쓰는 조직 3유형 (2분 46초)</a></li>
+<li><a href="https://youtu.be/axGKIooHxac?t=359" target="_blank" rel="noopener">&quot;누가 했어?&quot; 문화와 신상필벌 변질 (5분 59초)</a></li>
+<li><a href="https://youtu.be/axGKIooHxac?t=1151" target="_blank" rel="noopener">&#x27;아는 만큼 할 수 있다&#x27; 전제의 붕괴 (19분 11초)</a></li>
+<li><a href="https://youtu.be/axGKIooHxac?t=1476" target="_blank" rel="noopener">PAAM 방법론과 그 한계 (24분 36초)</a></li>
+<li><a href="https://youtu.be/axGKIooHxac?t=1872" target="_blank" rel="noopener">Anthropic 침투율 7.3% 데이터 (31분 12초)</a></li>
+<li><a href="https://youtu.be/axGKIooHxac?t=2085" target="_blank" rel="noopener">인간에게 남는 것: 정체성·경탄 (34분 45초)</a></li>
+</ul></section></main><div class="foot"><span class="dot"></span>티타임즈TV · 2026-06-17</div></div></body></html>
