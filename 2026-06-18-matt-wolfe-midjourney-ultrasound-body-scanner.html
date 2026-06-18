@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 미드저니가 만든 것?! — 음파 기반 전신 스캐너"><title>미드저니가 만든 것?! — 음파 기반 전신 스캐너</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">MORNING DIGEST · 2026-06-19 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>미드저니가 만든 것?! — 음파 기반 전신 스캐너</h1><p class="lead">title: 미드저니가 만든 것?! — 음파 기반 전신 스캐너</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 내용 구조</a><a href="#s3">기술적 맥락</a><a href="#s4">전략적 의미</a><a href="#s5">핵심 워크플로우/방법론</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Matt Wolfe</td></tr><tr><td>주제</td><td>텍스트→이미지 AI 기업 미드저니가 만든 &quot;전신 스캐너&quot;</td></tr><tr><td>작동 원리</td><td>약 9,000개 초소형 트랜스듀서가 초음파를 쏘고 반향(에코)을 측정</td></tr><tr><td>핵심 성능</td><td>60초 만에 전신 스캔, 원자 폭보다 미세한 진동 감지, 0.5mm 정확도</td></tr><tr><td>비교</td><td>MRI 대비 60배 빠르고 10배 저렴, 방사선 없음, 회당 운영비 사실상 0</td></tr><tr><td>사업 형태</td><td>병원 아닌 &quot;스파&quot;에 설치 — 1호점 샌프란시스코 애플스토어 옆</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li>정체: 텍스트를 AI 이미지로 바꾸는 것으로 유명한 미드저니가 하드웨어 스캐너 제작.</li>
+<li>구조: 모래알보다 작은 트랜스듀서 약 9,000개가 링(원형)에 배열, 각각이 스피커이자 마이크로 작동.</li>
+<li>동작: 초음파를 몸속으로 발사하고 되돌아오는 에코를 수신 → 21대 서버(2 페타플롭 연산)가 수백 개 단면을 3D 장기 지도로 재구성.</li>
+<li>정밀도: 센서 하나가 원자 폭보다 미세한 진동까지 감지, 장기 0.5mm 정확도.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>AI 이미지 기업이 만든 이유: 미드저니의 핵심 역량은 &quot;원시 데이터→이미지&quot; 변환. 초음파 에코라는 raw 데이터를 정밀 3D 영상으로 재구성하는 데 그 역량이 직결됨.</li>
+<li>음파 기반 장점: 방사선이 없어 안전하고, 소모품이 없어 스캔 1회 실질 운영비가 거의 0에 수렴.</li>
+<li>연산 규모: 21대 서버, 2 페타플롭 연산으로 대량 에코를 실시간 영상화.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>AI 이미지 역량의 하드웨어 확장: 소프트웨어(이미지 생성) 강점을 의료 하드웨어로 전이하는 사례.</li>
+<li>의료 접근성 파괴적 혁신: MRI의 시간(최대 2시간)·비용(수천 달러) 장벽을 60초·저비용으로 낮춰 일상화 시도.</li>
+<li>일상 소비재화: 병원이 아닌 스파라는 라이프스타일 공간에 배치해 &quot;MRI급 성능, 사우나처럼 캐주얼한&quot; 경험 지향.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><ul>
+<li>스캔 흐름: 링 안에 들어섬 → 9,000개 트랜스듀서가 초음파 발사·에코 수신 → 21대 서버가 수백 단면 재구성 → 0.5mm 정확도 3D 장기 지도 생성(60초 소요).</li>
+<li>배치 전략: 스파(사우나·냉탕·온탕) 공간에 스캐너 10대를 나란히 설치하는 복합 모델.</li>
+<li>확장 목표: 스캐너 5만 대로 월 10억 회 스캔 — 지구상 모든 사람에게 전신 스캔 제공 규모.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>예방 건강검진: 저비용·무방사선으로 정기 전신 스캔을 일상화해 조기 질환 발견.</li>
+<li>웰니스 결합형 공간: 스파·피트니스와 결합한 신개념 건강관리 서비스.</li>
+<li>대규모 헬스 데이터: 월 10억 회 스캔으로 축적되는 영상 데이터의 AI 분석 기반 마련.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>미드저니 스파 1호점이 샌프란시스코 애플스토어 옆에 개점 예정이며, 스캐너 10대를 배치.</li>
+<li>목표는 스캐너 5만 대·월 10억 회 스캔으로, 사실상 전 인류 대상 전신 스캔을 지향.</li>
+<li>한동안 주목받지 못했던 미드저니가 의료 하드웨어로 다시 화제의 중심에 복귀.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>트랜스듀서</td><td>전기·음파 등 한 에너지를 다른 형태로 바꾸는 소자</td><td>소리를 내고 듣는 초소형 스피커+마이크</td></tr><tr><td>초음파</td><td>사람이 못 듣는 높은 주파수의 음파</td><td>박쥐가 길 찾을 때 쓰는 소리</td></tr><tr><td>에코(반향)</td><td>발사된 음파가 부딪혀 되돌아오는 신호</td><td>동굴에서 외칠 때 돌아오는 메아리</td></tr><tr><td>페타플롭</td><td>초당 1,000조 번 연산하는 컴퓨팅 성능 단위</td><td>계산기 수백만 대가 동시에 일하는 속도</td></tr><tr><td>MRI</td><td>자기장으로 몸속을 촬영하는 정밀 의료영상 장비</td><td>자석으로 몸속 사진을 찍는 큰 기계</td></tr><tr><td>3D 재구성</td><td>여러 단면 데이터를 입체 영상으로 합치는 처리</td><td>여러 장 사진으로 입체 모형 만들기</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-06-19</div></div></body></html>
