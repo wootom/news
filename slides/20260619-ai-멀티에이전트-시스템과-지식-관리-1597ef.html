@@ -1,0 +1,155 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="영상은 AI가 근본적으로 브레이크가 없어서 생기는 문제를 먼저 짚습니다."><title>AI 멀티에이전트 시스템과 지식 관리</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;--up:#1f9d57;--dn:#c0392b;--text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f7f6;--bg:#fff}
+html,body{height:100%}
+body{background:#0c0c0e;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR','Apple SD Gothic Neo','Segoe UI',sans-serif;color:var(--text);overflow:hidden}
+#deck{position:fixed;inset:0;overflow:hidden}
+.stage{position:absolute;top:50%;left:50%;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;width:1280px;height:720px;background:var(--bg);overflow:hidden;display:none;flex-direction:column;padding:30px 44px 26px}
+.slide.active{display:flex}
+.chip{display:flex;align-items:center;justify-content:space-between;font-size:13px;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:12px}
+.chip .brand{display:flex;align-items:center;gap:9px;text-transform:uppercase}
+.chip .dot{width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.chip .pg{color:var(--accent);font-weight:700}
+.shead{display:flex;align-items:flex-start;gap:13px;border-bottom:3px solid var(--accent);padding-bottom:10px;margin-bottom:14px}
+.shead .num{background:var(--accent);color:#fff;font-size:15px;font-weight:800;border-radius:8px;padding:6px 11px;flex:none}
+.shead .htxt h1{font-size:27px;font-weight:900;line-height:1.2;letter-spacing:-.01em}
+.shead .ey{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--accent);text-transform:uppercase;white-space:nowrap;align-self:flex-end;padding-bottom:3px}
+.body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column}
+/* 자유 카드 배치: 2단 고정 대신 내용량(weight)에 따라 카드 너비를 달리하고
+   flex-grow로 행을 꽉 채운다. align-content:stretch로 행들이 세로를 채운다. */
+.cards{flex:1;min-height:0;display:flex;flex-wrap:wrap;gap:14px;align-content:stretch}
+.sec-panel{flex:1 1 30%;min-width:228px;border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin:0;background:var(--surface);display:flex;flex-direction:column}
+.sec-panel.w-full{flex-basis:100%}
+.sec-panel.w-half{flex-basis:46%}
+.sec-panel.w-third{flex-basis:29%}
+.sec-panel .ph{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;color:var(--accent-d);margin-bottom:9px}
+.sec-panel .ph::before{content:"";width:5px;height:15px;background:var(--accent);border-radius:2px;flex:none}
+.sec-panel table{font-size:13px}.sec-panel th{font-size:12px;padding:7px 9px}
+.sec-panel td{padding:6px 9px;font-size:12.5px;line-height:1.4}
+.sec-panel li{font-size:13px;margin:4px 0;line-height:1.45}.sec-panel p{font-size:13px;line-height:1.5}
+.sec-panel h3{font-size:14px;margin:5px 0 2px}.sec-panel blockquote{font-size:12.5px;padding:9px 12px;line-height:1.45}
+.foot{margin-top:9px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.foot .fd{width:8px;height:8px;border-radius:50%;background:var(--accent-mid)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:15px;background:#fff}
+th{background:var(--accent);color:#fff;padding:9px 12px;text-align:left;font-weight:700;font-size:14px}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;word-break:keep-all}
+td:first-child{font-weight:700;white-space:nowrap}tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f8faf9}
+.up{color:var(--up);font-weight:700}.dn{color:var(--dn);font-weight:700}.hl{color:var(--accent);font-weight:700}
+ul,ol{margin:2px 0 2px 20px}li{margin:5px 0;font-size:15px;line-height:1.5}
+h3{font-size:17px;font-weight:800;color:var(--accent-d);margin:6px 0 2px}
+p{font-size:15px;line-height:1.55;margin:4px 0}
+blockquote{border:1px solid var(--accent-mid);background:var(--accent-light);border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.55;color:#1f3d30}
+code{background:#eef2f0;padding:1px 5px;border-radius:4px;font-size:.9em}
+a{color:var(--accent);text-decoration:none}strong{color:#1a1a1a}hr{display:none}
+.ig-bars{display:flex;flex-direction:column;gap:6px;margin:7px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(64px,28%) 1fr auto;align-items:center;gap:8px;font-size:12.5px}
+.igb-l{font-weight:700;color:var(--accent-d);word-break:keep-all}
+.igb-track{height:13px;background:var(--surface);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:9px;margin:7px 0}
+.ig-kpi{flex:1;min-width:104px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;gap:2px}
+.igk-v{font-size:22px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:11.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:13px;margin:7px 0;justify-content:flex-start}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:4px}
+.igd-ring{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:40px;height:40px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:13px;font-weight:800;color:var(--accent-d)}
+.igd-l{font-size:11.5px;color:var(--text);font-weight:600;text-align:center;max-width:88px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:7px 0 7px 4px;border-left:2px solid var(--accent-mid);padding-left:13px}
+.ig-tl{position:relative;padding:4px 0}
+.igt-dot{position:absolute;left:-18px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--accent-d);font-size:12.5px;margin-right:7px}
+.igt-x{font-size:12.5px;color:var(--text);line-height:1.45}
+.ig-raw{font-size:12.5px;color:var(--text);white-space:pre-wrap;line-height:1.5}
+.cover{background:radial-gradient(120% 140% at 80% 8%,#2b6f4e,#163d2b 52%,#0c241a);color:#eef6f0;padding:0;position:relative}
+.cover .cv{padding:52px 56px;display:flex;flex-direction:column;height:100%;width:100%}
+.cv-ey{font-size:14px;letter-spacing:.16em;color:#9fe0bd;font-weight:700;text-transform:uppercase}
+.cover .cv h1{font-size:40px;font-weight:900;line-height:1.22;margin-top:18px;letter-spacing:-.02em;max-width:90%;color:#eef6f0}
+.cv-sum{font-size:17px;color:#cfeadd;border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:14px 18px;margin-top:18px;line-height:1.55;max-width:92%}
+.cv-toc{margin-top:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cv-toc .it{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 13px;font-size:13px;color:#eef6f0;display:flex;gap:9px}
+.cv-toc .it b{color:#7ee3ad}
+.cv-badge{position:absolute;top:46px;right:54px;width:94px;height:94px;border-radius:50%;background:#eef6f0;color:#163d2b;border:2px solid #7ee3ad;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900}
+.cv-badge .i{font-size:22px}.cv-badge .t{font-size:14px;margin-top:2px}
+.nav{position:fixed;bottom:16px;right:20px;display:flex;align-items:center;gap:9px;z-index:50}
+.nav button{background:rgba(45,145,98,.92);color:#fff;border:none;width:36px;height:36px;border-radius:9px;font-size:17px;cursor:pointer}
+.nav .counter{background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:7px 13px;border-radius:9px;font-weight:600}
+.progress{position:fixed;top:0;left:0;height:4px;background:var(--accent-mid);z-index:60;transition:width .25s}
+.hint{position:fixed;bottom:18px;left:20px;color:rgba(255,255,255,.45);font-size:12px;z-index:50}
+</style></head><body><div class="progress" id="prog"></div><div id="deck"><div class="stage" id="stage"><section class="slide cover active"><div class="cv"><div class="cv-badge"><span class="i">📊</span><span class="t">📊 슬라이드</span></div><div class="cv-ey">xbot · 2026-06-19</div><h1>AI 멀티에이전트 시스템과 지식 관리</h1><div class="cv-sum">영상은 AI가 근본적으로 브레이크가 없어서 생기는 문제를 먼저 짚습니다.</div><div class="cv-toc"><div class="it"><b>01</b><span>핵심 문제 인식 · 안드레 카파시의 4원칙 · 한네스 멀티에이전트 구조 · V1의 한계와 V2의 개선 · 위키 개념과 기억 공유</span></div><div class="it"><b>02</b><span>낫(NAT)과 옵시디언 · 워크플로우와 린트 기능 · 벤더 중립성과 설정 방식 · 활용 권장과 한계</span></div><div class="it"><b>03</b><span>버전 2.1과 최종 메시지 · 영상 출처</span></div></div></div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">02 / 04</span></div><div class="shead"><span class="num">01</span><div class="htxt"><h1>핵심 문제 인식 &amp; 안드레 카파시의 4원칙</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-third"><div class="ph">핵심 문제 인식</div><ul>
+<li>영상은 AI가 근본적으로 브레이크가 없어서 생기는 문제를 먼저 짚습니다.</li>
+<li>AI는 추측으로 일을 밀어붙이고, 필요 이상으로 내용을 부풀리며, 시키지 않은 곳까지 건드려 버그를 만들 수 있습니다.</li>
+<li>이를 막기 위해 안드레 카파시의 코딩 원칙과 멀티에이전트 구조를 결합한 해법을 제시합니다.</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">안드레 카파시의 4원칙</div><ul>
+<li>첫째, 코딩 전에 먼저 생각해야 하며 추측으로 움직이면 안 됩니다.</li>
+<li>둘째, 단순함을 최우선으로 두고 불필요한 확장성과 추상화를 제거해야 합니다.</li>
+<li>셋째, 필요한 곳만 수술하듯 고치고, 멋대로 수정하지 말고 반드시 사용자에게 보고해야 합니다.</li>
+<li>넷째, 목표 지향적으로 실행하고 테스트를 먼저 작성한 뒤 통과할 때까지 반복해야 합니다.</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">한네스 멀티에이전트 구조</div><ul>
+<li>시스템은 지휘자 역할의 오케스트레이터가 작업을 나누고 결과를 통합하는 방식으로 작동합니다.</li>
+<li>실제 작업은 클로드, 코덱스, 제미나이 같은 워커 에이전트가 수행합니다.</li>
+<li>에이전트 간 호출 통로로는 MCP와 CLI를 활용합니다.</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">V1의 한계와 V2의 개선</div><ul>
+<li>V1은 오케스트레이터가 클로드로 고정되어 있었습니다.</li>
+<li>제미나이 최고 모델을 무료로 호출할 수 없었고, 특정 벤더에 종속되는 문제가 있었습니다.</li>
+<li>설치 과정도 유연하지 않았습니다.</li>
+<li>V2는 플러그인 설치만으로 시스템이 자동 생성되고, 모델·도구·지휘자를 자유롭게 교체할 수 있습니다.</li>
+<li>벤더 독립성을 높이고 설치 절차도 훨씬 단순화했습니다.</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">위키 개념과 기억 공유</div><ul>
+<li>기존 RAG 방식은 매번 문서의 단편만 검색해서 맥락을 연결하기 어렵고, 매번 0에서 다시 시작하는 한계가 있습니다.</li>
+<li>카파시의 LLM 위키는 원본 자료를 AI가 마크다운 위키로 컴파일해 누적 자산으로 만드는 방식입니다.</li>
+<li>벡터DB나 복잡한 코드 없이 평문 마크다운으로 PC에 보관할 수 있습니다.</li>
+<li>여러 에이전트가 같은 위키를 읽고 기억을 공유하면서 마치 한 팀처럼 작동합니다.</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-19</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">03 / 04</span></div><div class="shead"><span class="num">02</span><div class="htxt"><h1>낫(NAT)과 옵시디언 &amp; 워크플로우와 린트 기능</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-third"><div class="ph">낫(NAT)과 옵시디언</div><ul>
+<li>낫은 직접 만든 지식 관리 도구입니다.</li>
+<li>사용자는 옵시디언으로 마크다운을 보며, AI 에이전트가 내부 엔진 역할을 맡습니다.</li>
+<li>옵시디언은 무료이며 가입이나 서버가 필요 없습니다.</li>
+<li>PC 폴더의 마크다운 메모를 노트처럼 보여주고, 링크된 문서를 그래프로 시각화합니다.</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">워크플로우와 린트 기능</div><ul>
+<li>사용자는 카파시의 4원칙 레포 주소나 메모를 인박스에 넣습니다.</li>
+<li>인스트 컴파일을 실행하면 AI가 자료를 정독한 뒤 위키 폴더로 정리하고 기존 문서와 연결합니다.</li>
+<li>인박스에는 원문을 보관하고, 위키에는 정리된 마크다운을 쌓아갑니다.</li>
+<li>린트 기능은 끊긴 링크나 목록 누락 같은 형식 문제를 기계적으로 잡아냅니다.</li>
+<li>동시에 AI가 내용 모순이나 오래된 정보 같은 의미 문제도 직접 판단합니다.</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">벤더 중립성과 설정 방식</div><ul>
+<li>평문 마크다운은 클로드, 코덱스, 제미나이 등 모든 에이전트가 같은 지식을 읽게 해줍니다.</li>
+<li>그래서 여러 AI에게 동시에 같은 정보를 물어도 일관된 답변을 얻을 수 있습니다.</li>
+<li>설정은 플러그인 설치 후 마켓플레이스를 추가하고 오케스트레이터를 선택하는 방식으로 진행됩니다.</li>
+<li>지식 그물 폴더를 지정하고 환경 변수나 설정 파일에 한 줄만 입력하면 모든 에이전트가 동일한 지식을 인식합니다.</li>
+<li>야지(Yazi) 같은 탐색 도구도 공유되어 동일한 검색 결과를 얻게 됩니다.</li>
+</ul></div><div class="sec-panel w-half"><div class="ph">활용 권장과 한계</div><ul>
+<li>제미나이는 특히 위키 마크다운 작업에 권장됩니다.</li>
+<li>무료로 대량 작업을 처리할 수 있고, 비전 능력이 좋아 이미지나 스캔 PDF도 다룰 수 있습니다.</li>
+<li>반면 오픈소스 에이전트는 기능은 풍부하지만 비용 예측이 어렵고, 전체 시스템을 깊이 신뢰해야 하며 투명성이 낮다고 봅니다.</li>
+<li>한네스 멀티에이전트는 검증된 도구 위에 필요한 기능만 투명하게 얹는 구조라 정액 요금과 직접 확인 가능성이 장점입니다.</li>
+<li>다만 수천~수만 권 규모 자료는 한 번에 다루기 어렵고, 개인이나 팀 단위의 세컨드 브레인에 더 적합합니다.</li>
+<li>AI 요약 오류가 누적될 수 있다는 점도 한계로 제시합니다.</li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-19</div></section><section class="slide"><div class="chip"><div class="brand"><span class="dot"></span>xbot</div><span class="pg">04 / 04</span></div><div class="shead"><span class="num">03</span><div class="htxt"><h1>버전 2.1과 최종 메시지 &amp; 영상 출처</h1></div><span class="ey">📊 슬라이드</span></div><div class="body"><div class="cards"><div class="sec-panel w-third"><div class="ph">버전 2.1과 최종 메시지</div><ul>
+<li>버전 2.1에서는 카파시 4원칙에 기반한 AI 브레이크가 추가됩니다.</li>
+<li>낫이라는 지식 그물로 에이전트 간 기억 공유도 구현합니다.</li>
+<li>이 시스템은 작업이 복잡할수록, 최종 결과의 품질이 중요할수록, 단일 모델의 한계를 느낄수록 더 유용합니다.</li>
+<li>낫은 GitHub에 오픈소스로 공개되어 있어 기존에 그대로 쓰거나 자신에게 맞게 수정할 수 있습니다.</li>
+</ul></div><div class="sec-panel w-third"><div class="ph">영상 출처</div><ul>
+<li>제목: <a href="https://youtu.be/mcNaoV8M-tg?si=csD32YDTat7xhlxg">안드레 카파시 + 하네스 멀티 에이전트 = 이제 무적입니다 (v2.1)</a></li>
+<li>채널: AI 치트키 · 게시일: 2026-06-17</li>
+<li>링크: <a href="https://youtu.be/mcNaoV8M-tg?si=csD32YDTat7xhlxg">https://youtu.be/mcNaoV8M-tg?si=csD32YDTat7xhlxg</a></li>
+</ul></div></div></div><div class="foot"><span class="fd"></span>xbot · 2026-06-19</div></section></div></div><div class="hint">← → 또는 Space · 화면 좌/우 클릭 · F 전체화면(클릭 시 자동)</div><div class="nav"><button id="prev">&lsaquo;</button><span class="counter" id="counter">1 / 4</span><button id="next">&rsaquo;</button></div><script>
+var slides=[].slice.call(document.querySelectorAll('.slide'));var cur=0;
+var c=document.getElementById('counter'),pr=document.getElementById('prog');
+function fitBody(sl){var b=sl&&sl.querySelector('.body');if(!b)return;b.style.zoom=1;var ch=b.clientHeight,sh=b.scrollHeight;if(sh<1)return;var z=ch/sh;z=Math.max(0.6,Math.min(2.2,z));if(z>0.99&&z<1.04)z=1;b.style.zoom=z;}
+function show(i){cur=Math.max(0,Math.min(slides.length-1,i));for(var k=0;k<slides.length;k++){slides[k].classList.toggle('active',k===cur);}c.textContent=(cur+1)+' / '+slides.length;pr.style.width=((cur+1)/slides.length*100)+'%';fitBody(slides[cur]);}
+document.getElementById('next').onclick=function(e){e.stopPropagation();show(cur+1);};
+document.getElementById('prev').onclick=function(e){e.stopPropagation();show(cur-1);};
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(cur+1);e.preventDefault();}else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(cur-1);e.preventDefault();}else if(e.key==='Home'){show(0);}else if(e.key==='End'){show(slides.length-1);}});
+function goFS(){try{var e=document.documentElement;if(!document.fullscreenElement&&e.requestFullscreen){e.requestFullscreen().catch(function(){});}}catch(_){}}
+document.getElementById('deck').addEventListener('click',function(e){if(e.target.closest('.nav')||e.target.closest('a'))return;goFS();var x=e.clientX/window.innerWidth;if(x>0.5){show(cur+1);}else{show(cur-1);}});
+function fit(){var s=Math.min(window.innerWidth/1280,window.innerHeight/720);document.getElementById('stage').style.transform='translate(-50%,-50%) scale('+s+')';}
+window.addEventListener('resize',fit);document.addEventListener('fullscreenchange',fit);
+window.addEventListener('keydown',function(e){if(e.key==='f'||e.key==='F'){goFS();}},{once:false});
+window.addEventListener('load',function(){goFS();});
+fit();show(0);
+</script></body></html>
