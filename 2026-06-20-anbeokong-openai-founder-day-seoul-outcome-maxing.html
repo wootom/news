@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: OpenAI 파운더 데이 서울 현장 — &#x27;토큰 맥싱&#x27;에서 &#x27;아웃컴 맥싱&#x27;으로, 그 이면의 락인"><title>OpenAI 파운더 데이 서울 현장 — &#x27;토큰 맥싱&#x27;에서 &#x27;아웃컴 맥싱&#x27;으로, 그 이면의 락인</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-06-20 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>OpenAI 파운더 데이 서울 현장 — &#x27;토큰 맥싱&#x27;에서 &#x27;아웃컴 맥싱&#x27;으로, 그 이면의 락인</h1><p class="lead">title: OpenAI 파운더 데이 서울 현장 — &#x27;토큰 맥싱&#x27;에서 &#x27;아웃컴 맥싱&#x27;으로, 그 이면의 락인</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 내용 구조</a><a href="#s3">기술적 맥락</a><a href="#s4">전략적 의미</a><a href="#s5">핵심 워크플로우/방법론</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>안될공학 (패치)</td></tr><tr><td>주제</td><td>OpenAI Founder Day Seoul 현장 리포트 — AI 투자 대비 성과 논쟁과 OpenAI의 방향</td></tr><tr><td>핵심 쟁점</td><td>&quot;비싼 모델로 토큰 많이 태우는 시대는 끝, 싼 모델 조합이 답인가?&quot;</td></tr><tr><td>OpenAI 답변</td><td>최고 연구책임자 마크 첸 — &quot;중요한 건 토큰량이 아니라 결과(아웃컴)&quot; 일부 인정</td></tr><tr><td>3대 사례</td><td>플리토(글로벌 데이터 루프) · 프로토파이(복잡도 기반 모델 라우팅) · AWS 베드락(기업 인프라 진입)</td></tr><tr><td>숨은 메시지</td><td>아웃컴 맥싱의 실현 경로가 결국 <strong>OpenAI 의존(락인) 심화</strong>일 수 있음</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li>발표자가 확인하려던 두 가지: ① 한국 스타트업이 OpenAI로 실제 무엇을 하는가 ② &quot;AI에 돈 쓰는데 성과가 안 보인다&quot;는 업계 질문에 OpenAI는 어떻게 답하는가.</li>
+<li>행사 중 청중 질문이 핵심을 직격: 토큰을 많이 쓰는 시대는 끝, 저렴한 모델 조합(오픈라우터)이 프론티어 모델을 이긴다는 연구가 있지 않나.</li>
+<li>이는 팔란티어 CEO 알렉스 카프의 &#x27;토큰 맥싱&#x27; 비판과 동일 맥락 — AI 사용량 증가가 곧 생산성은 아니라는 문제의식.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>마크 첸 답변 요지: &quot;모든 서비스가 가장 크고 똑똑한 모델을 필요로 하진 않는다. 토큰은 지능의 대리 지표일 뿐, 중요한 건 결과다.&quot; 다만 &quot;문제가 정말 복잡해지면 최고 지능 수요는 늘 존재한다&quot;고 덧붙임.</li>
+<li>모델 성능과 기업 생산성 사이 간격: 개발자가 코드를 빨리 쓰는 것과 제품 출시 주기 단축은 별개. 업무 선정·데이터 안전 연결·결과 검증·권한 관리·요청별 모델 배치·직원 업무방식 변화가 모두 필요.</li>
+<li>한국 특수성: 인건비는 한국 임금 기준(미국의 약 절반), API 비용은 달러 고정 → 같은 자동화로도 ROI 증명이 구조적으로 더 어려움.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>&#x27;편리함&#x27;과 &#x27;의존성&#x27;은 방향은 달라도 결과가 같을 수 있음 — OpenAI 모델이 인프라·업무 프로세스에 깊이 박힐수록 타 모델 전환 비용(락인)이 <span class="up">상승</span>.</li>
+<li>모델을 갈아탈 자유를 주는 흐름(오토라우터)과, 더 깊이 심어 갈아타기 어렵게 만드는 흐름(직접 라우팅 설계·AWS 통합)이 같은 무대에서 동시 진행.</li>
+<li>팔란티어가 지적한 구조 — 토큰 효율화를 고객 스스로 못 찾고 공급자 개입이 필요하다는 점 — 이 사례들로 오히려 확인됨.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><ul>
+<li>플리토: 언어 데이터 기반 상장사. 번역 품질 <span class="up">개선</span>을 넘어, 여러 국가 고객의 목소리를 실시간 이해해 제품 <span class="up">개선</span> 루프로 묶는 인프라로 기능. 범용 언어모델을 지역별 데이터·산업 경험에 연결하는 파트너.</li>
+<li>프로토파이: 코딩 없이 고품질 인터랙션 프로토타입을 만드는 툴(전 세계 100만+ 사용, OpenAI·구글·MS·폭스바겐 등 사용). 요청 복잡도를 로우·미디엄·하이로 판단해 각기 다른 에이전트·모델 호출 = <strong>아웃컴 맥싱의 실제 구현</strong>. 단, 이 최적화를 OpenAI 직접 개입 없이는 스스로 하기 어려웠다는 점이 락인의 단서.</li>
+<li>AWS 베드락: 6/1부로 GPT 5.5·5.4·코덱스 모델 탑재. 프라이빗 연결·기존 권한 체계 적용·사용량 과금으로 보안·IT·재무팀의 도입 장벽을 동시 해소 — OpenAI 단독으로 못 낮추던 장벽을 AWS 신뢰로 해소하되 락인도 심화.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>한국 AI 스타트업: 최상위 모델 대신 가성비 하이 모델을 복잡도별로 조합해 프론티어급 애플리케이션을 저렴하게 구성, 무료 API 크레딧으로 초기 비용 부담 완화.</li>
+<li>글로벌 제품팀: 플리토식 데이터 루프로 해외 고객 피드백을 본사 제품 <span class="up">개선</span>에 실시간 반영.</li>
+<li>엔터프라이즈 IT: AWS 베드락 경유로 사내망·권한 체계를 유지한 채 OpenAI 모델 도입, 사용량 기반 과금으로 재무 예측성 확보.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>OpenAI는 지역별 가격 민감도 인지·한국 맞춤 오퍼링·대량 무료 크레딧·동일 성능 매년 10배 저렴화를 강조 — 방향은 분명하나 달러 기준 ROI 증명 구조 자체는 사라지지 않음.</li>
+<li>앞으로 봐야 할 것은 데모가 아니라 결과: 프로토파이의 복잡도 라우팅이 실제 이탈을 줄이는지, 플리토 데이터 루프가 제품 <span class="up">개선</span> 속도를 높이는지, OpenAI가 토큰 기반 수익 구조를 실제로 어떻게 바꾸는지.</li>
+<li>비판하는 쪽(팔란티어)과 비판받는 쪽(OpenAI)이 이제 같은 곳을 봄 — 다음 승부는 &#x27;누가 먼저 아웃컴을 증명하느냐&#x27;.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>토큰 맥싱</td><td>비싼 모델로 토큰을 최대한 많이 태우는 사용 방식</td><td>무조건 큰 엔진을 풀가동하는 낭비</td></tr><tr><td>아웃컴 맥싱</td><td>토큰량이 아닌 실제 결과 극대화를 목표로 하는 방식</td><td>연비보다 도착을 챙기는 운전</td></tr><tr><td>복잡도 기반 라우팅</td><td>요청 난이도에 따라 다른 모델·에이전트를 골라 호출</td><td>일의 크기에 맞춰 사람을 배치</td></tr><tr><td>오토라우터/오픈라우터</td><td>여러 저가 모델을 묶어 프론티어급 성능을 내는 방식</td><td>작은 팀을 모아 큰 일을 처리</td></tr><tr><td>프론티어 모델</td><td>최고 성능 최신 대형 AI 모델</td><td>업계 최상위 선수</td></tr><tr><td>락인(lock-in)</td><td>특정 공급자에 깊이 묶여 전환이 어려워지는 상태</td><td>한 통신사에 약정으로 묶이기</td></tr><tr><td>ROI</td><td>투자 대비 회수되는 성과·이익</td><td>들인 돈만큼 거둔 결실</td></tr><tr><td>AWS 베드락</td><td>여러 AI 모델을 한 플랫폼에서 제공하는 AWS 통합 서비스</td><td>여러 모델을 모은 앱 장터</td></tr><tr><td>마크 첸</td><td>OpenAI 최고 연구책임자(CRO)</td><td>연구 총괄 책임자</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-06-20</div></div></body></html>
