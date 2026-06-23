@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="MORNING DIGEST · 2026-06-23 · Astro K Joseph"><title>코딩 없이 AI로 iOS 앱 제작·앱스토어 출시 — Rork 워크플로우 실전</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Astro K Joseph</span><span class="ey">MORNING DIGEST · 2026-06-23 · Astro K Joseph</span><span class="chip">🎬 영상</span></div><h1>코딩 없이 AI로 iOS 앱 제작·앱스토어 출시 — Rork 워크플로우 실전</h1><p class="lead">MORNING DIGEST · 2026-06-23 · Astro K Joseph</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">워크플로우 5단계</a><a href="#s3">주목 기능</a><a href="#s4">시사점</a><a href="#s5">용어 사전</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>내용</th></tr></thead><tbody><tr><td>플랫폼</td><td>Rork(rork.com) — &quot;AI와 대화하며 모바일 앱 제작, 앱스토어 출시&quot;</td></tr><tr><td>전제 조건 제거</td><td>Mac·Xcode·Swift·시뮬레이터 설치 불필요(전부 웹 브라우저 내)</td></tr><tr><td>데모 앱</td><td>&#x27;Voyager AI&#x27; — AI 여행 플래너·일정 빌더</td></tr><tr><td>빌드 시간</td><td>초기 버전 약 2분 내 자동 생성(아이콘 포함)</td></tr><tr><td>실기기 테스트</td><td>Rork 컴패니언 앱 + USB 연결로 아이폰에서 직접 실행</td></tr><tr><td>AI 연동</td><td>Rork AI Cloud로 일정 생성·챗봇 기능 활성(Gemini 3.5 Flash 적용)</td></tr><tr><td>출시</td><td>플랫폼 내에서 앱스토어 제출(Apple 개발자 계정 필요, 연 $99)</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>워크플로우 5단계</h2><div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>프롬프트 입력</b><span>앱 이름·콘셉트·포함 화면(홈/AI 플래너/탐색/일정 상세/예산 트래커/AI 챗/여행 일지/프로필)을 상세히 기술. 참조 이미지 업로드, 플랜 모드, 플랫폼(iPhone/Android/Web/React Native 크로스플랫폼) 선택 가능 (<a href="https://youtu.be/WgFE7B-4hjw?t=0" target="_blank" rel="noopener">0:00 딥링크</a>)</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>자동 빌드</b><span>AI가 6개 태스크(테마·디자인 시스템 → 데이터 모델 → 뷰 → AI 플래너 → AI 어시스턴트 → 점검)로 분해해 약 2분 만에 초기 버전 완성. 우측 라이브 프리뷰로 즉시 확인</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>실기기 미리보기</b><span>&#x27;Run on your device&#x27; → Rork 컴패니언(Rork Max) 앱 설치, 아이폰 USB 연결·개발자 모드 활성 → 폰에서 네이티브로 실행(지도·예산 트래커 등 정상 동작)</span></div></div><div class="step"><span class="snum">4</span><div class="sbody"><b>AI 기능 연동</b><span>&quot;Rork AI Cloud 연결&quot; 후속 프롬프트로 여행 플래너(목적지·일수·예산·인원 → 일정 생성)와 AI 여행 어시스턴트(질의응답) 작동. Gemini 3.5 Flash 모델 자동 적용</span></div></div><div class="step"><span class="snum">5</span><div class="sbody"><b>앱스토어 제출</b><span>Publish → New submission → 아이콘·이름·버전·번들ID 확인 → Apple 개발자 이메일/비밀번호 입력·인증코드 → 빌드·번들·패키징 후 자동 제출. App Store Connect/TestFlight에서 스크린샷·개인정보 정책 등 보완</span></div></div></div></section><section class="card s6" id="s3"><h2><span class="seq">03</span>주목 기능</h2><ul>
+<li><strong>모델 선택</strong> — Auto 또는 특정 모델 지정 가능(시연 중 Opus 4.8 Rork Fast, Opus 4.8 등 노출)</li>
+<li><strong>요소 단위 편집</strong> — &#x27;Select an element&#x27;로 화면 내 특정 텍스트/요소를 컨텍스트에 추가해 타깃 수정</li>
+<li><strong>온디바이스 개발</strong> — 폰에 설치된 Rork 앱 안에서도 프롬프트로 변경·미리보기 가능(&quot;이동 중 개발&quot;)</li>
+<li><strong>AI의 능동 제안</strong> — 빌드 후 AI가 &quot;라이브 AI 연동을 설정할까요?&quot;라고 다음 단계를 먼저 제안</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>시사점</h2><p>전통적 iOS 개발의 진입장벽(Swift 학습, Mac 구매, Xcode·인증서·TestFlight·App Store Connect 설정)을 AI 플랫폼이 한 워크플로우로 흡수. 아이디어 → 출시까지 비개발자도 도달 가능하다는 점을 시연으로 보여줌. 다만 앱스토어 심사·리비전, 개인정보 정책 등 출시 후 절차는 여전히 사람의 책임 영역. (영상 자체가 Rork 제휴/홍보 성격이므로 실제 완성도·심사 통과율은 별도 검증 필요)</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Rork</td><td>브라우저에서 AI로 모바일 앱을 만들고 출시하는 플랫폼</td><td>말로 앱 만드는 작업실</td></tr><tr><td>Xcode</td><td>애플의 공식 앱 개발 도구(설치 불필요해짐)</td><td>기존엔 필수였던 공구함</td></tr><tr><td>TestFlight</td><td>출시 전 앱을 시험 배포·체험하는 애플 서비스</td><td>정식 출시 전 베타판</td></tr><tr><td>App Store Connect</td><td>앱 등록·심사·메타정보 관리 콘솔</td><td>앱 제출 행정 창구</td></tr><tr><td>번들 ID</td><td>앱을 식별하는 고유 주소</td><td>앱의 주민번호</td></tr><tr><td>컴패니언 앱</td><td>노트북·폰을 이어 실기기 실행을 돕는 보조 앱</td><td>폰과 PC를 잇는 다리</td></tr><tr><td>React Native</td><td>한 코드로 iOS·안드로이드 모두 만드는 기술</td><td>양쪽에 쓰는 만능 레시피</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>Astro K Joseph · 2026-06-23</div></div></body></html>
