@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="MORNING DIGEST · 2026-06-25 · 메이커 에반"><title>왜 스킬이 졌을까 — Vercel 실험으로 본 Skills vs AGENTS.md</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-06-25 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>왜 스킬이 졌을까 — Vercel 실험으로 본 Skills vs AGENTS.md</h1><p class="lead">MORNING DIGEST · 2026-06-25 · 메이커 에반</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">실험 설계 — 4가지 조건, 가장 어려운 시험</a><a href="#s3">왜 Skills가 졌나</a><a href="#s4">왜 AGENTS.md가 이겼나</a><a href="#s5">핵심 교훈 — 똑똑함보다 &#x27;헷갈릴 틈 없애기&#x27;</a><a href="#s6">영리한 보완 — 80% 압축</a><a href="#s7">Skills가 빛나는 경우 — 역할 분담</a><a href="#s8">실전 적용법</a><a href="#s9">시사점</a><a href="#s10">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>출처</td><td>Vercel의 공개 실험 (Next.js 16 신기능 대상)</td></tr><tr><td>문제</td><td>AI는 학습 시점 이후 나온 신기능을 &#x27;모르면서 아는 척&#x27; 옛 방식으로 코딩</td></tr><tr><td>두 방식</td><td>Skills(필요 시 꺼내 보는 매뉴얼) vs AGENTS.md(항상 눈앞의 메모지)</td></tr><tr><td>결과</td><td>AGENTS.md 100점 &gt; 강제 Skills 79점 &gt; (맨몸=Skills 자율) 53점</td></tr><tr><td>교훈</td><td>&quot;AI에게 선택을 시키면 틀린다. 선택을 안 시키면 안 틀린다.&quot;</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>실험 설계 — 4가지 조건, 가장 어려운 시험</h2><p>AI가 한 번도 본 적 없는 Next.js 16 신기능으로만 시험지를 구성하고 4가지 조건을 비교:</p>
+<div class="tbl-wrap"><table><thead><tr><th>조건</th><th>점수</th></tr></thead><tbody><tr><td>맨몸 (도움말 없음)</td><td>53점</td></tr><tr><td>Skills 제공 + 자율 사용</td><td>53점 (1점도 안 오름)</td></tr><tr><td>Skills 제공 + &quot;꼭 써라&quot; 강제</td><td>79점</td></tr><tr><td>AGENTS.md (눈앞의 메모지)</td><td>100점 (빌드·검사·테스트 전부 만점)</td></tr></tbody></table></div>
+<p>Vercel은 보고서에 &quot;멍청한 방식이 정교한 방식을 이겼다&quot;고 적었다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>왜 Skills가 졌나</h2><p>첫째, AI가 매뉴얼을 그냥 안 꺼내 본다 — 10번 중 약 6번을 존재를 알면서도 안 펼치고 자기 옛 기억으로 일해버린다. 둘째, 지시 문구에 지나치게 민감하다 — &quot;무조건 매뉴얼부터 봐&quot;라고 하면 프로젝트는 안 보고, &quot;프로젝트 먼저 보고 매뉴얼 봐&quot;라고 단어 순서만 바꾸면 제대로 동작. 즉 정확히 지시하지 않으면 언제 삐끗할지 모른다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>왜 AGENTS.md가 이겼나</h2><p>① 고민할 순간이 없다 — 매뉴얼을 볼지 말지 결정하는 그 순간이 실수 지점인데, 메모지는 이미 눈앞에 있어 결정이 불필요. ② 항상 모든 순간 거기 있다 — 부르는 타이밍을 놓칠 수 없다. ③ 순서 고민이 없다 — 자연스럽게 코드와 함께 본다. 결국 비결은 &#x27;AI에게 선택을 안 시킨 것&#x27;.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 교훈 — 똑똑함보다 &#x27;헷갈릴 틈 없애기&#x27;</h2><p>도구가 똑똑할수록 AI는 &#x27;쓸지 말지&#x27; 고민하다 삐끗한다. 능동적으로 찾아 쓰게 하지 말고, 가만히 있어도 보이게 정보를 눈앞에 펼쳐 주는 것이 현재 AI를 다루는 핵심.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>영리한 보완 — 80% 압축</h2><p>문서가 너무 길면(책 한 권을 책상에 펼친 격) 오히려 헷갈린다. Vercel은 전체 내용 대신 &#x27;목차만&#x27; 넣어 분량을 약 40k→8k로 80% 줄였는데도 점수는 그대로 100점. 핵심만 남기니 더 깔끔해졌다.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>Skills가 빛나는 경우 — 역할 분담</h2><p>Skills가 쓸모없는 건 아니다. &#x27;내가 시점을 정해 직접 부르는 특별한 큰 작업&#x27;(예: 프로젝트 전체를 3버전으로 마이그레이션)에 적합. 정리하면: 평소 기본 지식은 AGENTS.md로 항상 펼쳐 두고, 특별한 대형 작업은 Skills로 명시 호출 — 둘을 나눠 쓰는 것이 정답.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>실전 적용법</h2><p>Next.js 사용자는 터미널에 한 줄(<code>npx next codemod ... AGENTS.md</code> 류)이면 ① 프로젝트 버전 확인 ② 맞는 문서 다운로드 ③ 목차 압축 후 AGENTS.md에 자동 삽입까지 처리. Next.js를 안 써도 원리는 동일: 프로젝트 최상위에 AGENTS.md를 만들고 규칙(색상·폰트·폴더 구조)을 목차처럼 짧게 적되, 문서 맨 위에 &quot;외운 지식 말고 이 문서를 먼저 보고 판단해&quot; 한 줄을 반드시 넣는다 — 이 한 줄이 100점과 53점을 가른다.</p></section><section class="card s6" id="s9"><h2><span class="seq">09</span>시사점</h2><p>이 실험은 단순한 파일 형식 비교가 아니라 &#x27;AI를 어떻게 다룰 것인가&#x27;의 본질을 보여준다. 똑똑한 자동화(능동적 도구 호출)에 의존하기보다, 선택지를 줄이고 컨텍스트를 항상 노출하는 결정론적 설계가 더 신뢰성 있다는 교훈. 자동은 될 때도 안 될 때도 있지만 수동·상시 노출은 100%에 가깝다.</p></section><section class="card s12" id="s10"><h2><span class="seq">10</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Skills</td><td>AI가 필요 시 꺼내 쓰는 전문 매뉴얼 묶음</td><td>책장에 꽂힌 전문 매뉴얼</td></tr><tr><td>AGENTS.md</td><td>프로젝트 루트에 항상 펼쳐둔 AI 지침 파일</td><td>책상 위 항상 펼쳐진 메모지</td></tr><tr><td>Next.js</td><td>인기 웹 프레임워크(여기선 16버전 신기능 대상)</td><td>웹 개발용 공구 세트</td></tr><tr><td>컨텍스트 노출</td><td>정보를 AI가 항상 보도록 펼쳐 두는 것</td><td>칠판에 늘 적어두기</td></tr><tr><td>토큰</td><td>AI가 처리하는 텍스트 단위(분량·비용과 직결)</td><td>글자 수 요금</td></tr><tr><td>codemod</td><td>코드를 자동으로 변환·생성하는 명령</td><td>코드 자동 리모델링</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>메이커 에반 · 2026-06-25</div></div></body></html>

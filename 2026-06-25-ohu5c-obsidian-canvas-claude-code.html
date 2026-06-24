@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="MORNING DIGEST · 2026-06-25 · 오후다섯씨"><title>옵시디언 캔버스 × 클로드 코드 — 생각을 다이어그램으로 구조화하는 워크플로우</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>오후다섯씨</span><span class="ey">MORNING DIGEST · 2026-06-25 · 오후다섯씨</span><span class="chip">🎬 영상</span></div><h1>옵시디언 캔버스 × 클로드 코드 — 생각을 다이어그램으로 구조화하는 워크플로우</h1><p class="lead">MORNING DIGEST · 2026-06-25 · 오후다섯씨</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">캔버스 기본 — 시각적 다이어그램 도구</a><a href="#s3">핵심 통찰 — 캔버스는 순수 텍스트 파일</a><a href="#s4">활용 1 — 내 생각을 AI와 함께 발전</a><a href="#s5">활용 2 — 긴 문서를 캔버스로 변환</a><a href="#s6">왜 캔버스인가 — HTML/SVG 대비 장점</a><a href="#s7">시사점</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>도구</td><td>옵시디언 캔버스 + 클로드 코드(또는 Codex 등 LLM)</td></tr><tr><td>캔버스란</td><td>문서·이미지·카드를 노드로 두고 화살표로 연결하는 시각적 다이어그램</td></tr><tr><td>결정적 특징</td><td><code>.canvas</code> 파일이 노드(id·type·위치 xy·크기)+엣지로 구성된 순수 텍스트(JSON형)</td></tr><tr><td>그래서 가능한 것</td><td>텍스트 파일이므로 AI가 직접 읽고 정렬·색상·연결을 수정 가능</td></tr><tr><td>활용 두 갈래</td><td>① 내 생각을 캔버스로 표현→AI가 보완 ② 긴 문서를 AI가 캔버스로 변환</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>캔버스 기본 — 시각적 다이어그램 도구</h2><p>좌측에서 &#x27;새 캔버스&#x27;를 만들고 문서 연결·카드 생성·이미지 삽입을 통해 마인드맵처럼 객체를 연결한다. 각 노드는 옵시디언의 기존 파일(마크다운·이미지)이나 텍스트 카드이며, 화살표(엣지)로 관계를 표현해 복잡한 생각을 구조화한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>핵심 통찰 — 캔버스는 순수 텍스트 파일</h2><p><code>.canvas</code> 파일을 VS Code로 열면 각 노드가 id, type, 연결 파일명, 위치(x·y), 크기(width·height)를 가진 텍스트로 정의돼 있고 엣지도 텍스트로 기록된다. VS Code에서 노드 width를 400→1000으로 바꾸면 옵시디언 캔버스에 실시간 반영되는 식으로 &#x27;CAD 파일처럼&#x27; 동작한다. 즉 텍스트라서 LLM이 직접 편집할 수 있다는 것이 모든 활용의 출발점.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>활용 1 — 내 생각을 AI와 함께 발전</h2><p>클로드 코드에 <code>.canvas</code> 파일을 참조로 주고 &quot;캔버스 파일을 멋지게 정리해 주세요&quot;라고만 해도, AI가 흩어진 3개 노드(텍스트·이미지·마크다운)를 한 줄로 정렬하고 텍스트에 초록색·제목 크기를 입히며 화살표 방향을 흐름에 맞게 수정한다. 사용자가 먼저 &#x27;에이전트 OS / 클로드 코드 / 지시·기억·반복·목표·도구 / CLAUDE.md / 후크 / 스킬&#x27; 등 카드를 대략 그려두면, AI가 의도를 파악해 누락 요소(후크·스킬 등)를 채워 다이어그램을 완성한다. 주고받으며 점진적으로 구조를 정교화하는 방식.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 2 — 긴 문서를 캔버스로 변환</h2><p>이미 작성된 복잡한 문서(예: 책 편집 공통 규칙, AI 협업 프로토콜)를 &quot;새 캔버스 파일로 정리해 줘&quot;라고 하면, AI가 내용을 노드·엣지로 구조화해 깔끔한 다이어그램을 생성. 노드가 겹치면 &quot;겹치지 않게 해 줘&quot;로 추가 정리 가능하지만, 발표자는 직접 배치하며 머릿속 생각을 정리하는 쪽을 선호.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>왜 캔버스인가 — HTML/SVG 대비 장점</h2><div class="tbl-wrap"><table><thead><tr><th>방식</th><th>편집성</th><th>비용·속도</th></tr></thead><tbody><tr><td>이미지(PNG)</td><td>깨지고 편집 불가</td><td>—</td></tr><tr><td>SVG</td><td>편집 어려움</td><td>—</td></tr><tr><td>HTML</td><td>편집 어려움</td><td>토큰 많이 소모</td></tr><tr><td>옵시디언 캔버스</td><td>순수 텍스트라 빠르고 편집 쉬움</td><td>불필요한 토큰 절약, 옵시디언 검색·시각화와 궁합</td></tr></tbody></table></div>
+<p>옵시디언의 강점은 수많은 파일을 시각화·검색하는 것이고, 그 전제는 &#x27;순수 텍스트로 정의된 문서&#x27;다. 캔버스가 이 규칙에 정확히 부합하기 때문에 AI 협업 다이어그램 도구로 적합하다.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>시사점</h2><p>캔버스를 &#x27;AI가 읽고 쓰는 텍스트 다이어그램&#x27;으로 보면, 아이디어 구조화→AI 보완→문서·발표자료 산출로 이어지는 저비용 워크플로우가 된다. 핵심은 결과물 포맷(이미지·SVG·HTML)이 아니라 &#x27;편집 가능한 순수 텍스트&#x27;를 유지하는 것이며, 이는 옵시디언의 검색·연결 철학과 맞물린다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>옵시디언 캔버스</td><td>노드·엣지로 생각을 시각화하는 무한 화이트보드</td><td>디지털 화이트보드 + 포스트잇</td></tr><tr><td>노드/엣지</td><td>캔버스의 카드(노드)와 연결선(엣지)</td><td>점과 화살표</td></tr><tr><td>클로드 코드</td><td>터미널/IDE에서 코드를 짜고 파일을 다루는 AI</td><td>파일을 직접 만지는 AI 비서</td></tr><tr><td><code>.canvas</code> 파일</td><td>노드·엣지를 좌표·크기로 담은 텍스트(JSON형)</td><td>다이어그램의 설계 도면</td></tr><tr><td>CLAUDE.md</td><td>프로젝트에서 AI가 따를 규칙을 적은 파일</td><td>AI용 업무 지침서</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>오후다섯씨 · 2026-06-25</div></div></body></html>

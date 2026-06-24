@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="MORNING DIGEST · 2026-06-25 · 안될공학"><title>HBM의 다음은 HBF? — 샌디스크 특허와 NAND 기반 메모리 계층 논쟁</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-06-25 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>HBM의 다음은 HBF? — 샌디스크 특허와 NAND 기반 메모리 계층 논쟁</h1><p class="lead">MORNING DIGEST · 2026-06-25 · 안될공학</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">왜 NAND인가 — HBM의 한계</a><a href="#s3">어떻게 빠른가 — 극단적 병렬화</a><a href="#s4">NAND의 약점 = HBF의 한계</a><a href="#s5">역할 분담 — 읽기 중심 vs 쓰기 중심</a><a href="#s6">기업별 포지션</a><a href="#s7">결론 — 대체가 아니라 공존</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>화두</td><td>HBM 다음으로 SSD용 NAND 플래시 기반 &#x27;HBF&#x27;가 거론</td></tr><tr><td>HBF란</td><td>High Bandwidth Flash — NAND 다이를 다단 적층해 HBM에 가까운 대역폭 구현</td></tr><tr><td>표준화</td><td>샌디스크+SK하이닉스가 JEDEC이 아닌 OCP에서 워크스트림으로 추진</td></tr><tr><td>1세대 목표</td><td>NAND 16다이 스택, 512GB 용량, 1.6TB/s 읽기 대역폭</td></tr><tr><td>로드맵</td><td>2세대 2TB/s<span class="up">↑</span>, 3세대 3.2TB/s / 2026 하반기 첫 샘플, 2027 초 AI 추론 시스템</td></tr><tr><td>결론</td><td>HBM은 사라지지 않고 역할 재배치 — HBF·CMS와 공존</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>왜 NAND인가 — HBM의 한계</h2><p>AI 모델이 커질수록 모든 가중치를 비싼 HBM에 담는 것은 물리·비용 한계가 있고, 멀리 떨어진 SSD에서 매번 가져오면 GPU 대기시간이 길다. HBF는 HBM과 SSD 사이에 &#x27;용량은 NAND처럼 크고 대역폭은 메모리처럼 높은&#x27; 새 계층을 만들려는 시도. 샌디스크가 MRAM·ReRAM 대신 NAND를 고른 이유는 밀도·확장성·비용이 이미 검증됐고, NAND는 비휘발성(전원 꺼져도 데이터 유지)이라 HBM의 리프레시 전력이 불필요하기 때문 — 전력=비용인 추론 시대의 강점.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>어떻게 빠른가 — 극단적 병렬화</h2><p>NAND 셀 하나를 빠르게 만드는 게 아니라 동시에 움직이는 NAND 수를 극단적으로 늘리는 방식. 컨트롤러가 여러 채널→여러 다이→다이 내 여러 플레인에 동시에 명령을 보낸다(&quot;차선을 수십 개로 늘리기&quot;). 마이크론의 6플레인 NAND도 같은 원리. HBF는 여기에 다이 적층과 넓은 인터페이스, 로직 베이스 다이를 더해 병렬성을 극대화한다.</p></section><section class="card s12" id="s4"><h2><span class="seq">04</span>NAND의 약점 = HBF의 한계</h2><div class="tbl-wrap"><table><thead><tr><th>약점</th><th>내용</th></tr></thead><tbody><tr><td>셀당 비트<span class="up">↑</span></td><td>TLC(3bit)·QLC(4bit)는 상태 구분이 촘촘해져 오류에 취약. SLC(1bit)는 빠르고 수명<span class="up">↑</span>지만 용량<span class="dn">↓</span></td></tr><tr><td>리텐션</td><td>시간·열에 따라 전하가 새어 저장값이 흔들림</td></tr><tr><td>인듀어런스</td><td>쓰기/지우기(P/E) 반복으로 셀이 마모, 에러율 <span class="up">상승</span></td></tr><tr><td>쓰기 증폭</td><td>KV캐시처럼 잦은 쓰기 워크로드에서 수명이 빨리 닳음</td></tr><tr><td>열(熱)</td><td>GPU 옆 고온·온도 변화가 리텐션·수명을 가속 열화</td></tr></tbody></table></div>
+<p>NAND는 오류가 없는 메모리가 아니라 컨트롤러가 웨어레벨링·ECC(LDPC 등)로 끊임없이 고치며 쓰는 메모리. HBF는 GPU 옆 고대역폭을 유지하며 ECC·불량다이 관리·데이터 보정까지 해야 해 로직 다이·시스템 SW 역할이 커진다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>역할 분담 — 읽기 중심 vs 쓰기 중심</h2><p>HBF는 한 번 학습하면 잘 바뀌지 않는 &#x27;읽기 중심 모델 가중치&#x27;에 먼저 맞고, 쓰기가 잦은 KV캐시는 HBM이나 별도 고성능 계층에 두는 것이 현실적. 엔비디아는 KV캐시용 전용 계층을 따로 만들었는데, 베라루빈 시스템의 블루필드 4 STX(스토리지 아키텍처) 위에 올라가는 CMS(Context Memory Storage)가 그것이며, 스펙트럼-X 고속 네트워크로 여러 GPU가 공유한다. 즉 NAND를 GPU에 붙이는 길(HBF)과 독립 스토리지 랙을 네트워크로 묶는 길(CMS)이 경쟁.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>기업별 포지션</h2><div class="tbl-wrap"><table><thead><tr><th>기업</th><th>전략</th></tr></thead><tbody><tr><td>샌디스크</td><td>NAND 셀·CBA 본딩·컨트롤러 설계 + 급진적 &#x27;프로세서 온 NAND&#x27; 특허 선점</td></tr><tr><td>SK하이닉스</td><td>HBM의 TSV·고단적층·고대역폭 패키징 경험으로 HBF(AIN-B) 추진</td></tr><tr><td>삼성전자</td><td>OCP/HBF 공식 발표 없음 — PCIe 6.0 SSD·페타바이트 스토리지 등 랙 차원 강조</td></tr><tr><td>엔비디아</td><td>블루필드 4 STX + CMS로 독립 스토리지 계층 구축</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>결론 — 대체가 아니라 공존</h2><p>샌디스크 특허는 &#x27;제품이 아니라 특허&#x27;이며, 그 안에서도 HBM은 사라지지 않고 지연 시간이 중요한 작업을 맡는 역할로 이동할 뿐. SK하이닉스 시뮬레이션에서 HBM 8개+HBF 8개 하이브리드가 HBM 단독 대비 와트당 성능 최대 2.69배 향상 — 둘을 함께 쓰는 것이 가장 똑똑하다는 결론. 발표자는 HBF를 &quot;해답이라기보다 아직 풀리지 않은 문제&quot;로 평가하며, OCP 코리아 테크데이(8/21 코엑스)에서 인터페이스·ECC 위치·온도/수명 기준·교체 가능성 등을 관전 포인트로 제시.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>HBM</td><td>GPU 옆에 붙이는 고대역폭 D램 메모리</td><td>GPU 전용 초고속 작업대</td></tr><tr><td>HBF</td><td>NAND를 적층해 만든 고대역폭 플래시 계층</td><td>크지만 느린 창고를 빠른 선반으로</td></tr><tr><td>NAND 플래시</td><td>전원 꺼져도 유지되는 비휘발성 저장 메모리</td><td>SSD 안에 든 기억 칩</td></tr><tr><td>KV캐시</td><td>추론 중 생성·재사용되는 임시 키-값 데이터</td><td>대화 맥락을 적어둔 메모</td></tr><tr><td>TLC/QLC/SLC</td><td>셀당 3/4/1비트 저장 방식(용량↔속도·수명 트레이드오프)</td><td>한 칸에 몇 글자 적느냐</td></tr><tr><td>리텐션/인듀어런스</td><td>데이터 보존 특성 / 쓰기 내구성</td><td>잉크 안 바램 / 종이 안 닳음</td></tr><tr><td>ECC(LDPC)</td><td>잘못 읽힌 비트를 정정하는 오류정정 코드</td><td>오타 자동 교정기</td></tr><tr><td>CMS</td><td>엔비디아의 KV캐시 전용 스토리지 계층</td><td>GPU 밖에 둔 대형 메모장</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-06-25</div></div></body></html>
