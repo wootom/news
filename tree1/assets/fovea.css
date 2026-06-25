@@ -1,22 +1,68 @@
 /* fovea.css — YouTube Report Design System
-   Primary: #65a30d (green), Mobile-optimized, max-width: 900px
-   Updated: reference CSS 기준 적용
+   Theme: Daybreak (데이라이트 뉴트럴 + 카테고리 식별색) · Mobile-optimized, max-width: 900px
+   카테고리 accent: tech=#0E9E7E / econ=#2E6BF0 / hub=#6A4BE0 (body.cat-* 로 스위치)
 */
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 :root {
-  --primary-color: #65a30d;
-  --primary-color-hover: #4d7c0f;
-  --secondary-color: #374151;
-  --background-color: #ffffff;
-  --text-main: #111827;
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
-  --surface: #f9fafb;
-  --touch-highlight: rgba(101, 163, 13, 0.1);
+  /* ── Daybreak · 데이라이트 뉴트럴 (차콜 그레이 제거) ── */
+  --canvas: #EEF2F6;
+  --canvas-top: #EAF1F8;
+  --surface-card: #FFFFFF;
+  --ink-900: #16202B;
+  --ink-700: #3F4A56;
+  --ink-500: #76818E;
+  --ink-300: #9AA4AF;
+  --line: #E7ECF1;
+  --zebra: #F7F9FB;
+
+  /* ── 카테고리 식별색 (기본 = 공학·테크) · body.cat-*에서 재정의 ── */
+  --accent: #0E9E7E;
+  --accent-deep: #0B7A60;
+  --accent-tint: #E3F6F0;
+  --accent-ink: #0B6B54;
+
+  /* ── 시맨틱(카테고리 무관 고정) ── */
+  --up: #12A150;
+  --down: #E5484D;
+
   --radius: 10px;
-  --shadow: 0 1px 4px rgba(0,0,0,0.08);
+  --shadow: 0 1px 4px rgba(16,32,43,0.08);
+
+  /* ── 레거시 별칭 → Daybreak 매핑(기존 규칙 자동 리컬러) ── */
+  /* accent 파생 3종은 리터럴(= 기본 tech값). :root var() 간접참조는 body.cat-* 오버라이드를
+     따라가지 않으므로(=:root에서 동결) 각 body.cat-* 블록에서 반드시 재정의한다. */
+  --primary-color: #0E9E7E;
+  --primary-color-hover: #0B6B54;
+  --touch-highlight: #E3F6F0;
+  /* 중립 별칭은 카테고리 무관(동결돼도 정상) */
+  --secondary-color: var(--ink-900);
+  --background-color: var(--canvas);
+  --text-main: var(--ink-900);
+  --text-muted: var(--ink-500);
+  --border-color: var(--line);
+  --surface: var(--zebra);
+
+  /* 설정 모달 별칭(미정의 방지) */
+  --bg-card: var(--surface-card);
+  --bg-section: var(--zebra);
+  --text-primary: var(--ink-900);
+  --text-secondary: var(--ink-700);
+}
+
+/* ── 카테고리별 식별색: "헤더 색이 곧 그 글의 주제" ── */
+body.cat-tech {
+  --accent: #0E9E7E; --accent-deep: #0B7A60; --accent-tint: #E3F6F0; --accent-ink: #0B6B54;
+  --primary-color: #0E9E7E; --primary-color-hover: #0B6B54; --touch-highlight: #E3F6F0;
+}
+body.cat-econ {
+  --accent: #2E6BF0; --accent-deep: #1F50C4; --accent-tint: #E7EFFE; --accent-ink: #1B47AE;
+  --primary-color: #2E6BF0; --primary-color-hover: #1B47AE; --touch-highlight: #E7EFFE;
+}
+body.cat-hub {
+  --accent: #6A4BE0; --accent-deep: #5236C2; --accent-tint: #EEEAFD; --accent-ink: #4A30B0;
+  --primary-color: #6A4BE0; --primary-color-hover: #4A30B0; --touch-highlight: #EEEAFD;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,7 +70,8 @@
 body {
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI",
                "Noto Sans KR", Roboto, Helvetica, Arial, sans-serif;
-  background: var(--background-color);
+  background: linear-gradient(180deg, var(--canvas-top), var(--canvas) 260px);
+  background-color: var(--canvas);
   color: var(--text-main);
   line-height: 1.75;
   font-size: 16px;
@@ -127,8 +174,8 @@ h3 {
 /* 키워드 태그 (회색) */
 .tag-kw {
   display: inline-block;
-  background-color: #f3f4f6;
-  color: #374151;
+  background-color: var(--zebra);
+  color: var(--ink-700);
   border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 2px 9px;
@@ -209,8 +256,8 @@ h3 {
 
 /* ── Keyword highlight ────────────────────────────── */
 mark {
-  background: rgba(101, 163, 13, 0.15);
-  color: var(--primary-color-hover);
+  background: var(--accent-tint);
+  color: var(--accent-ink);
   border-radius: 3px;
   padding: 0 3px;
   font-weight: 600;
@@ -244,9 +291,9 @@ mark {
 .ts-badge {
   display: inline-flex;
   align-items: center;
-  background: rgba(101, 163, 13, 0.1);
-  color: var(--primary-color);
-  border: 1px solid rgba(101, 163, 13, 0.25);
+  background: var(--accent-tint);
+  color: var(--accent-ink);
+  border: 1px solid var(--accent-tint);
   border-radius: 4px;
   padding: 1px 6px;
   font-size: 11px;
@@ -259,13 +306,14 @@ mark {
   transition: background 0.15s;
 }
 .ts-badge:hover {
-  background: rgba(101, 163, 13, 0.22);
+  background: var(--accent-tint);
+  filter: brightness(0.96);
 }
 
 /* ── Cross Citation Box ───────────────────────────── */
 .cross-citation {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  background: var(--accent-tint);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 14px 18px;
   margin-top: 16px;
@@ -273,15 +321,15 @@ mark {
 .cross-citation h4 {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #166534;
+  color: var(--accent-ink);
   margin-bottom: 10px;
 }
 
 /* ── Citation Source Badge ────────────────────────── */
 .citation-source {
   display: inline-block;
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--accent-tint);
+  color: var(--accent-ink);
   border-radius: 4px;
   padding: 1px 6px;
   font-size: 11px;
@@ -357,15 +405,15 @@ td.change.down { color: #2563eb; font-weight: 700; } /* 국내: 파랑=하락 */
 
 /* ── Editor Note / Callout ────────────────────────── */
 .editor-note, .callout {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
+  background: var(--accent-tint);
+  border: 1px solid var(--line);
   border-radius: 12px;
   padding: 18px 20px;
   margin: 18px 0;
   font-size: 14.5px;
   line-height: 1.75;
 }
-.editor-note strong, .callout strong { color: #166534; }
+.editor-note strong, .callout strong { color: var(--accent-ink); }
 
 /* ── Page Actions ─────────────────────────────────── */
 .page-actions {
@@ -426,8 +474,8 @@ td.change.down { color: #2563eb; font-weight: 700; } /* 국내: 파랑=하락 */
   background: #fff;
 }
 .search-bar input[type="search"]:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(101, 163, 13, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-tint);
 }
 .card.search-hidden { display: none !important; }
 
