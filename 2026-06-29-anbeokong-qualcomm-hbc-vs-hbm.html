@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="출처: 안될공학 · 2026-06-29"><title>퀄컴 드래곤플라이와 HBC — HBM이 아닌 &#x27;메모리 옆 연산&#x27;</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-06-29 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>퀄컴 드래곤플라이와 HBC — HBM이 아닌 &#x27;메모리 옆 연산&#x27;</h1><p class="lead">출처: 안될공학 · 2026-06-29</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">드래곤플라이는 칩이 아니라 서버 풀세트</a><a href="#s3">디코드 병목과 메모리 월</a><a href="#s4">HBC 구조 — 메모리 위에 연산을 얹다</a><a href="#s5">같은 문제, 정반대 해법 — 그록 vs 퀄컴</a><a href="#s6">삼성 PIM·PNM과의 관계</a><a href="#s7">고객·일정과 한국 함의</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>사건</td><td>6/24 퀄컴이 인베스터데이에서 데이터센터용 <strong>드래곤플라이</strong> 풀세트 공개</td></tr><tr><td>핵심 개념</td><td><strong>HBC</strong>(High-Bandwidth Compute) = 새 메모리 규격이 아니라 메모리 위에 연산칩을 쌓은 구조</td></tr><tr><td>HBM vs HBC</td><td>HBM=길을 넓혀 빨리 보내기 / HBC=옮길 데이터 자체를 줄이기</td></tr><tr><td>겨냥 병목</td><td>디코드 단계의 <strong>메모리 월</strong>(연산은 한가, 데이터 나르기로 바쁨)</td></tr><tr><td>한국 함의</td><td>HBC가 요구하는 적층·패키징·PIM 능력이 삼성·SK하이닉스 강점과 정확히 겹침</td></tr><tr><td>주의</td><td>HBC는 미출시·유효대역폭·자체 추정치 — 검증 전 &#x27;김치국&#x27; 금지</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>드래곤플라이는 칩이 아니라 서버 풀세트</h2><p>칩 한 장이 아니라 서버 한 대 부품 세트를 한 번에 공개. 엔비디아가 GPU·CPU·네트워크·SW를 통째로 묶어 팔기에, 맞서는 회사들은 전체를 직접 설계해야 입장권을 얻음(AMD 헬리오스, 구글 TPU 중심, 퀄컴 합류). (<a href="https://youtu.be/t9c7kEktM3Q?t=352" target="_blank" rel="noopener">풀세트 전략 — 5:52</a>)</p>
+<ul>
+<li><strong>가속기(NPU)</strong> — AI200/AI250/AI300 로드맵</li>
+<li><strong>CPU</strong> — 자체 설계 C1000(오라이언 코어 250개+, 칩렛 방식)</li>
+<li><strong>연결망</strong> — UALink·이더넷 등 개방형 규격(엔비디아 NVLink 독점과 대비)</li>
+<li><strong>메모리</strong> — HBC</li>
+<li><strong>소프트웨어</strong> — 모듈러(39억 달러 인수, 쿠다에 도전)</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>디코드 병목과 메모리 월</h2><p>AI 생성은 ① 프리필(질문 한 번에 이해) ② 디코드(한 토큰씩 생성)로 나뉨. 디코드는 토큰마다 수백GB 가중치 + 점점 커지는 KV캐시를 메모리에서 반복 호출 → <strong>계산기는 노는데 책 나르느라 바쁜</strong> 전형적 데이터 병목. 모델 크기는 매년 10배씩 뛰는데 칩 처리능력은 못 따라가 격차(메모리 월)가 벌어짐. HBM은 이 틈을 메우려 길을 넓힌 비싼 해법. (<a href="https://youtu.be/t9c7kEktM3Q?t=698" target="_blank" rel="noopener">메모리 월 — 11:38</a>)</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>HBC 구조 — 메모리 위에 연산을 얹다</h2><p>3D 적층으로 저장 다이 위에 연산 다이를 얹어 <strong>메모리 바로 옆(위)에서 계산</strong>(near-memory computing). 가벼운 계산은 그 자리에서 끝내고 필요한 결과만 GPU로 전송 → 통행량 자체를 줄임.</p>
+<div class="tbl-wrap"><table><thead><tr><th>구분</th><th>HBM</th><th>HBC</th></tr></thead><tbody><tr><td>발상</td><td>데이터를 더 빨리 보내기(길 넓히기)</td><td>옮길 데이터를 줄이기(통행량 축소)</td></tr><tr><td>위치</td><td>GPU와 메모리 왕복</td><td>메모리 위에 연산 적층</td></tr><tr><td>1세대 제품</td><td>—</td><td>AI250(용량 768GB, 유효대역폭 133TB/s)</td></tr></tbody></table></div>
+<p>⚠️ 133TB/s는 물리적 대역폭이 아니라 <strong>유효 대역폭</strong>(아낀 것까지 환산). HBM의 raw 수치와 직접 &#x27;몇 배&#x27; 비교는 잘못. (<a href="https://youtu.be/t9c7kEktM3Q?t=1400" target="_blank" rel="noopener">HBM vs HBC — 23:20</a>)</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>같은 문제, 정반대 해법 — 그록 vs 퀄컴</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>그록(엔비디아 흡수)</th><th>퀄컴 HBC</th></tr></thead><tbody><tr><td>메모리 선택</td><td>SRAM(속도)</td><td>DRAM(용량)</td></tr><tr><td>강점</td><td>빠르고 일정한 응답(지터 없음)</td><td>거대 모델 통째로 적재</td></tr><tr><td>역할</td><td>급한 디코드(FFN·MoE) 전담</td><td>대용량 디코드</td></tr></tbody></table></div>
+<p>엔비디아조차 디코드 전용 그록 칩을 베라루빈에 7번째 칩으로 편입 — 디코드를 GPU 혼자 감당 못함을 업계 1등이 인정.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>삼성 PIM·PNM과의 관계</h2><p>삼성은 수년 전부터 HBM-PIM·LPDDR-PIM을 공개. <strong>PIM</strong>(메모리 칩 안에 계산기 심기) vs <strong>PNM</strong>(메모리 곁에 계산기) vs HBC의 near-memory(메모리 위에 적층). 셋 다 &quot;계산기를 메모리에 최대한 붙이자&quot;는 같은 방향. HBC는 PNM에 가깝되 구현은 퀄컴 독자 — &quot;방향은 같고 구현은 다르다&quot;. (<a href="https://youtu.be/t9c7kEktM3Q?t=2089" target="_blank" rel="noopener">삼성 PIM — 34:49</a>)</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>고객·일정과 한국 함의</h2><p>확보 고객: CPU=메타(주커버그 직접 확인), HBC=마이크로소프트 애저, 맞춤칩=바이트댄스. 단 양산은 2028년 하반기, &#x27;전력당 성능 2배&#x27;도 추정치이며 그때 상대는 미래의 인텔·AMD.</p>
+<p>HBC는 TSV·정밀 접합·발열·검사 등 고난도 적층 패키징을 요구 — SK하이닉스 HBM 주특기, 삼성 PIM/PNM 노하우와 정확히 겹침. 메모리 회사가 &#x27;주문대로 찍는 부품 공급사&#x27;에서 <strong>설계를 함께 하는 코디자인 파트너</strong>로 격상. 단 HBM 하나에서 작업 성격별로 메모리를 골라쓰는 시장으로 분화 → 기회이자 난이도 <span class="up">상승</span>의 양날의 검.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>HBC</td><td>메모리 위에 연산칩을 쌓은 near-memory 구조</td><td>창고 앞에서 가벼운 조립까지 끝내고 보냄</td></tr><tr><td>메모리 월</td><td>연산 속도와 메모리 공급 속도의 벌어지는 격차</td><td>빠른 요리사 앞에 식자재가 안 옴</td></tr><tr><td>KV 캐시</td><td>지금까지 쓴 답을 적어둔 메모장</td><td>길어질수록 두꺼워져 더 느려짐</td></tr><tr><td>PIM</td><td>Processing in Memory, 메모리 칩 안에 계산기</td><td>창고 안에 작업대를 들임</td></tr><tr><td>PNM</td><td>Processing near Memory, 메모리 곁에 계산기</td><td>창고 바로 옆 작업대</td></tr><tr><td>유효 대역폭</td><td>데이터를 아낀 것까지 환산한 값</td><td>지름길로 아낀 거리까지 합산</td></tr><tr><td>칩렛</td><td>작은 칩들을 레고처럼 이어 큰 칩 완성</td><td>블록 조립으로 거대 칩</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>안될공학 · 2026-06-29</div></div></body></html>
