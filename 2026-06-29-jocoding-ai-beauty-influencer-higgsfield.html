@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="여러 이미지·영상·오디오 모델을 한 구독으로 묶은 Higgsfield를 MCP로 클로드에 연결, 자연어 프롬프트만으로 일관성 있는 AI 인플루언서 &quot;유나&quot;를 만들고 화장품 광고 콘텐츠까지 자동 생성하는 실습."><title>클로드 + Higgsfield MCP로 AI 뷰티 인플루언서 만들기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">MORNING DIGEST · 2026-06-29 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>클로드 + Higgsfield MCP로 AI 뷰티 인플루언서 만들기</h1><p class="lead">여러 이미지·영상·오디오 모델을 한 구독으로 묶은 Higgsfield를 MCP로 클로드에 연결, 자연어 프롬프트만으로 일관성 있는 AI 인플루언서 &quot;유나&quot;를 만들고 화장품 광고 콘텐츠까지 자동 생성하는 실습.</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">Higgsfield란</a><a href="#s3">MCP 연결 절차</a><a href="#s4">캐릭터 일관성 — Element 등록</a><a href="#s5">비포·애프터 영상 제작</a><a href="#s6">화장품 광고 — Marketing Studio</a><a href="#s7">전략적 의미</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>조코딩 JoCoding (Higgsfield 광고·협찬)</td></tr><tr><td>목표</td><td>AI 뷰티 인플루언서 캐릭터 생성·운영 + 화장품 광고 제작</td></tr><tr><td>도구</td><td>Higgsfield(이미지·영상·오디오 통합 플랫폼) + 클로드 MCP</td></tr><tr><td>결과물</td><td>인스타그램·틱톡 계정 개설, 비포·애프터 바이럴 영상, 제품 광고 영상</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>Higgsfield란</h2><p>Nano Banana(이미지), Seedance(영상) 등 다양한 생성 모델을 개별 구독 없이 하나로 모아 쓰는 플랫폼. 기능·모델이 너무 많아 직접 고르기 어려운 문제를 MCP·CLI·스킬 공개로 해결 — AI 에이전트에게 목적만 말하면 알아서 최적 모델·기능을 조합한다.</p></section><section class="card s12" id="s3"><h2><span class="seq">03</span>MCP 연결 절차</h2><div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>주소 접속</b><span>Higgsfield.ai/MCP에서 연결 화면 진입, 연결 방식 MCP 선택.</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>URL 복사</b><span>표시된 Higgsfield 원격 서버 URL 복사.</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>커넥터 추가</b><span>클로드 설정 → 커넥터 → 커스텀 커넥터 추가에 URL 붙여넣고 이름 지정.</span></div></div><div class="step"><span class="snum">4</span><div class="sbody"><b>계정 연결</b><span>연결 버튼 → 브라우저에서 구독 계정 인증(Allow) → 연결 완료.</span></div></div><div class="step"><span class="snum">5</span><div class="sbody"><b>채팅에서 활성화</b><span>새 채팅의 플러스 → 커넥터에서 Higgsfield 켜고 프롬프트 작성.</span></div></div></div></section><section class="card s12" id="s4"><h2><span class="seq">04</span>캐릭터 일관성 — Element 등록</h2><p>클로드는 기본적으로 이미지·영상 생성이 없지만 MCP 연결 후 가능해진다. 여성 뷰티 인플루언서를 생성한 뒤 일관성 유지를 위해 캐릭터로 등록한다. (<a href="https://youtu.be/oiZJO1_P_bk?t=314" target="_blank" rel="noopener">딥링크 5:14</a>)</p>
+<div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>이미지 생성</b><span>모델·비율 지정 프롬프트로 인플루언서 후보 4종 생성.</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>Element 등록</b><span>이름(유나) 지정 후 Element로 즉시 등록(Soul 캐릭터는 별도).</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>다각도 보강</b><span>정면·좌·우 컷을 추가 생성해 Element 강화(닮음도 향상).</span></div></div><div class="step"><span class="snum">4</span><div class="sbody"><b>Use 적용</b><span>Element 탭의 Use로 프롬프트에 ID 자동 삽입 → 정확한 캐릭터 재현.</span></div></div></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>비포·애프터 영상 제작</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>방식</th></tr></thead><tbody><tr><td>비포 이미지</td><td>유나 Element + 캐주얼 셀피 프롬프트, count 4로 다중 생성</td></tr><tr><td>애프터 이미지</td><td>Image-to-Image로 화장 완료 컷 생성(유나 명시 + 레퍼런스 미디어)</td></tr><tr><td>영상 변환</td><td>시작·엔드 프레임 지정 → Seedance 2.0으로 비포→애프터 전환 영상</td></tr></tbody></table></div>
+<p>추가로 Predict Virality 기능은 메타 연구 기반으로 숏폼의 뇌 반응을 점수화해 바이럴 가능성을 예측.</p></section><section class="card s12" id="s6"><h2><span class="seq">06</span>화장품 광고 — Marketing Studio</h2><p>뷰티 인플루언서 수익화를 위한 제품 소개(UGC) 콘텐츠 제작. 클로드 코드 + MCP로 자동화:</p>
+<div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>제품 등록</b><span>화장품 사진(예: 메디테라피 콜라겐 펩타이드)을 Product로 등록, Product ID 획득.</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>광고 이미지</b><span>유나 Element + Product ID로 제품을 자연스럽게 든 다양한 구도 생성(글씨 디테일 유지).</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>Animate</b><span>생성 이미지를 Animate로 대사 포함 영상화(&quot;안녕하세요, 유나예요…&quot;).</span></div></div><div class="step"><span class="snum">4</span><div class="sbody"><b>자동 운영</b><span>CLI(클로드 코드·Codex)를 맥미니 등에 띄워 주기적으로 사진·영상 생성 후 인스타·틱톡 자동 포스팅 → 계정 성장 실험.</span></div></div></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>전략적 의미</h2><p>사람이 메뉴를 직접 누르는 대신 에이전트에게 목적만 말하는 워크플로우로의 전환. Element·Product 등록을 통한 일관성 유지가 AI 인플루언서 운영의 핵심이며, MCP+CLI 조합으로 콘텐츠 생산을 무인 자동화할 수 있다. 실제 인스타·틱톡 계정을 개설해 광고 수주 가능성까지 실험. (<a href="https://youtu.be/oiZJO1_P_bk?t=749" target="_blank" rel="noopener">딥링크 12:29</a>)</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>MCP</td><td>AI에 외부 도구를 붙이는 연결 표준</td><td>스마트폰에 앱을 설치하듯 능력 추가</td></tr><tr><td>Element</td><td>캐릭터 외형을 고정해 재사용하는 등록 단위</td><td>배우의 프로필을 등록해 같은 얼굴로 출연</td></tr><tr><td>Image-to-Image</td><td>기존 이미지를 변형해 새 이미지를 생성</td><td>사진에 화장만 입혀 다시 그리기</td></tr><tr><td>UGC</td><td>사용자가 만든 듯한 제품 후기형 콘텐츠</td><td>일반인이 찍은 리뷰 영상 느낌</td></tr><tr><td>CLI</td><td>명령어로 프로그램을 제어하는 방식</td><td>버튼 대신 글로 지시하는 리모컨</td></tr><tr><td>바이럴 예측</td><td>콘텐츠 확산 가능성을 점수화</td><td>시청 전 흥행 점수 미리보기</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-06-29</div></div></body></html>
