@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: GLM-5.2 — 앤트로픽을 긴장시킨 중국 오픈웨이트 모델 (Matt Wolfe)"><title>GLM-5.2 — 앤트로픽을 긴장시킨 중국 오픈웨이트 모델</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --accent:#2d9162;--accent-d:#1f6745;--accent-mid:#52b788;--accent-light:#d8f0e3;
+  --up:#1f9d57;--dn:#c0392b;--warn-bg:#fdecea;--warn-border:#f3c1bb;
+  --text:#1a1a1a;--muted:#666;--border:#e0e0e0;--surface:#f5f5f5;--bg:#fff;
+  --fill:#3a3a3a;--box-bg:#f4f4f4;
+  --header-grad:linear-gradient(135deg,#262626 0%,#383838 55%,#454545 100%);
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:#ededed;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header ─ */
+.hdr{
+  background:var(--header-grad);color:#f0f0f0;
+  border:1px solid #2a2a2a;border-radius:16px;
+  padding:32px 36px 26px;margin-bottom:18px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.08em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px 11px;border-radius:999px;color:#f0f0f0}
+.hdr-meta .chip.brand{background:#d8d8d8;color:#1a1a1a;border-color:#d8d8d8}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:#555}
+.hdr-meta .ey{color:#bdbdbd;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#f5f5f5;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:#d0d0d0;max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-d);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:#c8c8c8;border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--fill);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-d);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:#2a2a2a;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:#000}
+.card strong{color:#1a1a1a}
+
+/* ─ Tables ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--fill);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--fill);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--fill)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-d);line-height:1.1}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text)}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--fill)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:7px;vertical-align:middle}
+
+/* ─ TOC strip ─ */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 18px;padding:12px 16px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.toc .ti{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:5px}
+.toc a{
+  font-size:12.5px;font-weight:600;color:var(--text);text-decoration:none;
+  padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+  background:var(--surface)
+}
+.toc a:hover{background:var(--fill);color:#fff;border-color:var(--fill)}
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .toc{padding:10px 12px;gap:6px}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.toc,.tbl-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">MORNING DIGEST · 2026-07-02 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>GLM-5.2 — 앤트로픽을 긴장시킨 중국 오픈웨이트 모델</h1><p class="lead">title: GLM-5.2 — 앤트로픽을 긴장시킨 중국 오픈웨이트 모델 (Matt Wolfe)</p></header><nav class="toc"><span class="ti">목차</span><a href="#s1">핵심 개요</a><a href="#s2">핵심 주장</a><a href="#s3">오픈웨이트 ≠ 로컬 실행 용이</a><a href="#s4">사용 방법 3계층</a><a href="#s5">전략적 의미</a><a href="#s6">활용 시나리오</a><a href="#s7">현황 및 전망</a><a href="#s8">용어 사전</a></nav><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Matt Wolfe</td></tr><tr><td>한줄 요약</td><td>ZAI의 GLM-5.2는 저렴한 오픈웨이트 롱컨텍스트 코딩·에이전트 모델로, 생태계 구축 가능성이 핵심</td></tr><tr><td>배경</td><td>美 정부의 최첨단 모델 규제로 중국발 모델에 주목</td></tr><tr><td>라이선스</td><td>MIT 오픈소스, 오픈웨이트</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장</h2><p>GLM-5.2는 <strong>텍스트 전용, 100만 토큰 컨텍스트·12.8만 토큰 출력</strong> 플래그십. 함수호출·구조화출력·컨텍스트 캐싱·MCP 지원, 코딩·에이전트 워크플로우 최적화. 챗봇이 아니라 &quot;파일·코드·태스크를 던지면 계획하고 수행&quot;하는 모델. ([초반 설명])</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>오픈웨이트 ≠ 로컬 실행 용이</h2><div class="tbl-wrap"><table><thead><tr><th>오해</th><th>실제</th></tr></thead><tbody><tr><td>오픈웨이트면 집에서 쉽게 돌린다</td><td>7,530억 파라미터, 가중치 1.5TB+</td></tr><tr><td>압축하면 가능</td><td>1비트 양자화도 ~200GB 메모리 필요, 소비자 PC 불가</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>사용 방법 3계층</h2><div class="tbl-wrap"><table><thead><tr><th>레벨</th><th>방식</th><th>특징</th></tr></thead><tbody><tr><td>1</td><td>ZAI 웹사이트</td><td>가장 쉬움, 프롬프트는 ZAI 클라우드로 전송(호스티드)</td></tr><tr><td>2</td><td>ZAI API + 에이전트 하네스</td><td>Claude Code·Cursor·OpenCode 등 연동, 강력하나 호스티드</td></tr><tr><td>3</td><td>셀프호스팅</td><td>슈퍼컴/클라우드 GPU, 프라이버시·통제<span class="up">↑</span> 비용·복잡성<span class="up">↑</span></td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>전략적 의미</h2><p>오픈웨이트의 진짜 가치는 &quot;누구나 집에서 실행&quot;이 아니라 <strong>생태계가 그 위에 구축·최적화·호스팅</strong>할 수 있다는 점. 가격 경쟁으로 폐쇄형 프론티어 랩 의존도를 낮춤. 값싼 유능 모델은 사용 방식을 바꾼다 — 비싸면 주저, 싸면 실험·재시도·에이전트 장시간 실행.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>롱컨텍스트 처리</strong>: 대량 문서 분석·정리</li>
+<li><strong>코딩 에이전트</strong>: 저비용 토큰 헤비 워크플로우 스택에 편입</li>
+<li><strong>비용 실험</strong>: 리트라이·장시간 에이전트를 부담 없이 운용</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>Claude·GPT·Gemini를 전방위 대체하진 않으나, 긴 문서·코딩 에이전트·토큰 헤비 작업에서 훨씬 저렴한 대안. 美 규제 속 오픈소스 모델의 전략적 부상.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>오픈웨이트</td><td>모델 가중치를 공개(자체 호스팅 가능)</td><td>거대해서 실행엔 인프라 필요</td></tr><tr><td>컨텍스트 윈도우</td><td>한 번에 처리 가능한 토큰 길이</td><td>GLM-5.2는 100만 토큰</td></tr><tr><td>양자화</td><td>가중치 정밀도를 낮춰 용량 축소</td><td>1비트도 200GB 필요</td></tr></tbody></table></div></section></main><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-07-02</div></div></body></html>
