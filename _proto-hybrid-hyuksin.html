@@ -8,6 +8,7 @@
   :root{
     --bg:#eef1f4; --card:#ffffff; --ink:#1a1d21; --muted:#5b636c;
     --line:#dde2e8; --teal:#0e9e7e; --teal-soft:#e6f5f0; --teal-ink:#0a6b56;
+    --amber:#b45309; --amber-soft:#fdf1e3;
     --shadow:0 1px 2px rgba(20,25,35,.04),0 6px 20px rgba(20,25,35,.05);
   }
   *{box-sizing:border-box}
@@ -20,28 +21,50 @@
   h1{font-size:clamp(29px,5vw,42px);line-height:1.18;letter-spacing:-.02em;font-weight:800;
     margin:0 0 18px;text-wrap:balance}
   .lead{font-size:18.5px;color:var(--muted);margin:0 0 10px;text-wrap:pretty}
+  .lead b{color:var(--ink)}
   .meta{font-size:13px;color:var(--muted);margin:26px 0 0;padding-top:18px;border-top:1px solid var(--line)}
   .meta b{color:var(--ink);font-weight:600}
 
-  section{margin:44px 0 0}
+  /* 한 줄 요약 스트립 */
+  .tldr{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:24px 0 0;box-shadow:var(--shadow)}
+  .tldr > div{background:var(--card);padding:16px 16px}
+  .tldr .t{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--teal-ink);margin:0 0 5px}
+  .tldr .d{font-size:13.5px;color:#2c3138;line-height:1.5}
+  @media(max-width:560px){.tldr{grid-template-columns:1fr}}
+
+  section{margin:46px 0 0}
   .kicker{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;
     color:var(--teal-ink);background:var(--teal-soft);padding:4px 11px;border-radius:100px;margin:0 0 14px}
   h2{font-size:23px;line-height:1.3;letter-spacing:-.01em;font-weight:750;margin:0 0 12px;text-wrap:balance}
   p{margin:0 0 14px}
+  .sub{color:var(--muted);font-size:15.5px;margin:-4px 0 16px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
-    padding:24px 24px;box-shadow:var(--shadow)}
+    padding:22px 24px;box-shadow:var(--shadow)}
   .card + .card{margin-top:14px}
+  .card ul{margin:0;padding-left:20px}
+  .card li{margin:0 0 9px;font-size:15px;color:#2c3138}
+  .card li:last-child{margin-bottom:0}
+  .card li b{color:var(--ink)}
+
+  /* 인용 */
+  .quote{background:var(--ink);color:#fff;border-radius:16px;padding:24px 26px;box-shadow:var(--shadow);
+    margin:14px 0}
+  .quote .q{font-size:20px;font-weight:750;line-height:1.4;margin:0 0 8px;letter-spacing:-.01em}
+  .quote .s{font-size:13.5px;color:rgba(255,255,255,.7);margin:0}
+  .quote .q .hl{color:#4fd1ab}
 
   /* 대비 표 */
   .vs{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);
     border-radius:16px;overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
-  .vs > div{padding:22px 22px}
-  .vs .h{font-weight:750;font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+  .vs > div{padding:20px 22px}
+  .vs .h{font-weight:750;font-size:15px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
   .vs .kr{background:#fbfcfd}
   .vs .cn{background:var(--teal-soft)}
   .vs .cn .h{color:var(--teal-ink)}
   .vs ul{margin:0;padding-left:18px}
-  .vs li{margin:0 0 7px;font-size:14.5px;color:#2c3138}
+  .vs li{margin:0 0 8px;font-size:14.5px;color:#2c3138}
+  .vs li:last-child{margin-bottom:0}
   .vs .col-line{border-right:1px solid var(--line)}
   @media(max-width:560px){.vs{grid-template-columns:1fr}.vs .col-line{border-right:0;border-bottom:1px solid var(--line)}}
 
@@ -49,15 +72,27 @@
   .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
   .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 16px;
     box-shadow:var(--shadow)}
-  .kpi .n{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--teal-ink);
+  .kpi .n{font-size:29px;font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--teal-ink);
     font-variant-numeric:tabular-nums}
   .kpi .l{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.45}
   @media(max-width:560px){.kpis{grid-template-columns:1fr}}
 
-  /* 태그 칩(선전 기업) */
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 16px}
-  .chip{font-size:13.5px;font-weight:600;color:#2c3138;background:#f2f5f8;
-    border:1px solid var(--line);border-radius:100px;padding:6px 13px}
+  /* 기업 역할 그리드 */
+  .firms{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:4px 0 14px}
+  .firm{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 15px;
+    box-shadow:var(--shadow)}
+  .firm .fn{font-weight:750;font-size:14.5px;color:var(--ink)}
+  .firm .fr{font-size:12.5px;color:var(--muted);margin-top:3px}
+  @media(max-width:560px){.firms{grid-template-columns:1fr}}
+
+  /* 흐름 스텝 */
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:8px 0 4px}
+  .flow .step{flex:1 1 0;min-width:120px;background:var(--teal-soft);border:1px solid #cfe9e0;
+    border-radius:12px;padding:13px 14px}
+  .flow .step .sn{font-size:11px;font-weight:800;color:var(--teal-ink);letter-spacing:.06em}
+  .flow .step .st{font-size:14px;font-weight:650;color:#1f2a27;margin-top:4px;line-height:1.4}
+  .flow .arw{align-self:center;color:var(--teal);font-weight:800;font-size:18px}
+  @media(max-width:560px){.flow .arw{display:none}.flow .step{flex-basis:100%}}
 
   /* 이미지 패널 */
   figure{margin:0}
@@ -65,14 +100,22 @@
     box-shadow:var(--shadow)}
   .fig img{display:block;width:100%;height:auto}
   figcaption{font-size:13px;color:var(--muted);padding:12px 18px 15px;border-top:1px solid var(--line);
-    background:#fbfcfd}
+    background:#fbfcfd;line-height:1.55}
   figcaption b{color:var(--teal-ink);font-weight:700}
+
+  /* 정의 행 */
+  .defs{display:grid;gap:10px;margin:14px 0}
+  .def{display:grid;grid-template-columns:96px 1fr;gap:14px;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);align-items:start}
+  .def .k{font-weight:750;font-size:14px;color:var(--teal-ink)}
+  .def .v{font-size:14.5px;color:#2c3138;line-height:1.55}
+  @media(max-width:560px){.def{grid-template-columns:1fr;gap:4px}}
 
   /* 표 */
   table{width:100%;border-collapse:collapse;font-size:14.5px}
   .tbl{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
     box-shadow:var(--shadow)}
-  th,td{text-align:left;padding:13px 18px;border-bottom:1px solid var(--line)}
+  th,td{text-align:left;padding:13px 18px;border-bottom:1px solid var(--line);vertical-align:top}
   th{font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);
     background:#fbfcfd;font-weight:700}
   tr:last-child td{border-bottom:0}
@@ -81,7 +124,8 @@
   /* 결론 콜아웃 */
   .callout{background:var(--teal);color:#fff;border-radius:18px;padding:28px 26px;box-shadow:var(--shadow)}
   .callout h2{color:#fff;margin-bottom:10px}
-  .callout p{color:rgba(255,255,255,.92);margin:0}
+  .callout p{color:rgba(255,255,255,.94);margin:0 0 12px}
+  .callout p:last-child{margin-bottom:0}
   .callout .mark{background:rgba(255,255,255,.22);padding:1px 6px;border-radius:5px;font-weight:700}
 
   .foot{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
@@ -95,111 +139,174 @@
   <p class="eyebrow">Daybreak · 하이브리드 리포트 (실험본)</p>
   <h1>값싼 노동력은 이미 사라졌다 — 그런데 왜 중국인가</h1>
   <p class="lead">저임금·정부지원·모방으로는 설명되지 않는다. 현장에서 목격한 진짜 열쇠는 <b>속도</b>와 <b>생태계</b>, 그리고 그것을 떠받치는 <b>사람·규제·정부</b>였다.</p>
+
+  <div class="tldr">
+    <div><div class="t">속도</div><div class="d">완벽을 기다리기보다 일단 출시 → 시장이 검증 → 즉각 개선</div></div>
+    <div><div class="t">공급망</div><div class="d">선전 한 도시에 부품·파트너 집결 → 빠른 조립·낮은 비용</div></div>
+    <div><div class="t">기반</div><div class="d">공대생 연 200만·네거티브 규제·인프라 선확충·생태계 조성</div></div>
+  </div>
+
   <p class="meta"><b>출처</b> 혁신전파사 · 48분 롱폼(2026-07-02) &nbsp;·&nbsp; <b>형식</b> 이미지(비유·개념도) + HTML(데이터·표·산문) 하이브리드</p>
 
-  <!-- 1. 질문 : 산문 -->
+  <!-- 1. 질문 -->
   <section>
     <span class="kicker">질문</span>
-    <h2>단일 원인은 없다</h2>
+    <h2>“하나의 이유”를 찾으면 반드시 빗나간다</h2>
+    <p class="sub">중국은 AI·휴머노이드·자율주행·하드웨어 제조에서 미국과 함께 양강을 이룬다. 그 배경을 단일 원인으로 설명하려는 시도는 대부분 틀렸다.</p>
     <div class="card">
-      <p style="margin-bottom:0">중국이 AI·휴머노이드·자율주행·하드웨어 제조에서 미국과 양강을 이룬 배경을 하나로 설명하려는 시도는 대부분 빗나간다. 값싼 노동력은 생활수준·물가 상승으로 <b>이미 소멸</b>했고, 모방(벤치마킹)은 어디까지나 출발점일 뿐이다. 그럼에도 양강 구도는 유지된다 — 관전 포인트는 <b>모방 그 다음</b>에 있다.</p>
+      <ul>
+        <li><b>저임금?</b> — 이미 아니다. 생활수준·물가가 오르며 ‘값싼 노동력’이라는 전제는 소멸했다.</li>
+        <li><b>정부지원?</b> — 그것만으로 세계 최고 수준의 제품 경쟁력이 나오지 않는다.</li>
+        <li><b>모방?</b> — 벤치마킹은 <b>출발점</b>일 뿐, 그 다음이 없으면 양강이 될 수 없다.</li>
+        <li>그럼에도 미·중 양강 구도는 유지된다 → 관전 포인트는 ‘모방 <b>그 다음</b>’, 즉 <b>속도와 생태계</b>에 있다.</li>
+      </ul>
     </div>
   </section>
 
-  <!-- 2. 속도 문화 : 대비 표(HTML 강점) -->
+  <!-- 2. 속도 -->
   <section>
     <span class="kicker">관찰 ①</span>
-    <h2>“고민할 시간에 만들면, 이미 소비자 손에”</h2>
-    <p>가장 먼저 체감한 건 압도적인 <b>속도 문화</b>다. 완벽을 기다리기보다 일단 내보내고 시장에서 고친다.</p>
+    <h2>속도 — 완벽을 기다리지 않는다</h2>
+    <p class="sub">현장에서 가장 먼저 체감한 건 압도적인 속도 문화였다. 만드는 동안 고민하는 게 아니라, 만들고 나서 시장에서 고친다.</p>
+    <div class="quote">
+      <p class="q">“고민할 시간에 만들면, 그건 <span class="hl">이미 소비자 손</span>에 있다.”</p>
+      <p class="s">— 현장에서 반복적으로 목격한 중국식 개발 태도</p>
+    </div>
     <div class="vs">
       <div class="kr col-line">
         <div class="h">🇰🇷 한국</div>
         <ul>
-          <li>출시 전 과도한 QA·완벽주의</li>
-          <li>내부 검증에 시간 소요</li>
-          <li>피드백 루프가 느림</li>
+          <li>출시 <b>전</b> 과도한 QA·완벽주의</li>
+          <li>내부 검증에 시간 소요 → 출시 지연</li>
+          <li>피드백 루프가 느리고 길다</li>
+          <li>실패를 ‘사고’로 보는 문화</li>
         </ul>
       </div>
       <div class="cn">
         <div class="h">🇨🇳 중국</div>
         <ul>
-          <li>일단 출시 → 시장이 검증</li>
-          <li>즉각 피드백·빠른 개선 반복</li>
-          <li>반복 주기 자체가 경쟁력</li>
+          <li>일단 출시 → <b>시장이 검증</b></li>
+          <li>즉각 피드백 → 빠른 개선 반복</li>
+          <li>반복 주기(iteration) 자체가 경쟁력</li>
+          <li>실패를 ‘데이터’로 보는 문화</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- 3. 선전 공급망 : 칩 + 산문(HTML) -->
+  <!-- 3. 선전 공급망 -->
   <section>
     <span class="kicker">관찰 ②</span>
     <h2>선전(深圳) — 하드웨어의 실리콘밸리</h2>
-    <p>속도를 물리적으로 떠받치는 건 <b>공급망 밀집</b>이다. 필요한 부품·파트너가 반경 안에 즉시 집결한다.</p>
-    <div class="chips">
-      <span class="chip">화웨이</span><span class="chip">텐센트</span><span class="chip">BYD</span>
-      <span class="chip">TCL</span><span class="chip">DJI</span><span class="chip">유비텍</span>
+    <p class="sub">속도를 물리적으로 떠받치는 건 공급망 밀집이다. 필요한 부품·파트너가 한 도시 반경 안에 즉시 모인다.</p>
+    <div class="firms">
+      <div class="firm"><div class="fn">화웨이 · 텐센트</div><div class="fr">통신·플랫폼·반도체 설계</div></div>
+      <div class="firm"><div class="fn">BYD</div><div class="fr">전기차·배터리 수직계열화</div></div>
+      <div class="firm"><div class="fn">DJI</div><div class="fr">드론 — 세계 시장 지배</div></div>
+      <div class="firm"><div class="fn">유비텍(UBTECH)</div><div class="fr">휴머노이드·서비스 로봇</div></div>
+      <div class="firm"><div class="fn">TCL</div><div class="fr">디스플레이·가전 제조</div></div>
+      <div class="firm"><div class="fn">+ 부품·금형·조립 생태</div><div class="fr">반경 안에 협력사 밀집</div></div>
     </div>
-    <div class="card">
-      <p style="margin-bottom:0">본사·공장·부품사가 한 도시에 집적 → <b>빠른 조립 · 낮은 비용</b> → 구조적 가격 경쟁력. 하나의 시제품을 하루 만에 손에 쥐고 다음 버전을 돌리는 일이 이곳에선 일상이다.</p>
+    <div class="flow">
+      <div class="step"><div class="sn">STEP 1</div><div class="st">부품·파트너 즉시 집결</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="sn">STEP 2</div><div class="st">시제품 빠른 조립</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="sn">STEP 3</div><div class="st">낮은 비용 구조</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="sn">STEP 4</div><div class="st">구조적 가격 경쟁력</div></div>
     </div>
   </section>
 
-  <!-- 4. 인재 : KPI(HTML 강점) -->
+  <!-- 4. 인재 -->
   <section>
     <span class="kicker">본질 ①</span>
     <h2>사람 — 매년 쏟아지는 200만 공학도</h2>
-    <p>속도와 공급망을 굴리는 연료는 결국 <b>사람</b>이다. 인재의 규모와 방향이 다르다.</p>
+    <p class="sub">속도와 공급망을 굴리는 연료는 결국 사람이다. 인재의 <b>규모</b>와 <b>방향</b>이 다르다.</p>
     <div class="kpis">
-      <div class="kpi"><div class="n">≈200만</div><div class="l">중국 연간 공대 졸업생 (테크 취업·창업으로 확산)</div></div>
-      <div class="kpi"><div class="n">소수</div><div class="l">한국 공학 인재 풀 — 상대적으로 얕음</div></div>
-      <div class="kpi"><div class="n">의대 쏠림</div><div class="l">한국 상위권 인재의 진로 집중 현상</div></div>
+      <div class="kpi"><div class="n">≈200만</div><div class="l">중국 연간 공대 졸업생 — 테크 취업·창업으로 확산</div></div>
+      <div class="kpi"><div class="n">소수 풀</div><div class="l">한국 공학 인재 — 절대 규모가 얕음</div></div>
+      <div class="kpi"><div class="n">의대 쏠림</div><div class="l">한국 상위권 인재 진로가 한쪽으로 집중</div></div>
+    </div>
+    <div class="card">
+      <p style="margin-bottom:0">규모가 크다는 건 단순히 머릿수가 아니다. <b>실패해도 다시 도전할 사람이 충분</b>하다는 뜻이고, 그래서 위험한 시도가 계속 나온다. 인재가 테크 창업으로 흐르는 나라와, 안정적 전문직으로 흐르는 나라는 5년 뒤 만들어내는 산업의 종류가 다르다.</p>
     </div>
   </section>
 
-  <!-- 이미지 A : 규제 유턴 비유 (HTML이 못 하는 순수 비유) -->
+  <!-- 이미지 A : 규제 유턴 -->
   <section>
     <span class="kicker">본질 ②</span>
     <h2>규제 — ‘유턴’이 말해주는 두 철학</h2>
-    <p>제도의 결이 다르다. 이 차이는 표보다 <b>그림 한 장</b>이 낫다.</p>
+    <p class="sub">제도의 결이 다르다. 신산업의 운명을 가르는 이 차이는 표보다 그림 한 장이 낫다.</p>
+    <div class="defs">
+      <div class="def"><div class="k">네거티브<br>(미·중)</div><div class="v">‘금지한 것’만 아니면 다 해도 된다. 목록에 없는 새 시도 = <b>허용</b>. 유턴이 자유롭다.</div></div>
+      <div class="def"><div class="k">포지티브<br>(한국)</div><div class="v">‘허용한 것’만 할 수 있다. 목록에 없는 새 시도 = <b>불가(허가 대기)</b>. 표시된 곳에서만 유턴.</div></div>
+    </div>
     <figure class="fig">
       <img src="assets/proto/hy-regulation-uturn.jpg" alt="규제 유턴 비유: 미·중 네거티브 규제(유턴 자유) vs 한국 포지티브 규제(표시된 곳만 허용)">
-      <figcaption><b>네거티브(미·중)</b> 금지 안 한 건 다 허용 — 유턴 자유. &nbsp;<b>포지티브(한국)</b> 표시된 것만 허용. 신산업은 대부분 ‘아직 표시 안 된 영역’ → 허가가 없어 착수가 늦어진다.</figcaption>
+      <figcaption>신산업은 대부분 ‘<b>아직 표시 안 된 영역</b>’이다. 그래서 한국에서는 허가가 나올 때까지 착수 자체가 늦어지고, 그 사이 경쟁국은 이미 시장에 제품을 내놓는다.</figcaption>
     </figure>
   </section>
 
-  <!-- 5. 정부 : 사례 표(HTML) -->
+  <!-- 5. 정부 -->
   <section>
     <span class="kicker">본질 ③</span>
-    <h2>정부 — 인프라를 먼저 깔고, 페널티로 집행한다</h2>
-    <p>정부의 역할은 ‘지원금’이 아니라 <b>순서</b>였다. 인프라를 선(先)확충하고 강한 페널티로 규율한다.</p>
+    <h2>정부 — 지원금이 아니라 ‘순서’로 움직인다</h2>
+    <p class="sub">정부의 역할은 돈을 뿌리는 게 아니었다. 인프라를 먼저 깔고, 강한 페널티로 규율하고, 집행으로 밀어붙인다.</p>
+    <div class="flow" style="margin-bottom:14px">
+      <div class="step"><div class="sn">1</div><div class="st">인프라 선(先)확충</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="sn">2</div><div class="st">강한 페널티 설계</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="sn">3</div><div class="st">예외 없는 집행</div></div>
+      <div class="arw">→</div>
+      <div class="step"><div class="sn">4</div><div class="st">빠른 상용화</div></div>
+    </div>
     <div class="tbl" style="overflow-x:auto">
       <table>
         <thead><tr><th>분야</th><th>정부의 수(手)</th><th>결과</th></tr></thead>
         <tbody>
-          <tr><td>전기차</td><td>충전 인프라 선확충 + 보급 강제</td><td class="hl">빠른 상용화</td></tr>
-          <tr><td>드론 딜리버리</td><td>운항 인프라·규율 동시 정비</td><td class="hl">실서비스 조기 안착</td></tr>
+          <tr><td>전기차</td><td>충전 인프라 선확충 + 내연차 규제로 전환 강제</td><td class="hl">빠른 대중화</td></tr>
+          <tr><td>드론 딜리버리</td><td>운항 공역·안전 규율을 인프라와 동시에 정비</td><td class="hl">실서비스 조기 안착</td></tr>
+          <tr><td>공통 원리</td><td>‘허용 후 방치’가 아니라 ‘깔아주고 강하게 관리’</td><td class="hl">신뢰 가능한 확산</td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <!-- 이미지 B : 생태계 오케스트레이션 (개념 다이어그램) -->
+  <!-- 이미지 B : 생태계 -->
   <section>
     <span class="kicker">제안 ①</span>
     <h2>혁신의 기반은 기업이 아니라 ‘생태계’다</h2>
-    <p>결국 개별 기업의 분투가 아니라 <b>생태계</b>가 혁신을 만든다. 조성자의 역할은 플레이가 아니라 <b>오케스트레이션</b>이다.</p>
+    <p class="sub">결국 개별 기업의 분투가 아니라 생태계가 혁신을 만든다. 조성자의 일은 플레이가 아니라 <b>오케스트레이션</b>이다.</p>
     <figure class="fig">
       <img src="assets/proto/hy-ecosystem-orchestration.jpg" alt="생태계 오케스트레이션: 조성자의 네 역할(설계·보완·감시·조율), 조성자가 플레이어로 들어가면 실패">
-      <figcaption>조성자(정부·기업)의 일 = <b>설계 · 보완 · 감시 · 조율</b>. 조성자가 직접 플레이어로 들어가는 순간 다른 참여자의 진입이 막히고 순환이 멈춘다.</figcaption>
+      <figcaption>조성자(정부·기업)의 네 가지 일 — <b>설계·보완·감시·조율</b>. 조성자가 직접 플레이어로 들어가는 순간 다른 참여자의 진입이 막히고 순환이 멈춘다(오른쪽 실패 케이스).</figcaption>
     </figure>
+    <div class="vs" style="margin-top:14px">
+      <div class="kr col-line">
+        <div class="h">🇰🇷 한국의 현재</div>
+        <ul>
+          <li>생태계 제약 → AI 하드웨어 스타트업 <b>희소</b></li>
+          <li>혁신 시도의 절대량이 부족</li>
+        </ul>
+      </div>
+      <div class="cn">
+        <div class="h">🇨🇳 중국의 현재</div>
+        <ul>
+          <li>‘과잉’이라 할 만큼 시도가 <b>활발</b></li>
+          <li>실패·성공이 동시에 대량 발생</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
-  <!-- 6. 결론 : 콜아웃(HTML) -->
+  <!-- 6. 결론 -->
   <section>
     <div class="callout">
       <h2>답은 경쟁이 아니라 ‘협력’</h2>
-      <p>한국은 생태계 제약으로 AI 하드웨어 스타트업이 희소하고, 중국은 과잉이라 할 만큼 활발하다. 방향은 분명하다 — 선전 하드웨어 에코시스템의 강점을 <span class="mark">활용</span>하는 협력. 우리가 설계할 것은 제품이 아니라 <span class="mark">생태계</span>다.</p>
+      <p>한국이 선전과 정면으로 속도·물량 경쟁을 하는 건 승산이 낮다. 그러나 선전 하드웨어 에코시스템의 강점을 <span class="mark">활용</span>하는 협력은 다르다 — 우리가 잘하는 설계·소프트·브랜드에, 그들이 잘하는 조립·부품·속도를 붙인다.</p>
+      <p>그래서 한국이 설계해야 할 것은 하나의 제품이 아니라 <span class="mark">생태계</span> 그 자체다. 조성자로서 설계·보완·감시·조율에 집중하되, 절대 스스로 플레이어가 되어 판을 막지 않는 것 — 그것이 이 48분이 남긴 결론이다.</p>
     </div>
   </section>
 
