@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="채널: 안될공학 · 게시: 2026-07-05 · 길이: 약 23분"><title>삼성은 뜯고 화웨이는 접었다 — 스마트폰 칩 발열의 정반대 해법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-07-06 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>삼성은 뜯고 화웨이는 접었다 — 스마트폰 칩 발열의 정반대 해법</h1><p class="lead">채널: 안될공학 · 게시: 2026-07-05 · 길이: 약 23분</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>한 줄 요약</td><td>삼성(메모리 분리)과 화웨이(회로 3D 적층)의 정반대 행보는 결국 &quot;미세공정만으로 성능 못 올린다&quot;는 같은 질문의 답</td></tr><tr><td>삼성 방향</td><td>AP 위 메모리를 떼어내 열 빠지는 길을 넓힘 — &quot;열의 길이 줄이기&quot;</td></tr><tr><td>화웨이 방향</td><td>AP 내부 회로를 위아래로 접어 배선 단축 — &quot;배선의 길이 줄이기&quot;</td></tr><tr><td>핵심 논점</td><td>좋은 모바일 칩 = 트랜지스터 축소가 아니라 신호·열 경로 설계까지 포함</td></tr><tr><td>신뢰도 유의</td><td>삼성 엑시노스 2700은 단일 유출 루머, 화웨이 기린은 미양산·미검증</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>두 소식은 층위가 다름. 삼성은 완성된 칩 패키지에서 열 나가는 길을 바꾸는 문제(패키징), 화웨이는 칩 내부 회로 배치를 3차원으로 재설계하는 문제(회로 설계). 하나는 &quot;열 꺼내는 방법&quot;, 다른 하나는 &quot;회로 그리는 방법&quot;.</p>
+<ul>
+<li>스마트폰 메인보드 면적 극도 제한 → AP 위에 D램을 쌓는 PoP(Package-on-Package) 방식 오래 사용</li>
+<li>위아래로 겹치면 보드 면적 절약 + 연결 거리 단축(모바일 메모리에 유리)</li>
+<li>문제: 성능 <span class="up">상승</span> → 이 구조가 열에 불리. AP 열이 D램의 솔더볼·접착필름·몰딩제(모두 열전도 나쁨) 통과해야 냉각장치 도달</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 발열의 물리</h2><ul>
+<li>온도 <span class="up">상승</span> ΔT ≈ 소비전력 P × 열저항 Rθ. 열저항 2배면 같은 조건에서 칩 온도 더 빠르게 <span class="up">상승</span></li>
+<li>일정 온도 넘으면 AP가 전압·클록 스스로 낮춤 = 스로틀링 → 성능 저하</li>
+<li>체감 성능 관건: 순간 최고 성능이 아니라 부하 지속 시 &quot;몇 분간 성능 유지&quot; 여부</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>삼성의 단계적 진화</h2><div class="tbl-wrap"><table><thead><tr><th>세대</th><th>변화</th><th>효과</th></tr></thead><tbody><tr><td>엑시노스 2400</td><td>Fan-out WLP(팬아웃 패키지) 최초 적용 — 접점을 RDL(재배선층)로 바깥에 펼침</td><td>패키지 얇게, 열 경로 축소</td></tr><tr><td>엑시노스 2600</td><td>D램 면적 절반 축소·발열 영역과 겹치지 않게 이동 + 구리 HPB(히트패스블록) 삽입</td><td>패키지 열저항 직전세대比 최대 16% <span class="dn">감소</span></td></tr><tr><td>엑시노스 2700(루머)</td><td>메모리를 더 멀리 분리(수평 배치 or 별도 패키지, 불명확)</td><td>AP 윗면 개방 → 냉각면 확대</td></tr></tbody></table></div>
+<ul>
+<li>구리는 절연·몰딩 소재보다 열전도 약 500~1,000배 높음(단, 폰 온도가 500배 낮아진다는 뜻 아님)</li>
+<li>PoP·Fan-out WLP·HPB는 서로 대체 기술이 아니라 각각 다른 부분(쌓기/접점연결/열배출)을 손봄</li>
+<li>수평 배치는 공짜 아님: 패키지 면적<span class="up">↑</span>, 배선거리<span class="up">↑</span>, 워페이지(휨) 관리 필요 → 무조건 우월한 구조 아님</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>애플·퀄컴·화웨이 비교</h2><div class="tbl-wrap"><table><thead><tr><th>회사</th><th>현 상태</th><th>방향</th></tr></thead><tbody><tr><td>애플</td><td>2016 A10부터 TSMC InFO PoP 사용, A20(아이폰18)에서 WMCM 전환 보도</td><td>수평 배치 가능성 거론(공식 아님)</td></tr><tr><td>퀄컴</td><td>스냅드래곤 8 Elite Gen5는 기판 기반 PoP 유지</td><td>차세대에 HPB 유사 구조 루머(미확인)</td></tr><tr><td>화웨이</td><td>차세대 기린(2026 가을)에 로직 폴딩 첫 적용 발표</td><td>AP 내부 회로를 위아래 층 분리</td></tr></tbody></table></div>
+<h3>화웨이 로직 폴딩 상세</h3>
+<ul>
+<li>크리티컬 패스(가장 느린 신호 경로)를 한 평면에 길게 늘이지 않고 1분은 아래층·1분후는 위층에 배치, 수직으로 짧게 연결</li>
+<li>하이브리드 본딩: 솔더 범프 없이 절연막·구리 접점 직접 접합 → 연결 간격<span class="dn">↓</span>, 저항·정전용량<span class="dn">↓</span> (TSMC도 SoIC로 제공, 화웨이 독점 기술 아님)</li>
+<li>화웨이 주장 수치: 배선 30% 단축 → 최대주파수 13%·전력효율 41% <span class="up">개선</span>, 투영 회로밀도 1.55억→2.38억/㎟</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오 / 판단 포인트</h2><ol>
+<li><strong>온디바이스 AI 시대</strong>: 폰엔 팬 없음 → 서버보다 낮은 온도·전력 범위. NPU·ISP·모뎀 동시 부하 증가로 전체 열 경로 설계가 관건</li>
+<li><strong>미세공정의 한계</strong>: 공정 미세화로 생긴 전력 여유를 더 높은 클록·큰 GPU에 쓰면 전체 열은 안 줄 수 있음</li>
+<li><strong>비교 기준 전환</strong>: 벤치마크 최고점이 아니라 &quot;같은 표면온도·같은 소비전력에서 성능을 얼마나 오래 유지하는가&quot;</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>확인된 사실: 삼성 엑시노스 2400 팬아웃·2600 구리 HPB 실적용, 화웨이 기린 로직 폴딩 계획·하이브리드 본딩 수치 공개</li>
+<li>미확인: 엑시노스 2700 구조, 화웨이 양산 제품 발열·성능(실제 분해 검증 필요), 애플·퀄컴 차세대</li>
+<li>화웨이 수치 해석 주의: &quot;옛 공정으로 최신 미세공정 따라잡음&quot; 아님 — 높아진 건 투영 면적 밀도이지 트랜지스터 체급 아님. 1.5μm 하이브리드 본딩 피치 ≠ 1.5nm 공정. 41%는 대표 고성능 코어 1개·심사 전 논문 결과</li>
+<li>3D 적층 리스크: 열원이 수직으로 겹쳐 국부 전력밀도·핫스팟·수율 관리 난제</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>AP (SoC)</td><td>CPU·GPU·NPU 등을 한 칩에 담은 스마트폰 중심 프로세서</td><td>폰의 두뇌</td></tr><tr><td>PoP</td><td>AP 위에 D램을 층층이 쌓는 패키지 방식</td><td>2층집처럼 부품을 세로로 쌓기</td></tr><tr><td>스로틀링</td><td>온도 <span class="up">상승</span> 시 칩이 스스로 속도를 낮춰 고장 막는 것</td><td>과열되면 자동으로 힘 빼는 안전장치</td></tr><tr><td>열저항(Rθ)</td><td>열이 빠져나가기 어려운 정도</td><td>두꺼운 이불일수록 열이 안 빠짐</td></tr><tr><td>HPB</td><td>AP 위에 붙인 작은 구리 방열판(히트패스블록)</td><td>냄비 손잡이의 열 빼는 금속판</td></tr><tr><td>로직 폴딩</td><td>회로를 위아래 층으로 나눠 배선을 짧게 만드는 설계</td><td>긴 종이를 접어 거리를 줄이기</td></tr><tr><td>하이브리드 본딩</td><td>솔더 없이 절연막·구리를 직접 붙이는 접합 기술</td><td>접착제 없이 표면끼리 딱 붙이기</td></tr><tr><td>크리티컬 패스</td><td>전체 동작 속도를 결정하는 가장 느린 신호 경로</td><td>가장 느린 사람이 팀 속도를 정함</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/HPLOGiIXyjg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 · 2026-07-06</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
