@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="채널: Jack Roberts · 게시: 2026-07-06 · 길이: 약 19분"><title>Fable 5 에이전틱 OS 5단계 — Claude Code 위에 나만의 AI 운영체제 구축</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">MORNING DIGEST · 2026-07-07 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>Fable 5 에이전틱 OS 5단계 — Claude Code 위에 나만의 AI 운영체제 구축</h1><p class="lead">채널: Jack Roberts · 게시: 2026-07-06 · 길이: 약 19분</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>한 줄 요약</td><td>Fable 5(현존 최강 모델)를 Claude Code 기반 &quot;에이전틱 운영체제&quot;에 얹어 메모리·오케스트레이션·야간 자동화·음성까지 5단계로 확장</td></tr><tr><td>핵심 주장</td><td>올해 가장 중요하게 만들 것은 &quot;에이전틱 OS&quot; — 통합 메모리 위에서 모든 AI 도구를 하나로 지휘</td></tr><tr><td>하네스</td><td>Hermes 에이전트(모델 셀렉터·프롬프트 캐싱·음성 지원)를 통해 Fable 5 접근</td></tr><tr><td>비용 유의</td><td>Fable 5는 토큰 소모가 매우 큼 → 전체 데이터를 훑게 하면 과금 급증. MoE 캐싱으로 완화</td></tr><tr><td>접근 시한</td><td>Claude 앱 내 Fable 5 이용은 7/7까지, 이후 API 액세스 전환</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>통합 메모리 — &quot;하나의 두뇌&quot;라는 전제</h2><ul>
+<li>에이전틱 OS의 목적: 폰·노트북·Hermes·Claude 어디서 무엇을 하든 <strong>하나의 연속된 시스템</strong>으로 세계를 통합</li>
+<li>Hermes가 Claude에서 일어난 일을 알고, Claude가 Hermes 상황을 아는 상호 인지 구조</li>
+<li>무한 컨텍스트 지향: 사업 목표·재무 수치·과거 대화·회의 기록을 AI가 모두 알면 반복 설명 불필요, 최상의 인사이트 산출</li>
+<li>연결 대상: <strong>Obsidian 볼트(로컬 LLM 위키, Karpathy 원칙)</strong> + 모든 Claude Code 시스템 + Hermes 개인비서 → Claude·Hermes가 동일 DB 참조</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>5단계 구축 — 레벨별 기능</h2><div class="tbl-wrap"><table><thead><tr><th>레벨</th><th>이름</th><th>핵심 동작</th></tr></thead><tbody><tr><td>1</td><td>운전대 넘기기(Give the wheel)</td><td>Fable 5를 OS 모델 셀렉터에 추가, effort 다이얼 부여 → 전체 데이터 훑어 &quot;안 쓰고 있는 고ROI 스킬 2개&quot; 추천. 시급 입력 시 스킬별 일일 절감액 달러 환산</td></tr><tr><td>2</td><td>하나의 두뇌(One Brain)</td><td>메모리 코어를 Fable 5가 재설계 → 주제별 클러스터·검색·클릭 탐색 가능한 <strong>인터랙티브 지식맵</strong>으로 승격(retention·hooks·intros 등 토픽 확장)</td></tr><tr><td>3</td><td>에이전트부(Ministry of Agents)</td><td>오케스트레이터를 Opus 4.8 → <strong>Fable 5</strong>로 교체. DeepSeek V4 Pro·GLM 5.2·GPT 5.5에 질의 후 최적안 종합(adversarial review). 프롬프트 캐싱으로 토큰 대폭 절감(OpenRouter·aorth)</td></tr><tr><td>4</td><td>드리밍(Dreaming)</td><td>야간에 Fable 5가 클라우드 활동·메모리·자동화·챗로그 전체를 검토하며 서브에이전트 스핀업, <span class="up">개선</span>안·인사이트 자동 생성</td></tr><tr><td>5</td><td>음성 OS</td><td>Claude Code OS 위에 대화형 음성 인터페이스 구축 → 질문 응답, 버튼 클릭·화면 이동, 대시보드 색상까지 라이브 수정(&quot;22,000개 메시지 발송&quot; 등 상태 보고)</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>오케스트레이션 경제학 — 왜 MoE·캐싱인가</h2><ul>
+<li>Ministry(=Mixture of Experts) 구조: 오케스트레이터 1개 + 하위 전문가 다수 → &quot;어느 나라에 살까&quot; 같은 질문도 3개 모델이 토론 후 종합(&quot;네덜란드 위트레흐트&quot; 데모)</li>
+<li>원래 다중 모델 병렬 호출은 모든 모델 토큰을 지불해야 하지만, Hermes가 <strong>프롬프트를 캐싱</strong>해 비용을 페니 단위로 절감</li>
+<li>저가 라우팅: DeepSeek·GLM·GPT 5.5를 OpenRouter로, 결제는 aorth 경유 → 토큰 효율 극대화</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>실전 팁 — 오탐과 비용 관리</h2><ul>
+<li>Fable 5에게 &quot;모든 것&quot;을 훑게 하면 토큰 폭식 → 질의 범위를 좁혀 요청</li>
+<li>openclaw·Hermes 등 외부 에이전트와도 메모리를 공유해 도구 간 단절 제거</li>
+<li>온보딩 위저드(이름·사진·시스템 스캔·메모리 식별)로 스킬 ROI를 대시보드화</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><ul>
+<li>확정 흐름: Claude 앱 내 Fable 5 접근 7/7 마감 → 이후 API 전환. 최강 모델을 &quot;지금&quot; 무거운 작업에 선점하라는 권고</li>
+<li>관전 포인트: ① 오케스트레이터를 최강 모델로 두는 MoE의 비용 대비 품질 ② 로컬 지식맵(Obsidian)과 에이전트 메모리 통합의 실용성 ③ 야간 드리밍의 실제 인사이트 품질</li>
+<li>유의: 데모 중심 튜토리얼로, 제시된 성능·절감 수치는 발표자 환경 기준(검증 필요)</li>
+</ul></section><section class="card s12" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>에이전틱 OS</td><td>여러 AI 에이전트를 통합 지휘하는 개인 운영체제</td><td>여러 앱을 묶은 스마트폰 홈화면</td></tr><tr><td>하네스(harness)</td><td>모델을 감싸 실행·연결하는 실행 환경</td><td>말에 씌우는 마구(장비 일습)</td></tr><tr><td>Mixture of Experts</td><td>오케스트레이터가 여러 전문가 모델에 분배·종합</td><td>팀장이 전문가 3명 의견 취합</td></tr><tr><td>adversarial review</td><td>여러 모델이 서로 반박하며 최적안 도출</td><td>토론 배틀 후 결론</td></tr><tr><td>프롬프트 캐싱</td><td>반복 입력을 저장해 재과금 회피</td><td>자주 쓰는 문장 복붙 저장</td></tr><tr><td>Obsidian 볼트</td><td>링크로 연결된 로컬 지식노트 저장소</td><td>개인용 위키 서랍</td></tr><tr><td>드리밍</td><td>유휴 시간에 AI가 자율로 문제를 파고드는 기능</td><td>자는 동안 돌아가는 백그라운드 작업</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/3ujOdi9W1EI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-07-07</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
