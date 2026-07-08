@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="date: 2026-07-08"><title>[미주은행] 미러링의 파워!</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>미국주식으로 은퇴하기 - 미주은</span><span class="ey">MORNING DIGEST · 2026-07-08 · 미국주식으로 은퇴하기 - 미주은</span><span class="chip">🎬 영상</span></div><h1>[미주은행] 미러링의 파워!</h1><p class="lead">date: 2026-07-08</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>미국주식으로 은퇴하기 - 미주은</td></tr><tr><td>제목</td><td>[미주은행] 미러링의 파워!</td></tr><tr><td>게시일</td><td>2026-07-08 (다이제스트 수집일)</td></tr><tr><td>길이</td><td>약 8분</td></tr><tr><td>핵심 결론</td><td>① 직장 상사의 평가는 공정한 기준이 아닌 상사 개인의 주관적 가치관에 좌우됨 ② 상사의 반복 행동을 관찰해 그가 중시하는 가치를 파악하고 따라하는 &#x27;미러링&#x27;이 관계·진급의 핵심 무기 ③ 도저히 따라하고 싶지 않은 상사라면 미러링보다 이직 준비가 나은 선택</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1. 화자의 배경 — &#x27;춤추는 총지배인&#x27;의 경험담</h3>
+<ul>
+<li>인도네시아·말레이시아 등 동남아 호텔 총지배인 재직 경험 기반의 조직 관리 노하우</li>
+<li>K팝·K드라마 절정기와 맞물려 한국인 프리미엄 + 플래시몹 댄스 등으로 직원 호감 획득</li>
+<li>실질적 인기 요인: 직원 진급·복지에 관대한 리더십 — 매년 직원 약 20% 승진, 급여 인상 다수</li>
+<li>레비뉴 매니저·세일즈 마케팅 디렉터 출신으로 비용 관리보다 매출 성장 중심 경영 → 직원 사기 <span class="up">상승</span> → 매출 <span class="up">상승</span> → 호감 <span class="up">상승</span>의 선순환 구축</li>
+<li>승진 후 책임감·후천적 학습으로 기술적 능력은 충분히 발전 가능하다는 인재관 → 열정적 직원에게 기회 우선 부여</li>
+</ul>
+<h3>2. 상사 평가의 본질 — 공정하지 않은 주관의 영역</h3>
+<ul>
+<li>관대한 리더에게도 &#x27;찍히는&#x27; 직원은 존재 — 문제 직원의 약점은 제각각(건방진 유능형 vs 착하지만 답답한 성실형)</li>
+<li>원인: 사람 평가는 일정한 기준이 아닌 평가자의 지극히 주관적인 관점에 좌우</li>
+<li>좋은 직장 선택만큼 중요한 것이 &#x27;나와 궁합이 맞는 상사&#x27;를 만나는 일 — 단, 면접만으로는 상사 스타일 파악 불가</li>
+<li>부하 직원은 상사 1명에게 맞추지만, 상사에게 그 직원은 수십 명 중 1명 → 맞추는 노력의 대부분은 부하 몫이라는 현실</li>
+</ul>
+<h3>3. 해법 — 한 단계 진화한 미러링</h3>
+<ul>
+<li>미러링 정의: 상대의 반복적·습관적 행동을 관찰해 거울처럼 따라하는 것</li>
+<li>화자의 확장 정의: 겉 행동 모방을 넘어 상대가 가장 중시하는 &#x27;가치관&#x27;을 파악하고 그 가치에 부합하게 행동하는 전 과정</li>
+<li>실제 사례: 화자는 누구에게나 예의·인사성을 지키는 사람 → 이를 미러링한 직원은 좋은 관계 유지, &quot;직원에게도 인사 잘하네&quot; 수준에서 멈추거나 만만하게 본 직원(강자에 약하고 약자에 강한 유형)은 관계 <span class="dn">악화</span></li>
+<li>소통 방식 미러링: 상사가 이메일형인지 메신저·전화형인지 관찰 후 맞추기</li>
+</ul>
+<p>- 화자는 이메일 선호 + 인사말·감사 표현을 갖춘 격식형 → 형식 없는 이메일에 불쾌감 가능 - 반대로 &#x27;THX&#x27;로 줄여 쓰는 속도전형 상사에게는 정중한 인사말보다 빠른 일처리·핵심 중심 소통이 유효</p>
+<h3>4. 미러링의 한계선</h3>
+<ul>
+<li>나에게 중요한 사람인데도 도저히 따라하고 싶지 않다면 → 그 사람은 내 인생에 도움이 안 될 가능성 높음</li>
+<li>이 경우 미러링 고민보다 이직 준비가 더 나은 선택</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장 맥락</h2><ul>
+<li>미주은 채널의 &#x27;미주은행&#x27; 코너는 투자 종목 분석이 아닌 커리어·자산형성의 토대가 되는 직장 생활 처세 콘텐츠 — 은퇴 자금의 원천인 근로소득·진급을 다루는 시리즈</li>
+<li>인사평가·진급이 연봉과 투자 여력을 직접 좌우한다는 점에서 &#x27;인적 자본 관리&#x27;를 투자 관점으로 접근</li>
+<li>글로벌 호텔 체인(아코르 계열) 실무 경험 기반이라 다국적 조직·외국계 기업 재직자에게 적용성 높음</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>조직 내 평가는 실력 단일 변수가 아닌 &#x27;상사의 주관적 가치관 적합도&#x27; 함수 — 실력 개발과 별도로 상사 관찰이 필수 과제</li>
+<li>미러링은 아부가 아니라 상대의 평가 기준을 역설계(리버스 엔지니어링)하는 정보 수집 전략</li>
+<li>소통 채널·형식까지 맞추는 디테일이 인사고과·진급 기회의 실질 변수로 작동</li>
+<li>&#x27;따라할 수 없는 상사 = 이직 시그널&#x27;이라는 판단 프레임 제공 — 관계 <span class="up">개선</span> 노력의 손절 기준</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 시나리오</h2><ul>
+<li>새 부서 배치·이직 직후: 첫 2~4주간 상사의 이메일 문체, 회의 스타일, 반복 행동을 관찰 기록 후 소통 방식 맞추기</li>
+<li>인사평가 시즌 전: 상사가 중시하는 가치(예의·속도·형식·성과지표)를 목록화하고 본인 업무 보고 방식을 그 기준에 맞춰 재정렬</li>
+<li>관계 <span class="dn">악화</span> 진단: 상사와의 갈등이 실력 문제인지 가치관 미스매치인지 구분 → 미러링 시도 후에도 <span class="up">개선</span> 없거나 따라하기 싫은 상사라면 이직 준비로 전환</li>
+<li>리더 입장 활용: 팀원들에게 본인의 평가 기준을 행동으로 일관되게 노출해 팀 전체의 예측 가능성 제고</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><ul>
+<li>직장 내 평가의 주관성은 구조적 현실로 지속 — AI·성과지표 도입에도 최종 진급 결정권자의 주관 개입은 불변</li>
+<li>하이브리드 근무 확산으로 상사 관찰 기회가 줄어드는 환경 → 이메일·메신저 등 텍스트 소통에서의 미러링 중요성 오히려 <span class="up">상승</span></li>
+<li>채널은 향후에도 투자(미주은) + 커리어 처세(미주은행) 투트랙 콘텐츠 지속 전망</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>미러링</td><td>상대의 반복 행동과 가치관을 관찰해 거울처럼 맞춰 행동하는 관계 전략</td><td>이메일형 상사에게는 격식 있는 이메일로 보고</td></tr><tr><td>총지배인(GM)</td><td>호텔의 최고 운영 책임자</td><td>호텔 전체의 CEO 격</td></tr><tr><td>레비뉴 매니저</td><td>객실 가격·판매를 조절해 매출을 극대화하는 호텔 직군</td><td>항공권처럼 날짜별 객실 요금을 설계하는 사람</td></tr><tr><td>플래시몹</td><td>공공장소에서 불특정 다수가 갑자기 함께 춤·퍼포먼스를 하는 이벤트</td><td>호텔 로비에서 직원들이 깜짝 단체 댄스</td></tr><tr><td>인사고과</td><td>조직이 직원의 성과·태도를 정기 평가하는 제도</td><td>연말 성적표, 연봉·승진의 근거</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/XKI8e8Ev-gQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>미국주식으로 은퇴하기 - 미주은 · 2026-07-08</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
