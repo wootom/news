@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 기술부채보다 위험한 AI 인지부채 — 데이터센터 전쟁과 AI 시대 생존법"><title>기술부채보다 위험한 AI 인지부채</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-hub"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-07-09 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>기술부채보다 위험한 AI 인지부채</h1><p class="lead">title: 기술부채보다 위험한 AI 인지부채 — 데이터센터 전쟁과 AI 시대 생존법</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>티타임즈TV (게스트: 박종천 지란지교소프트 CAIO)</td></tr><tr><td>대주제</td><td>① AI &#x27;인지부채&#x27; 개념 ② AI 데이터센터 전쟁 구도 ③ 데이터 주권·중국 모델</td></tr><tr><td>핵심 메시지</td><td>AI가 강력해질수록 &quot;내가 이해 못 하는 결과물&quot;이 쌓이는 인지부채가 최대 리스크</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>인지부채(Cognitive Debt)란</h2><p>개발 조직의 오랜 과제인 <strong>기술부채</strong>(급하게 대충 만든 코드가 쌓여 시스템이 위험해지는 것)를 넘어, 이제 <strong>인지부채</strong>가 등장했다. AI가 코드를 짜고 일을 처리하는데 &quot;돌아가긴 하지만 왜 돌아가는지 모르는&quot; 상태다. &quot;AI가 짠 코드는 AI만 디버깅할 수 있어&quot; 우리가 그 내용을 모르게 된다.</p>
+<p>바이브 코딩(AI에게 맡겨 개발)뿐 아니라 워크 에이전트(워드·엑셀 코파일럿 등)로 확장되면 동일한 인지부채가 쌓인다. 예: AI가 만든 슬라이드를 검토 없이 보냈다가 핵심 내용이 틀릴 수 있음. 해법은 <strong>AI와 함께 빠르게 학습</strong>해 주도권(의사결정·계획)을 사람이 쥐는 것. 발표자는 &quot;가끔 코드를 직접 넣어보며 무엇을 쓰는지 이해하는 것이 학습&quot;이라고 강조.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>AI 데이터센터 전쟁 구도</h2><p>모델 경쟁과 데이터센터 경쟁의 주체가 동일: Azure(MS↔OpenAI), AWS(↔Anthropic), GCP(자체 Gemini), Colossus(xAI Grok). MS·아마존은 자체 모델 없이 &quot;위의 코딩·워크 에이전트&quot;를 장악하려 함. OpenAI는 Azure+Oracle, Anthropic은 주로 AWS 사용.</p>
+<p>칩 경쟁 다변화: 엔비디아 GPU 외 구글 TPU, 아마존 트레이니움·인퍼런시아, <strong>테슬라 AI칩(AI4→AI5→AI6 발표)</strong> 까지. 테슬라는 전기차→에너지→로봇→AI칩 회사로 변신 중. 세레브라스는 상장했으나 첫 실적 부진. 메타는 GPU 다량 보유·직원 데이터 수집(키보드·마우스 추적) 실험 중이나 플랫폼 부재로 방향 불확실(일부 중단 보도).</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>데이터 주권 — 한국의 위치</h2><p>발표자 지표: 한국은 세계 영토의 0.06%, 인구 0.6%, GDP 1.5%. 그러나 인터넷 공개 데이터는 GDP보다 낮은 ~1.5%(데이터 공개에 소극적). &quot;영토&lt;인구&lt;GDP&lt;디지털 데이터&quot; 순으로 중요. 한국이 소버린 AI(K-AI)를 가지려면 데이터가 먼저 많아지는 데이터 강국이 되어야 함 — 언론사 30년치 신문 디지털화, 공공·기업 비기밀 데이터 공개, 암묵지(현장 노하우)의 데이터화 필요.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>코딩 에이전트 시장 현황</h2><div class="tbl-wrap"><table><thead><tr><th>순위</th><th>도구</th><th>특징</th></tr></thead><tbody><tr><td>1위(매출)</td><td>GitHub Copilot</td><td>MS 영업력·유료 기본 탑재</td></tr><tr><td>2위</td><td>Cursor</td><td>오래됨·완성도, <strong>일론 머스크(xAI)가 고가 인수</strong></td></tr><tr><td>성능 인정</td><td>Claude Code</td><td>찐 개발자 위주, 성능 1위</td></tr><tr><td>똑똑하나 비쌈</td><td>Codex(OpenAI)</td><td>정액제도 용량 금방 소진, API는 토큰 폭증</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>전략적 의미·시나리오</h2><ul>
+<li><strong>페이블(Fable) 수출 규제 사례</strong>: 강력 모델(Mythos급)이 해킹·무기화 위험을 낳자, 가드레일 우회 가능성 때문에 미국 정부가 해외 사용을 차단 → &quot;코카콜라 수출 금지&quot;에 비유. 자체 모델의 중요성 부각.</li>
+<li><strong>암묵지의 데이터화</strong>: 휴머노이드 로봇엔 1인칭 작업 영상 데이터가 필요 → 인도 등에서 현장 노동 데이터를 수집하면 &quot;그 방식대로 로봇이 일하게&quot; 되는 편향 우려.</li>
+<li><strong>기업 생존 전략</strong>: 개인은 증강 인간으로, 회사는 증강 회사로 전환해야. 눈치 보다 늦으면 &quot;죽도 밥도 안 된다&quot;.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>AI는 거품 논쟁에도 &quot;피할 수 없는 미래&quot;. 승부는 GPU·전력·이미 나오는 AI 토큰 매출로 갈리며, MS&gt;아마존&gt;구글+Colossus 순. 플랫폼·지면·데이터를 모두 가진 빅테크(메타·구글·애플)가 광고 헤게모니까지 강화. 개인·기업 모두 인지부채를 경계하며 AI와 함께 학습하는 역량이 핵심 경쟁력이 된다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>인지부채</td><td>AI 결과물을 이해 못 한 채 쌓이는 위험</td><td>남이 정리한 서류에 서명만 하는 것</td></tr><tr><td>기술부채</td><td>급조한 코드가 쌓여 커지는 문제</td><td>미룬 설거지가 산더미 되는 것</td></tr><tr><td>바이브 코딩</td><td>AI에게 맡겨 대화형으로 개발</td><td>AI에게 &quot;만들어줘&quot; 하고 받는 것</td></tr><tr><td>워크 에이전트</td><td>업무 앱에 내장된 AI 자동화</td><td>엑셀 안의 AI 비서</td></tr><tr><td>소버린 AI</td><td>자국 데이터·모델로 만든 AI 주권</td><td>국산 AI 자립</td></tr><tr><td>가드레일</td><td>위험 답변을 막는 안전장치</td><td>도로 난간</td></tr><tr><td>정액제/종량제</td><td>고정요금 vs 사용량 과금</td><td>뷔페 vs 단품 계산</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>핵심 구간</h2><ul>
+<li><a href="https://youtu.be/fwdIXO1DoTo?t=169" target="_blank" rel="noopener">인지부채 도입·바이브코딩 문제</a></li>
+<li><a href="https://youtu.be/fwdIXO1DoTo?t=591" target="_blank" rel="noopener">Fable 수출 규제·모델 안전</a></li>
+<li><a href="https://youtu.be/fwdIXO1DoTo?t=1056" target="_blank" rel="noopener">데이터 주권·중국 모델 50% 규정</a></li>
+<li><a href="https://youtu.be/fwdIXO1DoTo?t=1521" target="_blank" rel="noopener">코딩 에이전트 시장·Cursor 인수</a></li>
+<li><a href="https://youtu.be/fwdIXO1DoTo?t=1901" target="_blank" rel="noopener">인지부채 심화·AI 데이터센터 결론</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/fwdIXO1DoTo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-07-09</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

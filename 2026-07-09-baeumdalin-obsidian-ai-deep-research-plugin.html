@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 옵시디언에서 AI 딥리서치 자동화 — NotebookLM + Tavily 무료 플러그인"><title>옵시디언에서 AI 딥리서치 자동화 — NotebookLM + Tavily 무료 플러그인</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>배움의 달인</span><span class="ey">MORNING DIGEST · 2026-07-09 · 배움의 달인</span><span class="chip">🎬 영상</span></div><h1>옵시디언에서 AI 딥리서치 자동화 — NotebookLM + Tavily 무료 플러그인</h1><p class="lead">title: 옵시디언에서 AI 딥리서치 자동화 — NotebookLM + Tavily 무료 플러그인</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>배움의 달인 (AI·자동화) · 김문정</td></tr><tr><td>주제</td><td>자체 개발 옵시디언 플러그인 &quot;RealyGood Research&quot; 소개·설치·시연</td></tr><tr><td>핵심</td><td>Tavily 리서치 API + NotebookLM(MCP)를 옵시디언 안에서 실행 → 딥리서치 결과를 노트로 자동 저장</td></tr><tr><td>비용</td><td>무료(Tavily 가입 시 1,000 크레딧 무료, 커뮤니티 플러그인 배포)</td></tr><tr><td>결과물</td><td>마크다운(.md) + HTML 두 형식 동시 생성</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능 구조</h2><p>옵시디언 볼트 내부에서 질문 하나를 던지면 두 종류의 리서치 리포트가 동시에 생성된다. 첫째는 Tavily API 기반 딥리서치, 둘째는 NotebookLM 기반 리서치이며, 각각 수십 개(40~50개) 소스를 활용한다. 결과는 지정 폴더(기본 <code>00-리서치</code>)에 마크다운과 HTML로 저장되어, 리서치 데이터가 자동으로 개인 지식관리(볼트) 안에 축적된다.</p>
+<p>두 프로바이더(Tavily·NotebookLM)는 개별 또는 동시 사용이 가능하며, 토글로 선택한다. 실행은 모달(진행 창)로 표시되고 창을 내려도 백그라운드로 계속 진행된다. 통상 10분 내외 소요.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>플러그인은 외부 CLI 코딩 에이전트를 백엔드로 활용한다. Codex CLI, Claude Code CLI, Gemini CLI, Antigravity 중 하나를 프로바이더로 지정하면, 그 CLI가 NotebookLM MCP와 Tavily API를 연결해 리포트를 작성한다. NotebookLM MCP는 오픈소스를 차용했고, 설치는 제공된 커맨드를 터미널(옵시디언 내장 터미널 가능)에 붙여넣어 진행한다.</p>
+<p>NotebookLM은 로그인이 필요하며, 작업 대기 한도는 기본 900초(약 15분)로 설정된다. Tavily API 키는 클라우드가 아닌 로컬에 <code>.env</code> 형태로 저장되어 보안 우려가 낮다. 딥리서치 1회당 약 20크레딧 차감(무료 1,000크레딧으로 충분).</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>기존에는 NotebookLM·Gemini·ChatGPT 딥리서치를 각 웹서비스에서 따로 수행하고 결과를 옮겨야 했다. 이 플러그인은 리서치 실행 지점을 옵시디언으로 통합해, &quot;리서치 → 지식 축적&quot;의 흐름을 끊김 없이 만든다. 지식관리 도구(옵시디언)를 단순 저장소가 아닌 리서치 실행 허브로 확장한 사례다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우</h2><ol>
+<li>커뮤니티 플러그인 브라우즈에서 &quot;RealyGood Research&quot; 설치·활성화(BRAT 불필요).</li>
+<li>설정에서 Tavily API 키 저장 + NotebookLM MCP 설치·로그인 + CLI 프로바이더 지정.</li>
+<li>좌측 리본 아이콘 → 토픽 입력 → 프로바이더 토글 → 출력 폴더 지정 → Start.</li>
+<li>10분 내외 후 <code>.md</code>·<code>.html</code> 리포트 자동 생성.</li>
+<li>공유 시: HTML 파일을 Gemini Canvas에 업로드 → &quot;HTML 페이지로 열어줘&quot; → Share로 공유 링크 생성(PDF 인쇄도 가능).</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>주제 조사 자동화</strong>: &quot;AI 챗봇 활용 시 고객 만족도·충성도 영향&quot; 같은 질문으로 40~50개 출처 기반 리포트를 노트로 확보(영상 시연 사례).</li>
+<li><strong>개인 지식베이스 강화</strong>: 반복 리서치 결과가 옵시디언에 자동 누적되어 이후 검색·연결에 재활용.</li>
+<li><strong>외부 공유</strong>: 사내 협업·보고 시 Gemini Canvas 공유 링크로 시각화된 리포트 전달.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>플러그인은 커뮤니티 플러그인으로 정식 등록되어 누구나 설치 가능하다. 개발자는 생업 병행으로 업데이트에 한계가 있어 카톡방 커뮤니티의 협업(오픈소스)으로 <span class="up">개선</span>·재배포되는 구조라고 밝혔다. Tavily API 퀄리티 만족도가 높아 딥리서치 워크플로우의 표준 도구로 자리 잡을 가능성이 있다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Tavily</td><td>AI 앱용 웹 검색·리서치 API 서비스</td><td>AI에게 붙여주는 전용 검색 비서</td></tr><tr><td>NotebookLM</td><td>구글의 문서 기반 AI 리서치·요약 도구</td><td>자료를 넣으면 정리해주는 AI 노트</td></tr><tr><td>MCP</td><td>AI가 외부 도구·데이터에 접속하는 표준 연결 규격</td><td>가전제품 공용 콘센트</td></tr><tr><td>CLI</td><td>명령어로 프로그램을 실행하는 터미널 도구</td><td>버튼 대신 명령어로 조작하는 리모컨</td></tr><tr><td>BRAT</td><td>옵시디언 베타 플러그인 수동 설치 도구</td><td>정식 출시 전 앱 미리 설치기</td></tr><tr><td>크레딧</td><td>API 사용량을 차감하는 이용 단위</td><td>놀이공원 자유이용권 횟수</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>핵심 구간</h2><ul>
+<li><a href="https://youtu.be/cVkf43CCdYc?t=88" target="_blank" rel="noopener">플러그인 개요·개발 배경</a></li>
+<li><a href="https://youtu.be/cVkf43CCdYc?t=311" target="_blank" rel="noopener">설치·설정(Tavily 키·NotebookLM MCP)</a></li>
+<li><a href="https://youtu.be/cVkf43CCdYc?t=556" target="_blank" rel="noopener">실행·시연</a></li>
+<li><a href="https://youtu.be/cVkf43CCdYc?t=800" target="_blank" rel="noopener">결과 확인·소스 40~50개</a></li>
+<li><a href="https://youtu.be/cVkf43CCdYc?t=1000" target="_blank" rel="noopener">Gemini Canvas 공유 방법</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/cVkf43CCdYc" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>배움의 달인 · 2026-07-09</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
