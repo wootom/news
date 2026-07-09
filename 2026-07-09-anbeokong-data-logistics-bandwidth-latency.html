@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="유럽의 65TB를 한국으로 가장 빨리 옮기는 방법이 인터넷이 아니라 비행기일 수 있다. &quot;빛보다 빠른 것은 없지만, 빛으로 보내는 방식이 언제나 가장 빠른 해답은 아니다.&quot; 지연시간·대역폭·저장장치·물류를 하나의 시스템으로 보는 데이터 물류 관점을 AI 인프라까지 확장"><title>데이터를 왜 비행기로 옮길까 — 대역폭과 지연시간의 역설</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-07-10 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>데이터를 왜 비행기로 옮길까 — 대역폭과 지연시간의 역설</h1><p class="lead">유럽의 65TB를 한국으로 가장 빨리 옮기는 방법이 인터넷이 아니라 비행기일 수 있다. &quot;빛보다 빠른 것은 없지만, 빛으로 보내는 방식이 언제나 가장 빠른 해답은 아니다.&quot; 지연시간·대역폭·저장장치·물류를 하나의 시스템으로 보는 데이터 물류 관점을 AI 인프라까지 확장해 설명한다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>안될공학</td></tr><tr><td>핵심 질문</td><td>대용량 데이터를 가장 빨리 옮기는 방법은 인터넷인가 비행기인가</td></tr><tr><td>두 축</td><td>지연시간(latency) vs 대역폭(bandwidth) — 서로 다른 개념</td></tr><tr><td>결론</td><td>데이터 성격에 따라 광통신·전용망·물리운송을 조합하는 &#x27;데이터 물류&#x27;가 정답</td></tr><tr><td>AI 연결</td><td>학습 데이터·모델 체크포인트 등 대용량 이동에서 &#x27;데이터 중력&#x27;이 관건</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>지연시간 vs 대역폭 (핵심 구분)</h2><p>&quot;인터넷이 빠르다&quot;는 말은 두 가지를 뭉뚱그린 표현이다. 지연시간은 데이터를 보낸 뒤 첫 반응이 도착하기까지의 시간이고, 대역폭은 1초 동안 옮길 수 있는 데이터 총량이다. 물류 비유 — 퀵서비스 오토바이는 지연시간이 짧지만 한 번에 싣는 양이 적고, 컨테이너선은 도착까지 며칠 걸리지만 한 번에 옮기는 총량이 압도적이다. 인터넷은 첫 패킷이 1초 안에 지구 반대편에 도착(짧은 지연)하지만, 수십TB를 옮길 때 중요한 것은 첫 비트가 아니라 &#x27;마지막 비트가 언제 도착하느냐&#x27;다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>왜 회선 숫자만으로는 안 되나 (병목의 진실)</h2><p>65TB 이론상 전송시간 — 1Gbps 회선 100% 활용 시 약 6일, 10Gbps 약 14시간 30분, 100Gbps 약 1시간 26분. 그러나 100Gbps라는 숫자는 출발지부터 목적지까지 그 속도가 그대로 보장돼야 성립한다. 데이터센터 스위치에 400/800Gb 포트가 있어도 국제구간·중간사업자 회선·혼잡·암호화·파일시스템, 그리고 양쪽 저장장치의 읽기/쓰기 성능이 모두 받쳐줘야 한다. 100Gbps는 초당 약 11.5GB인데 일반 HDD 한 대로는 못 따라가 병렬 드라이브나 고성능 SSD 어레이가 필요하다. <strong>실제 병목은 회선 하나가 아니라 출발지 스토리지·서버 메모리·CPU·네트워크 인터페이스·국제망·목적지 스토리지를 잇는 시스템 전체</strong>다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>TCP와 BDP (왜 넓은 파이프를 못 채우나)</h2><p>TCP는 패킷 하나 보내고 응답을 기다리는 방식이 아니라, 여러 패킷을 연속으로 보내 놓고 확인응답(ACK)을 받는 &#x27;슬라이딩 윈도우&#x27; 구조다. 멀리 떨어진 고속 회선일수록 도로 위에 더 많은 차를 동시에 올려야 한다. 왕복 지연 100ms인 100Gbps 회선은 응답이 돌아오기 전에도 약 1.25GB의 데이터가 네트워크 안에서 이동 중이어야 한다 — 이 값이 대역폭×지연시간, 곧 BDP(Bandwidth-Delay Product)다. 송신 윈도우·수신 버퍼가 BDP보다 작거나 패킷 손실·혼잡제어가 걸리면 100Gbps 회선도 제대로 활용하지 못한다. 회선 숫자만 키운다고 파일 전송이 자동으로 빨라지지 않는다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>비행기라는 배치 전송</h2><p>비행기는 데이터를 패킷으로 흘려보내지 않고 저장장치에 거대한 덩어리로 담아 한 번에 옮긴다(배치 전송). 20TB HDD 50개면 1PB이고, 1PB를 포장부터 도착까지 24시간에 운반하면 평균 전송률이 약 93Gbps — 비행기가 빛보다 빨라진 게 아니라 한 번에 싣는 양이 워낙 커서 평균 대역폭이 100Gb급에 가까워진 것이다. 다만 지연시간은 여전히 하루라 화상회의·게임처럼 즉시 반응이 필요한 데이터엔 못 쓴다. 백업·데이터센터 이전·대규모 영상 원본·과학 관측자료처럼 &#x27;며칠 안에 전체를 안전하게&#x27; 옮기는 작업엔 강력하다. 관련 격언 — &quot;고속도로를 질주하는, 테이프를 가득 실은 승합차의 대역폭을 절대 과소평가하지 마라&quot;(앤드루 타넨바움).</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>실제 사례 — 클라우드 물리전송과 블랙홀 사진</h2><p>물리 운송을 서비스화한 대표 사례가 AWS Snowball(현재 신규 고객엔 미제공, AWS Data Transfer Terminal·파트너 물리전송으로 대체), MS Azure Data Box, Google Cloud Transfer Appliance다. 이들은 단순히 &#x27;택배가 인터넷보다 빠르다&#x27;가 아니라 네트워크 점유 비용·재전송 실패 가능성·회선 비용·운영시간·보안/무결성 검증까지 계산한 결과다. 물리운송은 장치 암호화·포장·인수인계·체크섬 검증이라는 새 문제를 대신 떠안는다. 가장 극적인 사례가 이벤트 호라이즌 망원경(EHT) — 2019년 인류 최초 블랙홀 이미지의 원본(2017년 관측만으로 약 3.5PB, 관측소 한 곳이 하루 약 350TB 기록)을 인터넷이 아니라 하드디스크를 미국·독일 상관처리 시설로 물리 운반해 분석했다.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>AI 시대의 데이터 물류</h2><p>AI 시대에 이동하는 것은 텍스트 몇 개가 아니라 자율주행 영상·센서 로그·위성 이미지·의료 영상·학습 원시데이터·모델 체크포인트처럼 크고 무거운 데이터다. 여기서 &#x27;데이터 중력&#x27;이 작동한다 — 데이터가 수PB로 커지면 데이터를 애플리케이션으로 가져오기보다 애플리케이션을 데이터 있는 곳으로 옮기는 편이 유리해진다. AI 인프라는 GPU를 많이 사는 문제가 아니라, 데이터가 어디서 생기고 어디에 저장되며 어떤 네트워크로 언제 GPU 가까이 도착할지를 설계하는 문제다. 실시간 추론 데이터는 낮은 지연으로, 수개월치 학습·백업은 배치로 옮기는 것이 경제적이다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>활용 시나리오</h2><p>① 데이터센터 이전·대규모 백업 — 수PB를 며칠 안에 옮겨야 할 때 물리전송 우선 검토. ② AI 학습 파이프라인 설계 — 데이터 발생지·저장소·GPU 위치를 함께 고려한 배치/실시간 경로 분리. ③ 대용량 관측·미디어 원본 이송 — 회선 비용·무결성 검증까지 포함한 총비용 관점의 전송수단 선택.</p></section><section class="card s6" id="s9"><h2><span class="seq">09</span>현황 및 전망</h2><p>핵심은 &#x27;인터넷 vs 비행기&#x27; 택일이 아니라 데이터의 중요도·시급성·비용에 따라 서로 다른 길을 섞는 것이다. 공학은 가장 빠른 기술 하나를 고르는 게 아니라 현실의 모든 제약을 연결해 가장 좋은 시스템을 만드는 일이다. AI 데이터 규모가 커질수록 &#x27;데이터 물류&#x27; 설계 역량이 GPU 확보만큼 중요한 경쟁력이 된다.</p></section><section class="card s12" id="s10"><h2><span class="seq">10</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>지연시간(Latency)</td><td>데이터를 보낸 뒤 첫 반응이 오기까지의 시간</td><td>택배 첫 상자가 도착하는 시각</td></tr><tr><td>대역폭(Bandwidth)</td><td>1초 동안 옮길 수 있는 데이터 총량</td><td>도로의 차선 수</td></tr><tr><td>TCP</td><td>인터넷에서 데이터를 순서대로 안정적으로 보내는 규약</td><td>번호표 붙여 순서대로 배달</td></tr><tr><td>슬라이딩 윈도우</td><td>응답을 기다리며 여러 패킷을 연속 전송하는 TCP 방식</td><td>고속도로에 차를 줄지어 계속 올리기</td></tr><tr><td>BDP</td><td>대역폭×지연시간, 파이프를 가득 채우는 데 필요한 데이터량</td><td>파이프 부피</td></tr><tr><td>데이터 중력</td><td>데이터가 클수록 연산을 데이터 쪽으로 옮기는 게 유리한 현상</td><td>무거운 짐은 사람이 짐 있는 곳으로 감</td></tr><tr><td>EHT</td><td>지구 크기 가상 망원경을 만드는 이벤트 호라이즌 망원경</td><td>여러 접시를 합쳐 만든 초대형 안테나</td></tr></tbody></table></div></section><section class="card s6" id="s11"><h2><span class="seq">11</span>핵심 타임스탬프</h2><ul>
+<li><a href="https://youtu.be/fKwiYdz5CFo?t=95" target="_blank" rel="noopener">지연시간 vs 대역폭 개념</a></li>
+<li><a href="https://youtu.be/fKwiYdz5CFo?t=180" target="_blank" rel="noopener">65TB 전송시간 계산과 병목</a></li>
+<li><a href="https://youtu.be/fKwiYdz5CFo?t=290" target="_blank" rel="noopener">TCP 슬라이딩 윈도우·BDP</a></li>
+<li><a href="https://youtu.be/fKwiYdz5CFo?t=430" target="_blank" rel="noopener">비행기 배치 전송·클라우드 물리전송</a></li>
+<li><a href="https://youtu.be/fKwiYdz5CFo?t=580" target="_blank" rel="noopener">EHT 블랙홀 사진 하드디스크 운반</a></li>
+<li><a href="https://youtu.be/fKwiYdz5CFo?t=680" target="_blank" rel="noopener">AI 시대 데이터 물류</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/fKwiYdz5CFo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 · 2026-07-10</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
