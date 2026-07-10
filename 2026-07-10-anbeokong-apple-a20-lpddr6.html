@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 애플 A20 Pro가 13년 만에 메모리 버스를 96비트로 넓히는 이유"><title>애플 A20 Pro — 96비트 메모리 버스의 의미</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-07-11 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>애플 A20 Pro — 96비트 메모리 버스의 의미</h1><p class="lead">title: 애플 A20 Pro가 13년 만에 메모리 버스를 96비트로 넓히는 이유</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>안될공학 (진행: 패치)</td></tr><tr><td>대주제</td><td>아이폰 18 Pro의 A20 Pro가 2012년 A6 이후 고정됐던 <strong>64비트 메모리 버스를 96비트로 확장</strong>한다는 루머 분석</td></tr><tr><td>핵심 논점</td><td>용량(GB) 증가가 아니라 <strong>데이터 통로(대역폭) 확장</strong> — 이유는 엔비디아가 HBM을 쓰는 것과 동일</td></tr><tr><td>미확정 사항</td><td>96비트·LPDDR6 모두 애플 미발표. 유출자 주장(LPDDR5X)과 패키지 추정(LPDDR6)이 엇갈림</td></tr><tr><td>성능 함의</td><td>이론 대역폭 초당 60~70GB → <strong>약 102~173GB</strong>로 <span class="up">상승</span>, 온디바이스 AI·카메라 지속성능 <span class="up">개선</span> 기대</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>96비트란 — 용량이 아니라 통로</h2><p>램 12GB는 저장 용량, 64/96비트는 프로세서-메모리 간 <strong>데이터 선의 개수(통로 폭)</strong>다. 64→96비트는 데이터 선이 50% 늘어 한 번에 옮기는 데이터 양이 증가하는 것이지 용량이 50% 느는 게 아니다. HBM이 수직으로 수천 개 통로를 뚫어 대역폭을 확보한 것과 같은 원리를 모바일에 축소 적용한 셈.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>왜 지금 대역폭을 넓히나</h2><p>스마트폰 SoC 메모리는 CPU만 쓰는 게 아니라 <strong>유니파이드 메모리</strong>로 GPU·뉴럴엔진·ISP·영상 인코더·디스플레이가 공유한다. 특히 생성형 AI는 매 토큰 생성마다 모델 가중치를 메모리에서 읽어야 하므로, 연산기를 키워도 <strong>메모리가 못 따라오면 뉴럴엔진이 대기</strong>한다. 애플의 &#x27;LLM in a Flash&#x27; 연구도 핵심은 계산이 아니라 &quot;적은 데이터를 얼마나 연속적으로 옮기느냐&quot;였다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>왜 HBM이 아니라 LPDDR6인가</h2><p>HBM은 수백~수천 접점, 실리콘 인터포저, 복잡한 적층 본딩이 필요해 비용·면적·전력·발열·수율 측면에서 스마트폰엔 지나치게 무겁다. LPDDR6는 원래 전력·공간이 빡빡한 모바일에 맞춘 방식으로, <strong>필요할 때는 넓은 대역폭, 평소엔 전력·공간 절약</strong>이라는 방향에 부합한다. LPDDR6는 12비트 서브채널 2개가 24비트 채널을 구성하고, 이 채널 4개면 자연스럽게 96비트가 된다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>패키징 변화 — POP에서 WMCM으로</h2><p>기존 A시리즈는 프로세서 위에 D램을 올리는 <strong>PoP(패키지 온 패키지)</strong> 구조. 그러나 2나노 공정에서 연산 밀도가 오르면 프로세서 열이 위쪽 D램에 전달돼 방열이 문제. 그래서 A20에서는 <strong>WMCM(웨이퍼 레벨 멀티칩 패키징)</strong> — 프로세서와 D램을 <strong>나란히 배치</strong>하고 재배선층으로 연결 — 채택 보도가 나온다. 열 결합을 줄이고 96비트에 필요한 더 많은 배선 공간을 확보하되, 수평 면적은 늘어나는 트레이드오프가 있다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>공급망 각사의 과제</h2><div class="tbl-wrap"><table><thead><tr><th>주체</th><th>해야 할 일</th></tr></thead><tbody><tr><td>메모리 3사(삼성·SK하이닉스·마이크론)</td><td>24비트 I/O 구조를 D램 다이에 구현, 수개월 신호·전력·온도 검증</td></tr><tr><td>애플(SoC)</td><td>LPDDR6 메모리 컨트롤러 + 96개 고속 데이터선 PHY 설계</td></tr><tr><td>TSMC·패키징</td><td>96개 데이터선 + 명령·주소·전원선 배선, MUF 몰딩언더필로 수율 확보</td></tr></tbody></table></div>
+<p>삼성은 최대 10.7Gbps·16GB LPDDR6 공개, SK하이닉스는 2026년 하반기 공급 준비, 마이크론은 2025년 말 샘플링 발표. 다만 <strong>누가 A20 Pro에 공급하는지는 미확인</strong>.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>확인해야 할 관전 포인트</h2><p>올해 실제 제품 출시 시 검증할 숫자는 96비트 하나가 아니다 — ① LPDDR5X인가 LPDDR6인가 ② 핀당 속도·총 대역폭 ③ WMCM으로 D램이 실제 옆으로 이동했는지 ④ 그 대역폭이 AI 응답속도·게임·카메라 지속성능으로 이어지는지. <strong>&quot;96비트는 시작점일 뿐, 그 통로를 얼마나 자주 채우느냐가 실제 성능을 결정&quot;</strong>한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>메모리 버스</td><td>프로세서-메모리 데이터 통로 폭</td><td>64→96비트 = 차선 확장</td></tr><tr><td>대역폭</td><td>초당 옮기는 데이터 양</td><td>핀속도 × 버스폭 ÷ 8</td></tr><tr><td>유니파이드 메모리</td><td>CPU·GPU·NPU가 공유하는 메모리</td><td>애플 실리콘 방식</td></tr><tr><td>LPDDR6</td><td>저전력 모바일 D램 규격</td><td>스마트폰용 고속 메모리</td></tr><tr><td>HBM</td><td>고대역폭 적층 메모리</td><td>AI 서버용, 모바일엔 과함</td></tr><tr><td>PoP</td><td>프로세서 위 D램 적층</td><td>기존 아이폰 방식</td></tr><tr><td>WMCM</td><td>프로세서·D램 수평 배치 패키징</td><td>발열 <span class="up">개선</span>용 신방식</td></tr><tr><td>PHY</td><td>메모리 물리 연결 회로</td><td>신호 타이밍·전압 조절</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>핵심 포인트</h2><ul>
+<li>96비트 = 용량 아닌 대역폭(통로) 확장</li>
+<li>이유: AI·카메라가 메모리 대역폭 병목</li>
+<li>HBM 대신 LPDDR6로 모바일에 맞게 확장</li>
+<li>PoP→WMCM 패키징 전환으로 발열 해결</li>
+<li>LPDDR6 여부·실제 대역폭이 최대 관전 포인트</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/amH064p_Ekg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 · 2026-07-11</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
