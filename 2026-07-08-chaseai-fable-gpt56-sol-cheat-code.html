@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: Fable 5 + GPT 5.6 Sol 결합 워크플로우 — 계획은 클로드, 실행은 코덱스로 토큰 절감"><title>Fable 5 + GPT 5.6 Sol = CHEAT CODE (Chase AI)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">MORNING DIGEST · 2026-07-10 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>Fable 5 + GPT 5.6 Sol = CHEAT CODE (Chase AI)</h1><p class="lead">title: Fable 5 + GPT 5.6 Sol 결합 워크플로우 — 계획은 클로드, 실행은 코덱스로 토큰 절감</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Chase AI</td></tr><tr><td>대주제</td><td>GPT 5.6 Sol과 Claude Fable을 &quot;누가 더 나은가&quot;로 겨루지 않고 <strong>한 워크플로우에 결합</strong>하는 클로드 코드 스킬 소개</td></tr><tr><td>핵심 메시지</td><td>계획·검토는 Fable이 주도하고 실행(빌드)은 더 저렴하고 토큰 효율이 좋은 Codex(GPT 5.5→5.6)에 넘겨 <strong>두 모델의 장점 + 토큰 절감</strong>을 동시에 얻는다</td></tr></tbody></table></div>
+<p>발표자는 &quot;새 모델이 경쟁 모델을 이겼는가&quot;라는 질문 자체가 틀렸다고 본다. 두 강력한 모델을 <strong>함께</strong> 쓰는 법을 물어야 하며, 그 답으로 자신이 만든 스킬을 공유한다. 스킬은 Matt PCO의 &quot;Grill Me&quot;에 기반한 강화 플랜 모드 + Claude와 Codex의 적대적(adversarial) 계획 협상 + Codex 실행 + Fable 검토를 하나로 묶는다.</p></section><section class="card s6" id="s2"><h2><span class="seq">02</span>왜 결합하나 — ① 성능, ② 토큰 효율</h2><ul>
+<li><strong>성능 근거</strong>: GPT 5.6 Sol(및 상위 Sol Ultra)은 벤치마크상 매우 강력하다. Terminal Bench 2.1에서 Claude Mythos는 물론 Fable 5보다 앞선 수치를 보인다. 단, 이는 OpenAI 자체 발표치라 발표자도 &quot;grain of salt(감안해서 보라)&quot;라고 단서를 단다.</li>
+<li><strong>토큰 효율 근거(핵심)</strong>: &quot;Fable에게 계획시키고 Opus로 실행&quot;하는 어드바이저 패턴이 유행하지만, 같은 값이면 Opus 대신 더 나은 GPT 5.6/5.5로 실행하는 편이 낫다. 효율은 5.6 &gt; 5.5 &gt; Opus 4.6 순으로 <span class="up">개선</span>된다는 게 데이터의 요지다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>비용·효율 수치 비교</h2><div class="tbl-wrap"><table><thead><tr><th>모델(설정)</th><th>벤치 통과율</th><th>비용</th><th>요지</th></tr></thead><tbody><tr><td>GPT 5.5 (extra high)</td><td>23%</td><td>$1.24</td><td>기준선</td></tr><tr><td>GPT 5.6 Sol</td><td>25%</td><td>5.5보다 저렴</td><td>점수는 높고 값은 싸 효율<span class="up">↑</span></td></tr><tr><td>GPT 5.5 vs Opus 4.8</td><td>5.5 우세</td><td>5.5 저렴</td><td>통과율 높고 비용 낮아 &quot;논쟁 여지 없음&quot;</td></tr></tbody></table></div>
+<p>발표자는 실제 데모에서 전체 작업에 <strong>Fable 측 토큰 약 13만 개만</strong> 소모했다고 강조한다. 어드바이저 모드로 Opus를 붙이는 것보다 GPT 실행이 더 싸고 결과도 낫다는 게 반복되는 결론이다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>스킬 구성 — 두 종류</h2><ul>
+<li><strong>codex build 스킬</strong>: Fable로 이미 만든 계획을 Codex가 그대로 받아 해당 기능·제품을 빌드하는 단순형.</li>
+<li><strong>grillme codex(GMI codex) 스킬</strong>: 기존 grillme 스킬에 &quot;GPT 5.6이 직접 빌드&quot; 단계를 더한 종합형. 아래 4단계로 동작한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>GMI codex — 4단계 파이프라인</h2><ol>
+<li><strong>인터뷰(Grill Me)</strong>: Matt PCO의 grill me 스킬 그대로. 표준 플랜 모드보다 훨씬 깊게 파고드는 &quot;스테로이드 플랜 모드&quot;. Fable이 주도해 8~10개 질문을 던지며, 각 질문마다 추천안까지 제시한다.</li>
+<li><strong>적대적 계획(Adversarial planning)</strong>: Fable의 계획을 Codex(오늘 5.5, 내일 5.6)에 넘긴다. Fable과 Codex가 <strong>최대 5회</strong> 오가며 합의에 도달한다. 모든 왕복은 마크다운 파일에 로그로 남는다.</li>
+<li><strong>빌드</strong>: 합의된 계획으로 실제 빌드를 Codex(5.5→5.6)에 맡긴다. 발표자는 이를 Opus·Sonnet 실행이나 어드바이저 모드보다 낫다고 본다(더 좋고 더 싼 모델이라).</li>
+<li><strong>검토(Review)</strong>: Codex 빌드를 Fable이 되짚어 검토. 잘못된 부분은 Codex에 수정 지시(<strong>최대 2회</strong>). 3회째에도 미완이면 Fable이 직접 코드를 정리해 마무리한다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>데모 — Trip Atlas 트립 플래너</h2><p><code>/grill codex</code> 명령에 &quot;Trip Atlas — 시네마틱 스타일의 여행 계획 웹앱&quot;을 만들라고 지시. 진행 흐름:</p>
+<ul>
+<li><strong>인터뷰</strong>: &quot;이건 무엇을 위한 것인가&quot;(→ 영상 데모가 아닌 실제 개인 도구), 지오코딩 방식 등을 추천안과 함께 질문.</li>
+<li><strong>적대적 계획(2라운드)</strong>: 라운드1에서 정체성 고정(실제 개인 도구·스택 확정), 라운드2에서 데이터 코어 하드닝 관련 <strong>12개 지적</strong>을 반영해 승인.</li>
+<li><strong>선택지</strong>: 합의 후 ① Codex가 빌드 ② Claude가 빌드 ③ 여기서 중단 중 택1. 데모는 Codex 빌드 선택.</li>
+<li><strong>검토 후 결과물</strong>: 세계 지도 + GPT 이미지 생성기로 만든 커스텀 그래픽, 여행 이름 지정·경유지 추가, SVG 비행기가 지점을 오가는 시네마틱 리플레이와 여권 스탬프 연출. 도쿄를 추가하면 경유지 간 거리를 즉시 표시하는 등 &quot;실제로 동작하는&quot; 첫 버전을 완성. Fable 검토는 &quot;합리적 수준의 몇몇 편차&quot;만 지적.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>총평 — 관점과 한계</h2><ul>
+<li><strong>철학</strong>: OpenAI(실행 효율)와 Anthropic(계획·검토 품질)의 장점을 한 파이프라인에 결합. &quot;GPT/Codex에 극도로 반감이 없는 한&quot; 어드바이저 모드로 Opus를 쓸 이유가 줄어든다는 주장.</li>
+<li><strong>핵심 가치</strong>: 성능 우열보다 <strong>토큰 효율</strong>이 논쟁 불가한 실익. 특히 5.6이 벤치 수치의 절반만 실현해도 실행 단계를 GPT로 넘기는 구성이 유리하다.</li>
+<li><strong>한계·유의</strong>: 성능 비교는 OpenAI 자체 발표치(편향 가능). 5.6 Sol은 영상 시점 기준 &quot;내일 출시&quot; 예정으로, 데모 실행은 5.5로 진행됐다. 스킬은 설명란 GitHub 링크로 배포.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Fable 5</td><td>계획·검토를 주도하는 앤트로픽 상위 모델</td><td>설계·감리를 맡는 건축가</td></tr><tr><td>GPT 5.6 Sol</td><td>실행(빌드)에 쓰는 오픈AI 신모델</td><td>빠르고 값싼 시공팀</td></tr><tr><td>Codex</td><td>GPT를 코드 실행 에이전트로 쓰는 도구</td><td>GPT로 돌리는 자동 개발자</td></tr><tr><td>Grill Me</td><td>표준 플랜 모드를 강화한 심층 인터뷰 스킬</td><td>꼬치꼬치 캐묻는 기획 회의</td></tr><tr><td>적대적 계획</td><td>두 모델이 합의까지 반박·수정 왕복</td><td>찬반 토론으로 계획 다듬기</td></tr><tr><td>어드바이저 모드</td><td>Fable이 계획하고 Opus가 실행하는 구성</td><td>설계자+시공자 분업</td></tr><tr><td>Terminal Bench 2.1</td><td>터미널 작업 수행력 측정 벤치마크</td><td>개발 실무 모의고사</td></tr><tr><td>토큰 효율</td><td>같은 결과를 더 적은 토큰·비용으로</td><td>연비 좋은 엔진</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>핵심 구간</h2><ul>
+<li><a href="https://youtu.be/gsvZn4nbFus?t=0" target="_blank" rel="noopener">도입 — GPT 5.6 Sol vs Fable, 함께 쓰기</a></li>
+<li><a href="https://youtu.be/gsvZn4nbFus?t=85" target="_blank" rel="noopener">토큰 효율이 결합의 진짜 이유</a></li>
+<li><a href="https://youtu.be/gsvZn4nbFus?t=117" target="_blank" rel="noopener">효율 비교 — 5.6 &gt; 5.5 &gt; Opus 4.6</a></li>
+<li><a href="https://youtu.be/gsvZn4nbFus?t=154" target="_blank" rel="noopener">스킬 구성 — codex build / GMI codex</a></li>
+<li><a href="https://youtu.be/gsvZn4nbFus?t=209" target="_blank" rel="noopener">적대적 계획 단계</a></li>
+<li><a href="https://youtu.be/gsvZn4nbFus?t=238" target="_blank" rel="noopener">빌드 핸드오프 → Codex</a></li>
+<li><a href="https://youtu.be/gsvZn4nbFus?t=269" target="_blank" rel="noopener">Fable 검토 단계</a></li>
+<li><a href="https://youtu.be/gsvZn4nbFus?t=341" target="_blank" rel="noopener">데모 — Trip Atlas 만들기</a></li>
+<li><a href="https://youtu.be/gsvZn4nbFus?t=495" target="_blank" rel="noopener">결과물·13만 토큰 소모</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/gsvZn4nbFus" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-07-10</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
