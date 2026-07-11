@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 시총 1~2위가 흔들릴 때 — 조방원전·반도체 소부장, 과거·미래 대장의 귀환"><title>시총 1~2위가 흔들릴 때 — 과거·미래 대장의 귀환</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-07-11 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>시총 1~2위가 흔들릴 때 — 과거·미래 대장의 귀환</h1><p class="lead">title: 시총 1~2위가 흔들릴 때 — 조방원전·반도체 소부장, 과거·미래 대장의 귀환</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>슈퍼개미 이세무사TV (장마감 브리핑, 게스트 민우)</td></tr><tr><td>대주제</td><td>반도체 탑2(삼성전자·SK하이닉스)가 흔들리는 국면에서 자금이 &#x27;과거의 대장(조방원전)&#x27;·&#x27;미래의 대장(피지컬 AI)&#x27;과 코스닥 반도체 소부장으로 이동하는 흐름 진단</td></tr><tr><td>오늘 지수</td><td>코스피 전일 대비 <span class="up">+2.52%</span>지만 갭<span class="up">상승</span>분을 못 지키고 <strong>음봉</strong> 마감. 코스닥은 몸통 있는 <strong>양봉</strong></td></tr><tr><td>핵심 관점</td><td>전일 대비 등락보다 <strong>양봉(시가&lt;종가)·음봉</strong> 흐름이 장의 에너지를 보여준다 — 7월 8거래일 중 7일이 음봉</td></tr><tr><td>결론</td><td><span class="up">상승</span>장(빨강)→조정장(파랑)으로 시장 색깔 전환. 대장 교체기엔 조방원전·밸류업·반도체 소부장이 주도</td></tr></tbody></table></div>
+<blockquote>투자 조언이 아니며, 특정 종목 추천이 아니다. 언급 수치는 방송 당일 기준 등락률이다.</blockquote></section><section class="card s6" id="s2"><h2><span class="seq">02</span>오늘 지수 — 코스피 음봉, 코스닥 양봉</h2><p>간밤 미국 나스닥·필라델피아 반도체 지수 강세로 코스피가 갭<span class="up">상승</span> 출발했으나, 이틀 연속 갭을 지켜내지 못하고 장중 밀리며 시초가보다 종가가 낮은 <strong>음봉</strong>으로 마감했다. 전일 대비로는 <span class="up">+2.52%</span>지만, 이는 미국 시장이 셌던 효과일 뿐 우리 장 자체의 힘은 약했다는 해석이다. 반면 코스닥은 코스피보다 크게 오르며 몸통 있는 양봉을 만들어, 지난 6월 29일 월요일처럼 코스닥 단독 강세의 전조가 다시 나타났다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>양봉·음봉으로 읽는 7월 — 색깔이 바뀌고 있다</h2><p>진행자는 지수 등락률보다 <strong>시초가 대비 종가</strong>(양봉/음봉)를 시장 에너지의 지표로 강조한다. 7월 첫 거래일부터 당일까지 8거래일 중 <strong>음봉이 7개, 양봉은 단 1개</strong>. <span class="up">상승</span>장에서 흔하던 빨간색(양봉)이 줄고 파란색(음봉)이 많아지는 것은, 시장이 <span class="up">상승</span>장에서 조정장으로 &#x27;색깔&#x27;이 바뀌고 있다는 신호로 본다.</p>
+<div class="tbl-wrap"><table><thead><tr><th>구분</th><th>7월 8거래일</th></tr></thead><tbody><tr><td>양봉(시가&lt;종가)</td><td>1개</td></tr><tr><td>음봉(시가&gt;종가)</td><td>7개</td></tr><tr><td>해석</td><td><span class="up">상승</span>장→조정장 국면 전환</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>반도체 탑2의 부진 — &quot;소문난 잔치에 먹을 것 없다&quot;</h2><p>이번 주는 7월 7일 삼성전자 실적, 7월 10일 SK하이닉스 ADR 상장이라는 반도체 탑2 이벤트가 몰려 보유자에게 희망을 준 주였다. 그러나 삼성전자는 실적 발표 후 <span class="dn">하락</span>했고, SK하이닉스는 ADR 상장을 앞두고 이 좋은 장에 홀로 마이너스 마감했다. 재료 기대감에 올랐다가 재료 확인과 동시에 파는 <strong>&#x27;셀 온(sell on)&#x27;</strong> 현상으로, 삼성전자는 지수보다도 덜 올랐고 SK하이닉스는 지수보다 더 못 올랐다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>과거·미래 대장의 귀환 — 조방원전 + 피지컬 AI</h2><p>영화 &#x27;해바라기&#x27;의 &quot;과거의 대장이 돌아온다&quot; 비유로 국면을 설명한다. 현재 대장(삼성전자·SK하이닉스)이 흔들리자, 자금이 <strong>과거의 대장</strong>과 <strong>미래의 대장</strong>으로 분산된다는 것.</p>
+<ul>
+<li><strong>과거의 대장 = 조방원전</strong> (조선·방산·원자력·전력기) + 밸류업 관련 금융주</li>
+<li><strong>미래의 대장 = 피지컬 AI</strong> (아직 대장이 아닌 코스닥 2차전지·제약바이오는 눈치보기)</li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>종목</th><th>당일 등락</th><th>테마</th></tr></thead><tbody><tr><td>금호타이어(시총 2.2조)</td><td>상한가</td><td>호남 그룹주</td></tr><tr><td>후성</td><td><span class="up">+16%</span></td><td>소재</td></tr><tr><td>두산</td><td><span class="up">+14%</span></td><td>지주·전력</td></tr><tr><td>이수페타시스</td><td><span class="up">+13%</span></td><td>반도체 기판</td></tr><tr><td>HD현대마린엔진·현대로템·한화시스템</td><td><span class="up">+10%</span><span class="up">↑</span></td><td>조선·방산</td></tr><tr><td>엘앤에프</td><td><span class="up">+9%</span></td><td>2차전지</td></tr></tbody></table></div></section><section class="card s12" id="s6"><h2><span class="seq">06</span>코스닥 반도체 소부장 압도적 강세</h2><p>코스닥 3대 주도 업종(반도체 소부장·2차전지·제약바이오) 중 오늘은 <strong>반도체 소부장</strong>이 압도적으로 강했다. 특히 이미 신고가를 냈다가 조정받았던 &#x27;원래 강했던&#x27; 주도주들이 재차 급등했다.</p>
+<div class="tbl-wrap"><table><thead><tr><th>종목</th><th>당일 등락</th></tr></thead><tbody><tr><td>PSK</td><td><span class="up">+24%</span></td></tr><tr><td>테스</td><td><span class="up">+22%</span></td></tr><tr><td>원익IPS</td><td><span class="up">+19%</span></td></tr><tr><td>제주반도체</td><td><span class="up">+14%</span></td></tr><tr><td>유진테크</td><td><span class="up">+12%</span></td></tr><tr><td>HPSP</td><td><span class="up">+12%</span></td></tr><tr><td>이오테크닉스</td><td><span class="up">+10%</span></td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>ETF·단일종목 레버리지 쏠림 완화</h2><p>삼성전자·SK하이닉스가 오를 때는 지수·ETF·단일종목 레버리지가 함께 오르는 <strong>선순환</strong>이, 힘이 빠지면 가속도가 붙는 <strong>악순환</strong>으로 뒤집힌다. 탑2가 약해지자 거래대금 상위 30위권에 금호건설·KB금융·대한광통신·LG이노텍·대덕전자 등 개별 종목이 다시 진입하며 극단적 쏠림이 완화됐다. 진행자는 <strong>단일종목 레버리지</strong>를 &quot;아이스크림처럼 녹아버린다&quot;며 강하게 경계했다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>관점·전망</h2><p>기업 주가는 시간이 지나면 실적을 반영하지만, 대장 교체기의 노이즈가 길어질수록 투자자는 공포에 종목을 놓기 쉽다. 다음 장의 반등 여부는 코스닥 3대 업종(반도체 소부장·2차전지·제약바이오)의 지속 강세에 달려 있으며, 지수 등락에 일희일비하기보다 양봉·음봉 흐름과 자신만의 원칙을 지키는 것이 핵심이라는 메시지로 마무리한다.</p></section><section class="card s12" id="s9"><h2><span class="seq">09</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>양봉/음봉</td><td>시초가 대비 종가가 높으면 양봉, 낮으면 음봉</td><td>장의 세기·에너지 지표</td></tr><tr><td>셀 온</td><td>재료 기대로 올랐다가 재료 확인 시 매도</td><td>소문난 잔치에 먹을 것 없다</td></tr><tr><td>소부장</td><td>소재·부품·장비</td><td>반도체 후공정 장비주</td></tr><tr><td>조방원전</td><td>조선·방산·원자력·전력기 묶음</td><td>과거 주도 테마의 귀환</td></tr><tr><td>밸류업</td><td>기업가치 제고 정책 관련주</td><td>저PBR 금융주</td></tr><tr><td>피지컬 AI</td><td>로봇 등 물리 세계에 구현되는 AI</td><td>미래 주도 테마 후보</td></tr><tr><td>ADR</td><td>미국 예탁증권</td><td>해외 상장 이벤트</td></tr><tr><td>단일종목 레버리지</td><td>한 종목에 배수를 건 ETF</td><td>변동성에 원금 급속 잠식</td></tr></tbody></table></div></section><section class="card s6" id="s10"><h2><span class="seq">10</span>핵심 포인트</h2><ul>
+<li>코스피 전일 대비 <span class="up">+2.52%</span>에도 갭 못 지켜 음봉, 코스닥은 몸통 양봉</li>
+<li>7월 8거래일 중 음봉 7·양봉 1 — <span class="up">상승</span>장→조정장 색깔 전환 신호</li>
+<li>반도체 탑2(삼성·SK하이닉스) 셀온 부진, 자금은 조방원전·소부장 이동</li>
+<li>금호타이어 상한가·후성 16%·두산 14% 등 과거 대장 테마 급등</li>
+<li>코스닥 반도체 소부장 압도(PSK 24·테스 22·원익IPS 19)</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/AylLXOTBrGM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-07-11</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
