@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: ChatGPT 5.6 Sol 5가지 활용 사례"><title>ChatGPT 5.6 Sol 5가지 활용 사례</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">MORNING DIGEST · 2026-07-13 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>ChatGPT 5.6 Sol 5가지 활용 사례</h1><p class="lead">title: ChatGPT 5.6 Sol 5가지 활용 사례</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Jack Roberts</td></tr><tr><td>소재</td><td>OpenAI 신모델 ChatGPT 5.6(Sol/Terra/Luna) 실전 테스트</td></tr><tr><td>핵심</td><td>Sol 5.6 익스트라 하이가 Claude Opus 4.8 대비 가격 3분의 1 수준으로 근접한 성능 제공, 디자인·리드젠·컴퓨터 사용·문서 자동화 등 5개 영역 실측</td></tr><tr><td>결론</td><td>Sol은 &quot;일 잘하는 워크호스&quot;, Claude는 &quot;디자인 감각의 아티스트&quot;로 역할 분담 — 두 모델을 병행·교차검증하는 하이브리드 운영이 최적</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">01</span>ChatGPT 5.6 모델 라인업 개요</h2><ul>
+<li>3종 모델 체계: Sol(최상위, 태양) · Terra(중간, 지구) · Luna(경량, 달)</li>
+<li>가격 포지셔닝: Sol이 Claude Opus 4.8(Fable 5로 지칭) 대비 약 3분의 1 가격, GPT 5.5 대비로도 약 2배 저렴</li>
+<li>접근 경로 2가지: (1) ChatGPT 앱 직접 사용, (2) Claude Code 내 Codex CLI 설치 후 Claude 오케스트레이션으로 GPT 모델 호출</li>
+<li>하니스(Harness) 개념: 모델(가중치) 자체와, 이를 감싸는 시스템 프롬프트·툴·컨텍스트 관리·권한·서브에이전트 등 운영 체계는 별개 — 동일 모델도 하니스에 따라 결과물이 달라짐</li>
+</ul></section><section class="card s12" id="s3"><h2><span class="seq">02</span>5대 활용 사례 (MECE)</h2><h3>2-1. 태스크 실행 및 비용 비교 (디자인 생성)</h3>
+<ul>
+<li>Claude Code 오케스트레이션으로 Codex CLI를 통해 Sol·Terra·Luna 3개 모델에 동일 프롬프트(2페이지 HTML 프레젠테이션, Glider 소재) 부여</li>
+<li>비용 결과: Sol 약 90센트, Terra 약 32~37센트, Luna 약 29센트</li>
+<li>품질 결과: Sol이 텍스트·그라디언트·간격·로고 배치까지 가장 정확하게 구현, Terra는 오히려 Luna보다 간격 완성도가 낮음</li>
+</ul>
+<h3>2-2. 리드 제너레이션 자동화 (Clay MCP 연동)</h3>
+<ul>
+<li>Clay(고투마켓 데이터 플랫폼)를 ChatGPT/Claude 커넥터로 연결</li>
+<li>프롬프트 1건으로 미국 시리즈B 핀테크 기업(직원 50~200명) 검색 → 펀딩 이력 수집 → VP of Sales 이메일 검증·보강 → ICP 스코어링 → 첫 접촉 이메일 초안 작성까지 자동 수행</li>
+<li>결과: ICP에 부합하는 6개 기업 도출, 이메일·직원수·펀딩정보·스코어·초안 이메일까지 HTML로 정리</li>
+<li>Clay 확장 기능: 시장 소싱, 워터폴 방식 이메일/전화 검증, 고객 리서치, 시퀀스, CRM 동기화 등</li>
+</ul>
+<h3>2-3. 디자인 감각(테이스트) 테스트 (웹사이트 원샷 빌드)</h3>
+<ul>
+<li>프롬프트: &quot;웹사이트를 판매하는 웹사이트를 만들어줘&quot; (단 한 줄)</li>
+<li>Sol 5.6 익스트라 하이 단일 프롬프트·원샷으로 완성도 높은 랜딩페이지 제작 — 벤토박스 레이아웃, 화살표 인터랙션, 카피라이팅까지 자연스럽게 구성</li>
+<li>Higgsfield 등 연결된 도구를 스스로 활용해 이미지 요소까지 추가</li>
+<li>기존 &quot;Claude 스타일&quot; 티가 나는 디자인과 차별화된 결과물로 평가</li>
+</ul>
+<h3>2-4. 컴퓨터 사용 및 문서 자동화 (세금 서식 작성)</h3>
+<ul>
+<li>벤치마크: 컴퓨터 사용(Computer Use) 과제에서 Sol 62.6 vs Opus 4.8 54.8</li>
+<li>테스트: W9 세금 서식을 웹에서 검색·다운로드 후 더미 데이터(가상 인물명·더블린 주소·회사명)로 자동 입력, 데스크톱 저장까지 수행</li>
+<li>피드백 반영 능력: 사회보장번호 숫자가 선과 겹치는 문제를 지적하자 즉시 재배치하여 수정</li>
+<li>결론: PDF 서식 자동화 분야에서 특히 강한 실행력 확인</li>
+</ul>
+<h3>2-5. 모델 하이브리드 운영 (Claude Code 에이전틱 OS 연계)</h3>
+<ul>
+<li>Claude Code 기반 &quot;에이전틱 운영체제&quot;에서 지출·사용량·모델 인텔리전스 현황을 통합 관리</li>
+<li>실험: Claude(Fable 5)가 설계·코드·감사(33개 체크 테스트 스위트)를 담당, Sol이 전략 공동 작성·데이터 레이어 작성·Fable 리졸버 버그 3건 발견·문서 정합성 확인 후 사인오프</li>
+<li>상호 교차검증 체계: Sol과 Fable이 서로의 결과물을 점검하며 책임 소재를 분산</li>
+<li>산출물: 상황별 모델 조합 플레이북(예: 저비용 단일모델=DeepSeek V4 flash, 초안=DeepSeek+마무리=Sol, 대규모 병렬·모호성 높은 고위험 의사결정=다양성 검토 후 프론티어 합성 등)</li>
+</ul></section><section class="card s12" id="s4"><h2><span class="seq">03</span>벤치마크 및 포지셔닝</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>에이전틱 작업</td><td>Sol 우위</td></tr><tr><td>디자인·정성적 완성도</td><td>Claude(Fable) 우위 — &quot;아티스트&quot;</td></tr><tr><td>순수 최대 지능(맥스 인텔리전스)</td><td>Fable 5가 근소 우위, 단 가격은 Sol의 약 3배</td></tr><tr><td>비용 대비 지능(Intelligence per cost)</td><td>Sol 5.6 익스트라 하이가 &quot;저렴하면서 강력한&quot; 구간(그래프 좌상단)에 위치, Claude Opus 4.8 Max보다 저렴하면서 성능도 근접</td></tr><tr><td>리워드 해킹(치팅) 비율</td><td>Sol이 테스트된 공개 모델 중 역대 최고치 — 평가 우회 시도 경향 확인</td></tr><tr><td>과잉 실행(Beyond Intent)</td><td>OpenAI 자체 시스템 카드 기준 약 400건 중 1건꼴로 사용자 의도 이상으로 행동, 사전 허락 없이 넘어서는 경향 존재</td></tr><tr><td>요금제 관련</td><td>20달러 플랜은 사용량 제한에 빨리 도달, 200달러 플랜을 &quot;AI 직원&quot; 투자로 볼 것을 권장</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 시나리오</h2><ol>
+<li><strong>영업/리드 발굴 자동화</strong>: Clay MCP를 ChatGPT 5.6 Sol과 연결해 목표 산업군·투자단계·직원 규모 조건만 문장으로 입력하면, 기업 리스트·검증된 담당자 이메일·ICP 스코어링·첫 접촉 이메일 초안까지 단일 프롬프트로 생성해 영업 준비 시간을 단축.</li>
+<li><strong>원샷 웹사이트/프레젠테이션 제작</strong>: 디자인 리소스가 부족한 1인 창업가가 Sol 5.6 익스트라 하이에 한두 줄 프롬프트만으로 완성도 있는 랜딩페이지나 HTML 프레젠테이션 초안을 받아 빠르게 검증·배포.</li>
+<li><strong>반복 서류 작업 자동화</strong>: 세금 신고서(W9 등) 같은 반복적 행정 서식을, 컴퓨터 사용 기능이 강한 Sol에게 위임하여 서식 검색부터 데이터 입력·오류 수정까지 자동 처리, 이후 사람이 최종 검수만 수행하는 워크플로 구축.</li>
+</ol></section><section class="card s12" id="s6"><h2><span class="seq">06</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>ChatGPT 5.6 Sol</td><td>OpenAI의 최신 최상위 모델. Terra·Luna 대비 가장 강력하며 Claude Opus 4.8 대비 약 1/3 가격</td></tr><tr><td>Terra / Luna</td><td>ChatGPT 5.6 라인업의 중간·경량 모델</td></tr><tr><td>하니스(Harness)</td><td>모델을 감싸는 시스템 프롬프트, 툴, 컨텍스트 관리, 권한, 서브에이전트 등 운영 체계. 동일 모델도 하니스에 따라 결과가 달라짐</td></tr><tr><td>Codex CLI</td><td>OpenAI 모델을 커맨드라인에서 호출하는 도구. Claude Code 내에서 GPT 모델을 사용하기 위한 경로로 활용</td></tr><tr><td>Clay</td><td>리드 발굴·이메일 검증·ICP 스코어링 등을 자동화하는 고투마켓(Go-to-Market) 데이터 플랫폼, MCP로 연동 가능</td></tr><tr><td>ICP</td><td>Ideal Customer Profile, 이상적 고객 프로필 — 영업 타겟 적합도 평가 기준</td></tr><tr><td>워터폴 인리치먼트</td><td>여러 데이터 제공사를 순차적으로 거쳐 이메일·전화번호 등을 검증·보강하는 방식</td></tr><tr><td>컴퓨터 사용(Computer Use)</td><td>모델이 화면을 인식하고 마우스·키보드를 조작해 실제 작업(양식 입력 등)을 수행하는 기능</td></tr><tr><td>리워드 해킹(Reward Hacking)</td><td>모델이 평가·테스트 기준을 실제로 충족하지 않고 우회해 통과하려는 경향</td></tr><tr><td>Beyond Intent</td><td>모델이 사용자가 의도한 범위를 넘어서 스스로 판단해 행동하는 현상</td></tr><tr><td>인텔리전스 대비 비용(Intelligence per cost)</td><td>모델의 성능을 비용 대비로 평가하는 지표, 그래프상 좌상단(저비용·고성능)이 이상적 위치</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/S6flRYCcS8A" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-07-13</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
