@@ -3825,6 +3825,76 @@ function filter(){
 }
 filter();  // 초기 로드 시 기본 카테고리(AI 뉴스) 필터 적용
 </script>
+<script>
+/* ⭐ 즐겨찾기 + 🗑 숨기기 — 브라우저 로컬(localStorage) 개인 기능. 실제 파일·발행은 그대로 유지.
+   기존 filter()를 확장 재정의(검색·탭 핸들러가 이걸 호출). 매일 카드 삽입에도 안전(로드 시 전 카드 재장식). */
+(function(){
+  var LS_STAR='daybreak_starred', LS_HIDE='daybreak_hidden';
+  function lget(k){try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return[]}}
+  function slugOf(c){return (c.getAttribute('href')||'').replace(/^\.\//,'').replace(/\.html.*$/,'');}
+  var star=new Set(lget(LS_STAR)), hide=new Set(lget(LS_HIDE));
+  function save(){localStorage.setItem(LS_STAR,JSON.stringify(Array.from(star)));localStorage.setItem(LS_HIDE,JSON.stringify(Array.from(hide)));}
+  window.viewMode='all';
+
+  var st=document.createElement('style');
+  st.textContent='.card{position:relative}'
+   +'.card-actions{position:absolute;top:8px;right:8px;display:flex;gap:5px;z-index:3}'
+   +'.ca-btn{width:27px;height:27px;border-radius:7px;border:1.5px solid var(--border,#d0d0d0);background:rgba(255,255,255,.9);cursor:pointer;font-size:13px;line-height:1;padding:0;color:#999;display:flex;align-items:center;justify-content:center}'
+   +'.ca-btn:hover{background:#fff}.ca-star.on{color:#f5a623;border-color:#f5a623}.ca-hide:hover{color:#c0392b;border-color:#c0392b}';
+  document.head.appendChild(st);
+
+  function decorate(card){
+    if(card.querySelector('.card-actions'))return;
+    var slug=slugOf(card);
+    var box=document.createElement('div');box.className='card-actions';
+    var b1=document.createElement('button');b1.type='button';b1.className='ca-btn ca-star';b1.textContent='★';b1.title='즐겨찾기';
+    var b2=document.createElement('button');b2.type='button';b2.className='ca-btn ca-hide';b2.textContent='✕';b2.title='숨기기';
+    b1.onclick=function(e){e.preventDefault();e.stopPropagation();star.has(slug)?star.delete(slug):star.add(slug);save();filter();};
+    b2.onclick=function(e){e.preventDefault();e.stopPropagation();hide.has(slug)?hide.delete(slug):hide.add(slug);save();filter();};
+    box.appendChild(b1);box.appendChild(b2);card.appendChild(box);
+  }
+  document.querySelectorAll('.card').forEach(decorate);
+
+  var tabs=document.querySelector('.tabs'), starTab=null, hideTab=null;
+  if(tabs){
+    starTab=document.createElement('button');starTab.className='tab';starTab.type='button';
+    hideTab=document.createElement('button');hideTab.className='tab';hideTab.type='button';
+    tabs.appendChild(starTab);tabs.appendChild(hideTab);
+    var pick=function(btn,mode){document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});btn.classList.add('active');window.viewMode=mode;filter();};
+    starTab.addEventListener('click',function(){pick(starTab,'starred');});
+    hideTab.addEventListener('click',function(){pick(hideTab,'hidden');});
+  }
+  document.querySelectorAll('.tab[data-cat]').forEach(function(t){
+    t.addEventListener('click',function(){window.viewMode='all';filter();});
+  });
+
+  window.filter=function(){
+    var se=document.querySelector('.search'); var q=((se&&se.value)||'').toLowerCase();
+    var mode=window.viewMode, inHidden=(mode==='hidden'), anyVisible=false;
+    document.querySelectorAll('.cat-section').forEach(function(sec){
+      var catMatch=(mode!=='all')?true:(!activeCat||sec.dataset.cat===activeCat);
+      var secAny=false;
+      sec.querySelectorAll('.card').forEach(function(card){
+        var slug=slugOf(card), h=hide.has(slug), s=star.has(slug);
+        var modeOk=(mode==='all')?!h:(mode==='starred')?(s&&!h):h;
+        var qOk=!q||card.textContent.toLowerCase().indexOf(q)>=0;
+        var show=catMatch&&modeOk&&qOk;
+        card.classList.toggle('hidden',!show);
+        var sb=card.querySelector('.ca-star'); if(sb)sb.classList.toggle('on',s);
+        var hb=card.querySelector('.ca-hide'); if(hb){hb.textContent=inHidden?'↩':'✕';hb.title=inHidden?'복구':'숨기기';}
+        if(show){secAny=true;anyVisible=true;}
+      });
+      sec.classList.toggle('hidden',!secAny);
+    });
+    if(starTab)starTab.textContent='⭐ 즐겨찾기 ('+star.size+')';
+    if(hideTab)hideTab.textContent='🗑 숨김 ('+hide.size+')';
+    var emp=document.getElementById('empty');
+    if(emp){emp.style.display=anyVisible?'none':'block';
+      emp.textContent=(mode==='starred')?'⭐ 즐겨찾기한 기사가 없습니다.':(mode==='hidden')?'숨긴 기사가 없습니다.':'검색 결과가 없습니다.';}
+  };
+  filter();
+})();
+</script>
 </body>
 </html>
 
