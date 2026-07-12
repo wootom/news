@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: &quot;Scroll World 스킬로 Fable 5·GPT-5.6을 웹디자인 괴물로 만들기&quot;"><title>Scroll World 스킬로 Fable 5·GPT-5.6을 웹디자인 괴물로 만들기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">MORNING DIGEST · 2026-07-13 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>Scroll World 스킬로 Fable 5·GPT-5.6을 웹디자인 괴물로 만들기</h1><p class="lead">title: &quot;Scroll World 스킬로 Fable 5·GPT-5.6을 웹디자인 괴물로 만들기&quot;</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Chase AI</td></tr><tr><td>소재</td><td>단일 이미지를 스크롤 애니메이션 웹사이트로 변환하는 &quot;Scroll World&quot; 스킬 (원작자 Peter Wang, Chase AI가 포크·<span class="up">개선</span>)</td></tr><tr><td>핵심</td><td>Claude Code(Fable 5)와 Codex(GPT-5.6 Soul) 양쪽에서 동일 스킬로 원샷 웹사이트 제작 시연, Higgs Field MCP로 이미지·영상 생성 자동화</td></tr><tr><td>결론</td><td>씬 내부 퀄리티는 양쪽 다 우수하나, 씬 간 전환 매끄러움은 Fable 5(Claude Code)가 GPT-5.6(Soul)보다 우위</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>스킬 작동 원리</h2><ul>
+<li>단일 앵커 이미지에서 출발, 이를 영상으로 변환</li>
+<li>FFmpeg로 영상에서 개별 프레임을 추출해 사용자의 스크롤 위치와 매핑</li>
+<li>여러 씬이 서로를 참조하도록 설계해 하나의 스토리처럼 일관성 유지</li>
+<li>이미지 생성은 GPT image 2, 영상 생성은 Seed Dance 모델 사용 (Higgs Field MCP/CLI 경유)</li>
+<li>Codex(GPT-5.6)는 자체 이미지 생성 기능 보유 → 이미지는 네이티브로, 영상만 Higgs Field로 전송</li>
+<li>Claude Code는 이미지 생성 기능 없음 → 이미지·영상 전 과정을 Higgs Field가 전담</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>실행 절차 (인터뷰 방식)</h2><ol>
+<li>크리에이티브 방향 설정: 웹사이트 주제와 아트 스타일을 대화로 지정 (예: &quot;일본 여행 부티크 브랜드, 오리가미 스타일&quot;)</li>
+<li>예산 티어 선택: 씬 개수 결정 (기본 6씬은 과함, 4씬이 적정선 권장, 최소 3씬 가능) — 씬이 많을수록 Higgs Field 크레딧 소모 급증(6씬 기준 약 800크레딧)</li>
+<li>모바일 대응 수준 선택: 단순 크롭 세이프부터 풀 포트레이트 체인(모바일 전용 영상 추가 생성)까지 단계 선택 가능</li>
+<li>저니 제안 확인: 씬별 이미지 생성 수, 씬 다이브 영상 수, 커넥터·크로스페이드 등 총 생성 개수와 예상 소요 시간 제시</li>
+<li>앵커 이미지 승인: 전체 아트 디렙션을 결정짓는 첫 정지 이미지를 확인 후 승인해야 이후 전 과정이 진행됨</li>
+<li>자동 생성 및 완성: 승인 후 스킬이 전체 씬을 순차 생성해 로컬호스트에 결과물 배포 (예시 사례: 4씬, 10회 생성, 소요 32분)</li>
+</ol></section><section class="card s6" id="s4"><h2><span class="seq">04</span>결과물 품질 비교 (Fable 5 vs GPT-5.6)</h2><div class="tbl-wrap"><table><thead><tr><th>비교 항목</th><th>Claude Code(Fable 5)</th><th>Codex(GPT-5.6 Soul)</th></tr></thead><tbody><tr><td>개별 씬 내부 디테일·비주얼</td><td>우수</td><td>우수 (예: 지하철 등장 씬 등 완성도 높음)</td></tr><tr><td>씬 간 전환 (씬1→2, 씬2→3)</td><td>상대적으로 부드러움, 밀어내며 겹쳐지는 전환</td><td>하드 컷 발생, 이질감 있음</td></tr><tr><td>씬 간 전환 (씬3→4)</td><td>-</td><td>블러→줌인→3D 깊이감→매끄러운 전환으로 우수한 예외 사례 존재</td></tr><tr><td>이미지 생성 경로</td><td>Higgs Field 전담</td><td>Codex 네이티브 이미지 생성 + Higgs Field 영상</td></tr><tr><td>종합 평가</td><td>전환 매끄러움에서 우위</td><td>전환 일관성 부족이 주요 단점</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>확장 가능성과 한계</h2><ul>
+<li>스크롤 애니메이션 자체를 수작업(영상 촬영, 시작 프레임 추출, 프레임 단위 작업)으로 만들면 매우 번거롭고 시간 소모가 큼 — 스킬이 이 과정을 대폭 단순화</li>
+<li>현재 결과물은 &quot;비주얼 스펙터클&quot; 단계이며, 텍스트·CTA(콜투액션)·폼 등 기능적 요소 추가는 상대적으로 쉬운 후속 작업으로 평가됨</li>
+<li>3~9개월 전 기준으로는 이런 수준의 코히런트한 스크롤 사이트 제작이 상당히 어려웠던 작업이었다는 점을 강조</li>
+<li>씬 간 하드 컷 문제는 스킬 <span class="up">개선</span> 여지로 남아 있음 (전환 스무딩 추가 시 완성도 <span class="up">상승</span> 기대)</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>스킬 획득 및 연결 방법</h2><ul>
+<li>원작: Peter Wang의 오픈소스 &quot;Scroll World&quot; 스킬 (Twitter에서 공개)</li>
+<li>Chase AI 포크 버전 <span class="up">개선</span>점: 예산 티어 도입(씬 개수 조절로 비용 절감), 모바일 버전 <span class="up">개선</span>, SEO 관련 <span class="up">개선</span></li>
+<li>연결 절차: Higgs Field 사이트 → MCP and CLI 메뉴 → MCP URL 복사 → 인증 진행 → 스킬 URL을 Claude Code/Codex에 전달(플러그인 형태 설치도 가능)</li>
+<li>두 버전(원작·Chase AI <span class="up">개선</span>판) 모두 영상 설명란에 링크 제공 예정</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>활용 시나리오</h2><ol>
+<li>부티크 여행사·호텔 등 브랜드 스토리텔링이 중요한 랜딩페이지를 짧은 시간에 원샷으로 시안 제작할 때</li>
+<li>예산 제약이 있는 소규모 팀이 씬 개수(4씬 권장)와 모바일 대응 수준을 조절해 Higgs Field 크레딧 비용을 통제하면서 프리미엄 스크롤 사이트를 만들 때</li>
+<li>Claude Code와 Codex(GPT-5.6) 양쪽에서 동일 스킬 결과물을 비교해 팀의 AI 코딩 도구 선택 기준(전환 품질 등)을 세울 때</li>
+</ol></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>Scroll World</td><td>Peter Wang이 만든 오픈소스 스크롤 애니메이션 웹사이트 생성 스킬, Chase AI가 포크·<span class="up">개선</span></td></tr><tr><td>Fable 5</td><td>영상에서 언급된 Claude Code 측 모델/에이전트 명칭</td></tr><tr><td>GPT-5.6 Soul</td><td>OpenAI Codex의 신규 모델(Soul) 버전, 영상에서 Fable 5와 비교 대상</td></tr><tr><td>Higgs Field</td><td>이미지·영상 생성 모델을 MCP/CLI로 연결해주는 서비스, GPT image 2와 Seed Dance 모델 호출 담당</td></tr><tr><td>GPT image 2</td><td>Higgs Field를 통해 호출되는 이미지 생성 모델</td></tr><tr><td>Seed Dance</td><td>Higgs Field를 통해 호출되는 영상 생성 모델</td></tr><tr><td>앵커 이미지</td><td>전체 아트 디렉션을 결정하는 첫 정지 이미지, 이후 모든 씬의 기준점</td></tr><tr><td>씬 다이브(Scene Dive)</td><td>앵커 이미지를 영상으로 변환해 스크롤에 매핑하는 개별 씬 단위</td></tr><tr><td>포트레이트 체인</td><td>모바일 전용으로 별도 세로형 영상을 추가 생성하는 대응 방식</td></tr><tr><td>FFmpeg</td><td>영상에서 개별 프레임을 추출하는 데 사용되는 오픈소스 도구</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/KBH8P0z2AL8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-07-13</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

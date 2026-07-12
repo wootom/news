@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 베르나르 베르베르 &quot;각자에겐 수수께끼가 있습니다. 저는 책 대신 사람을 읽습니다&quot;"><title>베르나르 베르베르 &quot;각자에겐 수수께끼가 있습니다. 저는 책 대신 사람을 읽습니다&quot;</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>언더스탠딩</span><span class="ey">MORNING DIGEST · 2026-07-13 · 언더스탠딩</span><span class="chip">🎬 영상</span></div><h1>베르나르 베르베르 &quot;각자에겐 수수께끼가 있습니다. 저는 책 대신 사람을 읽습니다&quot;</h1><p class="lead">title: 베르나르 베르베르 &quot;각자에겐 수수께끼가 있습니다. 저는 책 대신 사람을 읽습니다&quot;</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>언더스탠딩 (북언더스탠딩 · 영혼의 왈츠 1부)</td></tr><tr><td>소재</td><td>프랑스 소설가 베르나르 베르베르 인터뷰, 신작 및 창작 철학</td></tr><tr><td>핵심메시지</td><td>글쓰기는 재능이 아닌 꾸준함의 산물이며, 영감은 독서가 아닌 사람과의 대화·여행에서 나옴</td></tr><tr><td>결론</td><td>좋은 소설은 튼튼한 스토리 골격 위에 예상을 뛰어넘는 주인공의 시련이 쌓여야 하며, 작가는 사람을 관찰·경청하는 직업</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>신간과 대표작 소개</h2><ul>
+<li>신작은 영혼·영성을 다룬 소설로, 저자 스스로 &#x27;과학적 소설&#x27;과 &#x27;영적 소설&#x27; 두 갈래를 병행 집필한다고 소개</li>
+<li>대표작 『개미』는 첫 과학 소설, 『타나토노트』는 첫 영적 소설로 자평, 개인적 애착작으로 『타나토노트』 언급</li>
+<li>신작 집필 시 기준점을 높게 잡은 야심작으로 자평, 프랑스 내 초대박 흥행은 아니었으나 한국 성공을 기대</li>
+<li>『아버지들의 아버지』는 『타나토노트』보다 대중적으로 반응이 좋았던 작품으로, 영적 소재도 다양하게 쓸 수 있다는 확신을 준 계기</li>
+<li>총 35권 집필, 개인적 만족도와 판매량(베스트셀러 여부)이 반드시 일치하지 않음을 언급 (예: 고양이 소재 작품이 상업적으로 가장 큰 성공, 공들인 『판도라의 상자』는 상대적으로 판매 부진)</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>창작 철학과 집필 방법론</h2><ul>
+<li>글쓰기를 &quot;소변을 보는 것&quot;에 비유, 몸 안에 채워진 것이 자연스럽게 흘러나오는 행위(플로우)로 묘사</li>
+<li>재능론 부정: 닭이 알을 낳듯 누구나 각자의 재능이 있으며, 글쓰기는 예쁜 문장이나 문학상이 아닌 독자를 놀라게 하는 것이 목표</li>
+<li>좋은 소설가가 되는 비결: 멋 부리지 않고 말하듯 빠르게 쓰기, 주인공에 대한 독자의 애착 형성이 핵심</li>
+<li>소설 구조론: 스토리는 뼈대(골격)이며 묘사·문체는 피부에 해당, 뼈대 없이 겉만 꾸미면(성형·메이크업) 무너짐</li>
+<li>서사 공식: 주인공이 적/시련을 만나 극복하는 과정에서 영웅성이 드러나며, 시련의 강도는 예측 불가능하게 점층되어야 함 (스타워즈 예시)</li>
+<li>꾸준함의 법칙: 재능보다 매일 반복하는 습관이 결정적, 조깅에 비유해 초기의 고통이 시간이 지나면 습관과 즐거움으로 전환됨을 설명</li>
+<li>영향받은 작가 3인(과학소설 계열)을 &quot;글쓰기 스승&quot;으로 언급, 이들의 작품에서만 느끼는 놀라움이 창작 동기로 작용</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>인간관찰과 영감의 원천</h2><ul>
+<li>영감의 원천은 독서보다 여행과 사람과의 대화, 책은 거의 읽지 않으며 &quot;놀라움을 줄 것이라는 확신이 들 때만&quot; 읽음</li>
+<li>한국 방문 목적은 관광이 아니라 한국인들과의 대화, 삶의 방식 차이를 관찰해 상상력의 재료로 삼음</li>
+<li>인간은 누구나 &quot;각자의 수수께끼(비밀)&quot;를 지니고 있으며, 충분한 대화와 시간을 들이면 그 비밀에 다가갈 수 있다는 인간관 제시</li>
+<li>카페에서 집필하는 이유: 밀폐된 작업실보다 사람들의 시선과 존재를 느낄 수 있는 열린 공간을 선호</li>
+<li>실제 만난 악인(과학부 기자 시절 상사)을 캐릭터 구상에 활용한 사례 소개, 무능력이 타인에 대한 공포 조장으로 이어진다는 관찰</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>기자 경력과 대중 노출에 대한 태도</h2><ul>
+<li>과학부 기자로 일하며 유명 과학자들과 교류한 경험이 소설 집필의 토대가 됨</li>
+<li>열악한 근무 환경(낮은 급여, 나쁜 상사)이 오히려 &quot;이 길로는 가지 않겠다&quot;는 방향성을 제공해 작가의 길을 택하게 된 계기로 작용</li>
+<li>현재 작가로서의 &#x27;상사&#x27;는 독자라고 표현, 독자의 마음을 얻는 것이 곧 생계와 직결됨을 인정</li>
+<li>대중 노출(악플·비평)에 대한 태도: 집필 중에는 &quot;비눗방울 안에 있는 상태&quot;로 외부 반응과 단절, 완성 후의 호불호는 통제 불가 영역으로 수용</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>소설 창작을 시도하는 독자: 스토리의 뼈대(주인공-시련-극복 구조)를 먼저 세우고 문장은 빠르게 쓰는 연습부터 시작</li>
+<li>습관 형성이 필요한 독자: 하루 10분이라도 매일 반복하는 &#x27;조깅식 습관화&#x27; 원리를 글쓰기 외 다른 자기계발 영역에도 적용</li>
+<li>사람을 통해 아이디어를 얻고 싶은 독자: 정보 습득을 독서에만 의존하지 않고, 타인과의 깊은 대화·관찰을 창작·기획의 소스로 활용</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>타나토노트 (Thanatonautes)</td><td>베르나르 베르베르의 소설, 죽음 이후 세계를 탐험하는 내용을 다룬 첫 영적 소설</td></tr><tr><td>아버지들의 아버지</td><td>『타나토노트』 이후 발표한 소설, 영적 소재를 좀 더 대중적으로 다뤄 흥행에 성공</td></tr><tr><td>판도라의 상자</td><td>저자가 공들여 쓴 세계관 확장형 소설, 상업적 판매량은 상대적으로 낮았음</td></tr><tr><td>플로우(flow)</td><td>저자가 언급한 개념으로, 몸 안에 들어왔다 자연스럽게 빠져나가는 창작 에너지의 흐름</td></tr><tr><td>뼈대(골격) 구조론</td><td>스토리를 뼈대, 문체·묘사를 피부에 비유한 저자의 소설 작법 개념</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/q9s_TdkV03U" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>언더스탠딩 · 2026-07-13</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

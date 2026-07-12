@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 클로드 코드+Clay로 리드 생성 자동화하기"><title>클로드 코드+Clay로 리드 생성 자동화하기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">MORNING DIGEST · 2026-07-13 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>클로드 코드+Clay로 리드 생성 자동화하기</h1><p class="lead">title: 클로드 코드+Clay로 리드 생성 자동화하기</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Nate Herk</td><td>AI Automation</td></tr><tr><td>소재</td><td>Claude Code를 오케스트레이터로, Clay를 B2B 데이터 소스로 연결해 콜드 아웃바운드 리드 생성·개인화 카피 작성·캠페인 발송까지 자연어 프롬프트만으로 처리하는 워크플로우</td></tr><tr><td>핵심</td><td>프롬프트 한 번(/goal 명령)으로 50개 리드 소싱, 데이터 보강(이메일·전화번호·페인포인트), 개인화된 이메일 제목/본문 작성, CSV 산출까지 자동 완료</td></tr><tr><td>결론</td><td>Clay는 데이터 문제(리드·이메일 확보)를, Claude Code는 툴 문제(여러 SaaS UI 학습 부담)를 해결하며, 총 비용 172 Clay 크레딧(약 12달러)으로 50개 완전 보강 리드 확보</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>콜드 아웃바운드의 구조적 문제</h2><ul>
+<li>첫 고객 확보 시 콜드 아웃바운드 3대 난제 — 적합한 비즈니스 발굴, 실제 연락처(이메일) 확보, AI 티 나지 않는 개인화 카피 작성</li>
+<li>데이터 문제 — 리드 소싱과 이메일 검증의 어려움</li>
+<li>툴 문제 — 여러 소프트웨어와 탭을 오가며 발생하는 학습·전환 비용</li>
+<li>웜네트워크·인바운드 우선 원칙 — 콜드 아웃바운드는 스케일이 필요하거나 다른 옵션이 없을 때의 대안으로 위치</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>Clay와 Claude Code의 역할 분담</h2><ul>
+<li>Clay 역할 — 자체 데이터셋과 다수 데이터 제공업체 API를 폭포수(waterfall) 방식으로 순차 조회, 단일 벤더 대비 이메일 매칭률 30%에서 80~90%로 <span class="up">상승</span></li>
+<li>Claude Code 역할 — 새로운 UI 학습 없이 자연어 지시만으로 Clay MCP 서버의 엔드포인트를 이해·실행하는 오케스트레이터</li>
+<li>크레딧 기반 과금 — 구독 대신 API 키 연동 후 크레딧 소모 방식, 이메일 찾기·인물/기업 보강·전화번호 조회 등 액션별 과금</li>
+<li>Clay-Claude Code 플러그인 연동 — Claude Code 터미널에서 /plugin marketplace 명령으로 &quot;Build with Clay&quot; 마켓플레이스 추가 후 설치(데스크톱 앱·VS Code 확장에서는 설치 불가, 터미널에서만 마켓플레이스 추가 가능)</li>
+<li>인증 절차 — 플러그인 설치 후 자연어로 인증 요청 시 Clay 스킬이 인증 링크 자동 생성, 워크스페이스 선택 후 승인하면 연동 완료</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>리드 생성 실전 워크플로우</h2><ul>
+<li>사전 준비 컨텍스트 파일 — 비즈니스 프로필, 케이스 스터디, FAQ, 증빙 자료, 오퍼, 웹사이트 카피를 Claude Code 프로젝트에 사전 입력해 개인화 카피 품질 확보</li>
+<li>/goal 프롬프트 활용 — 목표 조건(예: 완전 보강된 50개 리드)을 설정하면 조건 충족까지 Claude Code가 자율적으로 반복 작업</li>
+<li>서브에이전트 병렬 처리 — 휴스턴·샌안토니오·애틀랜타·샬럿·탬파·라스베이거스 등 6개 지역에 서브에이전트를 배치해 각 25개 매장 리드 수집·보강</li>
+<li>검증 및 중복제거 단계 — 에이전트 결과 취합 후 중복제거(dedup), 수율(yield) 점검, 데이터 정확성 검증을 다이나믹 워크플로우로 자동 수행</li>
+<li>소요 시간 편차 — 검증·재작성·에이전트 간 토론(디베이트) 포함 시 약 1시간 소요, 단순 소싱만 요청 시 약 5분 소요</li>
+<li>산출 데이터 컬럼 — 사업체명·의사결정자·직함·이메일·이메일 검증 상태·전화번호·웹사이트·소재 도시·구글 평점·리뷰 수·비즈니스 페인포인트·최근 시그널·주목할 성과·퍼스널라이제이션 훅·이메일 제목·본문 등 51행(50개 리드+헤더) 전량 공백 없이 완성</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>비용 및 캠페인 연동</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>수치</th></tr></thead><tbody><tr><td>소모 크레딧</td><td>172 Clay 크레딧</td></tr><tr><td>실비용</td><td>약 12달러(50개 완전 보강 리드 기준)</td></tr><tr><td>확장 추정</td><td>100개 리드 기준 약 24달러, 1% 전환율 가정 시 투자 대비 수익 우위</td></tr><tr><td>CSV→Clay 재반입</td><td>Claude Code 산출 CSV를 Clay에 새 테이블로 임포트 후 캠페인 생성</td></tr></tbody></table></div>
+<ul>
+<li>캠페인 변수 매핑 — 임포트한 테이블의 이메일 제목·본문 컬럼을 슬래시 명령으로 캠페인 메시지 변수에 연결, 리드별 개인화 미리보기 확인</li>
+<li>발신 계정 구매 — Clay 내에서 Gmail/Outlook 도메인 구매 가능(비즈니스명 유사 도메인 검색), 도메인당 최대 5개 계정, 일일 발송량 제한(30통/일)으로 자동 워밍업</li>
+<li>후속 팔로업 설정 — 무응답 시 3일 후 2차, 이후 3차 팔로업 메시지까지 캠페인 내 구성 가능</li>
+<li>현재 한계 — Clay MCP 서버가 캠페인 관리 전체를 아직 지원하지 않아 일부 단계(팔로업 메시지 생성 등)는 Clay UI에서 수동 설정 필요</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>소규모 에이전시의 콜드 아웃바운드 초기 리스트업 자동화(업종·지역·의사결정자 조건을 자연어로 지정)</li>
+<li>기존 비즈니스 프로필·케이스스터디·FAQ 문서를 Claude Code 컨텍스트로 등록해 개인화 이메일 카피 품질 향상</li>
+<li>/goal 명령과 서브에이전트 병렬화를 활용해 야간에 대량(예: 500개) 리드 배치 작업 실행</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Clay</td><td>B2B 리드 데이터 및 보강(enrichment)을 제공하는 SaaS 플랫폼</td><td>여러 데이터 벤더를 한 곳에서 조회하는 종합 데이터 상점</td></tr><tr><td>워터폴(waterfall) 조회</td><td>1차 데이터 제공업체에서 매칭 실패 시 순차적으로 다음 제공업체를 조회하는 방식</td><td>첫 번째 자물쇠 열쇠가 안 맞으면 다음 열쇠를 시도하는 방식</td></tr><tr><td>/goal 프롬프트</td><td>종료 조건을 지정하면 조건 충족까지 에이전트가 자율 반복하는 Claude Code 명령</td><td>목적지 도착까지 알아서 경로를 수정하는 내비게이션</td></tr><tr><td>리드 보강(enrichment)</td><td>기본 리드 정보에 이메일·전화번호·페인포인트 등 추가 데이터를 덧붙이는 과정</td><td>이름만 아는 사람의 신상 정보를 채워 넣는 과정</td></tr><tr><td>MCP 서버</td><td>Claude Code가 외부 서비스(Clay 등)의 기능을 호출할 수 있게 하는 연동 계층</td><td>앱과 앱 사이를 이어주는 통역사</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/zyvdl__Ywfk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-07-13</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
