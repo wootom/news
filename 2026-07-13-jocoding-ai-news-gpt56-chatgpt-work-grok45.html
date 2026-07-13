@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: AI뉴스 - GPT-5.6, ChatGPT Work, GPT Live, Grok 4.5, 뮤즈 스파크 총정리"><title>AI뉴스 - GPT-5.6, ChatGPT Work, GPT Live, Grok 4.5, 뮤즈 스파크 총정리</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">MORNING DIGEST · 2026-07-14 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>AI뉴스 - GPT-5.6, ChatGPT Work, GPT Live, Grok 4.5, 뮤즈 스파크 총정리</h1><p class="lead">title: AI뉴스 - GPT-5.6, ChatGPT Work, GPT Live, Grok 4.5, 뮤즈 스파크 총정리</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>조코딩 JoCoding</td></tr><tr><td>소재</td><td>한 주간 AI 모델·에이전트·월드모델·휴머노이드 신제품 총정리(GPT-5.6 3종, ChatGPT Work, GPT Live, Grok 4.5, 메타 뮤즈 스파크 등)</td></tr><tr><td>핵심주장</td><td>비용 대비 성능(코스트-인텔리전스)이 이번 경쟁의 핵심 축으로, OpenAI·Anthropic·xAI·Meta가 프론티어 모델을 앞다퉈 출시하며 격차가 좁혀지고 에이전트 접근성이 사무직까지 확대되는 국면</td></tr><tr><td>결론</td><td>종합 성능 1위는 페이블 5(60점)지만 비용 효율은 GPT-5.6·Grok 4.5가 우위, 앤트로픽은 오퍼스 5 조기 출시로 방어 예상. 90% 업무 AI 대체 전망 속 &#x27;1인 창업자&#x27; 역량이 중요</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>GPT-5.6 — 3종 라인업·디자인·에이전트</h2><ul>
+<li><strong>모델 3종 출시</strong>: 솔(Sol, 최강)·테라(Terra, 중간)·루나(Luna, 소형)로 분화, 추론 강도(트론) 조절 가능. &#x27;울트라&#x27;는 사고량 증가가 아니라 서브에이전트 적극 활용(토큰 소모<span class="up">↑</span>)</li>
+<li><strong>속도 옵션과 셀레브라스 협업</strong>: &#x27;빠름&#x27; 선택 시 셀레브라스(Cerebras) 하드웨어 위에서 실행돼 초고속 추론 제공</li>
+<li><strong>비용 대비 효율 강조</strong>: 클로드보다 저렴하고 성능 우위라는 점을 전면에 내세움, 에이전트 벤치(라스트샘 등) 스코어도 높게 제시. 단 벤치 대상을 유리하게 선별한 정황</li>
+<li><strong>디자인 비약적 향상</strong>: 세일링 게임·뮤지엄 웹사이트·PPT 등 프론트엔드/디자인 품질 대폭 <span class="up">개선</span>, UI·프론트엔드 작업 특화 훈련</li>
+<li><strong>지식 업무(엔드투엔드) 강화</strong>: 문서·슬랙·노션·MS365·구글드라이브의 뒤섞인 컨텍스트를 전문가 수준 결과물로 변환, 일부 벤치에서 페이블 상회</li>
+<li><strong>CUA(컴퓨터 유즈 에이전트) 사례</strong>: 블렌더를 직접 조작해 오브젝트 생성, 복셀 맨해튼·구글어스 클론·마인크래프트 등 구현 사례 급증</li>
+<li><strong>샘 알트만 통계 인용</strong>: 팀 내부 5.6 솔 300억 토큰 vs 페이블 5 17억 토큰 사용, 5.6 우세를 강조</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>에이전트 접근성 확대 — ChatGPT Work·GPT Live</h2><ul>
+<li><strong>ChatGPT Work 출시</strong>: 코덱스 기술 기반의 사무 업무용 에이전트, 슬랙·팀즈·구글드라이브·쉐어포인트·이메일·캘린더 연동. 웹·모바일·데스크톱 지원, 무료 플랜 포함 제공 → 점유율 확대 노림수(클로드 코워크 대응)</li>
+<li><strong>GPT Live 음성 모델</strong>: 백그라운드 사고+동시 발화로 끊김 없는 상호작용, 추임새 삽입·복잡 작업 위임·시각적 답변 지원. GPT Live 1 / Live 미니 2종, 무료 버전 개방. 실시간 한↔영 번역 시연</li>
+<li><strong>코덱스 규모</strong>: 주간 사용자 500만+ (3개월 전 대비 2배), 리눅스 데스크톱 앱 개발 중, 자동 모델 라우팅은 아직 미지원</li>
+<li><strong>벤치 치팅 대응</strong>: OpenAI가 벤치 조작을 실제 문제로 인정, 평가 중 해당 행동 페널티 부과·독립 벤더 사용 언급</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>경쟁 구도 — Anthropic·xAI·Meta</h2><ul>
+<li><strong>Anthropic 방어</strong>: 페이블 5 액세스를 7월 12일까지 연장(비교 유도), 오퍼스 5 이달 출시설(폴리마켓 78% 확률). 클로드 데스크톱 앱은 인앱 브라우저 지원 추가</li>
+<li><strong>xAI Grok 4.5</strong>: 코딩·에이전트·지식 업무 겨냥, 소프트웨어 엔지니어 마라톤 벤치 1위(페이블 상회). 빠르고 저렴(아웃풋 6달러 수준), TPS·토큰 효율 강조</li>
+<li><strong>Meta 뮤즈 스파크 1.1</strong>: 제미나 3.1·오퍼스 4.8·GPT-5.5에 견주거나 상회, 오픈소스 포기·클로즈드 전환(내부툴/API). 뮤즈 이미지(이미지 아레나 2위)·뮤즈 비디오 동시 공개</li>
+<li><strong>경쟁 요약</strong>: 아티피셜 애널리시스 기준 OpenAI·Claude·xAI가 구글을 앞서 치열 경쟁, 머스크-알트만 공개 설전(애플의 OpenAI 고소 건 등) 지속</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>월드모델·개발도구·휴머노이드</h2><ul>
+<li><strong>오픈소스 월드모델 링보 월드 2</strong>: 중국산, 키보드 입력에 따라 프레임을 실시간 생성해 탐험·달리기 가능(지니 3 유사). GPU 보유 시 로컬 실행</li>
+<li><strong>완스트리머 0.2</strong>: 실시간 상호작용 화상, 고화질·0.2초 레이턴시 유지</li>
+<li><strong>구글 AI 스튜디오 커스텀 URL</strong>: 바이브 코딩 결과물을 <code>.studio</code> 도메인으로 즉시 배포·공유</li>
+<li><strong>클라우드플레어 드롭</strong>: 로그인 없이 폴더/파일 업로드만으로 1시간 임시 배포(로그인 시 영구 연결), 워커스로 정적 배포 무료화</li>
+<li><strong>1X 네오 휴머노이드</strong>: 2.5D·25 자유도의 손, API 제어. 전구 교체·포도 따기·레고 조립·물 뿌리기 등 사람 손 수준의 정교한 작업 시연</li>
+<li><strong>TTS 벤치</strong>: 다수 오픈소스 TTS(코코로·슈퍼톤 등) 비교 평가 도구 등장</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>노동시장 시사점</h2><ul>
+<li><strong>KDI 정책 포럼</strong>: 청년·신규 진입자의 경력 사다리 축소가 최대 우려, AI를 &#x27;자동화(사람 축소)&#x27;가 아닌 &#x27;증강(역량·수요 확대)&#x27; 도구로 재설계할 필요 제기</li>
+<li><strong>4년 뒤 업무의 90% AI 대체 가능</strong> 전망 확산 → 다수가 사실상 &#x27;1인 창업자&#x27;화, 가치 창출 역량이 핵심 자질로 부상</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>활용 시나리오</h2><ol>
+<li><strong>모델 선택 의사결정</strong>: 프론트엔드/디자인 작업은 GPT-5.6, 비용 민감·코딩 대량 작업은 Grok 4.5, 종합 최고 품질은 페이블 5로 용도별 배분하는 데 활용</li>
+<li><strong>사무 자동화 도입</strong>: ChatGPT Work의 무료 제공·업무툴 연동을 근거로, 비개발 사무직에 에이전트 워크플로우를 저비용으로 시범 도입하는 판단에 활용</li>
+<li><strong>배포·공유 워크플로우 <span class="up">개선</span></strong>: AI 스튜디오 커스텀 URL·클라우드플레어 드롭을 활용해 바이브 코딩 결과물을 즉시 배포·공유하는 데 활용</li>
+</ol></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>코스트-인텔리전스</td><td>비용 대비 성능(지능) 지표, 같은 성능을 얼마나 저렴하게 내는지 평가</td></tr><tr><td>CUA</td><td>Computer Use Agent, AI가 실제 컴퓨터 화면·마우스·키보드를 조작해 툴을 다루는 에이전트</td></tr><tr><td>셀레브라스(Cerebras)</td><td>초고속 추론에 특화된 AI 반도체, GPT-5.6 &#x27;빠름&#x27; 모드가 이 위에서 실행</td></tr><tr><td>월드모델</td><td>사용자 입력에 따라 매 프레임을 실시간 생성해 탐험 가능한 인터랙티브 영상 생성 모델</td></tr><tr><td>루프 엔지니어링</td><td>개별 프롬프트 대신 목표·시간·이벤트 기반 반복 루프를 설계해 에이전트가 자율적으로 목표를 달성하게 하는 기법</td></tr><tr><td>ChatGPT Work</td><td>코덱스 기반의 사무 업무용 에이전트 모드, 업무 SaaS를 연동해 문서·메일·일정 작업을 자동 수행</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/bnxXaSwtCfw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-07-14</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
