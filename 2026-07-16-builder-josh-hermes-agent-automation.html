@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 엔지니어 샘 호트만이 헤르메스 에이전트 5개(뉴스 큐레이션·커뮤니티 CRM·콘텐츠 제작·이메일·자동매매)로 1인 크리에이터 업무를 결정론적 영역부터 자동화한 실전 사례다."><title>헤르메스 에이전트 5개로 개인 업무를 자동화한 방법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>빌더 조쉬</span><span class="ey">MORNING DIGEST · 2026-07-16 · 빌더 조쉬</span><span class="chip">🎬 영상</span></div><h1>헤르메스 에이전트 5개로 개인 업무를 자동화한 방법</h1><p class="lead">AI 엔지니어 샘 호트만이 헤르메스 에이전트 5개(뉴스 큐레이션·커뮤니티 CRM·콘텐츠 제작·이메일·자동매매)로 1인 크리에이터 업무를 결정론적 영역부터 자동화한 실전 사례다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>헤르메스(LLM 기반) 에이전트 5개를 활용한 개인·1인 사업 업무 자동화</td></tr><tr><td>핵심축</td><td>결정론적 영역은 클로드 코드 스킬로, 기억·개인화는 에이전트 메모리로</td></tr><tr><td>결론</td><td>조직뿐 아니라 개인도 에이전트로 큐레이션~매매까지 자동화 가능, 다만 사람의 검수·의사결정은 남음</td></tr><tr><td>화자</td><td>빌더 조쉬 (게스트: 샘 호트만, AI 엔지니어 시선 채널)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>운영 원칙</strong>: 멀티에이전트보다 싱글 에이전트로 결정론적 영역을 최대한 자동화, 업그레이드가 필요할 때만 멀티로 확장</li>
+<li><strong>에이전트1 뉴스 큐레이션</strong>: 해외 링크드인·트위터 글을 긁어 취향에 맞게 요약 → 카카오톡 1300명 오픈채팅방에 자동 발송, 아침 8:45·11:45 크론잡으로 계정 6~7개 24시간 이내 글 탐지</li>
+<li><strong>에이전트2 커뮤니티 CRM</strong>: 스쿨 커뮤니티 클래스룸 권한 부여·콘텐츠 업로드를 자연어로 처리, 멤버 관리 자동화</li>
+<li><strong>에이전트3 LLM 위키 상담봇</strong>: 옵시디언 마크다운 YAML 프론트매터 기반 지식베이스로 강의·에이전시업 상담(RAG 아닌 위키 방식), &quot;해외에서 어떤 프로덕트를 만들까&quot; 같은 개인 상담 제공</li>
+<li><strong>에이전트4 콘텐츠 제작</strong>: 유튜브 데이터 API·슈퍼베이스 DB 연동, 아웃라이어(조회수·좋아요·댓글) 바이럴 영상을 분석해 다음 영상 주제 추천, 쓰레드 글 초안 작성</li>
+<li><strong>에이전트5 이메일·자동매매</strong>: 광고 메일 초안 자동 작성, 만든 지 3일 된 주식 자동매매 봇은 섹터(반도체 등) 매크로 지식으로 시장 분<span class="dn">위기</span> 나쁘면 매매를 쉬도록 판단 보조</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술 맥락</h2><p>샘 호트만은 슬랙에서 LLM 에이전트를 운영하며, 예전 n8n·Make.com의 노드 레벨 자동화처럼 패턴이 뚜렷한 결정론적 업무는 클로드 코드 스킬(문서 레벨 결정론)로 처리한다. 에이전트의 강점인 메모리 영역에 피드백을 누적해 개인 선호에 맞게 최적화한다. 카카오톡 연동은 오픈소스 KakaoTalk CLI(코난센의 openclaw KMSG, 스위프트 기반)로 로컬에서 메시지 방을 검색·발송하는 방식을 사용한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>결정론 vs 개인화 분리</strong>: 정형화된 반복 업무는 스킬로 고정, 취향·판단이 필요한 영역은 에이전트 메모리로 최적화하는 이원 전략</li>
+<li><strong>1인 크리에이터의 레버리지</strong>: 큐레이션·CRM·콘텐츠·이메일·매매까지 5개 에이전트로 소규모 사업자가 조직 수준의 자동화를 확보</li>
+<li><strong>살아있는 지식베이스</strong>: LLM 위키(YAML 프론트매터)를 상담 직원처럼 활용, 향후 커뮤니티원이 챗봇으로 질의응답하는 AI 강사로 발전 계획</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>구간</th><th>핵심 논지</th><th>딥링크</th></tr></thead><tbody><tr><td>도입</td><td>5개 캐릭터 에이전트 소개, 조직 아닌 개인 활용</td><td><a href="https://www.youtube.com/watch?v=_Pd1G33_R48&amp;t=0" target="_blank" rel="noopener">0:00 딥링크</a></td></tr><tr><td>LLM 위키</td><td>옵시디언 YAML 프론트매터 기반 상담봇</td><td><a href="https://www.youtube.com/watch?v=_Pd1G33_R48&amp;t=388" target="_blank" rel="noopener">6:28 딥링크</a></td></tr><tr><td>실연 시작</td><td>대화창에서 크론잡 미리 실행 시연</td><td><a href="https://www.youtube.com/watch?v=_Pd1G33_R48&amp;t=789" target="_blank" rel="noopener">13:09 딥링크</a></td></tr><tr><td>큐레이션</td><td>해외 링크드인 글 요약·카톡 발송 데모</td><td><a href="https://www.youtube.com/watch?v=_Pd1G33_R48&amp;t=1171" target="_blank" rel="noopener">19:31 딥링크</a></td></tr><tr><td>데이터 우선</td><td>AX보다 DX(데이터)부터 정리하는 접근</td><td><a href="https://www.youtube.com/watch?v=_Pd1G33_R48&amp;t=1941" target="_blank" rel="noopener">32:21 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>뉴스 큐레이션 방 운영</strong>: 해외 크리에이터 글을 자동 요약·발송해 커뮤니티에 정보 제공</li>
+<li><strong>커뮤니티 지식봇</strong>: 강의·상담 지식을 위키로 관리하고 챗봇 형태로 회원에게 질의응답 제공</li>
+<li><strong>콘텐츠 기획</strong>: 바이럴 아웃라이어 영상 데이터를 분석해 다음 콘텐츠 주제를 데이터 기반으로 결정</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>샘 호트만은 5개 에이전트 중 뉴스 큐레이션은 아직 100% 자동화가 아닌 반자동(수동 필터링)으로 운영하고, 자동매매는 만든 지 3일로 매매 근거·백테스트를 갖춰가는 초기 단계다. 향후 자는 동안 알아서 단타 매매하는 완전 자동화와, 커뮤니티원이 직접 쓰는 AI 강사봇으로 확장을 기대하고 있다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>헤르메스 에이전트</td><td>LLM 기반 업무 자동화 에이전트</td><td>슬랙에서 호출하는 개인 비서</td></tr><tr><td>결정론적 영역</td><td>패턴이 뚜렷해 규칙으로 자동화 가능한 업무</td><td>n8n 노드처럼 정형화된 흐름</td></tr><tr><td>클로드 코드 스킬</td><td>문서 레벨로 결정론적 작업을 정의한 것</td><td>반복 업무 매뉴얼 자동 실행</td></tr><tr><td>LLM 위키</td><td>마크다운 YAML 프론트매터 지식베이스</td><td>옵시디언 기반 상담 직원</td></tr><tr><td>아웃라이어</td><td>지표가 압도적으로 좋은 바이럴 영상</td><td>구독자 대비 조회·좋아요 폭발 영상</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/_Pd1G33_R48" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>빌더 조쉬 · 2026-07-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

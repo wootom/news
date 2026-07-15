@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="데이터센터·GPU·메모리 수요의 &#x27;피크아웃&#x27; 우려는 소음일 뿐, AI 사용 심화와 제번스 역설로 메모리 수요는 구조적으로 계속 늘어난다는 진단."><title>반도체 피크아웃 논쟁 — 데이터센터·메모리 수요는 꺾이지 않는다 (김지현 SK AI위원회 부사장)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-07-16 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>반도체 피크아웃 논쟁 — 데이터센터·메모리 수요는 꺾이지 않는다 (김지현 SK AI위원회 부사장)</h1><p class="lead">데이터센터·GPU·메모리 수요의 &#x27;피크아웃&#x27; 우려는 소음일 뿐, AI 사용 심화와 제번스 역설로 메모리 수요는 구조적으로 계속 늘어난다는 진단.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>반도체 피크아웃(고점 논쟁)과 데이터센터·메모리 수요의 지속성</td></tr><tr><td>핵심축</td><td>데이터센터 증설 + AI 사용 심화 → 메모리(HBM·LPDDR·SSD) 수요 구조적 증가</td></tr><tr><td>결론</td><td>스페이스X·메타의 &#x27;잉여 데이터센터 임대&#x27;는 소음, 메모리 수요는 <span class="dn">감소</span> 불가</td></tr><tr><td>화자</td><td>티타임즈TV (김지현 SK AI위원회 부사장 · 홍재의 기자)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>피크아웃 판단 유보</strong>: 연초 삼성·하이닉스·마이크론 급등 후 조정, 그러나 향후 1~3년 피크·저점 여부는 알 수 없음 — 주가엔 매출·성장성 외 &#x27;욕망(투기적 변동성)&#x27;이 세 번째 축으로 작용</li>
+<li><strong>데이터센터 절대량 증가 확실</strong>: 현재 미국 54GW·중국 32GW·한국 1GW 미만 → 2030년 목표 미국 130GW·중국 60GW·한국 10GW로 대폭 증설 계획</li>
+<li><strong>한국 3대 메가프로젝트 규모</strong>: 2040년까지 약 5,000조원(반도체 팹·피지컬AI·데이터센터 포함) 투자 목표, 한국 GDP(약 2,500조)의 두 배 수준 — 데이터센터 목표만 약 18GW</li>
+<li><strong>GPU당 HBM 탑재 증가</strong>: 1개 GPU에 붙는 HBM이 4→8→16개로 계속 증가, 대화 세션 유지·파일 누적으로 메모리 삭제 불가</li>
+<li><strong>잉여 데이터센터 논란 해석</strong>: XAI 등 활용도 낮은 기업의 유휴 자원 임대는 &#x27;땅 짚고 헤엄치기&#x27; 판매 기회일 뿐, 시장 축소 신호 아님</li>
+<li><strong>AI 시장 수직계열화</strong>: GPU+HBM 판매 → 데이터센터 임대 → 토큰 생산·공급 → 모델 결합 토큰 → 에이전트·앱 번들의 4~5단계 통합 진행 중</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장 맥락</h2><p>최근 증시에서 메모리 사이클·반도체 피크아웃 논쟁이 격화되고, 메타·스페이스X가 잉여 데이터센터 자원을 앤트로픽·구글에 임대할 수 있다는 소식이 &#x27;수요 정점&#x27; 우려를 키웠다. 화자는 기업 가치가 현재 매출·잠재 매출·투기적 욕망 세 축으로 결정되며 주가 방향은 예측 불가하지만, 데이터센터·메모리의 물리적 수요 자체는 명확히 증가한다고 구분한다. 특히 온디바이스 AI(LPDDR)·HBM·SSD·S램 등 메모리 상품군이 다변화되며 과거 디램 단일 사이클 관점으로는 판단 불가하다고 강조한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>메모리 수요 비가역성</strong>: 사용자·기업(앤트로픽 매출 60%+ B2B)의 AI 사용 심화로 메모리 소비는 하드디스크·클라우드 용량처럼 계속 누적, <span class="dn">감소</span> 불가</li>
+<li><strong>제번스 역설 적용</strong>: AI 효율이 오를수록 토큰 소비가 오히려 폭증 — 모든 앱(파워포인트 등) 내부에 AI가 임베드되며 수요 확대</li>
+<li><strong>한국 포지션</strong>: 디램·HBM 등 램 중심 국가로서 &#x27;다시 오기 힘든 기회&#x27;, 정부·삼성·하이닉스의 과감한 증설 결단은 대도약 기회</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>구간</th><th>핵심 논지</th><th>딥링크</th></tr></thead><tbody><tr><td>피크아웃 판단</td><td>고점 여부는 알 수 없음, 주가엔 &#x27;욕망&#x27; 변수 개입</td><td><a href="https://www.youtube.com/watch?v=m0W07k5Q_nw&amp;t=53" target="_blank" rel="noopener">0:53 딥링크</a></td></tr><tr><td>잉여 데이터센터 논란</td><td>스페이스X·메타 임대는 유휴자원 판매 기회일 뿐</td><td><a href="https://www.youtube.com/watch?v=m0W07k5Q_nw&amp;t=182" target="_blank" rel="noopener">3:02 딥링크</a></td></tr><tr><td>메모리 필요 이유</td><td>GPU당 HBM 4→8→16개, 세션 유지로 삭제 불가</td><td><a href="https://www.youtube.com/watch?v=m0W07k5Q_nw&amp;t=401" target="_blank" rel="noopener">6:41 딥링크</a></td></tr><tr><td>에이전트 토큰 폭증</td><td>사용자·기업 사용 심화로 토큰 수요 급증</td><td><a href="https://www.youtube.com/watch?v=m0W07k5Q_nw&amp;t=648" target="_blank" rel="noopener">10:48 딥링크</a></td></tr><tr><td>제번스 역설</td><td>효율 <span class="up">상승</span>이 오히려 총사용량을 늘림</td><td><a href="https://www.youtube.com/watch?v=m0W07k5Q_nw&amp;t=830" target="_blank" rel="noopener">13:50 딥링크</a></td></tr><tr><td>메가프로젝트 규모</td><td>2040년까지 약 5,000조원, GDP 2배 투자</td><td><a href="https://www.youtube.com/watch?v=m0W07k5Q_nw&amp;t=1242" target="_blank" rel="noopener">20:42 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>반도체 투자 판단</strong>: 단기 주가 변동성과 물리적 수요를 분리, 메모리 상품군 다변화(디램·HBM 세대별·LPDDR·SSD)를 종합 평가</li>
+<li><strong>인프라 수요 예측</strong>: 데이터센터 GW 증설 목표 대비 실제 진행률을 추적해 GPU·MPU·메모리 파생 수요 가늠</li>
+<li><strong>AI 사용 전략</strong>: 세션 장기 유지·파일 누적이 메모리 수요를 키운다는 점을 서비스 설계·비용 산정에 반영</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>데이터센터 증설 목표(미국 130GW·한국 10GW 등)와 현 수준의 갭이 명확해 공급 확대는 실제 수요에 근거한다는 판단이다. 화자는 AI 시장이 GPU+HBM 판매에서 데이터센터 임대·토큰 생산·에이전트 번들로 수직계열화되며, MPU(TPU·자체 AI칩) 확산에도 메모리는 자체 설계가 어려워 램 수요는 지속된다고 본다. 향후 판단은 단일 사이클이 아니라 복잡·다변화된 램 상품군 전체를 보고 내려야 한다는 관점을 제시한다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>피크아웃</td><td>수요·실적이 정점을 찍고 <span class="dn">하락</span> 전환하는 국면</td><td>산 정상 후 내리막 시작</td></tr><tr><td>HBM</td><td>GPU에 적층 결합하는 고대역폭 메모리</td><td>GPU 옆에 붙는 초고속 메모장</td></tr><tr><td>제번스 역설</td><td>효율이 오를수록 총소비가 오히려 늘어나는 현상</td><td>연비 좋아지면 더 자주 운전</td></tr><tr><td>MPU</td><td>GPU 대안으로 자체 설계하는 가성비 AI칩(TPU 등)</td><td>맞춤 제작 저비용 엔진</td></tr><tr><td>LPDDR</td><td>스마트폰·PC 온디바이스 AI용 저전력 램</td><td>휴대기기 안의 빠른 임시 저장소</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/m0W07k5Q_nw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-07-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

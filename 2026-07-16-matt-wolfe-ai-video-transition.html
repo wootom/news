@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="두 로케이션의 시작·끝 프레임을 AI 영상 도구의 키프레임으로 넣고 전환 프롬프트만 주면, 복잡한 VFX 없이 매끄러운 점프 전환을 만들 수 있다."><title>AI 키프레임 영상 전환 트릭 — 두 로케이션을 매끄럽게 점프하는 편집법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">MORNING DIGEST · 2026-07-16 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>AI 키프레임 영상 전환 트릭 — 두 로케이션을 매끄럽게 점프하는 편집법</h1><p class="lead">두 로케이션의 시작·끝 프레임을 AI 영상 도구의 키프레임으로 넣고 전환 프롬프트만 주면, 복잡한 VFX 없이 매끄러운 점프 전환을 만들 수 있다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>AI 키프레임 기반 로케이션 점프 전환 편집 기법</td></tr><tr><td>핵심축</td><td>동일 의상·포즈 촬영 + 첫/끝 프레임 키프레임 + 전환 프롬프트</td></tr><tr><td>결론</td><td>복잡한 VFX 소프트웨어 없이 매끄러운 전환 구현</td></tr><tr><td>화자</td><td>Matt Wolfe</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>1단계 촬영</strong>: 로케이션 A에서 인트로 촬영 후 로케이션 B로 이동, 동일 셔츠·동일 포즈 유지로 전환 신뢰도 <span class="up">상승</span></li>
+<li><strong>2단계 프레임 추출</strong>: 클립 A의 마지막 프레임, 클립 B의 첫 프레임 정지 이미지 확보</li>
+<li><strong>3단계 키프레임 업로드</strong>: Runway·Kling·Leonardo 등 키프레임 지원 도구에 시작·끝 프레임 입력(영상 예시는 Runway Seedance 2.0)</li>
+<li><strong>4단계 프롬프트</strong>: &quot;카메라가 점프하듯 위로 솟구쳐 두 번째 장소를 한 동작으로 드러낸다&quot; 식 지시, &quot;인물은 말하지 않는다&quot; 명시 필수(모델이 임의 발화 생성 방지)</li>
+<li><strong>5단계 편집 결합</strong>: 여러 버전 생성 후 최상 결과를 실제 두 클립 사이에 삽입, 스무스 컷·짧은 크로스페이드로 이음새 은폐</li>
+<li><strong>응용 확장</strong>: 텔레포트·타임트래블·웜홀·마이크 토스·의상 교체 등 다양한 전환에 동일 개념 적용</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술 맥락</h2><p>AI 영상 도구의 키프레임 보간 기능을 활용해 두 정지 이미지 사이를 자연스러운 카메라 모션으로 채우는 방식이다. 전용 VFX 없이도 로케이션 점프 같은 몰입형 전환을 재현하며, 프롬프트에서 발화 억제를 명시해 AI 특유의 무작위 립싱크 오류를 예방한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>제작 진입장벽 <span class="dn">하락</span></strong>: 고가 VFX 툴 없이 크리에이터 누구나 고급 전환 구현</li>
+<li><strong>범용 개념</strong>: 하나의 키프레임 트릭이 다양한 전환 유형으로 확장</li>
+<li><strong>품질 안정화</strong>: 발화 억제 프롬프트·다중 생성·이음새 은폐로 완성도 확보</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>구간</th><th>핵심 논지</th><th>딥링크</th></tr></thead><tbody><tr><td>촬영</td><td>동일 의상·포즈로 두 로케이션 촬영</td><td><a href="https://www.youtube.com/watch?v=KzJkS00Ztd8&amp;t=5" target="_blank" rel="noopener">0:05 딥링크</a></td></tr><tr><td>프레임</td><td>첫 로케이션 끝·둘째 시작 프레임 추출</td><td><a href="https://www.youtube.com/watch?v=KzJkS00Ztd8&amp;t=25" target="_blank" rel="noopener">0:25 딥링크</a></td></tr><tr><td>키프레임</td><td>Runway·Kling·Leonardo에 프레임 입력</td><td><a href="https://www.youtube.com/watch?v=KzJkS00Ztd8&amp;t=35" target="_blank" rel="noopener">0:35 딥링크</a></td></tr><tr><td>프롬프트</td><td>발화 억제 포함 전환 프롬프트 작성</td><td><a href="https://www.youtube.com/watch?v=KzJkS00Ztd8&amp;t=50" target="_blank" rel="noopener">0:50 딥링크</a></td></tr><tr><td>편집</td><td>다중 생성 후 스무스 컷으로 이음새 은폐</td><td><a href="https://www.youtube.com/watch?v=KzJkS00Ztd8&amp;t=70" target="_blank" rel="noopener">1:10 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>숏폼 훅 제작</strong>: 로케이션 점프 전환으로 시청자 이탈 방지형 인트로 구성</li>
+<li><strong>브랜드 영상</strong>: 의상 교체·순간이동 연출로 제품 소개 영상에 임팩트 부여</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>Runway·Kling 등 키프레임 지원 도구가 보편화되며, 과거 전문 VFX 영역이던 전환 효과가 프롬프트 기반 작업으로 이동하고 있다. 발화 억제 같은 실전 노하우가 공유되며 개인 크리에이터의 영상 완성도가 빠르게 향상될 전망이다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>키프레임</td><td>시작·끝 이미지를 지정해 사이를 보간하는 기준 프레임</td><td>애니메이션 원화 두 장</td></tr><tr><td>점프 전환</td><td>두 장소를 한 동작으로 이어붙이는 전환</td><td>순간이동 컷</td></tr><tr><td>발화 억제 프롬프트</td><td>인물이 말하지 않도록 지시하는 문구</td><td>&quot;무음&quot; 지시</td></tr><tr><td>스무스 컷</td><td>이음새를 부드럽게 처리하는 편집</td><td>짧은 디졸브</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/KzJkS00Ztd8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-07-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
