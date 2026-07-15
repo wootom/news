@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 미쓰비시·하이랜더스, AI 휴머노이드 로봇 &#x27;N&#x27;과 케플러 V1.0 공개 (2027년 양산)"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>AI News</span><span class="ey">MORNING DIGEST · 2026-07-15 · AI News</span><span class="chip">🎬 영상</span></div><h1>리포트</h1><p class="lead">title: 미쓰비시·하이랜더스, AI 휴머노이드 로봇 &#x27;N&#x27;과 케플러 V1.0 공개 (2027년 양산)</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>도쿄 로봇 스타트업 하이랜더스가 휴머노이드 로봇 &#x27;N&#x27;과 AI 모델 케플러 V1.0을 공개, 미쓰비시 자동차와 공동 양산 추진</td></tr><tr><td>핵심축</td><td>&#x27;느리게 생각·빠르게 반응&#x27;하는 이중 두뇌 아키텍처 + 100억 파라미터 세계 모델 + 실제 공장 데이터 순환 구조</td></tr><tr><td>결론</td><td>2027년 하반기까지 미쓰비시 교토 엔진 공장 유휴 공간에서 월 1,000대 양산 목표, 현대차·보스턴다이내믹스와 경쟁</td></tr><tr><td>화자</td><td>AI 뉴스 채널(로봇·AI 최신 소식 정리)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>주역 기업</strong>: 도쿄 기반 로봇 스타트업 하이랜더스(Highlanders) — 휴머노이드 로봇 &#x27;N&#x27; 및 탑재 AI &#x27;케플러 V1.0&#x27; 공개</li>
+<li><strong>양산 파트너</strong>: 미쓰비시 자동차와 양해각서(MOU) 체결, 교토 엔진 공장 유휴 공간 활용해 공동 개발·양산</li>
+<li><strong>핵심 기술</strong>: 이중 두뇌(대뇌 5Hz·소뇌 500Hz) 아키텍처와 100억 파라미터 세계 모델로 접촉 역학 사전 예측</li>
+<li><strong>데이터 전략</strong>: 이미 일본 실제 생산 현장에서 센서·영상 데이터 수집, 2027년 한 해 약 2,600만 시간분 실데이터 확보 예상</li>
+<li><strong>경쟁 구도</strong>: 한국 현대자동차·보스턴다이내믹스(아틀라스), 조종형 메카 아크01 등과 휴머노이드 주도권 경쟁</li>
+<li><strong>AI 도구 동향(부수 이슈)</strong>: 앤트로픽의 샌드박스 브라우저(Claude), 메타의 MuseSpark 1.1 및 유료 API 공개</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>이중 두뇌 방식</strong>: 단일 AI 모델로는 실시간 계획·반응이 어렵다고 판단, &#x27;느리게 생각하고 빠르게 반응하는&#x27; 구조 채택</li>
+<li><strong>대뇌(신중 처리)</strong>: 시각·언어 추론·장기 계획 담당, 초당 5Hz로 작동</li>
+<li><strong>소뇌(반사 처리)</strong>: 균형·힘 제어 담당, 초당 약 500Hz로 작동 — 계획은 아래로, 센서 상태는 위로 끊임없이 전달</li>
+<li><strong>세계 모델</strong>: 시각·힘·토크·촉각 데이터로 학습한 100억 개 매개변수 모델, 움직임 발생 전 접촉 역학을 예측(사후 반응과 차별화)</li>
+<li><strong>훈련 방식</strong>: 시뮬레이션 + 차량 생산 운영 + 현장 가동 중인 실제 로봇 데이터를 결합한 삼중 학습</li>
+<li><strong>자체 인프라</strong>: 80개 노드에 걸쳐 NVIDIA B300 GPU 약 640개, 센서·영상 저장 약 24페타바이트 규모의 자체 클러스터</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>데이터 플라이휠</strong>: 로봇을 많이 배치할수록 데이터가 늘고, 더 나은 모델이 더 많은 배치를 정당화하는 자기강화 순환 구조 확보</li>
+<li><strong>생산 기반 확보</strong>: 로봇 스타트업의 최대 난제인 &#x27;양산 공간&#x27;을 미쓰비시 완성차 공장 유휴 라인 활용으로 해결</li>
+<li><strong>일본발 휴머노이드 부상</strong>: 일본이 미국(보스턴다이내믹스)·한국(현대차) 주도 경쟁에 정면 참전하는 신호</li>
+<li><strong>수직 통합 전략</strong>: 실제 제조 현장을 학습·검증·수요처로 동시에 활용하는 &#x27;현장 밀착형&#x27; 개발 모델</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>구간</th><th>내용</th><th>딥링크</th></tr></thead><tbody><tr><td>도입</td><td>하이랜더스, 로봇 &#x27;N&#x27;과 케플러 V1.0 공개</td><td><a href="https://www.youtube.com/watch?v=3GYOFWmnBCs?t=0" target="_blank" rel="noopener">0:00 딥링크</a></td></tr><tr><td>아키텍처</td><td>대뇌 5Hz·소뇌 500Hz 이중 두뇌 구조</td><td><a href="https://www.youtube.com/watch?v=3GYOFWmnBCs?t=44" target="_blank" rel="noopener">0:44 딥링크</a></td></tr><tr><td>데이터 확보</td><td>2027년 약 2,600만 시간분 실데이터 전망</td><td><a href="https://www.youtube.com/watch?v=3GYOFWmnBCs?t=89" target="_blank" rel="noopener">1:29 딥링크</a></td></tr><tr><td>양산·경쟁</td><td>미쓰비시 협업, 현대차·보스턴다이내믹스 경쟁</td><td><a href="https://www.youtube.com/watch?v=3GYOFWmnBCs?t=135" target="_blank" rel="noopener">2:15 딥링크</a></td></tr><tr><td>AI 도구 동향</td><td>앤트로픽 샌드박스 브라우저, 메타 MuseSpark 1.1</td><td><a href="https://www.youtube.com/watch?v=3GYOFWmnBCs?t=318" target="_blank" rel="noopener">5:18 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>제조 자동화</strong>: 인력 부족 공장 라인에 휴머노이드 배치, 실제 작업 데이터로 지속 <span class="up">개선</span>하는 스마트 팩토리 구현</li>
+<li><strong>위험 작업 대체</strong>: 사람이 접근하기 위험한 고위험 작업(중량물·유해환경)을 조종형·자율형 로봇으로 대체</li>
+<li><strong>로봇 파운데이션 모델 벤치마킹</strong>: 세계 모델 기반 접촉 예측 방식을 타사 휴머노이드 개발 전략과 비교·참고</li>
+<li><strong>투자·산업 분석</strong>: 일본·한국·미국의 휴머노이드 양산 로드맵과 GPU 인프라 규모를 경쟁 우위 지표로 활용</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li><strong>양산 목표</strong>: 미쓰비시 교토 엔진 공장에서 2027년 하반기까지 월 1,000대 생산 목표</li>
+<li><strong>데이터 축적</strong>: 2027년 한 해에만 약 2,600만 시간분 실제 데이터 확보 전망으로 모델 고도화 가속</li>
+<li><strong>경쟁 심화</strong>: 현대차·보스턴다이내믹스 아틀라스, 4.5m 조종형 메카 아크01(626개 관절·3.5톤, 초기 300만 달러 후 리스 도입) 등과 다층 경쟁</li>
+<li><strong>AI 에이전트 확산</strong>: 앤트로픽의 샌드박스 브라우저와 메타의 저가 API(경쟁사 약 1/4 가격, 신규 20달러 크레딧)로 물리·디지털 양쪽에서 자율 행동 AI 경쟁 가열</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>이중 두뇌 아키텍처</td><td>느린 계획용 대뇌와 빠른 반사용 소뇌를 분리한 제어 구조</td><td>사람 뇌가 생각(대뇌)과 균형 반사(소뇌)를 나눠 처리하는 것</td></tr><tr><td>세계 모델</td><td>감각 데이터로 물리 세계의 반응을 예측하는 AI 모델</td><td>공을 잡기 전 궤적을 미리 머릿속에 그리는 능력</td></tr><tr><td>접촉 역학 예측</td><td>물체와 닿기 전에 힘·마찰을 미리 계산하는 기능</td><td>컵을 쥐기 전 &#x27;얼마나 세게 잡을지&#x27; 예측</td></tr><tr><td>데이터 플라이휠</td><td>배치→데이터→모델<span class="up">개선</span>→추가배치로 도는 자기강화 순환</td><td>눈덩이가 굴러가며 스스로 커지는 구조</td></tr><tr><td>MOU(양해각서)</td><td>정식 계약 전 협력 의사를 확인하는 문서</td><td>결혼 전 약혼 같은 사전 합의</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/3GYOFWmnBCs" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>AI News · 2026-07-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

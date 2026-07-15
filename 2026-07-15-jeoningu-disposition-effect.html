@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 손실 난 주식을 못 파는 이유 — 처분 효과와 투자 심리"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>전인구경제연구소</span><span class="ey">MORNING DIGEST · 2026-07-15 · 전인구경제연구소</span><span class="chip">🎬 영상</span></div><h1>리포트</h1><p class="lead">title: 손실 난 주식을 못 파는 이유 — 처분 효과와 투자 심리</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>손실 난 주식을 팔지 못하는 투자자 심리(처분 효과)의 원인과 대응 전략</td></tr><tr><td>핵심축</td><td>손실 회피 · 정신적 회계 · 후회 회피 — 세 가지 심리가 만드는 비합리적 보유</td></tr><tr><td>결론</td><td>본능(대중 심리)대로 투자하면 기관·외인에게 이용당함, 감정 배제 규칙 또는 역발상 전략 필요</td></tr><tr><td>화자</td><td>전인구경제연구소(구독 43만 시절 저서 《주식의 심리》 저자, 경제 유튜버)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>문제 진단</strong>: 정보 격차가 줄어 종목 선택은 대부분 잘하나, 인간 본성에 뿌리박힌 투자 습관은 잘 고쳐지지 않음</li>
+<li><strong>핵심 개념</strong>: 개인은 수익 종목은 빨리 팔고 손실 종목은 오래 보유하는 경향 — 이것이 처분 효과(disposition effect)</li>
+<li><strong>심리 3층 구조</strong>: 손실 회피(고통 2배) → 정신적 회계(매수가 기준점) → 후회 회피(팔고 오를까 두려움)</li>
+<li><strong>시장 메커니즘</strong>: 1차 고점에서 개인 매수 집중 → 급락 → 본전 심리로 2차 고점이 1차를 못 뚫고 재<span class="dn">하락</span></li>
+<li><strong>주체별 차이</strong>: 기관·외인은 기계적 매도 룰로 손실 회피, 개인은 기대감에 가중치를 둬 손실을 떠안음</li>
+<li><strong>처방</strong>: 분할 매수·분할 매도·손절 기준점 등 감정 배제 전략 또는 대중과 반대로 움직이는 역발상</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장 맥락</h2><ul>
+<li><strong>정보 평준화</strong>: 유튜브 등으로 주도주 정보 격차 축소, 이제 승패는 종목 선택보다 매매 습관에서 갈림</li>
+<li><strong>주도주 수명</strong>: 대체로 1년 <span class="up">상승</span> 후 <span class="dn">하락</span>, 실적이 아주 좋아도 2~3년 — 실적·기대보다 주가가 먼저 꺾임</li>
+<li><strong>최근 사례</strong>: 삼성전자·SK하이닉스는 소형주도 고평가난해 종목도 아니나, 초보·개인 비중이 높고 고변동성이라 처분 효과 발현 가능성 지적</li>
+<li><strong>기관 vs 개인</strong>: 국민연금이 과거 기계적 매도를 가장 잘했던 주체로 언급, 개인은 본전 심리에 묶여 장기 손실 보유자로 전락</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>차트는 심리의 산물</strong>: 대중 심리에 맞춰 차트가 만들어지고 외국인·기관이 그 심리를 정확히 이용 — 다수를 따라가면 이용당함</li>
+<li><strong>매복 비유</strong>: 많은 사람이 가는 피난길에 매복이 기다림, 다수가 가는 길목이 곧 죽는 자리</li>
+<li><strong>감정 배제 시스템화</strong>: 분할 매수·분할 매도·손절 기준점 등 사전 규칙으로 본능적 판단 차단</li>
+<li><strong>유망주 파이프라인 유지</strong>: 새 유망주가 있어야 기존 주도주를 덜 아프게 떠나보낼 수 있음, 수익 중에도 종목 발굴 지속 필요</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>국면</th><th>개인 투자자 심리·행동</th><th>딥링크</th></tr></thead><tbody><tr><td><span class="up">상승</span> 초기 매수</td><td>&quot;여태 올랐으니 계속 오르겠지&quot; 관성·확증 편향, 고점 부근 대량 매수</td><td><a href="https://www.youtube.com/watch?v=gOFGaBOc7QQ?t=150" target="_blank" rel="noopener">2:30 딥링크</a></td></tr><tr><td>전망 이론(카너먼, 2002)</td><td>1천만 원 손실 고통이 이익 기쁨의 2배 이상, 손실 기울기가 더 가파름</td><td><a href="https://www.youtube.com/watch?v=gOFGaBOc7QQ?t=180" target="_blank" rel="noopener">3:00 딥링크</a></td></tr><tr><td>정신적 회계(탈러)</td><td>매수가를 기준점으로 삼아 본전 회복까지 매도 거부, 손실 누적</td><td><a href="https://www.youtube.com/watch?v=gOFGaBOc7QQ?t=272" target="_blank" rel="noopener">4:32 딥링크</a></td></tr><tr><td>2차 고점 재<span class="dn">하락</span></td><td>본전 도달자 매도 증가로 1차 고점 못 뚫고 재<span class="dn">하락</span></td><td><a href="https://www.youtube.com/watch?v=gOFGaBOc7QQ?t=428" target="_blank" rel="noopener">7:08 딥링크</a></td></tr><tr><td>실증 결과</td><td>2022년 자본시장연구원 20만 명 분석: 초보·소형주·고변동성·고빈도 종목에서 처분 효과 강함</td><td><a href="https://www.youtube.com/watch?v=gOFGaBOc7QQ?t=491" target="_blank" rel="noopener">8:11 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>손절 규칙 사전 설정</strong>: 매수 전 손절가·분할 매도 구간을 정해 두어, 본전 심리와 후회 회피가 개입하기 전에 기계적으로 청산</li>
+<li><strong>역발상 포지셔닝</strong>: 대중이 열광해 거래량이 급증하는 고점 구간에서 매수 자제, 다수 심리와 반대 방향의 진입·청산 타이밍 검토</li>
+<li><strong>유망주 후보군 상시 관리</strong>: 수익 구간에도 신규 유망 종목을 지속 발굴해, 주도주 이탈 시 심리적 저항 없이 갈아탈 수 있는 대안 확보</li>
+<li><strong>기준점 재설정 훈련</strong>: 매수가가 아니라 현재 펀더멘털·시장가를 기준으로 판단하도록 정신적 회계 편향 점검</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li><strong>구조적 반복</strong>: 처분 효과는 개인 본성에 뿌리를 둬 시장 국면마다 재현, 고변동성 대형주(삼성전자·SK하이닉스 등)에서도 초보·개인 비중이 높으면 발현</li>
+<li><strong>경쟁 구도</strong>: 기계적 매도 룰을 가진 기관·외인이 1·2차 고점 사이에서 정리하고 빠져나가는 반면, 고점 매수 개인은 3중 심리에 묶여 장기 보유자로 남음</li>
+<li><strong><span class="up">개선</span> 방향</strong>: 감정 배제 규칙과 역발상, 지속적 종목 발굴을 병행할 때만 심리적 함정에서 벗어날 수 있다는 것이 화자의 결론</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>처분 효과</td><td>수익 종목은 빨리 팔고 손실 종목은 오래 보유하는 경향</td><td>잘 나가는 친구는 빨리 손절, 부진한 친구는 붙잡고 기다림</td></tr><tr><td>손실 회피</td><td>같은 크기라도 손실 고통이 이익 기쁨의 2배 이상</td><td>1천만 원 벌 때 기쁨보다 잃을 때 고통이 훨씬 큼</td></tr><tr><td>전망 이론</td><td>카너먼이 2002년 노벨상 받은 손실·이익 비대칭 이론</td><td>손실 곡선이 이익 곡선보다 가파르게 꺾이는 그래프</td></tr><tr><td>정신적 회계</td><td>주식마다 별도 심리 계좌를 만들어 매수가를 기준점으로 삼음</td><td>3만 원에 산 종목은 &quot;3만 원 본전&quot;이 절대 기준이 됨</td></tr><tr><td>후회 회피</td><td>팔고 나서 오를까 두려워 손절을 미루는 심리</td><td>&quot;지금 팔았다 오르면 어떡하지?&quot; 하며 계속 보유</td></tr><tr><td>확증 편향</td><td>오른다는 뉴스만 찾고 떨어진다는 정보는 회피·거부</td><td><span class="up">상승</span> 근거만 검색, <span class="dn">하락</span> 경고엔 화를 냄</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/gOFGaBOc7QQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>전인구경제연구소 · 2026-07-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

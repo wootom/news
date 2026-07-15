@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 지금은 저점 매수보다 고점 매도가 우선 — 반등 와도 현금부터 확보"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-07-15 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>리포트</h1><p class="lead">title: 지금은 저점 매수보다 고점 매도가 우선 — 반등 와도 현금부터 확보</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>급락장에서의 매매 전략 — 저점 매수보다 고점 매도·현금 확보 우선</td></tr><tr><td>핵심축</td><td>자율 반등을 매도 기회로 활용, 50% 현금 비중 유지, 반도체·소부장 중심 포트</td></tr><tr><td>결론</td><td>반등 목표는 7,500 또는 60일선 언저리, 그 구간에서 현금 확보가 저점 매수보다 유리</td></tr><tr><td>화자</td><td>슈퍼개미 이세무사(이정윤), 진행자 연종</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>급락 후 자율 반등</strong>: 전일 코스피 8~9% 급락, 당일 장중 <span class="dn">-5%</span>(6,448)까지 <span class="dn">하락</span> 후 <span class="up">+0.73%</span> 마감 — 낙폭 과대에 따른 데드캣 바운스 성격</li>
+<li><strong>매도 우위 전략</strong>: 저점 매수를 매일 외치는 논리는 이미 매수 여력을 소진시킴, 지금은 고점 매도를 생각할 시기</li>
+<li><strong>현금 비중 일관성</strong>: 바닥 대비 4배 <span class="up">상승</span>·변동성 급증 상황에서 한 달째 50% 현금 비중 유지, 아직 현금 소진 금지</li>
+<li><strong>쏠림 장세</strong>: 코스피는 시총 1~3위(삼성전자·SK하이닉스·SK스퀘어)가 지수 방어, <span class="up">상승</span> 200 : <span class="dn">하락</span> 600으로 대다수 종목은 <span class="dn">하락</span></li>
+<li><strong>코스닥 약세</strong>: 알테오젠 10%+ 급락이 제약·바이오·2차전지로 전이, 코스닥 <span class="dn">-1.92%</span> 음선 마감</li>
+<li><strong>수급 <span class="up">개선</span></strong>: 개인 5.8조 순매도, 외국인·기관 쌍끌이 순매수 — 고점에서 개인이 팔고 외인이 받는 구도는 긍정적</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장 맥락</h2><ul>
+<li><strong>지수 위치</strong>: 고점 9,385(9,350)에서 <span class="dn">-30%</span> 지점이 6,570, 이를 이탈해 6,500·120일선도 붕괴 후 반등 시작</li>
+<li><strong>반등 상단</strong>: 자율 반등 목표는 잘 가야 7,500 또는 60일선 언저리, 8,000 도달은 쉽지 않다고 판단</li>
+<li><strong>변동성 급증 배경</strong>: 5월 27일 레버리지 ETF 도입 이후 변동성 확대, 지수 4배 <span class="up">상승</span>과 겹쳐 리스크 관리 필요성 부각</li>
+<li><strong>업종 온도차</strong>: 반도체 소부장 강세(VM <span class="up">+18%</span>, 테스 <span class="up">+16%</span>, TSE <span class="up">+10%</span>, 테크윙·PSK 강세) vs 제약·바이오·2차전지 약세</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>비대칭 리스크</strong>: 현재 구간은 상방(반등 7,500)보다 하방(재차 <span class="dn">하락</span>) 확률이 높다는 판단 → 반등 시 매도가 합리적</li>
+<li><strong>현금 없는 투자자 우선순위</strong>: 현금이 없으면 저점 매수 자체가 불가, 반등 구간에서 현금 확보가 더 나은 전략</li>
+<li><strong>일관성 강조</strong>: <span class="dn">하락</span>할 때마다 논리를 바꾸지 않고 &#x27;50% 현금 + 반도체 필수 + SK하이닉스 선호&#x27;를 한 달째 유지</li>
+<li><strong>포트 균형론</strong>: 반도체만 담으면 공격수 11명, 반도체 일부를 덜어 소부장·화장품·로봇·의료기기 등으로 분산 권고</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>판단 포인트</th><th>내용</th><th>딥링크</th></tr></thead><tbody><tr><td>반등 성격</td><td>낙폭 과대 자율 반등, 아래꼬리 양선 형성</td><td><a href="https://www.youtube.com/watch?v=Ydyy1lNFLmw?t=95" target="_blank" rel="noopener">1:35 딥링크</a></td></tr><tr><td>매수 진입 조건</td><td>음선 이탈 시 매수 금지, 양선 종가·시초가에 단기로만</td><td><a href="https://www.youtube.com/watch?v=Ydyy1lNFLmw?t=196" target="_blank" rel="noopener">3:16 딥링크</a></td></tr><tr><td>반등 상단</td><td>7,500 또는 60일선, 8,000 어려움</td><td><a href="https://www.youtube.com/watch?v=Ydyy1lNFLmw?t=226" target="_blank" rel="noopener">3:46 딥링크</a></td></tr><tr><td>수급 진단</td><td>개인 5.8조 순매도, 외인·기관 순매수는 긍정</td><td><a href="https://www.youtube.com/watch?v=Ydyy1lNFLmw?t=403" target="_blank" rel="noopener">6:43 딥링크</a></td></tr><tr><td>현금 운용</td><td>50% 현금 비중 유지, 아직 소진 금지</td><td><a href="https://www.youtube.com/watch?v=Ydyy1lNFLmw?t=516" target="_blank" rel="noopener">8:36 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>현금 없는 투자자</strong>: 반등이 7,500~60일선까지 올라오면 보유 물량 일부를 매도해 현금 비중을 확보한다</li>
+<li><strong>현금 보유 투자자</strong>: 양선 종가·다음 날 시초가에서 단기 자율 반등만 노려 짧게 대응하고, 상단에서 재차 정리한다</li>
+<li><strong>포트 리밸런싱</strong>: 반도체 편중 포트에서 일부를 덜어 반도체 소부장(테스·PSK·VM)이나 화장품·로봇·의료기기로 분산한다</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li><strong>단기</strong>: 십자 양선 출현으로 익일 추가 반등 여지 있으나, <span class="up">상승</span> 중 재<span class="dn">하락</span>(얻어맞을) 확률이 더 크다고 전망</li>
+<li><strong>중기</strong>: 지수 4배 <span class="up">상승</span>·고변동성 국면이 지속되는 한 50% 현금 비중을 유지하며 매도 우위 스탠스 유지</li>
+<li><strong>종목</strong>: 반도체는 포트 필수 유지, 대형주는 삼성전자보다 SK하이닉스 선호, 소부장·의료기기 등으로 분산</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>자율 반등</td><td>급락 후 낙폭 과대로 자연스럽게 튀어오르는 반등</td><td>공을 떨어뜨리면 튀어오르는 것</td></tr><tr><td>데드캣 바운스</td><td><span class="dn">하락</span> 추세 중 일시적 반등, 추세 전환 아님</td><td>죽은 고양이도 튀어오른다</td></tr><tr><td>쏠림 현상</td><td>소수 대형주만 올라 지수는 <span class="up">상승</span>, 대다수 종목은 <span class="dn">하락</span></td><td><span class="up">상승</span> 200 : <span class="dn">하락</span> 600</td></tr><tr><td>아래꼬리 양선</td><td>장중 크게 빠졌다 회복해 시가보다 높게 마감한 캔들</td><td>장중 <span class="dn">-5%</span> 후 <span class="up">+0.73%</span> 마감</td></tr><tr><td>120일선/60일선</td><td>이동평균선, 중기 추세·지지·저항의 기준</td><td>120일선 붕괴 후 반등</td></tr><tr><td>소부장</td><td>소재·부품·장비, 반도체 후방 산업 종목군</td><td>테스·PSK·VM</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Ydyy1lNFLmw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-07-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
