@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="우로보로스 Agent OS는 모호한 생각을 인터뷰로 구체화·명세화하고 실행·검증까지 연결하며, 개인 메모리·온톨로지·그래프 RAG를 차세대 핵심으로 제시한다."><title>우로보로스 Agent OS — 인터뷰·오토·외장 메모리로 AI 에이전트를 재정의하다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">MORNING DIGEST · 2026-07-16 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>우로보로스 Agent OS — 인터뷰·오토·외장 메모리로 AI 에이전트를 재정의하다</h1><p class="lead">우로보로스 Agent OS는 모호한 생각을 인터뷰로 구체화·명세화하고 실행·검증까지 연결하며, 개인 메모리·온톨로지·그래프 RAG를 차세대 핵심으로 제시한다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>우로보로스 Agent OS의 오토·인터뷰·메모리 설계 철학과 로드맵</td></tr><tr><td>핵심축</td><td>&#x27;더 많이 시키기&#x27;가 아니라 &#x27;내 의도·기억을 AI가 정확히 이해하게 만들기&#x27;</td></tr><tr><td>결론</td><td>개인 메모리·온톨로지·외장 메모리가 다음 세대 Agent OS의 핵심</td></tr><tr><td>화자</td><td>평범한 사업가 (우로보로스 개발자 정아·재규 및 사용자 좌담)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>인터뷰로 AI 슬롭 축소</strong>: AI는 보편적 답변을 내지만, 우로보로스 인터뷰는 심층 질문으로 사용자가 무엇을 원하는지·어떤 목표를 달성할지 구체화 — 모르는 상태로 위임하면 슬롭(저품질 산출물)만 생성됨</li>
+<li><strong>오토의 역설계 철학</strong>: 결과물을 먼저 만들고 다시 인터뷰로 돌아가는 구조, 이전까지 어려웠던 우로보로스 진입장벽을 오토가 크게 낮춤</li>
+<li><strong>KTX 좌석 예약 실사례</strong>: 케이스킬 기본 예약은 원하는 좌석 지정이 안 되고 아무 자리나 잡음 — 좌석 검색 API를 직접 만들어 콘센트 좌석까지 자동 나열·예약하도록 <span class="up">개선</span>(PR 제출)</li>
+<li><strong>Codex Goal·Run 결합 워크플로우</strong>: 우로보로스와 Codex 앱을 결합해 병렬 실행·검증, 오픈 크롬으로 외부 리서치를 연결</li>
+<li><strong>Claude Dynamic Workflows</strong>: 성능은 높지만 토큰 사용량이 많고 서브 에이전트 내부 구조가 불투명 — SDK 없이도 동작하는 점이 중요</li>
+<li><strong>탑다운 학습 전환</strong>: 어려운 용어를 인터뷰 중 메인 세션에 물어 즉석 학습, 책 읽고 적용하는 바텀업이 아닌 &#x27;해보며 배우는&#x27; 방식 확산</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술 맥락</h2><p>우로보로스는 프롬프트를 길게 쓰는 도구가 아니라 &#x27;모호한 생각 → 인터뷰 → 명세 → 실행 → 검증&#x27;을 잇는 에이전트 시스템으로 포지셔닝된다. 화자들은 Codex·Claude Code·Hermes 등 에이전트를 쓰되 결과의 일관성·검증에 한계를 느낀 사용자를 겨냥하며, AI 코딩이 다시 데스크톱 앱으로 향하는 흐름과 Codex 앱과의 궁합을 강조한다. 후반부에서는 개인 메모리·온톨로지·그래프 RAG가 왜 차세대 핵심인지, 로컬 모델·강화학습·메모리 결합, 메모리 벤치마크와 환각 문제까지 다룬다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>의도 정렬이 관건</strong>: 자동화 규모보다 AI가 사용자의 의도·기억을 정확히 이해하게 만드는 것이 성패를 가름</li>
+<li><strong>검증 루프 필수</strong>: 장시간 자율 작업에서 토큰 비용·검증 문제가 커지므로 작업 후 인터뷰·피드백 루프로 개인화·품질 확보</li>
+<li><strong>외장 메모리·온톨로지</strong>: 개인 메모리와 온톨로지가 인터뷰 질문의 질을 바꾸고 자동화의 핵심 인프라가 됨</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>구간</th><th>핵심 논지</th><th>딥링크</th></tr></thead><tbody><tr><td>인터뷰로 슬롭 축소</td><td>심층 질문으로 의도 구체화, 모르는 위임은 슬롭</td><td><a href="https://www.youtube.com/watch?v=7ews9Ri75Ss&amp;t=465" target="_blank" rel="noopener">7:45 딥링크</a></td></tr><tr><td>오토 설계 철학</td><td>결과부터 만들고 다시 인터뷰로 되돌아감</td><td><a href="https://www.youtube.com/watch?v=7ews9Ri75Ss&amp;t=616" target="_blank" rel="noopener">10:16 딥링크</a></td></tr><tr><td>KTX 좌석 자동예약</td><td>좌석 검색 API 직접 구현, 콘센트 좌석까지 예약</td><td><a href="https://www.youtube.com/watch?v=7ews9Ri75Ss&amp;t=1100" target="_blank" rel="noopener">18:20 딥링크</a></td></tr><tr><td>Codex Goal·Run 결합</td><td>병렬 실행·검증 워크플로우 구성</td><td><a href="https://www.youtube.com/watch?v=7ews9Ri75Ss&amp;t=1604" target="_blank" rel="noopener">26:44 딥링크</a></td></tr><tr><td>Dynamic Workflows</td><td>고성능·고토큰, SDK 없이 동작이 핵심</td><td><a href="https://www.youtube.com/watch?v=7ews9Ri75Ss&amp;t=1875" target="_blank" rel="noopener">31:15 딥링크</a></td></tr><tr><td>온톨로지·외장 메모리</td><td>인터뷰와 개인 메모리 연결이 자동화 핵심</td><td><a href="https://www.youtube.com/watch?v=7ews9Ri75Ss&amp;t=4056" target="_blank" rel="noopener">1:07:36 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>개인화 자동화</strong>: 인터뷰로 목표를 명세화한 뒤 오토로 결과 생성, 작업 후 인터뷰로 피드백을 남겨 개인 메모리에 축적</li>
+<li><strong>실무 스킬 <span class="up">개선</span></strong>: KTX 좌석 예약처럼 부족한 스킬의 코드를 열어 검색 API를 보강, 자신의 반복 업무를 자동화</li>
+<li><strong>에이전트 병렬화</strong>: Codex 앱·오픈 크롬과 결합해 리서치·실행·검증을 병렬로 돌리는 다중 에이전트 파이프라인 구성</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>우로보로스는 오토를 통해 진입장벽을 낮췄고, Agent OS 1.0과 사용자 밋업으로 생태계를 넓히는 단계다. 화자들은 로컬 모델·강화학습·개인 메모리 결합, 메모리 시스템 벤치마크와 환각 저감을 향후 과제로 본다. Repo Prompt·InfraNodus·Hermes·Thinker Atropos 등 도구와 결합하며, 온톨로지·그래프 RAG를 통해 인터뷰의 깊이와 자동화 정확도를 함께 끌어올리는 방향을 제시한다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Agent OS</td><td>에이전트의 명세·실행·검증·메모리를 잇는 운영체계</td><td>AI 작업의 운영체제</td></tr><tr><td>오토(Auto)</td><td>결과를 먼저 만들고 인터뷰로 되돌리는 자동 실행</td><td>초안 먼저 뽑고 다듬기</td></tr><tr><td>AI 슬롭</td><td>의도 불명확 위임으로 생기는 저품질 산출물</td><td>대충 시켜 나온 불량품</td></tr><tr><td>온톨로지</td><td>개념·관계를 구조화한 지식 체계</td><td>지식의 지도·족보</td></tr><tr><td>그래프 RAG</td><td>지식 그래프 기반으로 검색·생성을 강화한 방식</td><td>연결망으로 찾아 답하기</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/7ews9Ri75Ss" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-07-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

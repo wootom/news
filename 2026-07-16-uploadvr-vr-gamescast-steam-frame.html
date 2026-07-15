@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Valve의 Steam Frame가 차세대 VR 플랫폼으로 부상하는 가운데, UploadVR이 지난 2주간의 주요 VR 게임 뉴스를 팟캐스트로 정리."><title>UploadVR VR Gamescast — Steam Frame 검증 타이틀과 VR 게임 뉴스 총정리</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>UploadVR</span><span class="ey">MORNING DIGEST · 2026-07-16 · UploadVR</span><span class="chip">🎬 영상</span></div><h1>UploadVR VR Gamescast — Steam Frame 검증 타이틀과 VR 게임 뉴스 총정리</h1><p class="lead">Valve의 Steam Frame가 차세대 VR 플랫폼으로 부상하는 가운데, UploadVR이 지난 2주간의 주요 VR 게임 뉴스를 팟캐스트로 정리.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>최근 2주간 VR 게임 산업 주요 뉴스 라운드업</td></tr><tr><td>핵심축</td><td>Steam Frame 검증 타이틀 · IP 취소 · 카맥 100만 달러 보증 · 물리 디스크 종료</td></tr><tr><td>결론</td><td>Steam Frame가 VR의 다음 대세로 부상, 하드웨어/유통 지형 재편 진행</td></tr><tr><td>화자</td><td>UploadVR (James &amp; Mike)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>Steam Frame &#x27;Great on Frame&#x27;</strong>: Valve가 스팀 스토어에 &#x27;Great on Frame&#x27; 검증 타이틀 섹션 신설, 다수에게 VR의 미래를 대표하는 헤드셋으로 인식</li>
+<li><strong>Tomb Raider VR 무산 정황</strong>: 6월 폐쇄된 Vertigo Games Amsterdam이 Tomb Raider VR을 개발 중이었다는 미확인 보도, 컨셉아트/인게임 렌더 다수 유출</li>
+<li><strong>카맥 100만 달러 보증</strong>: 존 카맥이 Team Beef 포팅 소프트웨어에 100만 달러 보증 재차 제안, MS의 대규모 게이밍 리셋 흐름과 맞물림</li>
+<li><strong>Survive the Night 무기한 보류</strong>: The Binary Mill이 발표 2개월 만에 협동 서바이벌 게임 Survive the Night 개발 무기한 중단</li>
+<li><strong>소니 물리 디스크 종료</strong>: 소니가 2028년부터 신작 PlayStation 게임 디스크 생산 중단, PSVR2 유통에도 영향</li>
+<li><strong>Golf+ VR 오픈 &amp; H3VR 정식 출시</strong>: Golf+가 첫 공식 VR 오픈 개최(패스 미보유 시 $1.99), H3VR이 10년 얼리액세스 종료 후 정식 출시</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술 맥락</h2><p>Steam Frame는 스탠드얼론 성격의 Valve 신형 헤드셋으로, &#x27;Great on Frame&#x27; 인증 프로그램을 통해 최적화 타이틀을 큐레이션하며 PC VR 생태계의 무게중심 이동을 예고한다. 동시에 소니의 물리 디스크 생산 중단(2028)과 스튜디오 폐쇄·프로젝트 취소가 이어지며, VR 게임 유통은 디지털 중심으로 빠르게 재편되는 국면이다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>플랫폼 표준화</strong>: Steam Frame 인증이 VR 게임 품질·호환성의 사실상 기준점으로 자리매김 가능</li>
+<li><strong>AAA IP 리스크</strong>: Tomb Raider VR 무산·Survive the Night 보류처럼 대형 IP·신작의 취소 리스크가 상존</li>
+<li><strong>커뮤니티 기반 지속성</strong>: H3VR의 10년 얼리액세스 완주처럼 헌신적 커뮤니티가 VR 타이틀 생존의 핵심 변수</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>구간</th><th>핵심 논지</th><th>딥링크</th></tr></thead><tbody><tr><td>Steam Frame</td><td>&#x27;Great on Frame&#x27; 검증 섹션이 VR의 다음 대세</td><td><a href="https://www.youtube.com/watch?v=DzhFaFQ1D6o&amp;t=123" target="_blank" rel="noopener">2:03 딥링크</a></td></tr><tr><td>Tomb Raider VR</td><td>Vertigo Games의 미확인 개발·취소 정황</td><td><a href="https://www.youtube.com/watch?v=DzhFaFQ1D6o&amp;t=506" target="_blank" rel="noopener">8:26 딥링크</a></td></tr><tr><td>카맥 보증</td><td>100만 달러 포팅 보증 재제안</td><td><a href="https://www.youtube.com/watch?v=DzhFaFQ1D6o&amp;t=748" target="_blank" rel="noopener">12:28 딥링크</a></td></tr><tr><td>디스크 종료</td><td>소니 2028년 물리 디스크 생산 중단</td><td><a href="https://www.youtube.com/watch?v=DzhFaFQ1D6o&amp;t=1521" target="_blank" rel="noopener">25:21 딥링크</a></td></tr><tr><td>Golf+ VR 오픈</td><td>첫 공식 VR 오픈, St Andrews 여행 상품</td><td><a href="https://www.youtube.com/watch?v=DzhFaFQ1D6o&amp;t=2265" target="_blank" rel="noopener">37:45 딥링크</a></td></tr><tr><td>H3VR 정식 출시</td><td>10년 얼리액세스 종료, 헌신적 커뮤니티</td><td><a href="https://www.youtube.com/watch?v=DzhFaFQ1D6o&amp;t=2448" target="_blank" rel="noopener">40:48 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>VR 개발자</strong>: Steam Frame &#x27;Great on Frame&#x27; 인증 기준 사전 파악 및 최적화 로드맵 수립</li>
+<li><strong>VR 게이머</strong>: 검증 타이틀 리스트 및 출시/취소 소식 기반 구매 우선순위 조정</li>
+<li><strong>업계 관찰자</strong>: 물리 디스크 종료·스튜디오 폐쇄 등 유통 구조 변화 추적</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>Steam Frame는 아직 정식 출시 전이나 인증 프로그램만으로 이미 개발·구매 의사결정에 영향을 주고 있다. 소니의 디스크 종료와 잇단 프로젝트 취소는 VR 게임 시장의 통합·디지털화를 가속하며, 대형 IP 진입은 여전히 불확실성이 크다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Steam Frame</td><td>Valve의 차세대 VR 헤드셋</td><td>VR판 &#x27;스팀덱&#x27; 포지션</td></tr><tr><td>Great on Frame</td><td>Steam Frame 최적화 검증 프로그램</td><td>&#x27;Steam Deck Verified&#x27;의 VR 버전</td></tr><tr><td>Team Beef</td><td>클래식 게임 VR 포팅 그룹</td><td>둠·퀘이크 VR 이식 커뮤니티</td></tr><tr><td>H3VR</td><td>Hot Dogs, Horseshoes &amp; Hand Grenades</td><td>총기 시뮬 VR 스테디셀러</td></tr><tr><td>PSVR2</td><td>소니 PlayStation VR2</td><td>콘솔 기반 VR 헤드셋</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/DzhFaFQ1D6o" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>UploadVR · 2026-07-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
