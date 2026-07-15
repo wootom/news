@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: AI 에이전트 실전 워크플로우 — 공유 워크스페이스·캡처·평가 3요소로 월 40만 달러 조직 운영"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nick Saraev</span><span class="ey">MORNING DIGEST · 2026-07-15 · Nick Saraev</span><span class="chip">🎬 영상</span></div><h1>리포트</h1><p class="lead">title: AI 에이전트 실전 워크플로우 — 공유 워크스페이스·캡처·평가 3요소로 월 40만 달러 조직 운영</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>지식 노동 현장에서 AI 에이전트를 실제로 배선하는 실전 아키텍처</td></tr><tr><td>핵심축</td><td>공유 워크스페이스 + 저마찰 캡처 + 평가(evals) 3요소</td></tr><tr><td>결론</td><td>병목은 &quot;하루에 할 수 있는 일의 양&quot;이 아니라 &quot;일을 얼마나 빠르고 정확히 스코핑하느냐&quot;로 이동</td></tr><tr><td>화자</td><td>Nick Saraev — AI 구현·미디어·컨설팅 사업 운영, 당월 매출 40만 달러 이상 목표</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>문제 인식</strong>: 모두가 AI 에이전트를 말하지만, 실제 지식 노동 현장에서 어떤 모습인지 구체화한 사람이 드묾</li>
+<li><strong>1요소 — 공유 워크스페이스</strong>: 사람과 AI가 같은 작업 공간(Linear 등 프로젝트 관리 툴)에서 협업, 태스크에 &quot;AI ready&quot; 태그로 에이전트에 위임</li>
+<li><strong>2요소 — 캡처(capture)</strong>: David Allen의 GTD 개념 차용, 떠오르는 아이디어를 즉시 저마찰로 투두에 투입(핫키·폰 액션버튼)</li>
+<li><strong>3요소 — 평가(evals)</strong>: 모든 산출물을 표준 체크리스트로 통과시켜 취향·톤·품질 자동 강제</li>
+<li><strong>역할 전환</strong>: 화자는 &quot;직접 실무자&quot;에서 &quot;에이전트 함대의 프로젝트 매니저&quot;로 한 단계 추상화 <span class="up">상승</span></li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>상태 기반 파이프라인</strong>: Linear에 inbox → next → doing → waiting → done 상태를 두고 태스크 흐름 관리</li>
+<li><strong>웹훅 트리거</strong>: 태스크에 &quot;AI ready&quot; 태그가 붙으면 웹훅이 서버의 상주 에이전트로 요청 전송</li>
+<li><strong>에이전트 3대 접근권한</strong>: (1) 워크스페이스 컨텍스트(파일·타 태스크·콘텐츠 파이프라인), (2) 지식 베이스(의사결정·전략 문서), (3) 자격증명(비밀번호·API 키, Chrome DevTools 로그인용)</li>
+<li><strong>모델</strong>: 화자는 &quot;Fable 5&quot; 기반 에이전트 사용, GPT-5.6 등 어떤 모델로도 재현 가능하다고 언급</li>
+<li><strong>비용 인식</strong>: 반복 재시도는 토큰 소모이나 평균 태스크를 사람이 다듬는 시간보다 저렴하다고 판단</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>속도의 재정의</strong>: 20~50개 태스크를 동시에 각기 다른 에이전트에 던지고 하루 2~4회 배치로 검수 → &quot;생각의 속도&quot;로 작업</li>
+<li><strong>컨텍스트 스위칭 해소</strong>: 터미널을 하루 종일 켜두고 출력을 기다릴 필요 제거, 단일 진실 원천(single source of truth)에서 작업</li>
+<li><strong>병목 이동</strong>: 실행량이 아니라 &quot;정확한 스코핑 + 산출물 검증 능력&quot;이 새로운 병목</li>
+<li><strong>창업자 레버리지</strong>: 실무에서 해방된 시간을 핵심 벤더 관계·영업 등 최고 레버 활동에 재투자</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>내용</th><th>딥링크</th></tr></thead><tbody><tr><td>워크스페이스 구성</td><td>Linear에 상태 파이프라인 세팅, 사람+AI 공동 투두</td><td><a href="https://www.youtube.com/watch?v=8rVQuZlRaqo?t=0" target="_blank" rel="noopener">0:00 딥링크</a></td></tr><tr><td>캡처 습관화</td><td>GTD의 저마찰 캡처를 핫키·폰 액션버튼으로 구현</td><td><a href="https://www.youtube.com/watch?v=8rVQuZlRaqo?t=518" target="_blank" rel="noopener">8:38 딥링크</a></td></tr><tr><td>가드레일·평가</td><td>산출물이 기준 밖이면 자동 반복 재시도, 통과 시에만 사람에게 전달</td><td><a href="https://www.youtube.com/watch?v=8rVQuZlRaqo?t=796" target="_blank" rel="noopener">13:16 딥링크</a></td></tr><tr><td>배치 검수</td><td>하루 5개 태스크 이데이션 후 에이전트 배정, 하루 3~4회 배치 확인</td><td><a href="https://www.youtube.com/watch?v=8rVQuZlRaqo?t=1080" target="_blank" rel="noopener">18:00 딥링크</a></td></tr></tbody></table></div>
+<ul>
+<li><strong>비주얼 자산 체크</strong>: 텍스트가 깨끗이 렌더링되었는지, 문자 뭉개짐 없는지, 화자 스타일(검은 잉크·흰 배경)인지, 썸네일 크기(1280×720)·다이어그램(1920×1080) 규격 준수인지</li>
+<li><strong>의사결정 체크(5문항, 각 0~2점, 합계 7점 미만 시 실패 후 반복)</strong>: 제1원리 추론 여부, 기댓값(EV) 규율, Nick의 시간 최소화, &quot;그럴듯함&quot;이 아닌 검증, 레버리지 점검</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>콘텐츠 기획</strong>: &quot;유튜브 영상 5개 아이디어(각 제목 3안·앵글·간단 개요) 도출&quot; 태스크를 AI ready로 위임, 산출물 중 취향에 맞는 것만 선별</li>
+<li><strong>개인 리서치·구매</strong>: 인체공학 의자 구매를 위한 Reddit 교차조사 등 대량 리서치를 에이전트에 위임 후 30초 만에 결정</li>
+<li><strong>잡무 자동화</strong>: CRM 이메일 발송, 통신사 해지, 비자·거주자격 서류 작성 같은 반복 업무 위임</li>
+<li><strong>이동 중 캡처</strong>: 유튜브 시청 중 &quot;썸네일 프롬프트 수정&quot; 아이디어를 폰 액션버튼으로 즉시 Linear에 투입, 커맨드+G로 에이전트 브리핑</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li><strong>적용 조직</strong>: 화자 소유의 Left Click, Clervo, Maker School에 실제 도입, 일상 책임이 &quot;에이전트 함대 관리&quot;로 이동</li>
+<li><strong>새로운 관리 변수</strong>: 토큰 예산 관리가 새로운 고려사항으로 부상</li>
+<li><strong>미래 방향</strong>: 에이전트 산출물의 평가·검증 능력이 병목인 만큼, 검증을 최대한 쉽게 만드는 것(푸시 알림·음성 전사 승인)이 &quot;일의 미래&quot;의 핵심</li>
+<li><strong>비처방적 태도</strong>: 특정 툴(Linear) 강제가 아니라 &quot;형태(shape)&quot;가 중요하다고 강조, 각자 조직에 맞게 <span class="up">개선</span> 권장</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>캡처(Capture)</td><td>아이디어를 저마찰로 투두에 즉시 넣는 GTD 기법</td><td>걸으면서 떠오른 생각을 폰 버튼 한 번으로 태스크화</td></tr><tr><td>평가(Evals)</td><td>산출물을 통과시키는 표준 체크리스트</td><td>렌더 품질·의사결정 5문항 채점표</td></tr><tr><td>가드레일(Guardrails)</td><td>에이전트가 벗어나면 스스로 반복 재시도하게 하는 제약 조건</td><td>기준 미달 시 통과할 때까지 자동 재작업</td></tr><tr><td>웹훅(Webhook)</td><td>특정 이벤트 발생 시 요청이 전송되는 인터넷 상 지점</td><td>&quot;AI ready&quot; 태그 시 서버 에이전트 호출</td></tr><tr><td>지식 베이스</td><td>에이전트가 참조하는 의사결정·전략 텍스트 모음</td><td>화자의 판단 방식을 학습시킨 문서</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/8rVQuZlRaqo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nick Saraev · 2026-07-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

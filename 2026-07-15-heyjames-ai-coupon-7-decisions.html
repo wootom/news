@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: AI로 쿠폰 기능 만들 때 정해야 할 7가지 정책 결정"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>헤이제임스</span><span class="ey">MORNING DIGEST · 2026-07-15 · 헤이제임스</span><span class="chip">🎬 영상</span></div><h1>리포트</h1><p class="lead">title: AI로 쿠폰 기능 만들 때 정해야 할 7가지 정책 결정</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>AI(바이브 코딩)로 쿠폰 기능을 만들 때 코드가 아니라 정책 결정이 핵심</td></tr><tr><td>핵심축</td><td>발급·적용·중복·범위·유효기간·환불복원·부정사용 7가지 의사결정</td></tr><tr><td>결론</td><td>결정이 비면 할인이 아니라 손실 — 코드는 AI 몫, 정책은 사람 몫</td></tr><tr><td>화자</td><td>헤이제임스 (루비 온 레일즈 풀스택 바이브 코딩 실무·교육)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>실화 사례</strong>: 배달 플랫폼이 신규 가입자에게 15,000원 쿠폰 지급 → 탈퇴 후 재가입 반복으로 최소주문 16,000원 매장에서 치킨 1,000원 사태. 해킹이 아니라 &quot;재가입 시 신규 쿠폰 재지급 여부&quot; 정책 공백이 원인</li>
+<li><strong>두 번 만들기</strong>: 한 줄 프롬프트(&quot;주문할 때 쿠폰 코드 입력하면 할인&quot;) vs 실서비스 수준 프롬프트 비교 시연</li>
+<li><strong>쿠폰의 기술 정의</strong>: 정액 할인(5,000원)과 정률 할인(10%) 두 종류, 정률에는 최대 할인 금액 안전장치 필수</li>
+<li><strong>서버 검증 원칙</strong>: 할인 금액은 화면(브라우저 조작 가능)이 아니라 반드시 서버에서 재계산 — 결제가 있는 모든 기능의 원칙</li>
+<li><strong>7가지 결정</strong>: 한 줄 프롬프트로도 동작은 하지만 돈이 새는 빈틈이 남음</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>정률 할인의 함정</strong>: 100만 원 주문에 10% 쿠폰이면 10만 원 할인 → &quot;최대 할인 금액&quot; 한도 없이는 마진 붕괴</li>
+<li><strong>동시성(트랜잭션) 문제</strong>: 마지막 1장 수량한정 쿠폰을 두 사람이 동시 클릭 시 둘 다 &quot;1장 남음&quot; 확인 후 둘 다 발급 → 100장 한정인데 102장 발급 사고. 해결책은 DB가 수량을 잠그는 트랜잭션. 레일즈 등 프레임워크에 내장되어 있으나 &quot;동시 요청에도 수량 정확히&quot;를 프롬프트로 요구해야 챙겨짐</li>
+<li><strong>풀스택 프레임워크의 이점</strong>: 루비 온 레일즈는 서버 검증·트랜잭션이 기본 내장. SQLite 3로 외부 DB(슈퍼베이스 등)·과금 없이 코드 레벨 완결, 파일 복사만으로 백업. 프론트 기반 서비스는 서버 검증 로직을 빠뜨리기 쉬워 프롬프트 보강이 더 필요</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>정책 공백 = 운영 비용</strong>: 환불 시 쿠폰 처리 등을 코드로 안 정하면 CS가 수동 처리 → 결정을 미룬 비용이 운영에서 나감</li>
+<li><strong>기능은 서로 연결</strong>: 회원 탈퇴를 소프트 딜리트로 설계하고 재가입 정책을 정해두면 쿠폰의 부정사용(치킨 사태)을 막아줌. 각각 완성해도 접점의 빈틈으로 돈이 샘</li>
+<li><strong>AI를 기획 파트너로</strong>: &quot;정하지 않은 정책은 먼저 질문해 줘&quot; 한 줄이 잠재 손실을 하나씩 막아줌. 돈이 걸린 기능일수록 질문의 가치가 큼</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 7가지 결정</h2><div class="tbl-wrap"><table><thead><tr><th>#</th><th>결정 축</th><th>선택지·핵심</th><th>딥링크</th></tr></thead><tbody><tr><td>1</td><td>발급 방식</td><td>가입 시 자동 / 공개 코드 / 관리자 지정 — 목적(신규유치·홍보·보상)에 따라 설계가 달라짐</td><td><a href="https://www.youtube.com/watch?v=o7BRT86yZQg?t=224" target="_blank" rel="noopener">3:44 딥링크</a></td></tr><tr><td>2</td><td>적용 방식</td><td>코드 타이핑 vs 쿠폰함 등록·선택 — 실서비스는 대부분 쿠폰함(사용 유도)</td><td><a href="https://www.youtube.com/watch?v=o7BRT86yZQg?t=224" target="_blank" rel="noopener">3:44 딥링크</a></td></tr><tr><td>3</td><td>중복 사용</td><td>한 주문 한 장 vs 겹쳐쓰기 — 겹치면 마진 초과 조합 발생, 보통 한 장으로 시작</td><td><a href="https://www.youtube.com/watch?v=o7BRT86yZQg?t=266" target="_blank" rel="noopener">4:26 딥링크</a></td></tr><tr><td>4</td><td>적용 범위(브레이크)</td><td>세일상품 제외·최소 주문 금액·정률 최대 한도 — 브레이크 없으면 손실</td><td><a href="https://www.youtube.com/watch?v=o7BRT86yZQg?t=266" target="_blank" rel="noopener">4:26 딥링크</a></td></tr><tr><td>5</td><td>유효 기간</td><td>만료 차단 + 만료 임박 알림 여부 — 알리면 매출, 안 알리면 컴플레인</td><td><a href="https://www.youtube.com/watch?v=o7BRT86yZQg?t=305" target="_blank" rel="noopener">5:05 딥링크</a></td></tr><tr><td>6</td><td>환불 시 복원</td><td>환불 시 쿠폰 소멸 vs 복원 — 보통 유효기간 남았으면 복원(가장 많이 놓침)</td><td><a href="https://www.youtube.com/watch?v=o7BRT86yZQg?t=347" target="_blank" rel="noopener">5:47 딥링크</a></td></tr><tr><td>7</td><td>부정 사용</td><td>탈퇴 후 재가입 시 신규 쿠폰 재지급 여부 — 쿠폰정책과 회원정책 접점 결정</td><td><a href="https://www.youtube.com/watch?v=o7BRT86yZQg?t=389" target="_blank" rel="noopener">6:29 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>신규 유치 이벤트</strong>: 가입 자동 발급 쿠폰 설계 시 최소 주문 금액을 쿠폰 금액 대비 충분히 높게(치킨 사태 방지) + 재가입 재지급 차단 정책을 회원 소프트 딜리트와 연동</li>
+<li><strong>정률 프로모션 운영</strong>: 10% 쿠폰에 최대 할인 3,000원 한도 설정 → 32,000원 주문 시 3,200원이 아닌 3,000원만 적용되도록 서버 검증</li>
+<li><strong>수량 한정 선착순 쿠폰</strong>: &quot;동시 요청에도 수량 정확히&quot; 트랜잭션 요구를 프롬프트에 명시해 100장 한정이 초과 발급되지 않도록 방어</li>
+<li><strong>외주·인수인계형 제작</strong>: 루비 온 레일즈 + SQLite 3 풀스택으로 외부 서비스·과금 없이 완결, 고객이 프롬프트만으로 유지보수 가능하게 구성</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>실서비스 수준 프롬프트는 어려운 기술 용어 없이 정책 항목(정액/정률·최소주문·최대한도·1인당 횟수·환불 복원 조건)만 나열하면 됨 — &quot;운영해 본 사람의 목록&quot;</li>
+<li>AI는 실제 질문(전체 발급 수량 상한, 소수점 처리는 올림, 비활성화 시 기존 보유자 유효기간까지 사용 등)을 되물으며 기획 파트너로 작동</li>
+<li>쿠폰은 1회성 &quot;초대장&quot;, 포인트는 잔액 누적 &quot;지갑&quot;으로 적립률·소멸·현금성 이슈가 얹혀 난이도가 한 단계 위 → 보통 쿠폰부터 시작 권장</li>
+<li>채널은 회원가입·쿠폰에 이어 서비스 필수 정책들을 순차 연재 예정</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>정액 할인</td><td>고정 금액을 깎는 쿠폰</td><td>5,000원 할인</td></tr><tr><td>정률 할인</td><td>비율로 깎는 쿠폰, 최대 한도 필요</td><td>10% 할인(최대 3,000원)</td></tr><tr><td>서버 검증</td><td>할인액을 브라우저가 아닌 서버가 재계산</td><td>화면 금액은 조작 가능하므로 신뢰 금지</td></tr><tr><td>소프트 딜리트</td><td>실제 삭제 대신 탈퇴 표시만 남김</td><td>재가입 부정사용 추적·차단의 근거</td></tr><tr><td>트랜잭션</td><td>DB가 수량을 잠가 동시 처리 충돌 방지</td><td>계산대에 한 명씩 세우기</td></tr><tr><td>쿠폰함</td><td>등록한 쿠폰을 보관·선택하는 UI</td><td>코드 타이핑보다 사용률 높음</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/o7BRT86yZQg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>헤이제임스 · 2026-07-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

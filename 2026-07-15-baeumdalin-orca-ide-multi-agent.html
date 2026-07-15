@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: Orca IDE로 Claude·Codex·Grok 멀티 에이전트 오케스트레이션하기"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>배움의 달인</span><span class="ey">MORNING DIGEST · 2026-07-15 · 배움의 달인</span><span class="chip">🎬 영상</span></div><h1>리포트</h1><p class="lead">title: Orca IDE로 Claude·Codex·Grok 멀티 에이전트 오케스트레이션하기</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>Orca IDE(ADE)로 여러 AI 코딩 에이전트를 동시에 오케스트레이션하는 방법</td></tr><tr><td>핵심축</td><td>워크트리 분리 · 역할별 모델 배정 · 비용/품질 트레이드오프</td></tr><tr><td>결론</td><td>모델별 장단점을 조합(믹스 오브 에이전트)하면 저비용·고품질 개발이 가능</td></tr><tr><td>화자</td><td>배움의 달인 김문정 (개발 도구 리뷰 채널)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>Orca 정체성</strong>: 코딩용 AI 에이전트 여러 마리를 동시에 돌리는 ADE(Agentic Development Environment), 즉 에이전트 IDE</li>
+<li><strong>작동 원리</strong>: 하나의 프로젝트를 git worktree로 분리하고, 각 워크트리에 서로 다른 LLM CLI(Claude Code·Codex·Grok·Gemini·Antigravity)를 배정해 병렬 협업</li>
+<li><strong>오케스트레이션</strong>: 커맨더(그록)가 목표를 리서치·디자인·코딩으로 쪼개 각 워커에 배포하고, 결과를 다시 수합·정리하는 실행 루프</li>
+<li><strong>역할 분담</strong>: 팀장(그록) → 코딩(코덱스) → 디자인(클로드) → 리서치(그록)로 구성, 동시 최대 5개 워크트리 실행</li>
+<li><strong>커스텀 모드</strong>: 오케스트레이션 스킬 위에 사용자 정의 레이어(&quot;J모드&quot;)를 얹어 트리거 명령어로 호출</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>기존 IDE와 차이</strong>: Cursor·VS Code가 사람 한 명이 코드를 치는 도구라면, Orca는 에이전트 여러 명을 관리하는 작업실 개념. SST(Sesh) 대비 우위라는 SNS 평가</li>
+<li><strong>전제 조건</strong>: Orca는 껍데기(shell)이며 내부에서 모델이 돌려면 Claude Code CLI·Grok CLI·Codex CLI·Gemini/Antigravity CLI가 사전 설치되고 각 계정이 로그인·연동돼 있어야 함</li>
+<li><strong>코디네이트 타입</strong>: 핸드오프(권한 완전 위임) vs 슈퍼바이즈(사용자 관리) 중 선택, 워크트리 배분은 오토로 두면 커맨더가 자동 분배</li>
+<li><strong>부가 기능</strong>: 컴퓨터 유즈(로컬 맥 제어), 모바일 앱 QR 페어링으로 PC↔모바일 무중단 작업, 빠른 명령어(커맨드) 등록, 터미널 분할(⌘D / ⌘⇧D)</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>비용-품질 트레이드오프 관리</strong>: 코덱스·Fable 5만 쓰면 최고 품질이나 비용 과다. 작업 성격별로 저렴·빠른 모델과 고성능 모델을 섞어 효율 확보</li>
+<li><strong>믹스 오브 에이전트</strong>: 단일 최강 모델 의존이 아니라 모델별 강점을 조합하는 접근이 실무형 개발 생산성의 핵심</li>
+<li><strong>개발자 검증 사례</strong>: Orca CEO(&quot;찐찡&quot;)의 X 포스트가 근거 — 그록으로 배포·오케스트레이션, GPT 5.6 솔하이로 실작업 처리, 완료분을 다시 그록이 수합해 최종 답변</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>역할</th><th>배정 모델</th><th>선정 이유</th><th>딥링크</th></tr></thead><tbody><tr><td>오케스트레이션·수합</td><td>Grok 4.5</td><td>매우 빠르고 저렴, 고차원 추론 불필요한 조율에 적합</td><td><a href="https://www.youtube.com/watch?v=8i0HYZq98VI?t=104" target="_blank" rel="noopener">1:44 딥링크</a></td></tr><tr><td>실시간 리서치·서칭</td><td>Grok 4.5 (X하이)</td><td>실시간 검색 성능이 가장 우수하고 빠름</td><td><a href="https://www.youtube.com/watch?v=8i0HYZq98VI?t=1791" target="_blank" rel="noopener">29:51 딥링크</a></td></tr><tr><td>코딩·디버깅</td><td>Codex GPT-5.6 솔</td><td>가장 이성적·논리적, 복잡한 코딩/디버깅에 최적</td><td><a href="https://www.youtube.com/watch?v=8i0HYZq98VI?t=315" target="_blank" rel="noopener">3:15 딥링크</a></td></tr><tr><td>디자인·프론트엔드</td><td>Claude Sonnet 5</td><td>Fable 5가 더 좋으나 비싸서 소넷으로 절충</td><td><a href="https://www.youtube.com/watch?v=8i0HYZq98VI?t=1232" target="_blank" rel="noopener">20:32 딥링크</a></td></tr><tr><td>고급 UI/UX(예비)</td><td>Claude Fable 5</td><td>품질 최상이나 고비용이라 아껴 사용</td><td><a href="https://www.youtube.com/watch?v=8i0HYZq98VI?t=104" target="_blank" rel="noopener">1:44 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>병렬 경쟁 방식</strong>: 랜딩 페이지 하나를 클로드·코덱스·그록이 각각 구축한 뒤 가장 잘된 결과물을 선택</li>
+<li><strong>단계별 파이프라인</strong>: A단계 코덱스(코딩) → B단계 클로드(디자인) → C단계 그록(정리)처럼 순차 협업</li>
+<li><strong>실제 시연</strong>: &quot;X 최신 AI 모델 트렌드 분석 후 프로젝트에 맞는 믹스 오브 에이전트 조합을 추천하는 랜딩 페이지 제작&quot; 목표를 리서치·디자인·코딩 3개 워커로 분할, 세 모델 동시 구동으로 약 15분 만에 완성</li>
+<li><strong>모바일 원격 제어</strong>: 외출 중에도 모바일 Orca 앱으로 PC의 진행 중 프로젝트를 이어서 작업</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>Orca는 SNS에서 급부상 중인 신생 ADE로, 스킬·모드가 매우 짧은 주기로 자주 업데이트됨 → 주기적 업데이트 확인 권장</li>
+<li>초보자에게는 오케스트레이션 세부 설정이 어려워, 채널 측이 <code>오르카.t키보드</code> 형태의 모드 설정 가이드 사이트를 별도 제공</li>
+<li>그록 슈퍼헤비 사용량은 시연 시점 기준 약 9% 수준으로, 저비용 모델을 리서치·조율에 집중 투입하는 전략이 비용 관리에 유효함을 시사</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>ADE</td><td>Agentic Development Environment, 에이전트 여러 개를 관리하는 개발 환경</td><td>코더 한 명(IDE) vs 에이전트 팀 작업실(ADE)</td></tr><tr><td>워크트리(worktree)</td><td>하나의 저장소를 여러 작업 공간으로 분리하는 git 기능</td><td>같은 프로젝트를 방마다 나눠 동시 작업</td></tr><tr><td>오케스트레이션</td><td>여러 모델의 작업을 조율·배분·수합하는 과정</td><td>지휘자가 파트별 연주를 조율</td></tr><tr><td>믹스 오브 에이전트</td><td>모델별 강점을 조합해 쓰는 전략</td><td>저렴한 그록+강력한 코덱스 섞어 쓰기</td></tr><tr><td>핸드오프/슈퍼바이즈</td><td>권한 완전 위임 / 사용자 관리 방식의 코디네이트 타입</td><td>전권 위임 vs 결재 관리</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/8i0HYZq98VI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>배움의 달인 · 2026-07-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

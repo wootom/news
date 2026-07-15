@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="title: 비트코인·이더리움 스테이킹으로 노후 준비하기 (박종한 작가 1부)"><title>리포트</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>전인구경제연구소</span><span class="ey">MORNING DIGEST · 2026-07-15 · 전인구경제연구소</span><span class="chip">🎬 영상</span></div><h1>리포트</h1><p class="lead">title: 비트코인·이더리움 스테이킹으로 노후 준비하기 (박종한 작가 1부)</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>비트코인·이더리움을 활용한 노후·은퇴 포트폴리오 설계와 스테이킹 전략</td></tr><tr><td>핵심축</td><td>비트코인 축적 + 이더리움/솔라나 스테이킹 복리 + 알트코인은 펀더멘털 검증 후 소량</td></tr><tr><td>결론</td><td>은퇴 자산은 비트코인·이더리움 중심의 안정 자산 70~80%, 고위험 디파이는 10% 안쪽으로 제한</td></tr><tr><td>화자</td><td>전인구경제연구소(진행) · 박종한 작가(암호화폐 저술가, 공동 저서 출간)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li><strong>시장 성숙</strong>: 과거엔 이유 모른 채 급등에 편승(90% 이상)했으나, 지금은 주식처럼 밸류에이션·펀더멘털로 <span class="up">상승</span> 코인이 갈림</li>
+<li><strong>자본 이동 순서</strong>: 비트코인 → 알트코인 → 스테이블코인 순으로 자본이 흐름, 이더리움이 안 움직이면 아직 알트코인 시즌 아님</li>
+<li><strong>AI·블록체인 융합</strong>: AI 에이전트 결제·보안 기반으로 블록체인 수요 증가, 랜더·니어·비트텐서 등 AI/디핀 코인이 시장과 무관하게 펀더멘털로 <span class="up">상승</span></li>
+<li><strong>스테이킹 복리</strong>: 이더리움 스테이킹 연 3~5%, 솔라나 5~7%로 개수가 늘어 장기 복리 효과, 단 코인 가격이 우상향해야 유효</li>
+<li><strong>고이율 경계</strong>: 연 10~20% 넘는 디파이 수익률은 테라루나·캘프 해킹 사례처럼 재원 불명·시세조작 위험 신호</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장 맥락</h2><ul>
+<li><strong>옥석 가리기 국면</strong>: 코인 시장이 삼성전자·하이닉스만 오르는 코스피처럼 특정 코인(하이퍼리퀴드, 니어, 비트텐서, 랜더)만 <span class="up">상승</span>하고 나머지는 지지부진</li>
+<li><strong>펀더멘털 재정의</strong>: 과거의 TVL(예치 자본) 중심에서 → 수수료 매출·자사 토큰 바이백(공급 희석)으로 가격을 방어하는 프로토콜이 우위 (예: 하이퍼리퀴드 펀드 조성 후 HYPE 매입)</li>
+<li><strong>기관 자본 진입</strong>: 월가 RWA(실물자산) 자산이 이더리움·솔라나 체인에 다수 온보딩, 기관은 개인처럼 급등에 편승하지 않아 시장 난이도 <span class="up">상승</span></li>
+<li><strong>기업 스테이킹 실험</strong>: 비트마인은 보유 이더리움 90% 이상을 스테이킹, 스트래티지(구 마이크로스트래티지)는 우선주 STRC 발행(액면 100달러)했으나 90달러 아래로 <span class="dn">하락</span>하며 시장 불신 노출</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>비트코인 단독보다 이더리움 병행이 은퇴 도달을 앞당김</strong>: 가격 <span class="up">상승</span> + 스테이킹 개수 증가의 이중 복리로 비트코인만 보유하는 것보다 효율적일 수 있음</li>
+<li><strong>믿음의 크기가 스테이킹 비중을 결정</strong>: 특정 코인에 대한 5~20년 확신이 있어야 고비중 스테이킹(90%)이 정당화됨, 확신 없으면 위험</li>
+<li><strong>AI 패권 경쟁이 탈중앙 AI 수요를 촉발</strong>: 앤트로픽 등 특정 기업의 API 제한 이슈가 탈중앙 AI(비트텐서) 가격을 움직이며, 국가 전략자산화 논의로 확장</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 / 평가 포인트</h2><div class="tbl-wrap"><table><thead><tr><th>구간</th><th>포인트</th><th>딥링크</th></tr></thead><tbody><tr><td>GPU 공유 토큰 아이디어</td><td>집집마다 GPU를 P2P로 공유해 연산 제공하고 토큰 보상 — 이미 랜더(디핀)가 구현</td><td><a href="https://www.youtube.com/watch?v=5CPoIdjfqIY?t=538" target="_blank" rel="noopener">8:58 딥링크</a></td></tr><tr><td>채굴 vs 스테이킹</td><td>PoW(채굴, 컴퓨팅 파워)와 PoS(스테이킹, 밸리데이터가 네트워크 보안 기여) 구분</td><td><a href="https://www.youtube.com/watch?v=5CPoIdjfqIY?t=907" target="_blank" rel="noopener">15:07 딥링크</a></td></tr><tr><td>비트마인 스테이킹 전략</td><td>이더리움 90% 이상 스테이킹으로 배당 재원 마련, 일반 적정치는 30~50%</td><td><a href="https://www.youtube.com/watch?v=5CPoIdjfqIY?t=1006" target="_blank" rel="noopener">16:46 딥링크</a></td></tr><tr><td>개인 은퇴 시나리오</td><td>은퇴 시기(10~15년) 정하고 꾸준히 매집·스테이킹, 중간 변동 무시</td><td><a href="https://www.youtube.com/watch?v=5CPoIdjfqIY?t=1179" target="_blank" rel="noopener">19:39 딥링크</a></td></tr><tr><td>유동성 스테이킹</td><td>거래소/솔로/유동성 스테이킹 구분, stETH 청구권으로 디파이 재활용(에이브 담보)</td><td><a href="https://www.youtube.com/watch?v=5CPoIdjfqIY?t=1345" target="_blank" rel="noopener">22:25 딥링크</a></td></tr><tr><td>스테이블코인 이자</td><td>가치 고정으로 부담 적으나 이자는 낮음, 고이율일수록 재원 검증 필수</td><td><a href="https://www.youtube.com/watch?v=5CPoIdjfqIY?t=1591" target="_blank" rel="noopener">26:31 딥링크</a></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>보수형 은퇴 포트폴리오</strong>: 비트코인·이더리움 등 안정 자산 70~80%, 스테이킹으로 개수 복리, 고위험 디파이는 10% 안쪽으로 제한</li>
+<li><strong>이더리움 스테이킹 복리형</strong>: 은퇴 시점을 10~15년 뒤로 고정하고 이더리움을 거래소/유동성 스테이킹으로 연 3~5% 개수 증식, 가격 우상향 전제</li>
+<li><strong>솔라나 확신형</strong>: 솔라나에 5~20년 확신이 있는 투자자가 연 5~7% 스테이킹으로 세팅, 두 번의 네트워크 중단 이력은 리스크로 인지</li>
+<li><strong>트레이딩 분리형</strong>: 급등 테마 코인(시세조작 다수)은 은퇴 자산과 분리해 기민한 매매가 가능한 소액으로만 접근</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li><strong>당면 현황</strong>: 비트코인이 방향을 못 잡고 이더리움도 정체, 디파이 TVL은 캘프 해킹 후 미회복 — 시장이 각성·보수화하는 단계</li>
+<li><strong>플랫폼 승자 독식 전망</strong>: 이더리움·솔라나가 대표 플랫폼(토큰의 빅테크)으로 자리, 수이·캠톤·하이퍼리퀴드 등 기관 특화 신생 체인이 후보군</li>
+<li><strong>전제 조건</strong>: 스테이킹 복리는 토큰 가치 방어가 관건 — 펀더멘털(수수료 매출·성과)이 뒷받침돼야 개수 증가가 의미를 가짐</li>
+<li><strong>경계 신호</strong>: 연 10% 초과 수익률은 조심, 20% 이상은 테라루나식 붕괴 위험으로 간주</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>스테이킹</td><td>코인을 네트워크에 맡겨 보안에 기여하고 보상을 받는 것</td><td>예금처럼 맡기면 이자(코인 개수) 증가</td></tr><tr><td>PoW / PoS</td><td>작업증명(채굴)과 지분증명(밸리데이터 검증) 합의 방식</td><td>비트코인=채굴, 이더리움=스테이킹</td></tr><tr><td>밸리데이터</td><td>PoS에서 노드를 운영해 거래를 검증하는 주체(채굴자에 해당)</td><td>이더리움 솔로 스테이킹은 32 ETH 필요</td></tr><tr><td>유동성 스테이킹</td><td>스테이킹하고 stETH 같은 청구권을 받아 디파이에 재활용</td><td>아파트 분양권처럼 1:1 교환 청구권</td></tr><tr><td>디핀(DePIN)</td><td>물적 네트워크(GPU 등)를 공유하고 토큰으로 보상하는 구조</td><td>랜더가 GPU 공유로 AI 연산 제공</td></tr><tr><td>RWA</td><td>실물자산을 블록체인에 토큰화한 것</td><td>월가 자산이 이더리움·솔라나에 온보딩</td></tr><tr><td>TVL</td><td>프로토콜에 예치된 총 자본 규모</td><td>과거 펀더멘털 지표, 지금은 수수료 매출 중시</td></tr><tr><td>슬래싱</td><td>밸리데이터가 규칙 위반 시 받는 페널티</td><td>태만하면 스테이킹 손해 발생</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/5CPoIdjfqIY" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>전인구경제연구소 · 2026-07-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
