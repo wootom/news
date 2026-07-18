@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="아래 내용은 출연자의 개인적 견해를 정리한 것으로, 투자 권유나 조언이 아닙니다. 투자 판단과 책임은 본인에게 있습니다."><title>레버리지와 ADR가 코스피를 망쳤습니다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>전인구경제연구소</span><span class="ey">MORNING DIGEST · 2026-07-18 · 전인구경제연구소</span><span class="chip">🎬 영상</span></div><h1>레버리지와 ADR가 코스피를 망쳤습니다</h1><p class="lead">아래 내용은 출연자의 개인적 견해를 정리한 것으로, 투자 권유나 조언이 아닙니다. 투자 판단과 책임은 본인에게 있습니다.</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>전인구경제연구소</td></tr><tr><td>주제</td><td>삼성전자·SK하이닉스 쏠림과 레버리지 ETF·ADR 상장이 만든 코스피 변동성 급증</td></tr><tr><td>한 줄 요약</td><td>두 종목에 시총이 집중된 코스피 구조 위에 단일 종목 레버리지 ETF와 SK하이닉스 ADR 상장이 겹치면서 사이드카가 급증하고, 그 변동성의 최대 수혜자는 파생시장의 외국인이라는 진단</td></tr><tr><td>핵심 결론 1</td><td>삼성전자·SK하이닉스 두 종목이 코스피 시가총액의 60%를 차지해 이 두 종목만 움직이면 코스피 지수 자체가 요동친다</td></tr><tr><td>핵심 결론 2</td><td>6월 단일 종목 레버리지 ETF 상장과 7월 SK하이닉스 ADR(40조원 규모) 상장이 겹치며 사이드카 발동 횟수가 급증했다</td></tr><tr><td>핵심 결론 3</td><td>이 변동성 확대 국면에서 실제로 돈을 버는 주체는 개인이 아니라 파생시장을 활용하는 외국인일 가능성이 높다</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>시장 진단</h2><p>코스피는 삼성전자와 SK하이닉스 두 종목의 시가총액 비중이 60%에 달해, 이 두 종목의 주가 등락만으로 지수 전체가 크게 흔들리는 구조적 취약성을 갖고 있다고 진단한다. 실제로 올해 사이드카가 37번 발동되며 역대 최고치를 기록했고, 최근에는 1.5일에 한 번꼴로 발동될 정도로 빈도가 비정상적으로 높아졌다. 코스피가 하루 500포인트씩 움직이는 현상은 정상적인 시장 상황이 아니라고 지적한다. 월별로 보면 2월 3번, 3월 7번, 4월 3번, 5월 6번이던 사이드카가 레버리지 ETF가 상장한 6월에는 10번으로 늘었고, ADR이 상장한 7월에는 12거래일 중 8번이 발동되며 변동성이 더욱 커졌다. 과거 코스피는 현물보다 선물·옵션 등 파생시장에서 외국인이 활용하는 시장이었는데, 두 대형주 의존도가 커질수록 외국인이 활용하기 좋은 파생 플레이 구조가 강화된다고 설명한다.</p></section><section class="card s12" id="s3"><h2><span class="seq">03</span>핵심 종목·이슈 분석</h2><div class="tbl-wrap"><table><thead><tr><th>종목/이슈</th><th>분석 내용</th></tr></thead><tbody><tr><td>삼성전자·SK하이닉스</td><td>코스피 시총의 60%를 차지하며 두 종목 등락이 곧 코스피 등락으로 직결. 합산 시총 약 3,000조원대(원문 표현 &quot;3,조&quot;)</td></tr><tr><td>삼성전자·SK하이닉스 단일 종목 레버리지 ETF</td><td>6월 상장. 두 ETF 합산 시총은 10조원 수준으로 본주 시총 대비 작지만, 대중의 매수 관심을 본주·레버리지 두 선택지로 좁혀 수급을 두 종목에 집중시키는 촉매제 역할</td></tr><tr><td>SK하이닉스 ADR</td><td>7월 미국 상장, 규모 약 40조원(하이닉스 국내 시총 약 1,300조원 대비 작음). 외국인의 SK하이닉스 매수 접근성을 높였고, 작은 상장 규모로 인해 한국 주가와 ADR 주가 간 괴리(수급 불균형)가 발생할 수 있다고 지적</td></tr><tr><td>국민연금 매도 룰 조정</td><td>국내 주식을 더 담을 수 있도록 조정되며 예상보다 매도 물량이 줄어, 외국인 입장에서 불확실성 하나가 제거된 요인으로 언급</td></tr><tr><td>사이드카 발동 추이</td><td>2월 3회→3월 7회→4월 3회→5월 6회→6월(레버리지 ETF 상장) 10회→7월(ADR 상장, 12거래일 기준) 8회로 급증</td></tr><tr><td>ADR-국내 주가 괴리 가설</td><td>ADR 가격이 국내가보다 비싸면 다음날 국내 하이닉스 주가가 급등하는 패턴이 있다고 관찰하며, 외국인이 선물 매수 후 밤사이 ADR 가격을 올려 다음날 코스피 선물로 수익을 얻는 구조가 의심된다고 언급(물증은 없다고 명시)</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>매매·대응 전략</h2><p>출연자는 최근 한 달 전부터 과열 분<span class="dn">위기</span>가 심해졌다고 판단해 기존의 긍정적 관점에서 리스크 관리 쪽으로 태도를 바꿨다고 밝힌다. 기업 가치보다 하루하루의 변동성과 분<span class="dn">위기</span>로 주가가 오르내리는 국면에서는 투자 리스크를 지고 싶지 않다는 입장이며, 아직 빠져나오는 것도 나쁘지 않은 선택지라고 언급한다. 삼성전자·SK하이닉스처럼 고성장하는 기업이 흔치 않지만, 업종 내 다른 우량 기업들 주가는 수급 쏠림 때문에 오히려 빠진 상황이라며 특정 종목 집중이 아닌 분산 투자로 접근할 필요가 있다고 제안한다. 단, 주식을 전량 매도하라는 의미가 아니라 비중을 조금 더 분산하는 방향으로 가야 한다는 취지임을 명확히 한다. 아울러 외국인 관점에서 미국 증시 흐름을 함께 보며 그들이 한국 주식을 어떻게 매매할지 예측해보는 연습을 권한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>리스크 요인</h2><p>가장 큰 리스크는 코스피 지수 자체가 두 종목에 과도하게 의존해 있어 변동성이 구조적으로 확대되고 있다는 점이다. 레버리지 ETF와 ADR이라는 두 개의 촉매제가 겹치면서 시장 과열이 대중의 탐욕과 공포를 증폭시키고, 이 과정에서 개인 투자자가 손실을 볼 가능성이 크다고 지적한다. 특히 ADR과 국내 주가 간 괴리를 활용한 파생 차익거래 의심 정황이 있으나 이를 입증할 물증은 없다고 스스로 밝히며, 외국인이라는 단어 안에는 단일 세력이 아닌 수많은 투자 주체가 존재해 이들을 하나의 &quot;세력&quot;으로 규정할 근거도 없다고 선을 긋는다. 대중의 매수 관심이 본주·레버리지 두 종목으로만 쏠리면서 다른 우량주들의 수급이 빠져나가는 부작용도 리스크로 언급된다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>투자 시사점</h2><p>시청자에게 주는 시사점은 기업 실적과 무관하게 대중의 기대감과 공포만으로 가격이 조절되는 장세에서는 적정가 개념이 무색해질 수 있다는 경계심이다. 특정 종목 의존도가 높은 시장 구조에서는 그 종목을 누가 어떻게 움직이느냐에 따라 지수 전체가 좌우될 수 있다는 점을 인지하고 투자에 임해야 한다고 강조한다. 변동성이 커지는 국면에서 실제 수혜를 보는 주체가 파생시장을 활용하는 외국인일 가능성이 높다는 점에서, 개인 투자자는 이러한 구조적 특성을 이해하고 외국인의 관점에서 시장을 바라보는 습관을 기르는 것이 장기적으로 도움이 된다고 조언한다.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>현재 코스피는 삼성전자·SK하이닉스 쏠림, 레버리지 ETF 상장, ADR 상장이라는 세 요소가 맞물려 사이드카가 역대 최고 빈도로 발생하는 과열 국면에 있다고 진단한다. 7월 들어서도 ADR 상장 이후 사이드카 빈도가 더 높아진 상태이며, 이런 흐름이 이어질 경우 코스피의 일중 변동폭이 계속 크게 유지될 가능성이 있다고 본다. 다만 40조원 규모의 ADR 자금이 환전되어 들어오면서 원화 환율을 낮추는 긍정적 효과도 일부 있다고 덧붙인다. 향후에는 미국 증시 흐름과 외국인 매매 패턴을 계속 주시하면서, 두 종목 쏠림이 완화되고 수급이 다른 우량주로 분산되는지를 지켜봐야 한다는 것이 출연자의 전망이다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명(40자내)</th><th>비유/예시</th></tr></thead><tbody><tr><td>사이드카</td><td>선물가격 급변 시 프로그램매매 호가효력을 일시 정지하는 제도</td><td>도로의 급브레이크 안전장치</td></tr><tr><td>코스피</td><td>한국 유가증권시장 전체 종목 시가총액 지수</td><td>한국 대표기업 성적표</td></tr><tr><td>레버리지 ETF</td><td>기초자산 변동폭의 배수(보통 2배)로 움직이는 상장지수펀드</td><td>지렛대로 힘을 증폭시키는 것</td></tr><tr><td>ADR</td><td>해외기업 주식을 예탁증서 형태로 미국 시장에 상장한 것</td><td>원본 대신 쓰는 증명서 사본</td></tr><tr><td>파생시장</td><td>선물·옵션 등 기초자산 가격변동에서 파생된 상품이 거래되는 시장</td><td>원자산의 그림자 시장</td></tr><tr><td>수급 불균형</td><td>매수와 매도 물량이 맞지 않아 가격이 왜곡되는 상태</td><td>저울 한쪽에만 추가 쏠린 상태</td></tr><tr><td>괴리</td><td>서로 연동돼야 할 두 가격이 벌어져 차이가 나는 현상</td><td>같은 사람의 두 사진이 다르게 보이는 것</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/RkOlI_Wy1uU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>전인구경제연구소 · 2026-07-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

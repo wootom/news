@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="This Open Source Model Just Beat Claude Fable 5"><title>This Open Source Model Just Beat Claude Fable 5</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">MORNING DIGEST · 2026-07-18 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>This Open Source Model Just Beat Claude Fable 5</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Chase AI</td></tr><tr><td>주제</td><td>중국산 오픈웨이트 모델 Kimmy K3가 GPT 5.6, Fable 5를 실제로 이길 수 있는지 벤치마크와 실전 프런트엔드 테스트로 검증</td></tr><tr><td>한 줄 요약</td><td>Kimmy K3는 벤치마크상 경쟁력이 있지만, 실제 토큰 소모량과 속도를 감안하면 &quot;훨씬 저렴하다&quot;는 광고는 과장되어 있다</td></tr><tr><td>핵심 결론 1</td><td>Kimmy K3는 입력 기준 백만 토큰당 3달러로 표면 가격은 가장 저렴하지만, 토큰 효율성이 낮아 실제 작업당 비용은 GPT 5.6과 큰 차이가 없다</td></tr><tr><td>핵심 결론 2</td><td>프런트엔드 3D 지구본 대시보드 실전 테스트에서 완성도는 Fable 5 &gt; Kimmy K3 &gt; GPT 5.6 순이었다</td></tr><tr><td>핵심 결론 3</td><td>Kimmy K3는 같은 작업에 2,150만 토큰과 1시간 33분, 866달러가 들어 Fable 5(350만 토큰, 17분, 11.64달러)보다 훨씬 느리고 비효율적이었다</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>영상은 크게 두 축으로 구성된다. 전반부는 Kimmy K3(문샷 랩 제공, 2.8조 파라미터 규모의 오픈웨이트 모델)를 둘러싼 벤치마크 수치를 검증한다. 프로그래밍 벤치마크와 arena.ai의 블라인드 프런트엔드 투표 결과에서는 Kimmy K3가 GPT 5.6, Fable 5와 대등하거나 앞서는 것으로 나타났지만, 진행자는 이를 곧이곧대로 믿지 않고 가격·토큰 효율성·속도·환각(진실성) 지수까지 함께 살펴본다. 후반부는 Claude Code와 Codex 환경에서 Kimmy K3, Fable 5, GPT 5.6에 동일한 &quot;3D 지구 여행 대시보드&quot; 제작 프롬프트를 주고 결과물과 실제 소요 토큰·시간·비용을 비교하는 실전 테스트다. 결론적으로 벤치마크상의 저렴함과 실사용 비용 사이에 상당한 괴리가 있다는 점이 이 영상의 핵심 메시지다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>Kimmy K3는 오픈웨이트(open-weight) 모델로, 모든 매개변수 값을 확인할 수 있다는 점에서 GPT 5.6이나 Fable 5 같은 폐쇄형 모델과 구분된다. 다만 오픈웨이트라고 해서 일반 사용자의 컴퓨터에서 구동 가능하다는 뜻은 아니며, 실제 운용에는 수백만 달러 규모의 하드웨어가 필요하다. 가격 비교에서 Kimmy K3는 입력 백만 토큰당 3달러, 출력 기준으로도 GPT 5.6의 절반 이하, Fable 5의 30% 수준으로 표기 단가는 가장 낮다. 그러나 Artificial Analysis(독립 벤치마킹 기관)의 &quot;지능 지수 작업당 비용&quot; 지표로 보면 Kimmy K3는 작업당 95달러, GPT 5.6은 14달러로 오히려 Kimmy K3가 더 비싸게 나타났고, Fable 5는 2.75달러로 셋 중 가장 저렴했다. 이는 Kimmy K3가 동일 작업을 처리하는 데 훨씬 더 많은 토큰을 소모하는 토큰 비효율성 때문이다. 속도 면에서도 Kimmy K3는 6분, Fable 5는 5분, GPT 5.6은 4.7분이 걸려 Kimmy K3가 가장 느렸다. 진실성(환각 억제) 벤치마크에서는 100점 만점에 Fable 5가 40점, GPT 5.6이 22점, Kimmy K3가 18점으로 Kimmy K3가 가장 낮았다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>이 영상이 시사하는 바는 &quot;오픈소스=저렴함&quot;이라는 공식이 헤드라인 가격표만으로는 성립하지 않는다는 점이다. 실제 프로덕션 워크로드에서는 토큰 소모량, 처리 속도, 환각률까지 종합한 &quot;작업당 총비용(TCO)&quot;으로 판단해야 하며, 이 기준에서는 GPT 5.6처럼 토큰 효율성이 높은 폐쇄형 모델이 오히려 경쟁력을 가질 수 있다. 기업이나 개발자가 Kimmy K3 같은 중국산 오픈웨이트 모델 도입을 검토할 때는 단가표가 아니라 실제 벤치마크 작업 단위 비용과 응답 속도, 워크플로우 특성(긴 대기 시간 허용 여부)을 함께 고려해야 한다. 동시에 오픈웨이트 모델이 프런트엔드 코딩 같은 영역에서 프론티어 폐쇄형 모델과 대등한 수준까지 따라왔다는 점은, 중국 AI 생태계의 빠른 추격 속도를 보여주는 신호이기도 하다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><p>진행자는 세 모델(Kimmy K3, Fable 5, GPT 5.6/Codex)에 Claude Code 및 Codex 환경 안에서 동일한 프롬프트를 부여하는 방식으로 통제된 비교 테스트를 수행했다. 프롬프트는 &quot;단순 웹사이트가 아니라 SF 영화의 한 장면 같은 3D 지구 여행 대시보드를 만들되, 전에 본 적 없는 아이디어로 놀라게 해달라&quot;는 개방형 지시였으며, 결과 편향을 막기 위해 구체적 요구사항은 의도적으로 제한했다. 평가는 (1) UI 완성도와 인터랙션(확대·축소, 도시 클릭, 낮과 밤 전환, 통계 정보 표시) 정성 비교, (2) Open Router 데이터를 통한 토큰 사용량·소요 시간·비용 정량 비교의 두 단계로 이뤄졌다. 이런 &quot;블라인드 프롬프트 동일 조건 + 정성/정량 이중 평가&quot; 방식은 벤치마크 수치와 실사용 체감 품질 사이의 괴리를 검증하는 데 유용한 방법론이다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>모델 선택 의사결정</strong>: 신규 프로젝트에 사용할 LLM을 고를 때 표기 단가가 아니라 작업당 실제 토큰 소모량과 처리 시간을 기준으로 비교해 비용 리스크를 사전에 파악한다.</li>
+<li><strong>프런트엔드 프로토타이핑</strong>: 3D 인터랙티브 대시보드, 랜딩 페이지 등 시각적 완성도가 중요한 프로젝트에서는 Fable 5처럼 그래픽 디테일과 인터랙션 완성도가 높은 모델을 우선 검토한다.</li>
+<li><strong>대규모 배치 작업 비용 산정</strong>: Kimmy K3처럼 단가는 낮지만 토큰 소모가 많은 모델을 대량 배치 작업에 투입하기 전, Artificial Analysis류의 &quot;작업당 비용&quot; 지표로 실제 총비용을 시뮬레이션한다.</li>
+<li><strong>시간 민감 워크플로우 배제 기준</strong>: 실시간 응답이나 빠른 반복이 필요한 에이전트 워크플로우에는 속도가 느린 Kimmy K3 대신 GPT 5.6이나 Fable 5 같은 상대적으로 빠른 모델을 우선 고려한다.</li>
+<li><strong>환각 민감 도메인 필터링</strong>: 법률·의료 등 정답 여부가 중요한 모호한 질의 응답 작업에는 진실성 지수가 가장 높은 Fable 5를 우선 배치한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>현재 시점에서 Kimmy K3는 arena.ai 블라인드 투표 등 일부 벤치마크에서 프런트엔드 코드 생성 최고 성능을 보이며 화제를 모으고 있지만, 이는 주관적 선호도 조사라는 한계가 있다. 실전 테스트 결과 종합 완성도는 Fable 5, Kimmy K3, GPT 5.6 순이었고, 비용·속도 효율성에서는 Codex(GPT 5.6 계열)가 가장 저렴했으며 Fable 5가 가장 비쌌다. 진행자는 Kimmy K3가 &quot;이론상 매우 강력한&quot; 경쟁력 있는 오픈소스 모델이라는 점은 인정하면서도, 토큰 비효율성으로 인한 숨은 비용과 느린 속도 때문에 벤치마크가 보여주는 &quot;압도적 저비용&quot; 서사를 그대로 받아들여서는 안 된다고 결론짓는다. 향후 오픈웨이트 모델들이 토큰 효율성을 <span class="up">개선</span>한다면 프론티어 폐쇄형 모델과의 실질적 총비용 격차는 더 좁혀질 것으로 예상된다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>오픈웨이트(Open-weight)</td><td>모델 파라미터 값을 공개하지만 실행엔 고가 하드웨어 필요</td><td>레시피는 공개되지만 재료·주방은 별도로 구비해야 하는 요리법</td></tr><tr><td>토큰 효율성</td><td>동일 작업 수행에 필요한 토큰(연산량) 대비 결과물 비율</td><td>같은 목적지까지 연비 좋은 차 vs 기름 많이 먹는 차</td></tr><tr><td>지능 지수 작업당 비용</td><td>Artificial Analysis가 산출하는, 단가가 아닌 실제 작업 완료 총비용 지표</td><td>시간당 인건비가 아니라 프로젝트 완료까지 든 총 인건비</td></tr><tr><td>arena.ai 블라인드 투표</td><td>두 모델 결과물을 익명으로 보여주고 사용자가 선호를 고르는 벤치마크</td><td>브랜드 가린 펩시 챌린지</td></tr><tr><td>진실성(전지성) 지수</td><td>정답·오답·모름 응답에 가중치를 매겨 환각 정도를 측정하는 벤치마크</td><td>모르면 감점 없이 0점, 틀리면 감점되는 퀴즈 채점 방식</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/MeYdaNnXuHI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-07-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

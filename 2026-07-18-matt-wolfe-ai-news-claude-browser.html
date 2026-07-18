@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI News: Claude&#x27;s New Browser, Spotify Gets AI &amp; OpenAI&#x27;s New Hardware"><title>AI News: Claude&#x27;s New Browser, Spotify Gets AI &amp; OpenAI&#x27;s New Hardware</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">MORNING DIGEST · 2026-07-18 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>AI News: Claude&#x27;s New Browser, Spotify Gets AI &amp; OpenAI&#x27;s New Hardware</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>채널</th><th>주제</th><th>한 줄 요약</th></tr></thead><tbody><tr><td>Matt Wolfe</td><td>주간 AI 뉴스 라운드업</td><td>Claude Code 인앱 브라우저, Spotify 대화형 AI, OpenAI 코덱스 키패드 등 이번 주 AI 업계 소식 정리</td></tr></tbody></table></div>
+<ol>
+<li>Claude Code 데스크톱에 인앱 브라우저 탑재 — 화면 요소를 직접 선택·수정하고 웹 탐색까지 가능</li>
+<li>Spotify가 대화형 AI 기능 베타 출시 — 듣던 음악·플레이리스트를 대화로 탐색</li>
+<li>오픈웨이트 LLM 3종(Inkling, Bonsai 27B, Kimi K3) 및 OpenAI의 첫 하드웨어(Codex Creator Micro 키보드) 공개</li>
+</ol></section><section class="card s12" id="s2"><h2><span class="seq">02</span>주요 뉴스 정리</h2><h3>Claude Code, 데스크톱에 인앱 브라우저 추가</h3>
+<p>Anthropic이 Claude Code 데스크톱 앱에 인앱 브라우저를 추가했다. ChatGPT 앱이 브라우저 기능을 내장한 지 며칠 만에 나온 업데이트다. 일반 채팅이 아닌 Claude Code 프로젝트 화면에서만 사용 가능하며, <code>Cmd+Shift+B</code> 단축키나 우측 상단 브라우저 아이콘으로 열 수 있다. 화면 요소를 클릭해 선택하면 좌측 코드에서 해당 요소가 하이라이트되고, &quot;버튼 텍스트를 바꿔줘&quot; 같은 지시로 실제 코드 수정까지 이어진다. 또한 브라우저 접근 권한이 있으면 X(트위터)처럼 API 비용이 비싼 사이트도 API 없이 직접 스크롤하며 정보를 수집할 수 있다.</p>
+<h3>Google, 검색·Vids에 AI 기능 확장</h3>
+<ul>
+<li><strong>AI 모드 앱 연결</strong>: Google Gemini에 이미 연결된 여러 앱을, 이제 검색의 AI 모드에서도 프롬프트 기반으로 자동 연결할 수 있다. 예: &quot;장보기 목록을 만들어서 장바구니에 담아줘&quot;라고 하면 Instacart 앱을 찾아 연결을 제안한다.</li>
+<li><strong>Google Vids + Gemini Omni</strong>: 슬라이드 프레젠테이션형 영상 제작 도구인 Google Vids에 Gemini Omni가 결합돼, 슬라이드를 실제로 애니메이션화할 수 있게 됐다. 대화로 영상을 수정하는 기능도 추가됐고, 사용자의 아바타를 영상에 삽입하는 기능(예: 생일 축하 영상)도 새로 생겼다.</li>
+<li><strong>Google 이미지 검색 25주년 리뉴얼</strong>: Pinterest처럼 저장 이력을 학습해 이미지를 추천하는 기능과, google.com에서 바로 이미지를 생성하는 기능이 &quot;곧&quot; 출시 예정이다.</li>
+<li><strong>Notebook LM → Gemini Notebook으로 리브랜딩</strong>: 제품은 동일하지만 이름이 바뀐다.</li>
+</ul>
+<h3>Spotify, 대화형 AI 베타 출시</h3>
+<p>Spotify 프리미엄 사용자 대상으로 홈 화면과 재생 화면에서 텍스트/음성으로 대화하며 음악을 탐색하는 기능이 베타로 출시됐다. 시연에서 &quot;2년 전에 뭘 들었는지 알려주고 그 스타일의 플레이리스트를 만들어줘&quot;라고 요청하자 청취 기록을 분석해 로파이 계열 플레이리스트를 생성했다. 아티스트 스타일 설명(예: Tosho — 로파이 힙합/코지 인스트루멘탈)도 대화로 제공한다.</p>
+<h3>ByteDance Seedream 5.0 Pro (지난주 소식 후속, Art List 스폰서 구간)</h3>
+<p>참조 이미지 최대 5장으로 캐릭터·제품·색감·구도·스타일을 제어할 수 있는 멀티모달 이미지 생성기. 추론 능력이 강화돼 인포그래픽, UI 목업, 광고, 읽을 수 있는 텍스트가 포함된 이미지 생성이 가능하다. Art List 플랫폼에서 바로 사용 가능.</p>
+<h3>신규 오픈웨이트 LLM 3종</h3>
+<div class="tbl-wrap"><table><thead><tr><th>모델</th><th>개발사</th><th>특징</th></tr></thead><tbody><tr><td>Inkling</td><td>Thinking Machines Labs (Mira Murati 창업)</td><td>첫 공개 모델, 952B 파라미터, 약 2TB 파일 크기, 오픈웨이트지만 벤치마크상 최상위권은 아님. GLM 5.2에 추론·에이전틱 코딩 전 항목에서 밀림</td></tr><tr><td>Bonsai 27B</td><td>Prism ML</td><td>1비트 초압축 모델, 약 4GB, 27B 파라미터로 폰에서 구동 가능한 최대급. 코드 생성은 사실상 불가, Hugging Face 데모에서 94 tokens/sec</td></tr><tr><td>Kimi K3</td><td>Moonshot AI</td><td>이번 달 중 오픈웨이트 예정, 2.8조(2.8T) 파라미터로 최초의 오픈모델. 코딩 벤치마크(deepu)에서 5.6 Sonnet·Fable 바로 다음 순위, GPT-5.5·Opus 4.8·GLM 5.2보다 우위. Terminal Bench에서는 Fable 5도 능가</td></tr></tbody></table></div>
+<h3>라피드 파이어 (짧은 소식 모음)</h3>
+<ul>
+<li><strong>Grok Build 오픈소스화</strong>: xAI의 코딩 에이전트 겸 터미널 UI가 GitHub에 공개됨</li>
+<li><strong>Grok에 자동화(Automations) 추가</strong>: Claude·ChatGPT Codex처럼 일정 기반 반복 작업(&quot;루프&quot;) 설정 가능. 매일 트리거, 이메일 수신 트리거 등 지원</li>
+<li><strong>ChatGPT 검색 기능 <span class="up">개선</span></strong>: 웹/iOS/Android에서 채팅·프로젝트·이미지·문서를 한 곳에서 검색 가능, 필터 지원</li>
+<li><strong>Claude, 1Password 연동</strong>: 로그인이 필요한 작업을 자격 증명 노출 없이 대신 수행. 비밀번호는 Claude로 전송되거나 학습에 사용되지 않음</li>
+<li><strong>DoorDash CLI 출시</strong>: OpenClaw·Hermes·Codex 등 AI 에이전트가 DoorDash로 주문 가능(매장 검색, 최저가 비교, 결제). 미국·캐나다 대기자 명단 운영 중</li>
+<li><strong>Meta, Instagram 인물 태그 이미지 생성 기능 롤백</strong>: 지난주 소개된 기능이 배우·크리에이터들의 반발로 1주일도 안 돼 철회됨</li>
+<li><strong>새 Siri 롤아웃 시작</strong>: 애플워치에도 AI 기능이 적용되며 초기 반응은 긍정적</li>
+<li><strong>Anthropic, Claude for Teachers 출시</strong>: 미국 K-12 인증 교사 대상 프리미엄 Claude 무료 제공, 교육 스킬 라이브러리와 근거 기반 커리큘럼 연동 포함</li>
+<li><strong>OpenAI 첫 하드웨어 출시</strong>: Work Louder와 협업한 Codex 전용 키패드 &quot;Codex Creator Micro&quot;, openai.com/supply에서 230달러에 판매. 스크린 없는 스마트 스피커형 기기도 소문 단계로 개발 중이라는 보도(미확정)</li>
+<li><strong>OpenAI vs Apple 소송</strong>: Apple이 전직원의 이직 및 영업비밀 유출을 주장하며 OpenAI를 제소, OpenAI는 근거 없다고 반박</li>
+<li><strong>뉴욕주, 데이터센터 모라토리엄 시행</strong>: 50메가와트 이상 하이퍼스케일 데이터센터에 대한 신규 환경 허가를 최대 1년간 중단, 에너지 가격·환경영향 규제 마련 시간 확보 목적</li>
+<li><strong>Sunrun, 가정용 분산 AI 컴퓨트 파일럿</strong>: 태양광·배터리 시스템에 미니 컴퓨트 노드를 결합해 가정에 배치하고, AI 기업이 이를 활용하는 대가로 가입자에게 보상 지급</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>에이전트의 &quot;눈&quot; 확장</strong>: Claude Code의 인앱 브라우저와 Claude-1Password 연동은 모두 에이전트가 웹 UI를 직접 조작·인증하는 방향으로, API 의존도를 낮추고 실제 화면 기반 자동화(computer use류)를 강화하는 흐름과 맞닿아 있다.</li>
+<li><strong>오픈웨이트 모델 스펙트럼 확대</strong>: 952B(Inkling)부터 27B 1비트 압축(Bonsai, 온디바이스용)까지, 그리고 2.8T(Kimi K3, 클라우드 전용)까지 오픈웨이트 모델의 크기·타깃 디바이스가 양극화되고 있다.</li>
+<li><strong>분산 컴퓨트 실험</strong>: Sunrun의 가정용 컴퓨트 노드 파일럿은 대형 데이터센터 중앙집중형 인프라의 대안으로, 크라우드소싱형 컴퓨트 공급 모델을 시사한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>Anthropic은 Claude Code에 브라우저를 통합해 개발자 워크플로우 내 &quot;웹 조작 에이전트&quot;로서의 입지를 강화하고 있으며, 이는 OpenAI의 ChatGPT 앱 브라우저 기능에 대한 즉각적 대응 성격이 강하다.</li>
+<li>Spotify·Google Vids·Google 검색 등 소비자 서비스 전반에 대화형 AI 인터페이스가 확산되며, &quot;프롬프트로 조작하는 앱&quot;이 표준 UX로 자리잡는 중이다.</li>
+<li>오픈웨이트 모델 경쟁(Kimi K3, GLM 5.2, Inkling)은 폐쇄형 최상위 모델(Sonnet 5.6, Fable 5, Opus 4.8, GPT-5.5)과의 격차를 빠르게 좁히고 있으며, 특히 코딩·에이전틱 벤치마크에서 오픈모델의 상위권 진입이 가시화되고 있다.</li>
+<li>뉴욕주 데이터센터 모라토리엄은 AI 인프라 확장에 대한 규제 리스크가 현실화되는 신호로, 다른 주의 후속 조치 여부가 인프라 투자 지형을 바꿀 수 있다.</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 포인트·비교</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>가장 실용적인 업데이트</td><td>Claude Code 인앱 브라우저(개발 워크플로우 직접 <span class="up">개선</span>)</td></tr><tr><td>가장 소비자 친화적 업데이트</td><td>Spotify 대화형 AI, Google Vids 아바타 삽입</td></tr><tr><td>가장 큰 오픈웨이트 모델</td><td>Kimi K3 (2.8조 파라미터, 최초 오픈 2.8T급)</td></tr><tr><td>가장 작은/경량 모델</td><td>Bonsai 27B (1비트 압축, 약 4GB, 폰 구동용)</td></tr><tr><td>가장 논쟁적인 소식</td><td>Meta의 Instagram 인물 태그 생성 기능 1주일 만 롤백</td></tr><tr><td>가장 규제 이슈성 소식</td><td>뉴욕주 데이터센터 모라토리엄 (50MW 이상, 최대 1년)</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>개발자</strong>: Claude Code 인앱 브라우저로 실제 배포 사이트를 열어 UI 요소를 클릭해 바로 텍스트/스타일 수정을 요청하고, X 같은 API 비용이 높은 사이트에서 리서치 자동화에 활용</li>
+<li><strong>콘텐츠 크리에이터</strong>: Seedream 5.0 Pro로 참조 이미지 기반 인포그래픽·광고 이미지·읽을 수 있는 텍스트 포함 이미지를 Art List에서 제작</li>
+<li><strong>교사</strong>: Claude for Teachers로 K-12 커리큘럼 연계 수업 자료를 무료로 제작</li>
+<li><strong>바쁜 직장인</strong>: Spotify 대화형 AI로 &quot;2년 전 듣던 스타일 플레이리스트 만들어줘&quot; 같은 자연어 요청으로 음악 큐레이션</li>
+<li><strong>에이전트 사용자</strong>: 1Password 연동 Claude나 DoorDash CLI를 통해 로그인이 필요한 작업이나 음식 주문을 에이전트에 위임(단, 대기자 명단 상태 확인 필요)</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>지난주(새 앱들, 음성 모드, 신모델, Fable 사용시간 연장 등)에 비해 이번 주는 비교적 조용한 한 주였다고 진행자는 평가한다. 다만 Kimi K3는 아직 오픈웨이트가 공개되지 않아 다음 주 이후 실제 벤치마크(BeautyBench 등) 검증이 예상되며, OpenAI의 스크린리스 스마트 스피커는 아직 루머 단계로 Apple과의 소송전과 맞물려 주목할 필요가 있다. 뉴욕주의 데이터센터 규제가 다른 주로 확산될지, Sunrun의 분산 컴퓨트 파일럿이 실제 채택으로 이어질지도 지켜볼 지점이다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>인앱 브라우저</td><td>앱 안에서 별도 창 전환 없이 웹을 여는 기능</td><td>코딩하다가 창을 안 바꾸고 바로 옆에서 웹사이트를 확인하는 것</td></tr><tr><td>오픈웨이트 모델</td><td>모델 가중치를 공개해 다운로드·파인튜닝 가능한 AI 모델</td><td>레시피를 공개해 누구나 요리법을 응용할 수 있게 한 것</td></tr><tr><td>1비트 양자화</td><td>모델 파라미터를 극단적으로 압축해 용량을 줄이는 기법</td><td>고화질 사진을 초소형 파일로 압축하는 것과 유사</td></tr><tr><td>파라미터(B/T)</td><td>모델 크기를 나타내는 단위, B=10억, T=1조</td><td>뇌의 뉴런 개수처럼 모델의 &quot;규모&quot; 지표</td></tr><tr><td>Terminal Bench</td><td>AI의 터미널(명령줄) 작업 수행 능력을 측정하는 벤치마크</td><td>개발자가 터미널로 하는 일을 AI가 얼마나 잘하는지 시험</td></tr><tr><td>데이터센터 모라토리엄</td><td>일정 기간 신규 데이터센터 허가를 중단하는 규제 조치</td><td>도로 공사 전 임시로 통행을 막는 것과 유사</td></tr><tr><td>분산 컴퓨트</td><td>중앙 서버 대신 여러 개인·가정의 장비를 모아 연산력을 확보하는 방식</td><td>여러 집의 태양광 패널을 모아 전력망을 구성하는 것과 비슷</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ss2LaCKUQmU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-07-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
