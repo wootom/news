@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="A Complete Guide to the New Claude Design"><title>A Complete Guide to the New Claude Design</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Futurepedia</span><span class="ey">MORNING DIGEST · 2026-07-20 · Futurepedia</span><span class="chip">🎬 영상</span></div><h1>A Complete Guide to the New Claude Design</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Futurepedia</td></tr><tr><td>주제</td><td>Claude Design 플랫폼 전체 기능·활용법 가이드</td></tr><tr><td>한줄요약</td><td>확장된 템플릿·디자인 시스템·모션 그래픽을 갖춘 Claude Design으로 온브랜드 디자인을 손쉽게 생성·편집한다</td></tr><tr><td>결론</td><td>완화된 사용량 제한과 Claude Code 연동, 일관된 온브랜드 제작 기능으로 강력해진 디자인 플랫폼</td></tr></tbody></table></div>
+<ul>
+<li>접근 경로: Claude 사이드 패널 → Design, 데스크톱 앱, 또는 <code>claude.ai/design</code></li>
+<li>유료 Claude 계정 보유 시 즉시 사용 가능, 사용량은 기존 Claude 크레딧에 통합</li>
+<li>과거 문제였던 사용량 제한이 해소되어 사용성 <span class="up">개선</span></li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>템플릿</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>변화</td><td>기존 5개 → 대폭 확장된 다양한 템플릿 제공</td></tr><tr><td>성격</td><td>다양한 창작 작업을 위한 구조화된 시작점</td></tr><tr><td>유의</td><td>시간이 지나면 옵션이 바뀔 수 있음</td></tr></tbody></table></div>
+<ul>
+<li>제공 템플릿(발표에서 언급된 예시): 모바일 앱 디자인, 슬라이드, 도큐먼트, 와이어프레임, 애니메이션, UI 목업, 이력서, 3D 오브젝트, 리서치 리포트, HTML 이메일, 컬러+타입 페어링, 다이어그램, 플라이어</li>
+<li>테스트 예시: 명상 앱(모바일), 미래 식량 덱(슬라이드), 연차 보고서(도큐먼트), 웰니스 앱(와이어프레임), 음악 제작 툴(UI 목업), 제품 디자이너 이력서, AGI 경로 리서치 리포트</li>
+<li>3D 오브젝트: 커스터마이즈 테이블 램프, 아이소메트릭 커피숍 인테리어 → 다양한 3D 에셋 포맷으로 내보내기 가능</li>
+</ul></section><section class="card s12" id="s3"><h2><span class="seq">03</span>디자인 시스템</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>정의</td><td>브랜드의 스타일·보이스 가이드라인</td></tr><tr><td>목적</td><td>Claude의 기본 디자인 경향에서 벗어나 프로젝트 전반에 걸쳐 브랜드 스타일 일관 적용</td></tr><tr><td>생성 방법</td><td>플러스 버튼, Design Systems 탭 → Create, 또는 Claude Code</td></tr><tr><td>입력 소스</td><td>GitHub·Figma 연동, 자체 에셋(이미지·로고·웹사이트) 업로드, 추가 노트</td></tr></tbody></table></div>
+<ul>
+<li>예시 브랜드: Future Fuel(AI 시대 대비 에너지 드링크) — 로고 이미지 1장 + 짧은 노트만으로 생성</li>
+<li>생성 결과물: 브랜드 정의, 보이스·톤, 아이코노그래피, 랜딩 페이지 아이디어, 버튼, 히어로 제품, 모노그램·워드마크, 컬러 팔레트, 슬라이드 스타일, 배지·버튼 스타일</li>
+<li>워드마크·설명 등 모든 부분을 수동 또는 Claude 요청으로 수정 가능</li>
+</ul></section><section class="card s12" id="s4"><h2><span class="seq">04</span>주요 기능별 활용</h2><h3>4-1. UI 목업(웹사이트)</h3>
+<div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>예시 프롬프트</td><td>Future Fuel 웹사이트(홈·샵·재료·소개 페이지) 생성</td></tr><tr><td>초기 질문</td><td>페이지 구조, 인터랙티브 여부, 카피 작성, 히어로 2~3개 옵션 등</td></tr><tr><td>결과</td><td>히어로 변형(A/B/C) 토글, 공지 바 토글, 호버 상태, 작동하는 샵·장바구니, 재료·소개 페이지</td></tr></tbody></table></div>
+<ul>
+<li>인라인 편집: 단어·크기·폰트·간격 정밀 편집 후 Save로 커밋 (Claude Code보다 빠름)</li>
+<li>편집 방식: 영역 선택·주석(annotate)·그리기, tweaks 패널로 대안(색·형태·크기) 실험</li>
+<li>고급 활용: 히어로 배경을 루핑 비디오로 교체(ChatGPT로 와이드 이미지 → VO로 애니메이션)</li>
+</ul>
+<h3>4-2. Claude Code 연동</h3>
+<div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>경로</td><td>Share → Send to Claude Code</td></tr><tr><td>방식</td><td>프롬프트 복사·붙여넣기, 또는 zip 다운로드 후 프로젝트로 사용</td></tr><tr><td>용도</td><td>프로덕션 사이트: 데이터베이스 연결, Stripe 결제 등 배포 작업</td></tr></tbody></table></div>
+<h3>4-3. 슬라이드</h3>
+<ul>
+<li>디자인 시스템 적용으로 웹사이트와 동일한 온브랜드 프레젠테이션 생성</li>
+<li>인라인 편집·주석·tweaks·발표자 노트 지원</li>
+<li>내보내기: 편집 가능한 PowerPoint, PDF, Canva 커넥터 연동</li>
+</ul>
+<h3>4-4. 도큐먼트</h3>
+<ul>
+<li>온브랜드 계약서·법률 양식·인보이스 등 제작 (예: 소매 인보이스 템플릿)</li>
+<li>전자 문서용으로 적합 (인쇄 용도는 제약)</li>
+</ul>
+<h3>4-5. 애니메이션(모션 그래픽) — 발표자 최다 활용 기능</h3>
+<div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>강점</td><td>간단한 프롬프트 + 트랜스크립트로 영상 발화와 완벽히 싱크되는 모션 그래픽 생성</td></tr><tr><td>실사용</td><td>영상 인트로·중간 설명 구간 시각화, 토킹헤드 콘텐츠</td></tr><tr><td>워크플로우</td><td>Gemini에 영상 투입 → 타임스탬프 포함 트랜스크립트 확보 → 붙여넣기, 토킹헤드 공간 지정</td></tr><tr><td>편집</td><td>자연어로 정밀 수정(예: 30초 시점 아이콘 초록색 전환, 화살표 위치 이동)</td></tr><tr><td>내보내기</td><td>Share → MP4로 편집 플랫폼에 삽입</td></tr></tbody></table></div>
+<ul>
+<li>로고 리빌 애니메이션도 프롬프트 한 줄로 고품질 생성</li>
+<li>한계: 페이스리스 설명 영상 제작용으로는 부적합, 지도 애니메이션·에펠탑 등은 왕복 조정 필요</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>총평</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>평가</th></tr></thead><tbody><tr><td>강점</td><td>완화된 사용량 제한, Claude Code 손쉬운 연동, 전 포맷 온브랜드 일관성</td></tr><tr><td>핵심 차별점</td><td>디자인 시스템 기반 브랜드 일관성 + 자연어 인라인 편집의 속도·편의성</td></tr><tr><td>최고 활용처</td><td>토킹헤드 영상용 모션 그래픽(발표자 실사용, 시간 대폭 절약)</td></tr><tr><td>주의점</td><td>3D는 별도 기능 성격(캔 재현 실패), 프로덕션은 Code 이관 필요</td></tr></tbody></table></div></section><section class="card s12" id="s6"><h2><span class="seq">06</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>Claude Design</td><td>Claude 사이드 패널·<code>claude.ai/design</code>에서 접근하는 AI 디자인 플랫폼</td></tr><tr><td>Design System</td><td>브랜드 스타일·보이스 가이드라인, 프로젝트 전반에 일관 적용</td></tr><tr><td>Tweaks</td><td>색·형태·크기 등 대안을 실험하는 편집 패널</td></tr><tr><td>Inline Edit</td><td>프롬프트 없이 텍스트·폰트·간격을 직접 편집하는 기능</td></tr><tr><td>3D Object</td><td>3D 에셋을 여러 포맷으로 내보낼 수 있는 별도 템플릿</td></tr><tr><td>VO</td><td>이미지를 애니메이션화하는 데 사용된 영상 생성 도구</td></tr><tr><td>Canva Connector</td><td>슬라이드를 Canva로 바로 내보내는 연동 기능</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>출처</h2><ul>
+<li>영상: <a href="https://www.youtube.com/watch?v=3RWm4inkS2E" target="_blank" rel="noopener">A Complete Guide to the New Claude Design</a> (Futurepedia, 2026-07-19)</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/3RWm4inkS2E" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Futurepedia · 2026-07-20</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

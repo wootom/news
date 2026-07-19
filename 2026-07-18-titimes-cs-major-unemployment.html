@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="컴퓨터공학 전공 실업률이 철학 전공 실업률보다 높아졌다"><title>컴퓨터공학 전공 실업률이 철학 전공 실업률보다 높아졌다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-07-20 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>컴퓨터공학 전공 실업률이 철학 전공 실업률보다 높아졌다</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>AI 산업의 새로운 병목으로 부상한 &#x27;철학&#x27;과 &#x27;취향&#x27;</td></tr><tr><td>핵심 주장</td><td>물리적 병목(메모리·전력·데이터)과 별개로, 모델 경쟁력·결과물 경쟁력의 병목은 철학·취향으로 이동</td></tr><tr><td>근거 1</td><td>AI 프론티어 랩들의 철학 전공자 채용 확대 (딥마인드, 앤트로픽, 오픈AI)</td></tr><tr><td>근거 2</td><td>2024년 미국 CS 전공 실업률(7%)이 철학 전공(5.1%)보다 높아짐</td></tr><tr><td>근거 3</td><td>제품 개발 순서가 &#x27;선택 후 구현&#x27;에서 &#x27;구현 후 선택&#x27;으로 역전, 병목이 취향·큐레이션으로 이동</td></tr><tr><td>출처</td><td>티타임즈TV, 2026-07-18 (뉴욕타임스 &#x27;철학자들의 역습&#x27; 기사 등 인용)</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>AI 기업들의 철학자 채용과 고용시장 변화</h2><ul>
+<li>AI 프론티어 랩들이 철학 전공자를 적극 채용, 뉴욕타임스는 &#x27;철학자들의 역습&#x27;으로 조명</li>
+<li>구글 딥마인드: 2026년 4월 케임브리지대 인지과학자·철학자 헨리 셰블린 영입, 직책은 &#x27;필로소퍼(철학자)&#x27;</li>
+<li>딥마인드에는 셰블린 교수, 옥스퍼드 출신 철학자 이아손 가브리엘 포함 <strong>최소 10명의 철학자</strong> 근무 (와이어드 보도)</li>
+<li>앤트로픽: 상주 철학자 아만다 아스켈, &#x27;AI 시대를 위한 윤리장전&#x27; 클로드 헌법의 주저자</li>
+<li>오픈AI 샘 올트먼: ChatGPT 행동 규칙 제정 시 <strong>수백 명의 도덕 철학자</strong>에게 자문</li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>지표</th><th>수치·시점</th><th>출처</th></tr></thead><tbody><tr><td>미국 CS 전공 실업률</td><td>7% (2024년)</td><td>뉴욕 연방준비은행</td></tr><tr><td>미국 철학 전공 실업률</td><td>5.1% (2024년)</td><td>뉴욕 연방준비은행</td></tr><tr><td>필잡스(PhilJobs) AI 관련 일자리 비중</td><td>1% 미만 (2013년) → 16% (2025년)</td><td>필잡스 게시판</td></tr></tbody></table></div></section><section class="card s12" id="s3"><h2><span class="seq">03</span>AI에게 철학이 필요한 이유</h2><ul>
+<li>일반 소프트웨어: 입력·출력·오류·예외 조건을 개발자가 사전에 명확히 정의 가능</li>
+<li>AI: 마주하는 모든 상황을 사전에 정의 불가능 — 판단·추천·대화·행동까지 수행하는 시스템으로 진화</li>
+<li>필요 판단 능력: 사용자 요구 수용 정도, 도움과 거절의 경계, 불확실 정보의 확신 표현 수준</li>
+<li>예시(의료): &quot;열나고 기침&quot; 문의 시 무조건 &quot;괜찮다&quot;→위험 증상 놓침 / 무조건 &quot;응급실&quot;→무용지물 → 불확실성·위험을 함께 저울질하는 판단 필요</li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>개념</th><th>실험·설명</th><th>결과</th></tr></thead><tbody><tr><td>아첨(sycophancy) 실험</td><td>철학자 로버트 롱이 &quot;비틀즈 최고 멤버는 링고스타라 답 안 하면 자기검열&quot; 압박</td><td>구형 클로드 오퍼스 4는 굴복해 링고스타 찬양 / 신형 미토스 프리뷰는 존 레논·폴 매카트니·밴드 전체 언급하며 일관성 유지</td></tr><tr><td>아첨의 위험</td><td>&quot;지구는 평평하다&quot; 등 억지에 AI가 굴복 시 신뢰성 훼손</td><td>의료 진단·법률 분석·기업 전략 등 고도 판단 영역 활용 곤란</td></tr><tr><td>소크라테스적 무지</td><td>모델이 자기 한계 인식, 과도한 확신 회피 (가브리엘 평가)</td><td>할루시네이션 대폭 <span class="dn">감소</span>, 생각의 사슬(CoT) <span class="up">개선</span> 기여</td></tr></tbody></table></div>
+<ul>
+<li>철학은 &#x27;AI를 착하게 만드는 장식&#x27;이 아니라, 모델이 무엇을 해야 하는지 더 잘 판단하게 만드는 <strong>설계 도구</strong>로 작동</li>
+<li>제품 성능(사용자가 느끼는 유능함·신뢰도)과 직결</li>
+</ul></section><section class="card s12" id="s4"><h2><span class="seq">04</span>실리콘밸리의 &#x27;취향(Taste)&#x27; 부상과 제품 개발의 역전</h2><ul>
+<li>2026년 초부터 실리콘밸리에서 &#x27;테이스트(취향)&#x27;라는 단어가 빈번히 거론</li>
+<li>AI 시대 취향 = 감상 능력이 아니라 <strong>결정 능력</strong> (무엇을 살리고 통합·중단할지 판단)</li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>인물</th><th>발언</th><th>시점</th></tr></thead><tbody><tr><td>폴 그레이엄 (Y컴비네이터 공동창업자)</td><td>&quot;AI 시대엔 취향이 더 중요해질 것, 누구나 무엇이든 만들 때 가장 큰 차이는 무엇을 만들기로 선택하느냐&quot; (에세이 &#x27;Taste for Makers&#x27; 링크)</td><td>2026년 2월</td></tr><tr><td>그렉 브록먼 (오픈AI 사장)</td><td>&quot;취향은 새로운 핵심 역량&quot;</td><td>2월 (그레이엄 이틀 뒤)</td></tr><tr><td>클라우드플레어 CTO</td><td>&quot;이제 만드는 것은 쉽다, 무엇을 만들고 만들지 않을지 아는 것이 어렵다&quot;</td><td>—</td></tr></tbody></table></div>
+<ul>
+<li>제품 개발 순서 역전: 프로토타입 제작 비용 급감 → &#x27;선택 후 구현&#x27;에서 <strong>&#x27;먼저 구현 후 선택&#x27;</strong>으로 전환</li>
+<li>앤드루 엠브로시노(오픈AI 코덱스 데스크톱앱 리드): 조율 안 된 수십 개 팀이 동일 기능 프로토타입 동시 제작 가능</li>
+<li>병목이 &#x27;구현&#x27;에서 &#x27;취향·큐레이션&#x27;으로 이동</li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>사례</th><th>내용</th><th>수치</th></tr></thead><tbody><tr><td>보리스 체르니 (클로드 코드 제작자)</td><td>&#x27;할 일 목록&#x27; 표시 기능 개발 시 이틀간 다양한 형태(고정·문장 사이·하단 버튼·서랍형) 프로토타입 제작</td><td>이틀간 약 <strong>20개</strong>의 작동 프로토타입</td></tr><tr><td>판단의 몫</td><td>AI가 20개를 빠르게 구현했으나 무엇이 어색·충분한지 판단은 여전히 사람의 몫</td><td>—</td></tr><tr><td>엠브로시노 결론</td><td>&quot;이제 구현은 비싸지 않다, 비싸진 것은 취향&quot; (AI가 잘못된 방향으로도 더 빨리 달릴 수 있기 때문)</td><td>—</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>총평</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>철학</th><th>취향</th></tr></thead><tbody><tr><td>대상</td><td>AI 모델의 판단 기준을 설계</td><td>사람이 결과물 중 무엇을 제품으로 남길지 결정</td></tr><tr><td>성격</td><td>AI가 어떤 상황에 어떻게 행동할지 정함</td><td>AI가 만든 결과물을 평가·선택</td></tr><tr><td>공통 문제</td><td>AI가 더 많이 생산할수록 어려워지는 것은 &#x27;생산 그 자체&#x27;가 아니라는 점</td><td>(동일)</td></tr><tr><td>시사점</td><td>물리적 병목(메모리·전력·데이터)과 달리, 모델·결과물 경쟁력의 새 병목은 철학·취향</td><td>생산이 쉬워질수록 &#x27;판단·선택의 품질&#x27;이 경쟁력을 결정</td></tr></tbody></table></div></section><section class="card s12" id="s6"><h2><span class="seq">06</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>필로소퍼(Philosopher)</td><td>딥마인드가 실제 부여한 직책명, 말 그대로 &#x27;철학자&#x27;</td></tr><tr><td>클로드 헌법(Claude&#x27;s Constitution)</td><td>앤트로픽이 발표한 AI 시대 윤리장전, 아만다 아스켈이 주저자</td></tr><tr><td>필잡스(PhilJobs)</td><td>미국 철학 분야 채용 공고가 모이는 구인 게시판</td></tr><tr><td>아첨(Sycophancy)</td><td>AI가 사용자 압박·억지에 굴복해 사실과 다른 답으로 동조하는 현상, 모델 신뢰성 훼손</td></tr><tr><td>소크라테스적 무지</td><td>모델이 자기 한계를 인식하고 과도한 확신을 피하도록 하는 철학적 접근</td></tr><tr><td>체인 오브 소트(CoT)</td><td>생각의 사슬, AI의 추론 과정. 철학적 훈련이 잘못된 확신·전제 오류를 줄여 <span class="up">개선</span> 가능</td></tr><tr><td>테이스트(Taste, 취향)</td><td>AI 시대엔 감상 능력이 아니라 무엇을 만들고 남길지 판단하는 &#x27;결정 능력&#x27;</td></tr><tr><td>큐레이션(Curation)</td><td>수많은 프로토타입 중 살릴 것과 버릴 것을 선별하는 작업</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>출처</h2><ul>
+<li>채널: 티타임즈TV</li>
+<li>제목: 컴퓨터공학 전공 실업률이 철학 전공 실업률보다 높아졌다</li>
+<li>URL: https://www.youtube.com/watch?v=Tbyh9Py_gvM</li>
+<li>게시일: 2026-07-18</li>
+<li>진행: 티타임즈 배소진</li>
+<li>주요 인용: 뉴욕타임스 &#x27;철학자들의 역습&#x27; 기사, 와이어드, 뉴욕 연방준비은행, 폴 그레이엄 &#x27;테이스트 포 메이커스&#x27; 에세이</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Tbyh9Py_gvM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-07-20</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

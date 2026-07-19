@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="IT뉴스 - Kimi K3 열풍, Fable 5 구독제 계속, 오픈AI 하드웨어, grok-build 오픈소스, Gemini Spark, Lucy 2.5 등"><title>IT뉴스 - Kimi K3 열풍, Fable 5 구독제 계속, 오픈AI 하드웨어, grok-build 오픈소스, Gemini Spark, Lucy 2.5 등</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">MORNING DIGEST · 2026-07-20 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>IT뉴스 - Kimi K3 열풍, Fable 5 구독제 계속, 오픈AI 하드웨어, grok-build 오픈소스, Gemini Spark, Lucy 2.5 등</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>조코딩 JoCoding</td></tr><tr><td>영상</td><td>IT뉴스 주간 업데이트 (약 93분 라이브)</td></tr><tr><td>게시일</td><td>2026-07-19</td></tr><tr><td>메인 주제</td><td>중국 문샷AI의 오픈웨이트 모델 Kimi K3가 프론티어급 성능으로 화제</td></tr><tr><td>한줄 요약</td><td>오픈웨이트 Kimi K3가 코드 아레나에서 미국 모델을 처음 앞지르자 클로드는 Fable 5를 구독제에 다시 편입하는 등 시장이 재편</td></tr><tr><td>결론</td><td>오픈웨이트가 프론티어에 근접·일부 추월 → 미국 폐쇄형 랩들이 가격·구독 정책으로 대응, 온디바이스·로봇·영상 생성까지 오픈웨이트 확산</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>주요 뉴스 요약</h2><div class="tbl-wrap"><table><thead><tr><th>#</th><th>뉴스</th><th>핵심</th></tr></thead><tbody><tr><td>0</td><td>깃허브 접속 권한 유출 보안 권고</td><td>경찰청이 7/14 이례적 사이버보안 권고문 배포, 깃허브 개인 액세스 토큰 다수 외부 유출, 개인 액세스 토큰 즉시 폐기·재발급 권고</td></tr><tr><td>1</td><td>Kimi K3 공개 (문샷AI)</td><td>2.8조 파라미터 오픈웨이트, 100만 컨텍스트, 프론트엔드 코드 아레나에서 미국(Fable 5·GPT 5.6) 처음 추월해 1위</td></tr><tr><td>2</td><td>Kimi K3 가격·성능</td><td>API 100만 토큰당 입력 3달러·캐시 0.3·출력 15달러, 코딩 벤치 실측 69점(Fable 5 70점), 오픈웨이트 27일 공개 예정</td></tr><tr><td>3</td><td>시진핑 WAIC 등장</td><td>세계AI컨퍼런스(WAIC)에 시진핑 직접 등장, 오픈소스·개방성·5년간 5,000개 AI 교육/세미나 기획 강조</td></tr><tr><td>4</td><td>클로드 Fable 5 구독 편입</td><td>7/20부터 Max·팀 프리미엄 플랜에 Fable 5 포함(50% 한도), 당초 API 전용 전환 계획 철회</td></tr><tr><td>5</td><td>오픈AI 하드웨어 코덱스 마이크로</td><td>워크라우더 협업 키보드형 기기 230달러, 음성 입력·에이전트 상태 컬러 표시, 출시 후 품절</td></tr><tr><td>6</td><td>조니 아이브 협업 기기 근황</td><td>화면 없는 휴대형 AI 스피커, AI 컴패니언 지향, 카메라·센서·움직이는 기계 요소 탑재 예정</td></tr><tr><td>7</td><td>grok-build CLI 보안사고·오픈소스</td><td>전체 깃 저장소를 무단 업로드(약 26,000배 데이터), XAI 업로드 삭제·기능 비활성화, 이후 grok-build 오픈소스(Apache 2.0) 공개</td></tr><tr><td>8</td><td>구글 Gemini Spark 한국 공개</td><td>구글 I/O 발표 기능, 구글 AI 울트라 구독자 대상 한국 포함 확대, Gmail·드라이브·캘린더·유튜브 연동 자동화</td></tr><tr><td>9</td><td>구글 Gemma 4 업그레이드</td><td>커뮤니티 피드백 기반 성능 <span class="up">개선</span>(일부 <span class="up">+10%</span>), 플래시 어텐션 적용으로 첫 토큰 시간 최대 31% <span class="dn">감소</span></td></tr><tr><td>10</td><td>본사(Bonsai) 27B 온디바이스</td><td>프리즘ML이 Qwen3 27B를 1비트 양자화(3.9GB)로 스마트폰 구동, 벤치 85→76점 유지</td></tr><tr><td>11</td><td>싱킹머신즈 인클링</td><td>미라 무라티 창업사, 오픈웨이트 공개, Kimi K3 대비 열세지만 오디오(MC 56.6·보이스벤치 91.4) 우수</td></tr><tr><td>12</td><td>모바일 1 영상 생성</td><td>스마트폰 구동 오픈웨이트 영상 모델, 5초 480p 16fps 영상을 20초 내 생성, 2.25B Wan 대비 우수</td></tr><tr><td>13</td><td>완 스트리머 0.3</td><td>실시간 AI 인플루언서, 동작 상호작용 지원, 지연 0.2초·전체 0.5초, 오픈웨이트 아님</td></tr><tr><td>14</td><td>Lucy 2.5</td><td>실시간 라이브 영상 변환(옴니 라이브 버전), 가상 캐릭터/AI 필터 실시간 적용</td></tr><tr><td>15</td><td>엔비디아 동작 생성 모델</td><td>텍스트 기반 대화형 인간 동작 생성 오픈웨이트, 로봇 제어 확장 가능성</td></tr><tr><td>16</td><td>완댄서(WanDancer) 14B</td><td>음악에 맞춰 안무 생성 오픈웨이트, 케이팝·클래식·스트릿 등 자연스러운 춤 생성</td></tr><tr><td>17</td><td>엔진AI 로봇 격투/호버보드</td><td>중국 엔진AI 휴머노이드 격투 영상 바이럴(일론 머스크 반응), 자율비행 호버보드 로봇 공개</td></tr><tr><td>18</td><td>선데이 로보틱스 액트 2</td><td>단일 파인튜닝 예시로 신규 행동 학습, 제로샷 99% 성공률(빨래 개기 등)</td></tr><tr><td>19</td><td>업스테이지 솔라 오픈2 웨이트</td><td>독자 파운데이션 모델 사업, 7/22 오후 6시 허깅페이스 공개, 조코딩 채널과 협업 라이브</td></tr></tbody></table></div></section><section class="card s12" id="s3"><h2><span class="seq">03</span>심화 토픽 A — Kimi K3 (문샷AI)</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>개발사</td><td>중국 문샷AI, 기업가치 약 200억 달러(20B) — 오픈AI·앤트로픽 대비 소규모</td></tr><tr><td>스펙</td><td>2.8조 파라미터, 100만 토큰 컨텍스트, 27일 오픈웨이트 공개 예정</td></tr><tr><td>코드 아레나</td><td>프론트엔드 코드 아레나에서 Fable 5·GPT 5.6 제치고 1위, 오픈웨이트 최초로 미국 추월</td></tr><tr><td>코딩 벤치</td><td>딥소프트웨어 엔지니어 공식 67.5점 표기(실측 69점), Fable 5는 70점(1% 차), GPT 5.6 Sol 73%</td></tr><tr><td>특이 벤치</td><td>하비랩(법률) 벤치에서 Fable 5 대비 약 2배 점수 → 단순 증류 아님 시사</td></tr><tr><td>보안 능력</td><td>벌셀 CEO &quot;사이버보안 최상위·과적합 아님&quot; 평가, 오픈웨이트라 안전장치 해제 시 악용 위험</td></tr><tr><td>가격</td><td>API 100만 토큰당 입력 3달러·캐시 0.3·출력 15달러(Fable 5 출력 50달러 대비 저렴), 월 39달러 코딩 티어</td></tr><tr><td>실측 비용</td><td>작업당 비용 0.95달러로 GPT 5.6(1.04) 수준, 클라인 실험 시 Fable 대비 1.7배 토큰 사용</td></tr><tr><td>사례</td><td>macOS 스타일 OS, 동물의 숲 유사 게임 등 원샷 구현 데모 공개</td></tr><tr><td>투자 관점</td><td>세미애널리시스 &quot;엔비디아·HBM·D램에 긍정적&quot;, 제본스 패러독스로 오히려 수요 증가 전망</td></tr></tbody></table></div></section><section class="card s12" id="s4"><h2><span class="seq">04</span>심화 토픽 B — Fable 5 구독제 편입 (클로드)</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>기존 계획</td><td>7/19까지만 구독제에서 Fable 사용, 이후 API 전용 전환 예정이었음</td></tr><tr><td>변경</td><td>7/20부터 모든 Max·팀 프리미엄 플랜에 Fable 5 포함</td></tr><tr><td>한도</td><td>전체 사용량의 50%까지만 Fable, 나머지는 오퍼스 등 다른 모델</td></tr><tr><td>공식 사유</td><td>&quot;Fable 수요 예측 어려움 + 추가 용량 확보&quot;로 구독 편입</td></tr><tr><td>프로 구독</td><td>크레딧 차감(API) 방식 접근 가능하나 비싸 구독제가 유리</td></tr><tr><td>배경 해석</td><td>GPT 5.6·Kimi K3 등장으로 Fable 제외 시 하드 유저 이탈 우려 → 방어적 선택</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>심화 토픽 C — grok-build 보안사고·오픈소스 (XAI)</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>문제</td><td>grok-build CLI가 질문 시점 파일뿐 아니라 전체 깃 저장소·기 히스토리·미참조 파일까지 업로드</td></tr><tr><td>규모</td><td>필요 데이터 대비 약 26,000배 이상 전송</td></tr><tr><td>노출 위험</td><td>API 키·AWS/GCP 자격증명·DB 비밀번호·SSH 키, 삭제된 비밀정보까지 포함 가능</td></tr><tr><td>대응</td><td>XAI 서버 업로드 기능 비활성화·데이터 삭제 발표, 일론 머스크 직접 삭제 언급</td></tr><tr><td>후속</td><td>grok-build 하네스를 Apache 2.0 오픈소스로 공개(3일 전 깃허브), grok 4.5 기반 동작 투명화</td></tr></tbody></table></div></section><section class="card s12" id="s6"><h2><span class="seq">06</span>총평</h2><div class="tbl-wrap"><table><thead><tr><th>관점</th><th>내용</th></tr></thead><tbody><tr><td>오픈웨이트 부상</td><td>Kimi K3가 프론트엔드 코드 아레나에서 미국을 처음 추월, 200억 달러 소규모사가 프론티어급 달성</td></tr><tr><td>시장 반응</td><td>클로드가 Fable 5를 구독제로 재편입하는 등 폐쇄형 랩이 가격·정책으로 방어</td></tr><tr><td>온디바이스</td><td>27B 1비트 양자화·모바일 영상 생성 등 스마트폰 구동 모델 확산</td></tr><tr><td>보안 경각심</td><td>깃허브 토큰 유출 권고, grok-build 무단 업로드 사고로 AI 코딩 도구의 데이터 전송 투명성 이슈 부각</td></tr><tr><td>로봇·창작</td><td>엔진AI 휴머노이드 격투, 액트 2 제로샷 99%, 완댄서 안무 생성 등 물리·창작 영역 오픈웨이트 확대</td></tr><tr><td>국내</td><td>업스테이지 솔라 오픈2 웨이트 7/22 공개(조코딩 협업 라이브), 한국 오픈웨이트 저력 시험대</td></tr></tbody></table></div></section><section class="card s12" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>오픈웨이트(Open Weight)</td><td>모델 가중치를 공개해 누구나 다운로드·자체 서버에서 구동 가능한 모델</td></tr><tr><td>Kimi K3</td><td>중국 문샷AI의 2.8조 파라미터 오픈웨이트 모델, 코딩·보안·법률에서 프론티어급</td></tr><tr><td>Fable 5</td><td>클로드 계열 최상위 모델, 코딩 강점, 토큰 소모·가격이 높음</td></tr><tr><td>GPT 5.6 (Sol)</td><td>오픈AI 상위 모델, API 출력 30달러 수준</td></tr><tr><td>프론트엔드 코드 아레나</td><td>두 모델 결과를 사용자 투표로 비교하는 벤치마크</td></tr><tr><td>코덱스 마이크로</td><td>오픈AI·워크라우더 협업 키보드형 에이전트 코딩 하드웨어(230달러)</td></tr><tr><td>grok-build</td><td>XAI의 grok 기반 CLI 개발 도구(하네스), Apache 2.0 오픈소스 공개</td></tr><tr><td>Gemini Spark</td><td>구글의 워크스페이스 연동 에이전트(오픈클로 유사), 한국 포함 확대</td></tr><tr><td>Gemma 4</td><td>구글 오픈웨이트 모델, 커뮤니티 피드백 기반 성능 <span class="up">개선</span></td></tr><tr><td>1비트 양자화</td><td>파라미터를 0/1로 압축해 용량·연산을 크게 줄이는 기법</td></tr><tr><td>제본스 패러독스</td><td>효율 향상이 오히려 총수요를 늘린다는 경제 역설</td></tr><tr><td>WAIC</td><td>세계인공지능컨퍼런스(World Artificial Intelligence Conference)</td></tr><tr><td>액트 2(Act 2)</td><td>선데이 로보틱스 모델, 단일 예시로 신규 행동 제로샷 99% 성공</td></tr><tr><td>Lucy 2.5</td><td>실시간 라이브 영상을 AI로 변환하는 옴니 라이브 기술</td></tr><tr><td>솔라 오픈2 웨이트</td><td>업스테이지의 한국 독자 오픈웨이트 모델(7/22 공개)</td></tr></tbody></table></div></section><section class="card s6" id="s8"><h2><span class="seq">08</span>출처</h2><ul>
+<li>영상: <a href="https://www.youtube.com/watch?v=mxSVL5fOtyU" target="_blank" rel="noopener">조코딩 JoCoding — IT뉴스</a></li>
+<li>채널: 조코딩 JoCoding</li>
+<li>게시일: 2026-07-19</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/mxSVL5fOtyU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-07-20</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
