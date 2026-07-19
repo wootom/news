@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Cerebras Just Killed Second Brains"><title>Cerebras Just Killed Second Brains</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-hub"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nick Saraev</span><span class="ey">MORNING DIGEST · 2026-07-20 · Nick Saraev</span><span class="chip">🎬 영상</span></div><h1>Cerebras Just Killed Second Brains</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Nick Saraev</td></tr><tr><td>주제</td><td>Cerebras가 공개한 사내 지식베이스(RAG 기반) 구조 해설 및 직접 구축 실습</td></tr><tr><td>한 줄 요약</td><td>화려한 3D 브레인 시각화 없이, Slack·Wiki·GitHub 등 사내 데이터를 embedding으로 흡수해 누구나 질문할 수 있는 실용적 지식베이스가 진짜 세컨드 브레인이라는 주장</td></tr><tr><td>결론</td><td>문서 개수보다 &quot;가장 관련성 높은 데이터를 얼마나 잘 검색하느냐&quot;가 핵심이며, 시간·출처·재현성 가중치가 붙은 자동 수집형 RAG가 Obsidian식 시각화보다 ROI가 높음</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>RAG(검색증강생성) 기본 원리 — 표 위주</h2><div class="tbl-wrap"><table><thead><tr><th>개념</th><th>설명</th></tr></thead><tbody><tr><td>RAG 정의</td><td>전체 데이터가 아닌 특정 데이터셋에 대해 답하도록, 질문 앞에 관련 정보를 미리 삽입(prepend)하는 방식</td></tr><tr><td>일반 질의 문제</td><td>&quot;Nick 키가 몇이야?&quot; → 모델이 어느 Nick인지 몰라 답이 발산(Nick Jonas 5&#x27;10 등)</td></tr><tr><td>정보 주입 효과</td><td>프롬프트에 &quot;Nick is 6&#x27;2&quot; 삽입 시 모든 변동성이 붕괴되어 정답 고정</td></tr><tr><td>embedding space</td><td>LLM이 직관적으로 이해하는 개념 저장 공간, 원본 데이터의 대체 표현</td></tr><tr><td>실무 응용</td><td>&quot;지난주 Peter 강연 내용?&quot; 같은 사내 질문에 관련 정보를 검색·주입해 답변</td></tr></tbody></table></div></section><section class="card s12" id="s3"><h2><span class="seq">03</span>지식베이스 아나토미와 데이터 흐름 — 표 위주</h2><div class="tbl-wrap"><table><thead><tr><th>3대 구성</th><th>역할</th><th>Nick 적용 여부</th></tr></thead><tbody><tr><td>1) 수집·저장 플랫폼</td><td>사내 데이터(대화·SOP·이메일)를 시스템 내부로 반입</td><td>적용</td></tr><tr><td>2) 질의 플랫폼</td><td>저장된 데이터를 추출·조회(MCP·웹UI·AI에이전트·챗박스)</td><td>적용</td></tr><tr><td>3) 인증·권한·감사 레이어</td><td>authentication/authorization + auditing·analytics</td><td>미적용(소규모라 생략)</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th>데이터 소스</th><th>성격</th></tr></thead><tbody><tr><td>Slack(또는 Discord·이메일)</td><td>사람들이 대화하는 메시징 플랫폼</td></tr><tr><td>Wiki·Confluence</td><td>체크리스트·SOP·온보딩 페이지</td></tr><tr><td>코드 레포·GitHub</td><td>소프트웨어 비즈니스에 중요</td></tr><tr><td>net list·PRM docs</td><td>소프트웨어 관련 문서</td></tr><tr><td>커스텀 DB</td><td>KPI·매출 등 정형 데이터</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th>embedding 처리</th><th>내용</th></tr></thead><tbody><tr><td>원리</td><td>원본 텍스트(&quot;Nick thinks penguins are cool&quot;)를 LLM에 통과시켜 who/why/when/where 질문</td></tr><tr><td>메타데이터 부착</td><td>시간(5:32pm), 주체, 설명, 발언 의도 등 outcrop 정보 추가(디지털 카메라의 EXIF 비유)</td></tr><tr><td>가중치(weighting)</td><td>출처·최신성·관련성 기준 랭킹, 3년 전 하위직 발언보다 30초 전 창업자 발언을 강하게 가중</td></tr><tr><td>구조화 아티팩트</td><td>Slack 스레드를 window로 분할 → question·summary·resolution·systems·source ID 자동 생성</td></tr></tbody></table></div></section><section class="card s12" id="s4"><h2><span class="seq">04</span>실제 구축 과정과 성능 검증 — 표 위주</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>내용</th></tr></thead><tbody><tr><td>코딩 에이전트</td><td>Claude Code V2.1.211 사용(Opus 4.8 언급), Codex·GPT 5.6·Fable 5 등 대체 가능</td></tr><tr><td>입력 방식</td><td>Cerebras 블로그 글 전문을 터미널(Ghostty)에 붙여넣고 &quot;Nick Saraev Media LLC용으로 만들어달라&quot; 요청</td></tr><tr><td>파이프라인 대상</td><td>Slack, Gmail 3개 계정, GitHub, YouTube 채널</td></tr><tr><td>셋업 소요</td><td>파이프라인당 약 5~10분(Gmail은 Google Cloud 프로젝트·Gmail API·OAuth·refresh token 필요)</td></tr><tr><td>시각화</td><td>/btw로 별도 스레드 실행해 ASCII 다이어그램 생성(connectors→distillation(Haiku)→Postgres 단일 테이블→full-text+embedding 검색)</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th>성능 비교</th><th>지식베이스 있음</th><th>지식베이스 없음</th></tr></thead><tbody><tr><td>동일 20문항 정답</td><td>17/20 정답(나머지 3개는 정직한 부분답·거부)</td><td>0/20</td></tr><tr><td>예시 질의</td><td>Stacked 팟캐스트에 유료 스폰서 제안한 AI사 → abacus.ai(ChatLLM 홍보)</td><td>답변 불가</td></tr><tr><td>규모</td><td>Nick 약 640개 문서</td><td>Cerebras는 수십만 개 추정</td></tr><tr><td>일일 질의량</td><td>Cerebras 사내 하루 약 15,000건 질의(작성자 Isaac·Daniel·Mike)</td><td>—</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>총평</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>강점</td><td>자동 수집·enrichment로 관리 부담 없음, 시간·출처 가중으로 naive RAG 대비 정확도 우위, 신규 팀원 온보딩 자원으로 즉시 활용</td></tr><tr><td>약점</td><td>시각적으로 화려하지 않음(플로팅 브레인 없음), 예시 데이터가 다소 난해, 소규모팀은 인증·감사 레이어 미구현</td></tr><tr><td>시사점</td><td>세컨드 브레인의 본질은 시각화가 아니라 고품질 검색이며, 검색 품질은 문서 수가 아닌 관련성 높은 문서 확보 능력에 좌우됨</td></tr></tbody></table></div></section><section class="card s12" id="s6"><h2><span class="seq">06</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>RAG</td><td>Retrieval Augmented Generation, 질문 앞에 관련 정보를 검색·주입해 생성 품질을 높이는 기법</td></tr><tr><td>embedding</td><td>원본 데이터를 LLM이 이해하는 벡터/개념 공간으로 변환한 표현</td></tr><tr><td>Cerebras</td><td>초고속 추론 칩을 만드는 대형 AI 하드웨어 기업, 본 지식베이스 사례의 원천</td></tr><tr><td>distillation</td><td>각 스레드를 LLM(Haiku)에 통과시켜 question·summary·resolution 등으로 요약·구조화하는 단계</td></tr><tr><td>full-text 검색</td><td>정확한 토큰 일치를 찾는 검색 방식(embedding 검색과 병행)</td></tr><tr><td>MCP</td><td>데이터 질의·연결에 쓰이는 인터페이스(connectors 중 하나)</td></tr><tr><td>Maker School</td><td>Nick의 90일 고객 확보 로드맵(환불 보증) 유료 프로그램</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>출처</h2><ul>
+<li>영상: <a href="https://www.youtube.com/watch?v=eCx3SSCcISo" target="_blank" rel="noopener">Cerebras Just Killed Second Brains</a> — Nick Saraev</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/eCx3SSCcISo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nick Saraev · 2026-07-20</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
