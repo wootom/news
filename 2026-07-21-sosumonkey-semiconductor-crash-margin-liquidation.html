@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="반도체 폭락과 빚투 청산"><title>반도체 폭락과 빚투 청산</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>소수몽키</span><span class="ey">MORNING DIGEST · 2026-07-21 · 소수몽키</span><span class="chip">🎬 영상</span></div><h1>반도체 폭락과 빚투 청산</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>소수몽키</td></tr><tr><td>길이</td><td>약 31분</td></tr><tr><td>요지</td><td>AI 인프라 고변동 조정 — 표면 악재(중국·데이터센터)보다 <strong>역대급 레버리지 청산</strong>이 본질</td></tr><tr><td>결론</td><td>AI 사이클 종료 아님, 조정 재료. V자 반등은 어려움 — 8월~중간선거까지 과열 해소 예상</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>하락 폭 (고점 대비)</h2><div class="tbl-wrap"><table><thead><tr><th>자산</th><th>낙폭</th></tr></thead><tbody><tr><td>반도체 지수</td><td>올해 이번 주만 <span class="dn">-10%</span>, 고점 대비 급락</td></tr><tr><td>메모리</td><td>고점 대비 <strong><span class="dn">-35.2%</span></strong> (현 사이클 주도주)</td></tr><tr><td>반도체 ETF</td><td><span class="dn">-20%</span> (약세장 진입 기준)</td></tr><tr><td>나스닥</td><td><span class="dn">-7.1%</span></td></tr><tr><td>AI 인프라 주도주</td><td>대부분 고점 대비 30~40% <span class="dn">하락</span></td></tr></tbody></table></div></section><section class="card s12" id="s3"><h2><span class="seq">03</span>악재 1 — 중국 키미 K3 쇼크</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>성격</td><td>&#x27;딥시크 쇼크 2.0&#x27; — 2025.1은 가격, 이번은 <strong>성능 충격</strong></td></tr><tr><td>위상</td><td>종합 성능 4위권, 프론티어 코드 아레나 첫 미국 추월</td></tr><tr><td>시장 논리 1</td><td>중국 AI 투자 규모는 미국의 1/10 미만인데 성능 근접 → &quot;막대한 투자 필요한가&quot; 의구심</td></tr><tr><td>시장 논리 2</td><td>가성비 중국 모델로 수요 이탈 → 오픈AI·앤트로픽 수익성 우려</td></tr><tr><td>정황</td><td>시진핑 세계AI대회 첫 등장 연설, 29개국 AI 협력기구 결성, 오픈소스 개방 선언</td></tr><tr><td>저자 시각</td><td>단기 조정 핑계용. &quot;베꼈다&quot;(증류) 논란도 있으나 중장기 미중 AI 군비경쟁은 심화</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>악재 2 — 데이터센터 건설 지연</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>우려</td><td>중간선거 앞두고 정치 이슈로 데이터센터 건설 예상대로 안 될 수 있음</td></tr><tr><td>인용</td><td>前 백악관 AI 총괄 &quot;규제 쌓으면 AI 경쟁에서 진다&quot; 경고</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>본질 — 역대급 레버리지 청산</h2><div class="tbl-wrap"><table><thead><tr><th>지표</th><th>내용</th></tr></thead><tbody><tr><td>BofA 설문</td><td>펀드매니저 <strong>82%가 반도체를 최대 과열</strong>로 지목(역대급)</td></tr><tr><td>골드만삭스</td><td>대량 레버리지(빚투) 청산 진행, 여름 실적 후 새 주도주 윤곽</td></tr><tr><td>미국 마진부채(B2)</td><td>역대 4번째 과열(닷컴·금융<span class="dn">위기</span>·코로나 포함)</td></tr><tr><td>개인 실태</td><td>대출·레버리지 상품 강제 청산, 물탈 현금 소진 — 본주는 버티기 가능하나 레버리지는 횡보만 해도 녹음</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>매매 전략 (개인 의견)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>스탠스</td><td>보수적 — 추가매수 신중, 현금 비중 확보</td></tr><tr><td>과열 해소</td><td>빠르면 8월 초중순, 늦으면 중간선거(9~10월)까지 기간 조정</td></tr><tr><td>참고 상품</td><td>SGOV ETF(달러 현금), 디램/반도체/나스닥/S&amp;P500 ETF 분할매수</td></tr><tr><td>다음 주 관건</td><td><strong>알파벳 실적(수요일 장마감 후)</strong> — AI 인프라 반등 여부 좌우</td></tr><tr><td>기타</td><td>애플 올해 빅테크 1위(<span class="up">+22%</span>)·신고가, 유가·금리 <span class="up">상승</span>·지정학(미군 사망) 추가 변수</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>증류(Distillation)</td><td>상위 모델의 대화·출력을 뽑아 하위 모델을 학습시키는 기법</td></tr><tr><td>마진부채(B2)</td><td>빚을 내 투자하는 신용융자 잔고, 과열·정점의 선행 지표</td></tr><tr><td>토큰 지수</td><td>AI 토큰 비용 추이, <span class="dn">하락</span> 시 저가경쟁·프론티어 수익성 <span class="dn">악화</span> 신호</td></tr></tbody></table></div></section><section class="card s6" id="s8"><h2><span class="seq">08</span>출처</h2><ul>
+<li>영상: <a href="https://youtu.be/OgWZKiuoiXg" target="_blank" rel="noopener">반도체 폭락으로 빚투 빠르게 청산 중? 절호의 기회 올까</a> — 소수몽키 (2026-07-20)</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/OgWZKiuoiXg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>소수몽키 · 2026-07-21</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
