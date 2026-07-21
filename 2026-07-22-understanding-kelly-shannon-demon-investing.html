@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="잃지 않는 투자 — 켈리 공식과 쉐넌의 도깨비"><title>잃지 않는 투자 — 켈리 공식과 쉐넌의 도깨비</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>언더스탠딩</span><span class="ey">MORNING DIGEST · 2026-07-22 · 언더스탠딩</span><span class="chip">🎬 영상</span></div><h1>잃지 않는 투자 — 켈리 공식과 쉐넌의 도깨비</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>수학자들의 도박·투자 일화로 배우는 &#x27;잃지 않는&#x27; 자산관리 원칙</td></tr><tr><td>채널</td><td>언더스탠딩 (신영증권 박소연 이사, 『독학의 돈공부』)</td></tr><tr><td>등장 인물</td><td>클로드 섀넌(정보이론 아버지), 에드워드 소프, 존 켈리</td></tr><tr><td>핵심 공식</td><td>켈리 공식 — 승률 60%면 전재산의 20%만 베팅이 최적</td></tr><tr><td>결론</td><td>시장은 못 맞춘다 → 규칙·시스템·현금 보유로 &#x27;죽지 않기&#x27;</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>25년차 애널리스트인 저자는 &quot;시장은 맞추기 극히 어렵다&quot;는 전제에서 출발한다(2007년 9월 자사주를 고점에 강제 매도해 회복까지 20년 걸린 자기 일화). 그렇다면 최선은 어떤 일이 벌어져도 무너지지 않는 구조·원칙을 설계하는 것이며, 이를 켈리 공식과 쉐넌의 도깨비로 설명한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>인물 — 클로드 섀넌과 에드워드 소프</h2><p>섀넌은 정보이론(모든 정보를 0·1로 표현)의 창시자로, 저글링·외발자전거를 수학으로 분석한 기인이자 도박 애호가였다. 에드워드 소프는 블랙잭 카드카운팅(독립시행이 아닌 조건부 확률)으로 딜러를 이기는 논문을 써 라스베가스 룰을 바꿨다. 둘은 섀넌 집 지하실에서 8개월간 룰렛 예측 장치(구두 속 컴퓨터+무선 신호)를 만들어 실제로 카지노에서 돈을 땄다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>핵심 원리 — 켈리 공식</h2><p>존 켈리는 &quot;확률을 높였다면 얼마를 걸어야 하나&quot;에 답했다. 승률 60%·배당 1:1이면 최적 베팅은 (승률 60% − 패율 40%) = 전재산의 20%다. 승률 80%면 60%만 건다. 승률 절반을 넘어도 전부 걸지 않는 이유는 &#x27;파산의 수학&#x27; — 마지막에 0을 한 번 곱하면(올인 실패) 자산이 전부 사라지기 때문이다. 조금이라도 잃을 확률이 있으면 현금(재입장권)을 남겨야 한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>실전 적용 — 하프 켈리</h2><p>소프는 운용사(뉴포트 파트너스)를 차려 켈리 공식을 적용하되, 주식은 카지노와 달리 변수가 많아 &#x27;하프 켈리&#x27;(공식 값의 절반)만 베팅했다. 60% 승률이면 20%가 아닌 10%만 건 것이다. 이 보수성 덕에 1987년 블랙먼데이(하루 <span class="dn">-23%</span>)에 대부분 운용사가 파산할 때 그만 살아남았다. 켈리의 또 다른 교훈은 &#x27;우위가 없으면(반반이어도) 아예 베팅하지 말라&#x27;다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>쉐넌의 도깨비 — 리밸런싱의 힘</h2><p>&#x27;쉐넌의 도깨비&#x27;는 등락만 반복하는 박스권 자산에서 수익을 내는 법이다. 자산의 절반은 현금, 절반은 주식으로 두고, 오르면 일부 팔고 떨어지면 일부 사서 항상 50:50으로 기계적 리밸런싱한다. 주가가 제자리여도 복리로 자산이 불어난다. 단 <span class="up">상승</span>장에서는 바이앤홀드가 더 낫고, 레버리지 ETF는 변동성 드래그로 오히려 원금이 녹는다(진행자가 75:25 리밸런싱을 제안하나 &quot;검증되지 않았다&quot;며 신중).</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>전망 및 함의 — 규칙과 겸손</h2><p>핵심은 &quot;많이 먹기보다 죽지 않기&quot;, 매일 1%씩 확실히 모으기다. 시장 상황에 따라 규칙을 바꾸면 결국 주식에 휘둘리는 것과 같으므로, 감정에 흔들리지 않는 하나의 규칙(리밸런싱·정액적립식)을 지켜야 한다. 시세를 자주 보면 전두엽(논리)이 아닌 변연계(본능·공포)가 지배하므로, 전업 투자 선배들처럼 시세를 멀리하고 산책하며 마음을 다스리는 것이 진짜 실력이라고 강조한다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>켈리 공식</td><td>최적 베팅 비율 = 승률 − 패율</td><td>승률 60%면 20%만 걸기</td></tr><tr><td>파산의 수학</td><td>마지막 0을 곱하면 전 자산 소멸</td><td>올인 한 번의 실패</td></tr><tr><td>하프 켈리</td><td>켈리 값의 절반만 베팅하는 보수 전략</td><td>안전벨트 한 칸 더 조이기</td></tr><tr><td>쉐넌의 도깨비</td><td>50:50 기계적 리밸런싱으로 복리 창출</td><td>오르면 팔고 내리면 사기</td></tr><tr><td>변동성 드래그</td><td>등락 반복 시 레버리지 원금이 녹는 현상</td><td>계단 오르내리다 지하로</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/h_sI7zIdZLI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>언더스탠딩 · 2026-07-22</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
