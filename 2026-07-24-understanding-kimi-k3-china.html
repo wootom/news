@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="키미 K3와 오픈 웨이트 모델: 엔진만 공짜로 푸는 중국의 AI 전략"><title>키미 K3와 오픈 웨이트 모델: 엔진만 공짜로 푸는 중국의 AI 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>언더스탠딩</span><span class="ey">MORNING DIGEST · 2026-07-24 · 언더스탠딩</span><span class="chip">🎬 영상</span></div><h1>키미 K3와 오픈 웨이트 모델: 엔진만 공짜로 푸는 중국의 AI 전략</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>언더스탠딩</td></tr><tr><td>제목</td><td>키미 K3 뒤에 숨은 중국의 큰 그림 (김덕진 소장 2부)</td></tr><tr><td>길이</td><td>약 60분(3582초)</td></tr><tr><td>핵심결론 1</td><td>AI 경쟁의 축이 &quot;누가 제일 똑똑한가&quot;에서 &quot;1달러로 얼마나 많은 일을 하는가&quot;라는 효율·가격 싸움으로 옮겨가고 있다</td></tr><tr><td>핵심결론 2</td><td>중국 키미 K3는 최고급 유료 모델(60점대)과 거의 차이 없는 57점을 내면서, 다음 주 월요일 이 두뇌를 무료로 내려받아 쓸 수 있는 &quot;오픈 웨이트&quot; 모델로 공개한다</td></tr><tr><td>핵심결론 3</td><td>중국은 이를 국가 전략으로 삼아, AI 인프라가 없는 개발도상국에 &quot;엔진은 공짜, 부품(칩·인프라)은 우리 것&quot;이라는 패키지로 표준을 선점하려 한다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) GPT 5.6 — 1등이 아니라 &quot;가성비&quot;를 자랑한 이례적 사건</h3>
+<ul>
+<li>보통 새 AI 모델은 &quot;우리가 1등&quot;이라고 자랑한다. 그런데 오픈AI는 GPT 5.6을 내놓으며 자기네가 2등이라는 그래프를 스스로 공개했다.</li>
+<li>벤치마크 사이트(아티피셜 애널리시스) 기준: 클로드 페이블 5가 60점 1위, GPT 5.6이 59점 2위.</li>
+<li>대신 오픈AI가 강조한 건 &quot;가격&quot;. 같은 일을 한 번 할 때 페이블은 약 2.75달러, GPT는 약 1.04달러로 거의 절반이다.</li>
+<li>메시지: &quot;최고로 똑똑한 건 클로드일 수 있다. 하지만 격차는 아주 작고, 우리는 절반 가격이다.&quot;</li>
+</ul>
+<h3>2) 왜 지금 &quot;가격&quot;이 중요해졌나 — 정액제 개인 vs 종량제 기업</h3>
+<ul>
+<li>개인은 월정액(구독)으로 쓰니 많이 써도 요금이 같다.</li>
+<li>기업은 종량제(쓴 만큼 과금)로 쓴다. 에이전트가 질문 하나에 끝없이 작업을 반복하면 토큰 비용이 눈덩이처럼 불어난다.</li>
+<li>예: 200달러짜리 클로드를 1만 명이 API로 쓰면 비용이 엄청나게 커진다. 여기를 GPT가 &quot;효율&quot;로 파고들었다.</li>
+</ul>
+<h3>3) 실측 데모 — 같은 명령으로 게임 만들기</h3>
+<ul>
+<li>소장이 GPT·클로드·키미 세 모델에 &quot;지식의 바다를 항해하는 3D 게임을 효과음까지 넣어 만들어 줘&quot;라는 한 문장을 똑같이 입력.</li>
+<li>GPT는 6분 32초 만에 완성. 클로드는 조금 더 느리지만 그래픽이 더 좋았고, 중국 키미도 비슷한 수준을 만들어냈다.</li>
+<li>제3자(일론 머스크의 그록)에게 비용 평가를 시킨 결과(추정치): 클로드 약 1.96달러, GPT 5.6 약 0.36~0.64달러, 키미 K3 약 0.42달러.</li>
+<li>결론: 이제 중국 모델을 포함해 한 문장이면 그럴듯한 결과가 나오는 시대이고, 차이는 성능보다 &quot;비용&quot;에서 벌어진다.</li>
+</ul>
+<h3>4) 오픈 웨이트 모델이란 무엇인가 — &quot;두뇌만 통째로 준다&quot;</h3>
+<ul>
+<li>챗GPT·클로드·제미나이는 아무리 좋은 슈퍼컴퓨터가 있어도 내 컴퓨터에 설치할 수 없다. 회사 서버에 접속해 건당 사용료를 내야 한다(전화 요금 같은 구조).</li>
+<li>오픈 웨이트 모델은 완성된 &quot;두뇌&quot;를 내 컴퓨터에 다운로드해 설치하게 해준다. 가져올 때 돈을 내지 않는다.</li>
+<li>키미 K3는 지금은 유료 구독 모델이지만, 이 오픈 웨이트 버전을 다음 주 월요일에 공개한다고 예고했다.</li>
+<li>놀라운 점: 과거 오픈 모델은 연구·학습용이라 성능이 최고급과 크게 벌어졌는데, 키미 K3는 그 격차를 크게 좁혔다(K2 시절 44점 → K3 57점, 몇 달 새 13점 <span class="up">상승</span>).</li>
+</ul>
+<h3>5) 기업이 오픈 웨이트에 끌리는 이유 — 보안과 종속(Lock-in)</h3>
+<ul>
+<li>설치 후에는 인터넷 연결 없이 쓸 수 있어 보안 걱정이 큰 금융권 등이 선호한다.</li>
+<li>성능이 조금 떨어져도(양자화한 소형 모델은 점수가 낮다) 추가 사용료가 없어 대량 사용 기업에 유리하다.</li>
+<li>한번 특정 모델(예: 51점짜리 GLM)에 맞춰 데이터·MCP·서비스를 최적화(튜닝)해 놓으면, 나중에 다른 모델로 갈아타기 어려워진다 → 자연스럽게 그 생태계에 종속된다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>엔진 비유</strong>: 오픈 웨이트는 자동차 &quot;엔진만&quot; 덜렁 주는 것. 차체·튜닝·기름은 쓰는 쪽이 알아서 해야 한다. 이 &quot;엔진을 잘 돌려주는 일&quot;을 서빙(serving)이라 부른다.</li>
+<li><strong>서빙의 중요성</strong>: 엔진(모델)만 좋다고 되는 게 아니라, 안정적으로 빠르게 돌려주는 서빙 능력이 핵심. 아마존 AWS, MS 애저, 구글 클라우드 같은 회사가 이 튜닝·서빙·오케스트레이션을 대행한다.</li>
+<li><strong>키미의 현재 한계</strong>: 머리는 좋게 만들었지만 이를 운영할 리소스(메모리 등)가 부족해 신규 가입을 막았고, 응답 속도가 첫날 대비 세 배 이상 느려졌다.</li>
+<li><strong>화웨이 칩</strong>: 중국은 엔비디아급은 아니지만 여러 칩을 묶어 GPU 성능을 내는 방식을 발표. 딥시크·중국 모델에 최적화돼 있어, 오픈 웨이트 모델과 중국산 디바이스를 묶어 팔 수 있다.</li>
+<li><strong>양자화(quantization)</strong>: 모델을 작게 줄여 개인 PC나 맥에서도 돌릴 수 있게 만드는 기술. 원본을 그대로 돌리려면 데이터센터·클라우드급 인프라가 필요하다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>딥시크 열풍과 다른 점</strong>: 딥시크는 &quot;싸게도 만들 수 있다&quot;는 비용 이야기였다면, 이번은 &quot;우리도 그만큼 똑똑하게 만들 수 있다&quot;는 성능 접근이다.</li>
+<li><strong>중국의 국가 전략</strong>: 시진핑 주석이 상하이 세계인공지능대회(WAIC)에서 &quot;중국 제조가 아니라 중국 지조(창조)&quot;, &quot;AI는 한 나라의 독주가 아니라 세계적 교향곡&quot;이라 선언. 오픈 웨이트 모델을 개발도상국에 뿌리는 그림.</li>
+</ul>
+<p>- &quot;AI판 UN&quot;을 상하이에 만들겠다며 개도국을 모았고 12개국이 서명. 일대일로식 외교 패키지로 해석 가능.</p>
+<ul>
+<li><strong>남반구(난방구) 시장</strong>: AI 의사가 의사 많은 선진국보다 의사가 부족한 아프리카·남미에서 훨씬 큰 효용을 낸다. 인프라가 없던 지역이 인터넷 대신 AI부터 정보화를 시작할 수 있고, 그 표준·인프라 시장을 중국이 선점하려 한다(&quot;칩은 화웨이, 시스템은 우리가 깔아줄게&quot;).</li>
+<li><strong>미국 진영의 대응</strong>: 오픈AI도 GPT-OSS라는 오픈 웨이트 모델을 냈고, 구글은 소형 모델 젬마(Gemma)를 스마트폰·노트북 온디바이스에 심는 전략을 병행한다. 클라우드(AWS·애저·구글)가 서빙·튜닝을 대행하며 점유율을 키운다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 시나리오</h2><ul>
+<li><strong>금융·국방·공공</strong>: 보안·규제 때문에 인터넷 연결이나 중국 모델 사용이 꺼려지는 곳은, 자체 서버에 오픈 웨이트 모델(예: GPT-OSS)을 설치해 폐쇄망에서 운영한다.</li>
+<li><strong>대량 사용 기업</strong>: 하루 수만~수십만 번 에이전트를 호출해야 하는 기업은, 보유 GPU에 오픈 웨이트 모델을 올려 건당 사용료를 없애고 클라우드·전기 비용만 부담한다.</li>
+<li><strong>개인 파워 유저</strong>: 성능 좋은 맥/맥미니에 양자화한 소형 모델을 설치해, 단순 반복 작업은 로컬 모델로, 복잡한 추론만 유료 API로 나눠 쓰는 다중 AI 조율 구조를 구축한다.</li>
+<li><strong>개발도상국 정부</strong>: 비싼 챗GPT 구독 대신 무료 중국 오픈 웨이트 모델 + 화웨이 칩 + 데이터센터 인프라를 패키지로 도입한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><ul>
+<li><strong>최대 관전 포인트</strong>: 다음 주 월요일 공개될 키미 K3 오픈 웨이트 버전이 실제로 유료 모델만큼의 성능·속도를 내는지. 잘 나오면 파급이 커지고, 실망스러우면 &quot;튜닝 실패 + 중국 모델 불안감&quot;으로 남는다.</li>
+<li><strong>반도체 영향(HBM·GPU)</strong>:</li>
+</ul>
+<p>- 단기(1~2년)엔 HBM 수요는 괜찮거나 오히려 늘 수 있다. 지구인 머릿수가 늘지 않는 한 총수요는 비슷하되, 오픈 웨이트로 새 시장(개도국)이 열릴 여지가 있기 때문. - 1순위 병목은 AI 회사들이 원하는 몸값으로 상장에 성공할지 여부. 오픈AI·앤트로픽은 상장을 앞두고 요금을 올리려다, 경쟁 모델이 싸게 나오자 오히려 무료 티어를 늘리며 가격을 못 올리는 상황. 순환 투자(버블) 궤도가 끊기면 HBM에도 영향. - 2순위는 화웨이 칩 + 중국 오픈 웨이트 모델의 확산 → 엔비디아 같은 칩메이커가 먼저 고민에 빠지고, 그다음 HBM으로 파급될 가능성. - 다만 HBM은 아직 하이닉스·삼성이 우위라, 중국이 완벽한 HBM 없이 속도를 끌어올리는 그림이면 HBM 관점에선 나쁘지 않다는 시각도.</p>
+<ul>
+<li><strong>기업의 새 과제(AX)</strong>: AI 도입은 대부분 결정했으나, &quot;어떤 팀에 어느 등급 모델을 얼마나 배분할지&quot; 가이드라인이 없으면 1년 예산이 두 달 만에 소진된다. GPT 5.6이 솔·테라·루나로, 클로드가 등급별로 나뉜 이유. 젠슨 황(2025 CES)의 예언처럼 AI 부서장(CAIO)이 HR처럼 &quot;AI 두뇌를 어디에 배치할지&quot; 결정하는 역할을 하게 된다.</li>
+</ul></section><section class="card s12" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>오픈 웨이트 모델</td><td>완성된 AI 두뇌를 무료로 내려받아 내 컴퓨터/서버에 설치해 쓰는 모델</td><td>자동차 엔진만 통째로 공짜로 받는 것</td></tr><tr><td>키미 K3</td><td>중국 문샷(Moonshot)이 만든 AI. 유료 모델 대비 격차를 크게 좁힌 57점</td><td>K2(44점)에서 몇 달 만에 13점 <span class="up">상승</span></td></tr><tr><td>서빙(serving)</td><td>만들어진 모델을 안정적·빠르게 돌려 서비스로 제공하는 운영 능력</td><td>엔진에 차체·기름을 채워 실제 굴러가게 하는 정비</td></tr><tr><td>튜닝</td><td>회사 데이터·서비스에 맞게 모델을 최적화하는 작업</td><td>엔진을 차종에 맞게 세팅하는 것</td></tr><tr><td>양자화(quantization)</td><td>모델을 작게 압축해 개인 PC에서도 돌아가게 만드는 기술</td><td>짐을 줄여 작은 차에 싣기</td></tr><tr><td>종량제</td><td>쓴 만큼 요금을 내는 과금 방식(기업용)</td><td>전화 통화 건당 요금</td></tr><tr><td>정액제</td><td>월 고정 요금으로 무제한급 사용(개인용)</td><td>무제한 요금제</td></tr><tr><td>HBM</td><td>AI 연산에 쓰이는 고대역폭 메모리. 하이닉스·삼성이 주도</td><td>AI의 초고속 작업 책상</td></tr><tr><td>아티피셜 애널리시스</td><td>전 세계 AI 모델 성능·비용을 벤치마크하는 사이트</td><td>모델들의 성적표·가격표</td></tr><tr><td>WAIC</td><td>상하이 세계인공지능대회. 시진핑이 키노트 발표</td><td>중국판 AI 정상회의</td></tr><tr><td>AX</td><td>AI 기반으로 비즈니스 자체를 전환하는 것</td><td>단순 도입(도구)을 넘어 체질 <span class="up">개선</span></td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/cOZv_Id6wdM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>언더스탠딩 · 2026-07-24</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
