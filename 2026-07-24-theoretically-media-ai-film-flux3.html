@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Flux 3 영상 모델 공개와 AI 영화의 극장 개봉 이정표"><title>Flux 3 영상 모델 공개와 AI 영화의 극장 개봉 이정표</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-hub"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Theoretically Media</span><span class="ey">MORNING DIGEST · 2026-07-24 · Theoretically Media</span><span class="chip">🎬 영상</span></div><h1>Flux 3 영상 모델 공개와 AI 영화의 극장 개봉 이정표</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Theoretically Media</td></tr><tr><td>제목</td><td>AI Film Just Hit A Landmark &amp; Flux 3 Video Is Here!</td></tr><tr><td>길이</td><td>약 15분(910초)</td></tr><tr><td>핵심결론 1</td><td>Black Forest Labs가 2024년 8월 예고했던 영상 모델 Flux 3를 드디어 공개했다. 최대 20초 생성, 오디오 생성, 멀티모달 입력을 지원한다.</td></tr><tr><td>핵심결론 2</td><td>AI로 만든 장편 영화 &#x27;가십 고블린&#x27;이 극장 개봉을 확정하며 AI 영화의 이정표를 세웠다.</td></tr><tr><td>핵심결론 3</td><td>가십 고블린의 제작 워크플로우가 공개됐다. 미드저니로 이미지를 만들고 나노 바나나로 보정하며, &#x27;첫 프레임 이미지→영상&#x27; 방식으로 카메라 통제권을 유지한다.</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) Flux 3 — Black Forest Labs의 새 영상 모델</h3>
+<p>Black Forest Labs(독일 이미지 AI 회사)가 오래 예고했던 영상 생성 모델 Flux 3를 깜짝 공개했다. 2024년 8월 Flux 1 출시 때 예고했으니 거의 1년을 기다린 셈이다. 발표자는 &quot;블랙 포레스트 케이크(독일식 케이크)는 절대 오븐에서 일찍 꺼내면 안 된다&quot;는 농담으로 오랜 기다림을 표현했다.</p>
+<p>주요 사양은 다음과 같다.</p>
+<ul>
+<li><strong>최대 20초 생성</strong>: 기존 모델들의 10초 한계를 넘어섰다. 발표자는 &quot;이제 10초로는 부족하게 느껴진다&quot;고 평했다.</li>
+<li><strong>멀티모달 입력</strong>: 참조 이미지를 최대 10장까지 넣을 수 있고, 편집·리믹스를 위해 오디오나 영상도 입력으로 넣을 수 있다.</li>
+<li><strong>표준 화면비 전부 지원</strong>: 세로 9:16부터 초와이드 21:9까지.</li>
+<li><strong>오디오 생성</strong>: 소리도 함께 만들어낸다.</li>
+<li><strong>해상도</strong>: 현재 초기 접근 단계라 720p로 제한되지만 곧 1080p가 나올 예정이다.</li>
+</ul>
+<h3>2) Flux 3 실제 테스트 결과</h3>
+<p>발표자가 얼리 액세스(초기 사용 권한)로 직접 써본 결과를 공유했다.</p>
+<ul>
+<li><strong>텍스트→영상</strong>: &quot;넷플릭스 쇼 예고편&quot;이라는 간단한 프롬프트만으로 꽤 그럴듯한 결과가 나왔다. 화질은 Topaz(영상 화질 <span class="up">개선</span> 도구)로 업스케일했다. 발표자는 이 모델이 &#x27;추론(사고)형 영상 모델&#x27;일 것으로 추측했다.</li>
+<li><strong>이미지→영상</strong>: 참조 이미지가 제대로 반영되지 않는 문제가 있었다. 다만 이는 Discord(디스코드, 메신저 앱)를 통한 초기 테스트 환경 탓으로 보이며 정식 출시에서는 해결될 것으로 봤다.</li>
+<li><strong>프롬프트 일관성</strong>: &quot;15초에 15컷&quot; 같은 어려운 프롬프트도 요청한 요소를 대부분 담아냈다. 다만 경쟁 모델(Seedance/Cance 2.0)이 보여주는 빠른 카메라 움직임이나 어안렌즈 같은 역동적 연출은 부족했다. 즉 빠른 액션 시퀀스에는 아직 최적이 아니다.</li>
+<li><strong>커뮤니티 결과물</strong>: 감정이 담긴 드라마 장면, 빠른 대사 연기 등에서 준수한 결과가 나왔다.</li>
+</ul>
+<p>발표자는 &quot;Flux 3가 기존 Seedance를 대체할까? 아니다. 하지만 보완할 수는 있다&quot;고 정리했다. 가격은 미정이나 Seedance보다는 저렴할 것으로 기대했으며, <strong>오픈 웨이트(모델 가중치 공개)가 출시 계획에 포함</strong>되어 있다는 소식도 전했다.</p>
+<h3>3) AI 영화의 이정표 — &#x27;가십 고블린&#x27;의 극장 개봉</h3>
+<p>잭 런던(Zack London)이 만드는 AI 크리에이터 &#x27;가십 고블린(Gossip Goblin)&#x27;이 장편 영화를 극장 개봉한다. 지금까지 나온 AI 영화 중 가장 큰 규모의 극장 개봉이다. 잭 런던은 최근 할리우드 리포터로부터 &#x27;AI 영화계의 조지 루카스&#x27;라 불렸다. 영화는 Fable의 에드워드 사치(Edward Sachi)가 제작을 맡는다. 발표자는 우선 최근 공개된 30분짜리 단편 &#x27;포메그라닛(Pomegranate)&#x27;을 큰 화면으로 볼 것을 강력 추천했다.</p>
+<h3>4) 가십 고블린의 제작 워크플로우</h3>
+<p>친분 있는 채널 PJ Ace와 Chris Branch의 인터뷰를 통해 알려진 제작 방식이다.</p>
+<ul>
+<li><strong>이미지 생성은 미드저니(MidJourney)에서 시작</strong>한다. 그냥 쓰는 게 아니라 개인화(personalization)와 sref(스타일 참조) 코드를 세밀하게 활용한다. 2개월 전 기준으로는 버전 7을 사용했다.</li>
+<li><strong>핵심 원칙: 나노 바나나(Nano Banana)에서 시작하지 않는다.</strong> 미드저니가 &#x27;생성기&#x27;이고, 나노 바나나는 포토샵처럼 &#x27;보정·합성&#x27; 도구로 쓴다.</li>
+<li><strong>영상 생성은 모두 &#x27;첫 프레임 이미지→영상&#x27; 방식</strong>이다. 여러 이미지를 참조로 넣는 멀티/옴니 레퍼런싱을 쓰지 않는다. 이유는 <strong>카메라 통제권을 유지하기 위해서</strong>다. 발표자도 옴니/멀티 방식이 오히려 창작자를 게으르게 만든다며 공감했다.</li>
+<li><strong>캐릭터는 하나의 마스터 시트가 아니라 모듈식으로 관리</strong>한다. 캐릭터의 앞·옆·뒤 이미지를 따로 두고, 각 장면·장소마다 나노 바나나로 합성해 넣는 방식으로 추정된다.</li>
+<li>이전 작품 &#x27;더 패치라이트(The Patchite)&#x27;는 Kling(클링)으로 애니메이션했고, 신작 &#x27;포메그라닛&#x27;은 Seedance로 만들었다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>Flux 3는 &#x27;추론형&#x27; 영상 모델로 추정된다. 이는 단순히 프롬프트를 화면으로 바꾸는 것을 넘어, 요청 내용을 논리적으로 해석해 장면을 구성한다는 뜻이다. 멀티모달 입력(이미지·오디오·영상)을 받는 구조는 편집과 리믹스를 염두에 둔 것으로, 창작자가 이미 가진 소재를 재가공하기 좋다. 20초 생성 능력은 기존 10초 한계 대비 서사적 여유를 준다. 발표자는 단 5초의 추가가 장면의 완결성에 얼마나 큰 차이를 만드는지 테스트로 보여줬다. 오픈 웨이트 공개 계획은 로컬 실행과 커뮤니티 개조의 문을 연다는 점에서 의미가 크다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>경쟁의 축이 &#x27;누가 가장 화려한 액션을 만드느냐&#x27;에서 &#x27;누가 프롬프트를 정확히 지키고 일관성을 유지하느냐&#x27;로 옮겨가고 있다. 발표자가 Seedance와의 정면 성능 비교에 흥미가 없다고 한 것이 이를 보여준다. 한편 가십 고블린의 극장 개봉은 유튜브 기반 크리에이터가 극장 배급까지 진출하는 새로운 경로를 연 사건이다. 커리 바커, 마키플라이어처럼 팬덤을 가진 창작자에게 AI 영화를 맡기는 것이 &#x27;똑똑한 베팅&#x27;이라는 분석이다. 워크플로우 측면에서는 &#x27;옴니 레퍼런싱에 의존하지 않고 통제권을 지키는&#x27; 장인적 접근이 오히려 품질을 높인다는 교훈을 준다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 시나리오</h2><ul>
+<li><strong>짧은 예고편·광고 제작</strong>: Flux 3의 텍스트→영상으로 간단한 프롬프트만으로 20초 트레일러를 뽑고 Topaz로 화질을 보정한다.</li>
+<li><strong>기존 소재 리믹스·편집</strong>: 멀티모달 입력에 참조 이미지나 기존 영상을 넣어 기존 콘텐츠를 재가공한다.</li>
+<li><strong>일관성 있는 캐릭터 영상 제작</strong>: 미드저니로 캐릭터의 여러 각도 이미지를 만들고 나노 바나나로 장면마다 합성한 뒤, 첫 프레임 이미지→영상 방식으로 카메라 움직임을 통제한다.</li>
+<li><strong>로컬 영상 생성 파이프라인 구축</strong>: Flux 3 오픈 웨이트가 공개되면 자체 서버에서 영상 모델을 돌려 비용과 커스터마이징을 최적화한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><p>Flux 3는 출시 첫날(day one) 단계로, 앞으로 다수의 업데이트가 예정돼 있다. 720p는 곧 1080p로 확장되고, 이미지→영상의 참조 반영 문제도 정식 출시에서 <span class="up">개선</span>될 전망이다. 가격은 미정이나 Seedance보다 저렴할 것으로 기대되며, 오픈 웨이트도 공개될 예정이다. 발표자는 정식 출시 후 더 깊은 리뷰를 예고했다. AI 영화 쪽에서는 가십 고블린 극장 개봉과 닐 블롬캠프 관련 작품 등 굵직한 움직임이 이어지고 있어, AI 영화 제작이 실험 단계를 넘어 상업 배급 단계로 진입하고 있음을 보여준다.</p></section><section class="card s12" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Flux 3</td><td>Black Forest Labs가 만든 새 영상 생성 AI 모델</td><td>텍스트나 이미지를 넣으면 최대 20초 영상을 만들어주는 도구</td></tr><tr><td>Black Forest Labs</td><td>독일의 이미지·영상 AI 개발 회사</td><td>Flux 시리즈를 만드는 곳, &#x27;블랙 포레스트(검은 숲)&#x27;라는 이름</td></tr><tr><td>멀티모달</td><td>이미지·오디오·영상 등 여러 형태의 입력을 함께 받는 것</td><td>글뿐 아니라 사진과 소리까지 알아듣는 만능 조수</td></tr><tr><td>오픈 웨이트</td><td>모델의 학습 결과(가중치)를 공개하는 것</td><td>요리 완제품뿐 아니라 레시피 자체를 나눠주는 것</td></tr><tr><td>미드저니</td><td>텍스트로 고품질 이미지를 만드는 AI 도구</td><td>영화의 &#x27;촬영 카메라&#x27; 역할</td></tr><tr><td>나노 바나나</td><td>이미지를 보정·합성하는 AI 도구</td><td>영화의 &#x27;포토샵·편집실&#x27; 역할</td></tr><tr><td>sref 코드</td><td>미드저니에서 특정 스타일을 재현하는 참조 코드</td><td>원하는 화풍을 지정하는 &#x27;스타일 도장&#x27;</td></tr><tr><td>첫 프레임 이미지→영상</td><td>시작 이미지 한 장에서 영상을 만드는 방식</td><td>첫 장면 사진을 주고 그다음을 움직이게 하는 것</td></tr><tr><td>Seedance</td><td>Flux 3의 비교 대상이 되는 경쟁 영상 AI 모델</td><td>같은 리그의 라이벌 영상 모델</td></tr><tr><td>가십 고블린</td><td>극장 개봉하는 AI 장편 영화의 크리에이터 브랜드</td><td>&#x27;AI 영화계의 조지 루카스&#x27;로 불리는 잭 런던의 프로젝트</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/TZ1uAQazv90" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Theoretically Media · 2026-07-24</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
