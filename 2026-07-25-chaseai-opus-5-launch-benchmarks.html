@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Opus 5 출시 — 벤치마크가 정말 미쳤다 (Chase AI)"><title>Opus 5 출시 — 벤치마크가 정말 미쳤다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">MORNING DIGEST · 2026-07-25 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>Opus 5 출시 — 벤치마크가 정말 미쳤다</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Chase AI</td></tr><tr><td>제목</td><td>Opus 5 Just Dropped and Its Numbers Are Legit INSANE</td></tr><tr><td>길이</td><td>약 4분 18초(258초)</td></tr><tr><td>핵심결론 1</td><td>신형 모델 Opus 5가 공개, 경쟁 최상위 모델(영상 내 &quot;Fable 5&quot;)과 거의 동급 성능을 절반 비용에 제공</td></tr><tr><td>핵심결론 2</td><td>에이전틱 코딩·지식노동·에이전틱 검색 등 다수 벤치마크에서 이전 모델(Opus 4.8)을 압도적으로 능가</td></tr><tr><td>핵심결론 3</td><td>장기 자율 작업(long-horizon agentic task) 수행력과 시각적 산출물(3D/SVG) 능력도 크게 <span class="up">개선</span></td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) 벤치마크 전반 — Fable 5와 거의 동급, 비용은 절반</h3>
+<ul>
+<li>Opus 5는 에이전틱 터미널 코딩, 지식노동, 에이전틱 검색 등 다수 항목에서 경쟁 최상위 모델(&quot;Fable 5&quot;)과 이전 모델 Opus 4.8을 모두 앞서는 결과를 보였다고 소개됩니다.</li>
+<li>GPT 계열 최신 모델(&quot;5.6 소울&quot;)과 비교해도 해당 카테고리들에서 앞선다는 언급이 나옵니다.</li>
+<li>Opus 5가 더 낮은 성능을 보인 항목은 다학제적 추론(멀티디시플리너리 리즈닝) 정도이며 그 격차도 크지 않고, 도구를 사용하는 조건에서는 오히려 역전한다고 설명됩니다. 법률·헬스 분야도 예외로 언급되지만 나머지 대부분 항목에서는 최상위 모델을 능가합니다.</li>
+</ul>
+<h3>2) Cursor Bench 수치 — &quot;거의 동급, 비용은 절반&quot;</h3>
+<ul>
+<li>Cursor Bench 3.2를 최대 성능 설정(맥스 이펏)으로 테스트한 결과, Opus 5는 최상위 모델 대비 점수 차이가 0.5% 이내였다고 소개됩니다. 반면 과제당 비용은 절반 수준이라는 점이 핵심 포인트로 제시됩니다.</li>
+<li>그래프상 최대 설정(맥스)에서는 경쟁 모델이 근소하게 앞서지만, 실제 사용자 대부분은 최대 설정이 아닌 &#x27;하이(high)&#x27;나 &#x27;엑스트라 하이(extra high)&#x27; 설정을 쓰는데, 이 구간에서는 Opus 5와 경쟁 모델의 결과가 사실상 동일한 수준으로 나온다고 설명됩니다.</li>
+<li>다른 벤치마크인 아티피셜 애널리시스 코딩 에이전트 인덱스, 프런티어 벤치에서도 Opus 5가 경쟁 모델을 앞서는 결과가 소개됩니다.</li>
+</ul>
+<h3>3) 이전 모델(Opus 4.8) 대비 도약폭이 핵심</h3>
+<ul>
+<li>영상에서 강조하는 진짜 포인트는 단순히 경쟁 모델과의 비교가 아니라, 바로 직전 모델인 Opus 4.8에서 Opus 5로의 성능 도약폭이 전 영역에 걸쳐 매우 크다는 점입니다.</li>
+<li>과거 다른 모델 세대 교체 때는 성능은 좋아졌지만 비용이 지나치게 비싸지는 경우가 있었다고 언급하며, Opus 5는 그런 사례와 달리 토큰 효율이 매우 높다고 평가합니다.</li>
+</ul>
+<h3>4) 시각적 산출물 — 3D·SVG 개선</h3>
+<ul>
+<li>예시로 Opus 5가 만든 풍동(wind tunnel) 관련 작업물과, 3D 인터랙티브 동물세포 아티팩트가 소개됩니다.</li>
+<li>해당 계열 모델은 원래 이미지를 직접 생성하지 못하는 한계가 있었는데, 이번 버전은 3D 형태의 SVG·HTML 기반 그래픽 표현력이 크게 향상됐다는 점이 긍정적으로 평가됩니다.</li>
+</ul>
+<h3>5) 장기 자율 작업(Long-horizon Agentic Task) 능력</h3>
+<ul>
+<li>Anthropic 측은 Opus 5가 작업 결과를 스스로 검증하고 목표에 도달할 때까지 반복 수정하는 능력이 훨씬 강해졌다고 설명한다고 전합니다.</li>
+<li>이는 한 번의 응답으로 끝나지 않고 루프를 돌며 목표 대비 결과를 계속 점검·수정해야 하는 작업(예: 이른바 &#x27;그래프 엔지니어링&#x27; 같은 작업)에서 Opus 4.8보다 훨씬 나은 성능을 보인다는 의미로 설명됩니다.</li>
+<li>구체적 사례로, 기계 부품 도면을 주고 이를 3D CAD 모델 코드로 재현하라는 과제가 제시됩니다. 모델은 도면을 직접 볼 방법이 주어지지 않았음에도 불구하고, 스스로 컴퓨터 비전 파이프라인을 작성해 원본 이미지 픽셀에서 형상 정보를 추출한 뒤 기계 부품 전체를 재구성해냈다고 소개됩니다. 이는 구체적 수행 방법이 아니라 &#x27;목표&#x27;만 주어졌을 때의 자율적 문제 해결 능력을 보여주는 사례로 제시됩니다.</li>
+</ul>
+<h3>6) 안전성·정렬(Alignment) 지표</h3>
+<ul>
+<li>오용 가능성을 나타내는 지표(수치가 낮을수록 안전)에서도 Opus 5가 이전 모델들보다 <span class="up">개선</span>됐다고 소개됩니다.</li>
+<li>오픈소스 코드에서 취약점·익스플로잇을 찾아내는 능력이 Opus 4.8 대비 크게 늘었다는 점도 언급되는데, 이는 방어(보안 점검) 목적으로 활용 가능한 능력 향상으로 소개됩니다.</li>
+<li>가드레일(안전장치) 측면에서는, 사이버보안·생물학 등 민감 주제를 언급했다고 무조건 응답을 차단하는 경쟁 모델과 달리 상대적으로 덜 엄격하다고 설명됩니다. 다만 안전 분류기(classifier)는 여전히 존재하며, 경쟁 모델 대비 오작동(불필요한 차단) 확률이 85% 낮다는 수치가 제시됩니다.</li>
+</ul>
+<h3>7) 가격 정책</h3>
+<ul>
+<li>Opus 5의 가격은 입력 100만 토큰당 5달러, 출력 100만 토큰당 25달러로 소개되며, 이는 경쟁 최상위 모델(&quot;Fable 5&quot;) 대비 절반 수준이라고 강조됩니다.</li>
+<li>벤치마크에서 확인된 토큰 효율성과 결합해, 실사용 비용 부담이 상대적으로 낮아질 것으로 기대된다는 평가로 영상이 마무리됩니다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>에이전틱(Agentic) 작업: 모델이 단발성 질의응답이 아니라 여러 단계를 스스로 계획하고 도구를 호출하며 목표를 달성해가는 방식의 작업을 뜻합니다. 코딩·검색·리서치 등에서 최근 AI 모델 평가의 핵심 축입니다.</li>
+<li>토큰 효율(token efficiency): 같은 품질의 결과를 만들어내는 데 소모하는 토큰(=비용)이 얼마나 적은지를 뜻합니다. 성능이 좋아도 토큰을 많이 써야 한다면 실사용 비용이 커지므로, 벤치마크 점수와 별개로 중요한 지표입니다.</li>
+<li>장기 자율 작업(long-horizon task): 한 번의 답변으로 끝나지 않고, 결과를 스스로 점검하고 목표에 도달할 때까지 여러 차례 반복 수정해야 하는 작업 유형입니다. 이번 영상에서는 CAD 모델 재구성 사례로 소개됩니다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>&quot;경쟁 최상위 모델과 비슷한 성능을 절반 비용에&quot; 라는 포지셔닝은, 고성능 모델 사용에 따르는 비용 부담을 낮춰 실무 적용 폭을 넓히는 방향으로 해석됩니다.</li>
+<li>장기 자율 작업 능력 강화는 단순 챗봇형 사용을 넘어, 반복 검증이 필요한 복잡한 엔지니어링·자동화 워크플로우로 활용 범위가 확장될 가능성을 시사합니다.</li>
+<li>안전 가드레일을 상대적으로 완화하면서도 취약점 탐지 등 방어적 활용 능력을 키운 점은, 개발자·보안 실무자 대상 활용성을 함께 겨냥한 방향으로 풀이됩니다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 시나리오</h2><ul>
+<li>코딩 에이전트나 자동화 워크플로우에 고성능 모델을 도입하려는 개발자가, 비용 대비 성능을 비교할 때 참고할 수 있습니다.</li>
+<li>반복적으로 결과를 검증하며 목표에 도달해야 하는 장기 자동화 작업(문서 생성, 3D 모델링, 복잡한 리서치 등)에 이 모델의 적합성을 검토할 때 활용할 수 있습니다.</li>
+<li>보안 담당자가 오픈소스 코드의 취약점 점검 자동화 도구로 AI 모델 도입을 검토할 때 참고 사례로 삼을 수 있습니다.</li>
+<li>여러 AI 모델의 비용 대비 성능을 비교해 프로젝트에 맞는 모델을 선택하려는 실무자가 벤치마크 감을 잡는 데 참고할 수 있습니다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><ul>
+<li>영상 시점 기준 Opus 5가 막 공개된 직후로, 소개된 수치는 모두 공개 벤치마크·자체 발표 자료에 근거한 것이며 영상 진행자도 &quot;수치가 사실이라면&quot;이라는 조건부 표현을 반복해 사용해 검증이 더 필요하다는 입장을 취합니다.</li>
+<li>절반 가격에 준하는 성능이라는 포지셔닝이 실제 사용자 경험에서도 유지될지는 후속 실사용 후기·독립 벤치마크로 확인이 필요한 단계입니다.</li>
+<li>진행자는 영상 말미에 실제로 모델을 사용해볼 계획을 언급하며 기대감을 드러냅니다.</li>
+</ul></section><section class="card s12" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>에이전틱(Agentic)</td><td>모델이 스스로 계획·도구 호출을 반복하며 목표를 달성하는 방식</td><td>비서에게 &quot;보고서 써줘&quot; 하면 알아서 자료조사부터 완성까지 하는 것</td></tr><tr><td>토큰 효율</td><td>같은 결과를 내는 데 드는 토큰(비용)의 적음 정도</td><td>같은 요리를 재료 적게 쓰고 만드는 셰프</td></tr><tr><td>장기 자율 작업(long-horizon task)</td><td>한 번에 끝나지 않고 검증·수정을 반복해야 하는 작업</td><td>초안을 계속 고쳐 완성하는 퇴고 과정</td></tr><tr><td>Cursor Bench</td><td>코딩 에이전트 성능을 측정하는 벤치마크 중 하나</td><td>코딩 AI들의 실력고사</td></tr><tr><td>가드레일</td><td>AI가 민감한 주제에 응답하지 않도록 막는 안전장치</td><td>도로의 가드레일처럼 위험한 답변을 막는 장치</td></tr><tr><td>분류기(classifier)</td><td>입력·출력이 위험한지 판별해 걸러내는 내부 안전 장치</td><td>공항 보안검색대처럼 위험물을 걸러내는 장치</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Txse8Ux69Qg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-07-25</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
