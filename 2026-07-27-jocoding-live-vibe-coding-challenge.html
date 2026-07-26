@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="[LIVE] 한빛미디어x조코딩 바이브 코딩으로 서비스 만들기 챌린지"><title>[LIVE] 한빛미디어x조코딩 바이브 코딩으로 서비스 만들기 챌린지</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">MORNING DIGEST · 2026-07-27 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>[LIVE] 한빛미디어x조코딩 바이브 코딩으로 서비스 만들기 챌린지</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>조코딩 JoCoding</td></tr><tr><td>제목</td><td>[LIVE] 한빛미디어x조코딩 바이브 코딩으로 서비스 만들기 챌린지</td></tr><tr><td>길이</td><td>약 29분(1773초)</td></tr><tr><td>핵심결론 1</td><td>한빛미디어와 함께 진행한 《바이브 코딩 1인 창업》 책 4주 완독 챌린지에 122명이 참여했고, 그중 제출된 5개 서비스(도구 모음 사이트, 사내 안전관리 SaaS, 공공데이터 주차장 포털, 초등수학 게임, 감정관리 앱)를 실시간으로 리뷰했다</td></tr><tr><td>핵심결론 2</td><td>비개발자(회사원, 학부모)도 바이브 코딩만으로 실사용 가능한 서비스를 완성했으며, 진행자는 &quot;코딩은 AI가 대신하니 나머지(기획·AI 협업·수익화)를 더 많이 공부해야 한다&quot;는 점을 반복 강조했다</td></tr><tr><td>핵심결론 3</td><td>최종 3개 선정작은 다양한 무료 도구 모음 사이트(주레피), 사내 안전관리 통합 SaaS, 초등수학 게임형 학습 사이트였으며, 대부분 작품에 수익화(광고·결제)가 빠져 있다는 공통 아쉬움이 지적됐다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) 챌린지 개요 — 122명 참여, 5개 작품 선별 제출</h3>
+<ul>
+<li>조코딩의 저서 《바이브 코딩 1인 창업》 출간을 기념해 한빛미디어와 함께 4주 완독 챌린지를 진행했으며, 웹 개발 기초부터 출시·검증·매출화·구독 자동화·글로벌 진출까지 책의 전 과정을 따라가며 미션을 인증하는 방식으로 운영됐다.</li>
+<li>총 122명이 참여했고, 그중 한빛미디어가 선별한 5개 작품이 라이브 방송에서 소개됐다.</li>
+</ul>
+<h3>2) 작품 1 — 주레피: 다목적 무료 온라인 도구 모음</h3>
+<ul>
+<li>글자수 카운터, 문장 바꾸기, QR코드 생성기, 나이 계산기, 단위 변환기, 내 IP 찾기, 로또 번호 생성기 등 일상에서 자주 쓰이는 여러 소형 도구를 한 사이트에 모아 무료로 배포했다.</li>
+<li>제작자는 &quot;코딩은 AI가 해주니 오히려 AI와 어떻게 협업할지 고민하는 시간이 늘었다&quot;고 소감을 남겼으며, 진행자는 이런 형태의 사이트는 SEO 최적화와 광고(애드센스) 연결이 핵심 수익화 전략이 될 수 있다고 조언했다. 다만 이 작품은 아직 수익화가 붙어 있지 않은 상태로 소개됐다.</li>
+</ul>
+<h3>3) 작품 2 — 산해 서비스: 회사 안전관리 통합 SaaS</h3>
+<ul>
+<li>부산 도시가스·SK이노베이션 관련 업무로 추정되는 제작자가 회사 내 흩어진 여러 관리 프로그램(참관 계획, 근태 관리, 안전 회의, 커뮤니티 리포트)을 하나의 사내 SaaS로 통합해 만들었다.</li>
+<li>비개발자가 실제 업무 현장의 불편함을 바이브 코딩으로 직접 해결한 사례로 평가되며, 기존 유료 HR·안전관리 솔루션을 대체해 비용을 절감할 수 있는 실용적 모범 사례로 꼽혔다.</li>
+</ul>
+<h3>4) 작품 3 — 헤이젤파이: 전국 공공데이터 통합 포털</h3>
+<ul>
+<li>전국 시도별로 파편화된 공공데이터(공영주차장 실시간 자리수, 24시간 병원·약국 등)를 하나로 모아 접근하기 쉽게 만든 정보 포털로, 전국 18,000개 개별 주차장 상세 페이지 중 약 7,000개가 이미 배포됐다.</li>
+<li>제작자는 데이터 파편화(시도별 API가 제각각, 지역별 별도 가입 필요)와 위치기반 서비스 사업 신고 같은 제도적 허들을 챌린지 중 겪은 어려움으로 꼽았으며, 진행자는 이런 인허가 절차도 AI(코덱스 등)의 컴퓨터 사용 기능으로 어느 정도 도움받을 수 있다고 언급했다.</li>
+</ul>
+<h3>5) 작품 4 — 매스랩 키즈: 초등수학 게임형 학습 사이트</h3>
+<ul>
+<li>자녀가 ChatGPT·Gemini로 수학 문제를 푸는 모습에 충격받은 학부모가 직접 만든 초등 교과과정 기반 게임형 수학 학습 사이트로, 대칭점 찍기·도형 배치(3D/AR 포함) 등 다양한 인터랙티브 문제를 담았다.</li>
+<li>비개발·비수학 전공 학부모가 자녀를 위해 AI 도움만으로 완성도 높은 교육용 웹앱을 만든 사례로 소개됐으며, 다만 &quot;15,000 플레이·평균 4.5점&quot; 같은 일부 통계는 실제 로직 없이 표시된 것으로 보여 정리가 필요하다는 지적도 받았다.</li>
+</ul>
+<h3>6) 작품 5 — 마음리셋: 연애 감정관리 앱</h3>
+<ul>
+<li>연애 관계에서 느끼는 불안·감정을 이해하도록 돕는 심리 케어 서비스로, 간단한 심리 진단(MBTI 유사 방식), 감정 일기, 맞춤 명상 콘텐츠(호흡 가이드, 사운드), 로컬 저장 기능을 갖췄다.</li>
+<li>진행자는 심리 진단 로직이 AI 학습이 아니라 점수 합산 기반의 단순 규칙(if문) 방식으로 보인다고 분석했다.</li>
+</ul>
+<h3>7) 최종 선정과 공통 피드백</h3>
+<ul>
+<li>한빛미디어 요청으로 5개 중 3개(주레피, 산해 서비스, 매스랩 키즈)가 최종 선정됐으며, 각각 다양한 콘텐츠로 검색 유입을 노릴 수 있는 점, 실제 업무 문제를 직접 해결한 점, 자녀를 위한 교육적 임팩트가 선정 이유로 제시됐다.</li>
+<li>공통 피드백으로 &quot;책의 핵심 주제가 1인 창업(수익화)임에도 대부분 작품에 광고·결제 등 수익화 요소가 빠져 있다&quot;는 아쉬움이 지적됐고, 구글 애드센스 승인이 최근 더 까다로워져 콘텐츠(블로그 등)를 꾸준히 쌓아야 통과 확률이 높아진다는 실전 팁도 공유됐다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>바이브 코딩: 자연어로 AI에게 지시해 코드를 작성·수정하는 개발 방식으로, 비개발자도 서비스를 직접 구현할 수 있게 한다.</li>
+<li>SEO(검색엔진최적화): 검색 결과 상위 노출을 위한 콘텐츠·구조 최적화 작업으로, 무료 도구 사이트의 트래픽·광고 수익과 직결된다.</li>
+<li>구글 애드센스: 웹사이트에 광고를 게재해 수익을 얻는 구글의 광고 프로그램으로, 콘텐츠 양·품질에 따라 승인 여부가 갈린다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>비개발자도 AI 도구만으로 실사용 가능한 서비스를 완성할 수 있음을 실증한 사례들로, 1인 창업의 진입장벽이 &#x27;코딩 능력&#x27;에서 &#x27;기획력·AI 협업 능력·수익화 설계&#x27;로 이동했음을 보여준다.</li>
+<li>실제 업무 현장이나 개인적 필요(자녀 교육, 감정 관리)에서 출발한 서비스가 범용 아이디어보다 구체적 완성도를 갖추기 쉽다는 시사점을 제공한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>문제 발견(업무 불편·자녀 교육 고민 등 개인적 니즈) → 바이브 코딩으로 MVP 제작 → 배포 → (미흡한 경우가 많았던) 수익화 설계의 흐름을 보여준다.</li>
+<li>인허가·제도적 허들(사업자 등록, 위치기반서비스 신고 등)도 AI의 컴퓨터 사용 기능을 활용해 단계별로 처리할 수 있다는 팁이 제시됐다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>바이브 코딩으로 사이드 프로젝트를 시작하려는 비개발자가 실제 완성 사례와 피드백을 참고할 수 있다.</li>
+<li>사내 업무 도구를 직접 만들고 싶은 직장인이 &#x27;산해 서비스&#x27; 같은 자체 SaaS 제작 사례를 참고할 수 있다.</li>
+<li>서비스 출시 후 수익화(광고·애드센스)를 고민하는 1인 개발자가 실전 팁을 얻을 수 있다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>4주 완독 챌린지는 이번 회차로 종료됐으며, 진행자는 향후 유사한 챌린지를 다시 열 가능성을 시사했다.</li>
+<li>애드센스 승인 경쟁이 심화되는 추세로, 콘텐츠 지속 발행이 승인의 핵심 조건으로 강조됐다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>바이브 코딩</td><td>자연어 지시로 AI가 코드를 작성하게 하는 개발 방식</td><td>말로 짓는 프로그램</td></tr><tr><td>MVP(최소기능제품)</td><td>핵심 기능만 갖춰 빠르게 출시하는 초기 제품 버전</td><td>시제품으로 먼저 반응 보기</td></tr><tr><td>애드센스</td><td>웹사이트 광고 게재로 수익을 얻는 구글 프로그램</td><td>사이트에 붙이는 자동 광고판</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/_cz7JeXRkfg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-07-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

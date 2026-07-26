@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="We Are Not Just Reviewing VR Anymore"><title>We Are Not Just Reviewing VR Anymore</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>MRTV</span><span class="ey">MORNING DIGEST · 2026-07-27 · MRTV</span><span class="chip">🎬 영상</span></div><h1>We Are Not Just Reviewing VR Anymore</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>MRTV</td></tr><tr><td>제목</td><td>We Are Not Just Reviewing VR Anymore</td></tr><tr><td>길이</td><td>약 6분(372초)</td></tr><tr><td>핵심결론 1</td><td>VR 리뷰 채널 MRTV의 세바스찬과 New VR Tech의 마르코가 프리미엄 XR 액세서리 브랜드 &#x27;Abionic&#x27;을 공동 창업했다고 발표</td></tr><tr><td>핵심결론 2</td><td>Abionic은 헤드셋 자체가 아니라 실사용 리뷰·테스트·커뮤니티 피드백에서 축적한 문제를 해결하는 프리미엄 액세서리(쿠션, 스트랩 등 추정)를 만드는 것이 목표</td></tr><tr><td>핵심결론 3</td><td>첫 제품은 Shiftall MeganeX와 Pimax VR Air 시리즈 대상으로 개발 중이며, 독일 출시를 시작으로 이후 글로벌 롤아웃 예정</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) 두 리뷰어의 만남과 창업 배경</h3>
+<ul>
+<li>MRTV의 세바스찬과 New VR Tech의 진행자는 HP Reverb G2 열풍 당시 독일 도르트문트에서 만나 VR에 대한 공통된 열정으로 오랜 기간 함께 콘텐츠를 만들어온 사이다.</li>
+<li>두 사람은 VR 헤드셋이 스펙상으로는 훌륭해 보여도 실제 사용 경험이 그에 미치지 못하는 경우를 반복적으로 목격했다고 밝힌다.</li>
+</ul>
+<h3>2) 리뷰만으로는 한계 — &quot;이제 우리가 직접 해결하자&quot;</h3>
+<ul>
+<li>디스플레이·광학계·잠재력은 뛰어나도 마감이나 설계가 미흡해 실사용 경험이 떨어지는 사례를 계속 지적만 해왔다는 문제의식에서, 직접 문제를 해결하는 제품을 만들기로 결정했다.</li>
+<li>이렇게 탄생한 회사가 &#x27;Abionic&#x27;이며, 프리미엄 XR 액세서리 브랜드로 포지셔닝한다.</li>
+</ul>
+<h3>3) Abionic의 정체성 — 헤드셋이 아닌 액세서리, 로고 재판매가 아닌 실사용 기반 개발</h3>
+<ul>
+<li>Abionic은 새로운 헤드셋을 만드는 회사가 아니라, 기존 프리미엄 헤드셋을 실사용 관점에서 더 낫게 만드는 액세서리를 개발하는 것이 목표라고 명시한다.</li>
+<li>단순히 로고를 붙인 저가 범용 제품이 아니라, 수년간의 리뷰·테스트·장시간 VR 세션·커뮤니티 피드백에서 나온 실제 문제를 해결하는 제품을 만들겠다고 강조하며, &quot;프리미엄 XR에서는 작은 디테일이 핵심 경험의 일부&quot;라는 원칙을 제시한다.</li>
+</ul>
+<h3>4) 투명성 원칙과 기존 채널 유지</h3>
+<ul>
+<li>Abionic 관련 콘텐츠는 항상 명확히 고지하겠다고 약속하며, MRTV와 New VR Tech 채널은 기존처럼 헤드셋 리뷰·비교·솔직한 의견 제공을 계속한다고 밝힌다.</li>
+<li>커뮤니티의 신뢰가 이 사업을 가능하게 한 기반이라는 점을 강조하며 투명성을 재차 확인한다.</li>
+</ul>
+<h3>5) 첫 제품 티저 — MeganeX와 Pimax VR Air 대상</h3>
+<ul>
+<li>첫 Abionic 제품은 최근 집중적으로 테스트·리뷰한 두 하이엔드 헤드셋, Shiftall MeganeX와 Pimax VR Air 시리즈를 대상으로 개발 중이라고 공개한다.</li>
+<li>구체적인 제품 내용은 공개하지 않았으며, 이번 영상은 &#x27;무엇을 만드는지&#x27;가 아니라 &#x27;왜 시작했는지&#x27;에 초점을 맞췄다고 설명한다.</li>
+</ul>
+<h3>6) 출시 계획</h3>
+<ul>
+<li>독일에서 먼저 제품을 출시한 뒤 이후 글로벌 시장으로 확장할 계획이며, &quot;기다릴 가치가 있는 제품&quot;이 될 것이라고 자신감을 밝힌다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>XR 액세서리: VR/MR 헤드셋의 착용감·시야·인체공학을 <span class="up">개선</span>하는 페이셜 인터페이스, 스트랩, 쿠션 등 주변기기를 통칭한다.</li>
+<li>Shiftall MeganeX / Pimax VR Air: 초경량·고해상도를 지향하는 하이엔드 PC VR 헤드셋 라인업으로, 마니아·시뮬레이터 사용자층을 겨냥한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>콘텐츠 크리에이터가 리뷰 대상 산업의 실제 문제를 해결하는 제품 사업으로 확장하는 사례로, 리뷰어의 실사용 지식과 커뮤니티 신뢰를 제품 개발 자산으로 전환하는 모델을 보여준다.</li>
+<li>헤드셋 자체 경쟁이 아니라 &#x27;주변기기·사용 경험 <span class="up">개선</span>&#x27;이라는 틈새 시장에 하이엔드 VR 사용자층을 타깃으로 진입하는 전략이다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>문제 발견(반복적 리뷰 과정에서 축적된 불만) → 문제 해결형 창업(리뷰어가 직접 제품 개발) → 투명성 고지(리뷰 채널과 사업을 분리 표시) → 단계적 출시(독일 우선 → 글로벌)의 흐름을 보여준다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>VR/XR 액세서리 시장 동향을 추적하는 사람이 신규 브랜드 등장과 리뷰어 기반 창업 사례로 참고할 수 있다.</li>
+<li>MeganeX·Pimax VR Air 사용자가 향후 출시될 액세서리 정보를 미리 파악하는 데 활용할 수 있다.</li>
+<li>콘텐츠 크리에이터의 제품 사업 확장 전략(신뢰 자산의 상업화) 사례 연구로 쓸 수 있다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>구체적 제품 사양·가격·출시일은 아직 공개되지 않았으며, 후속 영상에서 세부 내용이 공개될 것으로 예고된다.</li>
+<li>독일 출시 이후 글로벌 롤아웃 일정이 이어질 예정이다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>Abionic</td><td>MRTV·New VR Tech 진행자가 공동 창업한 프리미엄 XR 액세서리 브랜드</td><td>리뷰어가 직접 만드는 VR 전용 액세서리 회사</td></tr><tr><td>XR</td><td>VR(가상현실)·AR(증강현실)·MR(혼합현실)을 아우르는 통칭</td><td>현실과 가상을 잇는 기술의 큰 우산</td></tr><tr><td>MeganeX</td><td>Shiftall이 만든 초경량 하이엔드 PC VR 헤드셋</td><td>안경형 초경량 VR 기기</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/6Jd2kb1G-Vc" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>MRTV · 2026-07-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
