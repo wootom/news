@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="바이브코딩으로 3개월 헤맨 서비스, 루비온레일즈로 4시간 만에 재구현했습니다"><title>바이브코딩으로 3개월 헤맨 서비스, 루비온레일즈로 4시간 만에 재구현했습니다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>헤이제임스</span><span class="ey">MORNING DIGEST · 2026-07-27 · 헤이제임스</span><span class="chip">🎬 영상</span></div><h1>바이브코딩으로 3개월 헤맨 서비스, 루비온레일즈로 4시간 만에 재구현했습니다</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>헤이제임스</td></tr><tr><td>제목</td><td>바이브코딩으로 3개월 헤맨 서비스, 루비온레일즈로 4시간 만에 재구현했습니다</td></tr><tr><td>길이</td><td>약 8분(485초)</td></tr><tr><td>핵심결론 1</td><td>바이브 코딩 창업자 다수가 리액트+넥스트JS+슈퍼베이스 조합을 쓰는데, 조각을 이어붙이는 &#x27;조립형 스택&#x27;이라 몇 달이 지나면 서로 다른 스타일의 코드가 겹겹이 쌓여 AI가 같은 에러 자리를 맴돌게 된다</td></tr><tr><td>핵심결론 2</td><td>막히는 원인은 개발 실력이나 프롬프트 문제가 아니라 처음에 깔린 &#x27;구조&#x27;의 문제이며, 조립형 스택은 조각 사이를 잇는 방법에 정답이 하나로 정해져 있지 않아 자유도가 높다는 것이 AI에게는 오히려 매번 다른 답을 내놓는 리스크가 된다</td></tr><tr><td>핵심결론 3</td><td>규칙이 명확하고 프론트엔드·서버 로직·DB·배포까지 내장된 루비온레일즈로 재구현하면, 두세 달간 검증된 기획을 옮기는 작업만 남아 로그인·결제·관리자 페이지·실서버 배포까지 4시간 만에 끝나는 경우가 많다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) 바이브 코딩 창업자들의 공통 패턴</h3>
+<ul>
+<li>화자가 창업자들을 상담하며 프로젝트를 열어보면 대부분 리액트, 넥스트JS, 슈퍼베이스 조합을 쓰고 있었다고 밝힌다. AI 코딩 도구가 기본값으로 자주 선택하는 스택이기 때문이다.</li>
+<li>자신이 어떤 기술을 쓰는지조차 모르는 창업자가 많다. AI에게 &quot;만들어 달라&quot;고만 하면 코드가 나오므로 굳이 알 필요를 못 느꼈기 때문이라는 것이다.</li>
+</ul>
+<h3>2) 초반은 신나지만 후반에 막히는 3가지 증상</h3>
+<ul>
+<li>처음 몇 달은 말만 하면 화면과 기능이 생기지만, 시간이 지날수록 세 가지 문제가 나타난다고 설명한다.</li>
+<li>첫째, 만든 줄 알았던 기능에서 빠진 부분이 하나둘 드러난다. 둘째, 자잘한 에러를 AI에게 고쳐 달라고 해도 같은 자리를 맴돌며 잘 고쳐지지 않는다. 셋째, 출시 단계에서 보안·서버 안정성·호스팅 비용 같은 답할 수 없는 질문들이 몰려온다.</li>
+</ul>
+<h3>3) 원인은 실력이 아니라 &#x27;조립형 구조&#x27;</h3>
+<ul>
+<li>화자는 리액트·넥스트JS·슈퍼베이스가 나쁜 기술이 아니라 숙련된 개발자에게는 강력한 선택지라고 전제한 뒤, 문제는 이 조합이 화면(리액트)·서버 기능(넥스트JS)·DB와 로그인(슈퍼베이스)·결제(별도 서비스)를 각각 이어붙여야 하는 &#x27;조립형 스택&#x27;이라는 데 있다고 짚는다.</li>
+<li>조각을 잇는 방법에 정답이 하나로 정해져 있지 않아 만드는 사람마다 구조가 달라지고, 코드를 읽지 못하는 상태에서 AI에게만 맡기면 같은 요청에도 매번 다른 답이 나온다. 오늘은 A 방식으로 로그인을 붙이고 다음 주엔 B 방식으로 결제를 붙이는 식으로, 몇 달이 지나면 서로 다른 스타일의 코드가 겹겹이 쌓여 AI가 에러 하나를 고치려 해도 얽힌 구조 전체를 이해해야 하는 상황이 된다.</li>
+</ul>
+<h3>4) 해법 — 내장형 풀스택 프레임워크로 재구현</h3>
+<ul>
+<li>화자가 상담에서 실제로 권하는 해법은 규칙이 명확하고 모든 기능이 내장된 백엔드 중심 풀스택 프레임워크로 다시 구현하는 것이며, 대표 사례로 루비온레일즈를 든다.</li>
+<li>레일즈는 나온 지 20년이 넘어 쌓인 코드·문서가 방대해 AI가 충분히 학습한 기술이고, &quot;설정의 자유&quot; 대신 &quot;정해진 관례를 따르게 하는&quot; 철학으로 같은 기능이면 코드가 한 가지 모양으로 수렴한다는 점을 강조한다. 프론트엔드, 서버 로직, 데이터베이스 연결, 배포 도구는 물론 실시간 채팅·예약 발송 같은 백그라운드 작업, 메일 발송까지 프레임워크 안에서 내장 해결되어 외부 서비스 연결 부위 자체가 거의 없다.</li>
+</ul>
+<h3>5) 4시간 재구현이 가능한 3가지 이유</h3>
+<ul>
+<li>화자는 4시간 재구현에 &quot;속임수가 없다&quot;며 세 가지 근거를 든다. 첫째, 두세 달의 바이브 코딩이 헛수고가 아니라 그 기간에 필요한 기능·화면이 이미 검증되어 재구현은 확정된 기획을 옮기는 작업이라 방향을 헤맬 시간이 사라진다.</li>
+<li>둘째, 프레임워크 대부분이 내장돼 있어 조각을 이어붙이는 시간이 들지 않는다. 셋째, 규칙이 명확한 만큼 AI가 최고 속도로 달릴 수 있는 길이기 때문이라고 설명한다. 실제 세션에서는 로그인, 결제, 관리자 페이지 같은 핵심 기능이 실서버까지 올라가는 경우가 많다고 밝힌다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>바이브 코딩: 코드를 직접 작성하지 않고 AI에게 자연어로 지시해 서비스를 만드는 개발 방식으로, 이 영상에서는 리액트+넥스트JS+슈퍼베이스 조합으로 진행되는 경우가 다수로 묘사된다.</li>
+<li>조립형 스택(리액트/넥스트JS/슈퍼베이스): 화면 렌더링(리액트), 서버 사이드 로직(넥스트JS), 데이터베이스·인증(슈퍼베이스), 결제(별도 서비스)를 각각 다른 도구로 조합하는 구조로, 연결 방식에 표준이 없어 자유도가 높은 대신 일관성 유지가 어렵다.</li>
+<li>내장형 풀스택 프레임워크(루비온레일즈): 프론트엔드, 서버 로직, 데이터베이스 연결, 배포, 백그라운드 작업, 메일 발송까지 하나의 프레임워크 안에 포함되어 외부 서비스를 이어붙일 필요가 적은 구조다. &quot;관례(convention)를 따르게 하는 철학&quot;으로 코드 스타일이 수렴한다는 것이 화자의 설명이다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>바이브 코딩 프로젝트가 출시 직전에 멈추는 현상을 창업자 개인의 실력·프롬프트 역량 문제가 아니라 초기 기술 스택 선택(구조)의 문제로 재정의함으로써, 비개발자 창업자가 자책 대신 스택 전환이라는 구조적 해법을 검토하게 만든다.</li>
+<li>AI 코딩 시대에는 &quot;자유도 높은 조합형 스택&quot;보다 &quot;규칙이 명확한 내장형 프레임워크&quot;가 AI의 일관된 결과물 생성에 유리하다는 관점을 제시하며, 이는 도구 선택 기준이 인간 개발자 중심에서 AI 협업 적합성 중심으로 이동하고 있음을 시사한다.</li>
+<li>이미 투입한 개발 기간(두세 달)을 &quot;매몰비용&quot;이 아니라 &quot;검증된 기획 자산&quot;으로 재해석해 재구현에 대한 심리적 저항을 낮추는 설득 전략을 취한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>1단계: 상담을 통해 창업자가 현재 어떤 기술 스택으로 서비스를 만들고 있는지부터 파악한다(다수가 스스로도 모르는 상태).</li>
+<li>2단계: 조립형 스택(리액트/넥스트JS/슈퍼베이스)에서 반복적으로 막히는 원인이 실력이 아닌 구조에 있음을 진단한다.</li>
+<li>3단계: 두세 달간 바이브 코딩으로 검증된 기획(필요 기능·화면)을 그대로 가져와 내장형 풀스택 프레임워크(루비온레일즈)로 재구현하며, 로그인·결제·관리자 페이지 등 핵심 기능을 실시간 세션 안에서 실서버까지 배포한다.</li>
+<li>4단계(부가): 실서버 출시 후 보안 검토, 사업성 검토, 창업·마케팅 전략 컨설팅과 운영 교육 자료 제공까지 패키지로 진행한다(화자가 운영하는 유료 서비스 소개).</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>리액트/넥스트JS/슈퍼베이스로 바이브 코딩을 시작했지만 출시 단계에서 에러가 반복되고 AI 수정이 같은 자리를 맴도는 비개발자 창업자가, 스택 전환 필요성을 판단하는 기준으로 참고할 수 있다.</li>
+<li>코드를 읽지 못하는 상태에서 AI에게 전적으로 개발을 맡기려는 예비 창업자가, 초기 스택 선택 시 &quot;내장형 프레임워크&quot;를 우선 검토하는 참고 사례로 활용할 수 있다.</li>
+<li>개발 에이전시나 외주 개발자가 바이브 코딩 프로젝트의 재구현·마이그레이션을 제안할 때, 고객에게 &quot;구조 문제&quot;라는 프레이밍으로 설명하는 커뮤니케이션 방식을 참고할 수 있다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>화자는 AI 코딩 도구가 기본값으로 조립형 스택(리액트/넥스트JS/슈퍼베이스)을 자주 추천하는 현재 흐름이 계속되는 한, 비개발자 창업자들이 출시 직전 병목에 부딪히는 사례가 반복될 것으로 본다.</li>
+<li>영상은 시청자에게 &quot;지금 만들고 있는 프로젝트가 어떤 기술로 만들어졌는지 AI에게 물어보라&quot;는 실천 과제를 제시하며, 마지막에 &quot;다듬기(A)&quot;와 &quot;다시 세우기(B)&quot; 중 어느 쪽인지 댓글로 남기도록 유도해 향후 시청자 반응을 통해 재구현 수요를 가늠하려는 의도를 보인다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>바이브 코딩</td><td>AI에게 자연어로 지시해 코드 없이 서비스를 만드는 개발 방식</td><td>말로 짓는 집</td></tr><tr><td>조립형 스택</td><td>화면·서버·DB·결제를 서로 다른 도구로 이어붙이는 구조</td><td>여러 회사 부품을 조립한 자동차</td></tr><tr><td>내장형 풀스택 프레임워크</td><td>프론트엔드부터 배포까지 하나의 틀 안에 포함된 개발 프레임워크</td><td>완제품으로 나오는 자동차</td></tr><tr><td>루비온레일즈</td><td>관례를 따르게 해 코드 스타일을 통일시키는 20년 이상 된 풀스택 프레임워크</td><td>정해진 레시피대로 짓는 표준 설계도</td></tr><tr><td>관례(convention)</td><td>&quot;설정의 자유&quot; 대신 정해진 규칙을 따르게 하는 설계 철학</td><td>자유 좌석 대신 지정석</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/7JJZTOMfwrE" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>헤이제임스 · 2026-07-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

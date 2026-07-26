@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="편집 프로그램 다 지웠습니다."><title>편집 프로그램 다 지웠습니다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-07-27 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>편집 프로그램 다 지웠습니다.</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>메이커 에반</td></tr><tr><td>제목</td><td>편집 프로그램 다 지웠습니다.</td></tr><tr><td>길이</td><td>약 7분(416초)</td></tr><tr><td>핵심결론 1</td><td>캡컷·프리미어 프로 같은 편집 프로그램을 완전히 지우고 클로드 코드에게 말로 지시해 촬영부터 편집까지 영상 한 편을 6시간 만에 완성했다</td></tr><tr><td>핵심결론 2</td><td>AI가 음성을 초 단위로 받아쓰는 특성을 이용해 자막 생성과 무음 구간(컷 편집)을 자동화하고, 30분 분량 촬영본에서 알맹이만 남기면 15분으로 압축된다</td></tr><tr><td>핵심결론 3</td><td>자막·컷 편집을 넘어 제목 카드·도표·확대 애니메이션 같은 화면 디자인까지 말로 지시해 생성하며, 리모션(코드 기반 영상 도구)과 스킬·워크플로우를 결합해 스타일을 기억시키는 단계까지 나아갔다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) 발상의 전환 — &quot;편집한다&quot;에서 &quot;편집을 시킨다&quot;로</h3>
+<ul>
+<li>발표자는 편집 10시간 넘게 걸린 경험을 언급하며, 편집 속도를 높이는 대신 편집 프로그램 자체를 안 쓰기로 결정했다고 밝혔다 (<a href="https://youtu.be/LlxnWTAGz4o?t=24" target="_blank" rel="noopener">00:24</a>).</li>
+<li>사용 도구는 클로드(정확히는 &quot;클로드 코드&quot;라는 기능)이며, 영상 파일을 주면서 &quot;말 없는 구간 잘라주고 자막 넣어주고 중요한 부분은 화면 확대해 줘&quot; 같은 자연어 지시만으로 결과물을 받는다 (<a href="https://youtu.be/LlxnWTAGz4o?t=64" target="_blank" rel="noopener">01:04</a>).</li>
+<li>마우스로 타임라인을 드래그하거나 자막 위치를 픽셀 단위로 맞추는 수작업이 사라졌다는 점을 강조했다.</li>
+</ul>
+<h3>2) 자막 자동화 — 속기사처럼 통째로 받아쓰기</h3>
+<ul>
+<li>편집 시간을 가장 많이 잡아먹는 원인으로 자막을 지목했다. 말 한 마디마다 블록을 만들고 시작점·끝점을 맞춰야 하는데, 10분 영상이면 자막 블록이 몇백 개가 된다고 설명했다 (<a href="https://youtu.be/LlxnWTAGz4o?t=119" target="_blank" rel="noopener">02:00</a>).</li>
+<li>AI는 영상 속 목소리를 통째로 받아쓰면서 어떤 단어를 몇 초에 말했는지까지 기록하므로, 자막이 목소리에 싱크 밀림 없이 붙는다. 발표자는 이를 &quot;속기사가 옆에 앉아 실시간으로 받아 적는&quot; 것에 비유했다.</li>
+<li>사람이 하는 일은 잘못 인식된 단어(예: 채널명 &quot;메이커 에반&quot;이 &quot;메이커의 반&quot;으로 오인식되는 경우)만 교정하는 것으로 축소됐다.</li>
+</ul>
+<h3>3) 컷 편집 자동화 — 무음 구간 일괄 삭제</h3>
+<ul>
+<li>촬영본에는 &quot;음&quot; 하는 구간, 대본 보느라 멈춘 구간, 같은 말을 여러 번 반복한 구간 등 침묵이 많은데, 이를 찾아 자르는 컷 편집이 가장 지루하고 오래 걸리는 작업이라고 설명했다 (<a href="https://youtu.be/LlxnWTAGz4o?t=176" target="_blank" rel="noopener">02:56</a>).</li>
+<li>AI가 단어별 발화 시각을 알고 있다는 것은 곧 &quot;아무 말도 안 한 구간&quot;도 알고 있다는 뜻이므로, &quot;말없는 구간 전부 잘라줘&quot;라는 한마디로 수백 개의 침묵 구간이 한 번에 제거된다.</li>
+<li>이 자동 컷 편집으로 30분 촬영본이 알맹이만 남아 15분으로 줄어드는 결과를 얻었다고 밝혔다.</li>
+</ul>
+<h3>4) 화면 디자인 자동화 — 편집 프로그램으로는 불가능한 영역</h3>
+<ul>
+<li>발표자는 자막·컷 편집까지는 &quot;워밍업&quot;이며, 진짜 핵심은 편집 프로그램으로는 아예 할 수 없는 화면 디자인 자동화라고 강조했다 (<a href="https://youtu.be/LlxnWTAGz4o?t=195" target="_blank" rel="noopener">03:15</a>).</li>
+<li>제목 카드, 도표, 강조 구간 확대 효과 등을 기존에는 템플릿을 사서 넣거나 직접 그려야 했지만, &quot;흰 배경에 큰 제목 띄워줘, 포인트 색은 보라색, 숫자는 올라가는 애니메이션 넣어줘&quot; 같은 말로 해당 장면을 바로 생성한다 (<a href="https://youtu.be/LlxnWTAGz4o?t=212" target="_blank" rel="noopener">03:32</a>).</li>
+<li>더 나아가 한 번 만든 스타일을 AI가 &quot;스킬&quot;이라는 형태로 기억해 &quot;저번처럼 해줘&quot;라는 지시만으로 재현할 수 있으며, 이를 &quot;저번처럼 알아듣는 디자이너&quot;에 비유했다. 이런 스킬들을 여러 워크플로우로 미리 만들어 반복 작업을 표준화했다고 설명했다 (<a href="https://youtu.be/LlxnWTAGz4o?t=229" target="_blank" rel="noopener">03:49</a>).</li>
+</ul>
+<h3>5) 리모션(Remotion) — 코드 기반 편집 보조 도구</h3>
+<ul>
+<li>마지막 노하우로 리모션을 언급하며, 편집을 도와주는 코드 기반 프로그램이라고 소개했다 (<a href="https://youtu.be/LlxnWTAGz4o?t=268" target="_blank" rel="noopener">04:28</a>).</li>
+<li>리모션을 기반으로 자막 삽입은 물론 이펙트·애니메이션까지 코드로 구현할 수 있다고 설명했다.</li>
+</ul>
+<h3>6) 실제 6시간 타임라인과 시작 가이드</h3>
+<ul>
+<li>실측 타임라인: 촬영 1시간 30분(틀려도 다시 말하고 넘어감, AI가 나중에 잘라줄 것이므로 부담 없음) → AI에게 영상 파일을 넘기고 무음 제거·자막·싱크·챕터 제목 화면 삽입을 요청하는 데 30분 → 이후 2~3시간은 AI가 처리하는 동안 커피 마시며 다음 아이디어 구상 → 결과물이 나오면 검수, 전체 합산 약 6시간 (<a href="https://youtu.be/LlxnWTAGz4o?t=319" target="_blank" rel="noopener">05:19</a>).</li>
+<li>입문 3단계로 ① 클로드 앱 설치 ② 욕심내지 말고 자막 작업부터 시켜보기 ③ 결과에 피드백 주기(&quot;자막이 너무 아래 있어&quot; 등)를 제시했으며, 첫 결과물이 마음에 안 들어도 실패가 아니라 피드백을 반영하면 <span class="up">개선</span>된다고 강조했다 (<a href="https://youtu.be/LlxnWTAGz4o?t=320" target="_blank" rel="noopener">05:20</a>).</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>클로드 코드(Claude Code)</strong>: 발표자가 실제로 사용하는 도구로, 영상 파일과 자연어 지시를 입력받아 무음 구간 제거, 자막 생성·동기화, 화면 확대·강조, 제목 카드/도표 생성 등을 수행한다. 음성을 시간 단위로 받아쓰는(타임스탬프 포함 전사) 기능이 자막·컷 편집 자동화의 기반이 된다.</li>
+<li><strong>리모션(Remotion)</strong>: 코드 기반으로 영상에 자막, 이펙트, 애니메이션을 삽입할 수 있는 보조 도구로 소개됐다. React/코드 방식으로 영상 요소를 프로그래밍적으로 제어하는 도구로 추정된다.</li>
+<li><strong>스킬(Skill)/워크플로우</strong>: 한 번 정의한 디자인 스타일이나 작업 절차를 AI가 기억하고 재사용할 수 있도록 만든 반복 가능한 작업 단위로, &quot;저번처럼 해줘&quot; 같은 짧은 지시로 동일한 결과를 재현하게 해준다.</li>
+<li><strong>컷 편집(Cut editing)</strong>: 발화 사이의 침묵·군더더기 구간을 찾아 제거하는 작업으로, 기존에는 수작업으로 타임라인을 훑어야 했으나 AI의 단어별 타임스탬프 인식을 활용해 자동화됐다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>편집 프로그램(캡컷, 프리미어 프로 등)의 UI 기반 수작업 편집 패러다임이, 자연어 지시 기반 AI 에이전트 워크플로우로 대체될 수 있음을 1인 크리에이터 실사용 사례로 보여준다.</li>
+<li>편집 시간의 병목이 촬영이 아니라 &quot;포장&quot;(자막 동기화, 컷 편집, 화면 디자인)에 있었다는 진단은, AI가 반복적·기계적 후반 작업을 대체함으로써 크리에이터가 콘텐츠 기획에 시간을 재배분할 수 있게 한다는 시사점을 준다.</li>
+<li>스타일을 &quot;스킬&quot;로 저장해 재사용하는 방식은 개인화된 자동화 자산(디자인 템플릿, 워크플로우)이 축적될수록 편집 효율이 누적적으로 <span class="up">개선</span>되는 구조를 시사한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>1단계(촬영, 약 1.5시간): 틀려도 멈추지 않고 이어서 다시 말하며 촬영 부담을 줄인다. 어차피 AI가 무음·반복 구간을 잘라줄 것이라는 전제가 이를 가능하게 한다.</li>
+<li>2단계(AI 작업 지시, 약 30분): 영상 파일을 클로드에 전달하며 &quot;말 없는 구간 잘라줘 / 자막 만들어줘 / 싱크 맞춰줘 / 챕터마다 제목 화면 넣어줘&quot; 등 구체적 자연어 요청을 순차적으로 전달한다.</li>
+<li>3단계(대기, 약 2~3시간): AI가 처리하는 동안 다른 작업(다음 영상 아이디어 정리)을 병행한다.</li>
+<li>4단계(검수): 초안이 나오면 전체를 훑으며 오인식 단어 교정, 디자인 미세 조정 등 피드백을 반복 제공해 완성도를 높인다.</li>
+<li>입문 절차: 클로드 앱 설치 → 자막 생성만 먼저 시도 → 결과물에 구체적 피드백(&quot;자막이 너무 아래 있어&quot; 등)을 주며 점진적으로 확장.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>1인 유튜버·콘텐츠 크리에이터가 편집 외주 없이 촬영-편집-발행 주기를 단축하고 싶을 때 참고할 수 있는 실전 워크플로우다.</li>
+<li>자막 동기화나 침묵 구간 제거처럼 반복적이고 기계적인 편집 작업에 시간을 뺏기는 제작자가 AI 자동화 도입의 첫 단계(자막부터)를 설계할 때 참고할 수 있다.</li>
+<li>코드 기반 영상 제작(Remotion 등)에 관심 있는 개발자 출신 크리에이터가 프로그래밍적 영상 파이프라인을 구축할 때 참고 사례가 된다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>발표자는 현재 이 워크플로우를 스킬·워크플로우 형태로 체계화해 &quot;딸각&quot;(간편 클릭 수준)으로 반복 활용하고 있다고 밝혔다.</li>
+<li>오픈 채팅방을 통해 자막 싱크, 디자인, 컷 편집 노하우(스킬)를 공유하겠다고 예고해, 개인 워크플로우가 커뮤니티 형태로 확산될 가능성을 시사했다.</li>
+<li>향후 다룰 주제로 시청자에게 컷 편집·자막·썸네일 중 가장 오래 걸리는 작업이 무엇인지 질문하며, 후속 영상에서 해당 주제를 심화할 계획을 밝혔다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>클로드 코드(Claude Code)</td><td>자연어 지시로 영상 편집(무음 제거, 자막, 디자인)을 수행하게 하는 AI 도구</td><td>말로 지시만 하면 결과물을 만들어오는 조수</td></tr><tr><td>컷 편집</td><td>발화 사이 침묵·반복 구간을 찾아 잘라내는 편집 작업</td><td>30분 촬영본에서 군더더기를 걷어내 15분으로 압축</td></tr><tr><td>자막 동기화</td><td>음성 발화 타이밍에 맞춰 자막 블록의 시작·끝점을 맞추는 작업</td><td>옆에서 실시간으로 받아 적는 속기사</td></tr><tr><td>리모션(Remotion)</td><td>코드로 자막·이펙트·애니메이션을 넣을 수 있는 영상 제작 보조 도구</td><td>마우스 대신 코드로 짜는 영상 편집기</td></tr><tr><td>스킬(Skill)</td><td>AI가 기억해 재사용하는 디자인 스타일·작업 절차 단위</td><td>&quot;저번처럼 해줘&quot;라는 한마디만 알아듣는 디자이너</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/LlxnWTAGz4o" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-07-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
