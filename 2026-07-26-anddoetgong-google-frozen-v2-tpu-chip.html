@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="구글, 제미나이 전용 AI칩 &#x27;프로즌 v2&#x27; 개발 — 컴퓨트 부족 속 실적발표 뒷이야기"><title>구글, 제미나이 전용 AI칩 &#x27;프로즌 v2&#x27; 개발 — 컴퓨트 부족 속 실적발표 뒷이야기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-07-26 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>구글, 제미나이 전용 AI칩 &#x27;프로즌 v2&#x27; 개발 — 컴퓨트 부족 속 실적발표 뒷이야기</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>안될공학 - IT 테크 신기술</td></tr><tr><td>제목</td><td>구글, Gemini 칩에 새긴 새로운 AI칩 만든다｜프로즌 v2와 컴퓨트 부족 (feat. Q2 실적발표)</td></tr><tr><td>길이</td><td>약 20분 (자막 기준 추정)</td></tr><tr><td>핵심결론 1</td><td>구글이 제미나이 전용 서버 AI칩 &quot;프로즌 v2&quot;를 개발 중이며, 목표는 2028년 배치, 기존 맞춤형 AI칩 대비 전력당 토큰 처리량을 6~10배로 높이는 것</td></tr><tr><td>핵심결론 2</td><td>구글은 2분기 매출·클라우드 매출 모두 예상을 넘겼지만 설비투자 확대 우려로 주가는 시간외 거래에서 5% <span class="dn">하락</span>했고, CEO가 &quot;컴퓨트 제약 상태&quot;임을 여러 분기 연속 공식 인정</td></tr><tr><td>핵심결론 3</td><td>제미나이 3.6 플래시(소프트웨어 효율화)와 프로즌 v2(하드웨어 효율화)는 &quot;같은 문제의 양면&quot;으로, 모델의 작업량을 줄이는 전략과 남은 작업을 전용 회로로 더 빠르게 처리하는 전략이 동시에 진행 중</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) 묘하게 겹친 세 가지 소식 — 제미나이 3.5 프로 지연, 3.6 플래시 출시, 프로즌 v2 보도</h3>
+<ul>
+<li>지난 16일, 구글이 준비 중이던 제미나이 3.5 프로의 출시가 내부 성능 목표(특히 코딩·에이전트 작업)를 충족하지 못해 지연되고 있다는 보도가 나왔습니다. 구글은 5월 자체 행사(I/O)에서 6월 출시를 예고했지만 그 일정은 이미 지났습니다.</li>
+<li>그런데 며칠 뒤 기다리던 &quot;프로&quot;가 아니라 제미나이 3.6 플래시가 먼저 등장했습니다. 이름만 보면 작고 가벼운 보급형 모델 같지만, 구글은 이를 코딩뿐 아니라 지식 업무·멀티모달 분석·공간 추론·에이전트 실행까지 현장에서 자주 쓰이는 다양한 작업을 빠르고 저비용으로 처리하는 &quot;워크호스(주력) 모델&quot;로 소개했습니다. 이전 3.5 플래시보다 출력 토큰을 평균 17% 적게 쓰고, 추론 단계와 도구 호출 횟수도 줄였다고 밝혔습니다.</li>
+<li>비슷한 시점에 구글이 제미나이에 맞춘 새로운 서버용 AI칩을 개발 중이라는 사실도 알려졌습니다. 내부 코드명은 &quot;프로즌 v2&quot;, 목표 배치 시점은 2028년입니다. 관계자들은 이 칩이 구글의 기존 맞춤형 AI칩보다 전력당 토큰 처리량을 6~10배 높일 수 있을 것으로 기대한다고 전해지나, 아직 개발 초기 단계이며 구글의 공식 발표 제품은 아닙니다.</li>
+<li>결과적으로 구글은 세 개의 시간표를 동시에 굴리고 있습니다. 최고 성능을 노리며 몇 달 단위로 개발되는 프로, 당장 오늘 들어오는 실제 요청을 처리해야 하는 플래시, 그리고 몇 년 뒤 제미나이를 가정하고 미리 설계하는 프로즌 v2입니다.</li>
+</ul>
+<h3>2) &quot;프로즌&quot;이란 이름의 유래와 초기 구상의 폐기</h3>
+<ul>
+<li>&quot;프로즌(frozen)&quot;은 &quot;얼렸다&quot;는 뜻으로, AI 모델 학습에서 더 이상 바꾸지 않을 값을 잠그는 것을 &quot;프리즈&quot;라 부르는 데서 착안된 것으로 짐작됩니다(프로젝트명이 실제로 이 용어에서 나왔는지는 확인되지 않았습니다). 소프트웨어에서 자유롭게 바꾸던 정보 일부를, 바꾸기 어려운 실리콘(반도체 회로)에 고정하려는 발상입니다.</li>
+<li>첫 번째 &quot;프로즌&quot; 구상은 구글 딥마인드의 제프 딘이 제안한 것으로 전해지며, 지금 알려진 v2보다 훨씬 과감했습니다. 제미나이의 가중치(AI가 입력을 처리하고 답을 내놓는 방식을 결정하는 수많은 숫자)까지 칩에 직접 새기는 방식이었습니다.</li>
+<li>현재 가중치는 SSD 같은 저장장치에 보관돼 있다가, 모델 실행 시 D램·HBM(고대역폭 메모리)으로 옮겨집니다. SSD가 창고라면 HBM은 연산기 바로 옆의 작업대에 해당하며, 추론이 시작되면 연산기는 이 작업대에서 필요한 가중치를 계속 읽어옵니다. 초기 프로즌 구상은 일부 가중치를 실리콘에 고정해 이 운반 과정을 줄이려 했습니다.</li>
+<li>그러나 AI 모델은 재학습할 때마다 가중치가 달라지고, 어텐션이나 MoE 같은 구조도 계속 바뀝니다. 실리콘을 한번 잘못 고정하면 소프트웨어 업데이트만으로는 고칠 수 없어, 모델은 새 세대로 넘어갔는데 칩은 옛 구조에 묶이는 위험이 있습니다. 효율은 매력적이었지만 모델 수명이 칩 수명을 결정해버리는 위험이 너무 커서 초기 구상은 폐기된 것으로 보입니다.</li>
+<li>프로즌 v2는 이보다 유연성을 더 남기는 방향입니다. 가중치 전체를 고정하기보다, 제미나이가 여러 세대에 걸쳐 반복 사용할 가능성이 높은 &quot;구조&quot;와 &quot;처리 방식&quot;에 집중하려는 것으로, 구조만 넣을지 일부 모델 정보까지 담을지는 아직 확정되지 않았습니다.</li>
+</ul>
+<h3>3) 구글이 컴퓨트 부족을 겪는 이유 — 스페이스X 임대 계약과 백로그 급증</h3>
+<ul>
+<li>구글은 TPU를 직접 설계하고 세계 최대 규모의 데이터센터를 운영하는 회사인데도, 컴퓨트 수요가 인프라 증설 속도보다 빠르게 늘어 이런 과감한 전용 칩까지 고민하고 있습니다.</li>
+<li>대표 사례로, 구글은 2026년 10월부터 스페이스X에 매달 9억 2천만 달러(약 1조원 이상)를 지급하고 엔비디아 GPU 약 11만 개를 포함한 대규모 컴퓨팅 자원에 접근할 예정입니다. 스페이스X는 xAI와 합병하며 대규모 AI 데이터센터 자원을 보유하게 됐고, 구글은 이를 빌려 부족한 용량을 메우려 합니다. 구글은 이를 &quot;브릿지 캐퍼(자체 데이터센터가 완성될 때까지 임시로 확보하는 연산 용량)&quot;라고 설명했습니다.</li>
+<li>이는 일회성 계약이 아닙니다. 2분기 실적발표에서 CFO(아시케나지)는 공급 제약을 고려해 3분기에는 외부 인프라 사용을 더 늘리겠다고 밝혔고, &quot;브릿지 전략&quot;이라는 표현을 그대로 사용했습니다. 즉 남의 데이터센터를 빌리는 것이 당분간의 방침이 된 것입니다.</li>
+<li>메타 역시 원하는 만큼의 제미나이 연산 용량을 구글에서 공급받지 못한 것으로 전해지며, 이후 직원들에게 AI 토큰을 더 효율적으로 사용하라고 내부 안내했습니다.</li>
+<li>실적 수치로도 확인됩니다. 2분기 구글 클라우드 매출은 전년 동기 대비 82% 성장한 248억 달러였고, 계약은 됐지만 아직 매출로 잡히지 않은 백로그는 5,140억 달러로, 직전 분기(4,620억 달러)보다 500억 달러 넘게 늘었습니다. 그 전 분기(2,400억 달러)와 비교하면 반년 사이 거의 두 배입니다. 순다르 피차이 CEO는 &quot;단기적으로 컴퓨트 제약 상태&quot;라고 직접 밝혔고, 클라우드 매출이 수요를 다 채웠다면 더 높았을 것이라고 언급했습니다. 이번 2분기 발표에서도 같은 이야기가 반복됐고, CFO는 &quot;여러 분기 연속으로 같은 말을 하고 있다&quot;고 덧붙였습니다.</li>
+</ul>
+<h3>4) 검색·AI 오버뷰의 추론 수요 폭증</h3>
+<ul>
+<li>컴퓨트 부족 문제는 기업용 클라우드에만 머물지 않습니다. 일상적으로 쓰는 구글 검색에서도 새로운 추론 수요가 발생하고 있습니다. 검색창에 질문을 입력하면 링크 위에 AI 오버뷰가 먼저 나타나는데, 관련 자료를 읽고 답을 정리하는 과정에서 제미나이 계열의 추론이 필요합니다.</li>
+<li>AI 오버뷰 월간 이용자는 25억 명을 넘어섰고, AI 모드도 월간 이용자 10억 명을 기록했습니다. 구글의 AI 제품·API가 처리하는 토큰은 한 달에 약 3,200조 개로 1년 전보다 7배 늘었습니다(토큰 수가 컴퓨트 사용량과 정확히 비례하진 않지만, 작업량 증가 추세를 보여주는 지표입니다).</li>
+<li>모델 API만 놓고 보면 분당 220억 토큰을 처리한다고 밝혔는데, 한 분기 전 160억 토큰에서 석 달 만에 약 37% 증가한 수치입니다.</li>
+<li>구글은 데이터센터 신설도 멈추지 않아, 2분기 실적발표에서 올해 설비투자 계획을 최대 2,850억 달러로 상향했습니다(직전 분기 제시치는 1,900억 달러). 그러나 매출·클라우드 실적 모두 예상을 넘겼음에도 지출 규모 우려로 주가는 시간외 거래에서 5% <span class="dn">하락</span>했습니다. 즉 &quot;데이터센터를 더 짓는 것만으로는 답이 안 된다&quot;는 신호로 해석됩니다.</li>
+</ul>
+<h3>5) 두 개의 축 — 소프트웨어 효율화(3.6 플래시)와 하드웨어 효율화(프로즌 v2)</h3>
+<ul>
+<li>컴퓨트 수요를 따라잡으려면 요청 한 건에 드는 계산량을 줄이거나, 같은 전력으로 더 많은 요청을 처리해야 합니다. 제미나이 3.6 플래시와 프로즌 v2는 각각 이 두 방향을 맡고 있습니다.</li>
+<li>3.6 플래시가 강조하는 것은 코딩 하나가 아니라 코드 생성·수정, 지식 업무, 장문서, 멀티모달 분석, 공간 추론, 컴퓨터 조작, 에이전트 실행까지 폭넓은 업무입니다. 한 분야 최고 점수보다 다양한 실제 업무를 빠르게 처리하는 모델을 지향합니다. 이때 &quot;범용성&quot;은 GPU의 하드웨어적 범용성과는 다른, 하나의 모델이 여러 종류 업무를 처리한다는 &quot;제품 차원의 범용성&quot;입니다.</li>
+<li>여기서 범용 모델과 전용 칩이 만납니다. 사용자 입장에서는 범용 모델이지만, 데이터센터 입장에서는 같은 플래시 구조가 수많은 서비스에서 반복 실행되는 하나의 거대한 워크로드가 됩니다. 서비스 사용 범위가 넓어질수록 이를 떠받치는 공통 연산의 호출량도 늘어납니다.</li>
+<li>3.6 플래시가 토큰과 도구 호출 횟수를 줄인 것도 같은 맥락입니다. 에이전트가 검색·문서 읽기·코드 실행·결과 검토를 반복할 때마다 시간과 비용이 늘어나므로, 같은 업무를 끝내는 데 필요한 과정 자체를 줄이는 쪽을 택했습니다. &quot;무조건 길게 생각하는 것&quot;이 아니라 &quot;필요한 만큼만 계산하고 마치는 능력&quot;이 중요해졌다는 의미입니다.</li>
+<li>구글 플로우(영상 생성 도구) 사례도 소개됩니다. 문장 하나로 영상을 만들 때도 거대한 모델 하나가 전부 처리하는 게 아니라, 제미나이와 다른 여러 모델이 의도 파악·이미지 및 참고자료 생성·영상 생성 등 역할을 나눠 함께 작동합니다. 프로즌 v2가 플로우 전체를 담는다는 뜻은 아니지만, AI 오버뷰·플로우·제미나이 앱·워크스페이스 에이전트 등 서로 다른 서비스 안에서 제미나이 계열 모델의 일부 연산이 공통으로 반복 호출될 수 있다는 점이 핵심입니다. 모델의 쓰임새가 넓어질수록 전용 하드웨어를 만들 경제성도 함께 커집니다.</li>
+</ul>
+<h3>6) 프로즌이 노리는 효율의 원리</h3>
+<ul>
+<li>프로젝트 관계자들이 말하는 목표(전력당 토큰 처리량 6~10배)는 큰 숫자지만, 비교 대상 모델·정밀도·배치 크기·응답 지연 조건 등이 아직 공개되지 않아 완제품의 실측 성능이 아니라 개발 관계자의 예상치로 봐야 합니다.</li>
+<li>GPU와 TPU는 이미 AI 특화 칩이지만, 다양한 모델과 계속 바뀌는 워크로드를 지원해야 하므로 여러 종류의 연산기·데이터 경로·명령 해석 제어 회로를 갖춰야 합니다. 이 유연성은 칩 면적을 차지하고 전력·설계 복잡성을 높입니다. 반대로 실행할 모델 구조가 어느 정도 정해져 있다면 불필요한 기능을 덜어내고, 반복되는 연산에 맞춰 데이터 경로와 메모리 배치를 다시 설계할 수 있습니다.</li>
+<li>특히 LLM이 토큰을 한 개씩 생성하는 동안에는 가중치와 중간 데이터를 계속 옮겨야 하는데, 연산 자체보다 데이터를 가져오는 데 더 많은 전력이 들기도 합니다. 프로즌은 고정된 구조를 활용해 이 이동·제어 부담을 줄이려는 시도로 보입니다.</li>
+<li>요컨대 제미나이 3.6 플래시가 소프트웨어에서 불필요한 출력 토큰·도구 호출을 줄였다면, 프로즌은 하드웨어에서 불필요한 데이터 이동과 범용 회로를 줄이는 것입니다. 한쪽은 모델이 수행해야 할 작업량 자체를 줄이고, 다른 쪽은 남은 작업을 더 효율적으로 처리하는 역할 분담입니다.</li>
+</ul>
+<h3>7) 프로즌 v2의 포지셔닝 — TPU 대체가 아닌 별도 실험 라인</h3>
+<ul>
+<li>프로즌 v2는 TPU를 대체하는 차세대 칩이라기보다 별도의 실험 라인입니다. TPU는 다양한 제미나이와 변화하는 AI 워크로드를 처리해야 해서 유연성이 반드시 필요하지만, 프로즌은 더 좁은 범위를 겨냥해 이미 충분히 검증되고 대량으로 반복되는 제미나이 추론에 깊게 최적화하는 대신 변화 대응 능력을 일부 포기합니다. 생산량도 TPU보다 훨씬 적을 것으로 전해집니다.</li>
+<li>이는 구글의 모델 전략과도 닮아 있습니다. 모든 요청을 가장 크고 비싼 프로로 처리하지 않고, 복잡한 문제엔 프로, 대규모 서비스엔 플래시, 더 단순한 작업엔 플래시 라이트를 배치하는 것처럼, 하드웨어도 학습·새 실험엔 GPU·TPU, 구조가 안정된 대량 추론엔 프로즌을 배치하는 역할 분담 구조입니다.</li>
+<li>AI 특화 정도의 스펙트럼도 언급됩니다. GPU·TPU는 다양한 모델을 처리하고, 특정 업체의 칩(&quot;소후&quot;)은 트랜스포머 구조에 집중하며, 다른 업체의 칩(&quot;HC1&quot;)은 특정 모델의 특정 가중치까지 하드웨어에 고정한 사례가 있습니다. 프로즌 v2는 트랜스포머 전체만 지원하는 칩보다는 제미나이 계열에 더 밀착하면서도 하나의 가중치 세트에 완전히 묶이지는 않는, 그 사이 어딘가에 위치할 가능성이 크다고 짐작됩니다.</li>
+</ul>
+<h3>8) 가장 큰 위험 — 칩보다 모델이 먼저 바뀔 가능성</h3>
+<ul>
+<li>프로즌의 가장 큰 위험은 성능이 예상보다 낮게 나오는 것이 아니라, 칩이 완성될 때 제미나이가 이미 다른 구조로 바뀌어 있을 가능성입니다. 프로 개발팀은 몇 달 단위로 경쟁하며 새로운 학습 방식·데이터·도구 사용 능력을 빠르게 반영해야 하는 반면, 반도체는 아키텍처 확정부터 설계·검증·데이터센터 배치까지 몇 년이 걸립니다. 프로즌 v2가 2028년에 배치된다면, 지금 내리는 설계 판단이 2년 뒤에도 유효해야 합니다.</li>
+<li>실제로 피차이 CEO는 2분기 실적발표에서 앞으로 거의 매달 새 모델을 내놓을 계획이라 밝혔고, 이미 제미나이 4 개발에 상당한 컴퓨트를 투입하고 있다고 했습니다. 모델은 변해야 경쟁력이 생기는데, 전용 칩은 모델이 크게 변하지 않아야 경제성이 생기는 모순입니다.</li>
+<li>이 모순을 풀지 못하면 프로즌은 최신 제미나이의 장점을 활용하지 못하고 구형 모델 전용 설비로 남을 수 있습니다. 반대로 3.5 플래시에서 3.6 플래시로 제품 기능이 계속 늘어나더라도 내부 핵심 연산 구조가 상당 부분 유지된다면, 프로즌은 여러 세대에 걸쳐 사용될 수 있습니다. 구글이 찾아야 하는 것이 바로 이 &quot;공통 부분&quot;이며, 프로즌 v2의 진짜 경쟁 상대는 엔비디아가 아니라 &quot;미래의 제미나이 자신&quot;이라는 것이 영상의 핵심 논지입니다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>TPU(Tensor Processing Unit): 구글이 자체 설계한 AI 연산 전용 반도체로, 다양한 AI 모델과 워크로드를 유연하게 처리하도록 설계되어 있습니다.</li>
+<li>HBM(고대역폭 메모리): 연산기 바로 옆에서 가중치·중간 데이터를 빠르게 주고받는 메모리로, 추론 속도에 직접 영향을 줍니다. SSD가 창고라면 HBM은 작업대에 해당합니다.</li>
+<li>가중치(weight): AI 모델이 입력을 어떻게 처리하고 어떤 답을 낼지 결정하는 수많은 숫자값으로, 학습 과정에서 조정됩니다.</li>
+<li>어텐션(attention)·MoE(전문가 혼합) 구조: 최신 AI 모델 내부에서 계속 <span class="up">개선</span>·변형되는 핵심 연산 구조로, 세대가 바뀔 때마다 달라질 수 있습니다.</li>
+<li>하드와이어드(hardwired): 단순히 모델 파일을 칩에 저장하는 것이 아니라, 앞으로 바뀌지 않을 값과 연산 순서를 전제로 데이터 이동 경로·제어 회로까지 그 작업에 맞춰 설계하는 것을 의미합니다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>구글은 &quot;모델(제미나이 3.6 플래시)의 소프트웨어 효율화&quot;와 &quot;칩(프로즌 v2)의 하드웨어 효율화&quot;를 동시에 추진하며, AI 서비스 비용을 구성하는 모든 층(토큰 수, 추론 단계, 도구 호출, 실행 칩)을 한꺼번에 손보고 있습니다.</li>
+<li>스페이스X로부터 대규모 GPU 자원을 임대하는 &quot;브릿지 전략&quot;은 자체 인프라가 완성되기 전까지 컴퓨트 부족을 메우는 임시방편이며, 동시에 경쟁사(xAI 계열)에 대한 인프라 의존이라는 역설적 상황을 보여줍니다.</li>
+<li>프로즌 v2가 성공한다면 구글의 강점은 제미나이 모델 하나에 그치지 않고, 모델·검색·클라우드·데이터센터·칩까지 한 회사 안에서 함께 최적화할 수 있다는 수직 통합 경쟁력으로 이어질 수 있습니다. 단, 이 전략의 전제는 제미나이의 핵심 구조 일부가 2028년까지 유지돼야 한다는 점입니다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 논지 전개</h2><ol>
+<li>세 가지 소식(3.5 프로 지연, 3.6 플래시 출시, 프로즌 v2 보도)이 같은 시기에 겹친 배경을 짚는다.</li>
+<li>&quot;프로즌&quot;이라는 이름의 유래와, 가중치를 통째로 칩에 새기려던 초기 구상이 왜 폐기됐는지 설명한다.</li>
+<li>구글이 컴퓨트 부족을 겪는 구체적 증거(스페이스X 임대 계약, 백로그 급증, CEO의 공개 인정)를 제시한다.</li>
+<li>검색·AI 오버뷰의 추론 수요 폭증 수치로 문제의 크기를 보여준다.</li>
+<li>소프트웨어 효율화(3.6 플래시)와 하드웨어 효율화(프로즌 v2)가 &quot;같은 문제의 양면&quot;임을 논증한다.</li>
+<li>프로즌이 효율을 얻는 기술적 원리(고정된 구조로 데이터 이동·제어 부담 절감)를 설명한다.</li>
+<li>프로즌 v2를 TPU 대체가 아닌 &quot;별도 실험 라인&quot;으로 포지셔닝한다.</li>
+<li>가장 큰 리스크는 칩 완성 전에 모델 구조가 먼저 바뀌는 것이라는 결론으로 마무리한다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>AI 인프라·반도체 투자를 검토하는 실무자가, 빅테크의 &quot;전용 AI칩&quot; 트렌드와 그 리스크(모델 변화 속도 vs 칩 개발 기간의 불일치)를 이해할 때 참고할 수 있습니다.</li>
+<li>클라우드 비용을 관리하는 기업 담당자가, 구글 클라우드의 공급 제약(백로그 급증, 외부 GPU 임대) 상황을 파악해 리소스 확보 전략을 세울 때 참고할 수 있습니다.</li>
+<li>AI 서비스 기획자가 &quot;범용 모델 + 전용 하드웨어&quot; 조합이 어떻게 비용 효율을 만드는지 이해하고, 자사 서비스의 반복 연산 패턴을 분석하는 데 활용할 수 있습니다.</li>
+<li>반도체·AI 산업 동향을 추적하는 애널리스트가, GPU·TPU·특화칩(소후, HC1 등) 스펙트럼에서 각 기업의 포지셔닝을 비교 분석할 때 배경지식으로 활용할 수 있습니다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>프로즌 v2는 아직 개발 초기 단계이며 구글의 공식 발표 제품이 아닙니다. 목표 배치 시점은 2028년으로, 지금부터 몇 년의 검증 기간이 남아 있습니다.</li>
+<li>구글은 2분기 실적에서 매출·클라우드 매출 모두 예상을 상회했음에도 설비투자 확대(최대 2,850억 달러)에 대한 시장 우려로 주가가 시간외 거래에서 5% <span class="dn">하락</span>했습니다. 컴퓨트 부족은 CEO·CFO가 여러 분기 연속 공개적으로 인정한 사안으로, 스페이스X 임대 등 &quot;브릿지 전략&quot;이 당분간 지속될 방침입니다.</li>
+<li>영상은 &quot;제미나이가 실리콘에 새겨도 될 만큼 안정된 구조인지, 아니면 프로즌이 완성될 무렵 또 다른 형태의 AI가 등장해 있을지&quot;를 열린 질문으로 남기며 마무리됩니다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>TPU</td><td>구글이 자체 설계한 AI 연산 전용 반도체</td><td>AI 계산만 담당하는 전용 공장 설비</td></tr><tr><td>ASIC</td><td>특정 용도에 맞춰 설계된 주문형 반도체(범용이 아님)</td><td>한 가지 요리만 잘하는 전용 조리기구</td></tr><tr><td>프로즌 v2</td><td>구글이 개발 중인 제미나이 전용 서버 AI칩(코드명)</td><td>특정 레시피에 맞춰 통째로 개조한 주방</td></tr><tr><td>HBM(고대역폭메모리)</td><td>연산기 옆에서 데이터를 빠르게 주고받는 메모리</td><td>요리사 바로 옆 작업대</td></tr><tr><td>가중치(weight)</td><td>AI가 답을 내는 방식을 결정하는 내부 숫자값들</td><td>요리 레시피의 정확한 재료 비율</td></tr><tr><td>어텐션(attention)</td><td>AI 모델이 입력의 어느 부분에 집중할지 결정하는 구조</td><td>문장을 읽을 때 중요한 단어에 눈길이 머무는 것</td></tr><tr><td>MoE(전문가 혼합)</td><td>여러 전문 하위모델 중 필요한 것만 선택해 계산하는 구조</td><td>병원에서 증상별로 해당 전문의에게만 진료 배정</td></tr><tr><td>하드와이어드</td><td>소프트웨어가 아니라 회로 자체에 특정 로직을 고정하는 것</td><td>리모컨 버튼처럼 눌러도 항상 같은 동작만 하게 만든 것</td></tr><tr><td>백로그(backlog)</td><td>계약은 됐지만 아직 매출로 인식되지 않은 잔여 수주</td><td>주문은 받았지만 아직 배송 전인 물량</td></tr><tr><td>브릿지 캐퍼(bridge capacity)</td><td>자체 인프라 완성 전까지 임시로 빌리는 연산 자원</td><td>새 집 짓는 동안 잠깐 빌려 사는 임시 거처</td></tr><tr><td>워크호스 모델</td><td>특출난 한 분야보다 다양한 실무를 두루 처리하는 주력 모델</td><td>만능 실무형 직원</td></tr><tr><td>AI 오버뷰</td><td>구글 검색 결과 상단에 AI가 답을 요약해 보여주는 기능</td><td>검색 결과를 미리 요약해주는 비서</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Lx5irDaSijE" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 · 2026-07-26</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
