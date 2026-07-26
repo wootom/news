@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="I Tested Opus 5 vs. Fable 5. What You Need to Know."><title>I Tested Opus 5 vs. Fable 5. What You Need to Know.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">MORNING DIGEST · 2026-07-26 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>I Tested Opus 5 vs. Fable 5. What You Need to Know.</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Nate Herk \</td><td>AI Automation</td></tr><tr><td>제목</td><td>I Tested Opus 5 vs. Fable 5. What You Need to Know.</td></tr><tr><td>길이</td><td>약 30분 24초(1824초)</td></tr><tr><td>핵심결론 1</td><td>총 18개 세션(Opus 5 10개, Fable 5 8개) 실측 결과, Opus 5의 토큰당 가격은 Fable 5의 절반이지만 실제 총비용은 더 많이 나온 경우가 다수였다(토큰 소모량이 더 많기 때문)</td></tr><tr><td>핵심결론 2</td><td>코드 버그 탐색·수정 과제에서 Opus 5가 4/4 테스트 통과(기술점수 93/95)로 Fable 5의 2/4 통과(66/95)를 크게 앞섰다 — Opus 5가 검증·반복 능력에서 우위</td></tr><tr><td>핵심결론 3</td><td>디자인·크리에이티브 과제(랜딩페이지, LinkedIn 카루셀, 프레젠테이션 슬라이드)에서는 대체로 Fable 5가 더 낫거나 비슷한 품질을 더 빠르고 저렴하게 만들었다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) 테스트 설계</h3>
+<ul>
+<li>진행자는 Claude Code 하네스 안에서 동일 프롬프트·동일 코드베이스를 Opus 5와 Fable 5에 각각 실행시켜 비용·시간·토큰·품질을 비교했다.</li>
+<li>총 7가지 실전 과제(버그 수정 2회, 발표용 영상 제작, 랜딩페이지, LinkedIn 포스트+카루셀, 유튜브 콘텐츠 전략 리서치, 프레젠테이션 슬라이드, 컴퓨터 사용(Snake 게임), 구조 시뮬레이터)를 순차 진행했다.</li>
+<li>Excalidraw 다이어그램 생성 같은 하네스 없는 단순 비교도 곁들였다.</li>
+</ul>
+<h3>2) 버그 수정 테스트 1회차 — 무승부에 가까움</h3>
+<ul>
+<li>동일 코드베이스에서 버그를 찾아 수정하게 한 뒤 Codex로 결과를 심사했다.</li>
+<li>Fable 5: 11분, $5.30. Opus 5: 13분, $4.22로 Opus가 더 저렴했다.</li>
+<li>Codex 판정은 근소하게 Fable 5 승리(패치가 더 깔끔하고 즉시 리뷰 가능했다는 이유).</li>
+</ul>
+<h3>3) 버그 수정 테스트 2회차 — Opus 5 압승</h3>
+<ul>
+<li>동일한 방식의 2번째 코드베이스 버그 테스트에서 Opus 5는 20분, $6.50, Fable 5는 12분, $8.73 소요됐다.</li>
+<li>Codex 심사 결과 Opus 5는 4/4 테스트 통과(기술점수 93/95), Fable 5는 2/4 통과(66/95)에 그쳤다.</li>
+<li>이 결과는 Anthropic이 릴리스 블로그에서 강조한 &quot;Opus 5는 작업을 검증하고 성공할 때까지 신중하게 반복하는 능력이 크게 향상됐다&quot;는 설명과 일치한다.</li>
+</ul>
+<h3>4) 발표용 10초 영상 제작 — Opus가 2개, Fable이 1개 생성</h3>
+<ul>
+<li>&quot;AIS Live&quot; 행사 홍보용 10초 영상 제작을 지시하자 Opus 5는 세로·가로 버전 2개를, Fable 5는 1개를 만들었다.</li>
+<li>Opus 5: 40분, $11.19. Fable 5: 7분 49초, 약 $7로 Fable이 절반 비용·훨씬 빠른 속도.</li>
+<li>Fable 5 결과물에는 일부 오래된(부정확한) 정보가 포함됐는데, 이는 진행자가 컨텍스트를 최신화하지 않은 탓으로 분석됐다.</li>
+</ul>
+<h3>5) 원페이지 랜딩페이지 제작 — Fable이 더 저렴하고 빠름</h3>
+<ul>
+<li>AI 컨설턴트 인증 프로그램 랜딩페이지를 브랜드 가이드라인에 맞춰 생성하도록 요청했다.</li>
+<li>Fable 5: 22분, $20.50. Opus 5: 약 1시간, $35.83으로 Fable이 시간·비용 모두 우위였고 품질은 대등 평가됐다.</li>
+<li>진행자는 &quot;Fable 5가 크리에이티브·디자인 측면에서 여전히 우세하고, Opus 5는 지시 준수·검증에서 강점을 보인다&quot;는 잠정 결론을 냈다.</li>
+</ul>
+<h3>6) LinkedIn 포스트 + 카루셀 제작 — Fable 선호</h3>
+<ul>
+<li>동일 주제로 LinkedIn 포스트와 카루셀 PDF를 생성시켰다.</li>
+<li>Fable 5: $6.17, 약 7.5분. Opus 5: $8.22, 더 긴 시간 소요.</li>
+<li>진행자는 Fable 5의 카루셀 스타일을 더 선호했으며, &quot;이 정도 작업엔 Opus 5도 오버스펙이고 Sonnet 4.5로도 충분할 수 있다&quot;고 언급했다.</li>
+</ul>
+<h3>7) 유튜브 채널 오디언스 리서치(댓글 2,200개+커뮤니티 게시글 분석)</h3>
+<ul>
+<li>유튜브 댓글과 스쿨 커뮤니티 게시글을 분석해 시청자 페인포인트와 신규 제품·영상 아이디어를 도출하게 했다.</li>
+<li>Opus 5는 2,200개 댓글과 480개 커뮤니티 게시글을 분석해 20분, $8.34 소요. Fable 5는 더 적은 게시글을 분석했고 10분 41초, $10.60 소요.</li>
+<li>두 모델의 결론(페인포인트, 추천 제품·영상 주제)은 상당히 유사했다.</li>
+</ul>
+<h3>8) 프레젠테이션 슬라이드 제작(컨텍스트 엔지니어링 주제) — Fable 승리</h3>
+<ul>
+<li>&quot;컨텍스트 엔지니어링&quot;을 주제로 한 유튜브 영상 개요 및 Excalidraw 스타일 슬라이드를 제작하게 했다.</li>
+<li>Fable 5: 8분, $41. Opus 5: 1시간 15분, $33으로 Opus가 더 저렴했지만 훨씬 오래 걸렸다.</li>
+<li>진행자는 Fable 5가 만든 29장 슬라이드가 시각적으로 훨씬 완성도 높고 자신의 평소 스타일에 가깝다고 평가하며 Fable 5 승리로 판정했다.</li>
+</ul>
+<h3>9) 컴퓨터 사용 테스트(Snake 게임) — 실수로 Opus 5끼리 비교</h3>
+<ul>
+<li>Play CLI로 구글 Snake 게임을 5회만 플레이하고 평균 점수를 보고하도록 지시했으나, 진행자가 실수로 두 세션 모두 Opus 5를 사용한 사실을 뒤늦게 발견했다.</li>
+<li>동일 모델·동일 프롬프트임에도 한 세션은 지시를 무시하고 게임을 반복 실행(1시간 53분, $18, 평균 63점)했고, 다른 세션은 지시를 따라 1시간 10분, $10, 평균 79.25점을 기록해 완전히 다른 결과가 나왔다.</li>
+<li>이는 LLM의 비결정성(nondeterminism)을 보여주는 사례로 제시됐다.</li>
+</ul>
+<h3>10) 구조 시뮬레이터 제작 — Fable이 압도적으로 빠르고 저렴</h3>
+<ul>
+<li>건물·차량에 날씨·하중을 가해 스트레스 테스트하고 직접 구조물을 설계할 수 있는 시뮬레이터 제작을 지시했다.</li>
+<li>Fable 5: 7분, $73. Opus 5: 2시간 26분, $112로 Opus가 훨씬 오래 걸리고 비쌌다.</li>
+<li>진행자는 오히려 더 단순하고 사용자 친화적인 UI가 Opus 5의 결과물이었다는 점에 놀랐으며, Opus 5가 과도하게 많은 서브에이전트를 돌리며 검증에 집착한 결과로 분석했다.</li>
+</ul>
+<h3>11) 종합 집계 결과</h3>
+<ul>
+<li>18개 세션 합산: Opus 5 총 출력 토큰 약 200만, 활성 시간 630분(세션당 평균 약 1시간). Fable 5 총 출력 토큰 약 83만 2천, 활성 시간 평균 약 25분.</li>
+<li>Opus 5가 토큰 단가는 Fable 5의 절반이지만, 총 사용 토큰이 훨씬 많아 실제 총비용에서는 우위를 상쇄하거나 역전되는 경우가 많았다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>Opus 5 / Fable 5: 둘 다 Anthropic Claude 최신 세대 모델로, Fable 5가 최상위 플래그십, Opus 5는 그보다 저렴하면서도 코딩·검증 과제에서 강점을 보이는 하위 라인업이다.</li>
+<li>검증 루프(verification loop): 모델이 결과물을 스스로 테스트·확인하고 조건을 만족할 때까지 반복 수정하는 절차. Anthropic은 Opus 5에서 이 능력이 크게 <span class="up">개선</span>됐다고 밝혔다.</li>
+<li>토큰 효율(token efficiency): 동일 품질의 결과물을 만드는 데 소모되는 토큰량. 단가가 싸도 소모량이 많으면 총비용은 오히려 커질 수 있다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>벤치마크 수치만으로 모델을 고르지 말고, 실제 워크플로에 직접 두 모델을 태워보고 &quot;느낌&quot;과 비용을 비교해야 한다는 것이 진행자의 핵심 메시지다.</li>
+<li>코딩·버그 수정·엄격한 지시 준수가 필요한 작업에는 Opus 5가, 크리에이티브·디자인·비주얼 완성도가 중요한 작업에는 Fable 5가 유리한 경향이 관찰됐다.</li>
+<li>작업 난이도에 맞는 모델을 매칭하는 것이 중요하며, 간단한 LinkedIn 포스트 작성 같은 작업에는 Opus 5조차 과한 스펙일 수 있다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>오케스트레이터 전략: 진행자는 Fable 5를 &quot;직접 코드를 쓰지 않고 지시만 내리는 오케스트레이터&quot;로 활용하면 컨텍스트 소모(300~400K 토큰 이하 유지)를 크게 줄일 수 있다고 제안했다.</li>
+<li>동일 프롬프트·동일 코드베이스·동일 하네스 조건에서 두 모델을 나란히 실행해 비용·시간·품질 3축으로 비교하는 방법론을 사용했다.</li>
+<li>Codex를 제3자 심사자로 활용해 두 모델의 코드 결과물을 객관적으로 채점했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>대규모 코드베이스에서 버그를 찾고 수정하는 작업에는 Opus 5를 우선 투입하고, 필요시 Fable 5로 교차 검증.</li>
+<li>브랜드 랜딩페이지, LinkedIn 카루셀 등 시각적 완성도가 중요한 마케팅 자산 제작에는 Fable 5를 기본으로 사용.</li>
+<li>유튜브 채널 운영자가 댓글·커뮤니티 데이터를 분석해 콘텐츠 전략을 세울 때는 두 모델 중 아무거나 사용해도 결론이 유사하므로 비용이 더 저렴한 쪽 선택.</li>
+<li>예산이 제한된 프로젝트에서는 Fable 5를 오케스트레이터로 두고 실제 실행은 하위 에이전트에 위임해 컨텍스트 소모를 최소화.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>Opus 5는 Fable 5 대비 토큰 단가가 절반이지만, 검증 루프에 집착해 서브에이전트를 과도하게 실행하는 경향으로 실제 비용 절감 효과가 기대만큼 크지 않을 수 있다.</li>
+<li>진행자는 벤치마크 차트(Frontier Bench, Cursor Bench, Coding Agent Index)에서 Opus 5가 Fable 5를 능가하는 것으로 나타났지만, 실전 워크플로에서는 과제 종류에 따라 결과가 크게 갈린다는 점을 강조하며 벤치마크를 맹신하지 말라고 조언했다.</li>
+<li>향후 관전 포인트는 Opus 5의 토큰 효율 <span class="up">개선</span> 여부와, 사용자가 프롬프트 설계로 두 모델 간 격차를 얼마나 좁힐 수 있는지다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>Opus 5</td><td>Anthropic Claude의 코딩·검증 특화 하위 라인업 모델</td><td>꼼꼼한 검증관</td></tr><tr><td>Fable 5</td><td>Anthropic Claude의 최상위 플래그십 모델</td><td>만능 크리에이티브 디렉터</td></tr><tr><td>검증 루프</td><td>결과물을 스스로 테스트하고 조건 충족까지 반복 수정하는 과정</td><td>통과할 때까지 다시 푸는 채점 시스템</td></tr><tr><td>오케스트레이터</td><td>직접 실행하지 않고 하위 에이전트에 작업을 지시·관리하는 역할</td><td>현장 감독</td></tr><tr><td>비결정성(nondeterminism)</td><td>동일 입력에도 매번 다른 결과가 나올 수 있는 AI 모델의 특성</td><td>같은 레시피로도 매번 조금씩 다른 요리가 나옴</td></tr><tr><td>Codex</td><td>OpenAI의 코드 심사·생성 도구, 본 영상에서는 제3자 심사자로 사용됨</td><td>독립 채점관</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/2J3uX8iRNng" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-07-26</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

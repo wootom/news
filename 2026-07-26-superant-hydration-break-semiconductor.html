@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="반도체, 언제 다시 살까? 지금은 하이드레이션 브레이크"><title>반도체, 언제 다시 살까? 지금은 하이드레이션 브레이크</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-07-26 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>반도체, 언제 다시 살까? 지금은 하이드레이션 브레이크</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>슈퍼개미 이세무사TV</td></tr><tr><td>제목</td><td>반도체, 언제 다시 살까? 지금은 하이드레이션 브레이크</td></tr><tr><td>길이</td><td>약 6분 37초(397초, 자막 기준)</td></tr><tr><td>핵심결론 1</td><td>DB증권 리포트 &quot;하이드레이션 브레이크&quot;를 근거로, 현재 반도체 주가 약세는 AI 사이클 종료가 아니라 급등 후 숨 고르기 구간이라고 진단</td></tr><tr><td>핵심결론 2</td><td>명목 GDP 증가율(6.1%)이 기준금리(3.75%)를 넉넉하게 상회하고 있어 거시적으로 글로벌 주식시장의 <span class="up">상승</span> 추세 자체는 꺾이지 않았다는 것이 핵심 근거로 제시</td></tr><tr><td>핵심결론 3</td><td>스탠 와인스타인의 30주 이동평균선 이론에 따라 삼성전자·SK하이닉스가 30주선에서 단단하게 저점을 형성하고 반등하는 지점이 재매수 최적 타이밍이며, 반대로 30주선이 깨지면 리스크 관리에 들어가야 한다고 제시</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) &quot;하이드레이션 브레이크&quot;란 무엇인가</h3>
+<ul>
+<li>반도체 주가 약세가 이어지며 AI 사이클 종료 공포가 시장을 덮치고 구글 실적 발표를 앞둔 시점에, DB증권 리포트 &quot;하이드레이션 브레이크&quot;를 근거로 전혀 다른 진단을 제시합니다.</li>
+<li>&quot;하이드레이션 브레이크&quot;는 축구 경기에서 더운 날씨에 선수들이 쓰러지지 않도록 전·후반 중간에 잠시 멈춰 물을 마시는 시간을 뜻하며, 리포트는 지금이 시장에도 이런 &quot;쉬는 시간&quot;이라고 진단한다고 설명합니다.</li>
+</ul>
+<h3>2) 거시 지표 근거 — 명목 GDP 증가율 vs 기준금리</h3>
+<ul>
+<li>리포트는 &quot;명목 GDP 증가율이 기준금리를 상회하면 주식시장은 <span class="up">상승</span>한다&quot;는 거시 원칙을 제시하며, 이는 경제성장률이 은행 이자보다 높으면 주식 투자 기대수익이 이자 비용보다 커서 시중 자금이 주식시장으로 쏠리기 때문이라고 설명됩니다.</li>
+<li>닷컴버블·주택버블 붕괴 시점 그래프를 근거로, 당시엔 기준금리가 명목 GDP 증가율을 웃돌아 &quot;이자 내기도 벅찬&quot; 상황에서 시장이 무너졌다고 설명됩니다.</li>
+<li>현재는 명목 GDP 증가율 6.1%가 기준금리 3.75%를 넉넉히 상회하고 있어, 글로벌 주식시장의 <span class="up">상승</span> 추세 자체는 전혀 꺾이지 않았다는 것이 팩트로 제시됩니다.</li>
+</ul>
+<h3>3) 개별 반도체 급락의 이유 — 스탠 와인스타인의 30주선 이론</h3>
+<ul>
+<li>&quot;큰 그림은 <span class="up">상승</span>장인데 왜 반도체 주식은 무섭게 빠지는가&quot;라는 질문에 대해, 미국의 전설적 트레이더 스탠 와인스타인의 연구를 근거로 답을 제시합니다.</li>
+<li>대부분의 주도주는 30주 이동평균선을 따라 움직이는 경향이 있으며, 주가가 30주선보다 지나치게 솟구쳐 오르면 자연스러운 조정(회귀)이 나타난다는 것이 핵심 논리입니다.</li>
+<li>스탠 와인스타인의 주가 4단계 이론에서 30주선을 상회하며 시장을 이끄는 주도주는 <span class="up">상승</span>기인 &quot;스테이지 2&quot; 구간에서 나타나며, 이선에서 지나치게 멀어지면 다시 30주선 부근으로 회귀하려는 강한 성질이 있다고 설명됩니다.</li>
+</ul>
+<h3>4) 삼성전자·SK하이닉스 차트 적용</h3>
+<ul>
+<li>삼성전자와 SK하이닉스 모두 최근 30주 이동평균선(회색선) 위에서 멀리 떨어져 급등했으며, 이는 &quot;너무 숨차게 달린&quot; 상태였다고 진단됩니다.</li>
+<li>미중 갈등 등 각종 악재 뉴스는 벌어진 주가와 이평선 간격을 좁히기 위해 잠시 쉬어가는 &quot;하이드레이션 브레이크&quot; 구간의 계기로 작용했을 뿐이라고 해석됩니다.</li>
+</ul>
+<h3>5) 리포트가 제시하는 재매수 전술</h3>
+<ul>
+<li>리포트 핵심은 &quot;한국 반도체 주가가 스스로의 30주 이동평균선 위에서 저점을 형성할 때 나타날 재매수 기회를 겨냥하는 것&quot;으로 요약됩니다.</li>
+<li>무작정 저가 매수(물타기)하는 것이 아니라, 주도주가 30주선 위에서 단단하게 바닥을 다지고 반등하는 시점이 비중을 다시 실어야 할 최적 재매수 타점이라고 제시됩니다.</li>
+<li>반대로 30주 이동평균선이 깨진다면 즉시 리스크 관리(비중 축소 등)에 들어가야 한다는 기준도 함께 제시됩니다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>30주 이동평균선은 약 7개월(30주)간 주가 평균을 이은 선으로, 중장기 추세 판단에 널리 쓰이는 기술적 분석 도구입니다.</li>
+<li>스탠 와인스타인의 &quot;주가 4단계 이론&quot;은 주가를 바닥 다지기(1단계)·<span class="up">상승</span>(2단계)·천장(3단계)·<span class="dn">하락</span>(4단계)으로 구분하는 고전적 기술적 분석 프레임입니다.</li>
+<li>명목 GDP는 물가 <span class="up">상승</span>분을 제거하지 않은 경제성장률로, 기준금리와 비교해 시중 자금의 주식시장 유입 유인을 가늠하는 거시지표로 활용됩니다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>개별 종목·섹터 조정과 거시 추세 <span class="up">상승</span>을 구분해서 봐야 한다는 메시지는, 단기 급락에 패닉 매도하기보다 거시 지표를 먼저 점검하라는 투자 원칙을 제시합니다.</li>
+<li>30주선 기준의 명확한 매수·리스크관리 기준선을 제시함으로써, 감정적 판단이 아닌 규칙 기반 대응을 유도하는 실전적 시사점을 제공합니다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>진행자는 특정 증권사 리포트를 원문 그대로 읽고 해설하는 &quot;리포트 해부&quot; 방식을 취하며, 팩트(수치·그래프)를 먼저 제시한 뒤 해석을 덧붙이는 순서로 설명을 전개합니다.</li>
+<li>거시 지표(GDP-금리 관계) → 개별 종목 기술적 분석(30주선) → 실전 매매 전술 순으로 스케일을 좁혀가며 결론을 도출하는 구조입니다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>반도체 주가 급락기에 패닉 매도 여부를 고민하는 투자자가 거시 지표(GDP-금리 스프레드)를 먼저 점검하는 체크리스트로 활용할 수 있습니다.</li>
+<li>삼성전자·SK하이닉스 등 주도주의 재매수 타이밍을 30주 이동평균선 기준으로 판단하려는 투자자에게 구체적 기준을 제공합니다.</li>
+<li>특정 증권사 리포트를 스스로 해석하는 방법을 배우고 싶은 초보 투자자에게 리포트 해설 예시로 참고할 수 있습니다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>영상 시점 기준 반도체 주가는 30주 이동평균선 대비 벌어진 간격을 좁히는 조정 국면에 있으며, 진행자는 이를 사이클 종료가 아닌 &quot;숨 고르기&quot;로 진단합니다.</li>
+<li>향후 관전 포인트는 삼성전자·SK하이닉스가 30주선 위에서 저점을 다지고 반등하는지 여부이며, 이 지점이 재매수 기회로, 30주선 이탈은 리스크 관리 신호로 제시됩니다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>하이드레이션 브레이크</td><td>급등 후 나타나는 일시적 조정·숨 고르기 구간</td><td>축구 경기 중 더위에 지친 선수들이 물 마시며 쉬는 시간</td></tr><tr><td>30주 이동평균선</td><td>최근 30주간 주가 평균을 이은 중장기 추세선</td><td>최근 7개월 성적 평균을 그린 추이 그래프</td></tr><tr><td>명목 GDP 증가율</td><td>물가<span class="up">상승</span>분을 반영하지 않은 경제성장률</td><td>할인 없이 표시가격 그대로 계산한 성장 속도</td></tr><tr><td>스탠 와인스타인 주가 4단계 이론</td><td>주가를 바닥·<span class="up">상승</span>·천장·<span class="dn">하락</span> 4국면으로 구분하는 기술적 분석 틀</td><td>사계절처럼 주가에도 순환 국면이 있다고 보는 관점</td></tr><tr><td>주도주</td><td>특정 시장 <span class="up">상승</span> 국면을 이끄는 대표 종목</td><td>마라톤에서 선두 그룹을 이끄는 페이스메이커</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ULuNRbYiAoI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-07-26</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

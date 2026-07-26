@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="스탠퍼드 로봇 공학자가 바라본 로봇의 시대 | Stanford, Catie Cuan"><title>스탠퍼드 로봇 공학자가 바라본 로봇의 시대 | Stanford, Catie Cuan</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>EO Korea</span><span class="ey">MORNING DIGEST · 2026-07-26 · EO Korea</span><span class="chip">🎬 영상</span></div><h1>스탠퍼드 로봇 공학자가 바라본 로봇의 시대 | Stanford, Catie Cuan</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>EO Korea</td></tr><tr><td>제목</td><td>스탠퍼드 로봇 공학자가 바라본 로봇의 시대 \</td><td>Stanford, Catie Cuan</td></tr><tr><td>길이</td><td>약 18분 48초(1128초)</td></tr><tr><td>핵심결론 1</td><td>아이폰이 전 세계 10억 대 보급에 13년 걸렸듯, 앞으로 수십억~수조 대의 로봇이 가정·병원·호텔·요양시설에 등장할 것이며, 로봇을 좁은 수직 응용에서 벗어나게 하면 엄청난 기회가 생긴다</td></tr><tr><td>핵심결론 2</td><td>인간형(휴머노이드) 로봇에 대한 기대는 로봇이 사람과 닮을수록 사람들의 기대치가 비합리적으로 높아진다는 로드니 브룩스의 통찰처럼 위험하며, 로봇의 미래상은 &#x27;더럽고 지루하고 위험한 일&#x27;을 넘어 훨씬 넓게 상상되어야 한다</td></tr><tr><td>핵심결론 3</td><td>저자는 구글 사무실 로봇 200대에 &#x27;뮤직 모드&#x27;(관절 움직임을 음악 샘플에 매핑하는 소프트웨어)를 탑재해 감정적 반응을 이끌어냈고, 이는 인간이 기술과의 상호작용에서 효율을 넘어 정서적 경험을 원한다는 증거였다</td></tr><tr><td>핵심결론 4</td><td>스탠퍼드 로봇 공학 센터에서 구축 중인 VLI(Vision-Language-Interaction) 모델은 로봇 동작의 성공 여부를 인간의 반응(긍정/부정)으로 측정하는 최초의 모델로, 사람과 자연스럽게 소통하는 로봇으로 가는 첫걸음이다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>1) 화자 소개와 문제의식</h3>
+<ul>
+<li>케이티 콴(Catie Cuan)은 아트랩(ArtLab)의 창립자 겸 CEO로, 로봇 안무가·로봇공학자·연구원·기업가·예술가라는 다중 정체성을 가짐</li>
+<li>목표는 AI·로봇 같은 차세대 기술을 더 인간적이고 기발하며 누구나 접근 가능하게 만드는 것</li>
+<li>&#x27;인본주의(humanism)&#x27;를 인간이 더 큰 힘과 안전함을 느끼며 더 건강하고 나은 삶을 살도록 기계와의 상호작용·경험을 설계하는 것으로 정의</li>
+<li>활동 거점은 캘리포니아 팔로알토 스탠퍼드 캠퍼스 내 스탠퍼드 로봇 공학 센터로, 가정용·산업용·의료용·수중·탐사 로봇 등 다양한 분야 연구자와 교육·예술·문화·무용 분야가 협업하는 구조</li>
+</ul>
+<h3>2) 로봇 대중화의 규모와 기회</h3>
+<ul>
+<li>비유: 아이폰이 전 세계 10억 대 보급에 걸린 시간은 13년에 불과, 로봇도 유사한 궤적으로 향후 수십억~수조 대가 보급될 것으로 전망</li>
+<li>로봇이 사무실·병원·호텔·가정·요양 시설 등 일상 공간에 배치될 것이며, 특정 분야에 국한된 좁은 수직적 응용에서 벗어나 더 지능적으로 만들어 사람과 함께 생활하는 환경에 놓일 때 큰 기회가 발생</li>
+<li>인간과 로봇이 서로를 이해하도록 만드는 과제(HRI, Human-Robot Interaction)가 저자 연구의 핵심 초점</li>
+</ul>
+<h3>3) VLI 모델 — 인간 반응 기반 로봇 학습</h3>
+<ul>
+<li>스탠퍼드 팀이 구축 중인 &#x27;VLI(Vision-Language-Interaction)&#x27; 모델은 환경 속 인간이 해야 할 일에 동기를 부여받는 최초의 모델</li>
+<li>기존 LLM 기반 로봇 동작 생성은 인간 정보를 바탕으로 동작 시퀀스를 만들지만, VLI는 로봇 동작의 성공 여부를 인간의 반응(긍정적/부정적)으로 측정</li>
+<li>목표는 사람들과 자연스럽고 직관적으로 소통하는 로봇의 첫걸음이며, 향후 수십억 대의 자율 기계가 수십억 명과 수조 건의 상호작용을 하게 될 것이므로 그 상호작용이 안전하고 읽기 쉽고 명확해야 한다는 문제의식</li>
+</ul>
+<h3>4) 개인적 배경 — 무용수에서 로봇공학자로</h3>
+<ul>
+<li>샌프란시스코 베이 지역 출신, 쿠바계 아버지 영향으로 어릴 때부터 사교댄스와 수학·과학을 함께 접함</li>
+<li>대학 졸업 후 IT 기업 인턴을 거쳐 뉴욕에서 사모펀드 컨설팅 일을 시작했으나 적성에 맞지 않음을 깨닫고 퇴사, 뉴욕 링컨 센터의 메트로폴리탄 오페라 발레단에서 전문 댄서로 활동</li>
+<li>이 시기 아버지가 병원에 입원했는데, 환자를 둘러싼 의료기기들이 삐삐거리고 불투명해 억압적으로 느껴졌던 경험이 이후 &#x27;인간 중심 기술 설계&#x27;라는 문제의식의 계기가 됨</li>
+</ul>
+<h3>5) 구글 &#x27;뮤직 모드&#x27; 프로젝트</h3>
+<ul>
+<li>구글 재직 시절 사무실 곳곳에서 테이블 청소·쓰레기 분류·회의실 정리를 수행하던 로봇 200대를 접함, 초기엔 신기했지만 곧 &quot;그냥 느린 로봇&quot;으로 시들해지는 직원 반응을 목격</li>
+<li>동료 톰의 제안(&quot;로봇이 음악을 연주하는 대신 로봇 자체가 음악이 되면 어떨까&quot;)에서 출발해 작곡가 피터 반 스트래튼과 함께 &#x27;뮤직 모드&#x27; 소프트웨어 개발</li>
+<li>로봇의 각 관절 움직임을 음악 샘플에 매핑(집게 개폐 시 찰칵 소리, 몸통 회전 시 저음 등)해 로봇 동작이 교향곡처럼 들리도록 구현, 로봇 아홉 대가 동시에 작업하면 하나의 오케스트라가 됨</li>
+<li>출시 후 알지 못하는 구글 직원들로부터 &quot;책상에서 울고 있다&quot;, &quot;기계가 이런 감정을 느끼게 할 줄 몰랐다&quot;는 이메일이 쇄도, 기술이 순수 도구를 넘어 정서적 경험을 제공해야 한다는 확신의 근거가 됨</li>
+</ul>
+<h3>6) 휴머노이드 로봇에 대한 비판적 시각</h3>
+<ul>
+<li>소설·미디어의 영향으로 현재 수십 개의 휴머노이드(인간형) 로봇 회사가 존재하며, &quot;인간이 쓰는 공간이니 사람처럼 생겨야 한다&quot;는 통상적 주장이 있음</li>
+<li>로봇공학계 원로 로드니 브룩스(Rodney Brooks)의 통찰 인용: 로봇이 사람과 닮을수록(좌우대칭, 인간과 비슷한 비율) 거울 뉴런이 활성화되어 사람들의 기대치가 비합리적으로 높아짐</li>
+<li>저자는 77세 아버지(영어가 세 번째 언어) 사례를 들어 &quot;이것이 정말 우리가 원하는 로봇인가&quot;라는 질문을 던지며, 업계가 로봇의 미래상에 대해 근시안적 시각에 갇혀 있다고 비판</li>
+<li>&#x27;더럽고(dirty)·지루하고(dull)·위험한(dangerous)&#x27; 3D 작업에만 로봇을 국한하는 통념도 넘어서야 한다고 주장, 사례로 2010년대 중반 유행한 물개 로봇 &#x27;파로(Paro)&#x27;(아프거나 외로운 사람의 정서적 동반자), 자폐 아동 사회성 학습 지원 로봇 등을 제시</li>
+</ul>
+<h3>7) 로봇과 함께한 다양한 경험 및 &#x27;도구를 만드는 인간&#x27; 철학</h3>
+<ul>
+<li>저자는 경력 동안 룸바 로봇청소기, 소형 휴머노이드, 드론, 대형 산업용 로봇 팔, 구글 모바일 조작기, 보스턴 다이내믹스 사족보행 로봇 등을 다뤄봄</li>
+<li>2017년 에이미(Ai.Mi) 연구실에서 로봇과 함께 춤춘 경험을 계기로, 인간이 석기 도구·불·바퀴·인쇄기·현대 컴퓨터·로봇으로 이어지는 도구 사용의 긴 연속선 위에 있다는 통찰을 얻음</li>
+<li>아리스토텔레스를 인용해 인간을 &#x27;호모 사피엔스(현명한 자)&#x27;가 아니라 &#x27;호모 파베르(도구를 만드는 자, homo faber)&#x27;로 불러야 한다는 주장을 소개, 지능이 뛰어난 종은 많지만 도구와의 관계·도구 제작 능력이 인간을 특별하게 만든다고 강조</li>
+<li>로봇과 오래 일할수록 인간의 표현력·민첩성·문 손잡이 조작이나 계단 이동 같은 일상 동작의 정교함이 얼마나 놀라운지 재확인, 이는 평생의 학습과 세대를 거친 진화의 산물이라는 점을 지적</li>
+</ul>
+<h3>8) 어려움의 가치와 스탠퍼드 CS 334 수업</h3>
+<ul>
+<li>마크 스카일러 스콧(Stanford) 교수의 &quot;사람의 심장을 3D 프린터로 출력하는 데 25년이 걸릴 것&quot;이라는 발언을 인용하며, 진짜 가치 있는 도전은 오랜 노력과 어려움을 요구한다는 관점 제시</li>
+<li>무용 훈련의 교훈(&quot;오디션에 400명 중 4명만 뽑힌다면 잘해야 한다&quot;)을 로봇공학 연구에 적용, 영향력이 큰 어려운 문제를 추구하는 것이 자신의 원칙이라고 밝힘</li>
+<li>스탠퍼드에서 컴퓨터 과학과 연극·공연예술이 공동 개설한 최초의 과목 &#x27;CS 334: 로봇과 예술&#x27;을 강의, 학생들이 AI·로봇을 활용해 정치적·철학적·사회적 메시지를 담은 창작을 하도록 지도</li>
+<li>수업의 핵심은 &quot;무엇을 만들까&quot;가 아니라 &quot;왜 만들까&quot;라는 질문이며, 한정된 자원(에너지·능력·네트워크·기술) 중 되찾을 수 없는 유일한 자원인 시간을 어떻게 쓸지 이해하는 것이 중요하다고 강조</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>VLI(Vision-Language-Interaction) 모델은 기존 로봇공학에서 널리 쓰이는 VLA(Vision-Language-Action) 모델 계열의 확장으로 이해할 수 있으며, 인간의 실시간 반응을 보상 신호로 활용해 로봇 행동의 성공을 정의한다는 점이 특징</li>
+<li>HRI(Human-Robot Interaction, 인간-로봇 상호작용)는 로봇이 인간의 예측 불가능한 행동·말·움직임에 어떻게 반응하고 적응할지를 다루는 로봇공학의 오랜 난제</li>
+<li>거울 뉴런(mirror neuron)은 타인의 행동을 관찰할 때 활성화되는 신경세포로, 인간형 로봇을 볼 때 무의식적으로 인간 수준의 능력을 기대하게 만드는 심리적 기제로 인용됨</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>로봇 산업이 대량 보급 국면(아이폰급 확산 속도)에 진입하는 시점에서, 폼팩터(휴머노이드 여부)보다 인간과의 정서적·상호작용적 설계가 채택률과 만족도를 좌우할 수 있음을 시사</li>
+<li>&#x27;기능 우선&#x27; 로봇 설계에서 &#x27;경험·정서 우선&#x27; 설계로의 전환 필요성 제기 — 구글 뮤직 모드 사례처럼 동일한 하드웨어라도 상호작용 방식 변화만으로 사용자 반응이 극적으로 달라질 수 있음</li>
+<li>인간 반응을 학습 신호로 삼는 VLI 접근은 로봇의 상용화·가정 보급 단계에서 안전성·신뢰성 확보의 새로운 축이 될 잠재력</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>뮤직 모드 개발 과정: 로봇의 관절별 움직임을 식별 → 각 움직임에 음악 샘플 매핑(조합론적 설계) → 작곡가와 협업해 사운드 디자인 → 소프트웨어로 배포해 로봇에 &quot;음악 모드 켜줘&quot; 명령으로 활성화</li>
+<li>VLI 모델 학습 구조: 인간이 환경 속에서 해야 할 일을 로봇이 관찰 → 로봇이 동작을 생성 → 인간의 반응(참여도 증가/<span class="dn">감소</span>)을 측정해 동작의 성공 여부를 판정 → 이를 반복 학습에 반영</li>
+<li>CS 334 수업 방법론: 학생이 먼저 &quot;왜 만드는가&quot;(가치관·메시지)를 정의 → 이후 무한한 기술적 선택지 중 목적에 맞는 것을 빠르고 쉽게 구현</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>요양·병원 환경에서 정서적 동반자 역할을 하는 로봇(파로 사례처럼) 도입해 환자·고령자의 불안감을 완화</li>
+<li>사무실·서비스 공간의 반복 작업 로봇에 &#x27;뮤직 모드&#x27;류 인터랙션 레이어를 추가해 직원·이용자의 정서적 수용도를 높이는 UX 설계</li>
+<li>자폐 아동 대상 사회성 학습 지원 로봇처럼, 특정 인구집단의 커뮤니케이션·학습을 보조하는 특화 로봇 개발</li>
+<li>대학·연구기관에서 공학과 예술·인문학을 결합한 융합 교육과정을 설계해 기술의 &#x27;왜&#x27;를 다루는 인재 양성</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>현재 로봇공학 업계는 인간형(휴머노이드) 폼팩터에 쏠려 있으며, 저자는 이를 근시안적이라 평가하고 더 넓은 폼팩터·상호작용 방식에 대한 상상력을 촉구</li>
+<li>스탠퍼드 로봇 공학 센터와 저자의 VLI 연구는 아직 초기 단계(&quot;첫걸음&quot;)로, 인간 반응 기반 학습이 실제 상용 로봇에 어떻게 적용될지는 향후 검증 필요</li>
+<li>저자는 앞으로도 인간에게 영감을 주는 사람들과 함께 영향력이 큰 어려운 문제를 추구하겠다는 방향성을 재확인하며, 스탠퍼드 CS 334 강의를 통해 차세대 인재들에게 이 문제의식을 전파 중</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>VLI(Vision-Language-Interaction)</td><td>로봇 동작 성공을 인간의 반응으로 측정하는 모델</td><td>사람이 웃으면 성공, 찡그리면 실패로 학습하는 방식</td></tr><tr><td>HRI(Human-Robot Interaction)</td><td>인간과 로봇이 상호작용하는 방법을 다루는 연구 분야</td><td>사람과 로봇 사이의 &#x27;대화 매너&#x27;를 설계하는 것</td></tr><tr><td>거울 뉴런(mirror neuron)</td><td>타인의 행동을 볼 때 활성화되는 신경세포</td><td>사람처럼 생긴 로봇을 보면 무의식중에 사람처럼 행동할 거라 기대하게 됨</td></tr><tr><td>3D 원칙(Dirty·Dull·Dangerous)</td><td>로봇을 더럽고 지루하고 위험한 작업에 쓰던 전통적 용도 규정</td><td>하수구 청소, 반복 조립, 폭발물 처리 로봇</td></tr><tr><td>호모 파베르(homo faber)</td><td>도구를 만드는 존재로서의 인간을 가리키는 철학 용어</td><td>&quot;현명한 사람&quot;이 아니라 &quot;도구를 만드는 사람&quot;이 인간의 본질이라는 관점</td></tr><tr><td>뮤직 모드(Music Mode)</td><td>로봇의 관절 움직임을 음악 샘플에 매핑한 구글 사내 소프트웨어</td><td>로봇 팔이 움직일 때마다 악기 소리가 나는 것</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/epcN1orZZpU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>EO Korea · 2026-07-26</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
