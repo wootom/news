@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="루프 엔지니어링이란? ROACH PI 개발자가 설명한 AI 에이전트의 다음 단계"><title>루프 엔지니어링이란? ROACH PI 개발자가 설명한 AI 에이전트의 다음 단계</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">MORNING DIGEST · 2026-07-28 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>루프 엔지니어링이란? ROACH PI 개발자가 설명한 AI 에이전트의 다음 단계</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>평범한 사업가</td></tr><tr><td>제목</td><td>루프 엔지니어링이란? ROACH PI 개발자가 설명한 AI 에이전트의 다음 단계</td></tr><tr><td>길이</td><td>약 69분(4120초)</td></tr><tr><td>핵심결론 1</td><td>루프 엔지니어링은 &#x27;루프를 시작·재개하는 것&#x27;이 아니라 의도(goal)에 도달할 때까지 &#x27;루프를 끝나지 않게 만드는&#x27; 공학이며, 에이전트가 에이전트를 스티어링하는 방식으로 진화 중</td></tr><tr><td>핵심결론 2</td><td>새 프론티어 모델 &#x27;페이블 5(MTS 프리뷰)&#x27;는 작업 구조 분해와 서브에이전트 위임을 뛰어나게 수행해, 사람이 만들던 하네스를 모델이 흡수하는 방향이 명확해짐</td></tr><tr><td>핵심결론 3</td><td>토큰 값은 석유·전기처럼 계속 비싸질 것으로 보며, 접근 여력에 따른 &#x27;토큰 신분제&#x27; 격차와 오픈소스·중국 모델(Qwen 3.7 Max, 딥시크 V4, 샤오미 미모) 활용 전략을 논의</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>roach-pi와 골(goal) 워크플로우</h3>
+<ul>
+<li>정승현 개발자(릿 소속, 전 배민)가 만든 roach-pi는 오픈소스 하네스 &#x27;파이(pi)&#x27; 위에 자신의 스킬과 방법론을 얹은 도구로, Claripi 단계에서 프롬프트가 모호하면 명확해질 때까지 인터뷰하는 골 지향적 구조.</li>
+<li>OMX·OMC·우로보로스와 유사한 &#x27;작업 전 명확화&#x27; 패턴을 갖되, 모호도를 수학적으로 점수화하지 않고 에이전트가 이해했다고 판단할 때까지 반복하는 방식으로 차별화.</li>
+</ul>
+<h3>사람이 병목이라는 문제와 스티어링</h3>
+<ul>
+<li>안드레 카파시의 &#x27;이해는 아웃소싱할 수 없는 물질&#x27;이라는 말에 공감하며, 사람이 있어야 할 곳은 의도를 주는 앞단과 검증·책임을 지는 뒷단이라고 정의.</li>
+<li>roach-pi는 토큰을 적게 쓰는 방향을 지향해 만들어졌으며, 사람을 LLM 하네스의 한 요소로 간주.</li>
+</ul>
+<h3>루프 엔지니어링의 정의와 변화</h3>
+<ul>
+<li>과거 랄프 루프(Ralph Loop)는 루프 &#x27;밖&#x27;에서 스펙 등 고민을 끝내고 while 루프만 돌려 완수까지 반복하는 방식이었으나, 지금의 루프 엔지니어링은 루프 &#x27;안&#x27;에서 에이전트가 에이전트를 스티어링하며 고민.</li>
+<li>피터 스테인버그가 &quot;프롬프트를 얘기하지 말고 루프를 설계하라&quot;고 트윗하며 바이럴됐고, 골과 클로드의 다이나믹 워크플로우가 루프 엔지니어링 계열로 분류됨.</li>
+</ul>
+<h3>페이블 5(신규 프론티어 모델) 충격</h3>
+<ul>
+<li>발표 당일 사용해 본 결과 작업 구조 분해·서브에이전트 위임 능력이 압도적이었고, 두 줄 프롬프트로 돌린 갤러그 게임 벤치마크에서 에셋까지 옛날 게임기 수준으로 스스로 생성.</li>
+<li>다만 1시간도 못 돌리고 중단되는 사례가 잦아 상용화까지는 시간이 더 필요하다는 평가.</li>
+</ul>
+<h3>메모리 시스템 철학</h3>
+<ul>
+<li>roach-pi 메모리는 유사도 검색이 아닌 키워드 매칭으로 굳어졌으며, 에이전트에게 검색 도구를 주면 검색어를 잘 넣기 때문. 장애·디버그·픽스 관련 키워드를 LLM이 정리해 저장.</li>
+<li>롱텀 메모리보다 200개 정도만 저장하고 오래된 것은 자동 삭제하는 구조를 선호. 현재 토큰 비용상 대규모 롱텀 메모리는 엔터프라이즈에서 무리라고 판단.</li>
+</ul>
+<h3>캐시 안정성과 리즈니스(reasness)</h3>
+<ul>
+<li>KV 캐시가 깨지면 응답이 느려지고 미적중분을 비용으로 지불하게 되는데, 세션 중 퍼미션(욜로 등) 변경이 캐시를 깨뜨리는 대표 원인.</li>
+<li>리즈니스 레포지토리는 캐시를 깨는 동작을 막거나 경고하며, 딥시크·샤오미 미모와 함께 쓰면 캐시 적중 시 시간당 1달러 미만도 가능.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>하네스 엔지니어링, 컨텍스트 엔지니어링, 스레드 관리(코덱스 앱의 아카이빙·핀), 프롬프트 캐싱 등 에이전트 코딩의 세부 개념이 급격히 세분화되는 국면.</li>
+<li>클로드 코드는 서브에이전트 네스티드 뎁스(중첩 스폰 개수)를 늘리는 방향을 게시했고, 다이나믹 워크플로우는 루프 안에서 자바스크립트 코드를 생성해 에이전트를 조율.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>&#x27;하네스는 모델이 높은 확률로 흡수&#x27;하므로 인간의 역할은 의도(intent)와 평가 지표(evaluation metric) 설정으로 수렴한다는 전망.</li>
+<li>코드는 &#x27;노동&#x27;이며 그 노동은 에이전트가 맡고, 엔지니어는 컴퓨터 공학보다 컴퓨터 과학(안정적 시스템 설계) 쪽으로 이동할 것.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>골 실행 전, 에이전트와 &quot;이거 코드베이스 보고 확인해 줘 → 어떻게 구현하면 돼&quot;를 여러 턴 주고받아 의도를 다듬은 뒤 실행.</li>
+<li>꿀팁: &quot;깐깐하고 비평적인 적대적 리뷰어에게 검토받기 전에 절대 골을 끝내지 마라&quot;를 넣으면 작업 완수율이 약 30% <span class="up">상승</span>.</li>
+<li>유사 작업은 한 스레드 안에서 이어가 컴팩션(압축) 시에도 의도가 유지되게 함.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>비개발자도 코덱스 앱 수준의 도구로 반복 리뷰 처리, 에러 발생 시 자동 PR 생성 등 일상 자동화 가능.</li>
+<li>3Blue1Brown식 애니메이션은 헤르메스의 마님(MANIM) 스킬 + 일레븐랩스 나레이션을 코드로 결합해 제작하는 다큐멘터리 워크플로우로 응용.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>roach-pi 로드맵은 Claripi를 빼고 &#x27;울트라 워크&#x27; 하나로 단순화, 다이나믹 워크플로우 개념을 녹여 서브에이전트에 경제 효율적으로 서빙하는 방향.</li>
+<li>중국 프론티어 모델은 개발에는 무리 없으나 중국어 출력·비엔지니어 업무 취약으로 기업 내부 시스템에는 미국 소타 모델이 여전히 경제적이라는 판단. &#x27;바이오 토큰&#x27;(운동·식단으로 사람의 체력 토큰 확보) 개념도 강조.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>하네스(harness)</td><td>LLM을 실제 작업에 잘 쓰도록 감싸는 도구·방법론 계층</td><td>자동차 엔진을 감싸는 차체·장치</td></tr><tr><td>루프 엔지니어링</td><td>의도 달성까지 루프가 끝나지 않게 설계하는 공학</td><td>목표 도달 전까지 멈추지 않는 훌라후프</td></tr><tr><td>KV 캐시</td><td>이전 대화 문맥을 캐싱해 속도·비용을 아끼는 구조</td><td>앞 문장이 바뀌면 뒤가 통째로 재계산</td></tr><tr><td>토큰 신분제</td><td>토큰 사용 여력에 따라 벌어지는 능력·기회 격차</td><td>석유·비싼 전기처럼 공급되는 자원</td></tr><tr><td>랄프 루프</td><td>스펙을 미리 잡고 while 루프로 완수까지 반복하는 초기 방식</td><td>루프 밖에서 고민 끝, 안에서는 개입 불가</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/5kfbaUJpD9k" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-07-28</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

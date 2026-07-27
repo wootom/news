@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="SaaS를 사람 없이 AI로 100% 운영하는 방법을 공개합니다. (진양의 인수창업 김지혁님)"><title>SaaS를 사람 없이 AI로 100% 운영하는 방법을 공개합니다. (진양의 인수창업 김지혁님)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>빌더 조쉬 Builder Josh</span><span class="ey">MORNING DIGEST · 2026-07-28 · 빌더 조쉬</span><span class="chip">🎬 영상</span></div><h1>SaaS를 사람 없이 AI로 100% 운영하는 방법을 공개합니다. (진양의 인수창업 김지혁님)</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>빌더 조쉬 Builder Josh</td></tr><tr><td>제목</td><td>SaaS를 사람 없이 AI로 100% 운영하는 방법을 공개합니다. (진양의 인수창업 김지혁님)</td></tr><tr><td>길이</td><td>약 46분(2760초)</td></tr><tr><td>핵심결론 1</td><td>인수 창업의 핵심은 &#x27;현금 흐름 인수&#x27;이며 코드베이스는 목적이 아닌 수단. 우호적 양수자를 만나 슬랙·노션 히스토리까지 인베딩해 컨텍스트를 흡수하는 것이 최우선 과제</td></tr><tr><td>핵심결론 2</td><td>인수한 SaaS를 PM(제라드)·개발자(길포일)·콘텐츠 마케터(얼크만) 등 AI 에이전트 팀으로 운영하며, 헤르메스 칸반·서브에이전트(빌드=코덱스, 리뷰=클로드+오픈라우터) 구조로 자동화</td></tr><tr><td>핵심결론 3</td><td>AI 네이티브 컴퍼니 OS를 쿼리어블→클로즈드 루프→셀프 임프루빙 3단계로 구축 중이며 현재 약 20~30% 진척. 인간은 전략·자본배분·최종승인과 휴먼 피드백에만 개입</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>인수 창업의 철학과 이력</h3>
+<ul>
+<li>김지혁 대표(진양의 인수창업 뉴스레터)는 누적 7개 사업체 영업권을 인수. 아기 타이즈 커머스(5천만 원 이하 인수 후 매각), BTS 선물 배송, 무인 아이스크림 매장(폐업), 음료 도매·주방 자재 유통 등을 거침.</li>
+<li>제로투원 창업은 리스크 계산이 안 돼, 나이·육아 등을 고려해 리스크를 헤징할 수 있는 인수 창업으로 전환.</li>
+</ul>
+<h3>SaaS 인수 결정 배경</h3>
+<ul>
+<li>과거 SaaS는 멀티플이 매출의 3~8년치(비싸면 10~20배)로 너무 비싸 회수 관점에서 기피.</li>
+<li>AI로 개발·디자인·마케팅 역량이 커머디티화되며, 기존 10인이 운영하던 SaaS도 소수로 운영 가능해져 하방은 안전하고 상방은 넓어졌다고 판단.</li>
+</ul>
+<h3>인수 시 가장 먼저 한 일: 계기판과 컨텍스트 흡수</h3>
+<ul>
+<li>파괴적 의사결정은 첫 6개월~1년간 미루고, 기존 창업자가 보던 지표(메타베이스 BI)를 그대로 다운로드해 흡수. 목표는 성장이 아닌 &#x27;현금 흐름 유지&#x27;.</li>
+<li>슬랙·노션 등 비정규 데이터를 임베딩해 &quot;나보다 회사 컨텍스트를 잘 아는 AI&quot;를 1번 과제로 구축. 기존 창업자에게 버그 설명을 반복 요청하던 소모를 줄이기 위해 에러로그 채널에 봇을 투입.</li>
+</ul>
+<h3>AI 직원(에이전트) 팀 구조</h3>
+<ul>
+<li>제라드(PM/개발 오케스트레이터): 라이브 DB 쿼리 권한까지 보유, 버그 원인·재현·수동 픽스 방법을 담은 DOD를 노션에 문서화.</li>
+<li>길포일(개발자 페르소나): 본앱 작업, PR 생성. 리뷰어 2명(클로드 CLI=진보적, 오픈라우터의 엔비디아 무료 모델=보수적 게이트키핑).</li>
+<li>얼크만(콘텐츠 마케팅 오케스트레이터): 리서치·라이팅·리뷰 3개 서브에이전트로 SNS·인스타 계정 운영 실행. (모두 실리콘밸리 드라마 캐릭터명)</li>
+</ul>
+<h3>AI 네이티브 컴퍼니 OS 3단계</h3>
+<ul>
+<li>1단계 쿼리어블(L1↔L2 연결): 노션·슬랙·리니어·메타베이스 등 SOT를 정리해 각 에이전트에 연결. 회의록·구두 회의는 아직 미적재로 약 20~30% 진척.</li>
+<li>2단계 클로즈드 루프: 에이전트 로그를 랭퓨즈(Langfuse)에 적재, 매주 크론으로 포스트그레스에 중요 대화를 빼내고 휴먼 피드백(슬랙 이모지 O/X)으로 참조 재활용.</li>
+<li>3단계 셀프 임프루빙: 매주 리뷰 후 에이전트가 스스로 SOUL.md·에이전트 MD 파일을 업데이트하고, 헤르메스가 반복 작업을 스킬·툴로 자동 생성.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>스택은 랭퓨즈(트래킹) + 포스트그레스(에이전트 DB 적재) + 헤르메스(오케스트레이션·크론·크롤) + 혼초(Honcho, 장기 메모리 외부 레이어)로 구성.</li>
+<li>스택 선정 대부분을 제라드(에이전트)가 결정했고, AWS 인프라 활용 등 가이드만 인간이 제공. 컨텍스트가 넓어지면 오히려 판단이 나빠져 역할별로 컨텍스트를 분리.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>코드베이스가 아니라 현금 흐름·거래처·결제 모듈·고객 DB·운영 히스토리(노하우)를 인수하는 것이 본질이며, &#x27;똥촉&#x27;(파격적 의사결정 후 뒤늦게 깨닫는 실수)은 기존 창업자가 이미 검증했으니 초기엔 실행 자제.</li>
+<li>Y Combinator의 AI 네이티브 컴퍼니 세션처럼 CS 자동 <span class="up">개선</span>·자동 PR·자동 응답도 이론상 가능하나, 보안·고관여 대응 문제로 아직 인간이 병목이자 최종 검토자.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>투자 전략·체크포인트</h2><ul>
+<li>(비투자 정보) 인수 시 &#x27;이 돈을 넣고 회수 가능한가&#x27;라는 마인드셋과 우호적 양수자 확보가 최우선.</li>
+<li>매출 레버(현금 흐름 유지·비용 절감)를 기준으로 판단하되, 명백해 보이는 <span class="up">개선</span>안이 안 되고 있다면 &#x27;안 되고 있는 이유가 있다&#x27;고 전제.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>인수 실사 단계에서 질문 응답 봇을 만들어 양도자·양수자 공동 채널에 투입, 인수 리스크(버그 대응 불가)를 완화.</li>
+<li>인스타 계정 운영 등 신규 매출 레버를 PM 에이전트가 기획→실행 에이전트가 콘텐츠 생성하는 방식으로 자동화.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>인수한 앱 3개(유료 메인 1 + 무료 2)에 에이전트가 첫 PR을 넣기 시작. AI 네이티브 OS 전체 진척은 약 20~30%.</li>
+<li>단기 목표는 SaaS 2개 추가 인수, 장기적으로 10인 운영을 1~2인으로 줄일 수 있는지 검증 후 100개 규모 확장을 지향.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>인수 창업</td><td>기존 사업체 영업권을 사서 운영하는 창업 방식</td><td>제로투원 대신 검증된 현금흐름 매입</td></tr><tr><td>멀티플</td><td>매출·이익 대비 인수가 배수</td><td>SaaS 매출 3~8년치, 비싸면 10~20배</td></tr><tr><td>쿼리어블</td><td>회사 데이터를 AI가 조회 가능하게 전산화한 상태</td><td>모든 결정 근거를 검색 가능한 DB화</td></tr><tr><td>클로즈드 루프</td><td>산출물이 다시 입력으로 돌아 <span class="up">개선</span>되는 피드백 구조</td><td>온도 오르면 내리는 온도계</td></tr><tr><td>혼초(Honcho)</td><td>헤르메스의 장기 메모리 외부 서비스 레이어</td><td>프로필별 대화 기억 블랙박스</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/jajEm8R9nD0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>빌더 조쉬 Builder Josh · 2026-07-28</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

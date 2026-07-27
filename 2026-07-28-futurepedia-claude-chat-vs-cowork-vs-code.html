@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Claude Chat vs Cowork vs Code: Which One Should You Use?"><title>Claude Chat vs Cowork vs Code: Which One Should You Use?</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Futurepedia</span><span class="ey">MORNING DIGEST · 2026-07-28 · Futurepedia</span><span class="chip">🎬 영상</span></div><h1>Claude Chat vs Cowork vs Code: Which One Should You Use?</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Futurepedia</td></tr><tr><td>제목</td><td>Claude Chat vs Cowork vs Code: Which One Should You Use?</td></tr><tr><td>길이</td><td>약 11분(656초)</td></tr><tr><td>핵심결론 1</td><td>Claude의 세 제품은 &#x27;생각은 Chat, 위임은 Cowork, 제작은 Code&#x27;라는 단순 프레임으로 선택하면 된다</td></tr><tr><td>핵심결론 2</td><td>Chat은 한 턴(turn) 안에서 답을 주고 멈추지만, Cowork·Code는 목표 달성까지 2분에서 40분간 스스로 계속 작업하는 에이전트다</td></tr><tr><td>핵심결론 3</td><td>Cowork와 Code는 내부 아키텍처가 동일하며, 코드 저장소(repo)를 붙이면 Code, 파일·앱만 연결하면 Cowork가 된다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>세 제품과 접근 경로·요금</h3>
+<ul>
+<li>Claude에는 Chat, Cowork, Code의 세 핵심 제품이 있으며 claude.ai 웹, 모바일 앱, 데스크톱 앱의 세 표면(surface)에서 사용할 수 있다.</li>
+<li>Chat은 무료 포함 모든 요금제에서 쓸 수 있지만 Cowork·Code는 유료 요금제가 필요하며, 데스크톱은 Pro 이상, 모바일·웹은 최근 추가되어 Max 이상부터(곧 Pro로 확대 예정) 지원된다.</li>
+<li>선택 프레임은 &#x27;Chat은 생각, Cowork는 위임, Code는 제작&#x27;으로 요약된다.</li>
+</ul>
+<h3>Chat: 생각의 파트너</h3>
+<ul>
+<li>Chat은 브레인스토밍·글쓰기·리서치·아이디어 정리를 위한 왕복 대화형 도구로, 프로젝트(영구 컨텍스트)·커넥터(이메일·캘린더 연결)·아티팩트(옆에 열리는 앱·문서 창)로 확장된다.</li>
+<li>Chat이 파일을 만들거나 대시보드를 만들어도 모든 작업은 하나의 턴 안에서 끝난 뒤 사용자에게 넘겨지고 대기한다.</li>
+<li>결과물을 문서에 복붙하거나 이어붙이는 &#x27;잡일&#x27;을 하게 되면 그것은 잘못된 모드에 있다는 신호이며, 그 작업은 위임되었어야 한다.</li>
+</ul>
+<h3>Cowork: 위임하는 어시스턴트</h3>
+<ul>
+<li>Cowork는 질문이 아니라 &#x27;업무 배정&#x27;으로, 목표를 주면 체크리스트를 만들고 단계별로 처리하며 종종 서브에이전트로 멀티태스킹해 완성 결과를 가져온다.</li>
+<li>Chat이 답을 주는 순간 끝나는 &#x27;자판기&#x27;라면 Cowork는 주문을 받아 재료를 모으고 여러 단계 레시피를 거쳐 완성해 내오는 &#x27;주방&#x27;에 비유된다.</li>
+<li>Cowork는 데스크톱에선 사용자의 실제 컴퓨터를, 모바일·웹에선 클라우드의 새 샌드박스를 자체 작업 공간으로 확보해 세션 내내 작업을 축적한다.</li>
+</ul>
+<h3>Cowork의 두 버전: 데스크톱 vs 클라우드</h3>
+<ul>
+<li>내부 시스템은 동일하고 실행 위치만 다르며, 로컬 파일 작업 여부가 핵심 차이다.</li>
+<li>데스크톱 버전은 실제 컴퓨터의 폴더를 배정하면 파일 열람·편집·생성·정리가 가능하지만, 모바일·웹 클라우드 버전은 컴퓨터가 꺼져 있어도 돌아가는 대신 로컬 파일에는 접근하지 못한다.</li>
+<li>발표자의 우회법은 원하는 파일을 Google Drive 폴더에 두고 커넥터로 연결해, 어느 표면에서든 컴퓨터 전원과 무관하게 파일을 다루는 것이다.</li>
+</ul>
+<h3>예약 작업(Scheduled Tasks)으로 무인 실행</h3>
+<ul>
+<li>한 번 스케줄을 설정해두면 사용자 입력 없이 완전히 자동으로 실행된다.</li>
+<li>월요일 아침 자는 동안 지난주 이메일·회의록·고객 뉴스를 읽어 브리핑 문서와 초안 이메일을 미리 준비해두는 식의 무인 워크플로우가 가능하다.</li>
+<li>예약 작업은 디바이스가 온라인일 필요가 없어 컴퓨터·폰이 꺼져 있어도 계속 진행된다.</li>
+</ul>
+<h3>Code: 만드는 엔지니어</h3>
+<ul>
+<li>Code는 앱·웹사이트·자동화·크롬 확장·생산성 도구 등을 평문 영어 설명만으로 코드를 작성해 만들며, 개발자가 아니어도 사용할 수 있다.</li>
+<li>데스크톱에선 폴더를 배정해 그 안에 코드베이스 전체를 구축하고, 터미널·개발자 도구 없이 데스크톱 앱만으로 시작하는 것을 권장한다.</li>
+<li>모바일·웹에선 (1) 집 컴퓨터의 세션을 폰에서 원격 제어하거나 (2) GitHub 저장소(repo)를 붙여 클라우드 세션을 돌리는 두 옵션이 있다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>Cowork와 Code는 계획·실행·지속을 담당하는 동일한 에이전트 코어를 공유하며, 로드되는 대상(파일·앱 vs 코드 저장소)만 다르다.</li>
+<li>repo는 온라인에 존재하는 프로젝트 폴더이며, 없으면 무료 GitHub 계정으로 빈 저장소를 만들거나 데스크톱 작업을 GitHub에 푸시해 연결한다.</li>
+<li>모바일·웹 Cowork는 현재 베타이며 Mac 구독자에게만 우선 배포되어 있어 Pro 사용자는 아직 안 보일 수 있다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>모드 구분을 이해하면 모든 일을 Chat으로 처리하며 스스로 조립 잡일을 하는 비효율에서 벗어날 수 있다.</li>
+<li>클라우드 실행 + 예약 작업 조합은 &#x27;기기 상시 가동&#x27;이라는 물리적 제약을 없애 자동 브리핑 등 상시 업무를 가능하게 한다.</li>
+<li>&#x27;내가 원하는 도구가 있었으면 좋겠다&#x27;는 니즈는 Code로 직접 구현할 신호로, 소프트웨어 제작의 진입장벽을 크게 낮춘다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>대화가 곧 작업일 때(브레인스토밍·글쓰기·리서치·의사결정)는 Chat을 연다.</li>
+<li>여러 단계와 최종 산출물(문서·스프레드시트·리서치 리포트·정리된 폴더)이 있는 어시스턴트급 업무는 결과만 기술하고 Cowork에 위임한 뒤 완료되면 돌아온다.</li>
+<li>&#x27;이런 도구가 존재했으면&#x27;이라는 문제는 Code로 기술해 엔지니어처럼 구축한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>저녁 외출 중 분기 보고서 마감이 떠오르면 폰에서 클라우드 Cowork로 작업을 시작하고 완료 알림을 받아 귀가 후 검토한다.</li>
+<li>정기적으로 확인하는 사이트의 데이터를 긁어 포맷하는 도구나 내부 대시보드를 Code로 만든다.</li>
+<li>오래 미뤄둔 아이디어의 모바일 앱을 Code로 설명만 해서 프로토타입까지 구현한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>모바일·웹의 Cowork·Code는 확장 배포 중이며, Pro 요금제로의 롤아웃이 임박해 접근성이 넓어지고 있다.</li>
+<li>에이전트형 실행(Cowork·Code)이 대화형(Chat)과 분명히 구분되면서 사용자의 작업 습관 자체가 재편되고 있다.</li>
+<li>언급된 Design은 아직 베타지만 강력한 신규 도구로, 용도 구분이 상대적으로 명확하다고 소개된다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>턴(turn)</td><td>Chat이 한 번 응답하고 멈추는 단위</td><td>자판기에 넣고 한 번 나오는 결과</td></tr><tr><td>서브에이전트</td><td>Cowork가 체크리스트 항목을 나눠 맡기는 보조 실행 주체</td><td>주방의 여러 요리사</td></tr><tr><td>샌드박스</td><td>클라우드에 새로 열리는 격리된 작업 환경</td><td>임시로 빌린 별도 작업 책상</td></tr><tr><td>repo(저장소)</td><td>온라인에 존재하는 프로젝트 폴더</td><td>클라우드에 놓인 프로젝트 서랍</td></tr><tr><td>예약 작업</td><td>무인·자동으로 정해진 스케줄에 실행되는 Cowork 작업</td><td>알아서 도는 자동 예약 청소</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/PtGQaduZwmA" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Futurepedia · 2026-07-28</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
