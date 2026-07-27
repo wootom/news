@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Fine. Let&#x27;s Talk About Higgsfield."><title>Fine. Let&#x27;s Talk About Higgsfield.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Theoretically Media</span><span class="ey">MORNING DIGEST · 2026-07-28 · Theoretically Media</span><span class="chip">🎬 영상</span></div><h1>Fine. Let&#x27;s Talk About Higgsfield.</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Theoretically Media</td></tr><tr><td>제목</td><td>Fine. Let&#x27;s Talk About Higgsfield.</td></tr><tr><td>길이</td><td>약 12분(734초)</td></tr><tr><td>핵심결론 1</td><td>7월 23일 Higgsfield의 약관 개정에 영구·양도가능·서브라이선스 가능한 출력물 라이선스와 광범위한 학습 조항이 담겨 논란이 되었고, 발표자의 X 게시물은 33.1만 뷰를 기록했다</td></tr><tr><td>핵심결론 2</td><td>커뮤니티 반발로 7월 26일 개정판이 나와 6개 항목이 <span class="up">개선</span>(영구 라이선스 문구 삭제 등)됐지만, &#x27;기본값 학습 동의&#x27; 조항은 원문과 토씨 하나 안 바뀐 채 유지됐다</td></tr><tr><td>핵심결론 3</td><td>발표자는 카자흐스탄 기반 Higgsfield의 공격적 업셀·해지 방해 &#x27;다크 패턴&#x27;을 문제 삼으며, 학습에 쓸 사용자 출력물에 라이선스료를 지불하고 UX를 <span class="up">개선</span>하라고 촉구한다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>사건의 발단: 7월 23일 약관 개정 메일</h3>
+<ul>
+<li>발표자는 Higgsfield와 스폰서 영상을 한 적이 없음을 밝히며(과거 제안은 받음), 자신이 이 논란의 &#x27;불씨를 댕긴 사람&#x27;으로서 다루게 됐다고 설명한다.</li>
+<li>논란의 큰 축은 출력물 라이선스로, 사용자가 만든 모든 결과물에 대해 영구·철회불가·양도가능·서브라이선스 가능한 권리를 회사에 부여하는 조항이었다.</li>
+<li>또한 입력물 학습이 가능하고 계정을 삭제해도 학습을 이어갈 수 있으며, 캐릭터용으로 업로드한 얼굴에도 영구·철회불가 라이선스(소유권 아님)가 걸리고 서브라이선스까지 가능했다.</li>
+</ul>
+<h3>프라이버시·과금·약관 변경 문제</h3>
+<ul>
+<li>프라이버시 정책상 데이터가 미국·EU·영국·중국 및 카자흐스탄 소재 회사 등 전 세계 벤더·파트너로 흐를 수 있으며, 이는 회사가 카자흐스탄 기반이라는 점과 맞물린다.</li>
+<li>대외 커뮤니케이션은 샌프란시스코 535 Mission Street(위워크로 알려진 주소)에서 오는 점이 실제 소재지와 대비돼 지적된다.</li>
+<li>과금 측면에서 구독 크레딧은 이월 불가, 추가 크레딧 팩은 90일 만료, 환불은 크레딧 미사용 시 7일 창구에 6% 수수료 차감, 갱신 건은 환불 불가이며 약관은 언제든 변경·계속 사용이 곧 동의로 규정됐다.</li>
+</ul>
+<h3>무제한 티어와 스로틀링</h3>
+<ul>
+<li>10.6조에 따라 무제한 티어는 크레딧 생성과 분리된 느린 큐에서 돌아가고 &#x27;과도하다(excessive)&#x27;고 판단되는 것에 동적 스로틀링이 걸린다.</li>
+<li>무제한이 느린 큐를 쓰는 것 자체(Runway 등도 동일)는 문제 삼지 않으나, 무엇이 과도한지 &#x27;그들이 판단(they deem)&#x27;하는 재량 부분이 쟁점이라고 지적한다.</li>
+<li>이 재량 언어가 사용자 예측 가능성을 해친다는 점이 핵심 불만이다.</li>
+</ul>
+<h3>커뮤니티 반발과 파급</h3>
+<ul>
+<li>발표자가 X에 스레드로 올리자 게시물 하나가 현재 기준 33.1만 뷰까지 올랐고 파생 게시물들도 나오며 X 뉴스 섹션에까지 올랐다.</li>
+<li>반발이 신경을 건드렸음이 분명했고, Higgsfield는 빠르게 반응해 7월 26일 새벽(발표자 기준 오전 1시경) 일부 이슈를 반영한 개정판을 냈다.</li>
+<li>발표자는 연 5억 달러 규모로 알려진 회사가 커뮤니티 압박에 한 발 물러섰다는 점을 성과로 평가한다.</li>
+</ul>
+<h3>개정판 스코어카드: 6승·1유지·4개 되가져가기</h3>
+<ul>
+<li><span class="up">개선</span>점으로 영구·철회불가·양도·서브라이선스 문구가 완전 삭제돼 콘텐츠·계정 삭제 시 소멸하고, 삭제 콘텐츠는 향후 학습에 쓰이지 않으며(이미 학습된 것은 제거 불가로 인정), 출력물 홍보 사용은 공개 상태이거나 동의가 필요하도록 바뀌었다.</li>
+<li>면책(indemnification)은 무제한에서 과실 기반으로, &#x27;단독 재량(sole discretion)&#x27; 문구는 &#x27;합리적(reasonable)&#x27;으로 완화됐다.</li>
+<li>다만 학습 부여 조항은 원문과 토씨 하나 안 다르게 유지돼 기본값이 켜짐이고, 소비자가 옵트아웃하는 유일한 길은 콘텐츠 삭제뿐이다(엔터프라이즈는 계약상 비학습 보장).</li>
+</ul>
+<h3>조용히 추가된 4가지와 발표자의 요구</h3>
+<ul>
+<li>프라이버시 정책이 &#x27;계약의 일부가 아닌 고지&#x27;에서 &#x27;계약의 일부&#x27;로 편입됐고(실제 변호사는 원래 그랬어야 한다고 평가), 약관 변경 최소 15일 사전 고지가 &#x27;합리적 고지&#x27;로 모호해져 24시간 통보도 가능해졌다.</li>
+<li>발표자는 Higgsfield가 자체 이미지 모델 Soul을 갖고 있지만 본질적으로 애그리게이터라며, Craiyon이 K2를 오픈소스화했듯 Soul도 오픈소스화하라고 제안한다.</li>
+<li>핵심 요구는 사용자 출력물을 홍보에 쓸 거면 사전에 요청하고 25~200달러 수준의 라이선스료나 추가 크레딧을 지불하며, 해지를 어렵게 만드는 대신 훌륭한 UX에 집중하라는 것이다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>Higgsfield의 이미지 모델은 Soul이며, RL(강화학습)로 카메라 모션·피사계 심도·프롬프트 강화·캐릭터 ID 등을 <span class="up">개선</span>한다고 CEO가 LinkedIn에 밝혔다.</li>
+<li>애그리게이터 특성상 다수 외부 모델을 중개하는 구조여서 &#x27;자체 확산 모델 구축&#x27;이라는 표현은 상당 부분 과장이라고 평가된다.</li>
+<li>자체 모델 Soul을 오픈소스화하면 학습 조항 논란을 상당 부분 해소할 수 있다는 것이 발표자의 제안이다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>커뮤니티가 조직적으로 문제를 제기하면 대형 AI 서비스도 약관을 되돌릴 수 있음을 보여준 사례다.</li>
+<li>학습 조항을 기본 켜짐으로 유지한 점은 데이터 확보가 이런 서비스의 핵심 자산임을 드러낸다.</li>
+<li>다크 패턴 기반 성장은 단기 매출엔 유리하나 브랜드 신뢰를 훼손해 &#x27;리뎀션 아크&#x27;가 필요한 상태로 몰린다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>발표자는 Claude(Fable·Ultra Code)에 약관을 검토시켜 라이선스·학습·바이오메트릭 등의 리스크를 식별했다.</li>
+<li>원문과 개정판을 항목별로 대조해 &#x27;<span class="up">개선</span>·유지·추가&#x27;로 분류하는 스코어카드 방식으로 변화를 검증한다.</li>
+<li>마지막에 각 플랫폼 약관을 Claude·GPT에 넣어 커뮤니티가 공동으로 분석·공유하자는 크라우드소싱을 제안한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>AI 서비스 가입 전 약관·프라이버시 정책을 LLM에 넣어 위험 조항을 스크리닝한다.</li>
+<li>무제한·크레딧 상품 가입 시 이월·만료·환불·해지 조건을 사전에 점검한다.</li>
+<li>얼굴·입력 데이터 업로드 시 라이선스·학습·서브라이선스 범위를 반드시 확인한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>개정 후에도 학습 기본 동의와 &#x27;합리적 고지&#x27;의 모호성 등 미해결 쟁점이 남아 있다.</li>
+<li>Discord·higgsfieldsucks.com 등에는 해지·크레딧·구독 관련 불만이 지속 축적되고 있다(731 크레딧 오차감 후 환불 사례 등).</li>
+<li>발표자는 Higgsfield가 UX·투명성을 <span class="up">개선</span>하면 신뢰를 회복할 여지가 있다며 &#x27;좋은 선택을 하라&#x27;고 조언한다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>Higgsfield</td><td>카자흐스탄 기반의 이미지·비디오 생성 애그리게이터 서비스</td><td>여러 모델을 중개하는 종합 창구</td></tr><tr><td>Soul</td><td>Higgsfield의 자체 이미지 생성 모델</td><td>회사가 직접 가진 유일한 원천 엔진</td></tr><tr><td>서브라이선스</td><td>부여받은 권리를 제3자에게 다시 넘길 수 있는 권한</td><td>빌린 권리를 재임대하는 것</td></tr><tr><td>스로틀링</td><td>사용량을 동적으로 제한·감속하는 처리</td><td>붐빌 때 느려지는 전용 느린 차선</td></tr><tr><td>다크 패턴</td><td>해지·환불을 어렵게 만드는 기만적 UX 설계</td><td>나가는 문에 자물쇠를 채우는 카지노</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/7vGp40qEV4s" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Theoretically Media · 2026-07-28</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

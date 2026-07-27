@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI로 홈페이지를 만든다? 무조건 클로드 쓰세요"><title>AI로 홈페이지를 만든다? 무조건 클로드 쓰세요</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>투쏠ㅣAI 에이전트</span><span class="ey">MORNING DIGEST · 2026-07-28 · 투쏠</span><span class="chip">🎬 영상</span></div><h1>AI로 홈페이지를 만든다? 무조건 클로드 쓰세요</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>투쏠ㅣAI 에이전트</td></tr><tr><td>제목</td><td>AI로 홈페이지를 만든다? 무조건 클로드 쓰세요</td></tr><tr><td>길이</td><td>약 10분(596초)</td></tr><tr><td>핵심결론 1</td><td>클로드 코드와 킥스피드(영상·이미지 생성 도구)만 있으면 스크롤로 장면이 전환되는 인터랙티브 홈페이지를 약 35분 만에 만들 수 있다</td></tr><tr><td>핵심결론 2</td><td>핵심은 &#x27;스크롤월드&#x27; 스킬로, 스크롤에 맞춰 카메라가 여러 장면을 컷 없이 통과하는 랜딩 페이지를 자동 구성해 준다</td></tr><tr><td>핵심결론 3</td><td>영상 5장면 기준 예상 비용은 약 500크레딧이며, 사용자 승인 게이트를 거쳐 렌더링을 시작하도록 프롬프트로 통제할 수 있다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>전체 제작 프로세스</h3>
+<ul>
+<li>클로드 코드에 스크롤월드 스킬과 프롬프트를 넣으면 단가 산정→예상 비용 승인→이미지·영상 생성→인코딩·조립까지 자동 수행한다.</li>
+<li>결과물이 나오면 사용자가 수동으로 클로드 코드와 대화하며 세부 수정을 반복하는 방식이다.</li>
+<li>킥스피드가 커넥터로 미리 연결돼 있어 클로드 코드가 영상·이미지 생성을 직접 호출한다.</li>
+</ul>
+<h3>스크롤월드 스킬</h3>
+<ul>
+<li>스크롤월드는 스크롤로 조작하는 몰입형 랜딩 페이지를 만들어 주는 에이전트 스킬로, 장면 진입·이탈·전환 등 인터랙티브 연출을 지원한다.</li>
+<li>클로드 코드에 스킬을 설치만 하면 다양한 인터랙티브 디자인을 손쉽게 구현할 수 있다.</li>
+<li>스킬 폴더 구조를 클로드가 스스로 탐색해 사용 방식을 파악한다.</li>
+</ul>
+<h3>그릴미(인터뷰) 스킬 활용</h3>
+<ul>
+<li>장면 구성이나 시작 흐름이 막막할 때 &#x27;그릴미&#x27; 스킬로 먼저 인터뷰를 진행하는 것을 권장한다.</li>
+<li>그릴미는 사용자를 딥하게 인터뷰하며 바이브 코딩 계획을 구체화해 준다.</li>
+<li>원하는 결과가 나올 때까지 세세하게 질문받으며 아이디어를 다듬을 수 있다.</li>
+</ul>
+<h3>실제 제작 사례(리프시프 버블티)</h3>
+<ul>
+<li>브랜드 &#x27;리프시프&#x27; 버블티 페이지로, 고산 찻잎 채집부터 한 잔이 완성되기까지의 여정을 각 장면으로 넣었다.</li>
+<li>시작 이미지로 고산 계단식 다랑논 사진을 첨부해 장면 혼동을 줄였다.</li>
+<li>계획 수립 후 클로드가 스크롤 플라이스루 엔딩 페이지·승인 게이트·크레딧 보고 계획을 반영했다.</li>
+</ul>
+<h3>비용·승인·모델 전환</h3>
+<ul>
+<li>5장면 기준 예상 비용은 약 500크레딧으로 안내됐고, 승인 후에만 렌더링이 시작되도록 프롬프트에 명시했다.</li>
+<li>계획 단계는 비용이 큰 상위 모델(페이블)로, 구현 단계는 오퍼스로 전환해 비용을 절감했다.</li>
+<li>최종 렌더링은 약 35분 소요됐고 5개 장면이 매끄럽게 전환되는 결과물이 완성됐다.</li>
+</ul>
+<h3>배포와 확장</h3>
+<ul>
+<li>커넥터에 버셀(Vercel)을 연결해 두면 클로드에서 곧바로 배포할 수 있다.</li>
+<li>주문하기 버튼에 폼을 붙이고 토스 플레이스 API로 주문을 받는 기능 확장이 가능하다고 소개했다.</li>
+<li>백엔드는 n8n이나 클로드 코드 내부 로직으로 처리해 실제 서비스로 발전시킬 수 있다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>스크롤월드는 영상을 프레임 단위로 분해해 스크롤 위치에 매핑함으로써 영상이 재생되는 듯한 몰입형 스크롤 경험을 구현한다.</li>
+<li>클로드 코드가 오케스트레이터로서 외부 영상 생성 도구(킥스피드)를 커넥터로 호출해 멀티모달 자산을 자동 생성·조립한다.</li>
+<li>계획-구현 단계별 모델 분리(페이블·오퍼스)로 품질과 비용을 동시에 관리한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>디자이너·개발자가 아니어도 스킬 조합만으로 상용 수준의 인터랙티브 웹페이지를 단시간에 제작할 수 있게 됐다.</li>
+<li>스킬 생태계가 확장되며 클로드 코드가 단순 코딩을 넘어 멀티모달 콘텐츠 파이프라인 허브로 진화하고 있다.</li>
+<li>승인 게이트·비용 보고 등 통제 장치를 프롬프트로 내장해 예측 가능한 생성 비용 관리가 가능해졌다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ul>
+<li>스킬 설치 → 그릴미로 인터뷰 → 장면·주제·시작 이미지 프롬프트 작성 → 계획 수립 → 승인 → 렌더링 → 수동 수정의 순서로 진행한다.</li>
+<li>시작 이미지를 직접 첨부해 AI가 잘못 이해할 수 있는 장면을 명확히 고정한다.</li>
+<li>비용이 큰 작업은 승인 게이트를 명시해 렌더링 전 크레딧을 확인한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>소상공인·1인 브랜드가 제품 스토리텔링형 랜딩 페이지를 저비용으로 제작한다.</li>
+<li>이벤트·프로모션 기간에 반응형 몰입 페이지를 빠르게 만들어 마케팅에 활용한다.</li>
+<li>버셀 배포와 토스 플레이스 API를 연결해 주문까지 받는 실제 판매 페이지로 확장한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>촬영 시점 킥스피드가 무제한 이벤트를 진행 중이어서 저비용 실험 환경이 조성됐다.</li>
+<li>발표자는 다음 편에서 디자인을 넘어 기능적 구현을 다룰 예정이라고 예고했다.</li>
+<li>프롬프트 템플릿은 ABC 클럽 강의실 자료에서 제공된다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>스크롤월드</td><td>스크롤로 장면을 전환하는 몰입형 랜딩 페이지 생성 스킬</td><td>스크롤할수록 영상이 재생되는 페이지</td></tr><tr><td>킥스피드</td><td>클로드에 연결해 이미지·영상을 생성하는 도구</td><td>클로드의 영상 제작 외주 스튜디오</td></tr><tr><td>그릴미</td><td>사용자를 인터뷰해 기획을 구체화하는 스킬</td><td>요구사항을 캐묻는 인터뷰어</td></tr><tr><td>승인 게이트</td><td>렌더링 전 예상 비용을 보고받고 승인하는 통제 지점</td><td>결제 전 견적 확인 단계</td></tr><tr><td>커넥터</td><td>클로드와 외부 도구·배포 서비스를 연결하는 설정</td><td>앱끼리 잇는 콘센트</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/tnOYNzGb_uA" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>투쏠ㅣAI 에이전트 · 2026-07-28</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
