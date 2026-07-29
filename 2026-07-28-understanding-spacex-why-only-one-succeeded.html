@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="스페이스X는 왜 혼자만 성공했을까"><title>스페이스X는 왜 혼자만 성공했을까</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>언더스탠딩</span><span class="ey">MORNING DIGEST · 2026-07-29 · 언더스탠딩</span><span class="chip">🎬 영상</span></div><h1>스페이스X는 왜 혼자만 성공했을까</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>언더스탠딩</td></tr><tr><td>제목</td><td>스페이스X는 왜 혼자만 성공했을까 (스펙스 이강환 최고전략책임자) (1부)</td></tr><tr><td>길이</td><td>약 67분(3,997초)</td></tr><tr><td>핵심결론 1</td><td>로켓의 진짜 난관은 궤도 계산이 아니라 짧은 시간에 막대한 연료를 태우고 밀어넣는 엔진 &#x27;엔지니어링&#x27;이라, 원리를 알아도 남이 따라 못 만든다</td></tr><tr><td>핵심결론 2</td><td>팰컨9 재사용이 판을 바꿔 발사비가 압도적으로 낮아졌고, ULA·블루오리진·아리안·일본이 모두 재사용에 실패해 스페이스X가 &#x27;의도치 않은 독점&#x27;(WSJ 2023)에 이름</td></tr><tr><td>핵심결론 3</td><td>유인 발사가 가능한 유일한 민간기업이 스페이스X이며(국가로도 미국·러시아·중국뿐), 스타링크 4만기·10만기 계획으로 발사 수요까지 자가 공급해 격차가 계속 벌어짐</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>로켓의 진짜 난관은 엔진 엔지니어링</h3>
+<ul>
+<li>민간의 상상과 달리 어려운 것은 지구·궤도 위치를 맞추는 항로 계산이 아니라, 1초에 엄청난 연료·산화제를 태우고 그 압력을 이겨 계속 밀어넣는 터보펌프 사이클을 기계적으로 완벽히 돌리는 일이다.</li>
+<li>원리 자체는 알려져 있고 간단하지만 &#x27;해보면 안 되는&#x27; 엔지니어링·노하우가 핵심이라, 완성품을 보고도 따라 만들기가 어렵다는 것이 스페이스X 우위의 근본 배경이다.</li>
+<li>누리호 엔진(75톤급)이나 팰컨, 과거 새턴 로켓의 연소 사이클은 기본 원리가 지금도 대체로 동일하며, 변한 것은 효율과 재사용 기술이다.</li>
+</ul>
+<h3>냉전기 기원 — 독일에서 &#x27;가져온&#x27; 기술</h3>
+<ul>
+<li>미국(폰 브라운)과 소련(코롤료프)의 로켓 기술은 모두 2차대전 독일 V2 로켓에서 출발했고, 미국은 폰 브라운과 함께 독일 과학자 약 100명을 데려왔다.</li>
+<li>소련은 코롤료프를 사망 시점까지 신원 비밀에 부쳐 미국의 스카우트를 막았고, 먼저 앞서 스푸트니크·유인 우주비행을 달성했다.</li>
+<li>미국 해군의 뱅가드 로켓은 생중계 발사 2초 만에 폭발했고, 이후 주도권이 폰 브라운의 육군으로 넘어가 새턴 계열이 성공에 이른다.</li>
+</ul>
+<h3>새턴 V와 우주왕복선 — &#x27;성공한 실패작&#x27;</h3>
+<ul>
+<li>아폴로를 달로 보낸 새턴 V의 F1 엔진은 높이 5.4m, 추력 680톤급 5기를 묶은 지금까지도 최고 출력 엔진으로, 비용을 따지지 않고 출력만 키운 냉전 산물이다.</li>
+<li>우주왕복선은 1981~2011년 5대·총 135회 운영된 재사용 시도였으나, 수소 엔진 누출 위험으로 매 비행마다 엔진을 뜯어 재조립·단열타일 수작업 교체가 필요해 1회 운영비가 약 2조 원(대부분 인건비)에 달했다.</li>
+<li>챌린저(1986 발사 중)·컬럼비아(2003 귀환 중) 폭발로 우주비행사 14명이 사망했고, 결국 &#x27;재사용이 신규 제작보다 비싼&#x27; 구조라 2011년 퇴역했다.</li>
+</ul>
+<h3>ULA 독점과 러시아 엔진 의존</h3>
+<ul>
+<li>우주왕복선 이후 미국 발사는 보잉·록히드마틴이 2006년 합작한 ULA로 통합돼 10여 년간 사실상 독점했고, 주력 아틀라스V는 러시아산 RD-180 엔진을 사서 썼다.</li>
+<li>계약이 쓴 만큼 이익을 붙여 주는 &#x27;실비정산(cost-plus)&#x27; 방식이라 과소비를 증명하는 행정 인력이 기술 인력보다 많아졌고, 이것이 기술 발전을 가로막았다.</li>
+<li>부품 산업이 미국 50개 주에 퍼져 지역 일자리와 얽히면서 정치적으로 없앨 수 없는 구조가 됐다.</li>
+</ul>
+<h3>스페이스X의 파괴 — 소송과 재사용</h3>
+<ul>
+<li>팰컨9는 2010년 첫 성공 후 약 300회 발사에 실패 2회로 성공률이 극히 높았는데, 2014년 미 공군이 ULA와 수의(단독) 대형 계약을 맺자 머스크가 소송으로 대응했다.</li>
+<li>큐리오시티·주노·뉴호라이즌스 등 미국 핵심 탐사가 러시아 RD-180 엔진에 의존한다는 점을 공론화했고, 마침 러시아의 2014년 크림반도 병합과 맞물려 국방용 러시아 엔진 금지 법안으로 이어졌다(현재 러시아가 판매를 끊어 아틀라스V는 단종).</li>
+<li>재사용의 핵심은 연료를 남겨 올라가 엔진을 재점화하고 궤도·자세를 잡아 안정적으로 착륙시키는 정밀 엔지니어링이며, 팰컨9 1단은 우주까지 가지 않고 70~80km에서 돌아와 세척·점검만으로 재사용된다.</li>
+<li>부스터 하나를 30회 넘게 쓴 사례가 5~6기이고 약 10회면 손익분기라, 그 이후 발사는 사실상 공짜에 가깝다.</li>
+</ul>
+<h3>유인 발사라는 최후의 장벽</h3>
+<ul>
+<li>2014년 나사 상업 유인(Commercial Crew)은 보잉(약 5~6조 원)과 스페이스X(약 3.5조 원)에 함께 발주됐으나, 스페이스X는 2020년부터 유인을 실어 날랐고(12회+) 보잉 스타라이너는 4년 늦은 2024년에야 한 번 갔다가 결함으로 승무원이 8주 예정이 8개월간 체류한 뒤 스페이스X 드래건으로 귀환했다.</li>
+<li>뉴글렌(블루오리진, 자체 BE-4 엔진)·아리안6(유럽)·일본 H3가 최근 발사에 성공하기 시작했지만, 모두 사람은 태우지 못하고 화물만 나른다.</li>
+<li>사람을 실어 우주로 보낸 나라는 미국·러시아·중국뿐이고, 이를 해내는 민간기업은 스페이스X가 유일하다 — 안전·생명유지·비상탈출까지 요구되는 유인은 난도가 차원이 다르다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장·거시 맥락</h2><ul>
+<li>월스트리트저널은 2023년 7월 스페이스X를 사실상 &#x27;독점(monopoly)&#x27;으로 규정했는데, 이는 스페이스X가 노려서가 아니라 경쟁자들이 재사용 경제성을 못 따라와 자멸한 결과라는 점이 핵심이다.</li>
+<li>우주 발사 수요의 대부분은 이제 인공위성 궤도 투입이며, 그중 최다는 스타링크다 — 관측(다분광·레이더·다수 위성으로 사각 제거)과 통신 위성 수요도 과거보다 크게 늘었다.</li>
+<li>스타링크는 현재 약 1만 기가 떠 있고 1단계 목표 4만 기, 추가로 10만 기 허가를 신청했으며, 발사의 60% 이상이 자가 소비여서 수요가 마르지 않는 수직통합 구조다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>재사용이 만든 원가 격차가 임계점을 넘자 경쟁사들이 기존 로켓을 접고 신규 개발로 돌아섰고, 그 지연 동안 스페이스X 단독 체제가 굳어졌다 — 기술 격차는 결국 &#x27;최고 인재를 끌어당기는 힘&#x27;에서 나온다는 진단이다.</li>
+<li>실비정산 계약·지역 일자리 안배처럼 산업 보호를 위한 제도가 역설적으로 혁신을 가로막을 수 있다는 정책적 교훈을 준다(계약을 단계별 성과지급으로 바꾼 것이 신생기업 진입을 가능케 함).</li>
+<li>로켓은 화성행을 위한 수단이고, 스타링크·데이터센터는 그 화성 자금을 버는 중간 사업이라는 목적-수단 구조가 스페이스X 확장의 일관된 논리다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>투자 전략·체크포인트</h2><ul>
+<li>재사용·유인이라는 이중 해자를 감안하면 발사 시장은 당분간 스페이스X 우위가 지속될 가능성이 높아, 경쟁사(블루오리진 뉴글렌·아리안6·일본 H3)의 유인 인증·재사용 실증 진척을 핵심 변수로 관찰한다.</li>
+<li>스타링크의 다이렉트-투-셀(안테나 없이 휴대폰 직접 연결)이 실현되면 기존 통신사(5G) 매출을 잠식할 수 있어, 통신·위성 밸류체인 재편을 장기 테마로 점검한다.</li>
+<li>러시아 엔진 단종·부품 공급망 재편이 미국 우주·방산 조달에 미치는 영향과, 한국 발사체(누리호)·부품 기업의 반사 기회를 함께 살핀다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>우주·위성·통신 관련 기업을 볼 때 &#x27;재사용 원가&#x27;와 &#x27;유인 인증&#x27; 두 축으로 경쟁력을 판별하는 프레임으로 활용한다.</li>
+<li>&#x27;경쟁자 자멸형 독점&#x27;이라는 관점을 다른 산업(플랫폼·반도체 장비 등)의 사실상 독점 사례 진단에 응용한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>뉴글렌·아리안6·일본 H3가 화물 발사에 진입했으나 유인은 여전히 스페이스X만 가능해, 유인 상업 발사 격차는 상당 기간 이어질 전망이다.</li>
+<li>스타링크의 저궤도 대량 배치와 다이렉트-투-셀 확장은 통신 시장의 지형을 바꿀 잠재력이 있으며, 블루오리진이 왜 뒤처졌는지는 후속 2부에서 다룬다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>터보펌프</td><td>고압 연소실로 연료·산화제를 강제로 밀어넣는 로켓 엔진의 핵심 펌프</td><td>타는 불 속으로 기름을 밀어넣는 초고압 심장</td></tr><tr><td>다단연소(폐쇄) 사이클</td><td>펌프 구동에 쓴 연료를 버리지 않고 다시 태우는 고효율 엔진 방식</td><td>새는 것 없이 끝까지 태우는 알뜰 엔진</td></tr><tr><td>재사용 로켓</td><td>발사 후 1단(또는 2단)을 회수해 세척·점검만으로 다시 쓰는 로켓</td><td>한 번 쓰고 버리는 대신 재급유해 다시 타는 비행기</td></tr><tr><td>실비정산(cost-plus)</td><td>쓴 비용에 이익을 얹어 지급하는 계약, 과소비 유인이 있음</td><td>많이 쓸수록 더 버는 청구서 방식</td></tr><tr><td>ULA</td><td>보잉·록히드마틴이 2006년 합작한 미국 발사 독점 기업</td><td>두 거인이 합쳐 만든 발사 독점체</td></tr><tr><td>RD-180</td><td>아틀라스V가 쓰던 러시아산 로켓 엔진, 국방용 금지·단종</td><td>남의 심장으로 뛰던 미국 로켓</td></tr><tr><td>다이렉트-투-셀</td><td>접시 안테나 없이 휴대폰이 위성과 직접 통신하는 스타링크 서비스</td><td>하늘이 곧 기지국인 통신</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/4XKllfAhgX8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>언더스탠딩 · 2026-07-29</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
