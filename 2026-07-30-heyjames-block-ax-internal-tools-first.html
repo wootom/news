@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="실리콘밸리 결제사 블록(구 스퀘어)이 AX 전환으로 수천 명을 내보낸 것이 화제. 발표자는 그 성공의 핵심이 &#x27;전직원 AI 교육·챔피언 제도&#x27;가 아니라 **내부 툴(내부 SaaS) 구축**이었다고 진단. 모두에게 클로드 코드를 가르치는 대신, 한 명이 만든 워크플로우를"><title>블록의 AX 성공, 진짜 교훈은 &#x27;내부 툴 먼저&#x27; — AI 네이티브 전환론 (헤이제임스)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>헤이제임스 - AI 쉽게 배우기</span><span class="ey">MORNING DIGEST · 2026-07-30 · 헤이제임스 - AI 쉽게 배우기</span><span class="chip">🎬 영상</span></div><h1>블록의 AX 성공, 진짜 교훈은 &#x27;내부 툴 먼저&#x27; — AI 네이티브 전환론 (헤이제임스)</h1><p class="lead">실리콘밸리 결제사 블록(구 스퀘어)이 AX 전환으로 수천 명을 내보낸 것이 화제. 발표자는 그 성공의 핵심이 &#x27;전직원 AI 교육·챔피언 제도&#x27;가 아니라 <strong>내부 툴(내부 SaaS) 구축</strong>이었다고 진단. 모두에게 클로드 코드를 가르치는 대신, 한 명이 만든 워크플로우를 교육 없이 쓰는 내부 제품으로 만들면 즉시 생산성이 몇 배 오른다는 것이 핵심 주장.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>화제</td><td>블록(구 스퀘어)의 AX 전환 성공·대규모 감원</td></tr><tr><td>발표자 주장</td><td>교육·챔피언보다 &#x27;내부 툴 구축&#x27;이 즉효</td></tr><tr><td>AX 3요소</td><td>교육 + 데이터(암묵지·문서) + 에이전트·대시보드</td></tr><tr><td>핵심 결론</td><td>교육은 장기 자산, 내부 툴은 즉시 비용절감</td></tr><tr><td>실패 패턴</td><td>토큰만 쓰고 성과 없이 흐지부지</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조 — AX의 세 축</h2><p>발표자는 AX를 세 축으로 정리한다. ①<strong>교육</strong>: 다수 임직원이 클로드 코드·코덱스를 어느 정도 쓰게 만들고 챔피언(잘하는 실무자)을 양성. ②<strong>데이터</strong>: 숙련자의 머릿속 <strong>암묵지</strong>와 사내 채팅 로그·문서·종이 서류(OCR 변환)를 마크다운·DB로 정제해 RAG로 꺼내 쓰는 재료화, 의사결정 데이터와 그 근거까지 확보. ③<strong>에이전트·대시보드</strong>: 데이터를 들고 판단하는 주체(기획·디자인·백엔드·마케팅 에이전트 등)를 만들되, 앞단에 <strong>MCP 레이어</strong>를 붙여 권한·열람 범위를 통제. 대시보드는 사실상 &#x27;내부 SaaS&#x27;다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 왜 &#x27;교육&#x27;만으로는 부족한가</h2><p>마케터 X가 클로드 코드로 소셜 콘텐츠 만드는 법을 익히는 데 3개월·생산성 10배가 걸렸다면, 마케터 A·B·C 모두에게 같은 시간·비용을 다시 투자하는 것은 비효율이다. 프롬프트를 서로 맞추고 스킬을 공유해도 결과물 편차가 생긴다. 대신 X가 완성한 워크플로우를 <strong>내부 툴</strong>로 제품화하면, 나머지는 교육 없이 툴을 쓰는 순간 즉시 10배 생산성을 얻는다. 툴은 에이전트·AI API와 붙어 자잘한 의사결정까지 자동화하고, 데이터 풀·대시보드가 붙어 필요한 데이터를 알아서 꺼내며, 법무 필터(문구 조정·이미지 검열)까지 안정적으로 걸린다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>핵심 워크플로우 — 규모별 처방</h2><p>스타트업(20명 이하)은 피그마·노션·슬랙·트렐로 등 SaaS를 엮어 쓰지만 기능의 10%도 안 쓴다 — 입맛에 맞는 내부 툴 하나로 프로젝트·영업·메신저·데이터 관리를 통합하면 3~5배 효율. 중소기업은 사람이 하던 일 상당수가 AI API 호출 한 번으로 대체 가능. 대표가 직접 공부하거나(20명 규모면 모든 업무를 파악 가능) 컨설팅·제작을 의뢰. 대기업의 ERP와 유사하나, ERP는 관리·집계용이라 오히려 번거로운 반면, 내부 툴은 &#x27;직원이 없으면 예전으로 돌아가기 싫은&#x27; 실사용 효율이 목표.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 시나리오</h2><p>마케팅 콘텐츠 생성 내부 툴(카드뉴스·스레드·상세페이지를 누가 쓰든 균일 품질로 자동 생성), 슬랙 멘션으로 호출하는 부서별 에이전트(마케팅 에이전트는 마케팅 데이터만 조회), 사내 통합 내부 SaaS(파일 변환·커뮤니케이션·데이터 조회를 한 툴에서 완결).</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망 — AI 네이티브의 조건</h2><p>블록처럼 &#x27;절반을 내보낼 정도&#x27;의 강력한 구조조정으로 AI 네이티브가 가능한 기업은 대표·임원의 의사결정이 강한 곳. 발표자(헤이제임스)는 교육의 장기 효과를 인정하되, 당장의 경쟁력·비용절감은 <strong>내부 프로세스를 자동화한 내부 제품</strong>에서 나온다고 강조. 내부 툴은 직원이 들고 나도 남는 자산이며 계속 <span class="up">개선</span>(깎아 나가기)된다. 아낀 인건비·시간을 매출 증대·신규 사업으로 재투자하라는 것이 결론.</p></section><section class="card s12" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>AX</td><td>AI 트랜스포메이션, 기업의 AI 전환</td><td>회사 전체를 AI 기반으로 리모델링</td></tr><tr><td>AI 네이티브</td><td>처음부터 AI 중심으로 설계·운영되는 기업</td><td>디지털로 태어난 신생 조직</td></tr><tr><td>암묵지</td><td>매뉴얼 없이 숙련자 머릿속에 쌓인 노하우</td><td>장인의 손맛, 말로 못 적는 감각</td></tr><tr><td>내부 툴(내부 SaaS)</td><td>회사 업무에 맞춰 자체 제작한 소프트웨어</td><td>우리 회사 전용 맞춤 앱</td></tr><tr><td>에이전트</td><td>데이터를 들고 판단·실행하는 AI 주체</td><td>각 분야를 맡은 AI 담당 직원</td></tr><tr><td>MCP</td><td>에이전트와 데이터 사이 권한·연결 레이어</td><td>출입증을 검사하는 보안 게이트</td></tr><tr><td>RAG</td><td>문서를 검색해 AI 답변에 붙이는 기술</td><td>참고 자료를 찾아 보며 답하기</td></tr><tr><td>챔피언</td><td>팀 내 AI를 잘 쓰는 전파 담당 실무자</td><td>사내 AI 전도사·튜터</td></tr></tbody></table></div></section><section class="card s6" id="s8"><h2><span class="seq">08</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/K-2t0lrhk60?t=20" target="_blank" rel="noopener">블록 AX 성공의 진짜 원인</a></li>
+<li><a href="https://youtu.be/K-2t0lrhk60?t=300" target="_blank" rel="noopener">AX 3요소 — 교육·데이터·에이전트</a></li>
+<li><a href="https://youtu.be/K-2t0lrhk60?t=600" target="_blank" rel="noopener">교육보다 내부 툴이 즉효인 이유</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/K-2t0lrhk60" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>헤이제임스 - AI 쉽게 배우기 · 2026-07-30</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

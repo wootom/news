@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="정적 AI 이미지 → 이미지-투-비디오 → 프레임 분할(11fps) → 디더링 처리 → 웹 배경 적용의 5단계로, 재료비 약 1달러에 &#x27;1만 달러처럼 보이는&#x27; 인터랙티브 애니메이션 웹사이트를 제작하는 방법. 발표자는 프로그래밍 학위 없이 유튜브만으로 익혔으며, 어떤 A"><title>1달러로 만드는 &#x27;10K짜리 감성&#x27; — AI 디더링 애니메이션 웹사이트 (Nick Saraev)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nick Saraev</span><span class="ey">MORNING DIGEST · 2026-07-30 · Nick Saraev</span><span class="chip">🎬 영상</span></div><h1>1달러로 만드는 &#x27;10K짜리 감성&#x27; — AI 디더링 애니메이션 웹사이트 (Nick Saraev)</h1><p class="lead">정적 AI 이미지 → 이미지-투-비디오 → 프레임 분할(11fps) → 디더링 처리 → 웹 배경 적용의 5단계로, 재료비 약 1달러에 &#x27;1만 달러처럼 보이는&#x27; 인터랙티브 애니메이션 웹사이트를 제작하는 방법. 발표자는 프로그래밍 학위 없이 유튜브만으로 익혔으며, 어떤 AI 에이전트에도 붙여 쓸 수 있는 무료 프롬프트를 제공.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>결과물</td><td>디더링 애니메이션 인터랙티브 웹사이트</td></tr><tr><td>재료비</td><td>약 1달러</td></tr><tr><td>핵심 효과</td><td>디더링(흑백 점 패턴) + 스타카토 프레임 전환</td></tr><tr><td>진입장벽</td><td>없음(AI 에이전트만 있으면 가능)</td></tr><tr><td>제공물</td><td>재현용 무료 프롬프트·컬러 팔레트</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 워크플로우 — 5단계 파이프라인</h2><p>①<strong>정적 이미지 생성</strong>: GPT image 2·나노 바나나 프로 등으로 르네상스풍(고딕 장미창·프레스코·함대 등 &#x27;웅장한&#x27; 소재)의 스타일 이미지 생성 — 이런 소재가 미세 애니메이션과 잘 어울림. ②<strong>이미지→비디오 변환</strong>: 이미지-투-비디오 모델에 &quot;왼쪽을 보게 애니메이션&quot;처럼 지시해 짧은 영상 생성(약 25~50센트). ③<strong>프레임 분할</strong>: 매끄러운 영상을 약 11fps로 잘라 의도적인 &#x27;뚝뚝 끊기는&#x27; 스타카토 느낌 부여. ④<strong>디더링 적용</strong>: 흑백 점 패턴(구형 디스플레이에서 디테일을 표현하던 방식)을 입힘. ⑤<strong>웹 배경 적용</strong>: 이를 사이트 배경으로 깔고, 마우스 인터랙션 효과를 더해 각 픽셀이 독립 렌더링되는 것처럼 착시.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 도구·설정 팁</h2><p>이미지 벤더는 <strong>Higgsfield</strong>(수백 개 이미지 모델 호스팅 애그리게이터)로 나노 바나나 프로 등 사용. 종횡비는 반드시 와이드스크린(16:9), 해상도는 기본 2K 대신 1K로 낮춰 비용 절감, 배치 사이즈는 2로 두어 선택지 확보. 영상 변환은 <strong>Seedance 2.0</strong>(최고 품질은 아니나 저렴, 디더링엔 고품질 불필요) 추천, 4초·16:9·1080p 설정으로 약 1달러 유지. &#x27;빠르게 달리는 말의 근육·배&#x27; 같은 표현은 안전 필터에 걸릴 수 있어 소재 선택에 주의.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>활용 시나리오</h2><p>포트폴리오·랜딩 페이지에 고급스러운 무드의 배경 연출, 브랜드 무드보드용 다양한 스타일 스와치 실험, 코딩 지식 없이 AI 에이전트에 프롬프트를 붙여 사이트 일괄 재현.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>현황 및 전망</h2><p>발표자(닉 사라예프)는 정규 프로그래밍 교육 없이 무료 튜토리얼로 익혔음을 강조하며, 핵심 자산인 재현 프롬프트·리소스를 설명란(Maker Zero 링크)에 무료 공개. 디더링·스타카토 프레임이라는 &#x27;치팅&#x27; 기법으로 저비용·고감성 결과를 얻는 것이 요지로, 웅장한 르네상스풍 이미지 + 따뜻한 파스텔 톤 조합이 가장 잘 맞는다고 조언.</p></section><section class="card s12" id="s6"><h2><span class="seq">06</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>디더링(Dithering)</td><td>흑백 점 패턴으로 계조·디테일을 표현하는 기법</td><td>신문 사진의 망점 인쇄</td></tr><tr><td>이미지-투-비디오</td><td>정지 이미지를 짧은 영상으로 애니메이션화</td><td>사진 한 장을 움직이는 짤로 만들기</td></tr><tr><td>프레임 분할</td><td>매끄러운 영상을 낱장 프레임으로 쪼갬</td><td>필름을 컷별로 잘라내기</td></tr><tr><td>스타카토 효과</td><td>프레임을 띄엄띄엄 전환해 끊기는 느낌</td><td>옛 VHS·플립북 같은 질감</td></tr><tr><td>Higgsfield</td><td>수백 개 이미지 모델을 모은 애그리게이터</td><td>여러 화가를 한곳에 모은 화방</td></tr><tr><td>Seedance 2.0</td><td>저렴한 이미지-투-비디오 생성 모델</td><td>가성비 좋은 영상 변환기</td></tr><tr><td>나노 바나나 프로</td><td>고품질 이미지 생성 모델</td><td>정밀한 그림을 그리는 AI 화가</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/KDkR0cJRiJk?t=120" target="_blank" rel="noopener">5단계 파이프라인 개요</a></li>
+<li><a href="https://youtu.be/KDkR0cJRiJk?t=420" target="_blank" rel="noopener">이미지 생성 — Higgsfield 설정</a></li>
+<li><a href="https://youtu.be/KDkR0cJRiJk?t=660" target="_blank" rel="noopener">영상 변환 — Seedance 2.0 설정</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/KDkR0cJRiJk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nick Saraev · 2026-07-30</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
