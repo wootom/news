@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="채널: Chase AI · 길이: 약 9분 · 유형: AI 도구 리뷰(오픈소스 Claude Code 스킬 소개·실증 비교)"><title>클로드 코드 리서치 문제를 푼 깃허브 1위 스킬 &#x27;last 30 days&#x27;</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">MORNING DIGEST · 2026-07-30 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>클로드 코드 리서치 문제를 푼 깃허브 1위 스킬 &#x27;last 30 days&#x27;</h1><p class="lead">채널: Chase AI · 길이: 약 9분 · 유형: AI 도구 리뷰(오픈소스 Claude Code 스킬 소개·실증 비교)</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>대상</td><td>오픈소스 Claude Code 스킬 <strong>&#x27;last 30 days&#x27;</strong> — 깃허브 <strong>55,000 스타</strong>, &#x27;오늘의 깃허브 1위&#x27; 레포</td></tr><tr><td>채널</td><td>Chase AI (AI 개발·도구 리뷰)</td></tr><tr><td>핵심 문제</td><td>Claude Code 리서치의 딜레마 — <strong>웹검색</strong>은 얕고, <strong>딥리서치</strong>는 5~20분·수백 서브에이전트·수백만 토큰</td></tr><tr><td>해결책</td><td>여러 소셜 플랫폼을 <strong>병렬 스크래핑</strong>해 &#x27;실제 사용자 여론&#x27;을 수집·종합하는 <strong>중간 지대</strong> 도구</td></tr><tr><td>수집 대상</td><td>Reddit·Hacker News·X(트위터)·YouTube·TikTok·Instagram·Polymarket·GitHub·LinkedIn·Pinterest·Bluesky</td></tr><tr><td>설치</td><td>Claude Code에서 <strong>한 줄</strong>. Codex·Cursor·claude.ai 웹앱도 지원</td></tr><tr><td>비용</td><td>대부분 API 키 불필요, X는 xAI 키 필요(회당 평균 <strong>~10센트</strong>), TikTok/IG는 scrape creators 키(설치 시 수천 콜 무료)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>왜 필요한가 — 리서치의 두 극단과 그 사이의 빈칸</h2><p>Claude Code로 무언가를 조사할 때 사용자는 늘 두 가지 나쁜 선택지 사이에 놓인다.</p>
+<ul>
+<li><strong>웹검색(web search)</strong>: 사실상 &#x27;고급 구글 검색&#x27;. SEO 상위에 오른 기사와 헤드라인만 훑는다. 틀리지는 않지만 한 겹 더 들어가지 못해 표면적이다.</li>
+<li><strong>딥리서치(deep research)</strong>: 5·10·15·20분이 걸리고 수백 개의 서브에이전트, 잠재적으로 수백만 토큰을 소모한다. 무겁고 느리다.</li>
+</ul>
+<p>&#x27;last 30 days&#x27;는 이 둘 사이의 <strong>완벽한 중간 지대</strong>를 제공한다. 여러 플랫폼을 빠르게 훑어 SEO 상위 기사가 아니라 <strong>실제 사용자들이 무슨 말을 하는지(user sentiment)</strong> 를 잡아낸다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>무엇을 하는가 — 여론 스크래핑과 종합</h2><ul>
+<li>Reddit, Hacker News, Polymarket, GitHub, YouTube, TikTok, Instagram 등 <strong>주요 소셜 플랫폼 전부</strong>를 훑어 필요한 정보를 찾는다.</li>
+<li>게시글 제목이 아니라 <strong>댓글·반응까지</strong> 파고들어 일반 웹검색으로는 얻을 수 없는 &#x27;풀뿌리(grassroots)&#x27; 여론을 확보한다.</li>
+<li>수집한 것을 <strong>종합해 랭킹된 브리프</strong>로 만들고, 원본(트랜스크립트·댓글 등 전부)을 <strong>JSON 파일</strong>로도 저장해 원자료를 직접 뒤질 수 있게 한다.</li>
+</ul></section><section class="card s12" id="s4"><h2><span class="seq">04</span>실증 비교 — &quot;Opus 5에 대한 여론&quot; (last 30 days vs 웹검색)</h2><p>발표자는 동일 질문 <strong>&quot;What are people saying about Claude Opus 5?&quot;</strong> 를 두 방식에 던져 결과를 나란히 비교했다.</p>
+<ul>
+<li><strong>웹검색 쪽</strong>: 구글에서 나올 법한 주요 기사 요약 수준. 틀리진 않지만 트위터·레딧에서 사람들이 실제로 하는 말(풀뿌리)까지는 닿지 못한다.</li>
+<li><strong>last 30 days 쪽</strong>: 훨씬 넓은 그물. 실제 소스 규모가 그 차이를 보여준다(아래 표). 발견한 디테일도 구체적이다 — &quot;Opus 5가 Fable 5의 절반 가격&quot;이라는 프레이밍, <strong>게시글이 아닌 &#x27;댓글&#x27;에서의 백래시</strong>, 전문 리뷰어들의 종합 여론까지.</li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>플랫폼</th><th>수집량</th></tr></thead><tbody><tr><td>Reddit</td><td>22 스레드</td></tr><tr><td>X(트위터)</td><td>13 포스트</td></tr><tr><td>YouTube</td><td>14 영상</td></tr><tr><td>TikTok</td><td>26</td></tr><tr><td>Instagram Reels</td><td>13</td></tr><tr><td>Hacker News</td><td>16 스토리</td></tr><tr><td>GitHub</td><td>25</td></tr><tr><td>Polymarket</td><td>일부</td></tr></tbody></table></div>
+<blockquote>※ &#x27;Opus 5&#x27;·&#x27;Fable 5&#x27;는 영상 데모에 쓰인 <strong>예시 질의</strong>이며, 특정 제품의 실제 사양·가격을 확인해 주는 내용은 아니다.</blockquote></section><section class="card s6" id="s5"><h2><span class="seq">05</span>작동 원리 — 프롬프트 개선 → 병렬 검색 → 댓글 심층 → 랭킹 종합</h2><ol>
+<li>Claude Code 안에서 <code>/last 30 days</code> 또는 자연어(&quot;use the 30 day skill&quot;)로 스킬을 호출하고 <strong>주제를 준다</strong>.</li>
+<li>사용자의 거친 프롬프트를 스킬이 <strong>스스로 더 낫게 다듬는다</strong>.</li>
+<li>주제에 맞는 <strong>서브레딧·트위터 핸들</strong> 등을 알아서 판단해 여러 플랫폼을 <strong>병렬 검색</strong>한다(그래서 빠르다).</li>
+<li>제목이 아니라 <strong>댓글까지 심층 확인</strong>한다.</li>
+<li>실제 스크래핑은 <strong>결정적(deterministic) Python 스크립트</strong>가 실행한다.</li>
+<li><strong>교차 검증 랭킹</strong> — 여러 플랫폼에서 반복 등장하는 신호를 상위로 올린다. 단일 레딧 댓글 하나가 결과를 왜곡하지 않는다.</li>
+<li><strong>스코핑 가능</strong> — &quot;레딧만&quot;·&quot;트위터만&quot;·&quot;유튜브만&quot;처럼 플랫폼을 한정해 지시할 수 있다. 사용법을 모르면 Claude Code가 스킬 문서를 읽어 안내한다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>설치·비용·API 키 — 진입장벽은 낮다</h2><ul>
+<li><strong>설치</strong>: Claude Code에서 <strong>코드 한 줄</strong>. 설치하면 대부분의 소스가 <strong>자동 세팅</strong>되어 API 키가 필요 없다.</li>
+<li><strong>X(트위터)</strong>: <strong>xAI(X AI) API 키</strong> 필요. 여기서 가장 비싼 소스지만 발표자 실측 기준 <strong>회당 평균 ~10센트</strong>.</li>
+<li><strong>TikTok·Instagram Reels</strong>: <strong>scrape creators</strong> API 키 필요. 다만 설치 시 <strong>보조 계정</strong>으로 수천 콜을 무료 제공해, 매일 써도 약 <strong>6개월</strong>은 공짜로 돌릴 수 있다.</li>
+<li>레포 자체가 <strong>소스별 필요 조건·비용을 문서화</strong>한다.</li>
+<li>Claude Code 외에 <strong>Codex·Cursor·claude.ai 웹앱</strong>에서의 설정법도 안내한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>포지셔닝·전망 — 웹검색과 딥리서치 사이, 여론에선 딥리서치보다 나을 수 있다</h2><ul>
+<li><strong>모든 질문에 쓸 도구는 아니다.</strong> 일상적인 잡다한 질문은 웹검색으로 충분하며, 발표자도 남용하지 말라고 권한다. &#x27;큰 건&#x27;에 쓰는 도구다.</li>
+<li><strong>위치</strong>: 표면적인 웹검색과, 수천 서브에이전트를 돌리는 무거운 딥리서치 워크플로우의 <strong>딱 중간</strong>.</li>
+<li><strong>강점</strong>: 특히 <strong>사용자 여론 파악</strong>에서는 딥리서치보다도 나을 수 있다는 게 발표자의 주장이다.</li>
+<li><strong>유일한 걸림돌</strong>: 특정 소스(주로 X 키) 연결. 레포 링크를 Claude Code에 던지면 필요한 부분을 안내해 준다.</li>
+</ul>
+<blockquote>※ 영상 중반에는 발표자 본인 유료 강의(Chase AI Plus의 &#x27;Claude Code Masterclass&#x27;) 홍보 구간이 포함되어 있어 본 분석에서는 제외했다.</blockquote></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Claude Code</td><td>터미널에서 도는 Anthropic의 AI 코딩 에이전트</td><td>명령줄 AI 비서</td></tr><tr><td>스킬(skill)</td><td>Claude Code에 기능을 더하는 설치형 확장</td><td>앱 플러그인</td></tr><tr><td>last 30 days</td><td>여러 소셜을 스크래핑해 여론을 종합하는 오픈소스 스킬</td><td>여론 수집 로봇</td></tr><tr><td>웹검색(web search)</td><td>구글식 기사·헤드라인 검색</td><td>표지만 훑기</td></tr><tr><td>딥리서치(deep research)</td><td>수백 서브에이전트로 장시간·대량 토큰 조사</td><td>대규모 조사단</td></tr><tr><td>사용자 여론(user sentiment)</td><td>게시글·댓글에 드러난 실제 사용자 감정</td><td>민심</td></tr><tr><td>풀뿌리(grassroots)</td><td>전문 기사가 아닌 일반 사용자의 목소리</td><td>길거리 여론</td></tr><tr><td>서브에이전트(sub agent)</td><td>상위 작업을 나눠 처리하는 하위 AI</td><td>분업 일꾼</td></tr><tr><td>스크래핑(scraping)</td><td>웹·앱에서 데이터를 자동 수집</td><td>자동 긁어오기</td></tr><tr><td>scrape creators</td><td>소셜 스크래핑용 API 서비스(무료 콜 제공)</td><td>데이터 수도꼭지</td></tr><tr><td>Polymarket</td><td>베팅으로 여론·확률을 반영하는 예측 시장</td><td>확률 배당판</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>타임스탬프 딥링크</h2><ul>
+<li><a href="https://youtu.be/ShYfGB3x5mM?t=0" target="_blank" rel="noopener">문제 제기 — 웹검색 vs 딥리서치의 딜레마</a></li>
+<li><a href="https://youtu.be/ShYfGB3x5mM?t=87" target="_blank" rel="noopener">&quot;Opus 5 여론&quot; 실증 비교와 8개 플랫폼 소스 규모</a></li>
+<li><a href="https://youtu.be/ShYfGB3x5mM?t=202" target="_blank" rel="noopener">값어치는 &#x27;소스&#x27;에 있다 — API 키·비용 정리</a></li>
+<li><a href="https://youtu.be/ShYfGB3x5mM?t=310" target="_blank" rel="noopener">작동 원리 — 프롬프트 <span class="up">개선</span>·병렬 검색·댓글 심층·랭킹</a></li>
+<li><a href="https://youtu.be/ShYfGB3x5mM?t=525" target="_blank" rel="noopener">포지셔닝 — 웹검색과 딥리서치 사이</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ShYfGB3x5mM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-07-30</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
