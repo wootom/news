@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="촬영·스튜디오·모델 섭외 없이 클로드 스킬 &#x27;하이퍼리얼&#x27;만으로 세상에 없는 가상 모델을 만들어 광고 컷까지 뽑는 과정을 소개한다. 하이퍼리얼은 팔레트 스튜디오가 만든 클로드용 스킬로, 사용자가 일상어로 지시하면 카메라·조명·피부 질감·심도를 전문가 수준 프롬프트로 변환"><title>촬영 없이 광고 찍는 법 — 하이퍼리얼 가상 모델 워크플로우 (메이커 에반)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">MORNING DIGEST · 2026-07-31 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>촬영 없이 광고 찍는 법 — 하이퍼리얼 가상 모델 워크플로우 (메이커 에반)</h1><p class="lead">촬영·스튜디오·모델 섭외 없이 클로드 스킬 &#x27;하이퍼리얼&#x27;만으로 세상에 없는 가상 모델을 만들어 광고 컷까지 뽑는 과정을 소개한다. 하이퍼리얼은 팔레트 스튜디오가 만든 클로드용 스킬로, 사용자가 일상어로 지시하면 카메라·조명·피부 질감·심도를 전문가 수준 프롬프트로 변환한다. 핵심은 &#x27;앵커페이스(기준 얼굴)&#x27; 한 명을 확정해 옷·배경·계절이 바뀌어도 동일 인물을 유지하고, 매끈한 AI 피부 티를 없애는 것이다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>도구</td><td>하이퍼리얼 (팔레트 스튜디오 제작, 클로드용 스킬)</td></tr><tr><td>역할</td><td>클로드를 시니어 아트 디렉터로 변신시킴</td></tr><tr><td>핵심 개념</td><td>앵커페이스(기준 얼굴) 고정 재사용</td></tr><tr><td>해결 문제</td><td>얼굴 일관성 부재, 매끈한 AI 피부 티</td></tr><tr><td>한계</td><td>이미지 전용(영상 불가), 기준 얼굴 제작에 시간 필요</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조 — 두 가지 벽</h2><p>기존 AI 이미지는 두 가지 벽에 부딪힌다. 첫째, 생성할 때마다 얼굴이 바뀌어 브랜드 전속 모델처럼 한 사람을 유지할 수 없다. 둘째, 피부가 밀랍 인형처럼 매끈해 보는 사람이 바로 AI임을 알아챈다. 하이퍼리얼은 이 두 문제를 정면으로 겨냥해 설계됐다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 아트 디렉터로서의 스킬</h2><p>사용자가 &quot;조명만 드라마틱하게&quot;처럼 편하게 말하면, 스킬이 이를 카메라 렌즈·조명 방향·피부 질감·배경 심도까지 전문 포토그래퍼 수준의 지시서로 변환한다. 전문 용어를 몰라도 되고, 설정만 해두면 최신 이미지 모델로 실제 이미지 생성까지 바로 수행한다. 비유하면 &quot;예쁘게 해주세요&quot;가 아니라 전문 디자이너가 도면을 그려주는 것과 같다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>핵심 워크플로우 — 앵커페이스와 두 무기</h2><p>심장은 &#x27;앵커페이스(기준 얼굴)&#x27;다. 가상 모델 얼굴 한 명을 만들어 기준점으로 잡으면 이후 옷·배경·계절이 바뀌어도 같은 사람이 유지된다. 두 무기는 (1) DNA 모드 — 마음에 드는 화보 한 장의 조명·앵글·색감·질감을 분해해 재사용 템플릿(레시피)으로 만들고, (2) 에디트 모드 — 배경·의상·표정·조명을 말 한마디로 바꾸며, &#x27;각도 시트&#x27;로 정면·측면·위·아래 컷을 한 번에 뽑는다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 시나리오</h2><p>쇼핑몰 상세 페이지, 브랜드 캠페인 컷, 제품 화보, SNS 전용 이미지 제작에 쓴다. 표정이 살아 있는 레퍼런스를 함께 주면 증명사진 같은 무표정을 피할 수 있고, 상세 페이지용 다각도 컷을 한 번에 확보할 수 있다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><p>하이퍼리얼은 스킬샵에서 제공되며 &#x27;레퍼런스 퍼스트&#x27; 철학을 따른다. 다만 영상은 아직 안 되는 이미지 전용이고, 기준 얼굴 제작 단계는 후보 생성·피부 검사·선택에 시간을 들여야 한다. 가상 모델 표기 여부는 브랜드가 판단하며, 다음 영상에서는 이 모델로 상세 페이지를 처음부터 끝까지 완성하는 과정을 예고했다.</p></section><section class="card s12" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>하이퍼리얼</td><td>팔레트 스튜디오가 만든 클로드용 사진 제작 스킬</td><td>클로드를 아트 디렉터로 변신</td></tr><tr><td>앵커페이스</td><td>재사용의 기준이 되는 고정 얼굴</td><td>건물 기초 공사</td></tr><tr><td>DNA 모드</td><td>레퍼런스 사진의 스타일을 레시피로 추출</td><td>음식 먹고 레시피 역추출</td></tr><tr><td>에디트 모드</td><td>배경·의상·표정을 말로 바꾸는 기능</td><td>재촬영 없이 문장 한 줄</td></tr><tr><td>각도 시트</td><td>같은 모델의 다각도 컷을 한 번에 생성</td><td>상세 페이지용 정면·측면·위·아래</td></tr><tr><td>레퍼런스 퍼스트</td><td>좋은 재료를 먼저 주고 바꿀 것만 지시</td><td>셰프에게 재료 주고 파스타 요청</td></tr></tbody></table></div></section><section class="card s6" id="s8"><h2><span class="seq">08</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/6VdL7ZPfaD4?t=88" target="_blank" rel="noopener">AI 이미지의 두 가지 벽</a></li>
+<li><a href="https://youtu.be/6VdL7ZPfaD4?t=155" target="_blank" rel="noopener">앵커페이스 개념</a></li>
+<li><a href="https://youtu.be/6VdL7ZPfaD4?t=420" target="_blank" rel="noopener">실전 5단계 순서</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/6VdL7ZPfaD4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-07-31</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
