@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="아내의 요청으로 요가 관련 플랫폼 &#x27;아요라&#x27;를 만들며 겪은 실제 창업담. 요가 클래스 검색 포털 → 사스(SaaS) 검토 → 강사-수강생 직접 연결 중개 플랫폼으로 방향을 세 번 바꾸는 과정에서 각 단계의 실패 이유를 숫자와 함께 복기하고, 결국 인도 현지 요가 선생님"><title>요가 플랫폼 3번 피벗해서 월 400만 원 매출 낸 이야기 — 검색 포털에서 서비스 플랫폼으로 (헤이제임스)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>헤이제임스</span><span class="ey">MORNING DIGEST · 2026-08-01 · 헤이제임스 - AI 쉽게 배우기</span><span class="chip">🎬 영상</span></div><h1>요가 플랫폼 3번 피벗해서 월 400만 원 매출 낸 이야기 — 검색 포털에서 서비스 플랫폼으로 (헤이제임스)</h1><p class="lead">아내의 요청으로 요가 관련 플랫폼 &#x27;아요라&#x27;를 만들며 겪은 실제 창업담. 요가 클래스 검색 포털 → 사스(SaaS) 검토 → 강사-수강생 직접 연결 중개 플랫폼으로 방향을 세 번 바꾸는 과정에서 각 단계의 실패 이유를 숫자와 함께 복기하고, 결국 인도 현지 요가 선생님을 실시간 번역·더빙으로 섭외해 서비스 출시 한 달 만에 매출 400만 원을 낸 사례를 공유한다.</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>발표자</td><td>헤이제임스, 개발·플랫폼 컨설팅 경험 보유, 아내의 요가 플랫폼 제작을 의뢰받아 진행</td></tr><tr><td>서비스명</td><td>아요라(Ayora) — 요가 관련 온라인 플랫폼</td></tr><tr><td>피벗 횟수</td><td>3회 (클래스 검색 포털 → 사스 검토 → 강사 직접 섭외 중개 플랫폼)</td></tr><tr><td>최종 성과</td><td>출시 약 1개월 만에 월 매출 약 400만 원, 요가 철학 시리즈 강의 1건이 30만 원대</td></tr><tr><td>핵심 차별화</td><td>인도 현지 요가·철학 선생님 섭외 + 실시간 번역/더빙 화상강의 시스템</td></tr><tr><td>서비스 결말</td><td>확장 가능성은 있었으나(월 1,000~2,000만 원 추정) 이후 서비스 종료</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조 — 3번의 피벗</h2><p>해외 요가 온라인 클래스 사이트들을 크롤링해 한눈에 비교할 수 있는 검색 포털을 몇 시간 만에 제작. 수익 모델은 노출을 통한 광고비·중개수수료였다. 클릭당 광고비 200~400원 기준으로 하루 2만 원(월 60만 원) 집행 시 약 2,000명 유입을 계산했지만, 실제 소액 광고 테스트 결과 &quot;간접 비즈니스&quot;의 한계가 드러났다. 플랫폼-소비자-요가업체 3단 구조에서 요가업체가 이미 자체 마진으로 광고·콘텐츠를 운영 중이라, 이들보다 더 나은 유입을 만들어 수수료를 뗄 만큼 우위를 갖기 어렵다는 결론에 도달. 하루 이틀 만에 폐기.</p>
+<p>트래픽 확보에 시간이 걸리는 문제를 피해, 요가 클래스 업체의 수강생 관리·마케팅 도구를 사스로 만들어 구독료를 받는 안을 시뮬레이션. 그러나 이미 엑셀·자체 관리 시스템·웹사이트 빌더를 쓰는 업체들에게 &quot;우리 사스가 더 편리하다&quot;를 설득하는 영업 난이도가, &quot;트래픽을 직접 부어주겠다&quot;는 제안보다 훨씬 높다고 판단해 실행 없이 폐기.</p>
+<p>회원가입·요가 클래스 데이터베이스 등 기존 자산을 재활용해, 요가 강사가 직접 클래스를 개설하고 가격·쿠폰을 설정하는 중개 플랫폼으로 전환. 초기엔 구글 미트로 수업하다가 출시 시점엔 자체 화상강의 시스템(1:1처럼 느껴지는 비공개 옵션, 배경음악 삽입 등)을 구축. 강사 섭외와 코칭은 아내가 직접 담당. 다만 국내 저가 요가 서비스와의 가격 경쟁에 부딪혀(몇천 원대 시장가) 일반 강사만으로는 의미 있는 수수료 확보가 어려웠음.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>전략적 의미 — &quot;서비스 플랫폼&quot;으로의 전환이 매출을 만든 이유</h2><p>가격 경쟁을 피하기 위해 국내에서 대체 불가능한 강사, 즉 인도 현지 요가·철학 선생님(하타, 아쉬탕가, 빈야사 등)을 아내가 직접 인도 출장을 통해 섭외했다. 문제는 한국어를 못 하고 인도식 영어 억양이 있어 청취가 어렵다는 점이었는데, 이를 실시간 번역, 한국어 더빙, 수강생 질문의 자동 영어 자막 변환 기능으로 해결했다. 발표자는 이 지점에서 &quot;번역·더빙 기능은 이 선생님들이 없었으면 무의미했고, 이 선생님들의 수업도 번역·더빙 없이는 한국인이 듣기 어려웠다&quot;는 상호 결합 관계를 강조한다. 즉 단순 중개(트래픽을 연결만 해주는 구조)가 아니라 발표자 측이 강사 섭외·번역·더빙·화상강의 시스템을 모두 엮어 제공하는 &quot;서비스 플랫폼&quot;으로 실질이 바뀌었고, 이 결합 자체가 대체 불가능한 가치가 되어 가격 경쟁 없이 30만 원대 시리즈 강의 판매가 가능해졌다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>활용 시나리오 — 다른 창업자를 위한 교훈</h2><ul>
+<li>양면 플랫폼(수요-공급 연결형)은 처음부터 시도하고 싶어지는 &quot;자연스러운 흐름&quot;이지만, 실제로는 소비자 유입 자체가 가장 어려운 병목이라는 것을 몸으로 겪어야 알 수 있다.</li>
+<li>중개 수수료 모델은 트래픽을 실제로 부어줄 수 있을 때만 설득력이 있고, 사스형 &quot;편리함 판매&quot;는 영업 난이도가 훨씬 높다.</li>
+<li>대체 가능한 공급자(국내 저가 요가 강사)로는 가격 경쟁에서 밀리므로, 경쟁자가 쉽게 구하지 못하는 공급자(인도 현지 전문 강사)를 확보하고 이를 사용 가능하게 만드는 보조 기술(번역·더빙)을 결합하면 차별화된 가격 결정력이 생긴다.</li>
+<li>아이디어를 검증할 때는 며칠 단위로 최소 기능만 빠르게 만들어(몇 시간~3일) 실제 광고 소액 집행이나 실 매출로 빠르게 폐기·전환 여부를 판단했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>현황 및 전망</h2><p>발표자는 서비스를 더 확장하면 월 1,000~2,000만 원 규모까지 키울 수 있었을 것이라 판단했지만, 실제로는 아요라 서비스를 종료했다고 밝힌다. 확장의 관건은 결국 인도를 비롯한 여러 나라에서 국내 섭외가 어려운 특색 있는 선생님을 지속적으로 발굴하고 섭외하는 역량이었다는 점에서, 이 사업 모델의 성패가 소수의 대체 불가능한 공급자 확보 능력에 크게 의존했음을 시사한다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>양면 플랫폼</td><td>공급자와 수요자를 동시에 모아야 하는 플랫폼 구조</td><td>배달앱처럼 식당과 고객을 동시에 모아야 하는 구조</td></tr><tr><td>간접 비즈니스</td><td>플랫폼이 직접 서비스를 제공하지 않고 중간에서 연결만 하는 구조</td><td>부동산 중개처럼 거래 당사자 사이에서 수수료만 받는 방식</td></tr><tr><td>아쉬탕가/하타/빈야사</td><td>요가의 세부 유파·스타일 명칭</td><td>헬스로 치면 웨이트/필라테스/크로스핏처럼 갈라진 장르</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/83WGXy_93B8?t=165" target="_blank" rel="noopener">클래스 검색 포털 아이디어와 광고비 계산</a></li>
+<li><a href="https://youtu.be/83WGXy_93B8?t=244" target="_blank" rel="noopener">간접 비즈니스의 한계 — 중간에 빨대를 꽂기 어려운 이유</a></li>
+<li><a href="https://youtu.be/83WGXy_93B8?t=407" target="_blank" rel="noopener">사스 전환 검토와 영업 난이도 비교</a></li>
+<li><a href="https://youtu.be/83WGXy_93B8?t=480" target="_blank" rel="noopener">강사 직접 섭외 중개 플랫폼과 화상강의 시스템 구축</a></li>
+<li><a href="https://youtu.be/83WGXy_93B8?t=685" target="_blank" rel="noopener">인도 선생님 섭외, 실시간 번역·더빙, 월 매출 400만 원 달성</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/83WGXy_93B8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>헤이제임스 · 2026-08-01</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

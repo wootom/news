@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="한 달간 회의 녹음·통화·혼잣말·메모를 전부 AI에 밀어넣어 100시간을 굴려본 실험 영상. 핵심은 &#x27;메모리 기능&#x27;이 아니라 &#x27;안드레 카파시가 제안한 LLM 위키&#x27; 구조로, 원본·위키·규칙서 세 칸을 두고 AI를 &#x27;규칙 지키는 사서&#x27;로 부리는 방식이다. 넣은 만큼만 똑"><title>회의록·통화·혼잣말까지 AI에 넣어 &#x27;제2의 뇌&#x27; 만들기 — LLM 위키 100시간 리뷰 (메이커 에반)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">MORNING DIGEST · 2026-08-01 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>회의록·통화·혼잣말까지 AI에 넣어 &#x27;제2의 뇌&#x27; 만들기 — LLM 위키 100시간 리뷰 (메이커 에반)</h1><p class="lead">한 달간 회의 녹음·통화·혼잣말·메모를 전부 AI에 밀어넣어 100시간을 굴려본 실험 영상. 핵심은 &#x27;메모리 기능&#x27;이 아니라 &#x27;안드레 카파시가 제안한 LLM 위키&#x27; 구조로, 원본·위키·규칙서 세 칸을 두고 AI를 &#x27;규칙 지키는 사서&#x27;로 부리는 방식이다. 넣은 만큼만 똑똑해지는 한계와 페이지가 쌓일수록 토큰 비용이 폭증하는 문제를 각각 회의 녹음 압축과 &#x27;그래피파이&#x27; 검색 가속 도구로 해결하고, 회사 전체에 적용하면 사장님 판단 기준을 조직에 이식하는 &#x27;지브레인&#x27; 단계까지 나아간다.</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>핵심 개념</td><td>LLM 위키 — AI가 스스로 관리하는 마크다운 지식 폴더</td></tr><tr><td>제안자</td><td>안드레 카파시(테슬라 AI 총괄·오픈AI 창립 멤버, 2026년 4월 제안, 공개 즉시 GitHub 스타 5,000개 돌파)</td></tr><tr><td>구조</td><td>원본 자료 칸 · 위키 칸 · 규칙서 칸(세 칸)</td></tr><tr><td>보조 도구</td><td>티로(회의 녹음·요약, 로컬 저장), 그래피파이(오픈소스, YC 투자), 지브레인(YC 대표 게리 탄 공개)</td></tr><tr><td>실측 효과</td><td>그래피파이 적용 시 자료 52개 질의 토큰 12만→1,700개(71배 절감)</td></tr><tr><td>저자 실험</td><td>100시간 사용, 장점·단점 각각 2개씩 명확히 구분해 제시</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조 — 무엇을, 왜 썼나</h2><p>저자는 회의 녹음, 통화, 혼잣말, 메모를 한 달간 전부 텍스트로 만들어 AI에 축적했다. 기존 챗GPT·클로드의 &#x27;메모리 기능&#x27;은 &quot;사장님은 커피 안 마심&quot; 같은 짧은 선호도 태그만 붙잡을 뿐, &quot;지난 분기 왜 그 결정을 내렸는지, 그때 반대 근거가 지금도 유효한지&quot; 같은 맥락은 담지 못한다고 지적한다(포스트잇 비유). 이 문제의식에서 2026년 4월 안드레 카파시가 제안한 &#x27;LLM 위키&#x27;가 등장했다. 새로운 앱이 아니라 폴더 몇 개와 마크다운 파일뿐인 구조인데, &quot;지식 관리에서 힘든 건 읽는 게 아니라 정리하는 것&quot;이라는 그의 한 문장이 화제를 모아 공개 며칠 만에 GitHub 스타 5,000개를 넘겼고 구글도 비슷한 표준 문서를 냈다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 세 칸 구조와 세 가지 동작</h2><p>LLM 위키는 ①원본 자료 ②위키 ③규칙서 세 칸으로 구성된다. 규칙서가 핵심으로, 이것이 없으면 AI는 그냥 &#x27;수다&#x27;지만 있으면 &#x27;규칙 지키는 사서&#x27;가 된다. 동작은 넣기·묻기·점검하기 세 가지뿐이며, 특히 점검 단계에서 AI가 스스로 위키의 모순·오래된 내용·연결 안 된 외톨이 페이지·빈 구멍을 찾아내고 &quot;이 부분 자료가 부족하니 더 넣어달라&quot;고 역으로 요청한다. 저자는 이를 통해 &quot;3월에 A라고 했다가 5월에 B로 바꿨고 이유는 C였다&quot;는 식의 맥락 기반 답변을 받았고, 계획을 물으면 과거 회의 결정과 예산 조건까지 연결해 답하는 걸 확인했다고 밝힌다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>활용 시나리오 — 두 가지 단점과 해법</h2><p>1) <strong>입력 부족 문제</strong>: 위키는 넣은 만큼만 똑똑해지는데, 매 회의를 손으로 기록하기는 어렵다. 해법은 한국 스타트업의 AI 회의 노트 앱 &#x27;티로&#x27;(로컬 기기 저장, 12개 언어 인식·실시간 번역, 라이트 요금제 월 8달러·300분)로 녹음하고, 전사본 전체(약 2만 자)를 넣지 않고 참석자·결정 사항·근거·담당자·미해결 이슈 다섯 항목으로 A4 한 장 압축해서 넣는 것. 2) <strong>토큰 비용 폭증 문제</strong>: 질문 하나에 관련 페이지와 연결 페이지를 전부 훑기 때문에 페이지 수백 개가 쌓이면 응답이 느려지고 사용량 한도가 빨리 소진된다(&quot;토큰세&quot;). 해법은 오픈소스 도구 &#x27;그래피파이&#x27;(2026년 4월, 카파시 제안 48시간 만에 공개, YC 투자)로, 자료를 기계적으로 스캔 후 링크로 연결하고 문서·이미지 의미 해석에만 AI를 써서 실측 자료 52개 질의에서 토큰을 12만→1,700개(71배)로 줄였다. 100페이지를 넘어설 때부터 붙이는 것을 권장한다. 3) <strong>조직 확장 — 지브레인</strong>: LLM 위키가 파일 전부라면, YC 대표 게리 탄이 2026년 4월 공개한 오픈소스 &#x27;지브레인&#x27;은 여기에 뜻 기반+단어 기반 하이브리드 검색과 연결이 많은 페이지를 우선하는 랭킹을 추가한다. 회의 처리기(참석자·결정 자동 추출), 밤에 도는 정리 작업(&#x27;드리밍&#x27;, 끊어진 연결 수정·중복 통합), 사람·회사명 추출을 AI 대신 규칙 기반으로 처리해 토큰 비용이 없다는 점이 핵심이다. 6개월 축적 시 &quot;작년 9월·올해 2월 두 번 있었고 두 번 다 회수 기간 18개월 초과로 보류, 이번은 14개월이라 통과&quot; 식으로 사장님의 판단 기준을 조직에 이식할 수 있다고 설명한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>현황 및 전망</h2><p>저자는 100시간 사용 후 단점도 명시한다. AI가 쓴 위키 문장은 밋밋하고, 페이지가 많아지면 비슷한 개념을 잘못 합치며, 깊은 주제는 표면만 다루는 경우가 많다. 지브레인은 아직 미완성 상품으로 혼자 쓰는 걸 전제로 만들어졌고 팀 전체 공유나 시간 순서 처리는 약하다고 평가한다. 실전 팁으로 매일이 아닌 주 2회(화·금) 입력, 월 2회 점검(&quot;모순되거나 오래된 내용 찾아줘&quot;), 인사·급여 등 민감정보는 절대 넣지 않기, 결과를 판단이 아닌 &#x27;판단 재료&#x27;로만 신뢰하기를 제시하며, &quot;AI가 답을 못 주는 건 AI가 부족해서가 아니라 우리가 준 재료가 부족해서인 경우가 많다&quot;는 결론으로 마무리한다.</p></section><section class="card s12" id="s6"><h2><span class="seq">06</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>LLM 위키</td><td>AI가 자료를 정리·점검하는 마크다운 폴더 구조</td><td>도서관 사서를 고용해 책 정리를 맡기는 것</td></tr><tr><td>그래피파이(Graphiti)</td><td>자료를 링크로 미리 연결해 검색 토큰을 줄이는 오픈소스 도구</td><td>매장을 다 뒤지지 않고 안내도부터 보는 것</td></tr><tr><td>지브레인(GitBrain)</td><td>하이브리드 검색·자동 정리를 더한 LLM 위키 확장판</td><td>위키에 검색엔진과 야간 정리 직원을 붙인 것</td></tr><tr><td>티로(Tiro)</td><td>로컬 저장 방식의 AI 회의 녹음·요약 앱</td><td>서버에 안 남기는 회의 속기사</td></tr><tr><td>토큰세</td><td>위키가 커질수록 질의당 소모되는 토큰이 늘어나는 현상</td><td>지식이 쌓일수록 붙는 세금</td></tr><tr><td>드리밍(Dreaming)</td><td>지브레인이 야간에 자동으로 모순·중복을 정리하는 작업</td><td>밤사이 서류를 재정리해두는 야근 사서</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/3D1eSsd02Mg?t=163" target="_blank" rel="noopener">LLM 위키란 무엇인가 (카파시 제안 배경)</a></li>
+<li><a href="https://youtu.be/3D1eSsd02Mg?t=274" target="_blank" rel="noopener">100시간 사용 장점 — 기억의 급이 다르다</a></li>
+<li><a href="https://youtu.be/3D1eSsd02Mg?t=385" target="_blank" rel="noopener">단점1 해법 — 티로로 회의 녹음 후 한 장 압축</a></li>
+<li><a href="https://youtu.be/3D1eSsd02Mg?t=549" target="_blank" rel="noopener">그래피파이 — 토큰 71배 절감 실험</a></li>
+<li><a href="https://youtu.be/3D1eSsd02Mg?t=710" target="_blank" rel="noopener">지브레인 — 사장님 판단 기준을 조직에 이식</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/3D1eSsd02Mg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-08-01</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 단편 영화 채널 AInspire가 2주 전 공개한 메카닉 단편 &#x27;제로(가제: 거신)&#x27; 제작기를 강의 요약본으로 공개하는 튜토리얼. 40초 레퍼런스 클립을 0.3초 단위로 프레임 분해해 시나리오의 뼈대로 삼고, 드라마 파트에서 쌓은 시나리오 작법(셋업·페이오프·크리"><title>AI 단편 영화 &#x27;제로&#x27; 제작기 — 시나리오부터 캐릭터 시트, 영상 생성까지 순서대로 만드는 법 (AInspire)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>AInspire</span><span class="ey">MORNING DIGEST · 2026-08-01 · AInspire</span><span class="chip">🎬 영상</span></div><h1>AI 단편 영화 &#x27;제로&#x27; 제작기 — 시나리오부터 캐릭터 시트, 영상 생성까지 순서대로 만드는 법 (AInspire)</h1><p class="lead">AI 단편 영화 채널 AInspire가 2주 전 공개한 메카닉 단편 &#x27;제로(가제: 거신)&#x27; 제작기를 강의 요약본으로 공개하는 튜토리얼. 40초 레퍼런스 클립을 0.3초 단위로 프레임 분해해 시나리오의 뼈대로 삼고, 드라마 파트에서 쌓은 시나리오 작법(셋업·페이오프·크리프행어)에 익스플로이드의 &#x27;시퀀스 스킬&#x27;을 더해 고도화한 뒤, 캐릭터 시트·소품·공간을 철저히 고정하고 나서야 이미지를 프롬프트 참고 자료로만 활용해 480p 테스트→720p 본생성→Topaz 4K 업스케일 순으로 진행하는 실전 워크플로우와, 메카닉 디자인이 의도치 않게 &#x27;퍼시픽 림&#x27;과 유사해진 저작권 실수담을 함께 다룬다.</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널/작품</td><td>AInspire, AI 단편 영화 &#x27;제로&#x27;(최초 가제: 거신/거철) — 2주 전 공개된 본편의 제작기 튜토리얼</td></tr><tr><td>핵심 주제</td><td>이름을 잃고 버려졌던 거대 로봇이 이름(제로)을 되찾기까지의 이야기</td></tr><tr><td>제작 기간</td><td>강의 공개용으로 3~4일이라는 시간 제약 속에서 혼자 제작 (편집 포함)</td></tr><tr><td>핵심 원칙</td><td>&quot;AI는 절대 딸깍 나오지 않는다&quot; — 반복 수정과 시행착오가 곧 퀄리티</td></tr><tr><td>자동화 비율</td><td>이전 편(반자동화 실패) 대비 이번 편은 약 70~80% 반자동화, 20~30%는 직접 수정 관여</td></tr><tr><td>저작권 주의</td><td>메카닉 디자인 85종 중 최종 선택안이 의도치 않게 &#x27;퍼시픽 림&#x27; 주인공 기체와 유사</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조 — 제작 순서(프로세스 전체 흐름)</h2><ol>
+<li><strong>레퍼런스 프레임 분해</strong>: 최초 40초 클립을 0.3초 단위로 프레임 분해해 이를 바탕으로 시나리오를 함께 작성.</li>
+<li><strong>시나리오 작법 적용</strong>: 드라마 파트에서 배운 셋업·페이오프·크리프행어 공식을 신(scene)별로 요청에 녹여 시나리오를 고도화. 여기에 익스플로이드에서 당시 최신 나온 &#x27;시퀀스 스킬&#x27;을 추가 적용해 드라마 파트보다 더 정교한 시나리오를 작성. 이번 프로세스로 얻은 교훈은 &quot;무조건 길고 상세하게 쓰는 게 능사가 아니다&quot; — 너무 길면 AI가 우선순위를 헷갈려 결과물이 왜곡됨. 짧지만 커뮤니케이션 오류를 줄이는 핵심 요소만 넣는 것이 중요.</li>
+<li><strong>캐릭터/메카닉 디자인 확정(가장 중요한 단계)</strong>: 메카닉 디자인만 60~85종 시안을 받아 검토. 크레딧을 가장 많이 절약할 수 있는 파트이자, 캐릭터 시트를 얼마나 고도화하느냐가 영상 품질을 가르는 핵심. 캐릭터 시트는 애니메이션용·실사용 두 버전을 각각 준비하고, 드론 디자인 하나에도 10회 이상 수정을 거침.</li>
+<li><strong>공간/소품 일관성 고정</strong>: 인부가 떨어지는 장소, 결투 장면, 정비소, 전투 후 복귀 도시, 악당 지휘 장소, 파일럿 콕핏 등 등장 공간 전부를 하루~이틀씩 공들여 디테일하게 통일. 소품 하나하나까지 시트로 고정해야 반자동화 시스템이 성립.</li>
+<li><strong>이미지 선先생성 → 참고자료로만 사용</strong>: GPT·나노바나(Nano Banana)·시드림(Seedream) 세 모델로 시나리오상 모든 신의 이미지를 먼저 뽑되, 이 이미지를 그대로 시댄스(Seedance)에 넣지 않음. &quot;캐릭터 시트와 시나리오 90%, 이미지는 분<span class="dn">위기</span>·톤 참고용 10%&quot; 비율로 시나리오에 의존해 진행하는 것이 핵심.</li>
+<li><strong>15초 세그먼트 분할</strong>: 시댄스의 최대 클립 길이가 15초이므로, 완성된 8분 분량 시나리오를 15초 단위로 쪼개 끊기지 않는 자연스러운 맥락과 개연성을 유지하도록 연출. 가장 많은 시간을 절약할 수 있는 노하우로 강조.</li>
+<li><strong>해상도 단계적 테스트</strong>: 480p로 5회 정도까지 디테일 붕괴 여부·맥락 오류·대상 뭉개짐을 충분히 테스트 후, 720p로 본생성. 이번 작품은 전부 720p로 뽑은 뒤 Topaz에서 4K로 업스케일.</li>
+<li><strong>편집과 생성 병행</strong>: 1차 자동화로 뽑은 이미지·영상을 정리하며 수정 지점을 유연하게 재구성. 스토리보드는 절대 맹신하지 않고(광고 영상은 예외, 내러티브 영상은 비추천), 순서 변경도 마지막까지 유연하게 적용.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>핵심 워크플로우 — 도구별 실전 활용</h2><ul>
+<li><strong>시나리오 대화</strong>: Claude(클로드)와의 세션 대화 기록을 별도로 캡처해 초안→디테일 수정을 반복. AI가 주는 &quot;글발·대사발&quot;은 아직 부족하다고 판단해 반드시 직접 워싱(수정)함.</li>
+<li><strong>이미지 생성 3종 병행</strong>: GPT, 나노바나, 시드림을 항상 함께 돌려 그때그때 가장 잘 나오는 모델을 채택(예: 크리처 디자인은 GPT가 유독 잘 뽑아준 사례). 얼굴 고도화는 GPT 6번째 출력본과 나노바나 6번째 출력본을 블렌드해 확정 시트로 완성.</li>
+<li><strong>그림체 레퍼런스</strong>: 베르세르크, 아키라 등 선호 화풍을 레퍼런스로 가져와 10회 이상 반복 수정.</li>
+<li><strong>폰트/타이포</strong>: 영문은 dafont(다폰트), 한글은 눈누(noonnu)에서 무료 폰트를 받아 1차 레이아웃 후 AI로 질감(텍스처) 추가, 이후 시댄스로 카메라 무브먼트 부여.</li>
+<li><strong>업스케일</strong>: 최종 영상은 Topaz로 4K 업스케일.</li>
+<li><strong>저작권/가이드라인 우회</strong>: NSFW 등 플랫폼 가이드라인 저촉을 피하기 위한 네이밍 규칙을 익스플로이드 공식 가이드 방식으로 만들어 Claude와 작업 시 오류를 방지. 우회는 단어보다 구도(포즈·앵글)의 영향이 크다는 점을 이번 제작에서 확인. 저작권 관련해서는 &quot;익숙하고 멋있다고 기억하는 이미지&quot;가 실은 어디선가 본 유명 디자인의 재현일 수 있으므로 반드시 교차 확인 권장.</li>
+<li><strong>아이레벨(눈높이) 샷 금지 원칙</strong>: 실사 촬영·연예인 소재라면 아이레벨이 유리하지만, AI 캐릭터에는 단점이 더 크다고 판단해 강의에서 아이레벨 샷 자체를 금지.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>활용 시나리오</h2><ul>
+<li><strong>개인 단편 영화/숏폼 내러티브 제작</strong>: 스토리보드에 얽매이지 않고 캐릭터 시트·시나리오 중심으로 반자동화 파이프라인을 구축하려는 1인 창작자.</li>
+<li><strong>AI 영상 저작권 리스크 관리</strong>: 메카닉·크리처처럼 레퍼런스가 풍부한 장르에서 디자인 유사성 문제를 사전에 교차 검증하고 싶은 제작자.</li>
+<li><strong>크레딧(생성 비용) 절약 전략 수립</strong>: 480p 저해상도 반복 테스트 → 고해상도 본생성 순서로 실패 비용을 줄이려는 실무자.</li>
+<li><strong>AI 에이전트(Claude 등)와의 협업 프로세스 설계</strong>: 저작권/가이드라인 우회 규칙을 룰로 정리해 에이전트에 학습시켜 반복 오류를 줄이려는 경우.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>시퀀스 스킬(익스플로이드)</td><td>신 단위 시나리오를 정교하게 구조화하는 익스플로이드 기능</td><td>드라마 작법 공식의 상위 확장판</td></tr><tr><td>시댄스(Seedance)</td><td>최대 15초 클립 단위로 영상을 생성하는 AI 영상 모델</td><td>15초짜리 필름 롤을 이어 붙이는 것과 유사</td></tr><tr><td>나노바나(Nano Banana)</td><td>이미지 생성에 병행 사용하는 AI 모델 중 하나</td><td>GPT·시드림과 함께 돌리는 3종 세트 중 하나</td></tr><tr><td>반자동화 시스템</td><td>캐릭터·소품·공간 시트를 고정해 이미지·영상 생성을 자동 반복시키는 체계</td><td>사람은 감독만, 나머지는 정해진 시트대로 AI가 생산</td></tr><tr><td>아이레벨(eye-level) 샷</td><td>카메라를 인물 눈높이에 맞추는 촬영 기법</td><td>실사에선 친밀감 연출용, AI 캐릭터에선 단점 노출로 지양</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/VoAr06QtgiY?t=710" target="_blank" rel="noopener">메카닉 디자인 60~85종 검토와 480p 테스트 팁</a></li>
+<li><a href="https://youtu.be/VoAr06QtgiY?t=793" target="_blank" rel="noopener">저작권 유사성(퍼시픽 림) 뒤늦은 발견 사례</a></li>
+<li><a href="https://youtu.be/VoAr06QtgiY?t=1200" target="_blank" rel="noopener">반자동화 70~80% 달성과 &quot;AI는 딸깍 나오지 않는다&quot;</a></li>
+<li><a href="https://youtu.be/VoAr06QtgiY?t=1693" target="_blank" rel="noopener">1차 자동화 이미지 정리와 스토리보드 비신뢰 원칙</a></li>
+<li><a href="https://youtu.be/VoAr06QtgiY?t=1854" target="_blank" rel="noopener">저작권/가이드라인 우회 네이밍 규칙과 아이레벨 금지</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/VoAr06QtgiY" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>AInspire · 2026-08-01</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
