@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="한 주간 쏟아진 AI 뉴스 20가지를 정리한 영상으로, 단일 비디오 클립을 3D 공간으로 바꾸는 4D 세계 모델 도구들, 미드저니 8.2의 실사 이미지 성능 재검증, LTX 2.3의 오브젝트 제거·재조명 기능과 Seedance 2.0/2.5 비교, 그리고 &quot;Seedan"><title>이번 주 AI 도구 20선 — Seedance를 넘어선 엔비디아 코스모스와 미드저니 8.2</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-hub"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Curious Refuge</span><span class="ey">MORNING DIGEST · 2026-08-02 · Curious Refuge</span><span class="chip">🎬 영상</span></div><h1>이번 주 AI 도구 20선 — Seedance를 넘어선 엔비디아 코스모스와 미드저니 8.2</h1><p class="lead">한 주간 쏟아진 AI 뉴스 20가지를 정리한 영상으로, 단일 비디오 클립을 3D 공간으로 바꾸는 4D 세계 모델 도구들, 미드저니 8.2의 실사 이미지 성능 재검증, LTX 2.3의 오브젝트 제거·재조명 기능과 Seedance 2.0/2.5 비교, 그리고 &quot;Seedance보다 훨씬 중요하다&quot;고 소개된 엔비디아의 오픈소스 세계 모델 코스모스 3 슈퍼가 핵심이다.</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널/성격</td><td>Curious Refuge, 매주 AI 크리에이티브 도구 뉴스를 정리하는 위클리 라운드업</td></tr><tr><td>이번 주 최대 화제</td><td>엔비디아 코스모스 3 슈퍼(Cosmos 3 Super) — 오픈소스 세계 모델, 기존 대비 25배 빠름</td></tr><tr><td>&quot;Seedance를 이긴다&quot;는 도구</td><td>엄밀히는 이미지 생성 경쟁이 아니라, 코스모스가 &quot;Seedance보다 훨씬 중요한 모델&quot;로 소개됨(범용 세계 모델 관점)</td></tr><tr><td>이미지 모델 비교</td><td>미드저니 8.2 vs 8.1/7, GPT-2(오픈AI 이미지 모델), Reeve(리브) 4파전 실사 테스트</td></tr><tr><td>영상 편집 도구 비교</td><td>LTX 2.3(오픈소스, 무료) vs Seedance 2.0/2.5(오브젝트 제거·재조명 품질에서 항상 우위)</td></tr><tr><td>기타 도구</td><td>Inspacio/Adobe Project Wonder(4D 가우시안 스플랫), Flora Techniques(노드 워크플로 템플릿), Pixverse 뎁스맵</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>새 도구 Inspacio는 비디오 클립 한 개만 업로드하면 AI가 피사체 반대편 보이지 않는 부분까지 추론해 3D 공간을 재구성, 방향키로 자유롭게 카메라를 이동시킬 수 있다. 기존 유사 도구는 여러 대의 카메라가 필요했지만 Inspacio는 단일 소스 영상만으로 작동한다는 점이 차별점이다. 오렌지주스를 따르는 여성, 책 읽는 아이들, 드론 촬영 장면, 요리·요가·밴드 연주 장면 등 다양한 예시에서 실시간 카메라 이동이 시연됐다. 어도비도 유사한 &quot;Project Wonder&quot;를 공개했는데, 단일 이미지/비디오를 탐색 가능한 3D 환경으로 바꾸는 실시간 AI 도구다(현재 인터랙티브 데모는 미제공, 연구 논문만 공개). 영상 제작자는 향후 몇 년 안에 4D 가우시안 스플랫이 가상 제작·VFX·후반작업 표준이 되어, 여러 카메라 앵글 촬영 자체가 불필요해질 것이라 전망한다.</p>
+<p>미드저니가 8.2를 출시하며 &quot;더 창의적이고 대담하고 저품질 결과가 줄었다&quot;고 주장했고, 영상에서 미드저니 8.2 vs 8.1 vs 7 vs GPT-2(오픈AI 이미지 모델) vs Reeve(리브) 비교 테스트를 진행했다. 유리구슬을 든 여성(텍스트 각인), 데님 재킷 남성의 &quot;진입 금지&quot; 표지판, 커플 댄스 장면, 일회용 카메라 홈파티 사진, 밴드 포스터(텍스트 다수 포함) 등 5개 시나리오를 테스트한 결과: 8.2는 8.1·7 대비 뚜렷하게 <span class="up">개선</span>되어 색감 보정과 질감이 영화적으로 느껴졌다. GPT-2는 텍스트 렌더링에서 특유의 &quot;가장자리에 세리프가 붙은 산세리프 폰트&quot; 패턴이 반복적으로 나타나 AI 생성물임을 알아채는 단서가 됐고, 이미지 곳곳에서 프랙탈링(질감이 비정상적으로 반복되는) 현상이 있었다. Reeve는 원문 충실도(prompt adherence)에서 가장 뛰어났으나 피부 질감이 과도하게 부드럽게 보정된 느낌이 있었다. 결론적으로 미드저니는 영화적 사실감·창의적 탐구에서는 여전히 최고 수준이지만, 나노바나나 프로나 GPT-2 같은 옴니 모델 대비 캐릭터 일관성 문제는 여전히 남아있다.</p>
+<p>LTX 팀이 비디오에서 사람/사물을 제거해 &quot;클린 플레이트&quot;를 만드는 오픈소스 2.3 버전을 공개했다(로컬 실행 또는 허깅페이스 온라인 데모, 최대 10초·960p). 차 마시는 두 사람 제거, 사막 요가 장면, 달리는 여성(모션 블러) 등 여러 테스트에서 LTX도 나쁘지 않은 결과를 냈지만, 동일 작업을 Seedance로 수행하면 렌즈 플레어·반사광 등 디테일에서 매번 더 사실적인 결과가 나왔다(사막 요가 장면에서는 LTX가 &quot;깨끗한 접시&quot;를 문자 그대로 사막 한복판에 렌더링하는 실수를 보이기도 함). LTX 팀은 시간대를 바꾸는 재조명(relighting) 도구도 공개했으나(흐린 날 → 화창한 날, 노을 → 정오 등), 이 역시 Seedance 쪽이 캐릭터의 자연스러움과 카메라 흔들림 억제에서 우위를 보였다. 다만 LTX는 무료 오픈소스이고 ComfyUI 파이프라인에 통합 가능하다는 점에서 대규모 프로덕션 환경에 여전히 매력적이라고 평가된다.</p>
+<p>영상에서 가장 비중 있게 다룬 도구. 엔비디아의 오픈소스 세계 모델(기존 Cosmos 프로젝트의 업데이트판)로, 로컬 컴퓨터에서 실행 가능하며 기존 모델보다 25배 빠르다. 핵심은 속도가 아니라 입력 범용성 — 이미지, 문서, 비디오, 오디오, 심지어 로봇이나 사람의 물리적 움직임 데이터까지 입력받아 원하는 형식(이미지/비디오/로봇 제어 명령 등)으로 출력한다. 오픈 가중치 모델 부문에서 이미지→비디오, 텍스트→이미지 변환 1위를 차지했다고 소개됐다. 로봇이 텍스트뿐 아니라 영상·이미지 같은 창의적·시각적 수단으로 소통(예: 로봇이 다음 작업 설계도를 스스로 이미지로 생성)할 수 있게 하는 것이 핵심 의의이며, 공장 로봇팔·화성 인간형 로봇·배달 로봇·계단을 오르는 로봇 등 실사에 가까운 물리 시뮬레이션 데모가 다수 제시됐다. 실사에 가까운 합성 데이터를 생성할 수 있다면 AI 시스템이 이를 기반으로 자가 학습을 시작할 수 있어(단, 검증·인적 감독은 여전히 필요), 로봇 대중화 시대에 이런 세계 모델이 핵심 인프라가 될 것이라는 전망이 제시됐다. 영상은 이 흐름을 &quot;챗봇 시대를 넘어 음성·비언어적 명령으로 AI와 상호작용하는 시대&quot;로의 전환으로 요약하며, 향후 2년 내 다양한 개별 도구 대신 원하는 결과의 99%를 처리하는 단일 인터페이스가 등장할 것이라 예측했다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>4D 가우시안 스플래팅은 기존 3D 가우시안 스플래팅(정적 장면의 다각도 렌더링)에 시간축을 더해 동영상 속 움직임·조명까지 재구성하는 기술로, 종전에는 다중 카메라 촬영이 필요했으나 Inspacio는 단일 영상에서 보이지 않는 부분을 AI가 추론해 채우는 방식으로 진입장벽을 낮췄다. 코스모스 3 슈퍼는 &quot;세계 모델(world model)&quot; 계열로, 특정 태스크 전용 모델이 아니라 물리 법칙과 공간을 학습해 이미지·영상·로봇 제어 등 여러 모달리티를 하나의 표현 공간에서 다루는 범용 모델이라는 점에서 미드저니·Seedance 같은 생성 전용 모델과 결이 다르다. Perception Bench라는 새 벤치마크는 AI 모델의 &quot;장면 이해력&quot;을 테스트했는데, 텍스트·의상 같은 큰 요소는 잘 인식하지만 세부 요소에서 정확도가 급격히 떨어져 어떤 모델도 3,000개 질문 기준 전체 정확도 60%를 넘지 못했다(구글 제미니조차 구글이 만든 이미지를 식별하지 못하는 사례가 소개됨).</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>활용 시나리오</h2><ul>
+<li>VFX/후반작업: LTX(무료·오픈소스, 로컬/ComfyUI 통합)로 저해상도 초안 클린 플레이트를 빠르게 뽑고, 최종 납품용은 Seedance로 품질을 끌어올리는 이원화 워크플로.</li>
+<li>광고·마케팅 대량 생산: Flora Techniques처럼 제품 참고 이미지 1장을 업로드하면 노드 기반 워크플로가 자동으로 9종의 변형 이미지를 생성 — 복잡한 노드 편집 없이 앱처럼 사용 가능해 크리에이티브 전문가의 진입장벽을 낮춤.</li>
+<li>영상 제어: Pixverse의 뎁스맵 미니 앱으로 영상 클립에서 깊이 정보(일반/터보 버전)를 빠르게 추출해 이후 생성 단계의 제어 강도를 높임.</li>
+<li>로봇공학: 코스모스 3 슈퍼로 로봇이 텍스트가 아닌 시각 자료(작업 이미지·영상)로 다음 행동을 스스로 설계·소통하는 파이프라인 구축.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>현황 및 전망</h2><p>이미지 생성은 미드저니 8.2가 여전히 영화적 사실감에서 앞서지만 GPT-2·Reeve 대비 일관성 문제가 남아 있고, 영상 편집(오브젝트 제거·재조명)은 오픈소스 LTX가 무료라는 강점에도 Seedance 계열의 품질 격차를 아직 좁히지 못했다. 반면 엔비디아는 이런 태스크별 경쟁 구도 자체를 우회하는 범용 세계 모델(코스모스 3 슈퍼)로 판을 키우고 있으며, 영상은 이를 &quot;AI 영화와 창작의 미래&quot;이자 향후 2~3년 내 도구 파편화가 끝나고 단일 인터페이스로 수렴할 신호로 해석한다. 부수적으로 소개된 통계로, 자비 출판 도서의 약 20%가 집필에 AI를 활용하고 이것이 아마존 판매량의 약 20%를 차지하며, 베스트셀러 3분의 1가량에 AI 생성 텍스트가 상당량 포함된다는 조사 결과가 언급됐다(판타지·호러 장르는 예외적으로 사람이 쓴 책이 늘어나는 추세). AI 활용 저자 중 8권을 출간해 170만 달러를 번 사례도 소개됐다.</p></section><section class="card s12" id="s6"><h2><span class="seq">06</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>4D 가우시안 스플랫</td><td>단일 영상을 시간축 포함 3D 공간으로 재구성하는 기술</td><td>사진 한 장으로 그 장소를 걸어다니는 것과 유사</td></tr><tr><td>클린 플레이트</td><td>영상에서 인물·사물을 지운 배경만 남긴 프레임</td><td>VFX 합성 전 빈 무대를 만드는 작업</td></tr><tr><td>세계 모델(world model)</td><td>물리 법칙·공간을 학습해 여러 모달리티를 통합 처리하는 모델</td><td>챗봇이 아니라 시뮬레이터에 가까운 AI</td></tr><tr><td>코스모스 3 슈퍼</td><td>엔비디아의 오픈소스 세계 모델, 기존보다 25배 빠름</td><td>로봇이 말 대신 그림으로 다음 행동을 설명하는 도구</td></tr><tr><td>프랙탈링</td><td>GPT-2 이미지에서 나타나는 반복적 질감 왜곡 현상</td><td>나뭇결이 비정상적으로 반복되어 보이는 결함</td></tr><tr><td>Perception Bench</td><td>AI의 장면 세부 이해력을 측정하는 새 벤치마크</td><td>큰 그림은 맞히지만 디테일에서 틀리는 시험</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/2vSqzvonRts?t=8" target="_blank" rel="noopener">Inspacio 4D 가우시안 스플랫 소개</a></li>
+<li><a href="https://youtu.be/2vSqzvonRts?t=289" target="_blank" rel="noopener">미드저니 8.2 vs 8.1/7/GPT-2/Reeve 비교 시작</a></li>
+<li><a href="https://youtu.be/2vSqzvonRts?t=984" target="_blank" rel="noopener">LTX 2.3 클린 플레이트 vs Seedance 비교</a></li>
+<li><a href="https://youtu.be/2vSqzvonRts?t=1370" target="_blank" rel="noopener">엔비디아 코스모스 3 슈퍼 — &quot;Seedance보다 중요한 모델&quot;</a></li>
+<li><a href="https://youtu.be/2vSqzvonRts?t=1767" target="_blank" rel="noopener">Perception Bench — AI 장면 이해력 60% 미만</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/2vSqzvonRts" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Curious Refuge · 2026-08-02</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
