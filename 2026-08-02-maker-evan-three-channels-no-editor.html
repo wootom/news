@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="편집자 없이 채널 세 개 굴리는 법 — 클로드 스킬로 만드는 쇼츠 자동화"><title>편집자 없이 채널 세 개 굴리는 법 — 클로드 스킬로 만드는 쇼츠 자동화</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-08-03 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>편집자 없이 채널 세 개 굴리는 법 — 클로드 스킬로 만드는 쇼츠 자동화</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>유튜브 채널 하나를 운영하려면 소재 찾기(2~3시간) → 대본 → 녹음 → 편집·자막까지 영상 하나에 나흘이 걸린다. 주 3회 업로드는 사실상 잠을 줄여야 가능하고, 채널 여러 개는 꿈도 못 꾼다.</li>
+<li>발표자(메이커 에반)의 핵심 주장은 &quot;이 과정 대부분이 사람만 할 수 있는 창의적 일이 아니라 그냥 노동&quot;이라는 것. 소재 검색, 정해진 틀 채우기, 자막 타이밍 맞추기는 전부 기계가 대신할 수 있다.</li>
+<li>그 대안이 <strong>클로드 스킬(Claude Skill)</strong> 이다. AI에게 반복 작업의 매뉴얼을 한 번 써주면, &quot;이 소재로 쇼츠 하나 만들어 줘&quot;라는 한 마디로 소재 수집·대본·나레이션·자막·영상까지 60초 쇼츠 하나가 통째로 나온다.</li>
+<li>사람이 남기는 일은 딱 두 가지 — <strong>고르는 것</strong>과 <strong>다듬는 것</strong>. 이렇게 아낀 시간으로 국뽕·제품 소개·이슈 채널 세 개를 같은 매뉴얼 세트로 동시에 운영한다.</li>
+</ul></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>영상은 4가지 축으로 전개된다.</p>
+<div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>클로드 스킬이 뭔지</b><span>코딩을 몰라도 이해되는 &quot;신입 직원 업무 매뉴얼&quot; 비유.</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>소재를 알아서 물어오는 법</b><span>인터넷 검색·커뮤니티 크롤링·중복 영상 확인.</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>말 한 마디로 60초 쇼츠가 나오는 과정</b><span>소재→화면→컷 분할→나레이션→자막→영상.</span></div></div><div class="step"><span class="snum">4</span><div class="sbody"><b>채널 여러 개가 실제로 되는지, 그리고 안 되는 부분</b><span>수익화 현실과 대량생산의 함정.</span></div></div></div></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>자동화 파이프라인을 구성하는 요소들.</p>
+<ul>
+<li><strong>클로드 스킬</strong>: 반복 작업의 규칙(소재 출처, 훅 길이, 자막 위치·픽셀 등)을 적어둔 매뉴얼 파일. 한 번 쓰면 계속 재사용되는 &quot;재산&quot;이 된다.</li>
+<li><strong>웹 접근</strong>: 클로드가 직접 해외 뉴스 사이트·커뮤니티 인기글을 돌며 반응 좋은 글을 수집.</li>
+<li><strong>TTS(음성 합성)</strong>: ElevenLabs(일레븐랩스)로 대본에 나레이션 음성을 입힘.</li>
+<li><strong>STT(음성→텍스트)</strong>: 나레이션 음성을 다시 글자로 받아 적으면 각 단어가 몇 초에 나왔는지 타임코드가 나오고, 그 숫자를 자막 타이밍에 그대로 꽂는다(수작업의 밀고 당기기 제거).</li>
+<li><strong>코드 기반 영상 렌더링</strong>: 화면을 코드로 생성. &quot;엑셀에서 셀 숫자만 바꾸면 그래프가 다시 그려지듯&quot; 대본·자막 데이터만 갈아 끼우면 영상이 자동으로 새로 그려진다. 그래서 두 번째 영상부터 훨씬 빨라진다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>병목 이동</strong>: 제작 시간을 기계에 넘기면 사람의 병목이 &quot;만들기&quot;에서 &quot;고르기·다듬기&quot;로 옮겨간다. 아낀 시간을 큐레이션과 품질 검수에 재투자하는 것이 핵심 전략.</li>
+<li><strong>채널 확장의 경제학</strong>: 소재 3개를 고르면 같은 오후에 쇼츠 3개가 나온다. 매뉴얼(스킬)은 그대로 두고 소재만 바꿔 국뽕·제품·이슈 채널 3개를 동시에 굴린다.</li>
+<li><strong>차별화의 조건</strong>: 단순히 많이 올리는 전략은 이제 안 통한다. 유튜브가 대량 생산된 비슷비슷한(틀은 같고 이름만 바꾼) 영상을 검색에서 걸러내기 때문. 자동화는 양이 아니라 큐레이션 품질을 높이는 데 써야 한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><ol>
+<li><strong>소재 수집</strong>: &quot;이번 주 국뽕 소재 찾아줘&quot; → 클로드가 해외 뉴스·커뮤니티를 돌아 소재·원본 링크·자극하는 감정·제목 후보 5~6개를 표로 정리.</li>
+<li><strong>중복 검증</strong>: 뽑은 제목으로 유튜브를 재검색해 이미 조회수 100만짜리 동일 영상이 있는지 확인(있으면 묻히므로 제외). 원래 2시간 걸리던 탭 20개 작업을 몇 분 만에 처리.</li>
+<li><strong>선택</strong>: 사람은 표를 보고 &quot;3번으로 가자&quot;처럼 고르기만 한다.</li>
+<li><strong>대본 생성</strong>: 대본용 매뉴얼에 따라 유튜브식으로 설계된 대본 출력(예: 분량별 글자 수, 후킹은 20초 안에).</li>
+<li><strong>나레이션</strong>: ElevenLabs TTS로 음성 생성.</li>
+<li><strong>자막</strong>: STT로 단어별 타임코드를 뽑아 자막 타이밍에 자동 삽입.</li>
+<li><strong>영상 렌더링</strong>: 코드가 대본·자막 데이터를 받아 화면 자동 생성.</li>
+</ol>
+<ul>
+<li>60초를 <strong>20컷 정도로 분할</strong>, 한 컷당 2~3초. 화면이 3초 이상 안 바뀌면 시청자가 넘겨버리기 때문.</li>
+<li>나레이션은 <strong>60초당 400자 안쪽</strong>. 넘으면 말이 빨라져 귀에 안 들어옴.</li>
+<li>자막 스타일: 위쪽 굵은 제목, 첫 줄 빨간색·둘째 줄 초록색 등 눈길 끄는 색 배치.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>부업 쇼츠 자동화</strong>: 영상 제작이 싫어 채널을 접었거나, 부업이 힘들어 손 놓은 사람이 노가다를 AI에 넘기고 큐레이션만 담당.</li>
+<li><strong>멀티 채널 운영</strong>: 국뽕 채널 / 제품 소개 채널 / 이슈 채널을 하나의 매뉴얼 세트로 동시 운영.</li>
+<li><strong>수익화 두 갈래</strong>:</li>
+</ul>
+<p>1. <strong>조회수 광고 수익</strong> — 국뽕·이슈 소재는 감정이 확실해 잘 소비되고 조회수가 붙는다. 2. <strong>제휴 링크(쿠팡 파트너스 등)</strong> — 제품 소개 영상 설명란에 링크를 걸고 구매 시 수수료. 단, &quot;이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다&quot; 문구를 반드시 함께 표기해야 한다(누락 금지 규칙).</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>발표자는 처음부터 잘한 것이 아니며, <strong>첫 매뉴얼은 아주 짧았고</strong> 계속 다듬어 지금 수준까지 끌어올렸다고 고백한다. 스킬은 반복 <span class="up">개선</span>으로 자산화된다.</li>
+<li>&quot;하루에 10개씩 뽑으면 되지 않냐&quot;에 대해서는 <strong>위험하다</strong>고 경고. 유튜브의 대량 저품질 콘텐츠 필터 때문에, 만드는 시간을 아껴 고르는 데 쓰는 방식이 지속 가능하다.</li>
+<li>다음 영상에서 실제 채널들의 현재 운영 상황을 공유할 예정.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유</th></tr></thead><tbody><tr><td>클로드 스킬</td><td>AI에게 반복 작업 규칙을 적어주는 매뉴얼 파일</td><td>신입 알바에게 주는 업무 매뉴얼</td></tr><tr><td>TTS</td><td>대본 텍스트를 음성으로 바꾸는 음성 합성(예: ElevenLabs)</td><td>글을 읽어주는 성우</td></tr><tr><td>STT / 타임코드</td><td>음성을 다시 글자로 받아 적으며 단어별 등장 시각을 뽑는 것</td><td>받아쓰기 하며 초시계 찍기</td></tr><tr><td>코드 기반 렌더링</td><td>데이터만 바꾸면 화면이 자동으로 다시 그려지는 영상 생성</td><td>엑셀 셀 바꾸면 그래프가 자동 갱신</td></tr><tr><td>훅(Hook)</td><td>시청자를 붙잡는 도입부</td><td>2초 안에 던지는 미끼</td></tr><tr><td>쿠팡 파트너스</td><td>링크로 판매가 일어나면 수수료를 받는 제휴 마케팅</td><td>소개하고 받는 소개비</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/Y4quZA7gz0Y?t=95" target="_blank" rel="noopener">클로드 스킬 = 신입 직원 업무 매뉴얼 비유</a></li>
+<li><a href="https://youtu.be/Y4quZA7gz0Y?t=150" target="_blank" rel="noopener">소재를 인터넷에서 알아서 물어오고 중복 검증까지</a></li>
+<li><a href="https://youtu.be/Y4quZA7gz0Y?t=208" target="_blank" rel="noopener">대본·TTS·자막·코드 영상까지 이어지는 워크플로우</a></li>
+<li><a href="https://youtu.be/Y4quZA7gz0Y?t=263" target="_blank" rel="noopener">말 한 마디로 60초 쇼츠 원샷 생성(20컷·400자 규칙)</a></li>
+<li><a href="https://youtu.be/Y4quZA7gz0Y?t=365" target="_blank" rel="noopener">수익화 두 갈래와 쿠팡 파트너스 필수 문구</a></li>
+<li><a href="https://youtu.be/Y4quZA7gz0Y?t=410" target="_blank" rel="noopener">대량생산의 함정과 유튜브 필터 경고</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Y4quZA7gz0Y" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-08-03</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

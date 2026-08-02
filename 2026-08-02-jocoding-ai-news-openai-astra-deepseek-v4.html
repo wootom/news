@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="조코딩 AI 뉴스 - 오픈AI 아스트라 10대 난제 해결, DeepSeek-V4-Flash 정식 출시, Seedance 2.5 등"><title>조코딩 AI 뉴스 - 오픈AI 아스트라 10대 난제 해결, DeepSeek-V4-Flash 정식 출시, Seedance 2.5 등</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">MORNING DIGEST · 2026-08-03 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>조코딩 AI 뉴스 - 오픈AI 아스트라 10대 난제 해결, DeepSeek-V4-Flash 정식 출시, Seedance 2.5 등</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>2026년 8월 첫째 주 AI 업계 소식 총정리 (조코딩 주간 뉴스)</td></tr><tr><td>뉴스 1</td><td>오픈AI 차세대 모델 &#x27;아스트라&#x27;가 인류가 10년 이상 못 푼 수학 난제 10개를 해결</td></tr><tr><td>뉴스 2</td><td>DeepSeek-V4-Flash 정식 출시 - 오픈 웨이트 무료 공개, API 가격이 최상위 모델의 1/105 수준</td></tr><tr><td>뉴스 3</td><td>오픈AI가 경량 모델 가격 인하 (루나 80%, 테라 20%)</td></tr><tr><td>뉴스 4</td><td>Seedance 2.5 글로벌 출시 - 30초 영상 단일 생성, 최대 3분 롱비디오</td></tr><tr><td>뉴스 5</td><td>미니맥스 H3(오픈 영상 모델), 그록 보이스, 크리스퍼 위스퍼 2.0, 제미나이 로보틱스 2 등 다수</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>2-1. 오픈AI &#x27;아스트라&#x27; - 미해결 수학 난제 10개 해결 (8/1 블로그)</h3>
+<ul>
+<li>오픈AI가 8월 1일 블로그에서 &quot;수학 및 이론 컴퓨터과학 분야의 10대 발전&quot;을 발표.</li>
+<li>대상은 최소 10년, 대부분 그보다 훨씬 오래 인류가 진전을 못 낸 &#x27;미해결 난제&#x27;다. 예: 고차원 구형 패킹(sphere packing) 밀도의 새로운 상한값, 이진 코드·구형 코드 관련 문제.</li>
+<li>기존 IMO 금메달·수능 풀이는 &#x27;이미 인간이 풀 수 있는 문제&#x27;를 푼 것이지만, 이번은 인간이 못 푼 문제를 새로 풀었다는 점에서 다르다.</li>
+<li>단순히 그럴듯하게 쓴 환각(할루시네이션)이 아니라, 각 논증을 &#x27;Lean 인증서(검증 가능한 형식 증명)&#x27;로 공식화해 제출.</li>
+<li>이 성과를 낸 모델은 오픈AI 차세대 주력 모델의 내부 버전인 코드명 &#x27;아스트라(Astra)&#x27;. 정식 모델명은 미정(GPT-6 급으로 추정).</li>
+<li>아직 수학계의 완전한 검증·인정 단계는 아니며 &#x27;유의미한 진전&#x27; 수준.</li>
+</ul>
+<h3>2-2. DeepSeek-V4-Flash 정식 출시 (7/31)</h3>
+<ul>
+<li>이전 공개는 프리뷰였고, 이번이 정식 버전. Hugging Face에 오픈 웨이트로 공개, 라이선스는 MIT(무료·자유 사용).</li>
+<li>경량(Flash) 모델임에도 이전 세대 Pro 모델을 능가. 성능은 한때 최강이던 오퍼스(Opus) 4.8에 근접.</li>
+<li>아티피셜 애널리시스(Artificial Analysis) 기준, 구글 최신 경량 모델 제미나이 3.6 플래시와 동일 점수.</li>
+<li>API 가격이 파격적. 구글의 초가성비 모델 제미나이 3.5 플래시 라이트보다 성능은 좋으면서 더 저렴(약 $0.03 수준). 최상위 모델 페이블(Fable) 5 대비 약 105배 저렴.</li>
+<li>오픈 웨이트라 양자화 버전도 등장. 거의 무손실 4비트는 약 162GB 필요, 3비트는 DGX 스파크·맥 128GB 통합메모리급에서 실행. DGX 스파크 2대로 초당 약 30토큰(느리지만 배치 작업엔 무료라 유용).</li>
+</ul>
+<h3>2-3. 오픈AI 경량 모델 가격 인하 (7/30)</h3>
+<ul>
+<li>가장 가벼운 모델 &#x27;루나&#x27; 가격 80% 인하, 중간 모델 &#x27;테라&#x27; 20% 인하.</li>
+<li>인하 후 테라는 입력 $2 / 출력 $12 수준.</li>
+<li>&#x27;솔(Sol)&#x27; 모델은 가격 변동 없이, 지능 유지하며 표준 대비 최대 2.5배 빠른 패스트 모드를 2배 가격에 제공.</li>
+<li>이번 인하는 DeepSeek의 초저가 공세에 대한 대응으로 추정.</li>
+</ul>
+<h3>2-4. ARC-AGI-3 점수 3배 상승 - &#x27;하네스&#x27;의 중요성</h3>
+<ul>
+<li>오픈AI가 GPT-5.6 솔의 ARC-AGI-3(추론 벤치마크) 점수를 3배 이상 끌어올렸다고 발표.</li>
+<li>모델을 바꾼 게 아니라 &#x27;하네스(harness, 모델을 감싸는 실행·설정 틀)&#x27;만 조정. 추론 유지(retained reasoning) + 압축(compaction) 방법론 적용.</li>
+<li>결과: 13.3% -&gt; 38.3%로 약 40%p 근접 <span class="up">상승</span>.</li>
+<li>시사점: 벤치마크 점수는 모델 자체뿐 아니라 API 설정·하네스 설계·프롬프트 방식까지 함께 측정된다.</li>
+</ul>
+<h3>2-5. 앤트로픽의 새 프롬프트 지침 - &quot;80%를 삭감하라&quot;</h3>
+<ul>
+<li>Y Combinator 강연에 클로드 코드 헤드 보리스 체르니 출연. 최신 모델(오퍼스 5 등)에서 시스템 프롬프트 구문의 80% 이상을 삭제했다고 밝힘.</li>
+<li>모델이 똑똑해질수록 복잡한 프롬프트·하네스가 오히려 방해. 다 지우고 생 모델부터 관찰하며 필요한 부분만 다시 채우는 방식 권장.</li>
+<li>앤트로픽 클로드 코드 팀의 &#x27;컨텍스트 엔지니어링 새 규칙&#x27;도 동일 맥락. 세세한 지침 대신 모델의 자율 판단에 위임, 도구도 예시 없이 파라미터·구조만 명확히 하면 됨.</li>
+<li>안드레이 카파시 트윗: 팰리컨 SVG 벤치마크가 포화되어, &#x27;반지의 제왕 첫 단락을 자바스크립트 3D 애니메이션으로 만들기&#x27;를 새 테스트로 제안.</li>
+</ul>
+<h3>2-6. Seedance 2.5 글로벌 출시 - 영상 생성 최강자</h3>
+<ul>
+<li>영상 생성 AI 시덴스(Seedance) 2.5 정식 공개. 단일 생성으로 네이티브 30초 영상(이전 15초). 인터랙티브 편집 롱비디오 모드로 최대 3분 일관성 유지.</li>
+<li>마야(Maya)·블렌더(Blender) 3D 툴용 공식 플러그인 제공 - 3D 씬을 영상으로 변환 가능.</li>
+<li>바이럴 사례: 30초 로지텍 키보드 광고, 프로즌 타임(정지) 효과, K팝 뮤비, AI 인플루언서 브이로그 등.</li>
+<li>서비스는 바이트댄스(틱톡 모회사)의 드리미나(Dreamina)·캡컷에서 먼저 제공. 단, 720p 기준 영상 1편(30초)에 약 1만 원 이상으로 매우 비쌈.</li>
+</ul>
+<h3>2-7. 그 외 영상·음성·로봇 소식</h3>
+<ul>
+<li>미니맥스 H3: 오픈 영상 모델. 텍스트-투-비디오 리더보드에서 시덴스 2.0을 상회, 비디오 에디팅 리더보드 1위. RTX 3060 한 장(8비트, 32GB 메모리)으로 832x480/124프레임 영상을 10분 내 생성. 웨이트는 카운트다운 중(약 6시간 후 공개).</li>
+<li>그록 이매진 비디오 1.5: 일론 머스크 그록의 영상 모델 <span class="up">개선</span>, 최대 15초·1080p.</li>
+<li>그록 보이스 씽크 패스트 2.0: 추론형 음성 모델. 음성 품질 82.9점, 음성 추론 97.2점, 응답 속도 0.7초로 매우 빠름.</li>
+<li>크리스퍼 위스퍼(Crisper Whisper) 2.0: 오픈 웨이트 음성인식(ASR). 일레븐랩스 스크라이브 V2(79.2)보다 높은 87.8점, Pro는 93.5점. 한국어 전사·타임스탬프도 양호.</li>
+<li>제미나이 로보틱스 2: 로봇용 비전-언어-행동(VLA) 모델. 포도를 지퍼백에 넣기, 전구 빼기, 쓰레기봉투 묶기 등 정교한 자율 동작. 리즈닝 모델(ER2), 온디바이스 모델도 함께 공개.</li>
+<li>피규어 03: 계단 오르기 데모 공개. 구글은 8/4까지 제미나이 영상 10개 무료 제공.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>&#x27;오픈 웨이트(open weight)&#x27;는 모델 가중치 파일을 누구나 내려받아 자기 PC·서버에서 돌릴 수 있게 공개한 것. API처럼 사용료 없이 전기세만 내면 무한히 쓸 수 있어 이번 주 핵심 흐름(DeepSeek-V4-Flash, 미니맥스 H3, 크리스퍼 위스퍼).</li>
+<li>&#x27;양자화(quantization)&#x27;는 모델의 숫자 정밀도를 낮춰 용량·메모리를 줄이는 기술. 비트가 낮을수록 가볍지만 성능 손실 위험. 4비트가 거의 무손실 기준.</li>
+<li>&#x27;Lean 인증서&#x27;는 수학 증명을 컴퓨터가 기계적으로 검증할 수 있게 형식언어로 옮긴 것. 환각과 진짜 증명을 구분하는 근거.</li>
+<li>&#x27;하네스&#x27;는 모델 자체가 아니라 그 주위의 실행 파이프라인(설정·프롬프트·도구 연결). 같은 모델도 하네스만 바꾸면 점수가 크게 달라진다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>AI가 &#x27;인간이 이미 푼 문제&#x27;를 넘어 &#x27;인간이 못 푼 미해결 난제&#x27;로 진입 - 특이점 논의를 자극하고, 순수 수학자·과학자 진로의 장기적 위상에 물음표.</li>
+<li>오픈 웨이트 모델이 상용 최상위 모델과 성능 격차를 좁히며 가격을 무너뜨림. 오픈AI의 가격 인하도 DeepSeek 압박에 대한 대응으로 해석.</li>
+<li>앤트로픽의 &quot;프롬프트 80% 삭감&quot; 지침은, 모델 지능이 오르면서 프롬프트 엔지니어링·하네스 설계의 비중이 줄어드는 패러다임 전환을 시사.</li>
+<li>영상 생성은 &#x27;최고 품질 유료(Seedance)&#x27;와 &#x27;가성비 오픈 웨이트(미니맥스 H3)&#x27;로 양분되는 구도.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><ul>
+<li>벤치마크 <span class="up">개선</span>: 모델 교체 대신 하네스 조정(추론 유지 + 압축)만으로 점수 3배 <span class="up">상승</span> 가능 - 평가·운영 시 하네스를 함께 고려.</li>
+<li>프롬프트 최적화(앤트로픽식): 기존 시스템 프롬프트·코드를 대폭 삭제 -&gt; 생 모델의 반응 관찰 -&gt; 꼭 필요한 부분만 재추가. 도구는 예시 대신 파라미터·구조만 명확히.</li>
+<li>로컬 실행: 오픈 웨이트 모델을 양자화해 DGX 스파크·RTX 3060 등 소비자 하드웨어에서 배치·비실시간 작업으로 활용.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>개인·스타트업이 DeepSeek-V4-Flash API(초저가) 또는 로컬 오픈 웨이트로 가성비 대량 처리 작업을 수행.</li>
+<li>광고·마케팅 팀이 Seedance 2.5로 30초 광고·뮤비를 딸깍 제작(외주 대비 저렴하나 편당 1만 원대 비용 유의).</li>
+<li>자막·전사 작업자가 크리스퍼 위스퍼 2.0(오픈 웨이트)으로 다국어 전사·타임스탬프 생성, 한국어도 처리.</li>
+<li>개발자가 그록 보이스 씽크 패스트 2.0(응답 0.7초)으로 실시간 상담원·통화형 서비스 구축.</li>
+<li>막장 웹드라마 쇼츠처럼 무한 반복 생성이 필요한 콘텐츠를 미니맥스 H3 오픈 웨이트로 저비용 양산.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>아스트라 성과는 수학계 완전 인정 전 단계이나, 정식 출시 시 연구 보조 도구로의 폭발적 활용이 예상.</li>
+<li>오픈 웨이트 영상 모델(미니맥스 H3, 곧 나올 플럭스 3 등)이 로컬 영상 생성 생태계를 재편할 가능성.</li>
+<li>프롬프트·하네스 최소화 흐름은 실험적 검증이 더 필요하지만 앤트로픽 공식 권고라 무게가 실림.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>아스트라(Astra)</td><td>오픈AI 차세대 주력 모델의 내부 코드명</td><td>아직 이름 안 붙은 GPT-6 시제품</td></tr><tr><td>오픈 웨이트</td><td>모델 파일을 누구나 받아 직접 돌리게 공개</td><td>레시피까지 통째로 공개한 요리</td></tr><tr><td>양자화</td><td>정밀도를 낮춰 모델 용량·메모리를 줄임</td><td>고화질 사진을 압축 저장</td></tr><tr><td>Lean 인증서</td><td>컴퓨터가 검증 가능한 형식 수학 증명</td><td>자동 채점 가능한 답안지</td></tr><tr><td>하네스(harness)</td><td>모델을 감싸는 실행·설정·도구 틀</td><td>같은 엔진에 다른 차체</td></tr><tr><td>할루시네이션</td><td>AI가 그럴듯하게 지어내는 거짓 답변</td><td>아는 척하는 헛소리</td></tr><tr><td>ASR</td><td>음성을 텍스트로 바꾸는 음성인식 기술</td><td>받아쓰기 하는 AI</td></tr><tr><td>VLA 모델</td><td>비전·언어를 보고 로봇 행동까지 내는 모델</td><td>보고 듣고 손을 움직이는 뇌</td></tr><tr><td>롱비디오 모드</td><td>장면을 이어붙여 긴 영상을 만드는 기능</td><td>여러 컷을 이은 한 편의 영상</td></tr><tr><td>MIT 라이선스</td><td>상업 이용까지 자유로운 개방형 라이선스</td><td>조건 없이 가져다 써도 되는 허가</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/e_j_SyBlc18?t=436" target="_blank" rel="noopener">4:37 아스트라, Lean 인증서로 미해결 난제 증명</a></li>
+<li><a href="https://youtu.be/e_j_SyBlc18?t=1009" target="_blank" rel="noopener">16:49 DeepSeek-V4-Flash 정식 출시·MIT 라이선스</a></li>
+<li><a href="https://youtu.be/e_j_SyBlc18?t=1284" target="_blank" rel="noopener">21:24 페이블 5 대비 105배 저렴</a></li>
+<li><a href="https://youtu.be/e_j_SyBlc18?t=1567" target="_blank" rel="noopener">26:07 보리스 체르니 &quot;프롬프트 80% 삭감&quot;</a></li>
+<li><a href="https://youtu.be/e_j_SyBlc18?t=1971" target="_blank" rel="noopener">32:51 Seedance 2.5 글로벌 출시</a></li>
+<li><a href="https://youtu.be/e_j_SyBlc18?t=2900" target="_blank" rel="noopener">48:20 미니맥스 H3 RTX 3060으로 실행</a></li>
+<li><a href="https://youtu.be/e_j_SyBlc18?t=3619" target="_blank" rel="noopener">60:19 제미나이 로보틱스 2 데모</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/e_j_SyBlc18" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-08-03</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
