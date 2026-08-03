@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="토스 창업자부터 대선후보까지, 계급장 떼고 매출로만 붙었습니다ㅣ흑백개발자: THE 해커톤"><title>토스 창업자부터 대선후보까지, 계급장 떼고 매출로만 붙었습니다ㅣ흑백개발자: THE 해커톤</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>EO Korea</span><span class="ey">MORNING DIGEST · 2026-08-04 · EO Korea</span><span class="chip">🎬 영상</span></div><h1>토스 창업자부터 대선후보까지, 계급장 떼고 매출로만 붙었습니다ㅣ흑백개발자: THE 해커톤</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><p>EO Korea가 개최한 <strong>흑백개발자: THE 해커톤</strong>은 심사위원이 없는 해커톤이다. 참가자들은 30시간 동안 새로운 서비스를 기획·제작하고, 이후 일주일간 실제 시장에서 고객을 만나 매출을 만들어야 한다. 슬로건은 &quot;오직 시장에서 증명하라&quot;. 계급장(경력·명성)을 떼고 오직 결과(매출)로만 승부하는 것이 핵심이다.</p>
+<ul>
+<li><strong>평가 구성</strong>: 매출 80% + 참가자 상호 평가 20%</li>
+<li><strong>진출 방식</strong>: 세일즈 기간 종료 후 매출 상위 10개 팀이 본선 진출 → 상호 평가 점수를 합산해 최종 우승 선정</li>
+<li><strong>매출 규칙</strong>: 경품·광고비 등으로 사용한 이익은 차감되어 <strong>순이익</strong>으로 집계</li>
+<li>토스 창업자·정치인(대선후보급)·연쇄창업가 등 유명 인사와 코딩 경력 한 달의 신입까지 뒤섞여 참가</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>흑팀 vs 백팀 — 대결 구도</h2><p>&#x27;흑백요리사&#x27; 포맷을 차용해 참가자를 <strong>흑팀</strong>과 <strong>백팀</strong>으로 나눴다.</p>
+<ul>
+<li><strong>흑팀</strong>: 본업이 바쁜 유명·경력 개발자(&quot;100개발자&quot;) 중심. 사전에 팀을 꾸리거나 이미 함께 일하던 사람들이 많음. 건강검진하면 이상 소견 나올 정도로 바쁜 실력자들</li>
+<li><strong>백팀</strong>: 당일 처음 만난 팀, 비개발자·신입이 랜덤 배정된 언더독. &quot;민폐가 될까 봐&quot; 걱정하는 참가자도 있었으나 &quot;클로드 코드 에이전트를 현실에서 만난 기분&quot;이라며 협업에 만족</li>
+<li>참가자 다수가 &quot;흑팀·백팀 실력 차이는 크지 않고, 결국 <strong>누가 더 바이럴을 잘 타느냐</strong>가 관건&quot;이라고 진단 → 개발력보다 마케팅·홍보가 승부처</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>참가 팀 아이템 스펙트럼</h2><p>30초 엘리베이터 피칭에서 드러난 아이템은 극도로 다양했다.</p>
+<ul>
+<li><strong>AI 영상/인플루언서</strong>: 딸깍 한 번에 AI 인플루언서 영상 자동 생성, 스노우·에픽 계열 AI 프로필의 영상 버전, 대화형 AI 인플루언서 100명, 인플루언서 100% 자동화(기획·제작·업로드)</li>
+<li><strong>관계·감정 자극형</strong>: 지인이 상품을 든 광고 이미지 생성(도파민 마케팅), 멀티버스 클론으로 동시에 100·1000명과 만남, 가상 복수 대행 에이전트, &quot;내 남친은 쓰레기인가&quot; 판별 봇</li>
+<li><strong>사주·점성술</strong>: AI 사주팔자 상담(사주 보이즈), 영미권 확장 사주앱, 사주-점성술 교차 검증(레드오션 속 차별화)</li>
+<li><strong>생산성·개발 도구</strong>: 데스크메이트(오픈클로(openclaw)·맥미니 세팅 없이 슬랙으로 바로 쓰는 AI 에이전트), 논문 작성 고양이(리서치 캐시), URL 쇼트너(공유 시 프리뷰 메타데이터를 마케팅 목적에 맞게 변경), 광고 카피 자동화</li>
+<li><strong>B2G/B2B</strong>: B2C가 다수인 가운데 B2G 타깃 B2B를 노린 팀, K팝 덕질 프로덕트 팀도 등장</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>승부 전략 — 매출을 만드는 법</h2><p>&quot;제품은 하루면 만들지만 파는 과정이 훨씬 어렵다&quot;가 공통된 깨달음이었다.</p>
+<ul>
+<li><strong>바이럴 우선주의</strong>: 이름만 들어도 뭔지 아는 날카로운 제품(&quot;쓰레기 판별기&quot;)이 기억에 남음. 개발 완성도보다 확산력에 집중</li>
+<li><strong>지인 세일즈</strong>: 과거 비즈니스 인맥·인플루언서·개인사업자에게 먼저 셀링이 무조건 돼야 한다는 전제</li>
+<li><strong>순이익 규칙 역이용</strong>: 발표 리워드가 &#x27;광고 비용&#x27;이었기에, 자극적이고 짧고 직관적인 피치로 광고비를 확보해 세일즈에 재투자</li>
+<li><strong>퀄리티 게이트</strong>: 지불 가치가 있는 수준으로 끌어올리려 첫날에는 판매를 아예 하지 않은 팀도 존재</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>최종 결과와 &#x27;매각(엑싯)&#x27; 논란</h2><p>일주일 세일즈 후 최종 순위가 가려졌다.</p>
+<ul>
+<li><strong>우승(1등) — 흑103팀</strong>: 대화형 AI 인플루언서 100명 서비스(인스타 DM 시뮬레이션, 채팅마다 지속 과금). 성장 정체 국면에서 팀원 현수(타로앱 엑싯 경험 창업가)가 <strong>회사 매각(엑싯)</strong>을 제안, 500만~1000만 원대 매각 대금을 매출로 잡아 1등 차지</li>
+<li><strong>준우승(2등) — 흑15팀</strong>: 인플루언서 100% 자동화. 종료 6~7시간 전 방향을 전환, 클릭 한 번으로 콘텐츠 생성 후 인스타그램 자동 업로드</li>
+<li><strong>3등 — 흑17팀</strong>: &#x27;메소드&#x27; 앱. 유저가 기업 요청에 맞춰 릴스·틱톡 바이럴 영상을 만들어 자기 인스타에 올리고 광고주에게 현금을 받는 구조. &quot;3등만 해도 충분&quot;이라는 마음가짐</li>
+<li><strong>매각 논란</strong>: 매각을 하지 않았으면 1등이 아니었을 것이라는 자평. &quot;다음 시즌엔 매각 금지 규정이 생기거나, 반대로 매각을 노리고 세일즈하는 팀이 나올 것&quot;이라는 전망 제기</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>바이브 코딩 실전 검증</strong>: 30시간 내 실제 매출을 내는 제품을 만드는 극한 스프린트 방법론 참고</li>
+<li><strong>AI 프로덕트 아이디어 소싱</strong>: AI 인플루언서·사주·복수 대행 등 감정·도파민을 공략하는 B2C 아이템 벤치마크</li>
+<li><strong>팀 구성·협업 실험</strong>: 랜덤 배정 팀에서 클로드 코드 에이전트를 활용한 비개발자-개발자 협업 관찰</li>
+<li><strong>해커톤 설계</strong>: 심사위원 대신 &#x27;시장 매출&#x27;로 평가하는 규칙 설계와 그 허점(매각) 학습</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>본 편은 30시간 빌드 세션과 일주일 세일즈 결과 발표까지를 담은 EO Korea 피처 영상</li>
+<li>참가자들은 &quot;10년 만의 몰입&quot;, &quot;수명 줄어든 느낌&quot;이라 표현할 만큼 고강도. 토스팀의 실력에 &quot;벽을 느꼈다&quot;는 소회도</li>
+<li><strong>시즌 2 예고</strong>: &quot;진짜 경쟁은 이제부터&quot; — 다음 시즌은 <strong>대학별 전쟁</strong> 포맷으로 진행 예정</li>
+<li>핵심 시사점: AI 시대의 개발은 &quot;AI에 의해 대체되는 게 아니라 AI를 잘 다루는 동료에 의해 대체된다&quot;</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>흑백개발자</td><td>&#x27;흑백요리사&#x27; 포맷을 차용한 EO Korea 개발자 서바이벌 해커톤</td></tr><tr><td>흑팀</td><td>유명·경력 개발자(&quot;100개발자&quot;) 중심의 기성 실력자 팀</td></tr><tr><td>백팀</td><td>당일 랜덤 배정된 비개발자·신입 중심의 언더독 팀</td></tr><tr><td>바이브 코딩</td><td>AI에게 자연어로 지시해 빠르게 제품을 만드는 개발 방식</td></tr><tr><td>클로드 코드 에이전트</td><td>대충 지시해도 알아서 처리하는 코딩 AI 에이전트(협업 파트너)</td></tr><tr><td>엘리베이터 피칭</td><td>최대 30초로 팀 핵심 기능을 간단히 공유하는 발표</td></tr><tr><td>순이익 규칙</td><td>경품·광고비로 쓴 이익을 차감해 매출을 집계하는 규칙</td></tr><tr><td>상호 평가</td><td>참가자끼리 매기는 점수(최종 점수의 20%)</td></tr><tr><td>엑싯(매각)</td><td>회사를 팔아 매출·수익을 실현하는 행위, 1등을 만든 변수</td></tr><tr><td>바이럴</td><td>SNS에서 콘텐츠가 빠르게 확산되는 것, 이번 대회 핵심 승부처</td></tr><tr><td>오픈클로(openclaw)</td><td>AI 에이전트 오케스트레이션 프레임워크</td></tr><tr><td>언더독</td><td>열세로 평가받는 참가자(백팀). &quot;언더독의 승리가 더 재밌다&quot;</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/ZDEJ1XH1eIc?t=127" target="_blank" rel="noopener">해커톤 규칙: 매출 80% + 상호평가 20%, 상위 10팀 본선</a></li>
+<li><a href="https://youtu.be/ZDEJ1XH1eIc?t=283" target="_blank" rel="noopener">흑팀 vs 백팀 랜덤 배정과 팀 구성 차이</a></li>
+<li><a href="https://youtu.be/ZDEJ1XH1eIc?t=326" target="_blank" rel="noopener">30시간 빌드 세션 시작과 우승 각오</a></li>
+<li><a href="https://youtu.be/ZDEJ1XH1eIc?t=540" target="_blank" rel="noopener">데스크메이트: 세팅 없이 슬랙으로 쓰는 AI 에이전트</a></li>
+<li><a href="https://youtu.be/ZDEJ1XH1eIc?t=1076" target="_blank" rel="noopener">백팀도 이길 수 있다 — 바이럴이 개발보다 관건</a></li>
+<li><a href="https://youtu.be/ZDEJ1XH1eIc?t=1176" target="_blank" rel="noopener">순이익 규칙과 광고비 리워드 확보 전략</a></li>
+<li><a href="https://youtu.be/ZDEJ1XH1eIc?t=1418" target="_blank" rel="noopener">30시간 빌드 종료, 참가자 소회</a></li>
+<li><a href="https://youtu.be/ZDEJ1XH1eIc?t=1664" target="_blank" rel="noopener">흑103팀 회사 매각(엑싯)으로 우승</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ZDEJ1XH1eIc" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>EO Korea · 2026-08-04</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

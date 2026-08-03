@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="성능은 좋지만, 흔들리는 메타의 AI"><title>성능은 좋지만, 흔들리는 메타의 AI</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-08-04 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>성능은 좋지만, 흔들리는 메타의 AI</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><p>메타는 지난 1년간 수백억 달러와 최고급 인재를 쏟아부어 AI 기술 격차를 빠르게 좁혔다. 2026년 4월 첫 자체 모델 뮤즈 스파크를 공개했고, 7월에는 업데이트판 뮤즈 스파크 1.1로 코딩·에이전트 시장에 유료 API를 들고 진입했다. 라마4 부진 이후 약 1년 만에 경쟁 가능한 모델을 내놓았다는 점은 분명한 성과다. 그러나 그 속도를 만들어낸 과정은 깨끗하지 않았다는 비판이 이어진다.</p>
+<p>핵심 논란은 두 가지다. 하나는 7월 7일 공개된 이미지 생성 모델 뮤즈 이미지가 사전 동의 없이 타인의 공개 인스타그램 사진을 재사용하도록 설계됐다는 것, 다른 하나는 4월 시작한 사내 프로그램이 직원의 키 입력·마우스·화면을 수집해 AI 에이전트를 훈련하려 했다는 것이다. 두 사건 모두 &quot;먼저 데이터·기능을 대규모로 연결하고, 반발이 나온 뒤에야 멈춘다&quot;는 동일한 패턴을 보였다.</p>
+<p>영상은 이 조급함의 근원을 2025년 라마의 부진과 그에 따른 조직 재편에서 찾는다. 저커버그는 스케일 AI에 143억 달러(약 20조원)를 투자하고 창업자 알렉산더 왕을 영입해 메타 슈퍼 인텔리전스 랩(MSL)을 신설했다. 그 과정에서 컴퓨팅·인력·의사결정 권한이 MSL로 쏠렸고, 2013년부터 AI 연구를 이끈 얀 르쿤이 회사를 떠났다.</p>
+<p>결론적으로 티타임즈는 모델과 컴퓨팅은 돈으로 확보할 수 있지만 직원과 사용자의 신뢰는 같은 방식으로 살 수 없다고 지적한다. 메타가 AI 경쟁에서 치른 비용이 서버·인재 영입 비용만이 아닐 수 있다는 것이다.</p></section><section class="card s12" id="s2"><h2><span class="seq">02</span>두 개의 데이터 논란: 사용자 vs 직원</h2><p>두 사건은 수집 대상(공개 소셜 콘텐츠 vs 사내 업무 데이터)과 법적 관계(공개 데이터 vs 고용 관계)가 다르지만, 진행 방식은 묘하게 닮았다.</p>
+<div class="tbl-wrap"><table><thead><tr><th>구분</th><th>뮤즈 이미지 (사용자 측)</th><th>모델 캐피빌리티 이니셔티브 (직원 측)</th></tr></thead><tbody><tr><td>공개/시작</td><td>2026년 7월 7일</td><td>2026년 4월</td></tr><tr><td>대상 데이터</td><td>타인의 공개 인스타그램 사진·소셜 맥락</td><td>직원 노트북의 키 입력·클릭·마우스·일부 화면</td></tr><tr><td>목적</td><td>인스타그램 관계를 AI 이미지 생성에 결합, 개인화 콘텐츠 생성</td><td>사람이 컴퓨터 쓰는 과정을 확보해 컴퓨터 유즈 AI 에이전트 훈련</td></tr><tr><td>핵심 결함</td><td>옵트아웃 방식, 설정 찾기 어려움, 사용 알림 없음, 사후에 꺼도 생성물 미삭제</td><td>내부 접근 통제 오설정으로 예상보다 넓은 범위의 직원이 데이터 접근 가능</td></tr><tr><td>반발 주체</td><td>창작자, 미국 배우·방송인 노동조합, 시민단체</td><td>직원 1,600명 이상 프로그램 중단 청원</td></tr><tr><td>조치</td><td>출시 4일 만인 7월 10일 기능 철회</td><td>6월 22일 무기한 중단</td></tr></tbody></table></div></section><section class="card s6" id="s3"><h2><span class="seq">03</span>조급함의 배경: 라마 부진과 MSL 신설</h2><p>메타 AI 조직이 흔들리기 시작한 시점은 2025년이다. 공개한 라마가 최상위 모델을 따라잡기는커녕 격차가 더 벌어졌고, 저커버그는 기존 연구 조직만으로는 필요한 속도를 내기 어렵다고 판단했다.</p>
+<ul>
+<li><strong>스케일 AI 투자</strong>: 143억 달러(약 20조원)를 투자해 지분 확보. 이를 계기로 창업자 알렉산더 왕이 메타로 이동.</li>
+<li><strong>MSL 신설</strong>: 파운데이션 모델과 제품 AI를 전담할 메타 슈퍼 인텔리전스 랩을 신설하고, 왕이 최고 AI 책임자(CAIO)를 맡음.</li>
+<li><strong>공격적 인재 영입</strong>: 엄청난 연봉·보상 패키지를 제시하며 오픈AI·구글·앤트로픽 등에서 인재 모집.</li>
+<li><strong>권한 이동</strong>: 왕과 새 연구진은 프론티어 모델 경쟁력을, 기존 제품 조직은 추천·광고·소셜 적용을 담당. 두 방향이 충돌한 것은 아니지만 제한된 컴퓨팅·인력·의사결정 권한의 우선순위가 MSL로 쏠림.</li>
+<li><strong>핵심 인물 이탈</strong>: 2013년부터 메타 AI 연구를 이끌던 얀 르쿤이 회사를 떠남.</li>
+</ul></section><section class="card s12" id="s4"><h2><span class="seq">04</span>성과: 뮤즈 스파크와 유료 API 전환</h2><p>막대한 투자만큼 성과도 나타났다.</p>
+<ul>
+<li><strong>뮤즈 스파크(2026년 4월)</strong>: MSL의 첫 모델. 개발 코드명 아보카도. 왕 합류 직후부터 약 9개월 만에 개발. 메타 AI 앱·웹사이트에 먼저 적용된 뒤 페이스북·인스타그램·왓츠앱으로 확대. 메타는 사용자가 메타 AI와 대화하는 평균 횟수가 크게 늘었다고 자평.</li>
+<li><strong>뮤즈 스파크 1.1(7월 9일)</strong>: 100만 토큰 문맥 처리, 도구·컴퓨터 유즈·코딩 강화. 라마의 무료 공개 생태계 전략에서 한 발 더 나아가 외부 개발자 대상 유료 API로 직접 판매 선언 → 외부 코딩 에이전트가 메타 모델을 불러 쓰는 모델 API 시장 진입.</li>
+</ul>
+<div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>입력 가격</td><td>100만 토큰당 1.25달러</td></tr><tr><td>출력 가격</td><td>100만 토큰당 4.25달러</td></tr><tr><td>가격 포지셔닝</td><td>상위권 경쟁 모델보다 공격적으로 낮은 가격</td></tr><tr><td>자체 평가</td><td>클로드 오퍼스 4.8에는 조금 못 미치나 오픈AI GPT-5.5는 상회</td></tr><tr><td>외부 평가</td><td>각종 평가에서 코딩 지수 크게 <span class="up">상승</span></td></tr></tbody></table></div>
+<p>저커버그는 &quot;매우 낮은 가격의 강력한 에이전트 코딩 모델&quot;이라며 기대감을 숨기지 않았다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>대가: 조직 혼란과 신뢰 비용</h2><p>같은 기간 일반 직원이 경험한 메타는 전혀 다른 회사였다.</p>
+<ul>
+<li><strong>감원</strong>: 2026년 5월 약 8,000명(전체 직원의 약 10%) 감원.</li>
+<li><strong>재배치</strong>: 같은 시기 약 7,000명이 어플라이드 AI 엔지니어링, 에이전트 트랜스포메이션 엑셀러레이터 등 AI 조직으로 이동. 이들 조직의 주 업무는 MSL 연구자들이 모델을 빠르게 <span class="up">개선</span>하도록 훈련·평가용 복잡한 코딩 문제를 만들고 결과를 검수하는 것.</li>
+<li><strong>박탈감</strong>: AI 모델을 직접 설계하는 엔지니어로 채용됐으나 갑자기 데이터 관리 인력처럼 취급된다는 상실감. 재직자 약 20%가 감원·이동에 영향. 일부는 본인 희망과 무관하게 &quot;징집되듯&quot; 배정됐다고 표현.</li>
+<li><strong>CTO 사과</strong>: 청원이 격화되자 앤드루 보즈워스 CTO가 메모를 통해 AI 조직 재편의 비전과 직원 경력에 미칠 영향을 설명한 방식이 &quot;형편없었다&quot;고 사과.</li>
+</ul>
+<p>직원은 AI를 설계하는 사람에서 AI가 학습할 평가 자료를 생산하는 사람으로 위치가 바뀌었고, 자신의 업무 행동 자체가 학습 데이터가 됐다. 회사에는 기술적 필요였지만 직원에게는 전문성과 자율성이 동시에 낮아지는 과정이었다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>AI 거버넌스 사례 학습</strong>: 옵트인 vs 옵트아웃, 사후 통지, 내부 접근 통제 등 데이터 처리 설계에서 놓치기 쉬운 지점을 점검하는 체크리스트 소재.</li>
+<li><strong>AX(AI 전환) 조직 설계 참고</strong>: 연구 조직 신설과 기존 조직 재배치가 초래하는 심리적 박탈감·이탈 리스크를 사전에 관리하는 반면교사.</li>
+<li><strong>빅테크 AI 경쟁 모니터링</strong>: 메타의 유료 API 전환(입력 1.25/출력 4.25달러)을 오픈AI·앤트로픽 가격과 비교하는 시장 분석 근거.</li>
+<li><strong>콘텐츠·초상권 리스크 검토</strong>: 공개 게시물의 재사용 범위와 동의 경계를 다루는 법무·정책 논의 사례.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>기술적으로 메타는 라마4 부진 약 1년 만에 코딩·에이전트 시장에서 경쟁 가능한 모델을 확보했고, 유료 API로 수익화까지 시도하는 단계에 이르렀다. 성능 측면에서는 GPT-5.5를 넘어섰다는 자체 평가와 외부의 코딩 지수 <span class="up">상승</span> 인정 등 반등의 신호가 뚜렷하다.</p>
+<p>그러나 속도를 위해 데이터·보안, 조직 심리, 사용자 신뢰·동의 같은 가치를 &quot;나중에 고칠 문제&quot;로 미룬 대가가 누적되고 있다. 뮤즈 이미지 기능 철회, 사내 프로그램 중단, CTO 사과, 얀 르쿤을 포함한 인재 이탈이 그 청구서다. 티타임즈는 모델과 컴퓨팅은 돈으로 확보할 수 있으나 직원·사용자의 신뢰는 그렇지 않다며, 메타가 치른 진짜 비용은 서버·인재 영입비만이 아닐 수 있다고 전망한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유</th></tr></thead><tbody><tr><td>뮤즈 이미지</td><td>2026년 7월 공개된 메타의 이미지 생성 모델</td><td>인스타 친구 사진으로 그림 그려주는 화가</td></tr><tr><td>뮤즈 스파크</td><td>MSL의 첫 언어 모델, 코드명 아보카도</td><td>9개월 만에 나온 신인 선수</td></tr><tr><td>뮤즈 스파크 1.1</td><td>100만 토큰·코딩 강화판, 유료 API로 판매</td><td>성능 업그레이드한 상용 버전</td></tr><tr><td>MSL</td><td>메타 슈퍼 인텔리전스 랩, 파운데이션·제품 AI 전담 조직</td><td>회사 안의 특급 신설 부서</td></tr><tr><td>모델 캐피빌리티 이니셔티브</td><td>직원 업무 과정을 수집해 에이전트를 훈련한 사내 프로그램</td><td>어깨너머로 일하는 법 배우는 견습생</td></tr><tr><td>옵트아웃</td><td>기본 활성 상태에서 사용자가 직접 꺼야 하는 방식</td><td>자동 청구, 싫으면 해지 신청</td></tr><tr><td>옵트인</td><td>사용자가 먼저 허락해야 활성화되는 방식</td><td>동의서에 서명해야 시작</td></tr><tr><td>컴퓨터 유즈</td><td>AI가 마우스·키보드로 소프트웨어를 직접 조작하는 능력</td><td>사람 대신 컴퓨터 만지는 손</td></tr><tr><td>스케일 AI</td><td>메타가 143억 달러 투자한 데이터 라벨링 기업</td><td>20조원짜리 지분 인수 대상</td></tr><tr><td>알렉산더 왕</td><td>스케일 AI 창업자, 메타 최고 AI 책임자</td><td>영입된 에이스 지휘관</td></tr><tr><td>얀 르쿤</td><td>2013년부터 메타 AI 연구를 이끌다 퇴사한 석학</td><td>재편 과정에서 떠난 원로</td></tr><tr><td>어플라이드 AI 엔지니어링</td><td>훈련·평가용 자료·도구를 만드는 재배치 조직</td><td>선수 뒤에서 훈련 자료 만드는 팀</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/zZkth2U6PfY?t=46" target="_blank" rel="noopener">AX 패러다임 변화와 메타 비판의 시작</a></li>
+<li><a href="https://youtu.be/zZkth2U6PfY?t=93" target="_blank" rel="noopener">뮤즈 이미지 공개와 인스타그램 결합 기능</a></li>
+<li><a href="https://youtu.be/zZkth2U6PfY?t=141" target="_blank" rel="noopener">옵트아웃 방식과 사용자 반발</a></li>
+<li><a href="https://youtu.be/zZkth2U6PfY?t=190" target="_blank" rel="noopener">기능 철회와 키 입력 수집 프로그램 등장</a></li>
+<li><a href="https://youtu.be/zZkth2U6PfY?t=335" target="_blank" rel="noopener">2025년 라마 부진과 스케일 AI 143억 달러 투자</a></li>
+<li><a href="https://youtu.be/zZkth2U6PfY?t=431" target="_blank" rel="noopener">뮤즈 스파크 1.1 유료 API 전환 선언</a></li>
+<li><a href="https://youtu.be/zZkth2U6PfY?t=530" target="_blank" rel="noopener">8,000명 감원과 7,000명 AI 조직 재배치</a></li>
+<li><a href="https://youtu.be/zZkth2U6PfY?t=676" target="_blank" rel="noopener">사진 공개는 동의가 아니다: 신뢰 비용 결론</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/zZkth2U6PfY" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-08-04</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

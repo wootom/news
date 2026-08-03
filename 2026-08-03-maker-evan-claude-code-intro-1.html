@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="클로드 코드 입문 1강"><title>클로드 코드 입문 1강</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">MORNING DIGEST · 2026-08-04 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>클로드 코드 입문 1강</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>강사 &#x27;메이커 에반&#x27;의 &quot;비개발자를 위한 AI 비서 활용 가이드&quot; 세션. 비개발자도 클로드 코드로 자기만의 앱·프로그램을 만들 수 있게 하는 것이 목표.</li>
+<li>시대 변화: 2023년에는 코드를 모르면 개발 불가였으나, 2026년은 말로만 시키면 AI가 처리. 랜딩 제작 비용이 과거 100만~1천만 원에서 도메인 월 3만 원 + 호스팅 월 1만 원 수준으로 <span class="dn">하락</span>. 팀도 기획·디자인·개발·PM 3~4명에서 혼자 풀스택 가능으로, 출시 기간도 3개월에서 12시간 강의 후 첫 사이트 완성 수준으로 단축.</li>
+<li>역설적으로 비개발자가 유리: (1) 빈 머리가 무기 — 개발자는 코드 흐름(플로)으로, 비개발자는 비즈니스 문제로 사고하며 AI 시대엔 후자가 승리. (2) 사용자 감각 우위 — 화면 직관성 판단이 곧 제품 품질. (3) 본업 결합 — 마케터·디자이너가 본업과 AI 코딩을 결합할 때 가장 강력한 차별화.</li>
+<li>마음가짐 3원칙: 실수해도 OK(깃으로 어제로 되돌림, 많이 망친 사람이 빨리 배움) / 모르는 걸 부끄러워 말 것(즉시 질문, 30분 헤매기보다 묻고 30초에 푸는 게 100배 가치) / 모방→변형→창조 3단계로 발전.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>클로드 코드란 무엇인가</h2><ul>
+<li>클로드 코드는 &#x27;터미널에서 만나는 AI 비서&#x27;. 옆자리에 앉은 만능 비서처럼 보고서 작성, 데이터 정리, 자료 조사, 브레인스토밍을 도움.</li>
+<li>개발자가 아니어도 사용 가능. 터미널은 그저 AI와 대화하는 창구일 뿐.</li>
+<li>할 수 있는 일: 코딩 외에 자료 조사(인터넷 검색→보고서화), 문서 작성(보고서·이메일·기획서), 브레인스토밍(다관점 아이디어), 데이터 정리(고객 데이터 분류·평균 계산). 그 외 PPT 제작, 영어 문맥 분석, 긴 문서 요약, 엑셀 처리.</li>
+<li>작동 방식 3단계: (1) 자연어로 요청(&quot;경쟁사 분석 보고서 만들어 줘&quot;) → (2) 클로드 코드가 알아서 파일 분석·명령 실행·인터넷 검색 → (3) 결과물 승인/리젝트.</li>
+<li>실제 활용 예시: 강의 PPT 자체가 클로드 코드로 제작. 배너 이미지 자동화, 유튜브 영상 자동화(강사 영상 조회수 약 20만), 인스타 카드뉴스 제작, 랜딩 페이지 제작 모두 가능.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>프롬프팅 — 잘 시키는 법</h2><ul>
+<li>프롬프팅은 지시사항을 주면 AI가 이해하고 결과를 내놓는 과정. AI에 내리는 명령이 곧 프롬프트.</li>
+<li>명확한 지시를 위한 4항목: 지시(무엇을 할지) / 맥락(환경·전체 상황, 예: 윈도우·크롬·디버그 모드·로그인) / 작업(구체 단계, 예: 주문 페이지→어제 필터→CSV 다운로드) / 출력(산출물 형식, 예: 보고서 MD).</li>
+<li>프롬프트 4원칙: 구체적 지시·상황·형태·예시 — 하나라도 빠지면 품질 급락. &quot;정리해줘&quot;(X)→&quot;결정사항·담당자 표로&quot;(O), &quot;보고서&quot;(X)→&quot;마케팅팀·월간·KPI&quot;(O), &quot;요약해줘&quot;(X)→&quot;임원 3줄 발표용&quot;(O), 모호한 예시(X)→&quot;매출 15% 이상, 방문자 20% 이상&quot;(O).</li>
+<li>5번째 보조 원칙: CLAUDE.md 같은 파일을 참조(@CLAUDE.md에 따라)로 함께 전달하면 프로젝트 규칙이 반영돼 결과가 더 정확.</li>
+<li>마인드셋: 신입에게 일 시키듯 맥락을 줄 것. 처음에 5분 더 써서 맥락을 주면 다음 5번의 작업이 10배 정확해짐.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>필수 도구·환경 개념</h2><ul>
+<li>CLAUDE.md: AI에게 주는 &#x27;인수인계서&#x27;. 권장 원칙 — 200단어 이하(길면 컨텍스트가 터져 AI가 끝까지 안 봄, 초과 시 모듈로 분할) / <code>/init</code>로 자동 초안 생성 후 본인 룰 추가 / 프로젝트 루트 최상위에 두면 자동으로 읽음 / 팀 공유 권장, 개인 메모는 CLAUDE.local.md / 한 달에 한 번 검토·업데이트.</li>
+<li>터미널: 마우스 없이 키보드로 명령을 내리는 검은 창. 맥은 터미널 앱, 윈도우는 파워셸. 평소 쓰는 명령은 안전하고 망가져도 깃이 되돌림.</li>
+<li>IDE: Integrated Development Environment 약자, 코드 전용 메모장. 자동완성·문법 색칠·에러 빨간 줄·파일 탐색기 제공(메모장 vs 워드 비유). 추천은 마이크로소프트의 무료 VS Code(code.visualstudio.com에서 다운로드).</li>
+<li>Node.js: 자바스크립트를 노트북/서버에서 실행시키는 엔진. 원래 브라우저에서만 돌던 JS를 노드가 서버에서도 실행 가능케 함. 강의 메인 프레임워크 Next.js가 노드 기반이라 먼저 설치 필요. LTS(Long Term Support) 버전 설치, 강의는 V20 이상 권장.</li>
+<li>Git: &#x27;코드의 시간 여행 도구&#x27;. 변경 이력을 기록하는 무료 도구로 모든 개발자가 사용. 어제 코드로 되돌리기, 망가진 지점 추적, 협업 가능. AI가 망쳐도 한 줄로 1초 만에 복구, <code>git diff</code>로 무엇이 바뀌었는지 확인. 일상 명령 4개(add·commit·push·pull)는 외울 필요 없이 클로드 코드에게 &quot;커밋 해 줘&quot;처럼 말로 시키면 됨.</li>
+<li>GitHub: 코드를 인터넷에 올리는 클라우드(구글 드라이브가 문서라면 깃허브는 코드). 백업·공유·포트폴리오 가능, 무료. 깃(내 노트북의 시간여행)과 깃허브(인터넷 저장소)는 커밋→푸시로 이어지는 한 세트. 노트북이 망가져도 코드 생존, 버셀 배포와 깃허브 연결 자동화, 깃허브 자체가 포트폴리오.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 명령어와 첫 실행</h2><ul>
+<li>외울 명령어 5개면 평생 사용: <code>claude</code>(어디서나 입력해 클로드 코드 실행·입력창 띄움) / <code>/clear</code>(현재 대화 비우기, 주제 전환 시 사용) / <code>/init</code>(프로젝트 안내서 자동 생성, 새 프로젝트 첫 회) / <code>/exit</code>(종료) / <code>@파일명</code>(파일 첨부·특정 파일 분석). 나머지는 한국어 자연어로 처리.</li>
+<li>첫 대화 5단계: (1) 터미널에서 <code>claude</code> 입력→브라우저 로그인 (2) &quot;이 폴더에 뭐가 있어?&quot; 자연어로 시작(한국어 OK) (3) 후속 질문 &quot;이 파일 열어봐&quot;, &quot;이 함수 설명해 줘&quot; (4) <code>@</code> 입력 후 파일명 자동완성으로 파일 첨부 (5) <code>/exit</code>로 종료.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>스킬(Skills)과 서브 에이전트</h2><ul>
+<li>스킬즈: &#x27;전문가 모드를 켜는 버튼&#x27;. 감기엔 내과, 치아엔 치과 가듯, 스킬은 클로드 코드에 전문의 자격증(도메인 지식)을 주입. 없으면 팀 규칙·회사 형식을 몰라 매번 반복 설명 필요, 있으면 회사 문서 형식 자동 적용·팀 규칙 준수·한 번 작성으로 자동 반영.</li>
+<li>스킬을 만들 때: 같은 설명을 반복할 때, 팀만의 규칙(문서 형식·보고서 구조·브랜드 가이드)이 있을 때, 자주 하는 작업(주간 보고서·회의록·데이터 분석)이 있을 때.</li>
+<li>스킬 파일 구조: 프론트매터(name·description, 특히 description으로 클로드 코드가 언제 이 스킬을 쓸지 판단) + 바디(규칙·예시·주의사항 자유 작성). 팁 — SKILL.md는 500단어 넘지 않기(앤트로픽 권장, 너무 길면 역효과), 초과분은 다른 파일로 분리해 점진적 로딩, 구체적 예시 포함, 나쁜 패턴도 명시.</li>
+<li>서브 에이전트: 전문 분야별 AI 비서를 여러 명 두고 메인 AI가 상황에 맞게 위임하는 시스템(사장이 코드리뷰 담당·디버거·데이터 분석가에게 분업). 이점 — 메인 대화가 깔끔(1만 줄 로그도 실패 3개만 요약 보고, AI의 단기 용량 한계 극복), 권한 제한 가능(읽기만 허용해 파일 삭제 사고 방지), 저렴한 모델 사용 가능(단순 검색은 싼 모델, 복잡 판단만 똑똑한 모델로 비용 절감).</li>
+<li>스킬 vs 에이전트: 스킬은 요리 레시피 책(지식 제공·참고하며 작업·개입 가능), 에이전트는 전문 요리사(작업 수행·전체 위임·독립 수행 후 보고).</li>
+<li>에이전트 예시 3종: 플랜 리뷰어(계획을 실행 전 검토, 빠진·위험·<span class="up">개선</span>점 분석 보고서), 다큐멘테이션 아키텍트(배경·목적·주의사항·다음 단계 포함 종합 문서), 웹 리서치 스페셜리스트(인터넷 검색으로 뉴스·연구·블로그 핵심 정리). 호출 방법 3가지 중 강사는 <code>@에이전트</code>로 빠르게 호출하는 3번을 선호(나머지는 트리거가 잘 안 될 때가 있어서).</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>활용 시나리오</h2><ul>
+<li>PPT·배너 이미지·유튜브 영상·인스타 카드뉴스·랜딩 페이지 등 콘텐츠 제작 자동화.</li>
+<li>자주 하는 실수와 해결: (1) 모호한 요청 → 목적·대상 독자·분량·톤을 구체화(&quot;좋은 걸 써 줘&quot; X → &quot;20대 직장인을 위한 저축팁을 친근한 톤으로 500자 내외로&quot;). (2) 한 번에 과다 요청 → 단계적 접근으로 각 결과물 확인 후 진행. (3) 결과 미검토 → AI도 실수하니 숫자·날짜·이름 반드시 검증. (4) 컨텍스트 미제공 → 배경 상황 설명(&quot;납기 연장 요청 이메일이야, 일주일까지 가능해, 정중히 수락하는 답장 써 줘&quot;).</li>
+<li>실전 팁: 대화가 길어지면 <code>/clear</code>로 새 세션 시작(앞부분 망각 방지), CLAUDE.md로 프로젝트 전체 규칙 설정, 복잡 작업은 중간 결과물 확인, 같은 설명 3회 이상이면 스킬화 신호, 실패 시 무엇이 잘못됐는지 분석해 더 구체적 요청, 개인 스킬을 팀 규칙 스킬로 발전시켜 팀 생산성 향상.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>현황 및 전망</h2><ul>
+<li>학습 순서 4단계: (1) 첫 대화 — 설치·파일 참조·간단 요약 요청 (2) 스킬 활용 — 기본 제공 스킬 사용·팀 규칙 스킬 제작 (3) 에이전트 활용 — 웹 리서치 실전·여러 에이전트 조합 (4) 나만의 에이전트 제작·팀 도입·워크플로우 최적화.</li>
+<li>FAQ: 코딩 몰라도 사용 가능(자연어 소통, 문서·자료조사·데이터 정리에 활용) / 결과물이 틀릴 수 있음(숫자·날짜·고유명사 반드시 확인) / 민감한 개인정보는 입력 금지, 회사 보안 정책 우선 확인 / 반복 규칙·지식은 스킬, 특정 결과물을 만드는 복잡 작업은 에이전트.</li>
+<li>본 강의는 이론 파트 마무리이며, 이후 실습으로 이어짐을 시사.</li>
+</ul></section><section class="card s12" id="s9"><h2><span class="seq">09</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유</th></tr></thead><tbody><tr><td>클로드 코드</td><td>터미널에서 자연어로 시키는 AI 코딩 비서</td><td>옆자리 만능 비서</td></tr><tr><td>프롬프팅</td><td>AI에 지시를 주고 결과를 얻는 과정</td><td>비서에게 내리는 명령</td></tr><tr><td>CLAUDE.md</td><td>프로젝트 규칙을 담아 AI에게 주는 문서</td><td>신입 인수인계서</td></tr><tr><td>터미널</td><td>키보드로 명령을 내리는 검은 창</td><td>AI와 대화하는 창구</td></tr><tr><td>IDE</td><td>코드 작성 전용 편집기(VS Code 등)</td><td>워드(vs 메모장)</td></tr><tr><td>Node.js</td><td>JS를 노트북·서버에서 실행하는 엔진</td><td>코드 실행 발전소</td></tr><tr><td>Git</td><td>코드 변경 이력을 기록·복원하는 도구</td><td>코드의 시간 여행 도구</td></tr><tr><td>GitHub</td><td>코드를 인터넷에 올리는 클라우드 저장소</td><td>코드용 구글 드라이브</td></tr><tr><td>스킬(Skills)</td><td>도메인 지식을 주입하는 전문가 모드</td><td>전문의 자격증 / 레시피 책</td></tr><tr><td>서브 에이전트</td><td>작업을 통째로 위임하는 전문 AI 비서</td><td>전문 요리사 / 분업 직원</td></tr><tr><td>description</td><td>스킬 사용 시점을 AI가 판단하는 설명문</td><td>스킬 발동 조건표</td></tr><tr><td>컨텍스트 창</td><td>AI가 한 번에 기억하는 대화 용량</td><td>단기 기억 한계</td></tr></tbody></table></div></section><section class="card s6" id="s10"><h2><span class="seq">10</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/1RKJb5ZaX9k?t=292" target="_blank" rel="noopener">클로드 코드란: 터미널의 AI 비서</a></li>
+<li><a href="https://youtu.be/1RKJb5ZaX9k?t=431" target="_blank" rel="noopener">프롬프팅 개념 도입</a></li>
+<li><a href="https://youtu.be/1RKJb5ZaX9k?t=479" target="_blank" rel="noopener">명확한 지시 4항목: 지시·맥락·작업·출력</a></li>
+<li><a href="https://youtu.be/1RKJb5ZaX9k?t=587" target="_blank" rel="noopener">CLAUDE.md 인수인계서와 권장 원칙</a></li>
+<li><a href="https://youtu.be/1RKJb5ZaX9k?t=782" target="_blank" rel="noopener">터미널·외울 명령어 5개</a></li>
+<li><a href="https://youtu.be/1RKJb5ZaX9k?t=976" target="_blank" rel="noopener">명령어 상세와 첫 대화 5단계</a></li>
+<li><a href="https://youtu.be/1RKJb5ZaX9k?t=1062" target="_blank" rel="noopener">스킬즈 개념: 전문가 모드</a></li>
+<li><a href="https://youtu.be/1RKJb5ZaX9k?t=1283" target="_blank" rel="noopener">서브 에이전트: 전문 AI 분업</a></li>
+<li><a href="https://youtu.be/1RKJb5ZaX9k?t=1466" target="_blank" rel="noopener">자주 하는 실수와 해결법</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/1RKJb5ZaX9k" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-08-04</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
