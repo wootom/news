@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 자동화 전문가가 5,000시간 실전 구축 경험에서 뽑은 9가지 핵심 교훈 — 도구가 아닌 사고방식, 관리·검증·권한 통제가 성패를 가른다."><title>5000 Hours of Building AI in Just 17 Minutes</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">MORNING DIGEST · 2026-08-05 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>5000 Hours of Building AI in Just 17 Minutes</h1><p class="lead">AI 자동화 전문가가 5,000시간 실전 구축 경험에서 뽑은 9가지 핵심 교훈 — 도구가 아닌 사고방식, 관리·검증·권한 통제가 성패를 가른다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>AI 에이전트·자동화 구축 실전 교훈 9선</td></tr><tr><td>발표자/채널</td><td>Nate Herk (Nate Herk \</td><td>AI Automation) — 7자리 매출 AI 에이전시 운영, 40만 명 교육</td></tr><tr><td>핵심 결론</td><td>도구는 무의미, 밑바탕 스킬·시스템·검증·권한 설계가 진짜 자산</td></tr><tr><td>대상</td><td>AI 에이전시 창업자, 사내 AI 담당자, 자동화 빌더</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li>두 갈래 진입 경로 — 에이전시 창업 vs 사내 AI 담당자, 차별화는 &quot;결과(receipts)&quot; 축적</li>
+<li>도구 무의미론 — n8n에서 Claude Code로 갈아타도 스킬·사고는 그대로 이전</li>
+<li>AI 네이티브 정의 — 지식량이 아니라 &quot;먼저 AI를 떠올리는가&quot;</li>
+<li>관리·검증·권한 3대 실전 원칙 — AI를 직원처럼 관리, 스스로 검증, 도구 권한으로 통제</li>
+<li>AI Evals(골든 데이터셋)로 성공률 정량 측정</li>
+<li>비즈니스는 파이프 — 병목(clog)과 누수(leak)를 찾아 진짜 제약을 해결</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적/맥락 배경</h2><ul>
+<li>컨텍스트 엔지니어링 — 동일 모델·하네스 위에 올리는 지식·프롬프트·스킬·시스템의 총합</li>
+<li>네거티브 프롬프팅 — &quot;하지 말 것&quot; 목록이 곧 실패 경험의 형식지화, Anthropic 문서도 다수 활용</li>
+<li>비결정성(non-deterministic) — 같은 입력도 100번 실행 시 100가지 결과, 모델 교체 시 거동 변화</li>
+<li>프롬프트 권한층 vs 도구 권한층 — 프롬프트 규칙은 &quot;제안&quot;, 도구 스코프는 &quot;실제 제약&quot;</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>포트폴리오(&quot;만들었다&quot;)보다 결과(&quot;무엇을 바꿨다&quot;)가 신뢰 격차 해소의 열쇠</li>
+<li>도구 종속 탈피 — 폴더·마크다운·지시문 기반 AI OS는 어떤 하네스로도 이전 가능</li>
+<li>AI는 &quot;채팅 상대&quot;가 아닌 &quot;관리·오케스트레이션 대상&quot;으로 인식 전환 필요</li>
+<li>접근 권한을 준 순간 사용을 가정 — 15만 명 오발송 사고가 증명한 통제의 중요성</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><div class="tbl-wrap"><table><thead><tr><th>교훈</th><th>실전 방법</th></tr></thead><tbody><tr><td>결과 수집</td><td>소요시간·누락 리드 등 수치 기록 + 워크스루 녹화</td></tr><tr><td>AI 관리</td><td>문제만 던지고 AI가 되묻게, 여러 페르소나로 자기 계획 공격(devil&#x27;s advocate)</td></tr><tr><td>자기 검증</td><td>&quot;사람이면 어떻게 검토?&quot; → 스크린샷 루프·버튼 클릭·폼 검증 자동화</td></tr><tr><td>권한 통제</td><td>스코프 API 키 — 초안만 허용, 발송 물리 차단</td></tr><tr><td>AI Evals</td><td>골든 데이터셋(양질 예시 20~500개) + 코드 채점 또는 LLM-as-judge</td></tr><tr><td>제약 발굴</td><td>이해관계자 요청은 진짜 제약 아님, 프로세스 병목·누수 직접 추적</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>에이전시 제안 — 데모 대신 &quot;3시간→10분 단축&quot; 같은 실측 결과 3건으로 신뢰 확보</li>
+<li>고객지원 에이전트 — 500건 사람 작성 응답을 골든셋으로 삼아 성공률 스코어링</li>
+<li>웹사이트 빌드 — 스크린샷 루프로 모바일 반응성·버튼·폼 웹훅 자동 점검</li>
+<li>이메일 자동화 — 스코프 키로 초안 생성만 허용해 대량 오발송 원천 차단</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>진입 장벽 <span class="dn">하락</span> → 모두가 유사 데모 보유, 차별화 난이도 <span class="up">상승</span></li>
+<li>모델·도구는 &quot;지금이 가장 열등한 상태&quot; — 자동화 범위는 계속 확대</li>
+<li>개인 프롬프트 역량에서 시스템·평가·권한 설계 역량으로 가치 이동</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/7WZ6XldxX0U?t=0" target="_blank" rel="noopener">00:00</a> 5,000시간 경험 서두, 두 진입 경로와 결과 수집</li>
+<li><a href="https://youtu.be/7WZ6XldxX0U?t=112" target="_blank" rel="noopener">01:52</a> 도구 무의미론 — 밑바탕 스킬이 진짜 자산</li>
+<li><a href="https://youtu.be/7WZ6XldxX0U?t=235" target="_blank" rel="noopener">03:55</a> 네거티브 프롬프팅·컨텍스트 엔지니어링</li>
+<li><a href="https://youtu.be/7WZ6XldxX0U?t=381" target="_blank" rel="noopener">06:21</a> 검증(verification) — AI가 스스로 완결 증명</li>
+<li><a href="https://youtu.be/7WZ6XldxX0U?t=524" target="_blank" rel="noopener">08:44</a> 권한 통제 — 스코프 키·15만 명 오발송 사고</li>
+<li><a href="https://youtu.be/7WZ6XldxX0U?t=806" target="_blank" rel="noopener">13:26</a> 비즈니스 파이프 — 병목·누수와 진짜 제약</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Receipts</td><td>빌드가 만든 실제 성과·수치</td><td>&quot;만들었다&quot;가 아닌 &quot;3시간을 10분으로 줄였다&quot;</td></tr><tr><td>네거티브 프롬프팅</td><td>&quot;하지 말 것&quot; 지시로 실패 경험 주입</td><td>신입에게 지뢰 위치 미리 알려주기</td></tr><tr><td>AI Evals</td><td>정답 예시로 성공률을 정량 측정</td><td>채점 기준표로 시험지 채점</td></tr><tr><td>LLM-as-judge</td><td>AI가 다른 AI 출력을 채점</td><td>추론이 필요한 답을 AI 심판이 판정</td></tr><tr><td>스코프 API 키</td><td>권한 범위를 물리적으로 제한한 키</td><td>특정 문만 여는 열쇠</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/7WZ6XldxX0U" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-08-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
