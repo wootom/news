@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Salmi Games CEO 야신 살미가 신작 Drifters: Blackout Crew의 디자인 철학, VR 개발의 현실, Steam Frame 포팅 경험을 투명하게 공유한 인터뷰."><title>VR Gamescast: Salmi Games&#x27; Yacine Salmi talks Drifters: Blackout Crew and porting to Steam Frame</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>UploadVR</span><span class="ey">MORNING DIGEST · 2026-08-05 · UploadVR</span><span class="chip">🎬 영상</span></div><h1>VR Gamescast: Salmi Games&#x27; Yacine Salmi talks Drifters: Blackout Crew and porting to Steam Frame</h1><p class="lead">Salmi Games CEO 야신 살미가 신작 Drifters: Blackout Crew의 디자인 철학, VR 개발의 현실, Steam Frame 포팅 경험을 투명하게 공유한 인터뷰.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>인디 VR 스튜디오의 신작 개발·플랫폼 전략·Steam Frame 포팅</td></tr><tr><td>발표자/채널</td><td>야신 살미(Salmi Games CEO) · UploadVR (Mike Johnson, James Tachie 진행)</td></tr><tr><td>핵심 결론</td><td>Drifters는 Quest·Steam VR 우선 얼리액세스 출시, Steam Frame 네이티브 지원 추진, VR 개발은 가장 어렵고 경쟁 치열한 소프트웨어 영역</td></tr><tr><td>대상</td><td>VR 게임 개발자, 인디 스튜디오, VR 하드웨어 관심층</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li>Drifters: Blackout Crew는 우주 배경 협동 PvE 추출 슈터, 전작 Sweet Surrender(로그라이크 슈터)의 교훈을 계승·확장</li>
+<li>셀셰이딩 아트 스타일: Quest 1의 저폴리곤 제약을 역이용해 시각적 차별화, 아웃라인 기법으로 정점 2배 대신 셰이더는 저렴</li>
+<li>우연한 발견: 여유 연산으로 포스트프로세싱(블룸·HDR)을 스탠드얼론에서 구현, 흑백 아웃라인 모드가 버그에서 기능으로 전환</li>
+<li>물리 시뮬레이션의 교훈: Sweet Surrender의 과도한 물리가 오히려 플레이 방해 → Drifters는 최소 물리로 재조정(중간 균형)</li>
+<li>개방적 커뮤니케이션 철학: NDA 범위 내에서 실패·수치까지 공유해 업계 투명성 촉진</li>
+<li>플랫폼 전략: 단일 플랫폼 집중 → 위시리스트 축적 → 순차 확장 (PSVR 2는 향후 검토)</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적/맥락 배경</h2><ul>
+<li>Quest 3 성능: 스탠드얼론으로는 강력하나 10~15년 전 PlayStation 3 수준, 정점 예산 제약 상존</li>
+<li>셀셰이딩 기법: 저폴리 유지로 정점 수 절감, 아웃라인이 정점을 2배로 늘리지만 픽셀 셰이더 비용은 매우 저렴 → Quest 2에서도 구동</li>
+<li>포스트프로세싱: 텍스처가 거의 없어 픽셀 셰이더 여유 확보 → 풀스크린 렌더 패스(블룸·HDR)를 스탠드얼론에서 실현, Drifters에도 적용(성능 부담 감수)</li>
+<li>사이파이 선택: 사실적 총기 시뮬레이션(H3VR 등)과 경쟁 회피, 창작 자유도 확보하되 펌프액션·만족스러운 재장전 등 기본 기대는 충족</li>
+<li>Steam Frame 포팅: Quest가 리드 플랫폼이라 APK 구동 용이, 초기 성능 매우 저조 → Valve 측 튜닝 후 Quest 수준 근접</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>아트 방향이 개발 결정을 좌우: 스타일 선택이 성능 예산·게임플레이 메커니즘(흑백 모드, 어둠 연출)까지 파생</li>
+<li>투명성 전략: 실패 사례 공유가 후배 개발자에게 실질 학습 자료 제공, 스튜디오 신뢰·커뮤니티 유대 강화</li>
+<li>리스크 관리형 출시: 3개 플랫폼 동시 출시 대신 Quest·Steam VR 얼리액세스 집중 후 데이터 기반 확장</li>
+<li>Valve와의 협업: 데브킷 제공·엔지니어 직접 소통·성능 <span class="up">개선</span> 지원 등 개방적 파트너십 확인, Steam Deck 검증까지 연결</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>Sweet Surrender (전작)</th><th>Drifters (신작)</th></tr></thead><tbody><tr><td>장르</td><td>싱글 로그라이크 슈터</td><td>협동 PvE 추출 슈터</td></tr><tr><td>재장전</td><td>수동 재장전 없음</td><td>수동 재장전 도입(크래프팅 무기)</td></tr><tr><td>물리</td><td>과도한 물리로 플레이 방해</td><td>최소화 후 만족감 위해 재추가(중간 균형)</td></tr><tr><td>리드 플랫폼</td><td>Quest 1 (Meta 계약)</td><td>Quest + Steam VR 얼리액세스</td></tr><tr><td>시각 효과</td><td>셀셰이딩 + 후처리 실험</td><td>셀셰이딩 심화 + 명암 연출 확장</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>인디 VR 개발 벤치마킹: 하드웨어 제약을 차별화 요소로 전환하는 아트·엔지니어링 전략 참고</li>
+<li>플랫폼 확장 계획: 위시리스트 기반 순차 출시 모델을 다른 인디 스튜디오가 적용</li>
+<li>Steam Frame 대응: APK vs Windows 빌드 포팅 경로 선택과 Valve 협업 프로세스 이해</li>
+<li>게임 디자인 의사결정: 물리 시뮬레이션·재장전 등 &quot;마찰 최소화&quot; 원칙을 스트림라인 슈터에 적용</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>Drifters: Blackout Crew — Quest·Steam VR 얼리액세스 출시 예정, PSVR 2는 위시리스트 축적 후 검토</li>
+<li>Steam Frame — Valve 튜닝으로 성능 Quest 근접, 가능하면 출시 시점 네이티브 지원 목표(가격·기기 흥행에 따라 결정)</li>
+<li>Gorilla Tag·Sweet Surrender는 Steam VR 인증 통과(Sweet Surrender는 Proton 경로, 1회 반려 후 통과), Steam Deck 검증</li>
+<li>하드웨어 시장 변수: Qualcomm 가격 인상, Nvidia 30% 인상 발표 등으로 Steam Frame 가격 불확실성 고조</li>
+<li>스튜디오 목표: Drifters를 향후 5~10년 지속 확장하며 스튜디오 유지</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/YoVw3SF2fOM?t=489" target="_blank" rel="noopener">08:09</a> Drifters: Blackout Crew 소개 — 우주 협동 PvE 추출 슈터</li>
+<li><a href="https://youtu.be/YoVw3SF2fOM?t=821" target="_blank" rel="noopener">13:40</a> 셀셰이딩·후처리 효과를 스탠드얼론에서 구현</li>
+<li><a href="https://youtu.be/YoVw3SF2fOM?t=1380" target="_blank" rel="noopener">23:00</a> 물리 시뮬레이션 과잉의 교훈과 재조정</li>
+<li><a href="https://youtu.be/YoVw3SF2fOM?t=1800" target="_blank" rel="noopener">30:00</a> PSVR 2·플랫폼 확장 전략</li>
+<li><a href="https://youtu.be/YoVw3SF2fOM?t=1980" target="_blank" rel="noopener">33:00</a> Steam Frame 포팅 — Valve 협업과 성능 <span class="up">개선</span></li>
+</ul></section><section class="card s12" id="s9"><h2><span class="seq">09</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>추출 슈터(Extraction Shooter)</td><td>목표 지역에 진입해 자원을 회수·탈출하는 슈터 장르</td></tr><tr><td>셀셰이딩</td><td>두꺼운 아웃라인으로 만화풍을 내는 렌더링 기법</td></tr><tr><td>후처리(Post-processing)</td><td>블룸·HDR 등 풀스크린 렌더 패스로 화면 품질 향상</td></tr><tr><td>Steam Frame</td><td>Valve의 신규 VR 헤드셋(스탠드얼론/PC스트리밍)</td></tr><tr><td>Proton</td><td>Windows 빌드를 리눅스/SteamOS에서 구동하는 호환 계층</td></tr><tr><td>APK</td><td>Android 패키지, Quest·Steam Frame 스탠드얼론 구동 형식</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/YoVw3SF2fOM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>UploadVR · 2026-08-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

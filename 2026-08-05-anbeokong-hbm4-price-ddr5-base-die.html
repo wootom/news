@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="HBM4 가격은 제조 원가가 아니라 &quot;같은 웨이퍼로 만들 수 있었던 DDR5의 기회비용&quot;으로 결정된다는 역산 논리를 제조사 관점에서 풀어낸 분석."><title>HBM4 가격은 왜 오를까? | DDR5부터 베이스 다이까지, 제조사의 계산법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학 - IT 테크 신기술</span><span class="ey">MORNING DIGEST · 2026-08-05 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>HBM4 가격은 왜 오를까? | DDR5부터 베이스 다이까지, 제조사의 계산법</h1><p class="lead">HBM4 가격은 제조 원가가 아니라 &quot;같은 웨이퍼로 만들 수 있었던 DDR5의 기회비용&quot;으로 결정된다는 역산 논리를 제조사 관점에서 풀어낸 분석.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>HBM4 가격 결정 구조와 DDR5 기회비용 역산</td></tr><tr><td>발표자/채널</td><td>안될공학(패치) — IT 테크 신기술 채널</td></tr><tr><td>핵심 결론</td><td>HBM4 가격은 제조원가가 아니라 포기한 DDR5 수익성으로 결정, HBM3e=100 기준 130 이상(고성능 초기 계약 140~150) 시나리오</td></tr><tr><td>대상</td><td>반도체 투자자, 메모리 산업 종사자, AI 인프라 관심층</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li>최근 트렌드포스 분석상 HBM은 웨이퍼당 수익성이 서버용 64GB DDR5보다 낮아지는 역전 현상 발생 (2026년 1분기 기준)</li>
+<li>원인: HBM 가격은 연단위 장기계약으로 선고정되는데 일반 DDR5 스팟·계약가가 예상보다 빠르게 급등</li>
+<li>HBM4 가격 역산의 출발점은 재료비가 아니라 같은 라인에서 만들 수 있었던 DDR5의 가치(기회비용)</li>
+<li>HBM4 원가 <span class="up">상승</span> 요인: 더 많은 웨이퍼 소모, 12단 적층 수율, 로직 베이스 다이, 2048비트 인터페이스, 초기 패키징 수율</li>
+<li>베이스 다이가 로직 칩으로 전환되며 메모리·파운드리·패키징 조직의 협업 필수화</li>
+<li>삼성 vs SK하이닉스: 수직계열화 강점과 조직·보상 갈등 이슈 부각</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적/맥락 배경</h2><ul>
+<li>스팟 가격 vs 계약 가격: 스팟은 소량 단기 거래 지표일 뿐, 엔비디아·AMD 등 대형 고객사 HBM은 인증 후 연간 이상 장기계약으로 거래</li>
+<li>웨이퍼 점유율: 마이크론에 따르면 동일 노드·동일 용량 기준 HBM3는 DDR5 대비 약 3배 웨이퍼 생산능력 소모, 차세대는 비율 더 확대</li>
+<li>3배 소모 이유: HBM용 다이는 TSV·넓은 주변회로로 면적이 커 웨이퍼당 개수 <span class="dn">감소</span>, 결함 포함 확률 <span class="up">상승</span></li>
+<li>적층 수율: 12단 HBM4는 정상 다이 12장 필요, 개별 수율 99% 가정 시 단순 확률 약 88.6%, KGD(Known Good Die) 검사·접합 수율이 핵심</li>
+<li>인터페이스: HBM3e 1024비트 → HBM4 2048비트로 폭 2배, 삼성 3.3TB/s·마이크론 2.8TB/s+ 대역폭 제시</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>HBM 확대 → DDR5 웨이퍼 <span class="dn">감소</span> → DDR5 가격 <span class="up">상승</span> → HBM 계약 하한선 <span class="up">상승</span>의 순환 구조</li>
+<li>가격 반영 시차: 마이크론은 2026년 HBM 물량·가격을 2025년 말 이미 확정, 이후 DDR5 급등분을 HBM 가격이 즉시 반영 못함 → 2027년 HBM4 협상에서 공급사 대폭 인상 요구</li>
+<li>대역폭 관점: HBM4는 스택당 대역폭이 HBM3 대비 크게 <span class="up">상승</span>(마이크론 2.3배), 스택 가격이 올라도 TB/s당 비용은 오히려 <span class="dn">하락</span> 가능 → GB 단가만으로 비교하면 오판</li>
+<li>삼성은 메모리·시스템LSI·파운드리·패키징을 모두 보유(수직계열화)하나, DS 부문 보상 합의에서 메모리와 적자 비메모리 조직 간 성과급 격차가 내부 갈등으로 표출</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>계산 논리</th></tr></thead><tbody><tr><td>1. 출발점 설정</td><td>HBM4 재료비가 아닌 대체 생산 가능한 DDR5 가치(기회비용)에서 시작</td></tr><tr><td>2. 웨이퍼 점유 반영</td><td>HBM은 동일 용량 대비 약 3배 웨이퍼 소모, HBM4는 더 큰 비율</td></tr><tr><td>3. 수율 부담 가산</td><td>12단 적층·KGD·접합·2048비트 검증의 초기 수율 손실 반영</td></tr><tr><td>4. 기회비용 가산</td><td>포기한 서버용 DDR5의 급등한 수익성 보전 필요</td></tr><tr><td>5. 시나리오 도출</td><td>HBM3e=100 기준 → HBM4 130+ (초기 고성능 계약 140~150)</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>메모리 반도체 투자 판단: 출하량이 아닌 웨이퍼당 수익성·베이스 다이 수율·계약가 반영 속도를 추적 지표로 활용</li>
+<li>반도체 공급망 분석: DDR5 쇼티지 지속 여부가 HBM 계약 하한선에 미치는 영향 모니터링</li>
+<li>삼성·SK하이닉스 경쟁력 비교: 수직계열화 능력과 조직·보상 정렬을 실제 수율·공급 안정성으로 연결하는지 점검</li>
+<li>AI 가속기 원가 분석: GB 단가 대신 TB/s당 비용으로 HBM4 경제성 재평가</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>2026년 1분기: HBM 웨이퍼당 수익성이 서버 DDR5에 역전됨 (트렌드포스)</li>
+<li>2026년 7월: 서버 DDR5 계약가 강세, 스팟은 상대적 환산 (트렌드포스)</li>
+<li>2027년 HBM4 협상: 공급사들이 상당한 가격 인상 요구, 협상 장기화</li>
+<li>전망: HBM3e 대비 30~50% 인상 시나리오, 초기 수율 안정화 속도가 실제 가격 결정 변수</li>
+<li>삼성: 2024년 7월 HBM 개발팀 신설 → 2025년 11월 D램 설계팀으로 재편, 조직·보상 정렬이 HBM4 성패 관건</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/yCmLJYxYPjk?t=28" target="_blank" rel="noopener">00:28</a> HBM4가 얼마나 비싸져야 하는가 — 문제 제기</li>
+<li><a href="https://youtu.be/yCmLJYxYPjk?t=139" target="_blank" rel="noopener">02:19</a> 스팟 가격 vs 대형 고객사 장기계약 가격 구분</li>
+<li><a href="https://youtu.be/yCmLJYxYPjk?t=193" target="_blank" rel="noopener">03:13</a> 마이크론의 웨이퍼 3배 소모 설명</li>
+<li><a href="https://youtu.be/yCmLJYxYPjk?t=308" target="_blank" rel="noopener">05:08</a> HBM 수익성이 DDR5에 역전된 트렌드포스 분석</li>
+<li><a href="https://youtu.be/yCmLJYxYPjk?t=421" target="_blank" rel="noopener">07:00</a> 2048비트 인터페이스와 베이스 다이 역할</li>
+<li><a href="https://youtu.be/yCmLJYxYPjk?t=719" target="_blank" rel="noopener">11:59</a> 삼성 vs SK하이닉스 조직·보상 갈등</li>
+</ul></section><section class="card s12" id="s9"><h2><span class="seq">09</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>HBM4</td><td>4세대 고대역폭 메모리, 2048비트 인터페이스·로직 베이스 다이 채택</td></tr><tr><td>베이스 다이</td><td>HBM 스택 하단의 로직 컨트롤러, 데이터 입출력·신호 타이밍·전력 분배 관리</td></tr><tr><td>TSV</td><td>Through-Silicon Via, 다이 수직 연결을 위한 실리콘 관통 전극</td></tr><tr><td>KGD</td><td>Known Good Die, 적층 전 정상 다이를 걸러내는 검사</td></tr><tr><td>스팟 가격</td><td>시장에서 즉시 구할 수 있는 소량 단기 거래 가격</td></tr><tr><td>기회비용</td><td>같은 웨이퍼로 대신 만들 수 있었던 DDR5의 수익 가치</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/yCmLJYxYPjk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 - IT 테크 신기술 · 2026-08-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
