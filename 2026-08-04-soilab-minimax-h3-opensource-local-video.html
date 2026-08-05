@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="중국 AI 기업 미니맥스(MiniMax)가 영상 생성 모델 H3(하일로 3)를 오픈웨이트로 무료 공개했다. 유료 API·자사 하일로 사이트 서비스와 별개로 허깅페이스에서 가중치를 내려받아 컴피UI(ComfyUI)에서 로컬 구동할 수 있다. RTX 3060급 그래픽카드만"><title>무료 오픈소스로 풀린 시덴스급 영상모델 — 미니맥스 H3 로컬 생성 실습 (소이랩)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>소이랩</span><span class="ey">MORNING DIGEST · 2026-08-06 · 소이랩</span><span class="chip">🎬 영상</span></div><h1>무료 오픈소스로 풀린 시덴스급 영상모델 — 미니맥스 H3 로컬 생성 실습 (소이랩)</h1><p class="lead">중국 AI 기업 미니맥스(MiniMax)가 영상 생성 모델 H3(하일로 3)를 오픈웨이트로 무료 공개했다. 유료 API·자사 하일로 사이트 서비스와 별개로 허깅페이스에서 가중치를 내려받아 컴피UI(ComfyUI)에서 로컬 구동할 수 있다. RTX 3060급 그래픽카드만 있으면 텍스트 기반 영상, 레퍼런스·옴니 참조 영상을 직접 생성할 수 있음을 실습으로 보여준 튜토리얼 영상이다.</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>미니맥스 H3(하일로 3) 오픈소스 공개 + 컴피UI 로컬 구동 실습</td></tr><tr><td>모델</td><td>H3 — 넥스트젠 멀티모델(텍스트→비디오, 스타트·엔드 프레임, 옴니 레퍼런스)</td></tr><tr><td>공개 방식</td><td>유료 API·하일로 사이트 서비스 + 오픈웨이트 무료 배포(허깅페이스)</td></tr><tr><td>최소 사양</td><td>RTX 3060 VRAM GPU, 24fps 최대 1080p FHD(현시점 권장 720p)</td></tr><tr><td>실습 범위</td><td>텍스트 감정연기 영상, 한글 모션그래픽, 조커 캐릭터 교체(옴니)</td></tr><tr><td>속도 팁</td><td>세이지 어텐션 노드로 26분→16분 단축(퀄리티 <span class="dn">하락</span> 없음)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조 — &#x27;로컬에서 돌리는 시덴스급 모델&#x27;의 등장</h2><p>현시점 영상 생성 모델의 최강자로 꼽히는 시덴스(Seedance)의 대항마로 미니맥스의 H3가 급부상했다. 발표자는 영상 도입부에 나온 장면이 촬영본도 시덴스 결과물도 아닌 H3로 만든 영상이라고 밝히며, 감정·움직임이 매우 자연스럽게 표현된다고 강조한다. 핵심 메시지는 &quot;시덴스급 모델을 로컬에서 무료로 쓰는 날이 코앞으로 왔다&quot;는 것이다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 넥스트젠 멀티모델과 오픈웨이트 공개</h2><p>미니맥스는 중국의 대형 AI 개발사로, 축적한 기술을 바탕으로 H3를 공개했다. H3는 텍스트 기반 비디오, 스타트·엔드 프레임, 옴니 레퍼런스를 모두 처리하는 멀티모델 비디오 생성 모델로, 시덴스와 동일한 기능군을 제공한다고 소개된다. 놀라운 지점은 유료 API와 자사 하일로 사이트 서비스가 이미 있음에도, 모델을 오픈소스 소프트웨어(무료 다운로드)로 함께 공개했다는 점이다. 사양은 초당 24프레임·최대 1080p FHD이며, RTX 3060 VRAM GPU에서도 작동한다고 홍보한다. 다만 공개 초기라 1080p는 아직 어렵고 720p 사용을 권장한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미 — 로컬·무제한 생성 시대의 개막</h2><p>지금까지 고품질 캐릭터 교체·모션그래픽은 상당한 비용을 들여야 했지만, 오픈웨이트 공개로 RTX 그래픽카드만 있으면 사실상 무제한으로 영상을 뽑을 수 있는 환경이 열렸다. 유료 상용 모델(시덴스 등)과 대등한 기능을 로컬에서 무료로 쓸 수 있다는 점은, 영상·모션그래픽 제작 비용 구조와 진입 장벽을 근본적으로 낮춘다. 이는 상용 영상 모델 진영에 직접적인 경쟁 압력이 된다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론 — 설치부터 옴니 참조까지</h2><ul>
+<li><strong>설치 준비</strong>: ① 컴피UI(ComfyUI)를 최신으로 업데이트해 H3 지원·워크플로우 확보 → ② 허깅페이스 페이지에서 디퓨전 모델·텍스트 인코더·VAE를 내려받는다. 처음에는 FP8 스케일드 디퓨전 모델 + MVFP4 텍스트 인코더로 시작할 것을 권장한다. 업데이트 후 컴피UI에 H3 워크플로우 템플릿 4종이 나타난다.</li>
+<li><strong>프롬프트 작성</strong>: H3는 프롬프트 양식이 매우 정교해, 별도의 프롬프트 가이드(허깅페이스의 base·RF 마크다운 파일)가 제공된다. 이 MD 규칙 파일을 챗GPT·코덱스 같은 LLM에 넣고 원하는 방향만 지시하면 복잡한 H3 프롬프트를 깔끔하게 자동 생성할 수 있다.</li>
+<li><strong>텍스트→비디오</strong>: 감정 연기 레퍼런스를 넣어 프롬프트를 만들고, 시드·듀레이션(15초)·메가픽셀(1M)을 조정해 실행하면 발음·표정까지 자연스러운 결과물이 나온다. 한글·세종 테마의 타이틀 모션그래픽도 인상적인 글자 이펙트로 생성된다.</li>
+<li><strong>옴니 레퍼런스(참조 기반)</strong>: 다크나이트 조커 장면 등 소스 영상에 교체할 인물 이미지를 넣고, 비디오·오디오 레퍼런스를 각 노드에 연결한 뒤 듀레이션(예: 7초)을 맞춰 실행하면 캐릭터가 교체된 영상이 나온다. 스토리보드 이미지를 입력해 프롬프트화하면 스토리보드 기반 영상도 생성된다.</li>
+<li><strong>속도 최적화</strong>: 세이지 어텐션(Sage Attention, KJ 노드)을 워크플로우에 연결하고 오토로 설정하면 생성 시간이 26분(또는 24분)에서 16분으로 단축된다(퀄리티 <span class="dn">하락</span> 없음). 설치가 복잡하므로 코덱스에 전체 권한을 열고 그래픽카드 드라이버에 맞춰 설치를 맡기면 자동으로 처리된다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><p>로컬 GPU만으로 광고·단편의 캐릭터 교체 영상 제작, 한글 타이틀·모션그래픽 생성, 스토리보드 기반 프리비주얼 영상화, API 비용 없이 반복 실험이 필요한 크리에이터의 대량 영상 프로토타이핑에 활용할 수 있다.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>H3는 공개 초기라 720p 권장 등 제약이 있으나, RTX 3060급에서도 상용급 결과가 나오는 점이 확인됐다. 발표자는 후속 콘텐츠로 H3의 다양한 기능을 계속 소개하겠다고 예고했다. 오픈웨이트 공개로 로컬 영상 생성 생태계(컴피UI·워크플로우·최적화 노드)가 빠르게 확장될 전망이다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>H3 (하일로 3)</td><td>미니맥스가 공개한 영상 생성 모델</td><td>시덴스급 성능을 로컬에서 구동</td></tr><tr><td>시덴스(Seedance)</td><td>현시점 최강급 상용 영상 생성 모델</td><td>H3가 겨냥한 비교 기준</td></tr><tr><td>오픈웨이트</td><td>모델 가중치를 공개해 무료로 내려받아 쓰는 방식</td><td>유료 API 없이 내 PC에서 실행</td></tr><tr><td>컴피UI(ComfyUI)</td><td>노드형 AI 이미지·영상 생성 워크플로우 도구</td><td>블록을 연결해 파이프라인 구성</td></tr><tr><td>옴니 레퍼런스</td><td>이미지·비디오·오디오 등 다중 참조로 영상 생성</td><td>조커 이미지로 인물 통째 교체</td></tr><tr><td>세이지 어텐션</td><td>생성 속도를 높이는 어텐션 최적화 노드</td><td>26분 작업을 16분으로 단축</td></tr><tr><td>코덱스(Codex)</td><td>명령으로 코드·설치를 대신 처리하는 코딩 에이전트</td><td>복잡한 노드 설치를 자동 수행</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/sNk_bZDxM5w?t=176" target="_blank" rel="noopener">오픈소스 공개·스펙: 24fps·최대 1080p·RTX 3060 구동</a></li>
+<li><a href="https://youtu.be/sNk_bZDxM5w?t=226" target="_blank" rel="noopener">설치 준비: 컴피UI 업데이트·허깅페이스 모델 다운로드</a></li>
+<li><a href="https://youtu.be/sNk_bZDxM5w?t=553" target="_blank" rel="noopener">텍스트→비디오 &#x27;감정 연기&#x27; 결과 시연</a></li>
+<li><a href="https://youtu.be/sNk_bZDxM5w?t=619" target="_blank" rel="noopener">세이지 어텐션으로 26분→16분 단축 꿀팁</a></li>
+<li><a href="https://youtu.be/sNk_bZDxM5w?t=823" target="_blank" rel="noopener">옴니 레퍼런스: 다크나이트 조커 캐릭터 교체</a></li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/sNk_bZDxM5w" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>소이랩 · 2026-08-06</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
