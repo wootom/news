@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="메이커 에반이 직접 만든 클로드 스킬 &#x27;상세페이지 딸깍&#x27;으로, AI가 기획·촬영·카피·자기심사까지 수행해 &#x27;AI 티&#x27;를 지운 상세페이지를 만드는 과정을 처음부터 끝까지 시연한 정보 제공 영상(제작자 견해)."><title>상세페이지 외주 맡기지 마세요, AI에게 시키세요 (상세페이지 딸깍 스킬)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-08-06 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>상세페이지 외주 맡기지 마세요, AI에게 시키세요 (상세페이지 딸깍 스킬)</h1><p class="lead">메이커 에반이 직접 만든 클로드 스킬 &#x27;상세페이지 딸깍&#x27;으로, AI가 기획·촬영·카피·자기심사까지 수행해 &#x27;AI 티&#x27;를 지운 상세페이지를 만드는 과정을 처음부터 끝까지 시연한 정보 제공 영상(제작자 견해).</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>문제: 상세페이지는 글·그림·광고를 다 잘해야 하는 물건, 외주는 견적 50~100만원·시안 대기 한 달·수정 반복</li>
+<li>그냥 AI에게 시키면: 그라데이션 네모·가짜 프로그램 화면·존재하지 않는 후기(별 4.9·312개) 등 &#x27;AI 슬롭&#x27; 생성</li>
+<li>핵심 통증: 가짜 별점 하나가 커리큘럼·강사 소개까지 통째로 의심받게 함</li>
+<li>해법: &#x27;섹션 채우기&#x27;는 쉽고, 어려운 건 &#x27;AI 티 지우기&#x27; → 이 문제 해결에 스킬 제작의 대부분 시간 투입</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>스킬 작동 구조</h2><ul>
+<li>스킬 = AI에게 주는 업무 매뉴얼(본문 1 + 참고문서 7개), AI는 레퍼런스를 텍스트가 아니라 &#x27;이미지로 봄&#x27;</li>
+<li>1단계 기획: 만들어 달라 해도 바로 안 만들고 선택지 3개씩 질문(주문받는 사람 아닌 기획자처럼)</li>
+<li>필수 3질문: (1) 후킹 방향(불안·동경·손실계산) (2) 이미지 스타일(실사·일러스트·타이포) (3) &quot;무엇을 파는가&quot;(리프레이밍)</li>
+<li>후기 요구: 지갑을 여는 건 남의 말이므로 후기 기반으로 상세페이지 품질 상향</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>리프레이밍 예시</h2><ul>
+<li>&#x27;영문 레터링 8주 과정&#x27; → 가격·주차 비교가 시작돼 무조건 싼 곳이 승리</li>
+<li>&#x27;내 손글씨를 돈이 되는 무기로 바꾸는 8주&#x27; → 비교 대상 소멸, 같은 물건인데 파는 것이 달라짐</li>
+<li>스킬은 백지로 안 묻고 AI가 먼저 2~3개 각도를 제시 → 사용자는 고르기만</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>디자인 규칙</h2><ul>
+<li>레퍼런스를 &#x27;만드는 도구&#x27;가 아니라 &#x27;나오는 결과물&#x27;로 선택(AI 브랜딩 강의 → 시네마틱 아닌 차분한 편집형)</li>
+<li>4종 분류: 차분한 편집형(기본)·따뜻한 제품형·강한 그래픽형·어두운 시네마틱형, 다른 계열 하나를 일부러 더 참조(그대로 베끼기 방지)</li>
+<li>포인트 컬러 1개만: 배경은 흰색·아주 연한 회색·거의 검정 중 하나, 색은 제목·배지에만 절제 사용</li>
+<li>사진: 그라데이션 네모 금지, 오픈AI 이미지 모델로 5장 생성 → 8장을 나란히 놓고 이질 색 재검수</li>
+<li>실제 문서 지면을 캡처해 삽입(지어낼 수 없는 증거), 이미지·GIF 제공 시 후킹·품질 <span class="up">상승</span></li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>자기 심사 구조 (스킬의 심장)</h2><ul>
+<li>AI가 만든 페이지를 또 다른 AI가 레퍼런스 폴더 기준으로 심사·반려</li>
+<li>재료 없는 섹션은 통째로 삭제(빈칸 채우기표 아님), 명확한 목적·메시지 있는 섹션만 생존</li>
+<li>가격 옆에 반드시 비교 대상 삽입(심적 회계), 페인포인트→해결→후기 순서 구성</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>시사점</h2><ul>
+<li>제작 시간 약 30분, 수개월간 마케팅·이미지생성·레퍼런스 기법을 축적해 다듬은 스킬</li>
+<li>모델 성능이 진화해 스킬을 레퍼런스로 참조 가능한 구간에 도달, 스킬샵에서 판매 개시</li>
+<li>상세페이지의 진짜 난제는 &#x27;완성도&#x27;가 아니라 &#x27;신뢰를 깨뜨리는 AI 티&#x27;의 제거</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/9g645PFYKjI?t=60" target="_blank" rel="noopener">01:00</a> 상세페이지가 어려운 이유와 외주의 벽</li>
+<li><a href="https://youtu.be/9g645PFYKjI?t=210" target="_blank" rel="noopener">03:30</a> 그냥 AI에게 시키면 나오는 &#x27;AI 슬롭&#x27;</li>
+<li><a href="https://youtu.be/9g645PFYKjI?t=300" target="_blank" rel="noopener">05:00</a> 스킬 구조와 필수 3질문·리프레이밍</li>
+<li><a href="https://youtu.be/9g645PFYKjI?t=540" target="_blank" rel="noopener">09:00</a> 레퍼런스 4종·색 규칙·사진 생성</li>
+<li><a href="https://youtu.be/9g645PFYKjI?t=720" target="_blank" rel="noopener">12:00</a> 자기 심사·섹션 삭제·가격 비교 규칙</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>AI 슬롭</td><td>AI가 만든 티가 나는 저품질 부품(가짜 후기·그라데이션 네모 등)</td></tr><tr><td>스킬</td><td>AI에게 주는 업무 매뉴얼(본문+참고문서)</td></tr><tr><td>리프레이밍</td><td>같은 상품의 &#x27;파는 것&#x27;을 바꿔 비교 대상을 없애는 기법</td></tr><tr><td>심적 회계</td><td>가격 옆 비교 대상을 두어 체감 가격을 낮추는 마케팅 기법</td></tr><tr><td>페인포인트</td><td>고객이 겪는 고통·문제 지점</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/9g645PFYKjI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-08-06</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

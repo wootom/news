@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="티타임즈가 엔비디아발 &#x27;AI 순환 거래&#x27; 구조를 해부하고, 칩을 파는 회사가 칩 살 돈까지 대주는 방식의 작동 원리·찬반 논리·위험성을 정리한 정보 제공 영상(진행자 해설)."><title>엔비디아는 어쩌다 연매출보다 더 큰 보증을 서게 됐나? (AI 순환 거래·AI 중앙은행 논란)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-08-06 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>엔비디아는 어쩌다 연매출보다 더 큰 보증을 서게 됐나? (AI 순환 거래·AI 중앙은행 논란)</h1><p class="lead">티타임즈가 엔비디아발 &#x27;AI 순환 거래&#x27; 구조를 해부하고, 칩을 파는 회사가 칩 살 돈까지 대주는 방식의 작동 원리·찬반 논리·위험성을 정리한 정보 제공 영상(진행자 해설).</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>사건: 엔비디아가 오픈AI의 데이터센터 임대료(최대 2,500억 달러·약 360조원) 보증 + 칩 대금(3,500억 달러) 금융 지원 논의</li>
+<li>구조: 건물주(소프트뱅크)에는 입주자 알선, 입주자(오픈AI)에는 보증, 그 건물 채우는 칩은 엔비디아가 판매</li>
+<li>비유: 자동차 대리점이 손님에게 찻값까지 빌려주는 셈, 파는 쪽이 사는 쪽 돈까지 조달</li>
+<li>명명: 반도체 분석기관 세미애널리시스가 &quot;엔비디아가 AI 중앙은행이 됐다&quot;고 표현</li>
+</ul></section><section class="card s12" id="s2"><h2><span class="seq">02</span>순환 거래의 실체 (수치)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>규모</th></tr></thead><tbody><tr><td>오픈AI 임대료 보증 논의</td><td>최대 2,500억 달러(약 360조원)</td></tr><tr><td>엔비디아 지난 회계연도 연매출</td><td>2,159억 달러 (보증액이 연매출보다 큼)</td></tr><tr><td>2026년 AI 기업 지분 투자</td><td>400억 달러 이상(약 57조원)</td></tr><tr><td>네이버 유치</td><td>엔비디아 10억 달러(1.48조원) 투자, 지분 4.5% 3대 주주</td></tr><tr><td>SSI(일리야 수츠케버)</td><td>50억 달러 투자, 컴퓨팅 자원 1년 내 10배</td></tr><tr><td>세미애널리시스 전망</td><td>2029년까지 AI 관련 부채 7.1조 달러</td></tr></tbody></table></div></section><section class="card s6" id="s3"><h2><span class="seq">03</span>핵심 논지</h2><ul>
+<li>지분 투자는 보유 현금만큼만 가능하나, 지급 보증은 현금 없이 신용만 빌려줘 규모에 천장이 사라짐</li>
+<li>칩·데이터센터·계약 모두 실재·공시되므로 &#x27;없는 매출을 만드는 회계부정&#x27;과는 다름</li>
+<li>그러나 위험이 분산이 아니라 증폭됨, 참여사가 서로의 매출이자 서로의 채무</li>
+<li>모든 것이 결국 오픈AI 한 회사에 집중(연매출 250억·올해 140억 적자, 2035년까지 컴퓨팅 약정 약 1.1조 달러)</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>찬반 논리</h2><ul>
+<li>반대(거품): 1999년 닷컴버블 통신장비(루슨트·노텔·시스코)가 신생 통신사에 돈 빌려줘 장비 판매 → 거품 붕괴로 줄도산 재연 우려</li>
+<li>찬성(정상): 지금 인프라 구매 주력은 MS·구글·아마존·메타 등 현금 최강자, 사는 쪽 체력이 근본적으로 다름</li>
+<li>찬성 논거: 샘 올트먼 &quot;진짜 진보는 금융 모델을 혁신할 때&quot;, GPU 실물 존재·매출 발생 = 평범한 업계 투자</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>리스크</h2><ul>
+<li>시스템에 브레이크 부재: 진짜 중앙은행엔 금리라는 제동장치, 엔비디아는 칩을 더 팔수록 이익이라 수요 둔화 시 보증을 더 서는 게 합리적 선택</li>
+<li>심판이 선수 겸업: 시장 최고가 물건 파는 회사가 최종 대부자 역할 → 판단 중립성 상실</li>
+<li>오픈AI 단일 의존: 한 곳이 흔들리면 연결된 전체가 동반 흔들림</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>전망</h2><ul>
+<li>업계 표준화: AMD(오픈AI 워런트+900억 달러 공급)·구글(앤스로픽 350억 달러 대출 보증) 등 유사 구조 확산</li>
+<li>남는 질문: 칩 파는 회사가 칩 살 돈까지 대줘야 굴러가는 시장이라면 그 수요는 어디까지가 진짜인가</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>타임스탬프</h2><ul>
+<li><a href="https://youtu.be/I3MPVsEs13A?t=60" target="_blank" rel="noopener">01:00</a> 오픈AI 임대료·칩 대금 보증 구조</li>
+<li><a href="https://youtu.be/I3MPVsEs13A?t=180" target="_blank" rel="noopener">03:00</a> 네이버·SSI·코어위브 등 순환 투자 사례</li>
+<li><a href="https://youtu.be/I3MPVsEs13A?t=330" target="_blank" rel="noopener">05:30</a> 지분 투자에서 지급 보증으로의 전환과 천장 소멸</li>
+<li><a href="https://youtu.be/I3MPVsEs13A?t=390" target="_blank" rel="noopener">06:30</a> 1999년 닷컴버블 통신장비와의 비교</li>
+<li><a href="https://youtu.be/I3MPVsEs13A?t=450" target="_blank" rel="noopener">07:30</a> AI 중앙은행 논란과 브레이크 부재</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>AI 순환 거래</td><td>파는 쪽이 사는 쪽 자금까지 조달해 돈이 제자리로 돌아오는 구조</td></tr><tr><td>지급 보증</td><td>현금 대신 신용으로 타사 채무를 책임지는 방식</td></tr><tr><td>AI 중앙은행</td><td>최종 대부자 역할을 하는 엔비디아를 빗댄 표현</td></tr><tr><td>워런트</td><td>정해진 가격에 주식을 살 수 있는 권리</td></tr><tr><td>세미애널리시스</td><td>반도체 산업 분석 기관</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/I3MPVsEs13A" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-08-06</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
