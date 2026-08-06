@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Theoretically Media(Tim)가 단편 &quot;Death Walks into a Bar&quot; 제작 비하인드를 통해 ByteDance Seedance 2.5의 프롬프팅·30초 생성·비용·한계를 실전 리뷰한 마스터클래스 영상."><title>Seedance 2.5 Masterclass &amp; Early Review</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Theoretically Media</span><span class="ey">MORNING DIGEST · 2026-08-07 · Theoretically Media</span><span class="chip">🎬 영상</span></div><h1>Seedance 2.5 Masterclass &amp; Early Review</h1><p class="lead">Theoretically Media(Tim)가 단편 &quot;Death Walks into a Bar&quot; 제작 비하인드를 통해 ByteDance Seedance 2.5의 프롬프팅·30초 생성·비용·한계를 실전 리뷰한 마스터클래스 영상.</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>대상 모델</td><td>ByteDance Seedance 2.5 (Dreamina 플랫폼 경유)</td></tr><tr><td>사례 작품</td><td>단편 &quot;Death Walks into a Bar&quot; (네온누아르, 약 2분22초)</td></tr><tr><td>핵심 신기능</td><td>30초 단일 생성 모드, 최대 50개 이미지 레퍼런스, 옴니 레퍼런스</td></tr><tr><td>해상도</td><td>720p 고정 생성 → Topaz로 업스케일 필요</td></tr><tr><td>총 생성량</td><td>약 15회 생성 · 450초 분량 → 최종 142초 편집 (비율 약 3.2:1)</td></tr><tr><td>비용 추정</td><td>API 기준 약 $80~95, 플랫폼 환산 시 약 $240~355</td></tr><tr><td>전통 촬영 대비 비용</td><td>약 $55,000~85,000 (저예산 인디 버전 $20,000~35,000)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ul>
+<li><strong>30초 생성 모드</strong>: 기존 2.0 대비 대폭 늘어난 단일 생성 길이. 대사 위주 신에서 특히 유용하며, 생성 비용은 높지만 재시도(retake) 횟수가 줄어 총량으로는 이득</li>
+<li><strong>옴니 레퍼런스(Omni Reference)</strong>: 캐릭터·장소를 이미지 3장만으로 지정 가능. 상세 캐릭터 시트나 정교한 로케이션 지도 없이도 일관된 톤 유지</li>
+<li><strong>최대 50개 이미지 레퍼런스</strong>: 캐릭터의 다양한 의상/소품 등 다중 이미지 레퍼런스를 한 번에 투입해도 안정적으로 반영</li>
+<li><strong>퍼스트 프레임 + 옴니 레퍼런스 결합</strong>: 각 샷의 첫 프레임 이미지와 상세 옴니 레퍼런스를 동시에 제공하는 방식도 테스트, 준수한 결과이나 샷 순서가 프롬프트 의도와 다르게 나오는 경우 있음</li>
+<li><strong>음성 캐스팅</strong>: 별도 지정이 없으면 이미지 레퍼런스의 인상에 맞춰 모델이 자체적으로 목소리(억양 포함)를 부여. 예) 미국인 캐릭터에 영국식 억양이 붙는 오류 발생, &quot;speaking American&quot;으로 명시해도 완전히 해결되지 않음</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>2.5는 2.0과 프롬프트 문법이 상당히 달라, 기존 2.0용 프롬프트를 그대로 쓰면 결과가 무너지는 경우가 많음 — 공식 문서 기반 재학습 필요</li>
+<li>텍스트를 화면 내 소품(책 페이지의 이름 등)에 정확히 렌더링해야 하는 경우, 외부 이미지 편집 도구(GPT image, Nano Banana)로 레퍼런스를 만드는 방식은 공간·비율 문제로 실패 — Seedance 자체에 프롬프트로 직접 생성시키는 방식이 더 안정적</li>
+<li>30초 장문 생성에서 디코히런스(decoherence)·모핑 아티팩트가 간헐적으로 발생(특히 액션 시퀀스), 생성 전체에 지속되지는 않으며 업스케일로도 제거되지 않음 — 추후 패치 예상(2.0 출시 초기에도 유사 패턴 있었음)</li>
+<li>과도하게 빠른 컷 편집(1초 단위 하이퍼컷) 스타일의 프롬프트는 선호하지 않으며, 호흡을 더 주는 프롬프트에서 결과가 <span class="up">개선</span>됨</li>
+<li>smartedit·롱비디오 기능은 제작 당시 접근 권한이 없어 테스트하지 못함</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>30초 생성은 비용이 높으므로 모든 신에 적용할 필요는 없음 — 대사 중심의 &quot;talky&quot; 신처럼 실제로 긴 호흡이 필요한 곳에만 선택적으로 사용하는 것이 합리적</li>
+<li>720p 고정 생성 + 외부 업스케일(Topaz) 조합이 현재로선 비용 대비 합리적인 워크플로우로 자리잡음</li>
+<li>프롬프트 난도가 높아져 진입장벽이 있지만, 프롬프트 어드히어런스(지시 반영도) 자체는 이전 버전 대비 크게 <span class="up">개선</span>되어 &quot;좋은 모델에서 훌륭한 모델로 가는 길목&quot;이라는 평가</li>
+<li>1인 창작자가 AI 영상 생성만으로 네온누아르 단편을 프로덕션 비용의 1/200 수준으로 완성할 수 있음을 실증 — 전통 프로덕션 대비 비용 격차가 워크플로우 성숙과 함께 계속 좁혀지는 흐름</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ol>
+<li><strong>레퍼런스 최소화</strong>: 캐릭터 2명 + 로케이션 1컷, 총 3장의 이미지만으로 전체 단편의 비주얼 일관성 확보 (Midjourney v8로 사전 생성)</li>
+<li><strong>30초 생성 우선 시도</strong>: 대사·연기가 중요한 신은 30초 모드로 크게 생성 후, 쓸 만한 구간을 편집에서 골라 쓰는 방식(전체가 실패해도 부분 활용 가능)</li>
+<li><strong>부분 재촬영(스크린샷 재활용)</strong>: 특정 대사 구간의 앵글이 어색하면, 다른 세그먼트에서 캐릭터 스크린샷을 추출해 이미지-투-비디오로 개별 재생성</li>
+<li><strong>텍스트 소품은 모델 자체 생성</strong>: 책에 적힌 이름처럼 정밀한 텍스트가 필요한 장면은 외부 이미지 편집 대신 Seedance에 프롬프트로 직접 요청</li>
+<li><strong>저해상도 생성 후 업스케일</strong>: 720p로 다수 생성 → Topaz Desktop(표준 업스케일, 크리에이티브 모드 아님)으로 후반 업스케일</li>
+<li><strong>AI를 활용한 비용 산정</strong>: Claude에게 실제 생성 비용(플랫폼/크레딧 환산)과 전통 촬영 대비 비용을 각각 산출시켜 비교 자료로 활용</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>저예산 단편 영화·시네마틱 트레일러</strong>: 대사 중심 신을 30초 생성으로 확보하고 나머지는 짧은 인서트로 채우는 하이브리드 편집</li>
+<li><strong>캐릭터 의상/소품 베리에이션 테스트</strong>: 최대 50개 레퍼런스 기능으로 동일 캐릭터의 다양한 착장 변형을 빠르게 프로토타입</li>
+<li><strong>브랜드/광고용 목업 프로덕션</strong>: 전통 촬영 대비 1/200 수준 비용으로 컨셉 영상 제작 후 실제 촬영 여부 의사결정</li>
+<li><strong>프롬프트 엔지니어링 학습 자료 제작</strong>: 실패 사례(거대한 책, 영국식 억양 등)를 공유해 팀 내 프롬프트 가이드/스킬 파일로 축적</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>현재 720p 고정 생성이 한계이나, 비용 절감 관점에서는 오히려 &quot;저해상도 생성 후 업스케일&quot; 전략이 권장됨</li>
+<li>디코히런스·모핑 이슈는 2.0 출시 초기에도 있었던 패턴으로, 저자는 조만간 패치될 것으로 예상</li>
+<li>smartedit·롱비디오 등 미공개/미접근 기능이 남아 있어 모델의 전체 역량은 아직 다 드러나지 않은 상태</li>
+<li>&quot;아직 매우 초기 단계이며 앞으로 발견할 것이 많다&quot;는 것이 저자의 결론 — 지속적인 실험과 프롬프트 공유를 예고</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Seedance 2.5</td><td>ByteDance 계열 AI 영상 생성 모델의 최신 버전</td></tr><tr><td>옴니 레퍼런스(Omni Reference)</td><td>이미지 등 다중 레퍼런스를 함께 입력해 캐릭터·장면 일관성을 유지하는 기능</td></tr><tr><td>디코히런스(Decoherence)</td><td>장시간 생성 중 형태·질감이 흐트러지거나 붕괴하는 현상</td></tr><tr><td>이미지-투-비디오</td><td>정지 이미지를 시작 프레임으로 삼아 영상을 생성하는 방식</td></tr><tr><td>Topaz</td><td>영상 업스케일링에 특화된 후반 처리 소프트웨어</td></tr><tr><td>Dreamina</td><td>ByteDance의 생성형 크리에이티브 플랫폼(Seedance 제공 경로)</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/b5F81eip5BM&amp;t=0초" target="_blank" rel="noopener">0:00</a> 인트로 — 단편 공개 배경과 마스터클래스 예고</li>
+<li><a href="https://youtu.be/b5F81eip5BM&amp;t=189초" target="_blank" rel="noopener">3:09</a> 레퍼런스 3장으로 전체 단편 제작한 방식</li>
+<li><a href="https://youtu.be/b5F81eip5BM&amp;t=385초" target="_blank" rel="noopener">6:25</a> 텍스트 소품(책 이름) 렌더링 문제와 해결법</li>
+<li><a href="https://youtu.be/b5F81eip5BM&amp;t=472초" target="_blank" rel="noopener">7:52</a> 720p 고정 생성과 Topaz 업스케일 워크플로우</li>
+<li><a href="https://youtu.be/b5F81eip5BM&amp;t=561초" target="_blank" rel="noopener">9:21</a> 총 생성 비용과 전통 촬영 대비 비용 비교</li>
+<li><a href="https://youtu.be/b5F81eip5BM&amp;t=788초" target="_blank" rel="noopener">13:08</a> 프롬프트 전략과 음성 억양 이슈</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/b5F81eip5BM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Theoretically Media · 2026-08-07</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

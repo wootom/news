@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="FMS26에서 SK하이닉스·샌디스크는 낸드를 데이터센터 메모리 계층으로 끌어올린 공개 표준 HBF(스택당 최대 512GB)를, 삼성은 낸드와 NPU를 한 패키지로 묶는 맞춤형 통합 구조 zNAND-O(초당 최대 400GB)를 각각 제시하며 같은 낸드에서 서로 다른 답을"><title>삼성·하이닉스 막 공개. HBM보다 10배 큰 메모리 — HBF·zNAND-O 전격 분석</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-08-07 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>삼성·하이닉스 막 공개. HBM보다 10배 큰 메모리 — HBF·zNAND-O 전격 분석</h1><p class="lead">FMS26에서 SK하이닉스·샌디스크는 낸드를 데이터센터 메모리 계층으로 끌어올린 공개 표준 HBF(스택당 최대 512GB)를, 삼성은 낸드와 NPU를 한 패키지로 묶는 맞춤형 통합 구조 zNAND-O(초당 최대 400GB)를 각각 제시하며 같은 낸드에서 서로 다른 답을 내놓았다는 분석.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>HBM보다 10배 큰 신규 메모리 계층 — HBF(SK하이닉스·샌디스크)와 zNAND-O(삼성)</td></tr><tr><td>발표자/채널</td><td>안될공학(패치) — IT 테크 신기술 채널</td></tr><tr><td>핵심 결론</td><td>낸드를 AI 가속기 가까이 배치해 웨이트 저장 문제를 푸는 두 갈래 접근 — SK하이닉스는 개방형 표준(HBF), 삼성은 맞춤형 패키지 통합(zNAND-O)</td></tr><tr><td>대상</td><td>반도체 투자자, AI 인프라·메모리 산업 종사자, GPU/NPU 시스템 설계자</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ul>
+<li>SK하이닉스 16단 HBM4는 스택 하나에 48GB, 반면 SK하이닉스·샌디스크가 FMS26에서 공개한 HBF는 스택 하나에 최대 512GB 제시 — HBM 10개(480GB)보다 큰 용량을 스택 1개에 압축</li>
+<li>HBF는 디램이 아니라 낸드 플래시 기반 &quot;High Bandwidth Flash&quot; — 8단 또는 16단 적층, 초당 0.4TB~최대 3TB 성능 제시</li>
+<li>삼성은 같은 행사에서 10세대 낸드를 NPU와 한 패키지로 묶는 zNAND-O(진앤드 5) 공개</li>
+<li>SK하이닉스는 낸드를 데이터센터의 새로운 메모리 계층으로, 삼성은 낸드를 특정 NPU·모델에 맞춘 통합 패키지로 각각 다르게 활용</li>
+<li>HBM 구조: 얇은 디램 다이를 여러 장 쌓고 TSV로 수직 연결한 스택 하나가 GPU 주변에 붙는 단위</li>
+<li>HBF 구조: 디램 대신 낸드 다이를 8~16단 적층, 베이스 다이가 낸드의 약점(느린 응답)을 감추고 메모리처럼 보이게 하는 역할 수행</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>프런티어 모델 실행 시 학습된 가중치(웨이트)를 메모리에 올려야 하는데, 모델이 커질수록 웨이트가 GPU 한 장의 HBM에 다 들어가지 못해 여러 GPU에 나눠 담고 통신하는 구조가 됨 — 이때 GPU 증설 이유가 연산량이 아니라 메모리 용량 부족인 경우 발생</li>
+<li>HBM과 HBF는 둘 다 병렬 메모리지만 병렬성을 쓰는 방식이 다름: HBM은 빠른 디램을 넓게 연결해 지연시간을 낮추면서 고대역폭도 확보, HBF는 낸드의 긴 응답시간을 그대로 안고 가는 대신 여러 다이에 읽기 요청을 미리 보내 큰 데이터 묶음을 동시에 받아 전체 처리량을 높임</li>
+<li>첫 데이터 도착 속도는 HBM이 압도적으로 빠름 — HBF는 웨이트처럼 읽는 순서가 규칙적인 데이터에 적합</li>
+<li>HBM4는 GPU와 연결되는 데이터 인터페이스가 2048비트까지 확장</li>
+<li>낸드를 가속기 가까이 연결하기 위한 규격이 UCIe(Universal Chiplet Interconnect) — 서로 다른 칩을 한 패키지 안에서 연결해 하나의 시스템처럼 동작하게 하는 공통 규격, 칩 간 고속 연결 규칙</li>
+<li>삼성 zNAND-O는 400단 이상 10세대 V낸드를 SLC(셀당 1비트) 방식으로 사용 — TLC(8단계)·QLC(16단계) 대비 용량은 줄지만 읽기 속도와 안정성 확보</li>
+<li>KV캐시(대화 문맥의 중간 결과 저장 공간)는 계속 생성·삭제가 반복돼 낸드의 &quot;덮어쓰기 불가, 빈 공간에 기록 후 정리&quot; 특성과 상성이 나쁨 — 낸드는 상대적으로 안 바뀌는 웨이트에서 먼저 경제성을 증명하고 KV캐시로 확장하는 흐름이 자연스러움</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>HBF의 가치는 &quot;SSD보다 빠른 저장장치&quot;가 아니라 프런티어 모델에 필요한 GPU 시스템을 얼마나 줄일 수 있는가, 또는 같은 시스템으로 얼마나 더 많은 요청을 처리할 수 있는가에 있음 — 고객은 시스템 전체 비용으로 평가</li>
+<li>SK하이닉스·샌디스크는 OCP를 통해 HBF를 공개 규격으로 추진 중이며, FMS26에서 구글(TPU)과 텐스토렌트가 HBF 표준 개발 참여를 공개 — 엔비디아 GPU 전용이 아니라 다양한 XPU 생태계 표준으로 확장 가능성 확보</li>
+<li>삼성 zNAND-O는 범용성 대신 특정 NPU·모델을 미리 정하고 낸드 배치와 NPU 계산 흐름을 함께 최적화하는 통합형 접근 — 스마트폰·홈허브·자동차·로봇·산업용 영상 장비·소형 엣지 서버처럼 정해진 기능을 반복 수행하는 제품에 적합</li>
+<li>두 회사 모두 HBM을 대체하려는 게 아니라 그 아래에 새로운 메모리 계층을 추가해 &quot;웨이트를 담기 위해 GPU를 계속 늘리기만 하던 구조&quot;를 바꾸려는 방향</li>
+<li>낸드 사용이 곧 저렴함을 의미하지 않음 — 400단급 낸드, TSV 베이스다이, UCIe·첨단 패키징 비용이 더해지고, SLC 선택 시 QLC 대비 저장 용량이 최대 1/4 수준으로 <span class="dn">감소</span></li>
+<li>신뢰성 리스크: 낸드가 연산칩과 한 패키지로 고정되면 교체가 어려워지고, 뜨거운 가속기·NPU 열에 노출되며 데이터 보존 특성이 저하 — 예비 영역 이전, 부분 용량 포기 운용, 외부 저장장치 재적재 대응 필요</li>
+<li>삼성은 과거 zNAND·zSSD로 디램-SSD 사이 시장을 시도했으나 비싼 가격·제한된 이점으로 큰 시장 형성에 실패한 전례 — 이번엔 AI 모델 대형화로 HBM 용량이 시스템 비용의 병목이 된 만큼 상황이 다름</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>SK하이닉스·샌디스크 HBF</th><th>삼성 zNAND-O</th></tr></thead><tbody><tr><td>1. 설계 전제</td><td>여러 XPU·다양한 모델이 공용 사용</td><td>특정 NPU·모델을 미리 확정</td></tr><tr><td>2. 메모리 배치</td><td>개방형 표준으로 OCP 통해 규격화</td><td>낸드·NPU를 한 패키지로 통합 설계</td></tr><tr><td>3. 최적화 방향</td><td>범용성과 생태계 확장(구글 TPU·텐스토렌트 참여)</td><td>모델 구조·웨이트 읽기 순서에 맞춘 전용 최적화</td></tr><tr><td>4. 목표 성능</td><td>스택당 최대 512GB, 초당 최대 3TB</td><td>4단 적층 초당 200GB, 8단 적층 초당 400GB</td></tr><tr><td>5. 검증 포인트</td><td>실제 모델이 대역폭을 얼마나 꾸준히 활용하는가</td><td>정해진 모델에서 시스템 전체 비용·전력 절감 효과</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>데이터센터 AI 인프라 설계: HBF 채택으로 웨이트 저장용 GPU 증설을 줄이거나, 같은 GPU 묶음으로 더 많은 사용자 요청·긴 문맥을 처리하는 용량 재배분 검토</li>
+<li>엣지·온디바이스 AI 제품 기획: zNAND-O 방식으로 스마트폰·자동차·로봇·홈허브 등에서 클라우드 의존 없이 더 큰 웨이트를 로컬 탑재해 복잡한 음성·영상 모델 구동</li>
+<li>XPU(TPU 등) 진영의 메모리 표준 선택: 구글·텐스토렌트 참여 사례를 참고해 개방형 HBF 표준 채택 여부와 인터페이스·데이터 흐름 정합성 검토</li>
+<li>메모리 반도체 투자·공급망 분석: SLC 기반 저장 효율, 첨단 패키징 비용, 낸드 열화·신뢰성 대응 방식(예비 영역 관리)을 시스템 비용 관점에서 추적</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>FMS26(2026년): SK하이닉스·샌디스크가 HBF 첫 규격 공개(스택당 최대 512GB, 초당 0.4~3TB), 삼성이 10세대 V낸드 기반 zNAND-O(진앤드 5) 공개</li>
+<li>HBF 표준화: 초기엔 메모리 업체 중심이었으나 FMS26에서 구글·텐스토렌트의 HBF 표준 개발 참여가 확인되며 XPU 생태계로 확장 신호</li>
+<li>다만 사양표상 최대 대역폭(초당 3TB)이 실제 AI 성능으로 직결되지는 않음 — MoE 모델처럼 토큰마다 다른 전문가 웨이트를 선택하거나 요청이 뒤섞이는 환경에서는 유효 대역폭이 사양표 대비 크게 낮아질 수 있음</li>
+<li>향후 관전 포인트: 실제 모델에서 발표 대역폭을 얼마나 활용하는지, 첨단 패키징 추가에도 전체 시스템 비용을 낮출 수 있는지, 뜨거운 연산칩 옆에서 교체 없이 오래 버틸 수 있는지</li>
+<li>두 회사 모두 HBM을 대체하지 않고 그 아래 새로운 메모리 계층을 추가하는 방향으로 수렴 — 낸드가 단순 저장장치에서 AI 연산을 뒷받침하는 메모리로 재정의되는 흐름</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>HBF</td><td>High Bandwidth Flash, 낸드 플래시를 적층해 만든 데이터센터용 고대역폭 메모리(SK하이닉스·샌디스크 공개 표준)</td></tr><tr><td>zNAND-O(진앤드 5)</td><td>삼성의 10세대 V낸드를 NPU와 한 패키지로 묶은 맞춤형 통합 메모리 구조</td></tr><tr><td>UCIe</td><td>Universal Chiplet Interconnect express, 서로 다른 칩을 한 패키지 안에서 연결하는 공통 고속 인터커넥트 규격</td></tr><tr><td>SLC/TLC/QLC</td><td>낸드 셀 하나에 저장하는 비트 수(1/3/4비트)에 따른 구분 — 비트 수가 적을수록 속도·안정성은 높고 용량 효율은 낮음</td></tr><tr><td>KV캐시</td><td>AI 대화의 문맥 중간 계산 결과를 저장해 재계산을 줄이는 공간, 대화가 길어질수록 계속 생성·삭제됨</td></tr><tr><td>베이스 다이</td><td>스택 하단에서 데이터 통로·신호를 제어하는 로직 칩, HBF에서는 낸드의 응답 지연을 감추고 메모리처럼 동작하게 하는 역할까지 수행</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/oWfrzyv8H1Y&amp;t=0초" target="_blank" rel="noopener">00:00</a> HBM 스택 구조와 HBF의 등장 — SK하이닉스 16단 HBM4 48GB vs HBF 스택당 최대 512GB</li>
+<li><a href="https://youtu.be/oWfrzyv8H1Y&amp;t=405초" target="_blank" rel="noopener">06:45</a> UCIe 규격과 구글·텐스토렌트의 HBF 표준 개발 참여</li>
+<li><a href="https://youtu.be/oWfrzyv8H1Y&amp;t=683초" target="_blank" rel="noopener">11:23</a> 삼성 zNAND-O(진앤드 5) 구조 — SLC 낸드와 NPU 통합 패키지</li>
+<li><a href="https://youtu.be/oWfrzyv8H1Y&amp;t=970초" target="_blank" rel="noopener">16:10</a> 낸드 열화·신뢰성 리스크와 삼성 zNAND·zSSD 과거 사례</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/oWfrzyv8H1Y" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 · 2026-08-07</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

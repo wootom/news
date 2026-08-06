@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="왜 미국 AI 모델 사용량의 60%를 중국이 잠식했을까? 반도체 주가를 흔든 Kimi 열풍"><title>왜 미국 AI 모델 사용량의 60%를 중국이 잠식했을까? 반도체 주가를 흔든 Kimi 열풍</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>혁신전파사</span><span class="ey">MORNING DIGEST · 2026-08-07 · 혁신전파사</span><span class="chip">🎬 영상</span></div><h1>왜 미국 AI 모델 사용량의 60%를 중국이 잠식했을까? 반도체 주가를 흔든 Kimi 열풍</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>혁신전파사</td></tr><tr><td>주제</td><td>중국 AI &#x27;육소호(六小虎, 작은 호랑이 6곳)&#x27; 스타트업의 창업 스토리와 전략</td></tr><tr><td>핵심 주장</td><td>알리바바·텐센트·화웨이 같은 빅테크가 아니라 즈푸AI·미니맥스·바이추환·문샷AI·스텝펀·제로닷 같은 유니콘 스타트업들이 효율화와 오픈소스 전략으로 미국발 반도체 제재를 돌파하며 중국 AI 혁신을 이끌고 있다</td></tr><tr><td>대상 독자</td><td>중국 AI 산업 동향, 반도체/AI 투자, 오픈소스 LLM 전략에 관심 있는 사람</td></tr><tr><td>난이도</td><td>중급 (LLM 기본 개념 + 중국 AI 생태계 배경 지식이 있으면 이해 용이)</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 &#x27;육소호&#x27; 6개 기업을 창업자 스토리 중심으로 순서대로 소개한다.</p>
+<div class="steps"><div class="step"><span class="snum">1</span><div class="sbody"><b>즈푸AI(Zhipu AI)</b><span>칭화대 탕제 교수의 지식그래프 연구에서 출발, GLM 시리즈 개발</span></div></div><div class="step"><span class="snum">2</span><div class="sbody"><b>미니맥스(MiniMax)</b><span>센스타임 출신 엔진제, 멀티모달·가상 캐릭터 대화 앱</span></div></div><div class="step"><span class="snum">3</span><div class="sbody"><b>바이추환(百川, Baichuan)</b><span>소고우 창업자 왕샤오촨, 의료 특화 AI로 신뢰성 승부</span></div></div><div class="step"><span class="snum">4</span><div class="sbody"><b>문샷AI(Moonshot AI, Kimi)</b><span>양즈린, 초장문 컨텍스트 처리로 유명해진 Kimi/K3</span></div></div><div class="step"><span class="snum">5</span><div class="sbody"><b>스텝펀(StepFun)</b><span>MS 출신 장다신, 인프라·디바이스·엣지 중심 실용 전략</span></div></div><div class="step"><span class="snum">6</span><div class="sbody"><b>제로닷(01.AI)</b><span>리카이푸, 기업용 AI 에이전트로 생산성 비즈니스 전환</span></div></div></div>
+<p>마지막에 세 가지 시사점(현장 적용력, 효율화·오픈소스 전략, 창업자의 누적 경로)으로 정리한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>즈푸AI GLM 계보</strong>: 2019년 GLM-10B(100억 파라미터) → GLM-130B(1300억) → 멀티모달 GLM-4V → 코딩 특화 GLM-5.2(벤치마크 상위권, 제한된 GPU 자원에도 고성능)</li>
+<li><strong>미니맥스 MoE 구조</strong>: 추론 시 전체 모델을 활성화하지 않고 일부 전문가 모델만 활성화하는 방식. 2024년 1월 업계 최초로 1000억 파라미터급 ABAB MoE 모델 출시. R&amp;D 인력의 80%를 MoE 개발에 투입</li>
+<li><strong>문샷AI Kimi 컨텍스트 확장</strong>: 2023년 10월 20만 자 롱컨텍스트 → 2024년 3월 200만 자로 확장</li>
+<li><strong>Kimi K3 아키텍처</strong>: 2026년 7월 공개, 총 2.8조 파라미터 초대형 모델이지만 추론 시 896개 전문가 모듈 중 16개만 활성화해 1040억 파라미터만 실제 가동하는 MoE 구조. 100만 토큰 장문 처리, 멀티모달 이해(이미지·표·그래프→코드/PPT 생성), 에이전틱 워크플로 지원. 오픈 웨이트로 전면 공개</li>
+<li><strong>커서(Cursor) AI 키미 사용 논란</strong>: 2026년 3월 커서 AI가 발표한 컴포저(Composer) 2.0의 내부 코드에서 &quot;Kimi&quot; 문자열이 발견됨. 처음엔 부인하다 이후 일부 학습에 사용했음을 인정 — 미국 AI 기업이 중국 오픈소스 모델을 가져다 쓴 상징적 사례로 화제</li>
+<li><strong>바이추환 의료 특화 모델</strong>: 바이샤오잉(百小應) 등 의료 강화 모델을 통해 오진 방지와 근거 추적성 확보에 집중</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>미국발 반도체(GPU) 제재가 오히려 중국 AI 기업들의 &#x27;효율화 혁신&#x27;과 &#x27;오픈소스 전략&#x27;을 촉발한 역설적 계기로 작용했다.</li>
+<li>육소호 기업들은 대형 모델 그 자체의 경쟁보다 &quot;모델을 어떻게 저비용·고효율로 실제 현장에 적용할 것인가&quot;에 집중하는 방향으로 전략을 전환했다.</li>
+<li>오픈 웨이트 공개는 폐쇄 모델 대비 API·기업 구축 등 부가 수익 모델로 이어지며, 홍콩 상장(즈푸AI, 미니맥스) 등 자본시장 접근으로도 연결되고 있다.</li>
+<li>미국 AI 모델 사용량의 상당 부분을 중국 오픈소스 모델(Kimi 등)이 잠식하고 있다는 점은 커서 AI 사례처럼 미국 개발 생태계에도 직접적 영향을 미치고 있음을 시사한다.</li>
+<li>모델 성능 경쟁보다 창업자의 문제의식과 누적된 경로(칭화대 사제관계 등 인적 네트워크)가 실질적 경쟁력의 원천이라는 시사점.</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ol>
+<li>학계/빅테크 경력에서 축적한 전문성(지식그래프, 컴퓨터비전, 검색, 음성인식 등)을 기반으로 창업</li>
+<li>2022년 11월 ChatGPT 등장(모두가 &quot;채지티 모먼트&quot;로 언급)을 계기로 생성형 AI로 피벗 또는 신규 창업</li>
+<li>초기에는 프런티어 모델(대형 파라미터) 경쟁에 참여</li>
+<li>GPU 제약에 부딪히며 &quot;경량화 + 고효율&quot; 전략으로 전환 — 대표적으로 MoE 구조 채택</li>
+<li>모델을 오픈 웨이트/오픈소스로 공개해 개발자 생태계 확산과 빠른 신뢰 구축</li>
+<li>API 제공, 기업용 에이전트, 특정 산업(의료, 자동차 등) 특화로 수익화 모델 전환</li>
+<li>홍콩·상하이 증시 상장으로 자본 조달</li>
+</ol>
+<ol>
+<li>ChatGPT 충격 이후 프런티어 모델 정면 승부는 승산이 낮다고 판단</li>
+<li>검색 경험에서 얻은 핵심 통찰(신뢰·정확성)을 AI에 적용하기로 결심</li>
+<li>교육·금융 등 여러 후보 중 데이터 가치·정확도 요구·사업화 가능성이 가장 큰 &#x27;의료&#x27; 분야로 좁힘</li>
+<li>의료 강화 모델(바이샤오잉) 개발 및 병원·보험·제약 등으로 사업 확장</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>AI 투자자/애널리스트</strong>: 반도체 제재 이후 중국 AI 기업들의 오픈소스·효율화 전략이 어떻게 밸류에이션과 상장으로 이어지는지 육소호 사례를 통해 파악해 투자 판단에 참고한다.</li>
+<li><strong>AI 스타트업 창업자</strong>: 대형 모델 경쟁이 아닌 특정 산업(의료, 자동차, 엣지 디바이스)에 특화한 니치 전략이 어떻게 차별화된 경쟁력을 만드는지(바이추환, 스텝펀 사례) 벤치마킹한다.</li>
+<li><strong>개발자/엔지니어</strong>: 오픈 웨이트로 공개된 Kimi K3 같은 MoE 기반 모델을 실제로 커서 AI처럼 자사 제품 학습에 활용하는 방안을 검토한다.</li>
+<li><strong>기업 AI 도입 담당자</strong>: 제로닷의 보스AI, 인베스터AI, 탑세일즈AI 같은 기업용 에이전트 사례를 참고해 자사 업무에 적용할 AI 에이전트 도입 전략을 수립한다.</li>
+<li><strong>테크 저널리스트/리서처</strong>: 중국 AI 산업을 &quot;빅테크 중심&quot;이 아니라 &quot;유니콘 스타트업 중심&quot;으로 재해석해 후속 취재나 리포트 소재로 활용한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>2026년 7월 기준 문샷AI Kimi K3는 코딩 블라인드 테스트에서 1위를 차지하는 등 딥시크 쇼크 이후 다시 한번 시장에 충격을 준 사례로 평가된다.</li>
+<li>즈푸AI는 홍콩 상장을 마쳤고 상하이 상장을 준비 중이며, 미니맥스도 홍콩 증시 상장 후 상하이 2차 상장을 준비하고 있어 육소호 다수가 자본시장 진입 단계에 있다.</li>
+<li>미니맥스는 전 세계 사용자 2억 명, 기업가치 3조 원 이상으로 성장했다.</li>
+<li>영상은 혁신전파사 &quot;중국 시즌 2&quot;의 마지막 에피소드이며, 채널은 향후 시즌 3에서 중국 외 지역의 혁신 기업 이야기를 이어갈 예정이라고 예고한다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유</th></tr></thead><tbody><tr><td>육소호(六小虎)</td><td>알리바바·텐센트 같은 빅테크가 아닌 중국 AI 유니콘 스타트업 6곳을 묶어 부르는 별칭</td><td>대기업 사이 떠오르는 6마리 작은 호랑이</td></tr><tr><td>MoE(전문가 혼합 구조)</td><td>추론 시 전체 모델이 아닌 일부 전문가 모듈만 선택적으로 활성화하는 아키텍처</td><td>회사 전체가 아니라 필요한 부서만 호출해 일 처리</td></tr><tr><td>오픈 웨이트</td><td>모델 가중치 파일을 공개해 누구나 내려받아 활용할 수 있게 하는 방식</td><td>레시피와 완성품을 통째로 공개</td></tr><tr><td>롱 컨텍스트</td><td>모델이 한 번에 입력받아 처리할 수 있는 텍스트 분량이 매우 긴 것</td><td>책 한 권을 통째로 기억하며 대화하기</td></tr><tr><td>GLM</td><td>즈푸AI가 개발한 대규모 언어모델 계열 명칭</td><td>즈푸AI의 대표 엔진 라인업</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li>즈푸AI GLM-5.2 코딩 성능으로 유명해진 계기: https://youtu.be/sg46BcNxspY&amp;t=1306초</li>
+<li>미니맥스 창업자 엔진제와 센스타임 퇴사 스토리: https://youtu.be/sg46BcNxspY&amp;t=529초</li>
+<li>바이추환의 의료 분야 선택과 집중 전략: https://youtu.be/sg46BcNxspY&amp;t=1075초</li>
+<li>커서 AI의 Kimi 무단 사용 논란과 K3 오픈 웨이트 공개: https://youtu.be/sg46BcNxspY&amp;t=1421초</li>
+<li>스텝펀의 인프라·디바이스 중심 실용 전략: https://youtu.be/sg46BcNxspY&amp;t=1644초</li>
+<li>리카이푸의 제로닷 창업과 기업용 AI 에이전트 사업: https://youtu.be/sg46BcNxspY&amp;t=1968초</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/sg46BcNxspY" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>혁신전파사 · 2026-08-07</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Claude Design 3.0 Destroys AI Slop"><title>Claude Design 3.0 Destroys AI Slop</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">MORNING DIGEST · 2026-08-07 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>Claude Design 3.0 Destroys AI Slop</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Jack Roberts</td></tr><tr><td>제목</td><td>Claude Design 3.0 Destroys AI Slop</td></tr><tr><td>핵심결론 1</td><td>AI가 만든 디자인이 다 비슷해 보이는(&quot;AI 슬랍&quot;) 이유는 다들 같은 기본 프롬프트·시스템을 쓰기 때문이며, 자체 &quot;디자인 시스템&quot;을 먼저 만들면 해결된다</td></tr><tr><td>핵심결론 2</td><td>Claude Design은 디자인 시스템 구축→에셋 생성→웹사이트 빌드→Claude Code로 이관(핸드오버)→showstopper 요소 추가의 5단계 워크플로로 완성도를 끌어올린다</td></tr><tr><td>핵심결론 3</td><td>한 번의 프롬프트(원샷)로 끝내지 않고 스킬(Hicksfield, 3D 웹사이트 스킬 등)과 UI 레퍼런스 사이트를 결합해 반복적으로 다듬는 것이 핵심이다</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><h3>1) 문제 제기 — AI 슬랍이란</h3>
+<ul>
+<li>진행자는 Claude로 만든 디자인이 서로 비슷비슷해 보이는 현상을 &quot;AI 슬랍&quot;이라 부르며, 원인은 모두가 같은 시스템·같은 프롬프트로 생성하기 때문이라고 짚었다. (<a href="https://youtu.be/wJWO91mi5o0&amp;t=0초" target="_blank" rel="noopener">0:00</a>)</li>
+<li>해결책으로 반복 재사용 가능한 &quot;디자인 시스템&quot;을 먼저 구축하는 방식을 제시했다.</li>
+</ul>
+<h3>2) 1단계 — 디자인 시스템 만들기</h3>
+<ul>
+<li>Claude 화면 좌측 하단 &quot;Design&quot; 메뉴에서 Claude Design을 열고, &quot;Design Systems → Create design system&quot;으로 새 시스템을 생성한다.</li>
+<li>디자인 시스템은 AI가 따라야 할 규칙 모음으로, 모바일 앱·슬라이드·문서·와이어프레임 등 어떤 산출물에도 재사용된다.</li>
+<li>GitHub 저장소 연동이나 파일 업로드로 브랜드 정보를 채울 수 있으며, 예시로 가상의 프리미엄 버거 브랜드(&quot;Smash and Grab Burger Co&quot;)를 들어 시연했다.</li>
+<li>Claude가 대화형으로 제품·브랜드·분<span class="dn">위기</span>·피해야 할 클리셰 등을 질문(인터뷰)하며 시스템 프롬프트를 완성해간다. (<a href="https://youtu.be/wJWO91mi5o0&amp;t=173초" target="_blank" rel="noopener">2:53</a>)</li>
+</ul>
+<h3>3) 에셋 생성 — Hicksfield 스킬 연동</h3>
+<ul>
+<li>로고·이미지 등 브랜드 에셋이 없을 때는 이미지·영상 생성 서비스 Hicksfield를 Claude Code에 연결하는 별도 스킬을 활용한다.</li>
+<li>스킬 텍스트를 Claude에 붙여넣으면 Hicksfield 계정과의 CLI 연동을 자동 관리해 로고, 제품 사진(버거, 재료 텍스처팩 등)까지 생성해준다.</li>
+<li>완성된 디자인 시스템(&quot;Smash grab burger co&quot;)을 예시로 보여주며, 브랜드 이미지 전체가 하나의 재사용 가능한 자산으로 묶인다고 설명했다. (<a href="https://youtu.be/wJWO91mi5o0&amp;t=332초" target="_blank" rel="noopener">5:33</a>)</li>
+</ul>
+<h3>4) 2단계 — 시스템 기반 웹사이트 빌드</h3>
+<ul>
+<li>생성된 에셋 폴더를 Claude Design의 &quot;Level 2&quot; 단계에 첨부(browse)하고, 스킬이 제공하는 브랜드 설명 문구를 붙여넣은 뒤 &quot;Continue to generation&quot;을 누르면 약 5분 내 웹사이트가 생성된다.</li>
+<li>이 단계에서는 가장 강력한 모델(Claude Fable 5)을 쓰기를 권장했다.</li>
+<li>완성된 디자인 시스템은 &quot;Projects → Design systems&quot;에서 다시 열람·수정할 수 있고, 이후 어떤 요청을 해도 이 스타일을 기준으로 반영된다.</li>
+<li>&quot;버거 비즈니스용 에셋을 활용해 스크롤 애니메이션이 있는 아름다운 웹사이트를 만들어달라&quot;는 한 문장 프롬프트만으로 색상 팔레트·이미지가 통합된 사이트 초안이 나왔다.</li>
+</ul>
+<h3>5) 3단계 — Claude Code로 핸드오버</h3>
+<ul>
+<li>Claude Design에서 만든 결과물을 &quot;Share → Project archive → Export&quot;로 zip 파일로 내려받아 Claude Code에서 열면, 로컬호스트에서 그대로 이어서 작업할 수 있다.</li>
+<li>Claude Code는 Claude Design이 할 수 있는 모든 것을 할 수 있으며(Claude Design 자체가 Claude Code 기반), 여기서 더 정교한 커스터마이징이 가능해진다.</li>
+<li>디자인 시스템 자체도 같은 방식으로 내보내 팀과 공유하거나 다른 프로젝트에 재사용할 수 있다.</li>
+</ul>
+<h3>6) 4단계 — Showstopper 요소 추가(3D 애니메이션)</h3>
+<ul>
+<li>원샷 결과물로는 충분하지 않으며, 반복(iteration)과 &quot;튀는 한 방(moving piece)&quot; 요소 추가가 완성도를 좌우한다고 강조했다. (<a href="https://youtu.be/wJWO91mi5o0&amp;t=556초" target="_blank" rel="noopener">9:16</a>)</li>
+<li>3D 웹사이트 전용 스킬을 업로드하면 Claude가 애니메이션 스타일(스크롤 스크럽 히어로/자동재생 배경/독립 섹션 등)과 클립 길이(권장 약 25초)를 대화형으로 물어보며 진행한다. (<a href="https://youtu.be/wJWO91mi5o0&amp;t=712초" target="_blank" rel="noopener">11:52</a>)</li>
+<li>Hicksfield로 3D 애니메이션 클립을 생성해 웹사이트 히어로 섹션에 삽입하는 예시를 시연했다.</li>
+</ul>
+<h3>7) UI 스니핑(UI Sniping) — 레퍼런스 활용법</h3>
+<ul>
+<li>21st.dev, UI 이터니티(shader 컴포넌트), React Bits.dev 같은 UI 컴포넌트 갤러리에서 마음에 드는 버튼·캐러셀·셰이더 코드를 찾아 그대로 복사한다.</li>
+<li>Claude Code에 &quot;이 코드를 설치하되 이미지는 버거 사진으로 교체해달라&quot;는 식으로 요청하면 레퍼런스 디자인을 브랜드에 맞게 이식할 수 있다.</li>
+<li>코드를 못 구하는 경우 스크린샷만 찍어 &quot;이 느낌으로 비슷하게 만들어달라&quot;고 요청해도 된다.</li>
+</ul>
+<h3>8) 5단계 — 디자인 시스템 재사용(다른 산출물에 적용)</h3>
+<ul>
+<li>이미 만든 디자인 시스템을 다른 작업(예: 유튜브 영상용 애니메이션 그래픽)에도 그대로 선택해 재사용할 수 있다.</li>
+<li>예시로 본인이 쓰는 영상용 HTML 덱 PDF를 첨부하고 &quot;이 문장을 3개 섹션으로 나눠 애니메이션화해달라&quot;고 요청, Claude에게 프롬프트 자체를 <span class="up">개선</span>해달라고 재요청하는 과정을 보여줬다. (<a href="https://youtu.be/wJWO91mi5o0&amp;t=909초" target="_blank" rel="noopener">15:09</a>)</li>
+<li>결과물에 대해 &quot;불필요한 태그 대신 깔끔한 HTML 컴포넌트로&quot;, &quot;사용자가 고민하지 않아도 되게 단순화&quot;해달라는 식으로 피드백을 주며 다듬는 과정을 반복했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>Claude Design은 Claude Code를 기반으로 동작하는 상위 레이어 도구로, 디자인 시스템·프로젝트·템플릿을 저장·재사용하는 UI를 추가로 제공한다.</li>
+<li>파일 첨부 용량 제한(50MB 초과 시 업로드 실패)이 있어 대용량 PDF 등은 재시도가 필요할 수 있다고 언급됐다.</li>
+<li>Hicksfield는 외부 이미지·영상 생성 서비스이며, 별도 계정과 스킬(CLI 연동 스크립트)을 통해 Claude Code와 연결된다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>&quot;같은 프롬프트→같은 결과물&quot;이라는 AI 슬랍의 구조적 원인을 이해하면, 시스템(규칙)과 브랜드 에셋을 먼저 고정하는 것이 결과물 차별화의 핵심 레버리지 포인트가 된다.</li>
+<li>초기 디자인 시스템 구축에 투자하는 시간이 이후 모든 산출물(웹사이트, 슬라이드, 영상 그래픽)의 일관성과 품질을 결정하므로, 사전 투자가 장기적으로 더 효율적이다.</li>
+<li>레퍼런스 UI 갤러리 활용과 3D 애니메이션 같은 &quot;튀는 한 방&quot;을 더하는 반복 작업이 원샷 산출물과 실제 클라이언트 납품물의 품질 격차를 좁혀준다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로·방법론</h2><ol>
+<li>Claude Design에서 Design System 생성 → 대화형 인터뷰로 브랜드 정보(제품, 톤, 피할 것) 입력</li>
+<li>(에셋 없을 시) Hicksfield 스킬로 로고·이미지·텍스처팩 자동 생성</li>
+<li>생성된 에셋을 Level 2 단계에 첨부 + 브랜드 설명 붙여넣기 → 웹사이트 원샷 생성 (Fable 5 권장)</li>
+<li>Share → Project archive → Export로 Claude Code에 핸드오버, 로컬호스트에서 이어 작업</li>
+<li>3D 웹사이트 스킬로 showstopper 애니메이션(스크롤 스크럽 히어로 등) 추가</li>
+<li>UI 스니핑(21st.dev, UI 이터니티, React Bits.dev)으로 레퍼런스 컴포넌트를 브랜드 색상·이미지로 교체</li>
+<li>완성된 디자인 시스템을 다른 산출물(슬라이드, 영상 그래픽 등)에도 재사용</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>에이전시가 신규 클라이언트(예: 버거 프랜차이즈) 브랜드 웹사이트를 처음부터 디자인 시스템 기반으로 빠르게 시제작할 때.</li>
+<li>유튜버·크리에이터가 영상 소개 그래픽/애니메이션을 만들 때 기존에 구축한 디자인 시스템(PDF 덱)을 그대로 재사용해 톤을 통일할 때.</li>
+<li>스타트업이 로고·제품 이미지 등 브랜드 에셋이 전혀 없는 상태에서 Hicksfield로 에셋을 먼저 만들고 이를 웹사이트·슬라이드에 일관되게 적용할 때.</li>
+<li>디자이너가 21st.dev·React Bits.dev 등에서 발견한 트렌디한 UI 컴포넌트(캐러셀, 셰이더 효과)를 자사 브랜드 색상·이미지로 빠르게 이식할 때.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>영상은 Claude Design이 반복 가능한 &quot;시스템&quot; 개념을 도입해 AI 슬랍 문제를 구조적으로 완화하려는 시도임을 보여주며, 이는 향후 AI 디자인 툴들이 공통적으로 채택할 방향으로 제시됐다.</li>
+<li>진행자는 디자인 시스템 콘텐츠에 대한 시청자 반응에 따라 후속 영상을 이어갈 계획을 언급했다.</li>
+<li>Hicksfield, 3D 웹사이트 스킬 등 서드파티 스킬 생태계가 Claude Code의 핵심 확장 축으로 자리잡고 있음을 시사한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유</th></tr></thead><tbody><tr><td>AI 슬랍(AI slop)</td><td>AI가 만든 결과물이 획일적이고 진부해 보이는 현상</td><td>같은 틀로 찍어낸 붕어빵</td></tr><tr><td>디자인 시스템(Design System)</td><td>AI가 따를 규칙·스타일 모음, 여러 산출물에 재사용</td><td>브랜드 스타일 가이드북</td></tr><tr><td>핸드오버(Handover)</td><td>Claude Design 결과물을 Claude Code로 옮겨 이어 작업하는 것</td><td>초안을 정식 작업실로 넘기기</td></tr><tr><td>Hicksfield</td><td>이미지·영상 생성 외부 서비스, 스킬로 Claude Code에 연동</td><td>에셋 제작 외주 스튜디오</td></tr><tr><td>Showstopper(무빙 피스)</td><td>웹사이트를 돋보이게 하는 임팩트 있는 애니메이션 요소</td><td>무대의 하이라이트 조명</td></tr><tr><td>UI 스니핑(UI Sniping)</td><td>레퍼런스 사이트에서 마음에 드는 UI 코드를 찾아 이식하는 기법</td><td>마음에 드는 옷을 보고 비슷하게 맞춰 입기</td></tr><tr><td>원샷(One-shot) 생성</td><td>추가 수정 없이 한 번의 프롬프트로 완성본을 만드는 방식</td><td>초안 없이 바로 완성작</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/wJWO91mi5o0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-08-07</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
