@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="100개 넘게 테스트한 에이전트 스킬 중 진짜 써야 할 13가지 (Jack Roberts)"><title>100개 넘게 테스트한 에이전트 스킬 중 진짜 써야 할 13가지 (Jack Roberts)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">MORNING DIGEST · 2026-08-08 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>100개 넘게 테스트한 에이전트 스킬 중 진짜 써야 할 13가지 (Jack Roberts)</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>무엇을</td><td>Jack Roberts가 &quot;Hermes 에이전트&quot;(AI 에이전트 플랫폼)용 스킬(skill) 100개 이상을 직접 테스트하고, 그중 반드시 써야 할 상위 13개를 선별해 소개하는 영상</td></tr><tr><td>누가</td><td>AI 에이전트/자동화 유튜버 Jack Roberts. 촬영 당시 몬테네그로에서 AI 이벤트 진행 중이라고 언급</td></tr><tr><td>왜 중요한가</td><td>발표자는 &quot;테스트한 스킬 대부분이 쓰레기(garbage)&quot;라며, 옳은 스킬을 골라 조합해야만 에이전트의 잠재력을 끌어낼 수 있고 시간·비용을 아낄 수 있다고 주장. 스킬이란 에이전트에게 특정 작업 절차를 규칙처럼 추가해 주는 확장 모듈이다</td></tr><tr><td>핵심 메시지</td><td>에이전트를 &quot;500 IQ 인턴&quot;에 비유. 똑똑하지만 무엇을 어떻게 할지 정확히 알려줘야만 제 실력을 낸다. 스킬 설치는 &quot;이 스킬 설치해줘&quot;라고 말하고 저장소(repo) 링크만 붙여넣으면 끝</td></tr></tbody></table></div>
+<blockquote>참고: 영상 자막상 제품명이 &quot;Hermes agent&quot;로 표기되나, 발표자는 Claude·Claude Code·Anthropic·Codex 등을 함께 언급한다. 여기서 스킬(skill) 개념은 클로드 계열 에이전트의 확장 방식과 동일한 맥락으로 다뤄진다.</blockquote></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>영상은 13개 스킬을 &quot;뒤로 갈수록 더 강력하다&quot;는 순서로 소개한다. 크게 (1) 입력 품질 <span class="up">개선</span>(2·4번: 질문으로 요구사항 명확화), (2) 안전·관리(1·5·7번: 스킬 검증·생성·최적화), (3) 연속성·조사(3·8·9번: 인수인계·리서치·학습), (4) 인프라(6번: VPS 24/7 구동), (5) 산출물(10·12번: 디자인·이미지/영상), (6) 일상 자동화·의사결정(11·13번: 모닝 브리핑·전문가 혼합)으로 묶인다. 각 스킬 링크와 타임스탬프는 영상 설명란에 제공된다고 안내한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>발표자는 Anthropic 엔지니어들이 Claude Code 시스템 프롬프트의 80% 이상을 삭제했는데도 코딩 성능 손실이 0이었다는 점을 인용하며, 이 발상을 에이전트 최적화(7번 Context Doctor)에 적용했다고 설명한다. 스킬은 토큰 효율이 중요해 &quot;설명 태그가 매 턴마다 실린다&quot;는 점을 강조하고, 300자 넘는 장황한 설명·오래된 스킬·불필요한 도구 스키마를 정리해야 한다고 본다. 인프라 측면에서는 VPS(가상 사설 서버, 항상 켜져 있는 원격 컴퓨터) 위에 에이전트를 올려 노트북을 닫아도 24시간 구동하는 구성을 제시한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>핵심 논지는 &quot;많은 스킬&quot;이 아니라 &quot;옳은 스킬 조합&quot;이 경쟁 우위라는 것이다. 스킬 관문 검증(1번 Bouncer)으로 악성 스킬·프롬프트 인젝션을 걸러 안전성을 확보하고, 시장을 먼저 조사해 더 나은 대안까지 찾아 항상 최고 품질의 스킬만 남긴다. 나아가 스킬을 만드는 메타 스킬(5번)과 스킬을 정리하는 최적화 스킬(7번)을 갖추면, 에이전트가 스스로 확장·정돈하는 자기<span class="up">개선</span> 루프가 만들어진다. 발표자는 이를 통해 &quot;남들보다 몇 광년 앞선다(light years ahead)&quot;고 표현한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><ul>
+<li>스킬 설치: 스킬을 에이전트로 가져와 &quot;이 스킬 설치해줘&quot;라고 말하고 repo 링크를 붙여넣는다.</li>
+<li>요구사항 명확화: &quot;이 아이디어로 나를 그릴(grill)해줘&quot;라고 하면 에이전트가 역질문으로 핵심(정확한 고객, 반복되는 통증 문제 등)을 파고든다.</li>
+<li>인수인계: &quot;오늘 내용 정리해서 다른 에이전트에게 넘길 핸드오버 문서 써줘&quot;라고 하면 상태·결정·다음 단계·추천 스킬·시크릿까지 담긴 문서를 생성한다.</li>
+<li>최적화 실행: Context Doctor에게 &quot;가진 모든 것에 이 스킬을 돌려줘&quot;라고 하면 6개 항목을 점검해 잘라내기(격리)·병합·이동·보류·다듬기 중 하나를 제안한다(하드 삭제는 하지 않음).</li>
+<li>의사결정: <code>/moa</code>로 여러 모델을 혼합(주 모델이 나머지 모델들에 같은 질문을 던지고 종합)한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오 (3개 이상)</h2><ol>
+<li>사업 아이디어 검증: &quot;새 사업을 시작하려는데 좋은 아이디어인지 그릴해줘&quot;라고 하면 에이전트가 고객·문제·수익 구조를 캐물어 맹점을 잡아준다(2번 Grill Me).</li>
+<li>최근 30일 리서치: 8번 스킬이 X·YouTube·Reddit·해커뉴스·폴리마켓·GitHub 커밋 등을 훑고 업보트/좋아요 기준으로 최신 동향을 랭킹해 준다(단, Reddit·일반 웹은 쿠키 인증이나 Firecrawl 연동 필요).</li>
+<li>웹사이트 디자인: 10번 Art Director(Power Design)로 황금비(부제:제목 = 1:1.61 등) 등 20개 보편 디자인 원칙과 21st.dev의 인터랙티브 컴포넌트를 결합해 가볍고 아름다운 사이트를 만든다.</li>
+<li>매일 아침 자동 브리핑: 11번 Morning Brief로 캘린더·이메일·최근 7일 대화를 종합해 오전 7시에 &quot;오늘 집중할 일 한 가지&quot;를 폰으로 받는다(Zapier로 Gmail·Outlook 연결).</li>
+<li>이미지/영상 제작: 12번 The Studio에서 Higgsfield CLI와 Nano Banana를 에이전트에 연결해 썸네일 텍스트 수정·영상 생성 등을 대화로 처리한다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>발표자는 13개 중 11번 Morning Brief를 &quot;가장 가치 있는 스킬&quot;로, 7·8·13번을 뒤로 갈수록 강력한 축으로 꼽는다. 6번 VPS 구동은 Hostinger 협찬 파트로, KVM2 플랜을 추천하고 연간·격년 결제 시 코드 &quot;Jack Roberts&quot;로 10% 추가 할인을 안내한다(설정 시 에이전트 자동 배포, OpenAI/ChatGPT 구독 연동, Telegram 연결 가능). 다수 스킬이 Matt Poclls(Matt PCO Skills) 저작물이며, 마지막에는 &quot;가장 수익성 높은 스킬&quot;로 웹사이트 제작 강의를 예고한다. 전반적으로 스킬 생태계가 빠르게 발전 중이며 &quot;옳은 스킬을 골라 조합하는 큐레이션 능력&quot;이 핵심 역량이 될 것이라는 전망을 담는다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>스킬(Skill)</td><td>에이전트에게 특정 작업 절차를 규칙처럼 추가하는 확장 모듈</td><td>인턴에게 건네는 업무 매뉴얼 한 장</td></tr><tr><td>프롬프트 인젝션</td><td>악의적 텍스트로 AI의 지시를 몰래 바꾸는 공격</td><td>대본에 몰래 끼워넣은 가짜 지시문</td></tr><tr><td>VPS</td><td>항상 켜져 있는 원격 가상 컴퓨터</td><td>노트북을 닫아도 대신 일해주는 클라우드 책상</td></tr><tr><td>핸드오버 문서</td><td>다음 에이전트에게 맥락을 넘기는 인수인계서</td><td>교대 근무자에게 남기는 인수인계 노트</td></tr><tr><td>MOA(Mixture of Agents)</td><td>여러 모델의 답을 종합해 품질을 높이는 방식</td><td>전문가 3인 회의로 편향·누락 보완</td></tr><tr><td>CLI</td><td>명령어로 프로그램에 접속하는 방식</td><td>컴퓨터에게 말 거는 텍스트 창</td></tr><tr><td>황금비</td><td>약 1:1.618 비율, 안정적 미감의 기준</td><td>애플 사이트 제목·부제 크기 비율</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/qEuxFsK7apk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-08-08</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

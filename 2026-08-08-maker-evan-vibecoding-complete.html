@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="바이브코딩 완전정복 — 메이커 에반"><title>바이브코딩 완전정복 — 메이커 에반</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-08-08 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>바이브코딩 완전정복 — 메이커 에반</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>바이브 코딩(AI에게 말로 시켜 개발하기)을 위한 &quot;스타터킷&quot; 소개</td></tr><tr><td>핵심 주장</td><td>코드보다 &quot;규칙&quot;을 먼저 줘야 AI가 일관되게 잘 짠다</td></tr><tr><td>구성물</td><td>폴더·파일 138개, 규칙 문서 20개, 전담 에이전트 2명</td></tr><tr><td>세팅 시간</td><td>압축 해제 시 3초 만에 프로젝트 세팅 완료</td></tr><tr><td>대상</td><td>바이브 코딩을 시작하고 싶지만 어디서부터 할지 막막한 초보자</td></tr><tr><td>판매</td><td>스킬샵에서 49,900원(원가 99만9,000원, 구독자 이벤트 반값), 446명 구매</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>영상은 스타터킷 안에 무엇이 들어 있고 왜 코드보다 먼저 필요한지를 다섯 덩어리로 설명한다. (1) 클로드(Claude)가 짠 코드를 왜 자꾸 갈아엎게 되는지, (2) 그걸 막아주는 규칙 파일이 무엇인지, (3) 백엔드와 프론트가 어떤 모양으로 미리 잡혀 있는지, (4) 함께 들어 있는 에이전트 두 명이 무슨 일을 하는지, (5) 실제로 어떻게 시작하는지를 세 단계로 보여준다. 발표자 메이커 에반은 자신이 실제로 쓰는 규칙과 구조를 통째로 압축해 정리해 두었다고 설명한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>스타터킷의 심장은 <code>.claude</code> 폴더로, 프론트엔드 가이드라인 10개와 백엔드 가이드라인 10개를 합쳐 총 20개의 규칙 문서가 예시 코드까지 붙어 정리돼 있다. 백엔드는 파이썬으로 되어 있으며 도메인·서비스·API·DB·미들웨어·에러·유틸 등 폴더(서랍)가 미리 나뉘어 있고, DB 마이그레이션·테스트·도커 설정·로깅·에러 처리가 한 곳에 미리 연결돼 있다. 프론트엔드는 Next.js에 TypeScript가 세팅돼 있고 shadcn/ui 컴포넌트 라이브러리(버튼·카드·입력창 등 기본 부품)가 붙어 있다. <code>design.md</code> 파일에 색상·글자 크기·간격 등 디자인 규칙을 명시해 클로드가 매번 다른 파란색을 쓰는 문제를 방지한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>발표자의 핵심 통찰은 코드가 누더기가 되는 원인이 &quot;실력 문제가 아니라 규칙 문제&quot;라는 점이다. 요즘 AI는 파일까지 알아서 만들지만 어떤 규칙으로 짤지는 사람이 정해줘야 하며, 규칙이 없으면 클로드가 매번 스스로 판단해 그날그날 다른 방식으로 짜서 합치면 일관성이 무너진다. 잘하는 사람들은 코드보다 규칙을 먼저 주고, 규칙이 잡힌 코드 베이스에서 AI가 훨씬 잘 짠다는 것이 반복되는 메시지다. 세팅과 규칙 문서가 같은 프로젝트 안에 붙어 있어 클로드가 코드를 짜기 전 규칙을 먼저 읽는다는 조합이 핵심 가치다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><p>가장 중요한 파일은 <code>CLAUDE.md</code>로, 클로드가 프로젝트에 처음 들어올 때 읽는 안내문 역할을 한다(신입 직원 첫 출근 안내문에 비유). 여기에는 무엇을 만드는지, 프론트·백엔드가 어디 있는지, 어떤 규칙 문서를 언제 펴봐야 하는지가 적혀 있고, <code>skills.json</code> 파일이 언제 어떤 규칙을 꺼낼지 지정한다. 함께 든 에이전트 2명 중 한 명은 계획·검토 담당(공사 전 도면을 검토하는 선배 역할), 다른 한 명은 자료 조사 담당(최신 라이브러리 사용법 등을 인터넷에서 찾아 정리)이다. 발표자의 실제 작업 순서는 &quot;계획 → 검토 → 자료 조사 → 코딩&quot;으로, 바로 코드부터 짜지 않는 이 순서가 갈아엎는 횟수를 크게 줄인다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>초보 개발자의 첫 프로젝트 시작</strong>: 폴더를 먼저 만들지 화면부터 그릴지 며칠 헤매는 대신, 설치 한 줄을 클로드에게 건네고 곧바로 만들고 싶은 기능만 말하면 정해진 자리에 파일이 생성된다.</li>
+<li><strong>기능 대량 추가 시 구조 유지</strong>: 백엔드 서랍(폴더)이 미리 나뉘어 있어 기능을 100개 붙여도 들어갈 자리가 있어 구조가 무너지지 않는다.</li>
+<li><strong>디자인 일관성 유지</strong>: <code>design.md</code>에 색상·간격 규칙을 미리 지정해 화면 10개를 만든 뒤 색이 미묘하게 달라 전부 다시 손보는 사고를 예방한다.</li>
+<li><strong>실서비스 개발 베이스</strong>: 발표자가 자신의 서비스 &quot;스킬샵&quot;의 거의 모든 기능을 이 스타터킷 코드를 베이스로 만들었다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>스타터킷은 스킬샵에서 49,900원에 판매 중이며, 원가 99만9,000원을 구독자 이벤트로 반값 할인한 가격으로 이미 446명이 구매했다. 발표자는 두 가지 한계를 솔직히 밝힌다. 첫째, 클로드 코드(Claude Code) 환경이 별도로 필요하다. 둘째, 이 킷은 전반적인 뼈대(구조·규칙)를 제공할 뿐 실제 코드를 대신 짜주지는 않으므로 사용자가 이 베이스 위에서 자신만의 코드를 개발해야 한다. 더 깊은 논의는 스킬샵 오픈톡방에서 이어진다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>풀이</th></tr></thead><tbody><tr><td>바이브 코딩</td><td>AI에게 자연어로 지시해 코드를 생성·개발하는 방식</td></tr><tr><td>클로드(Claude)</td><td>앤트로픽의 AI. 코드 생성에 활용</td></tr><tr><td>스타터킷</td><td>프로젝트 시작에 필요한 폴더·규칙·설정을 미리 묶은 꾸러미</td></tr><tr><td><code>.claude</code> 폴더</td><td>프론트·백엔드 규칙 문서 20개가 든 킷의 심장부</td></tr><tr><td><code>CLAUDE.md</code></td><td>클로드가 프로젝트 진입 시 읽는 안내문 파일</td></tr><tr><td><code>skills.json</code></td><td>언제 어떤 규칙을 꺼낼지 지정하는 설정 파일</td></tr><tr><td><code>design.md</code></td><td>색상·글자 크기·간격 등 디자인 규칙을 적어 둔 파일</td></tr><tr><td>에이전트</td><td>특정 일만 전담하는 클로드(계획·검토 / 자료 조사)</td></tr><tr><td>Next.js / TypeScript / shadcn/ui</td><td>프론트엔드 프레임워크·언어·컴포넌트 라이브러리</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/BbV0jHIYZvU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-08-08</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

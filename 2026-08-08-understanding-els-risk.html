@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ELS 수익률 급등과 위험성 — 언더스탠딩"><title>ELS 수익률 급등과 위험성 — 언더스탠딩</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>언더스탠딩</span><span class="ey">MORNING DIGEST · 2026-08-08 · 언더스탠딩</span><span class="chip">📊 시황</span></div><h1>ELS 수익률 급등과 위험성 — 언더스탠딩</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><p>메리츠증권 김정혁 팀장(저서 『한 권으로 끝내는 ELS 투자의 정석』)이 출연해, 2024년 홍콩 H지수 사태로 신뢰를 잃었던 ELS가 최근 어떻게 다시 부각되고 있는지, 그리고 여전히 남아있는 위험은 무엇인지 설명한다. 핵심은 &quot;쿠폰(수익률)이 30%까지 치솟은 것은 그만큼 시장이 위험하다고 본다는 신호&quot;라는 점이다.</p>
+<div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>콘텐츠</td><td>북언더스탠딩 (도서 기반 대담)</td></tr><tr><td>출연자</td><td>메리츠증권 김정혁 팀장</td></tr><tr><td>주제</td><td>ELS(주가연계증권)의 구조·수익원·위험</td></tr><tr><td>최근 쿠폰</td><td>연 20~30% 수준 (3년 만기 약 62%)</td></tr><tr><td>배경 사건</td><td>2024년 홍콩 H지수 ELS 대규모 손실·불완전판매 논란</td></tr><tr><td>핵심 메시지</td><td>높은 쿠폰 = 높은 변동성(위험)의 대가, 안전상품 아님</td></tr><tr><td>성격</td><td>정보 제공 (투자 권유 아님)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>ELS(Equity-Linked Securities, 주가연계증권)는 기초자산(개별 종목·지수)의 가격이 정해진 구간 안에만 머물면 약속된 이자(쿠폰)를 주는 상품이다. 구조의 본질은 &quot;투자자가 풋옵션(팔 권리)을 증권사에 매도하고, 그 대가로 프리미엄을 받는 것&quot;이다. 이 프리미엄이 곧 ELS 쿠폰 수익률이다. 투자금 100원 중 대부분은 채권에 넣어 이자를 만들고, 일부(20~30원)를 풋옵션 매도에 활용하는 구조다.</p>
+<p>수익 구조는 세 가지로 나뉜다. (1) 조기상환: 3~6개월마다 관찰해 조건을 넘으면 이자를 얹어 조기 종료, (2) 만기 수익상환: 만기까지 행사가격 위에 있으면 전체 쿠폰 지급, (3) 손실: 낙인(Knock-In)을 건드리고 만기에 행사가격 아래로 끝나면 <span class="dn">하락</span>률만큼 원금 손실이다. 상방(주가 급등 이익)은 막혀 있고 하방(급락 손실)은 열려 있는 비대칭 구조가 핵심이다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>금융·시장 맥락</h2><p>쿠폰이 높다는 것은 시장 변동성이 크다는 뜻이다. 옵션 프리미엄은 변동성이 커질수록 비싸지므로, 예전에 연 10% 주던 조건이 지금은 30~40%까지 올라온 것이다. 즉 수익률 30%는 &quot;그만큼 많은 사람이 급락 가능성에 베팅하고 있다&quot;는 시장의 불안 신호다.</p>
+<p>특히 코스피(코스피200)의 변동성이 유독 높다. S&amp;P500·유로스톡스·닛케이 등 선진 지수 대비 2~3배 수준으로 거래되며, &quot;불량아&quot;라는 표현이 나올 정도다. 발행자 실증(엠피리컬) 테스트로는 1,000건 발행 시 약 950건이 수익상환되고 5% 안팎이 손실상환으로 끝난다고 한다. 증권사는 이 90%대 확률 때문에 고객과 반대 방향에 베팅하기보다, 대부분 고객과 동일한 포지션을 복제해 헤지한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>ELS 발행 시장은 매주 10~15개 증권사가 경쟁하는 완전경쟁 시장이다. 은행 신탁이 전자 입찰(비딩)을 붙이면 가장 높은 쿠폰을 제시한 증권사가 낙찰된다. 공모 상품이 90% 이상이라 조건이 즉시 공시되고, 블로거·경쟁사가 실시간으로 서로 뜯어보기 때문에 특정 증권사가 자기에게만 유리하게 폭리를 취하기는 구조적으로 어렵다.</p>
+<p>증권사의 수익원은 &quot;변동성 예측 마진&quot;이다. 예컨대 실현 변동성이 실제로는 낮을 것이라 보는데 시장은 높게 보고 있을 때, 그 격차만큼을 벌게 된다. 반대로 40%로 제출한 뒤 2주 후 변동성이 20%로 떨어지면 트레이더 손익은 마이너스가 된다. 그래서 발행 타이밍과 변동성 전망이 증권사 실력의 핵심이 된다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 관점 / 유의사항</h2><p>발행자 본인이 초심자에게 주는 조언은 &quot;상품 라인업에서 쿠폰이 가장 낮은 것을 고르라&quot;는 것이다. 변동성 프리미엄은 공짜가 아니라 위험을 떠안는 대가이므로, 금리가 높을수록 그만큼 위험을 의심해야 한다. &quot;설마 떨어지겠어&quot;라는 나이브한 접근은 위험하며, 손실이 나도 감내 가능한 수준인지 정교하게 계산한 사람에게만 유용한 상품이라는 점을 반복 강조한다.</p>
+<p>기초자산 개수도 중요하다. ELS는 &quot;워스트 퍼포머(가장 많이 <span class="dn">하락</span>한 자산)&quot; 기준으로 손익을 계산하므로, 기초자산이 많을수록 그중 하나만 무너져도 손실이 난다. 따라서 기초자산이 적을수록(1개가 가장) 유리하다. 또한 3년 만기 동안 자금이 묶이는 환금성 문제, 중도환매 시 계좌 평가가격과 실제 환매가격의 이격(예: 계좌 103인데 실제 99.8) 문제도 유의해야 한다. 이는 투자 권유가 아니며, 원금 손실이 날 수 있는 투자상품임을 전제로 판단해야 한다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>시나리오</h2><ul>
+<li><strong>정상 조기상환 시나리오</strong>: 발행 후 6개월 시점 관찰일에 기초자산이 조기상환 조건(예: 발행가의 90%) 위에 있으면, 연 20~30%를 적용한 이자를 받고 조기 종료된다. 실제 발행의 다수(약 95%)가 이런 방식으로 마무리된다.</li>
+<li><strong>낙인 히트 후 회복 시나리오</strong>: 하이닉스 ELS에서 낙인(30) 아래로 두 달 만에 급락해도, 이후 조기상환 관찰일에 행사가격 위로 회복하면 낙인 여부와 관계없이 정상 상환된다. &quot;중간 시험은 상관없고 마지막 시험만 잘 보면 되는&quot; 구조(노낙인)의 이점이다.</li>
+<li><strong>손실 시나리오</strong>: 낙인을 건드린 뒤 만기까지 회복하지 못하고 행사가격(예: 50) 아래로 끝나면, <span class="dn">하락</span>률만큼 원금 손실이 확정된다. 특히 기초자산 여러 개 중 코스피가 <span class="dn">-49%</span>로 끝나면, 다른 자산(하이닉스)이 반등했어도 워스트 퍼포머 기준으로 손실이 잡힌다.</li>
+<li><strong>금리형(DLS) 위험 시나리오</strong>: 2019년 독일 금리 DLF처럼 금리를 기초자산으로 하면, 지수와 달리 짧은 기간에 낙인을 칠 수 있어 훨씬 위험하다. &quot;안정적&quot;이라 판매됐지만 실제로는 완전한 숏 포지션이었던 대표적 불완전판매 사례다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>2024년 홍콩 H지수 사태 이후 업계 자정과 금융당국 제도 <span class="up">개선</span>이 이뤄졌다. 청약철회·숙려 제도, 고령자 후견인·돌봄 서비스 등이 도입돼, 오늘 비딩한 상품이 실제 거래되기까지 2~3주가 걸리는 구조가 됐다. 과거 &quot;박스피의 주범&quot;이라 불릴 만큼 시장에 영향을 줬으나, 지금은 연 20~30조 규모로 축소돼 삼성전자·하이닉스 하루 거래대금(약 40조)에 비하면 영향이 미미하다는 설명이다.</p>
+<p>최근에는 코스피·삼성전자·하이닉스처럼 우량하다고 여겨지던 종목마저 코스닥처럼 크게 출렁이면서, 오히려 &quot;하방을 막아주는&quot; ELS에 다시 관심이 쏠리고 있다. 다만 출연자 스스로 &quot;ELS가 진짜 안전한 상품이라고 생각하는 사람은 없을 것&quot;이라며, 여러 투자 수단 중 하나로 어떻게 조합할지 스스로 고민해야 한다고 마무리한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>풀이</th></tr></thead><tbody><tr><td>ELS(주가연계증권)</td><td>기초자산 가격이 정해진 구간 안에 머물면 약속된 이자를 주는 파생결합증권. 상방은 막히고 하방은 열린 비대칭 구조</td></tr><tr><td>낙인(Knock-In) 배리어</td><td>원금 손실이 시작되는 <span class="dn">하락</span> 기준선. 발행가 대비 30~50% 등으로 설정</td></tr><tr><td>조기상환</td><td>3~6개월마다 관찰해 조건 충족 시 이자를 얹어 만기 전 종료하는 것</td></tr><tr><td>쿠폰(수익률)</td><td>ELS가 지급하는 이자율. 본질은 투자자가 매도한 풋옵션의 프리미엄</td></tr><tr><td>풋옵션 매도</td><td>ELS의 수익 원천. 투자자가 &quot;일정 가격 아래로 안 떨어지면 이익&quot;인 포지션을 파는 것</td></tr><tr><td>낙인형 vs 노낙인형</td><td>낙인형은 매일 낙인 관찰·보너스금리(풀더미) 있음(증권사 주력), 노낙인형은 만기에만 관찰(은행 주력)</td></tr><tr><td>워스트 퍼포머</td><td>기초자산이 여러 개일 때 가장 많이 <span class="dn">하락</span>한 자산 기준으로 손익 결정</td></tr><tr><td>변동성 프리미엄</td><td>변동성이 클수록 커지는 옵션 값. 높은 쿠폰의 원천이자 위험의 대가</td></tr><tr><td>DLS/DLF</td><td>금리 등 주가 외 자산을 기초로 한 파생결합상품. 2019년 독일 금리 DLF 손실 사태의 상품</td></tr><tr><td>환금성</td><td>자금을 현금화할 수 있는 정도. ELS는 3년 만기로 묶여 환금성이 낮음</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Yx7YrJEORxY" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>언더스탠딩 · 2026-08-08</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
