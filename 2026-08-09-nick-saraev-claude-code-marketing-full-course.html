@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="클로드 코드 하나로 광고 제작부터 리드 대응·데이터 분석·후속 관리까지 마케팅 전 기능을 자동화하는 6시간짜리 실전 강의"><title>클로드 코드 하나로 광고 제작부터 리드 대응·데이터 분석·후속 관리까지 마케팅 전 기능을 자동화하는 6시간짜리 실전 강의</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nick Saraev</span><span class="ey">MORNING DIGEST · 2026-08-09 · Nick Saraev</span><span class="chip">🎬 영상</span></div><h1>클로드 코드 하나로 광고 제작부터 리드 대응·데이터 분석·후속 관리까지 마케팅 전 기능을 자동화하는 6시간짜리 실전 강의</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>제목</td><td>CLAUDE CODE MARKETING FULL COURSE (6 HOURS)</td></tr><tr><td>채널/강사</td><td>Nick Saraev — 월 매출 50만 달러 규모 마케팅 에이전시 운영, 7년+ AI 경력, Mr. Beast 팀 등 트레이닝 경험</td></tr><tr><td>대상</td><td>코딩·AI 사전 경험 전무한 일반인 (제로 투 원 코스)</td></tr><tr><td>핵심 주장</td><td>클로드 코드를 프롬프트→스킬→루프→루틴 4단계로 활용하면 광고 소재, 카피, 리드 대응, 데이터 분석, 후속 관리까지 마케팅 전 기능을 자동화할 수 있다</td></tr><tr><td>사용 도구</td><td>클로드 코드(데스크톱 앱), 클로드 프로 구독(약 월 24~28 캐나다달러), Fable 5·Opus 5 모델, GPT 이미지 API(OpenAI), 구글 드라이브·구글 시트, 클라우드 루틴(환경변수+API 키)</td></tr><tr><td>강의 성격</td><td>실시간 빌드 시연 중심(일부 구간 편집 없이 그대로 노출), 세일즈 코스 아님을 명시하되 말미에 저자의 유료 프로그램(Maker School) 홍보 포함</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>강의 커리큘럼 구조</h2><ul>
+<li><strong>0. 인트로 — 코스 개요</strong></li>
+</ul>
+<p>- 강사 소개, 코스가 다룰 5가지 마케팅 기능과 전체 흐름 소개</p>
+<ul>
+<li><strong>1. 클로드 코드 설치·설정</strong></li>
+</ul>
+<p>- claude.com 가입 → 결제(개인 사용 플랜) → 데스크톱 앱 다운로드·설치(Mac 기준 시연) - 인터페이스 투어: Home 탭 vs Code 탭, 아티팩트, 사용량/토큰 대시보드, 승인(Allow/Deny) 팝업, 검색·프로젝트 기능</p>
+<ul>
+<li><strong>2. 마케팅 자동화 프레임워크</strong></li>
+</ul>
+<p>- 마케팅 성과를 좌우하는 레버 구조(Reach·Speed to Lead·Booking 비율 등) 설명 — 강사가 &quot;RACE&quot;식 모델의 R(Reach) 등을 언급하며 각 단계에서 AI가 개입할 지점을 매핑 - <strong>프롬프트 → 스킬 → 루프 → 클라우드 루틴</strong>의 4단계 자동화 성숙도 모델 제시 (뒤 챕터마다 이 4단계를 순서대로 적용)</p>
+<ul>
+<li><strong>3. 상단 퍼널(Top of Funnel) — 크리에이티브 자동화</strong></li>
+</ul>
+<p>- 광고 이미지/영상/오디오 소재를 템플릿 기반으로 대량 생성 (변형당 최소 5개 이상 생성해 크리에이티브 디렉터가 선별하는 구조) - 이미지 생성 프롬프트를 스킬화 → 매일 특정 시각(예: 오전 5:59)에 자동 실행되는 루프화 → 구글 드라이브 폴더 자동 생성·정리하는 클라우드 루틴화까지 단계별 시연</p>
+<ul>
+<li><strong>4. 카피 개인화(Personalization of Copy)</strong></li>
+</ul>
+<p>- 뉴스레터·아웃바운드 콜드 이메일에 &quot;퍼지 변수(fuzzy variable)&quot; 개념 적용 — 수신자 정보를 AI가 웹에서 리서치해 문맥에 맞게 자연스럽게 채워 넣음 - 구글 시트와 연동해 리드별 맞춤 변수를 자동 채운 뒤 메일 머지 발송까지 연결</p>
+<ul>
+<li><strong>5. 중단 퍼널(Middle of Funnel) — 스피드 투 리드 시스템</strong></li>
+</ul>
+<p>- 리드 발생 후 30초 내 AI가 대화를 시작하도록 만드는 예약(appointment booking) 자동화 - 실제 사례: 홈서비스 기업 월매출 300만 달러 → 900만 달러(3배)로 성장한 스피드 투 리드 구축 사례 소개</p>
+<ul>
+<li><strong>6. 데이터 수집·트래킹·대시보드 구축</strong></li>
+</ul>
+<p>- 자체 애널리틱스 플랫폼을 클로드 코드로 스캐폴딩 → Fable 5로 고품질 디자인 스킨 적용 - SQL 기반 이상치(anomaly) 탐지로 &quot;시그널&quot; 자동 생성(예: 리드 급감, 전환율 급등, 영업담당자 승률 비교) - 클라이언트별 대시보드(20개 클라이언트, 수만 행 데이터) 구축 실비용 공유(세션당 약 12~13달러)</p>
+<ul>
+<li><strong>7. 하단 퍼널(Bottom of Funnel) — 고품질 팔로업 자동화</strong></li>
+</ul>
+<p>- 이메일·SMS·알림 발송을 사람처럼 느껴지게 자동화하는 넛처링(nurturing) 시스템</p>
+<ul>
+<li><strong>8. 시스템 유지·업그레이드 및 고급 팁</strong></li>
+</ul>
+<p>- 구축한 시스템을 지속적으로 점검·<span class="up">개선</span>하는 방법 - 무엇을 자동화해도 되고 무엇은 안 되는지에 대한 원칙(6장 참조)</p>
+<ul>
+<li><strong>9. 마무리</strong></li>
+</ul>
+<p>- 요약, 구독 요청, 저자의 90일 프로그램 Maker School 소개로 종료</p></section><section class="card s12" id="s3"><h2><span class="seq">03</span>기술적·도구 맥락</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>핵심 플랫폼</td><td>클로드 코드(Claude Code) — 데스크톱 앱, 코드 실행형 AI 에이전트</td></tr><tr><td>모델</td><td>Fable 5(강의 시점 최상위 모델, 고품질 디자인·복잡 분석용), Opus 5(범용, medium/high reasoning 옵션)</td></tr><tr><td>이미지 생성</td><td>GPT 이미지(OpenAI API) — API 키를 클라우드 루틴 환경변수로 등록해 사용</td></tr><tr><td>자동화 계층</td><td>프롬프트(1회성, PC에서 직접 실행) → 스킬(재사용 가능한 절차 저장) → 루프(로컬에서 스케줄 반복) → 클라우드 루틴(API 키 포함, 클라우드에서 무인 실행)</td></tr><tr><td>연동 서비스</td><td>구글 드라이브(생성물 자동 저장·날짜별 서브폴더 구조), 구글 시트(리드 데이터·머지 변수), 클로드 브라우저(생성 결과 프리뷰·튜닝)</td></tr><tr><td>비용 감각</td><td>클로드 구독 약 월 24~28 캐나다달러, 세션당 크레딧 소모(고사양 대시보드 빌드 1회 약 12~13달러 사례 제시)</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>마케팅 자동화를 &quot;완전 자동화 가능 영역&quot;과 &quot;사람이 남아야 하는 영역&quot;으로 명확히 구분하는 실무적 프레임을 제시 — AI 만능론이 아닌 절제된 활용 원칙 강조</li>
+<li>프롬프트→스킬→루프→루틴이라는 자동화 성숙도 모델은 개인/소규모 팀이 단계적으로 무인 운영 시스템을 구축하는 실천 로드맵으로 기능</li>
+<li>크리에이티브·카피·데이터 분석처럼 반복적·검증 가능한 작업은 AI 위임, 반면 나쁜 소식 전달·관계 유지·최종 승인처럼 신뢰가 걸린 접점은 사람이 유지해야 한다는 원칙은 에이전시·SMB 마케팅 조직에 바로 적용 가능</li>
+<li>실제 매출 규모(월 50만 달러 에이전시, 3배 성장 사례)를 근거로 제시해 이론이 아닌 실행 가능한 사례 기반 학습을 지향</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우/방법론</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>내용</th></tr></thead><tbody><tr><td>1. 프롬프트 실행</td><td>원하는 결과를 자연어로 직접 지시, 실시간 확인·피드백</td></tr><tr><td>2. 스킬로 전환</td><td>&quot;이걸 스킬로 만들어줘&quot; 지시로 반복 가능한 절차 템플릿화</td></tr><tr><td>3. 루프로 전환</td><td>특정 시각에 자동 반복 실행되도록 로컬 스케줄 설정</td></tr><tr><td>4. 루틴으로 전환</td><td>API 키 등 환경변수를 클라우드에 등록, 사람 개입 없이 클라우드에서 무인 실행</td></tr><tr><td>5. 검증 후 확장</td><td>소규모 스모크 테스트(단일 이미지·소수 리드) 후 문제 없으면 대량 생성으로 확장</td></tr><tr><td>6. 상위 모델로 재작업</td><td>저사양 모델로 초안 뒤 Fable 5(고품질) 등 상위 모델로 디자인·분석 정교화</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li><strong>광고 소재 대량 생산</strong>: 템플릿 1개당 최소 5개 변형(3개 템플릿×5=15개) 자동 생성 후 사람이 우승작만 선별, 이후 스킬·루프·루틴화해 매일 자동 배치 생성</li>
+<li><strong>콜드 아웃바운드 개인화</strong>: 리드 명단(이름·회사·관심사 등)을 구글 시트에서 읽어 AI가 각자에게 맞는 문맥으로 이메일 초안을 자동 작성, 수치 근거 없는 과장 클레임은 배제</li>
+<li><strong>리드 반응 30초 대응 시스템</strong>: 폼 제출 즉시 AI가 대화를 개시해 예약 전환율을 끌어올리는 스피드 투 리드 구조(홈서비스 기업 3배 성장 사례)</li>
+<li><strong>클라이언트 성과 대시보드 자동 구축</strong>: 다수 클라이언트의 트래픽·리드·전환·영업 데이터를 통합 분석하고 이상 징후(리드 급감 등)를 자동 감지·시각화</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>강의 시점(2026-08) 기준 최신 모델(Fable 5)과 클로드 코드의 클라우드 루틴 기능을 활용한 실전 사례를 다루며, AI 에이전트 기반 마케팅 자동화가 개인·소규모 조직도 접근 가능한 수준까지 성숙했음을 보여줌</li>
+<li>강사는 향후 유사한 실전형 코스를 추가로 제작할 계획을 밝힘</li>
+<li>자동화가 과도해질 경우 고객 관계 훼손 위험을 스스로 목격했다며, &quot;고객이 그 과정을 직접 체감하는지&quot;를 자동화 여부 판단 기준으로 제시 — 향후 마케팅 자동화 논의에서 반복 인용될 만한 실무 원칙</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>스피드 투 리드(Speed to Lead)</td><td>리드 발생 직후(예: 30초 내) 즉각 응대해 전환율을 극대화하는 기법</td><td>손님이 문 두드리자마자 바로 문을 여는 것</td></tr><tr><td>퍼지 변수(Fuzzy Variable)</td><td>정형화된 데이터가 아니라 AI가 문맥을 리서치해 자연스럽게 채워 넣는 개인화 변수</td><td>이름만 바꾸는 게 아니라 그 사람 관심사까지 반영해 문장을 새로 쓰는 것</td></tr><tr><td>프롬프트→스킬→루프→루틴</td><td>1회성 지시에서 무인 클라우드 자동 실행까지의 자동화 성숙도 4단계</td><td>손으로 만들기 → 레시피화 → 알람 맞춰 반복 → 자동 주방 로봇 가동</td></tr><tr><td>클라우드 루틴</td><td>API 키 등 환경변수를 클라우드에 등록해 사람 개입 없이 실행되는 자동화 단위</td><td>무인으로 돌아가는 공장 라인</td></tr><tr><td>시그널(Signals)</td><td>대시보드에서 SQL 기반으로 자동 탐지되는 이상치·특이 패턴 알림</td><td>평소보다 손님이 갑자기 확 줄었을 때 울리는 경보</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/yulWjh3rq28" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nick Saraev · 2026-08-09</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
