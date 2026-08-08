@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="NotebookLM에서 이름을 바꾼 Gemini 노트북, 소스 기반 리서치와 9가지 결과물 변환까지 한 번에"><title>NotebookLM에서 이름을 바꾼 Gemini 노트북, 소스 기반 리서치와 9가지 결과물 변환까지 한 번에</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Futurepedia</span><span class="ey">MORNING DIGEST · 2026-08-09 · Futurepedia</span><span class="chip">🎬 영상</span></div><h1>NotebookLM에서 이름을 바꾼 Gemini 노트북, 소스 기반 리서치와 9가지 결과물 변환까지 한 번에</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>도구명 변경</td><td>Notebook LM → Gemini 노트북(Gemini Notebook)으로 명칭 변경</td></tr><tr><td>핵심 가치</td><td>사용자가 승인한 소스에만 근거해 답변 → 환각(hallucination) <span class="dn">감소</span></td></tr><tr><td>접속 방법</td><td>notebook.google.com에 기존 구글 계정으로 로그인</td></tr><tr><td>화면 구조</td><td>좌: 소스(지식 기반) / 중: 채팅 / 우: 스튜디오(결과물 생성) 3패널</td></tr><tr><td>주요 신기능</td><td>소스 자동 주제 라벨링, 웹 리서치로 소스 보강, 워드·마크다운·PPT·JSON·PNG 내보내기, Gemini 앱과 연동</td></tr><tr><td>대표 결과물</td><td>오디오 개요(팟캐스트), 슬라이드, 비디오 개요, 마인드맵, 보고서, 플래시카드, 퀴즈, 인포그래픽, 데이터표</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능 구조</h2><ul>
+<li><strong>좌측 소스 패널(지식 기반)</strong>: 사용자가 직접 업로드했거나 Gemini가 찾아 사용자가 승인한 자료만 포함. 모든 답변이 이 소스에 근거하므로 환각이 줄어듦.</li>
+<li><strong>중앙 채팅 패널</strong>: 일반적인 채팅 인터페이스와 유사하지만, 답변 전체에 본문 내 인용(출처 표시)이 붙고 클릭 시 소스 패널에서 해당 원문 맥락을 바로 확인 가능.</li>
+<li><strong>우측 스튜디오 패널</strong>: 소스와 대화 내용을 인포그래픽·팟캐스트·짧은 영상·슬라이드·보고서 등 다양한 결과물 형식으로 변환하는 공간.</li>
+<li><strong>소스 추가 방식 4가지</strong></li>
+</ul>
+<p>- PDF, 텍스트, 이미지, 오디오, 비디오 등 파일 직접 업로드 - 웹사이트·유튜브 링크 붙여넣기(여러 개는 스페이스바로 연속 추가) - Gemini에게 키워드로 웹 검색을 시켜 후보 소스 목록을 받고, 신뢰도 확인 후 선택적으로 채택(불필요한 매체는 선택 해제 가능) - 구글 드라이브의 문서·스프레드시트·슬라이드 연결 시 원본 수정이 자동 반영되는 &quot;살아있는 문서&quot;로 작동</p>
+<ul>
+<li><strong>소스 자동 라벨링</strong>: 주제별로 소스를 탭 형태로 자동 분류. 하나의 소스를 여러 탭에 동시 표시하거나 탭 순서를 재배열 가능. 특정 주제 탭만 선택/해제해 답변 범위를 좁힐 수 있음.</li>
+<li><strong>채팅 세부 기능</strong></li>
+</ul>
+<p>- 프롬프트 입력창 하단에 현재 답변에 사용 중인 소스 개수 표시 - 기본은 전체 소스를 참조하지만, 수동으로 특정 소스만 선택해 답변 범위를 제한 가능 - 답변 내 인용문에 마우스를 올리면 출처가 뜨고 클릭하면 원문 맥락으로 이동 - &quot;메모로 저장&quot; 후 &quot;소스로 변환&quot;하면 그 답변 자체가 새로운 소스가 되어 이후 답변의 근거로 재사용됨 - 채팅 기록 삭제는 되돌릴 수 없으므로, 삭제 전 중요한 답변은 반드시 메모 저장 필요</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적·배경 맥락</h2><ul>
+<li>Notebook LM이라는 이름 자체가 Gemini 노트북으로 바뀌었고, 그 외에도 기능이 대폭 강화됨.</li>
+<li>핵심 원리는 사용자가 승인한 출처에서만 정보를 가져와 답변을 구성하는 방식으로, 근거 없는 생성(환각)을 억제.</li>
+<li>신규 기능으로 프롬프트에 따라 시스템이 &quot;기존 소스에만 의존하지 않고 스스로 생각해 새 소스를 찾아볼지&quot; 판단하는 유연성이 추가됨. 단, 일반 질문으로 돌아가면 다시 기존 출처 인용 위주 답변으로 복귀.</li>
+<li>인포그래픽 등 이미지 기반 결과물은 아직 세부 텍스트·수치에 오류가 발생할 수 있어(예: 문장이 어색하거나 숫자가 겹침), 별도 AI 도구(예: ChatGPT)로 재검수·수정하는 보완 워크플로우가 필요.</li>
+<li>영상 후반부는 Gemini 노트북과 무관하게 트랜스포머의 셀프 어텐션·위치 인코딩·토큰화 개념을 설명하는 데모 콘텐츠(영상 개요 예시)가 포함되어 있어, 실제 제품 데모용 예시 자료로 사용됨.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>리서치 정확성(소스 근거 답변)과 생성형 AI 특유의 창의성은 상충되는 경우가 많은데, Gemini 노트북은 정확성에, Gemini 앱은 창의성에 특화되도록 역할을 분리.</li>
+<li>모든 노트북이 Gemini 앱에도 동기화되어 나타나므로, 노트북에서 구축한 지식 기반을 Gemini 앱 채팅으로 가져가 더 자유로운 창의적 대화를 이어갈 수 있음. Gemini에서 나눈 대화는 다시 노트북의 소스 항목에 자동으로 기록됨.</li>
+<li>Notebook LM 시절에는 하나의 노트에 긴 채팅 하나만 유지되는 한계가 있었으나, Gemini 앱 연동으로 사실상 한 노트북을 중심으로 여러 개의 병렬 채팅방을 운영하는 효과를 얻을 수 있게 됨.</li>
+<li>워드·마크다운·PPT·JSON·PNG 등 표준 오피스/개발 포맷으로 내보내기가 가능해지면서, 리서치 결과를 업무 산출물(보고서, 발표자료)로 바로 연결하는 활용도가 높아짐.</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 사용법/워크플로우 (단계 표)</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>내용</th></tr></thead><tbody><tr><td>1. 노트북 생성</td><td>notebook.google.com 접속 → 새 노트북 생성 → 제목을 자동 생성 값 대신 직관적인 이름으로 직접 수정</td></tr><tr><td>2. 소스 확보</td><td>파일 업로드 + 웹/유튜브 링크 붙여넣기 + Gemini 웹 검색으로 후보 소스 확보 후 신뢰도 검토·선택</td></tr><tr><td>3. 갭 분석 질문 3종 실행</td><td>①반대 의견·소수 관점 찾기 ②빠진 하위 주제·질문 나열 ③소스 간 모순·의견 불일치 정리</td></tr><tr><td>4. 결과 저장</td><td>유용한 답변은 &quot;메모로 저장&quot; → &quot;소스로 변환&quot;해 이후 답변의 근거로 재사용</td></tr><tr><td>5. 채팅 정리</td><td>필요 없어진 채팅 기록은 점 세 개 메뉴 → &quot;채팅 기록 삭제&quot;로 정리(삭제 전 중요 답변 저장 필수)</td></tr><tr><td>6. 소스 관리</td><td>자동 주제 라벨링 탭을 활용해 특정 주제 소스만 선택/해제하며 답변 범위를 좁힘</td></tr><tr><td>7. 스튜디오 결과물 생성</td><td>오디오 개요·슬라이드·비디오 개요·마인드맵·보고서·플래시카드·퀴즈·인포그래픽·데이터표 중 필요한 형식 선택 후 생성</td></tr><tr><td>8. 결과물 수정</td><td>슬라이드·인포그래픽 등에서 오류 발견 시 &quot;수정&quot; 버튼으로 요청하거나, 필요 시 외부 AI 도구로 재검수</td></tr><tr><td>9. 형식 내보내기</td><td>채팅창에 원하는 파일 형식(워드/마크다운/PPT/JSON/PNG)을 요청하면 스튜디오 패널에 생성됨 → 다운로드</td></tr><tr><td>10. Gemini 앱 연동</td><td>Gemini 앱에서 해당 노트북 파일을 열어 지식 기반 기반의 창의적 대화로 확장</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오 (3개 이상)</h2><ul>
+<li><strong>복잡한 사회적 이슈 리서치</strong>: AI가 환경에 미치는 영향처럼 다양한 관점이 얽힌 주제를 다룰 때, 소스 업로드 후 갭 분석 질문 3종(반대 관점 찾기, 빠진 하위 주제 찾기, 모순 정리)을 실행해 균형 잡힌 자료 기반을 구축.</li>
+<li><strong>학습·시험 대비</strong>: 소스를 기반으로 플래시카드와 퀴즈를 생성해 개념 암기와 이해도 점검에 활용. 오디오 개요(팟캐스트)를 운전·설거지 등 이동 중 복습용으로 청취.</li>
+<li><strong>발표자료·보고서 제작</strong>: 슬라이드 자료(발표자용/상세 프레젠테이션용 구분)나 보고서(개념 입문 강좌 등 소스 맞춤 프리셋 제공)를 생성하고, 수정 버튼으로 여러 슬라이드를 한 번에 수정 요청.</li>
+<li><strong>소셜 콘텐츠·시각 자료 제작</strong>: 인포그래픽 기능으로 방향·시각 스타일·상세 수준을 선택해 소셜미디어용 시각 콘텐츠를 제작(단, 세부 오류는 별도 AI 도구로 재검수 권장).</li>
+<li><strong>데이터 정리</strong>: 소스에 표로 정리하면 유용한 정보(예: LLM 핵심 개념 목록)가 있을 때 데이터표 기능으로 스프레드시트 형태로 바로 내보내기.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>Notebook LM에서 Gemini 노트북으로의 리브랜딩과 함께, 소스 자동 라벨링·웹 리서치 보강·다양한 파일 내보내기 등 실사용성을 높이는 업데이트가 다수 반영됨.</li>
+<li>오디오 개요·인포그래픽·비디오 개요 등 일부 생성형 결과물은 아직 품질 편차가 있어(특히 상세 모드 인포그래픽의 오류, 비디오 개요의 낮은 활용도), 사용자가 결과물을 검수하거나 보조 도구로 후처리하는 과정이 여전히 필요.</li>
+<li>Gemini 앱과의 연동이 강화되면서, &quot;정확성 중심의 노트북&quot;과 &quot;창의성 중심의 챗봇&quot;이라는 두 축을 하나의 지식 기반으로 넘나드는 방향으로 제품이 진화하고 있음.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Gemini 노트북</td><td>구글의 소스 기반 리서치 AI 도구(구 Notebook LM), 사용자가 승인한 자료에만 근거해 답변</td><td>나만의 자료 보관함 위에서 돌아가는 리서치 조수</td></tr><tr><td>환각(Hallucination)</td><td>AI가 근거 없이 사실이 아닌 내용을 생성하는 현상</td><td>출처 없이 지어낸 답변</td></tr><tr><td>스튜디오 패널</td><td>소스·대화 내용을 오디오, 슬라이드, 인포그래픽 등 결과물로 변환하는 우측 작업 공간</td><td>원재료(소스)를 완제품(보고서·영상)으로 가공하는 작업대</td></tr><tr><td>갭 분석 질문</td><td>현재 소스에서 빠진 관점·주제·모순을 찾아내기 위해 던지는 질문 세트</td><td>자료의 빈틈을 찾는 체크리스트</td></tr><tr><td>오디오 개요</td><td>소스 내용을 대화형 팟캐스트로 재구성하는 기능</td><td>논문을 두 진행자의 대담 방식으로 요약 청취</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/TGlPNGaHo6I" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Futurepedia · 2026-08-09</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

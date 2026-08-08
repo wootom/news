@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 데이터센터, 전압을 54V에서 800V로 15배 올리는 이유"><title>AI 데이터센터, 전압을 54V에서 800V로 15배 올리는 이유</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-08-09 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>AI 데이터센터, 전압을 54V에서 800V로 15배 올리는 이유</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>AI 데이터센터 전력 설계가 54V에서 800V 직류(800VDC)로 전환되는 배경과 영향</td></tr><tr><td>핵심 주장</td><td>GPU 랙의 소비전력이 급증하면서 낮은 전압(54V)으로는 전기를 충분히 배달할 수 없어 전압을 15배 올려야 함</td></tr><tr><td>대상</td><td>엔비디아, 구글·메타·마이크로소프트(오픈 컴퓨트 프로젝트), 전력반도체·MLCC·구리 관련 기업</td></tr><tr><td>핵심 수치</td><td>랙 전력 150kW→1MW(카이버렉), 전압 54V→800V(15배), 전류 2만A→1,250A(약 1/15)</td></tr><tr><td>왜 중요한가</td><td>AI 인프라 경쟁의 병목이 &#x27;GPU 몇 장 확보하느냐&#x27;에서 &#x27;전기를 어떻게 공급하느냐&#x27;로 이동 중</td></tr><tr><td>대립 구도</td><td>엔비디아(800V 단선 방식) vs 구글·메타·MS 주도 오픈 컴퓨트 프로젝트(±400V 방식)</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><h3>AI 데이터센터란</h3>
+<ul>
+<li>서버가 담긴 선반(서버 트레이)을 여러 장 쌓으면 냉장고만한 캐비닛, 즉 &#x27;렉(Rack)&#x27;이 됨</li>
+<li>이런 렉이 줄지어 늘어선 물리 구조는 일반 데이터센터와 동일</li>
+<li>다른 점은 렉 안에 GPU를 얼마나 빽빽이 채우고 전기를 얼마나 쓰는가</li>
+<li>AI를 만든다는 의미에서 &#x27;AI 팩토리&#x27;, 토큰을 찍어낸다는 의미에서 &#x27;토큰 팩토리&#x27;로도 불림</li>
+</ul>
+<h3>전력 소비의 자릿수 변화</h3>
+<ul>
+<li>일반 데이터센터 렉: 1kW 미만(가정집 수준)</li>
+<li>현재 AI 데이터센터 렉: 150kW(일반 대비 15배)</li>
+<li>2027년 엔비디아 차세대 GPU &#x27;루빈 울트라&#x27; 576개를 탑재한 초고밀도 &#x27;카이버렉&#x27;: 1MW(일반 렉 대비 100배 수준, 웬만한 아파트 단지 하나가 쓰는 전기와 맞먹음)</li>
+</ul>
+<h3>54V 구조의 한계</h3>
+<ul>
+<li>전기는 외부 송전망(수만V 교류)→변전실(수백V)→PSU(직류 54V)→12V→VRM→GPU(1V 미만) 순으로 여러 번 전압을 낮춰 전달됨</li>
+<li>문제는 최종 GPU 전압(1V)이 아니라 &#x27;건물에서 렉까지&#x27; 전기를 실어 나르는 배달 구간(54V)에 있음</li>
+<li>전력=전압×전류 공식상, 필요한 전력은 커지는데 전압이 54V로 고정되면 전류가 폭증</li>
+<li>1MW를 54V로 배달하면 필요 전류는 약 2만A(가정집 전류 수십A의 수백 배)</li>
+<li>전선 저항에 의한 손실은 전류의 제곱에 비례해, 전류가 10배면 손실은 100배로 증가</li>
+<li>리포트 기준 1MW 렉에서는 전력 손실이 현세대 대비 최대 70배까지 증가</li>
+<li>손실·발열을 버티려면 구리(버스바)를 더 굵게 써야 함: 1MW급 렉 하나의 버스바 무게는 약 200kg</li>
+</ul>
+<h3>엔비디아의 해법: 800V 직류</h3>
+<ul>
+<li>배달 전압을 54V에서 800V로 약 15배 올리면 같은 전력을 훨씬 적은 전류로 보낼 수 있음</li>
+<li>1MW 기준 전류가 2만A에서 약 1,250A로 약 15분의 1로 <span class="dn">감소</span></li>
+<li>변화 ① 교류→직류 변환 지점이 데이터센터 입구로 앞당겨짐(렉마다 하던 변환을 없애 배전 효율화)</li>
+<li>변화 ② 전압을 낮추는 지점은 렉 앞까지 최대한 미뤄짐(고전압 구간을 길게 유지할수록 유리)</li>
+</ul>
+<h3>사라지는 부품 vs 새로 생기는 부품</h3>
+<ul>
+<li>사라짐: 두꺼운 구리 버스바(구리 사용량 45% 절감, 엔비디아 발표), 렉마다 있던 PSU(전원 공급 장치, 빠진 자리는 GPU가 차지), 중앙집중식 UPS실</li>
+<li>새로 생김: SST(솔리드 스테이트 트랜스포머, 입구에서 교류→800V 직류 변환), 전력반도체(SiC·GaN 소재), 고압 MLCC(커패시터), 렉 옆 배터리·전력 저장 유닛(사이드카 구조)</li>
+</ul>
+<h3>두 진영의 대결: 800V vs ±400V</h3>
+<ul>
+<li>엔비디아: 800V 한 줄(전선 2가닥, 배선 단순, 렉 최적화 유리)</li>
+<li>구글·메타·마이크로소프트(오픈 컴퓨트 프로젝트, 2025년 5월 &#x27;디아블로&#x27; 규격): <span class="up">+400</span>V/<span class="dn">-400</span>V 두 줄(전선 3가닥, 절연 설계 수월, 기존 400V급 전기차 부품 재사용 가능)</li>
+<li>결과적으로 렉이 받는 전압은 둘 다 800V로 동일 — 논쟁은 &#x27;800이냐 400이냐&#x27;가 아니라 &#x27;800V를 어떻게 만들 것이냐&#x27;</li>
+<li>전망: 한쪽의 승리보다 용도별 공존(초고밀도 학습용은 엔비디아 800V, 클라우드 자체칩 렉은 ±400V, 일반 서버는 여전히 54V)</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적·배경 맥락</h2><ul>
+<li>근본 원리는 중학교 물리 공식 &#x27;전력 = 전압 × 전류&#x27; 하나: 전력이 커지는데 전압을 그대로 두면 전류가 폭증하고, 전류가 늘면 저항손실이 제곱으로 커짐</li>
+<li>엔비디아가 800V를 택할 수 있었던 배경은 전기차 산업: 전기차의 급속충전 기술이 이미 800V 기반으로 검증되어 있어 관련 전력반도체 부품을 데이터센터에 그대로 가져다 쓸 수 있음</li>
+<li>다만 800V급 고전압을 다루려면 기존 실리콘 반도체 소재로는 효율이 떨어지고 발열이 심해, 실리콘 카바이드(SiC)·질화갈륨(GaN) 등 차세대 전력반도체가 필요</li>
+<li>GPU의 전력 소비 패턴 자체도 문제: 수백 개 GPU가 동시에 연산을 시작하면 렉 전체 부하가 밀리초 단위로 30%→100%로 치솟았다가 뚝 떨어짐. 기가와트급 AI 팩토리에서는 전체 전력이 초당 1,000MW 넘게 오르내려, 발전소 하나가 1초 만에 켜졌다 꺼지는 수준의 충격이 전력망에 가해짐 → 이를 흡수하는 것이 커패시터(고전압 시대의 &#x27;관절&#x27;)</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>AI 인프라 경쟁의 축이 &#x27;GPU 확보&#x27;에서 &#x27;전기 공급 능력&#x27;으로 이동. 업계 성능 지표도 &#x27;GPU 몇 장&#x27;에서 &#x27;와트당 토큰&#x27;으로 바뀌는 중</li>
+<li>원래 데이터센터와 무관했던 전력반도체(전기차 산업), 고압 MLCC(가전·전장), SST(전력망) 관련 기업들이 AI 밸류체인의 핵심 부품 공급자로 새롭게 편입됨 — 관련 기업: 인피니언(독일), 온세미·텍사스 인스트루먼트(미국), 무라타 제작소(일본), 삼성전기(한국)</li>
+<li>데이터센터형 전력반도체 시장은 향후 10년간 크게 성장할 것으로 전망(영상에서 언급된 규모 표현은 &quot;약 2,500&quot; 수준이며 정확한 단위는 자막상 불명확)</li>
+<li>표준 경쟁(엔비디아 800V vs 오픈 컴퓨트 ±400V)은 승자독식이 아니라 용도별 공존 구도로 갈 가능성이 큼 → 관련 부품·표준 생태계 전반에 투자·공급 기회가 분산될 수 있음</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 포인트 심화 (표 또는 비교)</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>일반 데이터센터 렉</th><th>현재 AI 렉</th><th>2027년 카이버렉(루빈 울트라)</th></tr></thead><tbody><tr><td>전력</td><td>1kW 미만</td><td>150kW</td><td>1MW</td></tr><tr><td>일반 대비 배수</td><td>1배</td><td>약 15배</td><td>약 100배</td></tr><tr><td>GPU 탑재 수</td><td>-</td><td>-</td><td>576개</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th>항목</th><th>54V 방식</th><th>800V 방식</th></tr></thead><tbody><tr><td>필요 전류</td><td>약 20,000A</td><td>약 1,250A</td></tr><tr><td>전류 변화</td><td>기준</td><td>약 15분의 1로 <span class="dn">감소</span></td></tr><tr><td>전력 손실(현세대 대비)</td><td>최대 70배까지 증가</td><td>대폭 <span class="dn">감소</span></td></tr><tr><td>구리 사용량</td><td>1MW 렉 버스바 약 200kg</td><td>약 45% 절감(엔비디아 발표)</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용/시사점 시나리오</h2><ol>
+<li>대형 AI 학습(트레이닝)용 초고밀도 렉은 엔비디아식 800V 단선 방식을 채택해 배선을 단순화하고 렉 설계를 최적화한다.</li>
+<li>자체 칩을 쓰는 클라우드 렉(구글·메타·MS 등)은 오픈 컴퓨트 프로젝트의 ±400V &#x27;디아블로&#x27; 규격을 채택해 기존 400V급 전기차 부품 생태계를 재활용한다.</li>
+<li>밀도가 낮은 일반 서버는 여전히 기존 54V 방식을 유지해, 데이터센터 안에 800V·±400V·54V 세 방식이 공존한다.</li>
+<li>전력반도체(SiC·GaN), 고압 MLCC, SST 제조사에 새로운 수요가 창출되며 인피니언·온세미·TI·무라타·삼성전기 등이 설비 증설에 나선다.</li>
+<li>데이터센터 설계·평가 지표가 &#x27;GPU 수량&#x27;에서 &#x27;와트당 토큰&#x27;으로 바뀌면서 전력 효율이 경쟁력의 핵심 변수가 된다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>현재: 엔비디아는 800V 직류 방식을 밀고 있고, 구글·메타·마이크로소프트는 오픈 컴퓨트 프로젝트를 통해 2025년 5월 &#x27;디아블로&#x27; 규격(±400V)을 발표하며 다른 진영을 형성</li>
+<li>두 방식 모두 렉이 받는 최종 전압은 800V로 동일하며, 차이는 배선 방식(엔비디아 2가닥 vs 오픈 컴퓨트 3가닥)과 설계 철학(최적화 vs 표준화·실용성)</li>
+<li>향후 전망: 한쪽의 완승보다는 용도(초고밀도 학습용/클라우드 자체칩용/일반 서버용)에 따라 800V·±400V·54V가 공존하는 그림이 유력</li>
+<li>엔비디아는 2027년 루빈 울트라 576개를 탑재한 1MW급 초고밀도 &#x27;카이버렉&#x27;(사이드카 구조: 110kW 전력 선반 7개 + 리튬이온 배터리 유닛 5개) 출시를 예고한 상태</li>
+<li>이번 전환은 스마트폰 시대의 카메라 모듈·배터리 회사, 전기차 시대의 모터·배터리 소재 회사처럼, 전기를 다루는 회사들이 AI 밸류체인의 조연에서 주연급으로 부상하는 국면으로 요약됨</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명(40자내)</th><th>비유/예시</th></tr></thead><tbody><tr><td>800VDC(800V 직류)</td><td>데이터센터 내부 전력 배달용 새 직류 800V 규격</td><td>54V의 15배로 배달 전압을 높인 것</td></tr><tr><td>AI DC(AI 팩토리/토큰 팩토리)</td><td>GPU 밀집도가 높은 AI 전용 데이터센터</td><td>AI를 만들거나 토큰을 찍어내는 공장</td></tr><tr><td>렉(Rack)</td><td>서버 트레이를 쌓아 만든 냉장고 크기 캐비닛</td><td>서버들의 집합 서랍장</td></tr><tr><td>카이버렉(Kyber Rack)</td><td>엔비디아의 2027년 초고밀도 렉(루빈 울트라 576개)</td><td>렉 하나가 아파트 단지급 전기를 쓰는 구조</td></tr><tr><td>PSU(전원 공급 장치)</td><td>교류 전력을 직류로 바꿔주는 렉 내 부품</td><td>렉 안의 소형 발전소</td></tr><tr><td>VRM(전압 조정 모듈)</td><td>서버 메인보드에서 전압을 GPU가 쓸 수준으로 낮추는 모듈</td><td>최종 수도꼭지 조절 밸브</td></tr><tr><td>버스바(구리선)</td><td>렉 내부에서 대전류를 나르는 굵은 구리 도체</td><td>굵은 물 호스</td></tr><tr><td>SST(솔리드 스테이트 트랜스포머)</td><td>반도체 기반으로 교류를 800V 직류로 바꾸는 전자식 변압기</td><td>기계식 변압기+변환기를 합친 소형 관문</td></tr><tr><td>전력반도체</td><td>전압을 올리고 내리며 전류 흐름을 조절하는 반도체</td><td>GPU가 &#x27;계산&#x27;하는 반도체라면 이건 &#x27;전기 조절&#x27; 반도체</td></tr><tr><td>SiC(실리콘 카바이드)</td><td>고전압에서 효율이 높은 차세대 전력반도체 소재</td><td>실리콘보다 열에 강한 소재</td></tr><tr><td>GaN(질화갈륨)</td><td>고전압·고효율용 차세대 전력반도체 소재</td><td>SiC와 함께 쓰이는 차세대 소재</td></tr><tr><td>MLCC(적층세라믹커패시터)</td><td>순간적으로 전기를 담았다 빠르게 내보내는 커패시터</td><td>물탱크(배터리)와 달리 빠르게 붓고 빼는 바가지</td></tr><tr><td>UPS(무정전 전원장치)</td><td>정전 시 비상 전력을 공급하는 장치</td><td>건물 한쪽의 비상 발전기</td></tr><tr><td>오픈 컴퓨트 프로젝트(OCP)</td><td>구글·메타·MS 등이 참여하는 데이터센터 개방형 표준 단체</td><td>데이터센터판 공동 규격 협의체</td></tr><tr><td>디아블로 규격</td><td>OCP가 2025년 5월 공개한 ±400V 전력 규격</td><td>800V를 두 줄(<span class="up">+400</span>/<span class="dn">-400</span>)로 나눠 만드는 방식</td></tr><tr><td>와트당 토큰</td><td>같은 전력으로 얼마나 많은 AI 응답을 생성했는지 나타내는 지표</td><td>연비처럼 전력 대비 산출량을 재는 척도</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/NJQx2vKigE4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-08-09</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
