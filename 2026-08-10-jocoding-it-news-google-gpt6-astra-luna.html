@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="IT뉴스 주간 - 구글 리더십 개편, GPT-6 아스트라, 콜드월렛 해킹, AI 모델 대량 공개"><title>IT뉴스 주간 - 구글 리더십 개편, GPT-6 아스트라, 콜드월렛 해킹, AI 모델 대량 공개</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">MORNING DIGEST · 2026-08-10 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>IT뉴스 주간 - 구글 리더십 개편, GPT-6 아스트라, 콜드월렛 해킹, AI 모델 대량 공개</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>조코딩 주간 IT/AI 뉴스 라이브 요약</td></tr><tr><td>최대 이슈</td><td>구글 리더십 개편 — 제프 딘 퇴사·창업, 하사비스 의장 이동</td></tr><tr><td>안전 이슈</td><td>GPT-6(아스트라) 첫 &#x27;Critical&#x27; 분류로 출시 지연, AI 바이러스 16종 설계</td></tr><tr><td>보안 사건</td><td>콜드카드 하드월렛 RNG 취약점으로 1,000 BTC<span class="up">↑</span> 탈취</td></tr><tr><td>흐름</td><td>오픈웨이트 모델 대량 공개(영상·음성·코딩) + 무료 GPT 확대</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>구글 리더십 대개편</h2><ul>
+<li>제프 딘 = 27년 근속 레전드 개발자(텐서플로우·맵리듀스·빅테이블·검색·번역·광고 초기 주도) 퇴사</li>
+<li>신규 창업 &#x27;디스커버리 루프&#x27; = 과학·엔지니어링 발견 과정 자동화(구글이 투자·클라우드 지원 → 지분 보유)</li>
+<li>데미스 하사비스 = 딥마인드 CEO→의장, 알파벳 최고과학자·아이소모픽랩(생물학) 집중, 신임 CEO 코레이</li>
+<li>배경 = 두 거물 동시 이탈 시도 → 경영진이 주가 폭락 우려로 하사비스 만류(발표 직후 주가 5% <span class="dn">하락</span>)</li>
+<li>반론 = 세르게이 브린 제미나이 직접 감독 복귀, GCP 매출 성장률 100%<span class="up">↑</span>(딥마인드 부진과 별개)</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>오픈AI·앤트로픽 안전 이슈</h2><div class="tbl-wrap"><table><thead><tr><th>이슈</th><th>내용</th></tr></thead><tbody><tr><td>GPT-6 아스트라</td><td>사이버 공격 능력으로 첫 &#x27;Critical&#x27; 분류, 보안검사 강화로 출시 지연</td></tr><tr><td>샘 알트만 입장</td><td>&quot;강력 모델을 소수 제한은 나쁜 전략, 안전 확보에 시간 필요&quot;</td></tr><tr><td>클로드 페이블5</td><td>생물학 안전장치 완화, 과잉 거부 85% <span class="dn">감소</span>(건강·교육 질문 허용)</td></tr><tr><td>생물안보 경고</td><td>AI가 복제 가능 신종 바이러스 16종 설계, DNA 합성 주문 검토가 &#x27;자발적&#x27;이라 위험</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>보안 사건 — 콜드카드 하드월렛 해킹</h2><ul>
+<li>콜드월렛(오프라인 하드웨어 지갑)이 RNG(난수생성) 취약점으로 1,000 BTC<span class="up">↑</span> 탈취(7월 말)</li>
+<li>원리 = 원래 2^128 경우의 수여야 할 시드가 의사난수(PRNG) 폴백으로 예측 가능해짐</li>
+<li>오픈소스 펌웨어라 취약점 노출 → 클로드 코드가 &quot;취약점 찾아줘&quot; 한 줄에 8분 만에 발견</li>
+<li>교훈 = 하드웨어 월렛도 완전 안전 아님, 오픈소스 펌웨어는 양날의 검</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>무료 GPT·AI 서비스 업데이트</h2><ul>
+<li>GPT-5.6 루나 = 무료·저사용자 무제한 텍스트 채팅(ARC-AGI-2 59.6%, 테스크당 $0.18로 80% 저렴)</li>
+<li>GPT 라이브(보이스) = 파일·프로젝트 지원(이력서 기반 모의면접 등)</li>
+<li>클로드 코드 = 세션 간 메시지 전송 기능</li>
+<li>메타 뮤즈 코드 = 터미널 코딩 에이전트(뮤즈 스파크 1.2, 오퍼스 4.8급, $0.4로 저렴)</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>오픈웨이트·생성모델 대량 공개</h2><ol>
+<li>영상 = 플럭스3 비디오(20초 1080p, 옛날 후티지 특화), 미니맥스 H3(오픈웨이트, 단 한국 라이선스 제외), 원 애니메이트2(동작 복사), 완(30초)</li>
+<li>음성 = 보컬 렌더(악보→가창), 엔비디아 네모트론 보이스챗 11B(0.5초 응답)</li>
+<li>코딩 = 알리바바 쿠앤(Qwen) 3.8 맥스(2.4조 파라미터, 터미널벤치서 페이블 상회), 프라임 에이전트 하네스(ARC-AGI-3 인간 초월 95.5)</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>구글 = 웨더넥스트 사이클론(태풍 예측, 오픈소스), 잼마 트랜슬레이터(온디바이스 통역)</li>
+<li>로봇 = 페르소나 AI x HD현대, VR 원격조작 용접 휴머노이드 조선소 배치(재택 용접 가능성)</li>
+<li>AI 에이전트 결제 = 클라우드플레어 &#x27;클라우드 월렛&#x27;(스테이블코인 에이전트 지갑)</li>
+<li>함의 = 오픈웨이트 확산으로 커뮤니티 최적화 가속(미니맥스 H3 4일 만에 5배 속도), 안전·보안 규제 중요성 부각</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>오픈웨이트</td><td>모델 가중치를 공개해 누구나 내려받아 쓰는 것</td><td>요리 레시피와 재료를 통째로 공개</td></tr><tr><td>RNG/PRNG</td><td>난수생성기 / 의사(가짜) 난수생성기</td><td>진짜 주사위 vs 규칙 있는 가짜 주사위</td></tr><tr><td>콜드월렛</td><td>인터넷과 분리된 하드웨어 암호화폐 지갑</td><td>금고를 아예 인터넷에서 떼어둔 것</td></tr><tr><td>Critical(위험) 분류</td><td>AI 안전 평가 최고 위험 등급</td><td>위험물 취급 &#x27;최상위 경보&#x27;</td></tr><tr><td>하네스</td><td>모델을 감싸 성능을 끌어올리는 실행 틀</td><td>같은 엔진에 더 좋은 차체를 씌우기</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Kve2d_PpIHQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-08-10</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

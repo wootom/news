@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="SpaceX가 10GW AI 데이터센터를 서두르는 이유 — 전력당 매출의 경제학"><title>SpaceX가 10GW AI 데이터센터를 서두르는 이유 — 전력당 매출의 경제학</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학 - IT 테크 신기술</span><span class="ey">MORNING DIGEST · 2026-08-10 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>SpaceX가 10GW AI 데이터센터를 서두르는 이유 — 전력당 매출의 경제학</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>계기</td><td>SpaceX 상장 후 첫 분기 실적(2026.8.4), 매출 78억 달러(<span class="up">+92%</span> YoY)</td></tr><tr><td>충격 포인트</td><td>한 분기 AI 인프라 지출 158억 달러 = 매출의 2배 초과</td></tr><tr><td>컴퓨팅 목표</td><td>연말 2GW<span class="up">↑</span> → 2027년 말 10GW 근접(한국형 원전 7기급)</td></tr><tr><td>핵심 주장(세미애널리시스)</td><td>최신 GPU 1GW → 연 1,000억 달러<span class="up">↑</span> 추론 매출 잠재력</td></tr><tr><td>결론</td><td>SpaceX는 GPU가 아닌 &#x27;남보다 먼저 GPU를 켜는 시간&#x27;을 판다</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><ul>
+<li>빅테크 실적이 수요 뒷받침: Azure <span class="up">+43%</span>(수요&gt;공급), AWS <span class="up">+37%</span>(AI 연환산 250억 달러<span class="up">↑</span>), 구글클라우드 <span class="up">+82%</span></li>
+<li>컴퓨팅 구조 = 전력 공급 → GPU 가동 → 토큰 생성 → API·코파일럿·챗봇 판매</li>
+<li>새 핵심 지표 = TPS/MW(전력 1MW당 초당 토큰 처리량), GB300은 호퍼 대비 특정 조건 5배</li>
+</ul></section><section class="card s12" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 추론 경제성</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>특성</th></tr></thead><tbody><tr><td>프리필(Prefill)</td><td>질문·문서 읽기, 연산 성능 위주</td></tr><tr><td>디코드(Decode)</td><td>토큰 1개씩 생성, KV캐시 반복 호출로 메모리 부담</td></tr><tr><td>분리 서빙</td><td>프리필·디코드를 별도 GPU 풀에 배치(엔비디아 다이나모 Disaggregated Serving)</td></tr><tr><td>TTFT</td><td>첫 토큰까지 걸리는 시간, 응답 속도와 GPU 이용률의 균형이 수익성 좌우</td></tr></tbody></table></div>
+<ul>
+<li>세미애널리시스 계산 = 실제 AI 코딩 서비스 작업 패턴(입출력·캐시 비율·응답속도) 시뮬레이션</li>
+<li>에이전트 변수 = 사용자 1회 요청에도 GPU가 파일 읽기·코드 작성·실행·수정 반복 → 소비 토큰 급증</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미 — 숫자의 간극</h2><ul>
+<li>GB300 컴퓨팅 임차비 = 1MW당 연 약 1,200만 달러</li>
+<li>추론 매출 잠재력 = 1MW당 연 1억 달러<span class="up">↑</span> (오픈AI·앤트로픽 서비스 기준)</li>
+<li>SpaceX 조기 공급 프리미엄 = 1MW당 연 3,000만~5,000만 달러 추정</li>
+<li>리드타임 = SpaceX가 노리는 조기 공급 우위 3~5개월</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 방법론 — 속도와 전력 확보</h2><ul>
+<li>XAI 콜로서스1 = 약 300MW를 122일 만에 구축(전례)</li>
+<li>2026년 말 SpaceX 전체 컴퓨팅 약 2GW 전망</li>
+<li>전력망 대기 대신 &#x27;현장 발전&#x27; 직접 투입 = 사우스헤이븐 가스터빈 27기(495MW, 2월) → 69기(1.2GW<span class="up">↑</span>, 7월)</li>
+<li>부지 확보 + 건물 + 전력망 지연 시 현장 발전 병행 = GPU 점등 날짜 앞당김</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용/시사 시나리오</h2><ol>
+<li>MS = 유력 최대 구매자, 2026년 10GW<span class="up">↑</span> 계약(총 3,000억 달러<span class="up">↑</span>), 상당분 2027말~2028 인도 → 조기 컴퓨팅 필요</li>
+<li>MS-SpaceX 3GW 계약 시나리오도 현실적(세미애널리시스 추정, 미발표)</li>
+<li>2028 인도 대기 vs 2027 비싸게 조기 서비스 → 프리미엄 지불 유인 발생</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>10GW = 단일 센터가 아닌 여러 사이트 합산 컴퓨팅 용량</li>
+<li>리스크 = API 가격 <span class="dn">하락</span> 시 매출 <span class="dn">하락</span>, GPU 이용률 저하, 가스터빈 허가·환경 문제</li>
+<li>반대 요인 = 에이전트 확산으로 사용자당 추론량 급증 시 매출 상방</li>
+<li>핵심 질문 = &quot;AI 회사가 비싼 컴퓨팅을 사고도 남을 만큼 1MW에서 돈을 버는가&quot; → 빅테크 실적이 가능성 뒷받침</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>GW/MW</td><td>전력 단위(1GW=1,000MW), 한국형 원전 1기 약 1.4GW</td><td>데이터센터 규모를 전력으로 잰다</td></tr><tr><td>추론(Inference)</td><td>학습된 AI가 실제 답변(토큰)을 생성하는 과정</td><td>시험 공부(학습) 후 실제 문제 푸는 것</td></tr><tr><td>TPS/MW</td><td>전력 1MW당 초당 토큰 처리량, 추론 효율 지표</td><td>같은 연료로 더 많이 달리는 연비</td></tr><tr><td>KV캐시</td><td>이미 읽은 내용을 담아 반복 활용하는 메모리</td><td>방금 읽은 문장을 손에 쥐고 다음 문장 쓰기</td></tr><tr><td>TTFT</td><td>첫 토큰이 나오기까지 걸리는 대기 시간</td><td>검색 후 첫 글자가 뜨기까지의 체감 속도</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/wGxYJRtncEk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 - IT 테크 신기술 · 2026-08-10</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
