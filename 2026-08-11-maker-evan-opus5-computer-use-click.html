@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="메이커 에반이 클로드 오퍼스 5의 &#x27;컴퓨터 유즈&#x27;를 직접 써본 체험기. AI에게 &#x27;손&#x27;을 달아 화면을 직접 보고 클릭·타이핑하게 하는 기능이, 이전엔 좌표 오차로 실패하던 작은 요소 클릭까지 정확해지면서 여러 단계를 이어붙인 실제 자동화가 가능해졌다는 것이 핵심. 표 "><title>오퍼스 5 컴퓨터 유즈 — 클릭 정확도가 바꾼 자동화 체감</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-08-12 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>오퍼스 5 컴퓨터 유즈 — 클릭 정확도가 바꾼 자동화 체감</h1><p class="lead">메이커 에반이 클로드 오퍼스 5의 &#x27;컴퓨터 유즈&#x27;를 직접 써본 체험기. AI에게 &#x27;손&#x27;을 달아 화면을 직접 보고 클릭·타이핑하게 하는 기능이, 이전엔 좌표 오차로 실패하던 작은 요소 클릭까지 정확해지면서 여러 단계를 이어붙인 실제 자동화가 가능해졌다는 것이 핵심. 표 30줄 옮기기를 마우스 한 번 안 잡고 끝낸 경험을 들며, 되돌릴 수 있는 지루한 반복 작업에 맡기되 속도·비가시 요소·비가역 작업의 한계는 분명히 짚는다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>문제의식 — &#x27;머리 안 쓰는 클릭&#x27;의 낭비</h2><p>하루 수많은 클릭 중 진짜 판단이 필요한 것은 소수, 나머지는 창 열고 탭 옮기고 복사·붙여넣는 손 가는 일. 발표자는 두 창을 오가며 숫자 30개를 옮기다 40분을 날렸고, 지루함 때문에 한 줄을 건너뛰는 실수까지 했다. 어려워서가 아니라 지루해서 나는 실수 — 이 시간을 넘기고 싶었지만 마땅한 방법이 없었다.</p></section><section class="card s6" id="s2"><h2><span class="seq">02</span>컴퓨터 유즈란 — AI에게 손을 달다</h2><p>지금까지 AI는 &#x27;입&#x27;만 있어 방법을 알려줄 뿐 클릭·타이핑은 사람 몫이었다. 컴퓨터 유즈는 화면을 직접 보고 직접 누른다 — 전화로 길을 알려주던 사람이 운전대를 잡는 것에 비유. &#x27;말로 알려주면 내 시간이 들고, 직접 해주면 내 시간이 안 든다&#x27;가 차이의 전부.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>과거의 한계 — 스크린샷 좌표 방식의 어설픔</h2><p>AI는 화면을 스크린샷 한 장으로 받아 버튼 위치를 픽셀 좌표로 찍어야 했다. &#x27;안대를 썼다 벗겨 사진 한 장 보여주고 다시 씌운 뒤 그 버튼을 누르라&#x27;는 격이라, 여백·유사 버튼을 잘못 누르고 스크롤로 좌표가 밀려 재시도가 서너 번 반복됐다. 결국 사람이 마우스를 잡게 돼 &quot;신기하지만 아직 내가 하는 게 빠르다&quot;가 결론이었다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>오퍼스 5의 변화 — 조용해지고 작은 걸 누른다</h2><p>같은 작업을 오퍼스 5로 재시도하니 우선 &#x27;조용해졌다&#x27; — 클릭 한 번에 화면을 계속 다시 보던 왕복이 크게 줄어 한 번 보고 한 번에 들어간다. 가장 놀란 건 표 안 작은 체크박스·드롭다운 3번째 항목처럼 작은 요소를 정확히 누르는 것(&quot;콩자반을 집는다&quot;에 비유). 그리고 사람이 옆에서 지켜보며 잡아줄 필요가 없어져(&#x27;뒷자리 승객&#x27;처럼) 시켜놓고 다른 일을 할 수 있게 된 것이 가장 큰 변화.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>왜 클릭 정확도가 결정적인가</h2><p>다단계 작업은 한 단계 성공률이 높아도 여러 번 곱하면 뚝 떨어진다 — 클릭이 10번에 1번 빗나가면 자동화 자체가 실패. 반대로 클릭이 되면 &#x27;창 열고 → 값 읽고 → 다른 창에 넣고 → 저장 → 확인&#x27;의 5단계를 끝까지 이어붙일 수 있다. 예전엔 2~3번째에서 무너지던 것이 이제 완주한다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>실제로 맡긴 일들</h2><p>① 표 옮기기(사이트 값을 한 줄씩 확인·정리, 끝나면 빠진 줄 재확인까지 지시), ② 반복 입력(같은 양식에 내용만 바꿔 여러 번), ③ 눈으로 확인(값이 제대로 들어갔는지 열어보고 보고), ④ 창 왕복(가장 피곤한 일이지만 AI는 지치지 않음). 공통점은 모두 어렵지 않고 &#x27;하기 싫어 미루던 설거지 같은 일&#x27;. 지시 팁: 무엇을·어디서·언제 멈출지 세 가지를 함께 적고(멈출 조건이 핵심), 좌표 대신 목적(&quot;저장해 줘&quot;)만 말한다.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>한계 — 느림·비가역·비가시</h2><p>① 느리다 — 화면 보고 판단하고 누르는 걸 한 단계씩 하므로 사람이 30초에 할 일을 3분 걸릴 수 있어 급한 일은 직접. ② 되돌릴 수 있는 일만 — 결제·삭제·외부 메일 발송은 물어보게 하고 사람이 확인·실행. ③ 화면에 안 보이면 못 함 — 스크롤 아래·잘린 메뉴는 불가하므로 창을 크게 띄운다. 시작은 아주 작게(&quot;지금 화면에 뭐 열려 있는지 알려줘&quot; → 항목 하나 클릭)해 신뢰를 쌓고 권한도 필요한 앱만 골라 허용한다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><ul>
+<li><strong>컴퓨터 유즈(Computer Use)</strong>: AI가 화면을 직접 보고 클릭·타이핑으로 컴퓨터를 조작하는 기능.</li>
+<li><strong>다단계 성공률</strong>: 단계별 성공률의 곱으로 결정되는 전체 작업 성공 확률(클릭 정확도가 관건).</li>
+<li><strong>멈출 조건</strong>: 어디까지 하고 멈출지 지시에 명시하는 항목(폭주 방지).</li>
+<li><strong>리드 헤비/비가역 작업</strong>: 되돌릴 수 없는 결제·삭제·발송 등 사람이 최종 확인해야 하는 작업.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/C3Xwt2T0WLI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-08-12</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
