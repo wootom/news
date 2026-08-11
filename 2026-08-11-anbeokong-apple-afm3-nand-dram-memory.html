@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="안될공학(패치)이 3세대 애플 파운데이션 모델 AFM3를 통해 온디바이스 AI가 메모리 구조를 어떻게 바꾸는지 분석. 애플은 200억 파라미터 모델 전체를 느린 NAND에 저장하고 필요한 전문가만 DRAM으로 불러오는 구조를 채택, IFP·양자화로 속도·용량을 잡았다."><title>애플 AFM3, NAND를 모델 저장소로 — AI 시대 메모리 계층 재편</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-08-12 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>애플 AFM3, NAND를 모델 저장소로 — AI 시대 메모리 계층 재편</h1><p class="lead">안될공학(패치)이 3세대 애플 파운데이션 모델 AFM3를 통해 온디바이스 AI가 메모리 구조를 어떻게 바꾸는지 분석. 애플은 200억 파라미터 모델 전체를 느린 NAND에 저장하고 필요한 전문가만 DRAM으로 불러오는 구조를 채택, IFP·양자화로 속도·용량을 잡았다. AI 데이터센터가 촉발한 메모리 가격 급등(모바일 LPDDR5X 2분기 78~83%<span class="up">↑</span>) 속에서, DRAM과 NAND의 &#x27;역할 분담&#x27;이 AI 하드웨어의 핵심 화두로 부상했다는 것이 요지.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>배경 — 메모리 가격 급등과 애플의 선택</h2><p>한 달 뒤 신형 아이폰 공개를 앞두고 메모리·저장공간이 관전 포인트. AI 데이터센터가 DRAM·NAND를 대량 흡수하며 2분기 모바일용 LPDDR5X가 전분기 대비 약 78~83% <span class="up">상승</span>. 팀 쿡도 &quot;가격 <span class="up">상승</span>을 더는 전부 흡수하기 어렵다&quot;고 언급했고, 애플이 중국 CXMT(2025년 세계 DRAM 점유율 4위·약 7.7%)와 조달을 논의했다는 보도까지 나왔다. 이 시점에 애플은 아이폰 내 메모리 사용 방식을 크게 바꿨다.</p></section><section class="card s6" id="s2"><h2><span class="seq">02</span>AFM3 구조 — NAND에 모델, DRAM에 활성 부분</h2><p>AFM3에는 온디바이스 모델이 둘. AFM3 코어는 약 30억 파라미터 밀집(dense) 모델, 코어 어드밴스드는 전체 200억 파라미터지만 요청에 따라 10~40억만 활성화하는 MoE(전문가 혼합) 유사 구조. 어떤 전문가가 필요할지 모르므로 전체 모델은 어딘가 보관해야 하는데, 애플은 DRAM 대신 &#x27;저장용 NAND&#x27;를 모델 보관소로 끌어들였다. 전체 200억은 NAND에 두고 선택된 전문가만 DRAM으로 로드한다. 1월 애플·구글 공동발표대로 제미나이·구글 클라우드 기반 위에 애플 실리콘에 맞춰 재설계됐다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>IFP — NAND의 느린 속도를 우회</h2><p>NAND는 DRAM보다 훨씬 느려, 토큰마다 전문가를 바꿔 NAND를 읽으면 대기 시간이 병목이 된다. 애플의 해법은 IFP(instruction-following pruning): 사용자 질문을 먼저 보고 이 작업에 필요한 부분을 골라 NAND→DRAM으로 한 번 가져온 뒤, 토큰마다 갈아끼우지 않고 그대로 사용하며 정말 필요할 때만 다시 고른다. 표준 MoE가 토큰마다 전문가를 결정하는 것과 달리 &#x27;무엇을 계산할지 먼저 정해&#x27; 모델 읽기 횟수 자체를 줄이는 것이 핵심 차이.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>성능 — 작은 모델처럼 빠르게, 큰 모델처럼 정확하게</h2><p>IFP 연구에서 90억 파라미터 모델이 질문마다 약 30억만 골라 쓰고도, 일반 30억 밀집 모델보다 수학·코딩에서 5~8포인트 높은 성능을 냈다. 동시에 첫 토큰 생성 시간은 30억 밀집 모델과 비슷한 수준 — 필요한 능력을 잘 골라내면 작은 모델의 속도로 큰 모델의 결과에 근접한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>NAND 수명·양자화 — 리드 헤비와 2비트</h2><p>모델 가중치는 한 번 기록하면 대부분 읽기만 하는 리드 헤비 워크로드라 NAND에 상대적으로 적합. 다만 반복 리드는 주변 셀 문턱전압을 흔드는 &#x27;리드 디스터브&#x27; 오류를 키울 수 있는데, 한 번 가져온 가중치를 DRAM에 유지·재사용하는 구조가 이를 완화한다. 여기에 양자화가 결합 — 애플은 2025년 30억 모델에서 디코더 가중치를 2비트(임베딩 4비트, KV캐시 8비트)까지 낮췄고, QAT(양자화 인지 학습)+어댑터 재학습으로 품질 손실을 보완해 MMLU가 오히려 1.5% <span class="up">상승</span>. 30억을 16비트로 저장하면 약 6GB지만 2비트면 이론상 0.75GB.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>저장 용량 수요 폭증 — 아이폰이 NAND 시장에 미칠 힘</h2><p>애플 인텔리전스 공식 요구 저장공간은 현재 7GB(끄면 모델 삭제). 트렌드포스는 2026년 플래그십에서 로컬 AI용 모델·캐시가 40~60GB 시스템 저장공간을 쓸 수 있다고 전망(언어·음성·이미지 모델+캐시 합산). 아이폰17이 기본 저장을 128→256GB로 올린 것도 이 맥락. 2025년 애플이 약 2.4억 대를 생산했으므로 대당 평균 64GB만 늘어도 추가 NAND 약 15.4엑사바이트, 128GB면 약 37엑사바이트 — 대당 한 단계가 2억 대를 만나면 NAND 업계에 큰 숫자가 된다.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>업계 공통 방향 — HBF·GEN-S와 메모리 계층화</h2><p>AFM3는 특이 사례가 아니라 업계 흐름과 궤를 같이한다. SK하이닉스·샌디스크는 HBM과 SSD 사이 새 계층으로 NAND를 쓰는 HBF(High Bandwidth Flash) 표준화를 추진, 삼성전자도 FMS26에서 차세대 NAND 아키텍처 GEN-S 컨셉을 공개(AI 가속기 가까이 NAND 배치로 대용량 모델 고속 공급). PC에서도 온디바이스 모델·MS 리콜이 SSD를 점유. 결론: AI가 커질수록 DRAM/NAND 중 택일이 아니라 &#x27;지능 전체를 어디에 보관하느냐&#x27;가 중요해진다 — 계산할 부분은 DRAM/HBM, 거대한 모델·데이터는 NAND/HBF가 맡는 역할 분담.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><ul>
+<li><strong>AFM3</strong>: 애플의 3세대 온디바이스 파운데이션 모델(코어 30억·코어 어드밴스드 200억).</li>
+<li><strong>MoE(전문가 혼합)</strong>: 큰 모델 안 여러 전문가 중 질문에 필요한 것만 활성화하는 구조.</li>
+<li><strong>IFP(instruction-following pruning)</strong>: 질문 단위로 필요한 가중치를 선별해 NAND 읽기 횟수를 줄이는 기법.</li>
+<li><strong>양자화/QAT</strong>: 가중치를 2·4·8비트로 낮춰 용량·속도를 확보하는 압축과 그 인지 학습.</li>
+<li><strong>리드 디스터브</strong>: 반복 읽기로 인접 NAND 셀의 문턱전압이 변해 생기는 오류.</li>
+<li><strong>HBF(High Bandwidth Flash)</strong>: HBM과 SSD 사이를 메우는 고대역폭 NAND 계층.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/heIhmgp4ywU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 · 2026-08-12</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

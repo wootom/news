@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Jack Roberts(재그)가 소개하는 &#x27;건틀릿 루프(디자인 루프)&#x27; 기법. 클로드가 자기 디자인을 스스로 채점하는 한계를, 새 컨텍스트의 독립 비평가 여러 명을 붙여 가차 없이 반복 검증하는 방식으로 해결한다. Matt Shumer가 대중화한 개념으로, 취향을 체크"><title>클로드 디자인 10배 향상 — &#x27;건틀릿 루프&#x27; 독립 비평가 기법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">MORNING DIGEST · 2026-08-12 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>클로드 디자인 10배 향상 — &#x27;건틀릿 루프&#x27; 독립 비평가 기법</h1><p class="lead">Jack Roberts(재그)가 소개하는 &#x27;건틀릿 루프(디자인 루프)&#x27; 기법. 클로드가 자기 디자인을 스스로 채점하는 한계를, 새 컨텍스트의 독립 비평가 여러 명을 붙여 가차 없이 반복 검증하는 방식으로 해결한다. Matt Shumer가 대중화한 개념으로, 취향을 체크리스트로 환원해 한 번의 명령으로 오류 적은 웹사이트·그래픽·프레젠테이션을 뽑아낸다. 대신 토큰(비용)이 크게 소모되므로 재사용 가능한 템플릿·중요 작업에 쓰는 것이 권장.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>문제 정의 — 자기 채점의 한계</h2><p>클로드는 아름다운 디자인·HTML 애니메이션을 만들 수 있지만 &quot;제가 해낸 것 같아요&quot;라며 스스로 결과를 평가하는 것이 최대 약점. 판사·배심원·사형집행인을 겸할 수 없다는 것. 같은 결과물에 &quot;뭐가 문제냐&quot;를 다섯 번 물으면 다섯 가지 다른 답이 나오므로, 한 번의 셀프 판정으로는 품질이 담보되지 않는다.</p></section><section class="card s6" id="s2"><h2><span class="seq">02</span>건틀릿 루프의 원리 — 독립 비평가</h2><p>해법은 &#x27;새 컨텍스트 비평가&#x27;를 만들어 참고 디자인(기준)을 주고, 여러 비평가가 클로드의 산출물에 이의를 제기하는 반복 루프를 돌리는 것. 인터뷰 → 비행 전 점검(프리플라이트 체크리스트) → 허물고 다시 짓기 → 비평가 대면의 사이클. 취향이 체크리스트가 되어 &quot;요청한 a~g를 실제로 다 했는가&quot;를 각 비평가가 검증하고, 미흡하면 되돌아가 수정한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>사전 준비 — 디자인 시스템 구축(선택)</h2><p>필수는 아니나 성능을 크게 높이는 단계. 클로드 웹사이트 좌하단 &#x27;디자인&#x27;에서 새 디자인 시스템을 만들고, 보유한 디자인 자료(예: 마음에 드는 프레젠테이션)를 모두 넣어 타이포그래피·그래픽 등 청사진으로 정리한다. &quot;기억력이 없는 세계 최고 디자이너에게 스타일 청사진을 주는 것&quot;에 비유. 완성 후 &#x27;공유&#x27;에서 HTML 프로젝트로 내보내 루프에 활용한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>스킬로 설치 — /디자인 루프</h2><p>발표자가 세 가지 비평 역할을 정의한 자료(무료 커뮤니티 제공)를 통째로 복사해 클로드에 &quot;이걸 스킬로 만들어줘&quot;로 붙여넣으면 슬래시 명령 &#x27;/디자인 루프&#x27; 스킬이 생성된다. 이후 새 창에서 <code>/디자인 루프</code> 입력·활성화하면 시스템이 몇 가지 질문을 던지며 루프를 시작. 클로드 외부에서 실행하는 이유는 새 컨텍스트 비평가를 강제로 분리하기 위함.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>3단 난이도 테스트 결과</h2><p>① 회전목마(인스타 좋아요 1.5만) — URL만 주고 재현시켜도 아름다운 결과, 100% 독창 이미지. ② 애니메이션 — 자체 &#x27;클로드 디자인&#x27; 시스템으로 10~15초 HTML 그래픽에 문구 오버레이. ③ 웹사이트 — &#x27;웹사이트라는 아이디어&#x27;만으로도 숫자가 변동하는 인터랙티브 결과 생성. 공통적으로 브리핑·구성·비판적 검토를 백그라운드에서 수행하며, 참고 이미지를 주면 그에 맞춰 정교화된다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>비용·토큰과 실전 팁</h2><p>루프는 토큰을 크게 소모 — 한 사례는 약 300만 토큰, 스킬로 작은 모델에 분할하면 하이쿠 73만·소네트 119만 토큰 수준, 심판 3명의 6라운드 건틀릿은 약 200만 토큰. 라운드가 10회까지 가기도 하며(1라운드 3실패·로고 없음 → 색·크기 교정 → …), 그만큼 반복 검토가 품질을 만든다. 재사용 템플릿·큰 작업에 쓰고, 실험적으로는 DeepSeek V4 등 다른 모델로 더 긴 루프를 돌리는 방안도 제시. 디자인 감각이 좋은 클로드에 큰 모델을 맡기는 것을 권장.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>왜 중요한가 — 디자인이 곧 신뢰</h2><p>재그는 첫 테크 스타트업에서 디자인이 투자자 미팅·신규 고객·업계 표준화로 이어졌다며 디자인의 사업적 가치를 강조. 건틀릿 루프는 비개발·비디자이너도 웹사이트·프레젠테이션·이메일·HTML을 아름답게 만들 수 있게 해, 개인의 산출물 품질 하한을 끌어올린다. 단 되돌릴 수 없는 낭비를 막기 위해 크레딧 관리가 필요하다는 현실적 한계도 함께 제시.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><ul>
+<li><strong>건틀릿 루프(Gauntlet/Design Loop)</strong>: 독립 비평가 여러 명이 산출물을 반복 검증·수정하게 하는 프롬프트 기법.</li>
+<li><strong>새 컨텍스트 비평가</strong>: 원 작업과 분리된 세션에서 기준에 맞춰 냉정히 평가하는 역할.</li>
+<li><strong>디자인 시스템</strong>: 타이포그래피·그래픽 규칙을 정리한 청사진, 결과 일관성을 높임.</li>
+<li><strong>프리플라이트 체크리스트</strong>: 산출 전 요건 충족 여부를 항목별로 점검하는 목록.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/jq9LRwE0-GQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-08-12</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
