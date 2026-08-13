@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="젠스파크 세컨드 브레인 노트 — AI 회사가 하드웨어를 만드는 이유"><title>젠스파크 세컨드 브레인 노트 — AI 회사가 하드웨어를 만드는 이유</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-hub"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>오목교 전자상가</span><span class="ey">MORNING DIGEST · 2026-08-14 · 오목교 전자상가</span><span class="chip">🎬 영상</span></div><h1>젠스파크 세컨드 브레인 노트 — AI 회사가 하드웨어를 만드는 이유</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>제품</td><td>젠스파크(Genspark) 세컨드 브레인 노트 — 녹음 기반 AI 컨텍스트 수집 기기</td></tr><tr><td>스펙</td><td>무게 26g, 두께 2.95mm, 마이크 4개, 배터리 500mAh(연속녹음 다수 시간), 저장 64GB(약 1,000시간)</td></tr><tr><td>폼팩터</td><td>신용카드 크기·3장 두께, 버튼 1개(길게=녹음, 짧게=중요지점 표시), 맥세이프 부착</td></tr><tr><td>연동</td><td>젠스파크 앱 + 구글(드라이브·Gmail·캘린더)·슬랙 커넥터, MCP 확장</td></tr><tr><td>핵심 명제</td><td>&quot;AI 녹음기는 회의를 기록, 세컨드 브레인은 &#x27;나&#x27;를 기록&quot;</td></tr><tr><td>관전 포인트</td><td>오픈AI·메타·구글·애플이 동시에 AI 하드웨어로 가는 이유</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>리뷰는 하나의 질문으로 관통된다 — &quot;소프트웨어 회사인 젠스파크가 왜 하드웨어를 직접 만들었나?&quot; 제품 개봉·스펙·페어링·녹음 품질 시연을 거쳐, 점심 메뉴 회의 녹음을 젠스파크 슈퍼 에이전트가 자동으로 찾아 표·엑셀·PPT로 정리하고 드라이브 업로드·슬랙 전송까지 수행하는 실제 워크플로우로 답을 제시한다. 결론은 &quot;프롬프트를 잘 쓰는 사람이 아니라 기록이 잘 쌓인 사람이 좋은 결과를 받는 시대.&quot;</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>AI 사용 방식의 진화: 2022년 챗봇(묻고 답하기) → 2024년 코파일럿(지시하면 수행) → 2026년 자율형 에이전트(의도만 말하면, 때로는 조건만 맞으면 알아서 완성). 문제는 에이전트가 일을 끝내려면 &quot;사용자·회사·프로젝트의 맥락&quot;을 알아야 하는데, 이 맥락의 상당수가 회의 대화·이동 중 아이디어처럼 온라인에 남지 않는다는 것. 슈퍼 에이전트는 특정 모델 하나가 아니라 GPT·클로드·제미나이 등 프론티어 모델을 조합해 결과 품질을 높인다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>거의 모든 AI 회사가 하드웨어로 가는 이유가 여기서 드러난다 — 오픈AI(조니 아이브 영입 기기), 메타·구글의 스마트 글래스, 애플의 준비설. 모두 &quot;온라인 밖 현실의 맥락을 가져오는 입구&quot;를 선점하려는 경쟁이다. 소프트웨어만으로는 손으로 나눈 대화·현장에서 들은 정보를 절대 확보할 수 없기 때문. 세컨드 브레인 노트의 목적은 회의 하나의 기록이 아니라, 내가 만난 사람·나눈 대화·수행 업무·떠오른 생각을 누적해 AI가 점점 나를 더 잘 알게 만드는 것이다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 — 실제 시연</h2><p>점심 메뉴 회의 사례: &quot;회의한 거 정리해서 근처 밥집 메뉴·가격 표로 보여줘&quot;라고만 하면, 위치·취향을 입력하지 않아도 세컨드 브레인에서 회의록을 찾아 목동 SBS 인근 실제 가게를 조사해 표로 정리. 이어 &quot;엑셀·PPT로 만들어 드라이브 올리고 슬랙에 링크 전송&quot;까지 한 번에 수행(외부 전송은 확인 단계 거침). 1인 사업자(IoT 컨설팅) 사례에서는 상담을 녹음만 하면 기존 드라이브의 견적서를 스스로 참고해 새 견적서·PPT를 생성 — &quot;가르친 적 없는데 이미 인수인계된 직원.&quot; &#x27;스킬&#x27; 기능으로 견적 작성 과정을 등록하면 다음부터 한 줄 명령으로 반복.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><p>첫째, 지식 자산화 — 녹음·대화·산출물이 모두 세컨드 브레인에 누적돼 1인 사업의 지식이 자산이 되고, 훗날 직원 채용 시 그대로 인수인계 자료가 된다. 둘째, 리뷰어·크리에이터 — 제품을 쓰며 중얼거린 소감을 버튼으로 남겨두면 스크립트 작성 시 &quot;말한 소감 시간순 정리해줘&quot; 한 줄로 회수(갤럭시 폴드8 리뷰가 실제 사례). 셋째, 학생 — 수업 자료(드라이브)·과제(메일)·수업·팀플 녹음을 쌓아 시험기간 정리·발표자료 초안에 활용. 공통점: &quot;내 정보가 모이는 환경&quot;이면 직업 무관하게 유효.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>한계도 명확하다. 마이크 감도가 높아 주변 소음이 크게 잡히고 영상 촬영용 음질은 아니며, 초기에는 데이터가 적어 정확도가 떨어진다 — &quot;사자마자 좋아지는 제품이 아니라 기억을 쌓아야 성능이 나오는 제품.&quot; 회사 방침상 클라우드 업로드 불가한 민감 회의에는 부적합. 다만 노트 없이도 구글 로그인만으로 소프트웨어 세컨드 브레인을 먼저 써볼 수 있어 진입장벽은 낮다. 저자 평가: &quot;꾸준히 들고 다니며 채울 사람에게는 현재 나온 AI 표방 기기 중 가장 실체가 있는 물건.&quot; 프롬프트 역량 격차를 &#x27;기록 누적&#x27;으로 뒤집는 접근이 핵심 시사점.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>자율형 에이전트</td><td>의도만 말하면 스스로 여러 단계를 처리하는 AI</td><td>목적지만 찍으면 알아서 운전하는 자율주행</td></tr><tr><td>컨텍스트</td><td>AI가 나·상황을 이해하는 데 필요한 배경정보</td><td>업계 은어 &#x27;출고&#x27;의 진짜 뜻을 아는 눈치</td></tr><tr><td>커넥터</td><td>외부 서비스(드라이브·슬랙 등)를 AI에 연결하는 기능</td><td>여러 앱을 한 콘센트에 꽂는 멀티탭</td></tr><tr><td>MCP</td><td>AI가 외부 도구·데이터에 접속하는 표준 연결 방식</td><td>기기마다 통하는 USB-C 규격</td></tr><tr><td>스킬</td><td>반복 업무 절차를 AI에 등록해 한 줄로 재실행</td><td>자주 쓰는 요리 레시피를 즐겨찾기 등록</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/dCheL6z1wgE" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>오목교 전자상가 · 2026-08-14</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
