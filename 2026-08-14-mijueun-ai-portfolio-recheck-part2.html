@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="미주은 AI 인프라 포트폴리오 재점검 2부 — 엔비디아·TSMC·메타·팔란티어"><title>미주은 AI 인프라 포트폴리오 재점검 2부 — 엔비디아·TSMC·메타·팔란티어</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>미주은</span><span class="ey">MORNING DIGEST · 2026-08-14 · 미주은</span><span class="chip">📊 시황</span></div><h1>미주은 AI 인프라 포트폴리오 재점검 2부 — 엔비디아·TSMC·메타·팔란티어</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>미주은 × 조이스타(스마트스코어) 대표, 보유 16종목 전면 재점검 2부</td></tr><tr><td>진단 축</td><td>진단점수(펀더멘탈)·EPS 리비전(전망치 수정)·밸류에이션·모멘텀(매매신호)</td></tr><tr><td>총평</td><td>16종목 중 약 12종목은 펀더멘탈·EPS 리비전 양호, 조정은 대부분 밸류·모멘텀 문제</td></tr><tr><td>우선순위</td><td>①모멘텀 회복+밸류 부담 적은 종목 → ②모멘텀 미회복 종목 → ③EPS 하향·고평가 종목</td></tr><tr><td>시장 압력</td><td>전쟁→유가→인플레이션→금리로 이어지는 한 줄이 시장을 누르는 중</td></tr><tr><td>태도</td><td>&quot;자신감이 아니라 용기&quot;, 데이터 기준 위에서 분할 매수</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>각 종목을 진단점수·EPS 리비전·밸류에이션·모멘텀 4개 축으로 스냅샷 점검한다. 엔비디아·TSMC는 강세, 종목 하나(번호바 추정)는 성장 둔화 우려, 메타는 EPS 리비전 강한 하향으로 최약체, 그리고 대표가 메타를 팔고 산 팔란티어를 즉석 점검한다. 마지막은 &quot;좋은 기업인데 왜 주가만 빠지나&quot;에 대한 투자 태도 조언으로 마무리한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>종목별 진단 — 엔비디아</h2><p>7월 7일 195달러 매수 신호 후 약 11% <span class="up">상승</span>, 진단점수 93점으로 이 규모에서 보기 힘든 성장성·수익성. 죽었던 모멘텀이 정배열로 완전 전환, 매수세의 근간은 밸류와 EPS 성장이다. 매출 추정치가 계속 상향(과거 10%대 초반 → 22%까지), EPS 전망치 수정 80점·상향 유지(3개월 전 대비 <span class="up">+22%</span>). 성장성·EPS 리비전·밸류에이션 모두 안정감을 주는 종목으로 평가.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>종목별 진단 — TSMC·메타</h2><p>TSMC — &quot;미국 주식 하면서 안 가질 수 없는&quot; 애정 종목. 2022년 이후 마이너스 매매신호가 단 2회(<span class="dn">-1.5%</span>, <span class="dn">-5.9%</span>)뿐이고 나머지는 성공, 잘 맞히는 종목을 더 잘 맞힌다. 현재 422달러, 5·20·60일선 위 정배열로 방어력 높음. EPS 리비전 &#x27;강한 상향 가속&#x27; 95점(1개월 전 대비 <span class="up">+16%</span>는 이례적)으로 알파 수익 가능성 높은 신호. 장기 EPS 성장률과 주가 성장률이 비슷해 &#x27;마음 편한&#x27; 저변동 종목.</p>
+<p>메타 — 가격·밸류는 좋으나 모멘텀이 방향을 못 잡고 박스권에 갇힘(현재 약 599달러, 60일선 605·120일선 616이 저항). 매수·손절이 반복되는 상태. 결정적으로 EPS 리비전이 &#x27;강한 하향&#x27;으로 잡혔고 <span class="dn">하락</span> 추세가 이어져 포트 내 최약체. EPS 리비전이 상향 전환하는지가 주가 회복의 핵심 포인트.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 사례 — 메타 매도, 팔란티어 매수</h2><p>대표가 8월 초 메타를 팔고 팔란티어를 매수했는데, 스마트스코어도 8월 10일 172달러 매수 신호를 냈고 미주은도 같은 날 171달러에 추천 — 우연히 동일 판단. 팔란티어 진단점수 80점(성장성 85·수익성 100·해자 100), 매출성장률 올해 72%·내년 45%·내후년 42%, EPS 올해 <span class="up">+114%</span>·내년 36%·내후년 45%로 성장성은 압도적. 연초부터 6~7개월 이어진 긴 조정으로 저평가 구간 진입, 유일 약점이던 모멘텀이 실적 서프라이즈로 살아나면 사실상 해소. 결론: &quot;좋은 메타를 팔고 팔란티어로 간 것은 좋은 교환.&quot;</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용·해석 시나리오</h2><p>첫째, 스크리닝 프레임 — 방향성·속도·절대수치 3가지를 함께 봐, 높으면서 상향 가속/유지면 A그룹. 둘째, 매매 규율 — 모멘텀 꺾이면 팔고, 비싸다고 무조건 팔지 않으며, 싸도 무조건 사지 않는다. 급등 첫날 대신 쿨링타임 후 매수(손절 연쇄 방지). 셋째, 분할 매수 — 역배열 구간에서 2주간 10분의 1씩 나눠 사는 &#x27;용기&#x27;의 실행, 단 데이터 기준 위에서만.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>16종목 중 약 10~11종목은 거시 안정만 생기면 빠르게 튀어오를 수 있다고 판단. 시장을 누르는 것은 전쟁→유가→인플레이션→금리로 이어지는 한 줄이며, 이 뉴스가 해소되면 &quot;출발선에 선&quot;(EPS 리비전·밸류·모멘텀이 모두 살아있는) 종목이 먼저 뛴다. 핵심 조언: 자신감이 주가와 함께 움직여 문제이니, 떨어질 때만 기업가치를 논하지 말고 오를 때도 밸류 부담을 불편해하라. &quot;왜 안 오르나&quot;의 원인이 해소되면 오를지에 집중하고, 데이터 기준 위에서 용기를 내어 분할 매수하는 경험을 쌓는 것이 변동성 장세의 태도다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>EPS 리비전</td><td>애널리스트의 주당순이익 전망치 수정 방향</td><td>성적 예상 점수가 오르는지 내리는지</td></tr><tr><td>진단점수</td><td>성장성·수익성·현금흐름 등 펀더멘탈 종합점수</td><td>건강검진 종합 등급</td></tr><tr><td>모멘텀</td><td>추세·매수세의 강도(정배열/역배열)</td><td>밀던 힘이 위로 붙었는지 아래로 꺾였는지</td></tr><tr><td>정배열</td><td>단기 이평선이 장기 위에 놓인 <span class="up">상승</span> 배열</td><td>계단이 위로 나란히 정렬된 모양</td></tr><tr><td>쿨링타임</td><td>급등 직후 매수를 미루는 대기 기간</td><td>뜨거운 냄비를 잠깐 식히고 잡기</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/_dkHLskQ9Ic" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>미주은 · 2026-08-14</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

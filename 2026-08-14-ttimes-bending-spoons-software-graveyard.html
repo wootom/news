@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="밴딩스푼스 — 소프트웨어의 무덤을 뒤져 41조 기업이 된 인수 공식"><title>밴딩스푼스 — 소프트웨어의 무덤을 뒤져 41조 기업이 된 인수 공식</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-08-14 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>밴딩스푼스 — 소프트웨어의 무덤을 뒤져 41조 기업이 된 인수 공식</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주체</td><td>밴딩스푼스(Bending Spoons), 이탈리아 밀라노 기반 기술기업</td></tr><tr><td>별명</td><td>&quot;디지털 고물상 · 소프트웨어의 무덤을 뒤지는 회사&quot;</td></tr><tr><td>모델</td><td>성장 둔화된 유명 서비스를 싸게 인수 → 구조조정·가격인상 → 장기 보유 캐시카우化</td></tr><tr><td>규모</td><td>2026년 7월 나스닥 상장, 기업가치 약 41조 원</td></tr><tr><td>대표 인수</td><td>에버노트·비메오·위트랜스퍼·미트업·이벤트브라이트·AOL, 최근 에어테이블</td></tr><tr><td>핵심 논점</td><td>에어테이블(12.85억 달러) 인수가 최고의 대상이자 가장 어려운 시험대</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>밴딩스푼스의 돈 버는 공식은 단순한 4단계 순환이다. ①성장세가 둔화된 서비스를 낮은 가격에 매입 → ②조직·제품·기술·가격정책을 전면 개편해 수익성 극대화 → ③매각하지 않고 장기 보유하며 현금 창출 → ④여기서 나온 현금과 차입금으로 다음 기업 인수. &quot;인수하고 고치고 보유하고 다시 인수한다&quot;가 성장의 엔진이다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적·사업적 맥락</h2><p>인수 대상은 완전히 망한 앱이 아니라 &quot;성장 기대는 사그라졌지만 고객·브랜드·반복매출은 남아 있는&quot; 회사다. 구체적 기준: 잘 구축된 브랜드, 일정 규모 이상의 유료 사용자, 구독료·수수료 형태의 반복 현금매출, 그리고 조직 비대·기술 노후로 비용 절감 여지가 있을 것. 에버노트(인수 당시 반복매출 약 1억 달러·유료고객 수백만), 비메오(2024년 유료구독 128만·연매출 4.17억 달러), 이벤트브라이트(2025년 연매출 약 2.92억 달러)가 이 조건에 부합했다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>인수 후 처리 방식은 냉정하다. 조직 대폭 축소, 레거시 서버·코드 <span class="up">개선</span>, UI·핵심기능 재설계, 그리고 개발·마케팅·결제·데이터분석을 밴딩스푼스의 공통 플랫폼에 연결한다. 여러 회사를 사되 하나의 거대 운영체제 위에 올려 한 서비스의 기능·기술을 다른 서비스에 재활용한다. 에버노트 사례가 대표적: 인력 대부분 감축, 앱 속도·안정성 <span class="up">개선</span>, AI로 고객지원 자동화 → 매출 대비 IT 인프라 비용 2022년 대비 2025년 47% <span class="dn">감소</span>.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 방법론 — 가격 인상의 실제</h2><p>에버노트 개인 연간요금은 인수 전 69.99달러 → 2023년 129.99달러 → 2026년 개편으로 최대 249.99달러 상품까지 등장. 무료 사용자의 노트는 최대 50개로 제한, 연결 기기는 2대→1대로 축소. 반발에도 2025년 신규 유료구독의 51%가 사용한도에 도달한 기존 고객에서 발생, 사용자당 평균매출(ARPU)은 2022년 대비 2.5배 증가. 10년 넘게 노트를 쌓아온 고객은 불만 속에서도 이탈하지 못했다. 위트랜스퍼는 직원 75%, 코뮤트는 최대 85% 감원. AOL·이벤트브라이트·비메오 인수 인력 1,830명은 2026년 말 몇백 명만 남을 전망.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용·해석 시나리오</h2><p>첫째, SaaS 투자 관점 — 투자자는 개별 서비스보다 &quot;회사를 사서 고치는 능력&quot;에 프리미엄을 매겼다(매출 2023년 3.87억→2025년 13.1억 달러, 월 이용자 5억+·유료 900만+). 둘째, 노코드 시장 신호 — 에어테이블의 강점이던 노코드가 AI 코딩 도구에 밀려 몸값이 고점 대비 81% <span class="dn">하락</span>, 팬데믹 SaaS 밸류에이션 정상화의 상징. 셋째, 벤치마크 리스크 — 성장률의 대부분이 인수에서 나옴(2025년 매출 95% 증가 중 유기적 성장은 13%), 총부채 43.6억 달러로 지속적 차입·증자 필요.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>공식 자체는 잘 작동한다: 2026년 1분기 구독매출의 48%가 가입 5년 이상 고객, 평균 유지기간 약 8년, 영업현금흐름 2023년 0.59억→2025년 2.91억 달러. 그러나 규모가 커질수록 성장 유지를 위해 더 큰 회사를 사야 하고 실패 시 충격·부채 부담이 커진다. 에어테이블은 여전히 반복매출이 20%+ 성장하고 기업 핵심 데이터를 다루는 서비스라, 기업 고객은 가격보다 보안·안정성·지원에 민감하다. 밴딩스푼스가 성장성을 지키며 효율·수익성을 높이면 모델 신뢰가 강화되지만, 기존 공식대로 지원 조직을 과도하게 줄여 고객 이탈이 나면 한계가 드러날 수 있다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>반복매출(ARR)</td><td>구독·수수료로 매년 반복해서 들어오는 매출</td><td>월세처럼 매달 자동으로 들어오는 돈</td></tr><tr><td>ARPU</td><td>사용자 1명이 평균적으로 내는 매출</td><td>손님 한 명당 평균 계산서 금액</td></tr><tr><td>노코드</td><td>코딩 없이 앱·DB를 만드는 방식</td><td>레고 블록 조립하듯 소프트웨어 만들기</td></tr><tr><td>캐시카우</td><td>성장은 멈췄지만 현금은 꾸준히 버는 사업</td><td>늙었지만 매일 우유 주는 젖소</td></tr><tr><td>유기적 성장</td><td>인수 없이 기존 사업 자체로 낸 성장</td><td>이사·합병 빼고 원래 가게 매출만 늘어난 것</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/gmhCepXTHaI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-08-14</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
