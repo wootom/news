@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="클로드 코드로 마케팅까지 끝내는 12단계 — 데일리그로스 김형태의 에이전틱 마케팅"><title>클로드 코드로 마케팅까지 끝내는 12단계 — 데일리그로스 김형태의 에이전틱 마케팅</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>빌더 조쉬</span><span class="ey">MORNING DIGEST · 2026-08-14 · 빌더 조쉬</span><span class="chip">🎬 영상</span></div><h1>클로드 코드로 마케팅까지 끝내는 12단계 — 데일리그로스 김형태의 에이전틱 마케팅</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>빌더 조쉬(하우와이 팟캐스트) 대담 — 게스트: 데일리그로스 대표 김형태(15년차 마케터)</td></tr><tr><td>한 줄 정의</td><td>클로드 코드를 마케팅 파이프라인으로 전환해 3C분석부터 소재 제작·성과 분석까지 12단계 폴더로 반자동화한 실전 사례</td></tr><tr><td>핵심 명제</td><td>&quot;AI는 실행하고 마케터는 결정한다&quot; — 단순 반복 업무는 자동화, 전략·크리에이티브·판단은 사람 몫</td></tr><tr><td>12단계 구조</td><td>1~4 전략 기획(3C) · 5~8 콘텐츠(이미지·영상 소재) · 9~12 퍼포먼스(집행·분석·리포트·최적화)</td></tr><tr><td>시연 브랜드</td><td>진행자의 AI 웹디자인 빌더 SaaS &quot;수파노바(Supernova)&quot; — 메인 카피 &quot;AI 슬롭 탈출&quot;</td></tr><tr><td>대상 시청자</td><td>만들었지만 &quot;안 팔린다&quot;는 빌더·개발자·창업자, 그리고 AI를 붙이려는 마케터</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>대담은 하나의 문제의식에서 출발한다 — 빌더·개발자는 제품을 만드는 일은 쉬워졌지만 &quot;어떻게 팔지&quot;에서 막힌다. 김형태 대표는 클로드 코드를 코딩 도구가 아니라 <strong>마케팅 실행 엔진</strong>으로 쓰는 자신의 워크플로우를 공개한다. 프로젝트 폴더 하나에 브랜드 맥락(로고·컬러·USP·상세페이지)을 모두 넣어 두고, 01~12번 하위 폴더에 마케팅 프로세스를 순서대로 배치한다. 전략(3C 분석) → 콘텐츠(광고 이미지·영상 소재) → 퍼포먼스(집행·대시보드·주간 리포트) 순으로 흐르며, 각 단계는 스킬로 호출된다. 다만 전 과정을 한 번에 루프로 돌리지는 않는다 — 연동 세팅과 사람의 판단(소재 확정·최적화)이 중간중간 개입해야 하기 때문이다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 도구와 연동</h2><ul>
+<li><strong>클로드 코드(코딩 에이전트)</strong>: 마케팅에서 유용한 이유는 &quot;내 맥락을 잘 읽게&quot; 해 주기 때문. 01번 브랜드 분석부터 컨텍스트를 넉넉히 넣을수록 이후 소재·분석 품질이 올라간다.</li>
+<li><strong>메타 공식 MCP(2026년 4월경 공개)</strong>: 이전엔 개발자 앱을 만들어 API 토큰(읽기 권한)을 받아 광고 실적을 끌어왔는데, 비공식 활용에 페널티 우려가 있었다. 공식 MCP는 그 방식을 &quot;인정&quot;한 신호이자 연동 절차를 단순화했다.</li>
+<li><strong>소재 생성 툴</strong>: 초기엔 나노바나(Nano Banana) API 연동, 현재는 힉스필드(Higgsfield) 연동 + GPT 이미지 2.0으로 이미지 제작. 시드 이미지를 만든 뒤 컷을 이어 붙여 쇼폼 브랜드 영상까지 생성(영상은 아직 활용도·완성도가 이미지보다 낮아 수정이 많음).</li>
+<li><strong>분석 자동화</strong>: 메타 MCP/API를 연결해 매일 아침 로우 데이터가 자동 연동되는 성과 대시보드를 구축, 주 1회 리포트를 자동 생성한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미 — 안드로메다 이후의 게임</h2><p>메타의 <strong>안드로메다 업데이트</strong>가 규칙을 바꿨다. 과거엔 &quot;2030·강남 거주&quot; 식으로 타게팅을 잘게 쪼갰지만, 이제는 광고 소재를 여러 개 올려 두면 <strong>머신러닝이 알아서 필요한 사람을 찾아간다</strong>. 그래서 승부처가 타게팅에서 <strong>소재(크리에이티브)</strong>로 이동했다. 핵심은 카피만 살짝 바꾼 유사 소재를 양산하는 게 아니라(메타는 이를 같은 소재로 간주), <strong>서로 다른 페인포인트에 대응하는 다양한 &quot;앵글&quot;</strong>의 소재를 만드는 것이다. 예: 수파노바라면 ①AI 슬롭 탈출 ②저렴한 디자인 ③사회적 증거 등 니즈별 앵글을 분리. 처음엔 넓게 벌려 테스트하고, 잘 되는 몇 개로 좁힌 뒤 그 안에서 카피 테스트를 더 돌린다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 — 12단계 상세</h2><div class="tbl-wrap"><table><thead><tr><th>구간</th><th>폴더</th><th>하는 일</th></tr></thead><tbody><tr><td>전략 기획 (1~4)</td><td>01 컴퍼니</td><td>브랜드 톤·컬러·USP 분석 → 브랜드 브리프(한 줄 정의·핵심 셀링포인트·타겟·톤·쓸/안 쓸 컬러·사회적 증거·메인 카피)</td></tr><tr><td></td><td>02 컴페티터</td><td>경쟁사 광고 메시지·셀링포인트·상세페이지 분석 → 인사이트</td></tr><tr><td></td><td>03 커스터머</td><td>고객 페인포인트 도출</td></tr><tr><td></td><td>04 카피·메시지</td><td>컨셉·메시지 후보·스토리보드(고객 관점 우선) — 사람의 판단 개입</td></tr><tr><td>콘텐츠 (5~8)</td><td>이미지 소재</td><td>앵글별 광고 이미지(힉스필드+GPT 이미지 2.0). 후킹(페인포인트)→브랜드 강점→CTA 구조</td></tr><tr><td></td><td>영상 소재</td><td>시드 이미지 컷을 이어 쇼폼 광고 영상 생성(수정 필요·활용도 낮음)</td></tr><tr><td>퍼포먼스 (9~12)</td><td>집행·대시보드</td><td>메타 MCP/API 연동, 매일 아침 로우 데이터 자동 연동 대시보드</td></tr><tr><td></td><td>분석·리포트</td><td>주 1회 리포트(캠페인 현황·KPI 달성률·소재·랜딩페이지) 자동 생성</td></tr><tr><td></td><td>최적화 (12)</td><td>무엇을 끄고 바꿀지 결정 — 사람의 판단 개입</td></tr></tbody></table></div>
+<p>고객 관점의 원리는 테오도르 레빗의 비유로 요약된다 — &quot;고객은 0.25인치 드릴이 아니라 0.25인치 구멍을 원한다.&quot; 선크림이면 SPF 수치가 아니라 &quot;발라도 여드름이 안 난다&quot; 같은 문제 해결을 앞세워야 한다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><p>첫째, <strong>빌더·개발자·창업자</strong> — 제품은 만들었지만 판매가 막힌 사람이 고객 페인포인트 중심으로 광고 소재를 뽑아 메타에 다양한 앵글로 테스트. 둘째, <strong>1인 마케팅 대행·소규모 브랜드</strong> — 김형태 대표처럼 동시에 3~4개(많게는 13~14개) 브랜드를 혼자 운영하며 아침 실적 업로드·데이터 분석·소재 기획의 반복 공수를 줄여 결정에 집중. 셋째, <strong>인하우스 마케터</strong> — 메타 MCP/API 대시보드로 CPM·CTR·CVR·ROAS·장바구니·재구매율을 매일 실시간 점검하고, 주 1회 광고주와 퍼널별 지표를 함께 보며 랜딩페이지·소재를 조정. 공통 전제: 브랜드 맥락(로고·이미지·경쟁사)을 폴더에 미리 채워 두면 AI가 그대로 읽어 재현한다.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>완전 자동화(오토너머스 마케팅)는 아직 이르다는 것이 15년차 실무자의 판단이다. 이유는 두 가지다. ①어드밴티지+ 캠페인에서 효율 낮은 소재를 성급히 끄면 머신러닝 학습이 리셋돼 오히려 성과를 해칠 수 있어, 단기 조정은 위험하다(그래서 조정은 주 1회 단위). ②위닝 소재의 수명은 제각각이라 — 브랜드 고유 메시지를 담백하게 전한 &quot;에버그린 소재&quot;는 2년 이상 가기도 하지만, 대부분은 주·월 단위로 새로 발굴해야 한다. 그래서 사실 확인·리포트 생성은 쉬워졌지만, &quot;무엇을 끌지, 어떤 전략으로 갈지&quot;는 사람의 몫으로 남는다. 앞으로 마케터의 일은 단순 반복에서 <strong>전략·크리에이티브 상위 업무</strong>로 이동한다. 김형태 대표의 조언은 명료하다 — 마케터가 아닌 사람일수록 마케팅 원론·고객 접근의 본질을 먼저 배워라, 원론은 변하지 않는다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>클로드 코드</td><td>명령형 코딩 에이전트, 맥락을 읽어 작업을 수행</td><td>폴더 통째로 이해하는 만능 조수</td></tr><tr><td>MCP</td><td>AI를 외부 도구·데이터에 잇는 표준 연결 방식</td><td>기기마다 통하는 USB-C 규격</td></tr><tr><td>3C 분석</td><td>컴퍼니·컴페티터·커스터머로 나눠 보는 마케팅 기본 프레임</td><td>나·경쟁자·고객 3면 거울</td></tr><tr><td>안드로메다 업데이트</td><td>세분 타게팅 대신 다양한 소재를 올려 AI가 고객을 찾는 메타 방식</td><td>그물 대신 여러 미끼를 뿌려 물고기가 오게 함</td></tr><tr><td>앵글</td><td>같은 제품을 서로 다른 페인포인트로 접근하는 소재 관점</td><td>한 상품을 여러 각도로 찍은 사진</td></tr><tr><td>어드밴티지+ 캠페인</td><td>소재를 한 캠페인에 몰아 넣고 메타 ML이 예산을 배분</td><td>여러 후보를 한 오디션에 올려 자동 선발</td></tr><tr><td>위닝 소재</td><td>평균 이상 성과를 내며 오래 유지되는 광고 소재</td><td>스테디셀러 광고</td></tr><tr><td>ROAS</td><td>광고비 대비 매출, 퍼포먼스 핵심 지표</td><td>광고 1원으로 번 매출 배수</td></tr><tr><td>힉스필드 / GPT 이미지 2.0</td><td>광고 이미지·영상 소재를 만드는 생성 AI 툴</td><td>소재 찍어 주는 AI 스튜디오</td></tr><tr><td>AI 슬롭</td><td>AI로 대충 찍어낸 티가 나는 저품질 결과물</td><td>성의 없는 자동 생성물</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/FZzxy_0FT0o" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>빌더 조쉬 · 2026-08-14</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
