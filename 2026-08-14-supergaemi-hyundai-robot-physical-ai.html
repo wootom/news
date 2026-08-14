@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="현대차가 움직이자 로봇주도 움직였다 — 코스피 7000 코앞, 피지컬 AI로 도는 돈"><title>현대차가 움직이자 로봇주도 움직였다 — 코스피 7000 코앞, 피지컬 AI로 도는 돈</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-08-15 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>현대차가 움직이자 로봇주도 움직였다 — 코스피 7000 코앞, 피지컬 AI로 도는 돈</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>슈퍼개미 이세무사TV (진행: 몽당연필님, 대표 부재로 대타 진행)</td></tr><tr><td>방송일</td><td>2026년 8월 14일(금) 장마감 브리핑</td></tr><tr><td>코스피</td><td>2.42% <span class="up">상승</span>, 6,977 마감 (장중 7,010 터치 후 되밀림, 종가 재<span class="up">상승</span>)</td></tr><tr><td>코스닥</td><td>0.38% <span class="up">상승</span>, 864 마감</td></tr><tr><td>핵심 테마</td><td>현대차그룹(=피지컬 AI) 급등이 로봇 관련주 순환매를 촉발</td></tr><tr><td>거시 배경</td><td>미국 CPI·PPI가 예상 범위 내로 발표되며 9월 FOMC 금리 동결 기대 <span class="up">상승</span>, 위험자산 선호 강화</td></tr><tr><td>수급 특징</td><td>개인 코스피 1조7천억 순매도(코스닥은 순매수), 외국인 코스피 순매수 지속, 기관은 현물 순매도</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>이 영상은 하루 장 마감 브리핑으로, 아래 순서로 시장을 정리한다.</p>
+<ol>
+<li>전일(미국 증시) 배경: CPI·PPI 물가지표가 예상 범위 내에 들며 금리 동결 기대가 커졌고, 이에 따라 위험자산 시장이 강세를 보이며 국내 증시도 갭<span class="up">상승</span> 출발</li>
+<li>당일 지수 흐름: 코스피 2.68% 갭<span class="up">상승</span> 출발, 장중 7,010선 터치 후 되밀렸다가 장 막판 재<span class="up">상승</span>하며 6,977 마감</li>
+<li>수급 주체별 동향: 개인(코스피 매도·코스닥 매수), 외국인(코스피 매수 지속), 기관(현물 매도)</li>
+<li>업종·종목별 순환매: 반도체(삼성전자·SK하이닉스·삼성전기) → 자동차(현대차·기아·현대오토에버) → 로봇 관련주로 이어지는 매기 이동</li>
+<li><span class="up">상승</span>률 상위 종목 point: DN오토모티브, SK케미칼, 농심, SK텔레콤, GS 등 개별 테마·실적 모멘텀 종목</li>
+<li>거래대금 상위 종목 및 마무리 코멘트, 다음 주(광복절 대체공휴일로 월요일 휴장) 안내</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락(시장·산업 맥락)</h2><ul>
+<li><strong>물가지표와 금리 기대</strong>: 미국 CPI가 정상 범위로 발표되며 9월 FOMC에서 금리 인상 확률이 낮아지고 금리 동결(내지 인하 기대) 확률이 올라갔다. 이어 발표된 PPI(생산자물가지수)도 범위 내에 들며 위험자산 강세를 뒷받침했다.</li>
+<li><strong>주주환원 기대감이라는 재료</strong>: 미국 반도체 기업 샌디스크가 실적 발표와 함께 잉여현금흐름 100% 환원이라는 파격적 주주환원책을 발표. 진행자는 이를 삼성전자·SK하이닉스의 향후 주주환원 발표(8월 말~9월 초 예상)에 대한 기대감을 자극하는 &quot;2차 웨이브 재료&quot;로 해석했다.</li>
+<li><strong>반도체·자동차 줄다리기 구도</strong>: 시가총액 상위 반도체주(삼성전자·SK하이닉스·삼성전기 등)가 지수를 끌어올리면 코스피가 강세, 코스닥에서는 제약바이오·소부장·로봇·2차전지 관련주가 순환하며 코스닥이 강세를 보이는 패턴이 반복되고 있다고 진단.</li>
+<li><strong>엔트로픽 IPO 재료</strong>: 10월 예정된 엔트로픽 IPO(원문 그대로 인용. 실제로는 앤트로픽/Anthropic으로 추정되는 발언)를 앞두고, 지분을 보유한 SK텔레콤이 경기방어주 성격에 더해 재료성 <span class="up">상승</span>(10% <span class="up">상승</span>)을 보였다는 설명. 시가총액을 20조 원 수준으로 가정할 경우 SK텔레콤 보유 지분 가치가 약 4조 원에 달할 수 있다는 시장의 셈법을 전달. 네이버, LG CNS도 직간접 투자사로 언급됨.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>시장의 매기가 &quot;반도체 → 자동차/로봇&quot;으로 이동하며, 특정 대형주 한 섹터에 쏠리지 않고 순환매 형태로 지수를 지지하고 있다는 점이 코스피 7,000 근접의 동력으로 해석된다.</li>
+<li>진행자는 반도체(주주환원 기대감)와 자동차/로봇(피지컬 AI 테마)이라는 두 개의 축이 &quot;바통 터치&quot;하듯 서로의 <span class="up">상승</span> 동력을 이어받는 구도로 시장을 설명하며, 이 흐름이 유지되는지가 향후 관전 포인트라고 강조했다.</li>
+<li>개인 투자자의 코스피 대규모 순매도는 그간 <span class="up">상승</span>분에 대한 차익실현(리밸런싱) 성격으로 해석되며, 외국인의 지속적 순매수가 이를 상쇄하며 지수를 밀어올리는 구도.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>투자 시사점·전략</h2><ul>
+<li><strong>주주환원 재료 대기</strong>: 삼성전자·SK하이닉스의 주주환원책 발표 시점(8월 말~9월 초 예상)이 반도체 섹터의 다음 <span class="up">상승</span> 트리거가 될 수 있다는 시각. 발표 전까지는 지수 상위주가 제한적 박스권에서 숨 고르기를 하며 정상적 흐름을 보일 것이라는 예상.</li>
+<li><strong>피지컬 AI·로봇 관련주 모멘텀 확인</strong>: 현대차그룹(현대차 <span class="up">+8%</span>, 기아 <span class="up">+3%</span>, 현대오토에버 <span class="up">+9%</span>)의 급등이 로봇 관련주(클로봇, 로보스타 등) 순환매로 이어진 점에 주목. 반도체가 쉬어가는 국면에서 로봇 테마가 대체 재료 역할을 할 수 있는지 지켜볼 필요가 있다는 코멘트.</li>
+<li><strong>개인 매도 vs 외국인 매수 구도 관찰</strong>: 본인 평단이 불리한 투자자는 리밸런싱(비중 조절) 흐름에 동참하는 모습이고, 저가 매수자는 보유 유지하는 경향이라는 시장 참여자 심리 진단. 다만 이는 방송 진행자의 주관적 해석이며 투자 조언으로 단정할 수 없다.</li>
+<li><strong>주의</strong>: 본 요약은 방송 내용을 정리한 것으로 특정 종목 매수·매도를 권유하는 것이 아니며, 실제 투자 판단은 원 자료 확인과 개인 책임 하에 이루어져야 한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>일일 장마감 브리핑 아카이브</strong>: 특정 날짜(2026-08-14)의 코스피·코스닥 등락률, 수급 주체별 동향, 주도 테마를 빠르게 복기하는 참고 자료로 활용.</li>
+<li><strong>순환매 흐름 추적</strong>: 반도체 → 자동차 → 로봇으로 이어지는 테마 순환매 사례 연구로, 이후 유사한 순환매 패턴이 재현되는지 비교 검증하는 용도.</li>
+<li><strong>주주환원 재료 트래킹</strong>: 삼성전자·SK하이닉스 주주환원책 발표 여부와 시점을 추적하는 체크리스트 근거 자료로 활용(발표 전후 반도체 섹터 반응 비교).</li>
+<li><strong>개별 테마주 스크리닝 참고</strong>: 로봇(클로봇, 모션 등), 자동차부품(DN오토모티브), 수동소자(삼성전기, 삼화콘덴서), 화장품 개별주 등 당일 <span class="up">상승</span>률 상위 종목 리스트를 스크리닝 후보군으로 활용.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>코스피는 8월 11일 이후 갭<span class="up">상승</span> 양봉이 이어지다 8월 14일에는 장중 조정 후 재<span class="up">상승</span>하며 6,977 마감, 7,000선 돌파를 목전에 둔 상태.</li>
+<li>진행자는 향후 두 가지를 핵심 관전 포인트로 제시했다: (1) 삼성전자·SK하이닉스의 주주환원 정책 발표 여부와 시점, (2) 현대차발 로봇 관련주 순환매가 지속되는지 여부.</li>
+<li>다음 주 월요일(8/17)은 광복절 대체공휴일로 휴장이며, 다음 방송은 그 이후 재개 예정.</li>
+<li>채널 자체 공지: 몽당연필 진행 소모임 &quot;몽주리 5기&quot; 모집 중, 8월 24일 오프라인 &quot;먼데이 스톡&quot; 행사 예정, 8월 지방 강연 진행 중.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명(40자 이내)</th><th>비유/예시</th></tr></thead><tbody><tr><td>피지컬 AI</td><td>AI가 로봇 등 물리적 기기를 제어·구동하는 개념</td><td>현대차그룹의 로봇 사업을 지칭하는 별칭</td></tr><tr><td>순환매</td><td>매수세가 한 섹터에서 다른 섹터로 옮겨가는 현상</td><td>반도체 쉴 때 자동차·로봇이 배턴을 이어받음</td></tr><tr><td>FOMC</td><td>미 연준의 기준금리 결정 회의</td><td>9월 회의서 금리 동결 여부가 관전 포인트</td></tr><tr><td>CPI/PPI</td><td>소비자·생산자物가지수, 인플레이션 측정 지표</td><td>예상 범위 내 발표 시 금리 인상 우려 완화</td></tr><tr><td>주주환원책</td><td>기업이 이익을 배당·자사주매입으로 주주에 돌려줌</td><td>샌디스크의 잉여현금흐름 100% 환원 발표</td></tr><tr><td>갭<span class="up">상승</span></td><td>전일 종가보다 시가가 크게 뛰어 출발하는 현상</td><td>코스피가 2.68% 갭<span class="up">상승</span>으로 장을 시작</td></tr><tr><td>리밸런싱</td><td>보유 종목 비중을 재조정하는 매매 행위</td><td>평단 불리한 투자자의 차익실현성 매도</td></tr><tr><td>ADR</td><td>해외 예탁증서, 외국기업 주식의 대체 거래 형태</td><td>SK하이닉스 ADR 강세가 국내 주가에 선반영</td></tr><tr><td>소부장</td><td>소재·부품·장비 관련 기업을 묶어 부르는 말</td><td>반도체 소부장주가 코스닥 순환매 축 하나</td></tr><tr><td>MLCC</td><td>적층세라믹콘덴서, 전자부품의 핵심 수동소자</td><td>삼성전기·삼화콘덴서가 대표 관련주</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/luY1FPtZjr4?t=2" target="_blank" rel="noopener">00:02</a> 반도체가 오르내리는 흐름 속 현대차그룹 강세, &quot;현대차그룹의 다른 이름은 피지컬 AI&quot;라는 도입 발언</li>
+<li><a href="https://youtu.be/luY1FPtZjr4?t=117" target="_blank" rel="noopener">01:57</a> 샌디스크의 잉여현금흐름 100% 환원 발표, 삼성전자·SK하이닉스 주주환원 기대감 언급</li>
+<li><a href="https://youtu.be/luY1FPtZjr4?t=238" target="_blank" rel="noopener">03:56</a> 코스닥 0.38% <span class="up">상승</span> 864 마감, 반도체·코스닥 순환 구도 설명</li>
+<li><a href="https://youtu.be/luY1FPtZjr4?t=318" target="_blank" rel="noopener">05:18</a> &quot;오늘 매기가 장 초반부터 강했다&quot; — 현대차그룹발 자동차·로봇 순환매 시작 언급</li>
+<li><a href="https://youtu.be/luY1FPtZjr4?t=569" target="_blank" rel="noopener">09:29</a> 현대차의 로봇, LG전자의 로봇 등 로봇 관련주 순환매 코멘트</li>
+<li><a href="https://youtu.be/luY1FPtZjr4?t=652" target="_blank" rel="noopener">10:52</a> 전일 미장 PPI 결과와 야간 시장 <span class="up">상승</span>, 갭<span class="up">상승</span> 출발 배경 정리</li>
+<li><a href="https://youtu.be/luY1FPtZjr4?t=691" target="_blank" rel="noopener">11:31</a> 향후 관전 포인트: 주주환원 정책과 현대차발 로봇 관련주 순환매 지속 여부</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/luY1FPtZjr4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-08-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

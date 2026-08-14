@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="같은 클로드 코드인데 왜 결과가 다를까 — 컨텍스트 엔지니어링"><title>같은 클로드 코드인데 왜 결과가 다를까 — 컨텍스트 엔지니어링</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-08-15 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>같은 클로드 코드인데 왜 결과가 다를까 — 컨텍스트 엔지니어링</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>핵심 주제</td><td>같은 클로드 코드를 써도 결과가 갈리는 이유는 모델·프롬프트 실력이 아니라 &quot;작업 전에 에이전트가 무엇을 알고 있는가&quot;</td></tr><tr><td>근거 수치</td><td>프로젝트 컨텍스트 파일 유무에 따라 작업 완료율 약 30% → 90%(3배 차이)</td></tr><tr><td>제시자</td><td>안드레이 카르파티(테슬라 AI 총괄·오픈AI 창립 멤버 출신)가 정리한 작업 방식</td></tr><tr><td>핵심 개념</td><td>컨텍스트 엔지니어링 — 매 요청을 잘 쓰는 프롬프트 엔지니어링과 달리, 에이전트가 항상 알고 있는 배경 지식(규칙·구조·금지사항)을 만드는 작업</td></tr><tr><td>실천 축</td><td>①컨텍스트 파일 관리 ②세션(창) 구성 ③지시 대신 성공 기준 부여 ④변경분 중심 리뷰 습관 ⑤LLM 위키로 반복 설명을 문서화</td></tr><tr><td>오늘 30분 실천</td><td>안 쓰는 규칙 삭제 → 두 번 이상 고친 것 세 줄 기록 → 위키 폴더 생성 → 세션 두 개로 영역 분리·성공 기준 부여</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 &quot;같은 클로드 코드인데 누구는 한 번에 끝내고 누구는 다섯 번을 고친다&quot;는 관찰에서 출발한다. 저자는 이 차이가 모델 성능도, 프롬프트 실력도 아니라 &quot;에이전트가 작업을 시작하기 전에 무엇을 알고 있느냐&quot;에서 갈린다고 말하며, 한 연구에서 이 차이가 정답률 30%와 90%로 벌어졌다는 수치를 근거로 든다. 이어서 안드레이 카르파티가 정리한 작업 방식을 소개한다. 예전에는 사람이 대부분의 코드를 직접 짜고 AI는 자동완성 정도로 썼지만, 지금은 반대로 코드의 대부분을 에이전트가 쓰고 사람은 고르고 다듬는 쪽으로 역할이 바뀌었다. 이 변화의 핵심은 &quot;더 좋은 문장을 짜내는 것&quot;에서 &quot;에이전트가 일할 환경을 만드는 것&quot;으로 시간을 옮긴 태도이며, 이 환경을 만드는 작업에 컨텍스트 엔지니어링이라는 이름이 붙었다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>프롬프트 엔지니어링과 컨텍스트 엔지니어링은 범위가 다르다. 프롬프트는 한 번의 요청이고, 컨텍스트는 그 요청들이 실행되는 배경 — 매번 다시 설명하지 않아도 에이전트가 이미 알고 있는 정보(프로젝트가 무엇을 하는지, 어떤 규칙을 지켜야 하는지, 무엇을 절대 하면 안 되는지)다. 예를 들어 패키지 매니저를 하나로 정해뒀는데 에이전트가 매번 다른 것을 쓴다면, 매번 고쳐주는 대신 컨텍스트 파일에 한 줄 적어두면 끝난다. 이런 항목이 열 개쯤 쌓이면 체감이 크게 달라지는데, 이는 &quot;지시를 잘 쓰게 된 것&quot;이 아니라 &quot;지시할 일 자체가 줄어든 것&quot;이다. 근거로 제시된 연구 수치는 에이전트 코딩 작업에서 프로젝트 컨텍스트 파일이 없을 때 작업 완료율 약 30%, 잘 만든 컨텍스트 파일을 얹었을 때 90%까지 <span class="up">상승</span> — 3배 차이다. 다만 이 수치가 모든 상황에 그대로 적용되는 것은 아니며 작업 종류와 컨텍스트 파일의 질에 따라 달라진다고 단서를 단다. 그럼에도 방향은 분명하다: 미리 알려준 만큼 덜 헤맨다. 이는 모델을 바꿔서 얻는 차이보다 크며, 많은 사람이 결과가 안 좋으면 더 비싼 모델부터 찾지만, 같은 모델이라도 환경만 정리해도 체감이 먼저 바뀐다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>카르파티가 강조하는 컨텍스트 파일 작성 원칙은 네 가지다. 첫째, 프로젝트가 무엇인지 한 문단으로 요약. 둘째, 실행·테스트 명령어를 그대로 기재. 셋째, 지켜야 할 규칙·이름 규칙·폴더 구조·금지 사항. 넷째, 자주 틀리는 지점 — 한 번 고쳐준 걸 또 틀린다면 그건 파일에 없다는 뜻이다. 저자는 이 네 번째가 실제로 가장 중요하다고 강조한다. 같은 실수가 반복되는 건 에이전트가 나쁜 게 아니라 사람이 안 알려준 것이기 때문에, 규칙을 미리 상상해서 쓰지 않고 틀린 것을 본 다음에 적는 방식을 권한다. 그러면 파일이 짧게 유지되고 실제로 필요한 것만 남는다. 작성 순서도 중요한데, 중요한 내용을 위쪽에 두어야 하며 길어질수록 아래쪽 지시는 약해진다. 반대로 하지 말아야 할 것도 있다 — 코드를 통째로 붙여넣지 말 것(이미 저장소에 있음), 언젠가 할 일 목록을 넣지 말 것(지금 지켜야 하는 규칙만 남길 것). 파일이 길어질수록 지켜지는 비율은 오히려 떨어지며, 저자 경험상 규칙이 20줄일 때가 200줄일 때보다 잘 지켜진다. 그래서 한 달에 한 번 파일을 열어 안 쓰는 규칙을 지우는 관리를 권한다 — 규칙은 늘리는 것보다 버리는 게 더 어렵지만, 버려야 나머지가 지켜진다. 팀 단위라면 이 파일을 저장소에 넣어야 한다. 각자 컴퓨터에만 두면 사람마다 다른 규칙으로 작업하게 되지만, 저장소에 두면 리뷰가 가능해지고 규칙 변경도 코드처럼 논의 대상이 되어 개인 취향이 아닌 팀의 합의가 된다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>개인 개발자의 반복 실수 교정</strong>: 클로드 코드가 패키지 매니저를 계속 다른 것으로 쓰거나 같은 실수를 반복할 때, 그때마다 고쳐주는 대신 컨텍스트 파일(CLAUDE.md 등)에 규칙 한 줄을 추가해 지시할 일 자체를 줄인다.</li>
+<li><strong>여러 작업을 동시에 돌리는 병렬 개발</strong>: 독립적인 작업 단위로 영역을 나누고 세션(터미널/창) 2~3개를 열어, 각 세션에 &quot;테스트 통과&quot;, &quot;화면이 이렇게 보이면 끝&quot; 같은 확인 가능한 성공 기준을 줘서 에이전트가 스스로 반복하게 하고 사람은 병목에서 빠진다.</li>
+<li><strong>팀 단위 규칙 공유</strong>: 컨텍스트 파일을 개인 컴퓨터가 아닌 저장소(git)에 넣어, 규칙 변경을 코드 리뷰처럼 논의 대상으로 만들고 팀원마다 다른 규칙으로 작업하는 문제를 방지한다.</li>
+<li><strong>반복되는 질문·설명을 줄이는 지식 축적</strong>: 새 세션이나 새 팀원이 합류할 때마다 같은 배경 설명을 반복하는 대신, LLM 위키 폴더에 반복 설명되는 주제를 페이지로 쌓아 다음 질문이 그 위에서 시작되게 한다.</li>
+<li><strong>디자인처럼 자동 판정이 어려운 작업</strong>: 화면 전체가 아니라 컴포넌트 하나로 범위를 좁혀 성공 기준을 세우고 반복 속도를 높인다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>저자는 이 방식이 &quot;모델을 바꾸는 일&quot;이 아니라 &quot;내 쪽을 정리하는 일&quot;이라는 공통점을 강조하며, 도구(모델)는 이미 충분히 좋고 남은 차이는 대부분 무엇을 미리 알려줬느냐에서 갈린다고 결론짓는다. LLM 위키 아이디어는 공개 두 주 만에 GitHub 스타 5,000개를 넘기며 다수의 따라 구현이 나왔을 만큼 반향이 컸는데, 이는 많은 사람이 &quot;같은 설명을 계속 반복해야 하는&quot; 동일한 불편을 겪고 있었다는 방증으로 해석된다. 영상은 오늘 적용 가능한 다섯 가지 실천 항목(①컨텍스트 파일을 20줄 수준으로 줄이기 ②자주 틀리는 것만 기재 ③세션을 영역별로 2~3개로 시작 ④지시 대신 성공 기준 제시 ⑤반복 설명은 문서로 이관)을 제시하고, 30분 내 실행 가능한 순서(안 쓰는 규칙 삭제 → 최근 두 번 이상 고친 것 세 줄 기록 → 위키 폴더 생성 후 가장 자주 설명한 주제 하나 이관 → 세션 두 개로 영역을 나눠 성공 기준 부여)로 마무리한다. 저자는 이번 주에 &quot;얼마나 덜 고쳐줬는지&quot; 직접 세어보라고 권하며, 그 숫자가 이 방식의 효과를 보여주는 지표라고 말한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>컨텍스트 엔지니어링</td><td>에이전트가 항상 아는 배경 지식을 만드는 작업</td><td>매번 설명 대신 신입사원 매뉴얼을 미리 주는 것</td></tr><tr><td>프롬프트 엔지니어링</td><td>한 번의 요청 문장을 잘 쓰는 기술</td><td>매번 다른 주문서를 정성껏 쓰는 것</td></tr><tr><td>컨텍스트 파일</td><td>프로젝트 규칙·명령어·금지사항을 적어두는 문서(CLAUDE.md 등)</td><td>신입에게 주는 회사 매뉴얼</td></tr><tr><td>LLM 위키</td><td>반복 질문의 답을 문서로 쌓아 다음 질문이 그 위에서 시작되게 하는 구조</td><td>매번 새로 찾는 대신 정리된 백과사전을 보는 것</td></tr><tr><td>성공 기준(success criteria)</td><td>기계가 스스로 판정 가능한 완료 조건</td><td>&quot;오류 없이 실행되면 끝&quot; 같은 체크리스트</td></tr><tr><td>세션(창)</td><td>독립 작업 단위로 여는 에이전트 실행 창</td><td>여러 명의 조수에게 각자 다른 방을 주는 것</td></tr><tr><td>변경분 중심 리뷰</td><td>전체가 아닌 늘고 줄어든 부분만 확인하는 검토 방식</td><td>계약서 전체 대신 정정된 조항만 확인하는 것</td></tr><tr><td>삭제줄(diff의 -)</td><td>코드에서 조용히 사라진 부분</td><td>눈에 안 띄게 빠진 안전장치</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/nxfwJTrxlQs?t=0" target="_blank" rel="noopener">00:00</a> 같은 클로드 코드인데 결과가 갈리는 이유 — 정답률 30% vs 90%</li>
+<li><a href="https://youtu.be/nxfwJTrxlQs?t=51" target="_blank" rel="noopener">00:51</a> 프롬프트 엔지니어링과 컨텍스트 엔지니어링의 차이</li>
+<li><a href="https://youtu.be/nxfwJTrxlQs?t=128" target="_blank" rel="noopener">02:08</a> 컨텍스트 파일에 무엇을 적어야 하는가 — 4원칙</li>
+<li><a href="https://youtu.be/nxfwJTrxlQs?t=227" target="_blank" rel="noopener">03:47</a> 세션(창) 구성 — 영역을 나누고 2~3개로 시작</li>
+<li><a href="https://youtu.be/nxfwJTrxlQs?t=303" target="_blank" rel="noopener">05:03</a> 성공 기준을 확인 가능한 형태로 쓰는 법</li>
+<li><a href="https://youtu.be/nxfwJTrxlQs?t=356" target="_blank" rel="noopener">05:56</a> LLM 위키 — 질문 대신 문서 위에서 시작하기</li>
+<li><a href="https://youtu.be/nxfwJTrxlQs?t=479" target="_blank" rel="noopener">07:59</a> 오늘 30분 실천 순서 정리</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/nxfwJTrxlQs" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-08-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
