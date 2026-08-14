@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="그록봇 거품 빼기 — 월 200달러 오픈클로 클론, 이미 클로드코드·코덱스를 쓰면 배울 이유 없다"><title>그록봇 거품 빼기 — 월 200달러 오픈클로 클론, 이미 클로드코드·코덱스를 쓰면 배울 이유 없다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-hub"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">MORNING DIGEST · 2026-08-14 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>그록봇 거품 빼기 — 월 200달러 오픈클로 클론, 이미 클로드코드·코덱스를 쓰면 배울 이유 없다</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>AI 인플루언서들이 띄우는 xAI &#x27;그록봇(Grokbot)&#x27;의 실체와 과열된 기대의 검증</td></tr><tr><td>그록봇이란</td><td>여러 에이전트(봇) 팀을 띄워 협업시키는 인터페이스, 백엔드는 전부 그록(Grok)</td></tr><tr><td>성격</td><td>오픈클로·헤르메스 같은 에이전트 오케스트레이터를 매끄럽게 포장한 클론(xAI 생태계 한정)</td></tr><tr><td>가격 장벽</td><td>핵심 셀링포인트인 &#x27;전용 컴퓨터&#x27;를 쓰려면 커서 울트라 월 200달러 구독 필요(영상 주장)</td></tr><tr><td>결정적 한계</td><td>모델이 그록으로 고정, 클로드·GPT 혼용 불가</td></tr><tr><td>발표자 결론</td><td>티어1 패러다임 전환이 아니라 &#x27;예쁜 오픈클로&#x27;, 인플루언서는 과열을 자제해야</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 내용 구조</h2><p>채널(Chase AI)은 그록봇을 둘러싼 인플루언서 과열을 걷어내고 &quot;이미 클로드코드나 코덱스를 쓰는 사람에게 그록봇을 배울 이유가 있나?&quot;라는 질문에 답한다. 전개는 ①그록봇이 실제로 무엇인가(에이전트 팀 인터페이스) → ②연결·스킬·자기<span class="up">개선</span> 등 기능 → ③가격의 함정(커서 울트라 월 200달러·그록 전용) → ④누구를 위한 도구인가 → ⑤실제 시연으로 본 &#x27;클로드코드 대비 차별점 없음&#x27; → ⑥유일한 진짜 강점(제로 세팅 공유 가상컴퓨터)과 그 값어치 순이다. 결론은 &quot;슬릭한 사용자 친화형 오픈클로일 뿐 새 패러다임은 아니다&quot;로 수렴한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 — 그록봇은 무엇을 하나</h2><p>그록봇은 여러 봇(에이전트)을 한 번에 띄워 각기 다른 작업을 맡기고 서로 대화·파일 공유까지 시키는 인터페이스다. 봇들은 <strong>하나의 가상 서버(가상 컴퓨터)</strong> 안에서 함께 돌기 때문에 컴퓨터를 꺼도 작업이 계속되고 서로 통신·파일 공유가 가능하다. 여기서 영상은 인플루언서들의 흔한 오해 하나를 바로잡는다 — &quot;에이전트마다 각자 전용 컴퓨터를 받는다&quot;는 말은 사실이 아니며, 실제로는 <strong>한 대의 컴퓨터를 공유</strong>한다. 구글 워크스페이스·슬랙·깃허브·버셀(Vercel) 등 주요 앱에 연결되고, 클로드코드처럼 스킬·루틴을 갖추며, 봇이 이전 컨텍스트를 확인해 스스로 갱신하며 시간이 지날수록 똑똑해지는 구조를 표방한다. iOS 앱도 매끄러워 휴대폰으로 전체를 제어할 수 있다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미 — 가격의 함정과 모델 고정</h2><p>문제는 가격에서 곧바로 드러난다. 영상은 &quot;xAI가 이제 커서(Cursor)를 소유한다&quot;고 전제하며, 그록봇의 큰 셀링포인트인 &#x27;전용 컴퓨터를 가진 봇&#x27;을 쓰려면 <strong>커서 울트라 플랜 월 200달러</strong>를 써야 한다고 지적한다. 그 요금에 커서 자체가 포함되긴 하지만, 결국 이 도구의 정의적 기능 하나를 얻자고 월 200달러를 내는 셈이라는 것이다. 두 번째 한계는 이름 그대로 <strong>&#x27;그록&#x27;봇이라는 점</strong> — 클로드봇도 GPT봇도 아니어서 작업에 맞춰 모델을 자유롭게 섞어 쓸 수 없다. 저렴하고 유연한 클로드코드·코덱스 대비, 비싼 데다 한 모델에 묶인 구조라는 이중 약점이 전략적 매력을 깎는다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>실증 — 시연으로 본 &#x27;차별점 없음&#x27;</h2><p>발표자는 그록봇에서 새 봇을 만들고 프로필을 편집해 코딩봇·콘텐츠봇·리서치봇·구글봇을 세운다. 그러나 이는 클로드코드 데스크톱에서 <code>+</code> 버튼으로 서브에이전트(또는 새 채팅)를 몇 개든 띄우고 원하는 스킬을 붙이는 것과 본질적으로 다르지 않다고 본다. 두 번째로 자주 회자되는 &#x27;봇 간 대화&#x27;(리서치봇이 정보를 찾아 콘텐츠봇에 전달)는 실제로 매우 매끄럽게 작동하지만, 클로드도 며칠 전 에이전트 간 통신 기능을 내놓았고, 일상 실무에서 서브에이전트를 상시 대화시키는 빈도 자체가 높지 않으며, 정 필요하면 코드베이스에 문서를 만들어 변경을 로깅하는 방식으로 대체 가능하다고 반박한다. 즉 시연이 보여주는 &#x27;차별점&#x27;은 대부분 기존 도구로 이미 되는 일이다.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용·해석 시나리오 — 누구를 위한 도구인가</h2><p>첫째, 클로드코드·코덱스 사용자에게는 무의미하다 — 더 싸게 같은 일을 하므로 그록봇을 배울 실익이 없다. 둘째, 헤르메스·오픈클로 사용자에게도 굳이 필요 없다 — 이미 자기 스택으로 오케스트레이션을 한다. 셋째, 진짜 대상은 &quot;오픈클로/헤르메스 사용자가 되고 싶지만 기술적으로 세팅을 감당하지 못하고, 대신 월 200달러를 내서 미리 만들어진 환경을 사려는 사람&quot;뿐이다. 그록봇의 유일한 실질 강점은 <strong>공유 가상컴퓨터가 제로 세팅으로 자동 구성</strong>되는 점인데, VPS나 맥미니에 클로드코드로 루틴을 상시 돌리는 DIY도 가능하되 약간의 세팅이 필요하다. 문제는 그 세팅을 원하는 부류는 대개 스스로 구축할 만큼 기술적으로 능숙해서, 월 200달러 프리미엄의 정당성이 다시 흔들린다는 점이다.</p></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망 — 과열 경계</h2><p>발표자는 그록봇을 클로드·코덱스의 대체재로 진지하게 주장하는 사람은 없다고 인정하면서도, 인플루언서 영상들이 그록봇을 &#x27;갑자기 등장해 패러다임을 바꾸는 티어1 도구&#x27;처럼 묘사하는 데 문제를 제기한다. 실체는 &quot;슬릭하고 사용자 친화적인 오픈클로&quot;이며, 대다수 시청자는 이미 클로드코드·코덱스를 다룰 줄 알기에 이런 과열에 휩쓸리면 방향을 잘못 잡고 시간을 낭비하게 된다는 것이다. 처방은 명확하다 — 새 도구에 몰려가기보다 <strong>이미 가진 도구를 더 잘 쓰는 법</strong>을 익히라는 것. 세팅에 완전히 좌절한 &#x27;예비 오픈클로 유저&#x27;가 아니라면 그록봇은 당신을 위한 도구가 아니라는 결론으로 영상은 닫힌다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>그록봇(Grokbot)</td><td>xAI가 그록으로 여러 에이전트 팀을 돌리는 도구</td><td>그록 전용 &#x27;봇 오케스트라&#x27; 콘솔</td></tr><tr><td>오픈클로(openclaw)</td><td>여러 AI 에이전트를 엮어 자동 협업시키는 오케스트레이션 프레임워크</td><td>봇들을 지휘하는 관제탑</td></tr><tr><td>헤르메스(Hermes)</td><td>에이전트를 상시 구동·협업시키는 유사 오케스트레이터</td><td>오픈클로의 사촌 격 도구</td></tr><tr><td>커서 울트라</td><td>커서(Cursor)의 월 200달러 상위 요금제(영상 주장)</td><td>전용 컴퓨터를 여는 열쇠값</td></tr><tr><td>서브에이전트</td><td>상위 에이전트가 특정 작업을 맡기려 띄우는 하위 에이전트</td><td>팀장이 붙이는 담당 실무자</td></tr><tr><td>가상 컴퓨터(가상 서버)</td><td>봇들이 공유하며 24/7 도는 원격 실행 환경</td><td>봇들이 함께 쓰는 사무실 PC 한 대</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/M3_BX0BodOo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-08-14</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
