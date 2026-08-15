@@ -1,0 +1,231 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="안 써본 최고의 AI 영상 생성기? — Wan 3.0 리뷰 (vs Seedance·MiniMax H3)"><title>안 써본 최고의 AI 영상 생성기? — Wan 3.0 리뷰 (vs Seedance·MiniMax H3)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Curious Refuge</span><span class="ey">MORNING DIGEST · 2026-08-15 · Curious Refuge</span><span class="chip">🎬 영상</span></div><h1>안 써본 최고의 AI 영상 생성기? — Wan 3.0 리뷰 (vs Seedance·MiniMax H3)</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Curious Refuge (AI 영상 제작 전문)</td></tr><tr><td>주제</td><td>새 AI 비디오 생성기 <strong>Wan 3.0</strong> 직접 리뷰 + 경쟁 모델(Seedance 2.5/2.0·MiniMax H3)과 실전 비교</td></tr><tr><td>Wan 3.0 정체성</td><td>이미지·영상·오디오·문서·웹사이트를 한곳에 올려 영상을 만드는 &#x27;옴니(Omni)&#x27; 모델. 최대 1080p·30초 클립 생성</td></tr><tr><td>핵심 결론</td><td>종합 2~3위권 &#x27;워크호스&#x27; 모델. 최대 강점은 <strong>가격</strong>(경쟁작의 약 1/4), 최대 약점은 <strong>립싱크</strong></td></tr><tr><td>결정적 강점</td><td>30초·1080p 장척 생성 + 비용 효율. 30초 720p 약 3달러 vs Seedance 2.5 약 13달러</td></tr><tr><td>결정적 약점</td><td>립싱크·감정 연기·샷 간 연속성. 이 영역은 Seedance 2.0/2.5가 여전히 우위</td></tr><tr><td>무료 대안</td><td>로컬 구동 가능한 <strong>MiniMax H3 오픈웨이트</strong>(미국·EU·영국·한국 폼 신청) 권장</td></tr><tr><td>주의사항</td><td>&#x27;Wan 3.0&#x27; 검색 시 개인정보를 노리는 <strong>가짜 사이트</strong>(예: 유사 도메인) 다수 — 공식 사이트·정식 리셀러만 이용</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>Wan 3.0은 이전까지 오픈소스로 배포된 Wan 계열(2.2 및 이전 버전은 다운로드·로컬 실행 가능, 사실상 무료)의 최신·비공개 버전이다. 이번 3.0의 정체성은 &#x27;옴니 모델&#x27;이라는 점에 있다.</p>
+<ul>
+<li><strong>멀티 자산 업로드</strong>: 참조 이미지 최대 10장, 비디오 클립 5개, 오디오 클립 5개를 한 생성 세션에 투입. 여기에 <strong>텍스트 문서와 웹사이트 URL</strong>까지 컨텍스트로 불러올 수 있음(발표자는 옴니 모델 안에 웹사이트를 넣는 것을 처음 본다며 향후 업계 표준이 될 것으로 전망).</li>
+<li><strong>장척·고해상도</strong>: 최대 1080p 해상도, 최대 30초 길이 클립 — 대부분의 경쟁 모델보다 긴 단일 클립.</li>
+<li><strong>네이티브 오디오</strong>: 클립 내부에서 오디오를 기본 생성(현재는 업계 표준에 근접).</li>
+<li><strong>스마트 지속시간(Smart Duration)</strong>: 최종 결과물에서 실제로 쓴 시간만큼만 과금 — 안 쓰는 구간까지 비용을 내던 문제를 완화.</li>
+<li><strong>생성 속도</strong>: 갓 출시돼 느림. 테스트 대부분 <strong>1건당 약 30분</strong> 소요.</li>
+<li><strong>정식 경로</strong>: 생성은 공식 create 플랫폼 한 곳에서만 가능. 유사 도메인 가짜 사이트는 개인정보·카드정보 도용 위험이 커, 공식 사이트나 Magnific·한국 리셀러 등 정식 판매처만 이용 권장.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>비용 구조(핵심)</strong>: Wan 3.0은 길이·해상도에 비례해 과금.</li>
+</ul>
+<p>- 30초 1080p: 장면당 약 <strong>5달러</strong> - 30초 720p: 약 <strong>3달러</strong> (같은 조건 Seedance 2.5는 약 13달러 → 약 4배 저렴, Seedance 2.0 대비 약 2배 저렴) - 15초 1080p 단일 카메라: Wan 3.0 약 <strong>1.5달러</strong>, MiniMax H3 약 1.95달러, Seedance 2.0 약 8달러</p>
+<ul>
+<li><strong>워크플로우</strong>: ChatGPT 등으로 만든 <strong>캐릭터 시트</strong>(주인공·조연 이미지)를 업로드하고, 각 객체가 최종 결과에서 무엇을 나타내는지 정의한 뒤, 긴 프롬프트에서 객체별로 호출·연출을 세분화하는 방식.</li>
+<li><strong>학습 데이터 의심 정황</strong>: 생성 인물이 휴 잭맨·스티븐 스필버그와 흡사하게 나오는 등 다소 의심스러운 학습 데이터 흔적. 반면 업로드한 참조 이미지 기반 <strong>환경(배경·소품) 정의력은 우수</strong>.</li>
+<li><strong>콘텐츠 필터</strong>: 액션·다소 잔인한 장면 생성이 가능(타 플랫폼 필터에 걸릴 수 있는 표현도 통과하는 편) — 검열이 상대적으로 느슨.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>포지셔닝</strong>: Wan 3.0은 &#x27;최고&#x27;가 아니라 <strong>가성비 워크호스</strong>로 자리 잡는다. 품질 최상위는 Seedance 2.0/2.5, 무료·로컬은 MiniMax H3, 그 사이에서 &quot;충분히 쓸만하면서 4배 싼&quot; 실전 옵션.</li>
+<li><strong>비용이 곧 이유</strong>: &quot;왜 Seedance 대신 Wan 3.0을 쓰나?&quot;의 답은 가격. 감정 연기·립싱크가 결정적이지 않은 컷(배경 설명, 디테일 샷 등)에서는 4배 싼 값으로 실사용 가능한 결과를 낸다.</li>
+<li><strong>오픈웨이트의 힘(MiniMax H3)</strong>: H3의 API 버전 품질은 Wan 3.0·Seedance만 못하지만, <strong>오픈 웨이트 버전을 로컬에서 돌릴 수 있다</strong>는 점이 특별. &#x27;최고의 무료 도구&#x27;로는 H3를 강력 추천 — AI 영상 생성의 무료화·로컬화 흐름을 보여줌.</li>
+<li><strong>제작 파이프라인 관점</strong>: 한 편의 영상 안에서도 컷 성격에 따라 모델을 갈아 쓰는 &#x27;멀티 모델 워크플로우&#x27;가 현실적 정답(배경=Wan 3.0, 감정/립싱크=Seedance, 무료 테스트=H3).</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론 (모델별 실전 테스트 결과)</h2><p>발표자는 동일 캐릭터 시트·프롬프트로 Wan 3.0과 경쟁작을 나란히 생성해 비교했다.</p>
+<ol>
+<li><strong>골동품 시장 씬(멀티 참조 이미지)</strong>: Wan 3.0이 참조 이미지 기반 환경·소품 재현에서 인상적, 이 컷에선 <strong>Seedance 2.5보다 우수</strong>하고 4배 저렴. (인물이 유명인과 흡사한 부작용은 있음)</li>
+<li><strong>외계인 추격 VFX(합성)</strong>: Wan 3.0 결과가 조악한 그린스크린처럼 보임. 조명·합성의 역동성은 Seedance 2.5가 우위 — 이 컷은 우열 불분명.</li>
+<li><strong>감정 씬(커피숍 드라마)</strong>: Wan 3.0의 <strong>표정·감정 표현은 기대 이상</strong>이나 샷 간 연속성 붕괴(창문이 거울로 변함), 피부결 과다 주름. 종합적으로는 <strong>Seedance 2.5가 여전히 우위</strong>.</li>
+<li><strong>소행성 탈출 VFX</strong>: 폭발 입자 움직임은 인상적이나 VFX 완성도는 Seedance보다 미흡.</li>
+<li><strong>사무라이 액션(잔인 연출)</strong>: 타 플랫폼이 막을 수 있는 액션·고어 표현을 Wan 3.0은 생성 — 검열이 느슨.</li>
+<li><strong>로봇 격투 멀티샷(리얼 스틸류)</strong>: 샷 간 연속성이 매우 의심스러움. 동세대 Seedance 2.5가 확연히 우위.</li>
+<li><strong>머그컵 광고(실무 상업 컷)</strong>: AI 업스케일러·프레임 보정과 결합하면 Wan 3.0으로 <strong>실사용 가능한 광고 컷</strong> 제작 가능, 가격은 4배 저렴.</li>
+<li><strong>립싱크(재즈 라운지 노래)</strong>: Wan 3.0 성능 부진. MiniMax H3는 원곡에 없던 구간을 추가(뮤직비디오 부적합). <strong>최고의 AI 립싱크는 여전히 Seedance 2.0</strong>.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>저비용 배경·설정 컷 대량 생성</strong>: 감정·립싱크가 중요치 않은 establishing shot·디테일 샷을 4배 싼 값으로 생산.</li>
+<li><strong>참조 이미지 기반 세계관 구축</strong>: 캐릭터 시트·소품 이미지를 올려 일관된 배경·환경을 정의(Wan 3.0의 강점 영역).</li>
+<li><strong>장척 클립이 필요한 작업</strong>: 1080p 30초 단일 클립이 필요한 컷(컷 전환 없이 긴 호흡) — 경쟁작보다 긴 길이 이점.</li>
+<li><strong>무료·로컬 파이프라인</strong>: 예산 0으로 실험하려면 MiniMax H3 오픈웨이트를 로컬에서 구동, 또는 오픈소스 Wan 2.2 활용.</li>
+<li><strong>감정·립싱크 결정 컷은 분리</strong>: 배우 감정 연기·정확한 립싱크가 핵심인 씬은 Seedance 2.0/2.5로 별도 제작(비용 감수).</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>Wan 3.0은 갓 출시돼 생성 속도가 느리고(1건 ~30분) 품질 편차가 크지만, <strong>1080p·30초 + 저비용</strong> 조합으로 실전 제작 파이프라인의 &#x27;가성비 축&#x27;을 차지.</li>
+<li>종합 순위는 주요 기능 기준 <strong>2~3위권</strong>, 립싱크가 가장 큰 발목.</li>
+<li>최상위 품질(감정·연속성)은 Seedance 2.0/2.5가 유지, 무료·로컬은 MiniMax H3 오픈웨이트가 대안으로 부상 — 사용자는 컷 성격에 따라 모델을 조합하는 방향으로 갈 전망.</li>
+<li>가짜 생성 사이트가 난립하므로 공식 경로·정식 리셀러 이용이 안전 확보의 전제.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>Wan 3.0</td><td>알리바바 계열 AI 비디오 생성 모델의 최신·비공개 버전(옴니)</td><td>이미지·영상·문서를 한 번에 넣는 영상 자판기</td></tr><tr><td>옴니(Omni) 모델</td><td>이미지·영상·오디오·문서·웹사이트 등 여러 자산을 한 입력창에 받는 모델</td><td>재료를 종류 불문 다 넣는 만능 믹서</td></tr><tr><td>Seedance</td><td>바이트댄스 계열 AI 비디오 모델(2.0·2.5). 감정·연속성 강점</td><td>감정 연기에 강한 프리미엄 카메라</td></tr><tr><td>MiniMax H3</td><td>로컬 구동 가능한 오픈웨이트 AI 비디오 모델</td><td>집 컴퓨터에 설치해 쓰는 무료 촬영기</td></tr><tr><td>오픈웨이트(Open Weights)</td><td>모델 가중치를 공개해 내려받아 로컬 실행 가능한 방식</td><td>레시피까지 공개된 요리</td></tr><tr><td>캐릭터 시트</td><td>등장인물의 외형을 정의한 참조 이미지 세트</td><td>배우 프로필 사진첩</td></tr><tr><td>립싱크</td><td>오디오에 맞춰 인물 입 모양을 움직이는 기능</td><td>노래에 입을 맞추는 더빙</td></tr><tr><td>스마트 지속시간</td><td>실제 사용한 영상 길이만큼만 과금하는 기능</td><td>쓴 만큼만 내는 종량제</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/aA_AFy-GDwo?t=0" target="_blank" rel="noopener">00:00</a> 인트로 — Seedance 2.5 30초에 이어 Wan 3.0 출시, 리뷰 예고</li>
+<li><a href="https://youtu.be/aA_AFy-GDwo?t=59" target="_blank" rel="noopener">00:59</a> Wan 2.2 및 이전 버전은 오픈소스·로컬 무료 실행 가능</li>
+<li><a href="https://youtu.be/aA_AFy-GDwo?t=119" target="_blank" rel="noopener">01:59</a> 가짜 사이트 경고 — 공식 사이트·정식 리셀러만 이용 권장</li>
+<li><a href="https://youtu.be/aA_AFy-GDwo?t=171" target="_blank" rel="noopener">02:51</a> 비용 비교 — 720p 30초 약 3달러 vs Seedance 2.5 약 13달러</li>
+<li><a href="https://youtu.be/aA_AFy-GDwo?t=228" target="_blank" rel="noopener">03:48</a> 골동품 시장 씬 — 멀티 참조 이미지·캐릭터 시트 업로드 시연</li>
+<li><a href="https://youtu.be/aA_AFy-GDwo?t=683" target="_blank" rel="noopener">11:23</a> 감정 씬 비교 — Seedance 2.5가 감정 표현에서 우위</li>
+<li><a href="https://youtu.be/aA_AFy-GDwo?t=1052" target="_blank" rel="noopener">17:32</a> 립싱크 테스트 — MiniMax H3, 원곡에 없던 구간 추가 문제</li>
+<li><a href="https://youtu.be/aA_AFy-GDwo?t=1164" target="_blank" rel="noopener">19:24</a> 최종 평가 — 종합 2~3위, 립싱크 약점, 강점은 가격</li>
+<li><a href="https://youtu.be/aA_AFy-GDwo?t=1215" target="_blank" rel="noopener">20:15</a> 무료 대안 — 로컬 구동 MiniMax H3 오픈웨이트 추천</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/aA_AFy-GDwo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Curious Refuge · 2026-08-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
