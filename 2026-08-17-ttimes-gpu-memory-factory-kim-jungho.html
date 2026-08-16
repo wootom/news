@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="GPU 발전은 멈췄다, AI 데이터센터는 메모리 팩토리다 — 김정호 카이스트 교수"><title>GPU 발전은 멈췄다, AI 데이터센터는 메모리 팩토리다 — 김정호 카이스트 교수</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-08-17 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>GPU 발전은 멈췄다, AI 데이터센터는 메모리 팩토리다 — 김정호 카이스트 교수</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>출연·형식</td><td>티타임즈TV &#x27;박영선의 테크토크&#x27;. HBM(고대역폭메모리) 연구자로 알려진 카이스트 김정호 교수와의 대담이다.</td></tr><tr><td>계기</td><td>8월 4일 미국 산타클라라에서 열린 FMS(Future of Memory and Storage) 2026 행사에서 삼성전자가 GHBM, SK하이닉스·샌디스크·구글이 HBF를 각각 발표했다.</td></tr><tr><td>핵심 주장</td><td>화자는 GPU 자체의 발전은 사실상 멈췄고, AI의 지능은 메모리 용량과 속도에서 나온다고 본다. 그래서 미래의 AI 데이터센터는 &quot;메모리 팩토리&quot;라고 재정의한다.</td></tr><tr><td>기술 갈래</td><td>HBM(디램 적층) 다음 단계로 삼성은 GPU 위에 메모리를 쌓는 GHBM(수직 방향), SK하이닉스·샌디스크는 낸드플래시를 쌓아 용량을 늘리는 HBF를 각각 제시했다고 설명한다.</td></tr><tr><td>화자의 독자 연구</td><td>김정호 교수 연구실은 GHBM과 반대로 메모리를 아래에 두고 GPU를 위에 얹는 THBM(뒤집은 구조)을 연구 중이며, 이 대담에서 처음 공개한다고 밝힌다.</td></tr><tr><td>산업 구도</td><td>엔비디아는 삼성·SK하이닉스 의존도 확대를 꺼려 HBF 채택에 소극적이고, 대신 구글·AMD·전용 추론칩(LPU) 진영이 HBF 표준화를 주도하는 것으로 화자는 추정한다.</td></tr><tr><td>국가 전략</td><td>화자는 메모리(HBM·HBF)에서 전력 인프라, AI 모델·서비스까지 이어지는 풀스택을 갖추면 한국이 미·중과 겨루는 3대 강국이 될 수 있다고 전망한다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 티타임즈의 2027 AX 전략 컨퍼런스 예고로 문을 열고, 곧바로 김정호 교수와의 대담 하이라이트로 이어진다. 전체는 크게 세 블록으로 구성된다. 첫 블록은 배경 설명으로, 8월 4일 산타클라라 FMS 2026 행사에서 삼성전자가 GHBM(GPU 바로 위에 메모리를 쌓는 3차원 디램 기술)을, SK하이닉스가 샌디스크·구글과 함께 HBF(HBM 이후 낸드플래시 기반 대용량 메모리)를 각각 공개했다는 사실을 정리한다. 둘째 블록은 기술 원리 설명이다. AI 추론 시 입력 토큰(컨텍스트)이 수천에서 수백만 단위로 늘면서 이를 임시 저장하는 KV캐시 용량이 HBM만으로는 부족해졌고, 이를 해결하기 위해 디램보다 용량이 10배 큰 낸드플래시를 쌓는 HBF 개념이 나왔다고 설명한다. 이어 GPU와 메모리를 어떻게 배치할지를 둘러싼 여러 방식—GHBM(GPU 위에 메모리를 쌓는 구조), THBM(메모리 위에 GPU를 얹어 냉각을 쉽게 하는 화자 연구실의 역발상 구조), CHBM(GPU와 공동 설계하는 커스텀 HBM)—을 순서대로 소개한다. 셋째 블록은 산업·국가 전략 논의로, GPU 성능 정체와 메모리 중심 컴퓨팅으로의 전환, AI 데이터센터를 &quot;메모리 팩토리&quot;로 재정의하는 화자의 관점, 그리고 한국이 메모리-전력-모델-서비스로 이어지는 풀스택을 구축해야 한다는 제언으로 마무리된다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>HBM(High Bandwidth Memory)은 디램을 수직으로 쌓아 GPU 옆에 배치하는 고대역폭 메모리로, 현재 AI 가속기의 표준 부품이다. 화자는 AI 추론 과정에서 입력 문서·대화 맥락(토큰)이 예전 수천 단위에서 최근 수백만 단위로 늘었고, 이를 처리하기 위해 AI가 내부적으로 변환해 저장하는 KV캐시 용량도 함께 폭증했다고 설명한다. HBM은 용량 확장에 물리적 한계가 있어(GPU 옆에 8~16개까지만 붙일 수 있음), 디램보다 약 10배 용량이 큰 낸드플래시를 쌓아 올리는 HBF(High Bandwidth Flash) 개념이 SK하이닉스·샌디스크·화자의 연구실에서 거의 동시에 제기됐다고 밝힌다. 한편 삼성전자는 GPU와 HBM을 나란히 두는 기존 구조 대신 GPU 바로 위에 HBM을 쌓아 데이터 이동 거리를 줄이는 GHBM을 발표했다. 화자는 이 구조가 GPU 발열로 메모리가 녹을 위험이 있어 저전력 연산용(LPU·NPU급)에 한정될 것으로 본다. 이에 화자의 연구실은 반대로 메모리를 아래에, GPU를 맨 위에 얹어 냉각팬을 붙이기 쉽게 만든 THBM(Top-GPU HBM, 뒤집은 구조)을 연구 중이며 이를 아파트처럼 여러 개 군집화하는 방안도 검토한다고 밝힌다. 다만 화자는 현재까지는 설계·시뮬레이션 단계라고 인정한다. 추가로 HBM 베이스 다이에 GPU와 매칭되는 연산 기능을 넣어 표준 제품이 아닌 주문형 시스템 반도체로 만드는 CHBM(Custom HBM) 개념도 소개한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자가 반복해서 강조하는 것은 GPU 자체의 성능 경쟁은 정체됐고 부가가치가 메모리와 전력 인프라로 넘어갔다는 진단이다. 오픈AI 같은 AI 기업이 매출 100만 원 중 70만 원을 인프라 비용으로 쓴다는 예시를 들며, 돈이 몰리는 곳이 메모리와 전력이기 때문에 AI 데이터센터를 &quot;AI 팩토리&quot;가 아니라 &quot;메모리 팩토리&quot;로 불러야 한다고 주장한다. 산업 구도 측면에서는 엔비디아가 삼성·SK하이닉스에 대한 의존도가 더 커지는 것을 경계해 HBF 표준화에 소극적이며, 대신 랜드(낸드) 기반 메모리를 광통신으로 외부 연결하는 방식을 검토하는 것으로 화자는 해석한다. 반면 구글·AMD·추론 전용칩(LPU) 진영은 HBF를 채택할 가능성이 높다고 본다. 국가 전략 차원에서는, 메모리에서 대체 불가능한 초격차를 유지한 뒤 전력 인프라, 자체 AI 모델, TV·핸드폰·자동차 등 자국 제품에 내장되는 AI 서비스까지 수직으로 통합하면 한국이 미국·중국과 함께 AI 3대 강국이 될 수 있다는 것이 화자의 결론이다. AI의 본질은 모델 차별화보다 인프라(메모리·전력) 확보의 자본 싸움으로 귀결되고 있다는 관점도 제시한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 논거 구조</h2><ol>
+<li><strong>전제</strong>: AI 추론에서 입력 토큰(컨텍스트) 길이가 급격히 늘어 KV캐시 저장 요구량이 폭증했다.</li>
+<li><strong>1차 결론</strong>: 기존 HBM(디램 적층)만으로는 용량이 부족해 대용량 낸드플래시를 쌓는 HBF가 필요해졌다.</li>
+<li><strong>경쟁 분기</strong>: 용량 확대(HBF, SK하이닉스·샌디스크)와 속도 <span class="up">개선</span>(GHBM, 삼성)이라는 서로 다른 해법이 동시에 등장했다.</li>
+<li><strong>화자의 대안</strong>: GHBM의 발열 문제를 지적하며 메모리-GPU 배치를 뒤집은 THBM을 제시, 냉각 효율을 근거로 우위를 주장한다.</li>
+<li><strong>최종 결론</strong>: GPU 자체 성능 경쟁이 정체된 지금, 부가가치와 승부처는 메모리·전력을 포함한 시스템·인프라로 이동했다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>반도체·메모리 기업의 R&amp;D 우선순위 판단</strong>: HBM 다음 세대 경쟁이 용량 중심(HBF)과 속도 중심(GHBM)으로 갈리고 있다는 점을 참고해, 자사가 어느 방향에 투자할지 판단하는 근거 자료로 활용할 수 있다.</li>
+<li><strong>AI 인프라 투자자의 밸류체인 분석</strong>: GPU 자체보다 메모리·전력 인프라로 부가가치가 이동한다는 화자의 진단을 근거로, HBM·HBF·낸드 관련 기업의 투자 비중을 재검토하는 데 참고할 수 있다.</li>
+<li><strong>데이터센터 설계자의 냉각·패키징 전략 수립</strong>: GHBM(발열 위험)과 THBM(냉각 용이)의 트레이드오프를 참고해 차세대 AI 가속기 랙 설계나 냉각 시스템 투자 방향을 검토할 수 있다.</li>
+<li><strong>정책 입안자의 국가 반도체 전략 수립</strong>: 메모리에서 전력·모델·서비스까지 수직 통합하자는 화자의 제언을 한국 반도체·AI 산업 정책 논의의 참고 프레임으로 활용할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>2026년 8월 4일 산타클라라 FMS 행사에서 삼성전자는 GHBM을, SK하이닉스는 샌디스크·구글과 함께 HBF의 표준화 및 마케팅을 시작했다고 화자는 전한다. SK하이닉스·샌디스크의 HBF 양산은 작년부터 준비돼 왔고 최근 표준화 발표와 마케팅이 본격화되는 단계다. 화자는 이 표준화가 엔비디아보다는 구글·AMD·추론 전용칩(LPU) 진영을 겨냥한 것으로 보인다고 추정한다. 화자 자신의 THBM 연구는 아직 설계·시뮬레이션 단계로, 이번 대담에서 처음 외부에 공개했다고 밝힌다. 중장기적으로는 AI 모델 자체의 차별화가 옅어지고(트랜스포머 구조로 수렴) 인프라, 특히 메모리와 전력이 AI 경쟁의 핵심 병목이자 승부처가 될 것이라고 전망한다. 이 자본 싸움을 감당할 수 있는 국가는 사실상 미국과 중국뿐이며, 한국은 메모리 초격차를 지렛대 삼아 전력 인프라와 자체 모델·서비스까지 갖춘 풀스택 국가로 도약할 필요가 있다는 것이 화자의 결론이다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>HBM</td><td>디램을 수직으로 쌓아 만든 고대역폭 메모리</td><td>GPU 옆에 붙이는 현재의 표준 메모리</td></tr><tr><td>HBF</td><td>낸드플래시를 쌓아 HBM보다 용량을 약 10배 키운 메모리</td><td>SK하이닉스·샌디스크·구글이 공동 추진</td></tr><tr><td>GHBM</td><td>GPU 바로 위에 메모리를 쌓아 이동 거리를 줄인 구조</td><td>삼성전자가 발표, &quot;건물 밖으로 안 나가고 엘리베이터만 타는&quot; 구조</td></tr><tr><td>THBM</td><td>메모리를 아래, GPU를 위에 얹어 냉각을 쉽게 한 구조</td><td>화자 연구실이 처음 공개, GHBM을 &quot;거꾸로&quot; 뒤집은 형태</td></tr><tr><td>CHBM</td><td>GPU와 공동 설계해 만드는 주문형(커스텀) HBM</td><td>표준 부품이 아닌 시스템 반도체가 되는 방식</td></tr><tr><td>KV캐시</td><td>AI가 입력을 처리하며 내부 언어로 변환해 저장하는 임시 데이터</td><td>대화·문서 맥락을 기억하기 위한 저장소</td></tr><tr><td>컨텍스트(토큰)</td><td>AI에 입력되는 문장·문서의 단위</td><td>예전 수천 토큰에서 최근 수백만 토큰으로 증가</td></tr><tr><td>추론(인퍼런스)</td><td>학습된 모델이 실제 질문에 답을 생성하는 과정</td><td>학습보다 지금 더 중요해진 단계</td></tr><tr><td>메모리 센트릭 컴퓨팅</td><td>메모리를 중심에 두고 CPU·GPU를 그 안에 통합하는 설계 방식</td><td>메모리가 주인공, GPU·CPU가 부속이 되는 구조</td></tr><tr><td>AI 팩토리 → 메모리 팩토리</td><td>AI 데이터센터를 메모리 설비 관점에서 재정의한 화자의 용어</td><td>젠슨 황의 &quot;AI 팩토리&quot;를 화자가 재명명</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/NvYtr6wDva8?t=0" target="_blank" rel="noopener">00:00</a> 인트로 - 티타임즈 2027 AX 전략 컨퍼런스 예고</li>
+<li><a href="https://youtu.be/NvYtr6wDva8?t=116" target="_blank" rel="noopener">01:56</a> FMS 2026 산타클라라 행사, 삼성 GHBM·SK하이닉스 HBF 발표 소개</li>
+<li><a href="https://youtu.be/NvYtr6wDva8?t=303" target="_blank" rel="noopener">05:03</a> 토큰·컨텍스트 급증과 HBM 용량 한계 설명</li>
+<li><a href="https://youtu.be/NvYtr6wDva8?t=582" target="_blank" rel="noopener">09:42</a> GPU 성능은 메모리 용량·속도에서 나온다는 주장</li>
+<li><a href="https://youtu.be/NvYtr6wDva8?t=706" target="_blank" rel="noopener">11:46</a> GHBM 구조 설명 - GPU 위에 메모리를 쌓는 방식</li>
+<li><a href="https://youtu.be/NvYtr6wDva8?t=766" target="_blank" rel="noopener">12:46</a> THBM 최초 공개 - 메모리 위에 GPU를 얹는 역발상 구조</li>
+<li><a href="https://youtu.be/NvYtr6wDva8?t=1051" target="_blank" rel="noopener">17:31</a> &quot;AI 팩토리는 사실상 메모리 팩토리&quot; 발언</li>
+<li><a href="https://youtu.be/NvYtr6wDva8?t=1111" target="_blank" rel="noopener">18:31</a> 메모리 초격차 기반 국가 풀스택 전략 제언</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/NvYtr6wDva8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-08-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

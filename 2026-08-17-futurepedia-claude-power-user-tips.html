@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="클로드를 상위 1%처럼 쓰는 법 — 모델 선택부터 코워크·코드까지"><title>클로드를 상위 1%처럼 쓰는 법 — 모델 선택부터 코워크·코드까지</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Futurepedia</span><span class="ey">MORNING DIGEST · 2026-08-17 · Futurepedia</span><span class="chip">🎬 영상</span></div><h1>클로드를 상위 1%처럼 쓰는 법 — 모델 선택부터 코워크·코드까지</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>출연·형식</td><td>Futurepedia 채널의 튜토리얼 영상. 화자는 수백 시간 클로드를 사용하고 공식 문서를 전부 읽었다고 밝히며, 초보자용 원샷 질문부터 실제 업무를 맡기는 숙련자 수준까지 단계별로 안내한다.</td></tr><tr><td>핵심 문제의식</td><td>클로드는 사용설명서가 따로 없어 대부분의 사용자가 기능의 일부만 쓰고 있으며 그마저도 잘못 쓰는 경우가 많다는 것이 출발점이다.</td></tr><tr><td>구조</td><td>메모리 이전 → 모델·이펏 레벨 선택 → 프롬프트 습관 → 커넥터 → 프로젝트 → 스킬 → 코워크(Co-work) → 클로드 코드(Claude Code) 순으로 난이도가 올라가는 구성이다.</td></tr><tr><td>모델 전략</td><td>화자는 하이쿠는 거의 쓰지 않고, 프로 플랜은 소넷을 기본값으로 어려운 문제만 오퍼스로 전환하라고 권한다. 맥스 플랜에서는 오퍼스를 주로 쓰고 창작 작업에서만 소넷을 선호한다고 밝힌다.</td></tr><tr><td>이펏(effort) 레벨</td><td>미디엄은 일상 작업, 하이는 코딩·분석, 익스트라 하이는 에이전틱·멀티스텝 코딩 작업에 쓰라고 권한다. 불필요하게 높이면 시간만 오래 걸리고 결과가 나빠질 수 있다고 경고한다.</td></tr><tr><td>최종 메시지</td><td>채팅 → 모델/이펏 선택 → 도구 연결 → 프로젝트 설정 → 스킬 제작 → 코워크로 위임 → 코드로 실제 제작, 이 순서로 옮겨가라는 것이 화자의 결론이다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 크게 세 층위로 구성된다. 첫째 층위는 채팅(Chat) 안에서의 기초 설정이다. 다른 AI에서 쌓아온 기억을 클로드로 이전하는 방법, 무료 플랜과 유료 플랜의 화면 차이(코워크·코드 탭 유무), 모델 드롭다운에서 모델과 이펏 레벨을 고르는 법, 그리고 프롬프트를 잘 쓰는 두 가지 습관(맥락 덤핑, 비판적으로 되묻기)을 다룬다. 둘째 층위는 맥락을 지속적으로 공급하는 장치들이다. 커넥터(Connectors)로 Gmail·캘린더·구글드라이브·이미지 생성 도구(Higsfield 등)를 연결하는 법, 프로젝트(Projects)로 대화·지식베이스·커스텀 지침을 격리된 작업공간에 묶어두는 법, 스킬(Skills)로 반복되는 워크플로를 레시피 카드처럼 저장해 다음부터 한 번에 실행하는 법을 설명한다. 셋째 층위는 위임형 에이전트다. 코워크는 목표만 던지면 스스로 계획을 세우고 체크리스트를 수행하는 비서 역할이며, 클로드 코드는 코드를 몰라도 원하는 앱·자동화·크롬 확장 프로그램을 자연어로 설명하면 만들어주는 엔지니어 역할이라고 구분한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>영상에서 언급되는 클로드 관련 개념은 다음과 같다. 모델 라인업은 하이쿠(가장 빠르지만 화자는 거의 안 씀), 소넷(빠르면서 추론력 좋은 일상용 모델), 오퍼스(멀티스텝 작업에 강하고 작업 중 스스로 점검), 페이블(오퍼스보다 토큰 소모가 커서 오퍼스가 막힐 때만 전환)이다. 이펏 레벨은 모델이 답을 내기 전에 쓰는 사고 시간(토큰량)을 조절하는 별도 설정으로, 모델 선택과는 독립적인 축이다. 커넥터는 외부 서비스와 클로드를 연결하는 기능으로, 목록에 없는 서비스는 URL만 입력하면 붙는 커스텀 커넥터도 지원한다. 프로젝트는 서로 참조하지 않는 격리된 메모리 공간이며 하루 한 번 자동으로 메모리가 갱신된다. 스킬은 대화에서 다듬어진 프로세스를 통째로 패키징한 것으로, 슬래시(/)로 이름을 불러 명시적으로 실행할 수도 있다. 코워크는 세션마다 클라우드상의 별도 컴퓨터를 할당받아 작업하며, 데스크톱 앱에서는 로컬 컴퓨터의 지정 폴더에서 동작한다는 차이가 있다. 클로드 코드는 데스크톱 앱에서는 로컬 폴더를, 웹에서는 깃허브 저장소를 지정해야 하며, 플랜 모드로 전환하면 실행 전에 계획을 먼저 검토할 수 있다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자가 강조하는 것은 도구를 층위별로 옮겨 타는 전략이다. 채팅은 사고를 도와주는 파트너, 코워크는 목표를 맡기는 비서, 코드는 실제로 결과물을 만드는 엔지니어로 역할이 뚜렷이 나뉘므로, 사용자가 자기 작업의 성격에 맞춰 세 계층을 오가야 한다는 것이다. 특히 모델·이펏 레벨을 잘못 고르면 사용량 토큰을 낭비하고 리셋을 기다려야 하므로, 이 설정을 가장 먼저 익혀야 한다고 반복해서 강조한다. 또한 개발자가 아니어도 클로드 코드로 실사용 가능한 도구(프리미어 프로 플러그인, 모바일 앱 등)를 만들 수 있다는 점을 자신의 사례로 들며, 비개발자에게도 에이전틱 도구 진입을 권한다. 프로젝트를 업무·개인·창작 등으로 분리해 서로 참조되지 않게 하는 것도 전략적 선택으로 제시되는데, 이는 맥락 오염을 막아 각 프로젝트의 응답 품질을 유지하기 위해서다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ol>
+<li><strong>다른 AI에서 메모리 이전하기</strong>: 설정 → Capabilities → &quot;Import memory from other AI providers&quot;에서 Start import를 누른다. 안내된 프롬프트를 복사해 ChatGPT·Gemini 등 기존에 쓰던 AI에 붙여넣고, 그 응답을 다시 복사해 클로드에 붙여넣은 뒤 &quot;Add to memory&quot;를 누르면 끝난다. 같은 설정 화면에서 &quot;search and reference chats&quot;와 &quot;generate memory from chat history&quot; 토글도 켜 두어야 클로드가 시간이 지날수록 사용자를 더 잘 이해한다.</li>
+<li><strong>모델과 이펏 레벨 정하기</strong>: 모델 드롭다운에서 모델(하이쿠/소넷/오퍼스/페이블)과 이펏 레벨(로우~익스트라 하이)을 각각 고른다. 프로 플랜이면 소넷을 기본으로 쓰다 어려운 문제에서 오퍼스로 전환하고, 맥스 플랜이면 오퍼스를 기본으로 쓰다 막히면 페이블로 바꾼다. 이펏은 일상 작업엔 미디엄, 코딩·분석엔 하이, 에이전틱·멀티스텝 코딩엔 익스트라 하이를 쓴다.</li>
+<li><strong>맥락 덤핑과 비판적 되묻기로 프롬프트하기</strong>: 프롬프트 엔지니어링을 정교하게 다듬을 필요 없이, 관련 있어 보이는 맥락을 정리되지 않은 채로 그냥 다 넣는다. 어떤 맥락이 필요한지 모를 때는 클로드에게 필요한 정보를 먼저 질문하게 시키는 &quot;맥락 인터뷰&quot;를 활용한다. 첫 응답을 곧이곧대로 믿지 말고 매번 허점과 <span class="up">개선</span>점을 되묻으며 협업자처럼 다룬다.</li>
+<li><strong>커넥터로 도구 연결하기</strong>: Customize → Connectors → Add에서 목록의 커넥터를 고르고 플러스 버튼을 눌러 계정 로그인으로 연결한다. 목록에 없는 서비스는 &quot;Add custom connector&quot;에서 이름과 URL을 넣어 직접 추가한다(예: 이미지 생성용 Higsfield).</li>
+<li><strong>프로젝트로 작업 공간 분리하기</strong>: 사이드 패널에서 새 프로젝트를 만들고, 커스텀 지침(맥락·톤·프로세스·요구사항)과 프로젝트 파일(브랜드 가이드·SOP·참고자료)을 등록한다. 프로젝트는 서로 격리되어 참조되지 않으며, 하루 한 번 자동으로 메모리가 갱신되어 매번 맥락을 재설명할 필요가 없어진다.</li>
+<li><strong>스킬로 반복 워크플로 패키징하기</strong>: 대화에서 원하는 결과가 나올 때까지 되묻고 다듬은 뒤, &quot;이 과정을 스킬로 패키징해줘(예: weekly special)&quot;라고 요청한다. 이후에는 해당 스킬을 이름으로 부르거나 문맥상 자동으로 호출해 같은 프로세스를 한 번에 재현할 수 있다.</li>
+<li><strong>코워크로 실제 업무 위임하기</strong>: 채팅과 달리 목표만 던지면 클로드가 스스로 계획과 체크리스트를 세우고, 필요하면 하위 에이전트에 작업을 나눠 맡긴 뒤 완성된 결과를 가져온다. 예약 작업(scheduled task) 기능으로 매주 특정 요일에 자동 실행되게 설정할 수도 있다.</li>
+<li><strong>클로드 코드로 실제 제품 만들기</strong>: 데스크톱 앱에서 폴더를 지정하고 원하는 것을 자연어로 설명한다. 처음이라면 플랜 모드로 전환해 실행 전에 계획을 먼저 검토받는 것을 권장한다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>1인 마케터의 주간 프로모션 자동화</strong>: 프로젝트에 브랜드 문서·톤 가이드·판매 이력을 올려두고, 판매 데이터 분석 → 프로모션 문구 작성 → 이미지 생성(Higsfield 커넥터)까지 이어지는 과정을 &quot;weekly special&quot; 스킬로 만들어 매주 반복 실행한다.</li>
+<li><strong>비개발자의 사이드 프로젝트 제작</strong>: 코딩을 모르는 사람도 클로드 코드로 프리미어 프로 플러그인이나 모바일 앱 같은 실사용 도구를 직접 만들 수 있다. 화자 본인이 비개발자로서 여러 도구를 만든 사례를 든다.</li>
+<li><strong>업무별 프로젝트 분리 운영</strong>: 사업, 유튜브, 건강, 가족처럼 서로 무관한 영역을 별도 프로젝트로 나눠, 한 영역의 맥락이 다른 영역 답변에 섞이지 않게 관리한다.</li>
+<li><strong>커넥터 기반 자동 맥락 수집</strong>: Gmail로 고객 응대 톤과 진행 중인 프로젝트를 파악하고, 캘린더로 최신 일정을, 구글드라이브로 관련 파일을 자동으로 끌어와 별도 설명 없이 바로 작업을 시킨다.</li>
+<li><strong>예약 작업으로 정기 리포트 자동화</strong>: 코워크의 scheduled task 기능으로 매주 금요일 아침에 프로모션 문구와 이미지가 자동으로 준비되게 설정해, 출근 즉시 소셜 업로드만 하면 되게 만든다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 지난 1년 사이 에이전틱 도구들이 비개발자도 쓸 수 있을 만큼 강력해지고 쉬워졌다고 평가하며, 지금 소개한 채팅 단계 기능만 제대로 써도 이미 사용자의 상위 90%에 든다고 말한다. 다만 이는 클로드가 할 수 있는 일의 일부에 불과하며, 다음 단계는 코워크와 클로드 코드로 넘어가는 것이라고 강조한다. 오퍼스 최신 버전이 워낙 강력해져 페이블을 거의 안 쓰게 됐다는 언급에서 보듯, 모델 세대가 바뀔 때마다 화자의 기본 선택도 달라지고 있어 이런 가이드는 주기적으로 갱신될 필요가 있다는 점이 시사된다. 화자는 영상 설명란에 프롬프트 100개 이상과 설치 가능한 스킬 12개를 담은 무료 자료도 제공한다고 밝힌다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>이펏(Effort) 레벨</td><td>응답 전 사고에 쓰는 토큰량을 조절하는 설정</td><td>미디엄은 일상, 하이는 코딩, 익스트라하이는 에이전틱 작업</td></tr><tr><td>커넥터(Connector)</td><td>클로드와 외부 서비스·앱을 연결하는 기능</td><td>Gmail·캘린더·Higsfield를 붙이는 플러그인 같은 것</td></tr><tr><td>프로젝트(Projects)</td><td>메모리·대화·지침이 격리된 작업 공간</td><td>회사 핸드북을 미리 읽은 신입사원을 두는 것과 비슷</td></tr><tr><td>스킬(Skills)</td><td>반복 워크플로를 통째로 저장해 재사용하는 기능</td><td>레시피 카드처럼 같은 요리를 한 번에 재현</td></tr><tr><td>코워크(Co-work)</td><td>목표만 주면 계획을 세우고 실행하는 위임형 에이전트</td><td>체크리스트를 스스로 만들어 처리하는 비서</td></tr><tr><td>클로드 코드(Claude Code)</td><td>자연어 설명으로 실제 코드를 작성하는 에이전트</td><td>개발자 없이 앱을 만드는 사내 엔지니어</td></tr><tr><td>예약 작업(Scheduled task)</td><td>정해진 시간에 코워크가 자동 실행되게 하는 기능</td><td>매주 금요일 아침 자동으로 완성되는 보고서</td></tr><tr><td>플랜 모드(Plan mode)</td><td>실행 전 계획을 먼저 세워 검토받는 클로드 코드 옵션</td><td>공사 시작 전 설계도를 먼저 승인받는 절차</td></tr><tr><td>컨텍스트 인터뷰</td><td>클로드가 먼저 필요한 정보를 되묻게 하는 프롬프트 습관</td><td>상담사가 문진표로 먼저 질문하는 방식</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=0" target="_blank" rel="noopener">00:00</a> 문제의식: 클로드에는 사용설명서가 없다</li>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=161" target="_blank" rel="noopener">02:41</a> 모델(하이쿠·소넷·오퍼스·페이블) 선택 기준</li>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=194" target="_blank" rel="noopener">03:14</a> 이펏 레벨: 미디엄·하이·익스트라 하이 구분</li>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=284" target="_blank" rel="noopener">04:44</a> 맥락 덤핑과 컨텍스트 인터뷰 프롬프트 습관</li>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=384" target="_blank" rel="noopener">06:24</a> 커넥터로 Gmail·캘린더·Higsfield 연결하기</li>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=482" target="_blank" rel="noopener">08:02</a> 프로젝트는 서로 격리된다는 원칙</li>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=624" target="_blank" rel="noopener">10:24</a> 스킬을 대화에서 패키징하는 과정</li>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=716" target="_blank" rel="noopener">11:56</a> 코워크: 목표를 던지면 체크리스트로 수행</li>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=811" target="_blank" rel="noopener">13:31</a> 클로드 코드: 비개발자도 만드는 실제 도구</li>
+<li><a href="https://youtu.be/5aUgDDWd4-k?t=901" target="_blank" rel="noopener">15:01</a> 결론: 채팅에서 코워크·코드로 옮겨가라</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/5aUgDDWd4-k" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Futurepedia · 2026-08-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
