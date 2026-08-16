@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="구독 세 개 끊고 API 키 하나로, 이번 달 이미지·영상 제작비 1,800원"><title>구독 세 개 끊고 API 키 하나로, 이번 달 이미지·영상 제작비 1,800원</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-08-17 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>구독 세 개 끊고 API 키 하나로, 이번 달 이미지·영상 제작비 1,800원</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>화자</td><td>유튜버 &#x27;메이커 에반&#x27;. 콘텐츠 제작에 이미지·영상 생성을 직접 활용하는 1인 메이커로 소개된다.</td></tr><tr><td>문제 제기</td><td>이미지 생성 툴, 영상 생성 툴, 화질 업스케일 프로그램을 각각 따로 구독하며 6개월간 매달 10만 원 가까이 지출했으나, 실제 산출물은 월 10여 장에 불과했다고 밝힌다.</td></tr><tr><td>구독의 구조적 낭비</td><td>안 쓴 달에도 결제되고, 남은 크레딧은 이월 없이 소멸하며, 신모델 반영은 툴사 일정에 종속되고, 툴마다 UI가 달라 재학습 비용이 들고, 결과물을 매번 다운로드·재업로드해야 하는 다섯 가지 불편을 구체적으로 짚는다.</td></tr><tr><td>대체 구성</td><td>클로드 데스크톱 앱 + 리플리케이트(Replicate) API 키 하나. 화자는 이를 &quot;뷔페 정기권 → 단품 주문&quot; 전환에 비유한다.</td></tr><tr><td>실측 비용</td><td>이미지 1장 약 200원(최고 화질 400원), 영상 4초(무음) 약 400원, 화질 4K 업스케일 1건 약 400원. 이날 전체 작업(이미지 생성, 얼굴 편집, 영상화, 업스케일 4종) 합계 1,800원.</td></tr><tr><td>핵심 메커니즘</td><td>리플리케이트에서 발급한 API 키를 클로드에 등록하고, 클로드가 사전에 만든 &#x27;스킬(작업 매뉴얼 파일)&#x27;을 참조해 사용자의 짧은 자연어 지시를 모델이 이해할 정확한 프롬프트로 자동 확장·번역해 대신 실행한다.</td></tr><tr><td>시작 절차</td><td>1) 리플리케이트 가입 후 API 토큰 발급 2) 토큰을 채팅창이 아닌 별도 파일에 저장(클로드에게 저장 위치 문의) 3) 카드 등록 후 소액 충전(화자는 2만 원). 무료 크레딧은 없다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>화자는 기존에 이미지 생성 툴 1개, 영상 생성 툴 1개, 화질 업스케일 프로그램 1개를 각각 정액 구독해 왔다. 6개월치 결제를 정산해보니 산출물은 월 10여 장 수준인데 비용은 월 10만 원 가까이 나갔다는 것이 전환의 출발점이다. 화자가 짚는 구독형 문제는 크게 다섯 가지다. 첫째, 사용 여부와 무관하게 정액이 청구된다. 둘째, 크레딧이 월 단위로 소멸하고 이월되지 않는다. 셋째, 새 모델이 나와도 툴사가 자체 통합할 때까지 기다려야 하며 일부는 끝내 반영되지 않는다. 넷째, 툴마다 UI 배치가 달라 오랜만에 쓰면 다시 찾아야 한다. 다섯째, 결과물을 다운로드해 폴더로 옮기고 다른 툴에 재업로드하는 수작업이 반복된다.</p>
+<p>전환 후 구성은 클로드 데스크톱 앱과 리플리케이트 API 키 두 가지뿐이다. 리플리케이트는 여러 AI 모델 제공사(이미지·영상·업스케일 각각 다른 회사)를 한 창구에서 호출할 수 있게 묶어놓은 API 허브로, 화자는 이를 &quot;여러 가게를 모아놓은 곳에서 받는 열쇠 하나&quot;에 비유한다. 이 키를 클로드에 쥐여주면, 사용자가 말로 지시한 것을 클로드가 대신 해당 모델 API에 주문하고 결과물을 로컬 폴더로 직접 받아온다. 여기서 &#x27;스킬&#x27;이라는 개념이 등장하는데, 이는 &quot;어떤 작업엔 어떤 모델을 쓰고 비용을 미리 알리고 결과물을 어느 폴더에 저장하라&quot;는 규칙을 미리 파일로 적어둔 것으로, 신입 직원에게 주는 업무 매뉴얼에 비유된다. 한번 작성해두면 매번 재설명할 필요가 없다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>과금 구조는 산출물 단위가 아니라 계산 단위(모델별 크레딧)로 매겨지는 종량제(pay-as-you-go)다. 이미지는 &quot;장당&quot; 과금이며 화자가 쓰는 모델은 기본 15센트(약 200원), 최고 화질 옵션은 30센트(약 400원)로 제시된다. 영상은 &quot;초당&quot; 과금이라는 점이 이미지와 다른 핵심 차이로, 같은 4초 분량이라도 소리를 포함하면 초당 15센트, 소리를 빼면 초당 10센트로 내려간다. 화자는 나레이션을 별도로 입힐 계획이므로 영상 자체의 음성 생성을 꺼서 비용을 낮췄다고 설명한다. 화질 업스케인은 결과물 단위로 4초 영상 1건에 약 400원이 든다고 밝히며, 4초 처리에 약 2분이 소요된다고 언급한다(고정된 국지적 실측치이며 해상도·분량에 따라 달라질 수 있음에 유의). 화자는 실행 전 예상 비용을 먼저 안내받고 승인하는 절차(&quot;4초에 400원, 진행할까요?&quot;)를 장점으로 꼽는데, 이는 결제 후 후회하는 구독형 크레딧 소진과 대비된다고 설명한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>1인 메이커·소규모 개발자 관점에서 이 구조 전환이 갖는 함의는 세 갈래다. 첫째, 비용 구조가 고정비(구독료)에서 변동비(사용량 과금)로 바뀌면서, 제작 빈도가 낮은 창작자일수록 절감 폭이 커진다. 화자의 경우 월 10만 원대에서 하루 1,800원 수준으로 비용이 줄었다고 밝힌다(다만 이는 특정 하루의 사용량 기준 수치이며 월간 총액과 직접 비교한 것은 아니라는 점은 감안할 필요가 있다). 둘째, 신모델 접근성이다. 구독 툴은 벤더가 신모델을 통합해줄 때까지 기다려야 하지만, API 직접 호출 구조에서는 모델명을 바꿔 말하는 것만으로 당일 신모델을 쓸 수 있다. 화자는 이를 &quot;돈보다 더 큰 이득&quot;이라고 표현한다. 셋째, 워크플로우 통합이다. 이미지 생성→영상 변환→업스케일이 한 대화창 안에서 파일 이동 없이 이어지는 점을 화자는 가장 만족스러운 변화로 꼽는다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ol>
+<li><strong>API 허브 가입 및 키 발급</strong>: 리플리케이트 가입 후 프로필 메뉴에서 API 토큰을 생성한다.</li>
+<li><strong>키를 안전하게 보관</strong>: 채팅창에 직접 붙여넣지 않고, 클로드에게 저장 방법을 물어 별도 설정 파일에 저장한다.</li>
+<li><strong>결제 수단 등록·소액 충전</strong>: 무료 크레딧이 없으므로 카드 등록 후 소액(화자는 2만 원)을 충전해둔다.</li>
+<li><strong>스킬(작업 매뉴얼) 파일 준비</strong>: 어떤 작업에 어떤 모델을 쓰고, 비용을 어떻게 안내하며, 결과물을 어디에 저장할지 미리 규칙화한 파일을 클로드에 등록한다.</li>
+<li><strong>자연어 지시 → 클로드의 프롬프트 확장</strong>: 사용자가 &quot;정장 입은 고양이가 지하철에서 신문 보는 사진&quot;처럼 짧게 말하면, 클로드가 털 색깔·원단·조명 방향·렌즈 화각 등 모델이 필요로 하는 세부 묘사를 자동으로 보강해 API에 전달한다.</li>
+<li><strong>얼굴·레퍼런스 보존 편집</strong>: 인물 사진을 편집할 때는 &quot;얼굴·안경·머리는 그대로 두고 배경·자세만 바꿔달라&quot;고 명시적으로 제약을 걸어, 다른 사람 얼굴로 바뀌는 문제를 방지한다.</li>
+<li><strong>영상 변환 시 사양 지정</strong>: 정지 이미지를 영상화할 때 길이(4초 권장)와 음성 포함 여부를 지정해 비용을 통제한다.</li>
+<li><strong>화질 업스케일</strong>: 완성 영상 또는 임의의 저화질 파일을 4K로 업스케일 요청한다.</li>
+<li><strong>비용 사전 확인</strong>: 각 단계 실행 전 클로드가 예상 비용을 안내하면 승인 후 진행한다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>프로필 사진 한 장으로 썸네일·홍보물 반복 생성</strong>: 얼굴·안경·헤어를 고정한 채 배경, 표정, 옷 색깔만 바꿔 다양한 썸네일을 뽑아낸다. 스튜디오 촬영 없이도 매번 다른 배경의 인물 이미지를 얻을 수 있다.</li>
+<li><strong>제품과 인물 합성 이미지 제작</strong>: 인물 사진과 제품 사진을 함께 입력해 &quot;이 사람이 이 제품을 들고 있는&quot; 합성 이미지를 만든다. 화자는 이를 과거 포토샵 합성 작업의 대체재로 든다.</li>
+<li><strong>짧은 4초 단위 영상 제작</strong>: 10초짜리를 한 번에 뽑기보다 4초씩 여러 개를 만들어, 마음에 안 드는 컷만 재생성하고 편집 시 컷 활용도 쉽게 한다.</li>
+<li><strong>저화질 자료 영상의 4K 복원</strong>: 직접 만든 영상뿐 아니라 과거에 찍어둔 흐릿한 영상 파일도 업로드해 업스케일을 요청할 수 있다.</li>
+<li><strong>비용 대비 모델 선택 상담</strong>: 어떤 작업에 어떤 모델이 가장 저렴한지 클로드에게 직접 물어 후보와 가격을 비교받은 뒤 선택한다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 이번 사례를 &quot;구독료를 하나씩 걷어내는&quot; 연속 작업의 하나로 규정하며, 다음에는 나레이션(음성) 생성 구독도 같은 방식(API 직접 호출)으로 전환한 사례를 다룰 예정이라고 예고한다. 초심자가 막히기 쉬운 지점으로 두 가지를 짚는다. 하나는 API 키를 등록했는데도 인식이 안 되는 경우로, 대개 앱을 재시작하면 해결된다고 안내한다. 다른 하나는 이미지 파일을 창에 끌어다 놓아도 클로드가 파일 위치를 못 찾는 경우로, 파일을 우클릭해 경로를 복사한 뒤 위치를 함께 알려주면 해결된다고 설명한다. 또한 외부에서 받은 스킬 파일을 쓰기 전에는 보안 문제가 없는지 클로드에게 먼저 검토를 요청하는 습관을 권장한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>API 키</td><td>특정 서비스를 프로그램으로 호출할 때 쓰는 인증 문자열</td><td>가게에 들어갈 때 쓰는 열쇠</td></tr><tr><td>리플리케이트</td><td>여러 AI 모델을 한 계정·요금으로 호출하게 묶어주는 API 허브</td><td>여러 가게가 모인 상가에서 받는 마스터키</td></tr><tr><td>스킬(클로드)</td><td>AI에게 미리 등록해두는 작업 규칙·매뉴얼 파일</td><td>신입 직원에게 주는 업무 매뉴얼</td></tr><tr><td>종량제 과금</td><td>쓴 만큼만 비용이 청구되는 방식</td><td>뷔페 정기권 대신 단품 주문</td></tr><tr><td>크레딧(구독형)</td><td>매달 부여되고 다음 달로 이월되지 않는 사용 한도</td><td>안 쓰면 사라지는 포인트</td></tr><tr><td>업스케일</td><td>저해상도 이미지·영상을 고해상도로 복원·확대하는 처리</td><td>720p 영상을 4K(3840×2160)로 변환</td></tr><tr><td>4K 해상도</td><td>가로 약 3,840픽셀급 초고화질 규격</td><td>영상에서 머리카락 한 올까지 선명해지는 수준</td></tr><tr><td>레퍼런스 보존 편집</td><td>원본 인물의 얼굴 등 특정 요소를 고정하고 나머지만 바꾸는 편집 지시</td><td>&quot;얼굴·안경은 그대로, 배경만 바꿔줘&quot;</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/JAa6EUiG-n0?t=0" target="_blank" rel="noopener">메이커의 문제의식</a> 이미지·영상 제작비로 월 10만 원 가까이 썼다는 도입부 문제 제기</li>
+<li><a href="https://youtu.be/JAa6EUiG-n0?t=88" target="_blank" rel="noopener">구독료 vs API 요금 비유</a> &quot;뷔페 정기권에서 단품 주문으로&quot; 비유와 API 키 개념 설명</li>
+<li><a href="https://youtu.be/JAa6EUiG-n0?t=176" target="_blank" rel="noopener">스킬 개념과 실제 이미지 생성 시연</a> 클로드가 짧은 지시를 세부 프롬프트로 확장하는 과정</li>
+<li><a href="https://youtu.be/JAa6EUiG-n0?t=233" target="_blank" rel="noopener">얼굴 보존 편집 시연</a> 프로필 사진의 얼굴·안경을 유지한 채 배경만 바꾸는 방법</li>
+<li><a href="https://youtu.be/JAa6EUiG-n0?t=327" target="_blank" rel="noopener">영상 초당 과금과 사전 비용 확인</a> 4초 영상 400원, 실행 전 비용 안내 절차</li>
+<li><a href="https://youtu.be/JAa6EUiG-n0?t=449" target="_blank" rel="noopener">4K 업스케일 실측</a> 720p를 4K로 올리는 데 400원, 약 2분 소요</li>
+<li><a href="https://youtu.be/JAa6EUiG-n0?t=539" target="_blank" rel="noopener">시작 3단계 가이드</a> 리플리케이트 가입부터 API 키 저장, 소액 충전까지</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/JAa6EUiG-n0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-08-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

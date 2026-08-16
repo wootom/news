@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 호황이 장기 금리를 끌어올리는 이유 — 채권 공급 부담과 투자 전략"><title>AI 호황이 장기 금리를 끌어올리는 이유 — 채권 공급 부담과 투자 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-08-17 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>AI 호황이 장기 금리를 끌어올리는 이유 — 채권 공급 부담과 투자 전략</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>영상 성격</td><td>&#x27;정보의 바다&#x27; 코너에서 최근 금리·주식 시장 흐름을 화자(진행자) 개인 관점으로 정리하는 경제 해설 영상이다. 투자 조언이 아니라 화자 개인 견해임을 명시한다.</td></tr><tr><td>핵심 현상</td><td>소비 지표가 둔화되는데도 시장 금리(장기 금리)는 오히려 높은 수준을 유지하는 역설적 상황을 다룬다.</td></tr><tr><td>핵심 원인</td><td>화자는 금리 <span class="up">상승</span>이 물가 때문만이 아니라, AI 데이터센터 건설을 위한 빅테크의 대규모 회사채 발행과 각국 정부의 국채 발행이 동시에 늘면서 채권 시장 공급 부담이 커졌기 때문이라고 설명한다.</td></tr><tr><td>소비 지표</td><td>최근 미국 소매 판매가 전월 대비 약 0.6% <span class="dn">감소</span>(시장 예상은 0.1% 증가)했다. 화자는 아마존 프라임데이가 7월에서 6월로 앞당겨진 기저효과 등을 감안하면 경기 침체보다는 일시적 소비 조정에 가깝다고 본다.</td></tr><tr><td>AI 산업 매출</td><td>화자는 오픈AI의 연환산 매출이 약 400억 달러를 넘어섰고(작년 말 대비 약 2배), 7월 한 달에만 20% 이상 늘었다고 언급하며 AI가 실제 매출을 발생시키는 산업 단계로 넘어갔다고 평가한다.</td></tr><tr><td>결론 메시지</td><td>화자는 AI 관련주라는 이유만으로 투자하지 말고, 높은 금리를 이겨낼 실적·재무구조(현금 many, 부채 적음)를 갖춘 기업을 선별해야 한다고 강조한다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 크게 네 블록으로 전개된다. 첫 블록은 현상 제시로, 기술주·AI 관련주가 저점에서 반등하는데도 시장 금리는 높게 유지되는 역설을 던진다. 둘째 블록은 데이터 확인으로, 최근 미국 소매 판매 지표(전월 대비 0.6% <span class="dn">감소</span>, 예상치 0.1% 증가와의 괴리)와 오픈AI·앤트로픽의 매출 성장세를 근거로 든다. 셋째 블록은 원인 분석의 핵심으로, AI 데이터센터 건설에 필요한 빅테크의 대규모 회사채 발행(알파벳·아마존·메타 등 하이퍼스케일러가 올해 약 2,200억 달러 발행, 전년 대비 두 배 이상)과 미국·유럽 정부의 국채 발행 확대가 동시에 겹치면서 채권 공급이 늘어 채권 가격 <span class="dn">하락</span>·금리 <span class="up">상승</span>으로 이어진다는 메커니즘을 설명한다. 넷째 블록은 시장 영향과 투자 전략으로, 실질 금리 <span class="up">상승</span>이 할인율을 높여 성장주 밸류에이션에 부담을 준다는 점, 이미 나타나고 있는 미국 기업 파산 증가 현상, 그리고 지수 반등이 위험 해소를 뜻하지 않는다는 경고, 마지막으로 실적·재무구조 기반 종목 선별과 분할 매수·현금 비중 유지 전략을 제시하며 마무리한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장·데이터 맥락</h2><p>화자가 제시하는 수치는 다음과 같다. 미국 소매 판매는 전월 대비 약 0.6% <span class="dn">감소</span>(예상 0.1% 증가), 자동차·주유소 제외 소매 판매는 0.2% <span class="dn">감소</span>, GDP 계산에 반영되는 핵심 소매 판매는 0.4% <span class="dn">감소</span>, 온라인 등 무점포 소매 판매는 2.2% <span class="dn">하락</span>했다. 오픈AI의 연환산 매출은 약 400억 달러로 작년 말 대비 약 2배, 7월 한 달에만 20% 이상 증가했다. 알파벳·아마존·메타 등 하이퍼스케일러가 올해 발행한 회사채는 약 2,200억 달러로 지난해의 두 배를 넘는 규모다. 미국 30년물 실질 금리(명목 금리에서 기대 인플레이션을 뺀 값)는 약 3% 수준으로 약 18년 만에 최고치에 근접했다고 화자는 설명한다. 2026년 상반기 미국 기업 파산 신청은 약 371건으로 지난해 상반기보다 높은 수준이며, 올해 10억 달러 이상 대형 파산의 약 54%가 사모펀드(3호 펀드로 언급)와 관련됐다고 전한다. 국내 지수는 120일선을 회복하는 흐름을 보였고 주봉 기준 약 5% <span class="up">상승</span>했다고 화자는 언급한다(수치는 화자 발화 기준이며 정밀 재검증은 되지 않았다).</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자의 논리에 따르면, AI 산업의 성장은 기업 실적과 경제 전반에는 긍정적이지만 그 성장을 뒷받침하는 자금 조달(회사채·국채 발행 급증)이 채권 시장 공급을 늘려 장기 금리를 끌어올리는 역설적 부작용을 낳는다. 장기 금리 <span class="up">상승</span>은 기업 가치 평가에 쓰이는 할인율을 높여 특히 성장주·고밸류에이션 AI 기업의 주가에 부담으로 작용한다고 본다. 또한 금리 인상의 효과는 즉시 나타나지 않고 몇 년 뒤 대출·회사채 만기가 돌아올 때 부실로 드러나는 후행성이 있다고 지적하며, 최근 미국 기업 파산 증가를 그 정후로 해석한다. 투자자 관점에서는 매출 성장률만이 아니라 부채비율, 이자보상배율, 현금흐름까지 함께 봐야 한다는 함의를 제시한다. 다만 이는 화자 개인의 시장 해석이며 투자 조언이 아니라는 점을 유의해야 한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론 — 화자가 제시하는 매도(또는 매수 신중) 판단 신호와 절차</h2><p>화자가 제시하는 판단 흐름은 다음 순서로 정리된다.</p>
+<ol>
+<li><strong>소비·경기 지표 확인</strong>: 소매 판매 등 소비 지표가 둔화되는지 먼저 본다. 다만 일회성 요인(프라임데이 시기 변경 등 기저효과)인지 구조적 침체인지 구분해야 하며, 한두 달 추가 확인이 필요하다고 화자는 강조한다.</li>
+<li><strong>시장 금리(장기 금리) 방향 확인</strong>: 소비가 둔화돼도 금리가 내려가지 않고 오히려 오른다면, 그 원인이 물가 때문인지 채권 공급 부담(AI 투자 자금 수요 + 국채 발행 증가) 때문인지를 구분해야 한다.</li>
+<li><strong>실질 금리 수준 점검</strong>: 명목 금리에서 기대 인플레이션을 뺀 실질 금리가 안전자산(국채)에서도 충분한 수익(화자 언급 기준 약 3%)을 낼 수 있는 수준이라면, 위험자산(주식) 투자 매력이 상대적으로 낮아진다고 본다.</li>
+<li><strong>개별 종목의 재무 건전성 확인</strong>: 매출·영업이익이 실제로 성장하는지, 부채보다 현금이 많은지를 확인해 밸류에이션 부담을 견딜 수 있는 기업을 선별한다.</li>
+<li><strong>AI 투자 수혜 범위 확산 여부 확인</strong>: AI 데이터센터 투자가 반도체뿐 아니라 전력기기·변압기·냉각장비·인프라·네트워크 장비·소프트웨어 전반으로 확산되는지를 살펴, 한 분야에 쏠리지 않고 AI 인프라 전체에서 실적이 나는 기업을 찾는다.</li>
+<li><strong>미국 10년물·30년물 국채 금리 안정 여부 지속 확인</strong>: 연준이 기준금리를 동결·인하하더라도 장기 국채·회사채 공급이 계속 늘면 시장 금리는 쉽게 내려가지 않을 수 있으므로, 장기 금리 안정 여부를 지속 추적해야 한다고 강조한다.</li>
+<li><strong>매매 실행 원칙</strong>: 반등장에서 무리한 추격 매수를 하지 않고, 실적과 수급이 확인되는 주도주 중심으로 분할 매수하며, 일정 현금 비중을 유지한다. 화자는 이를 이세무사TV가 강조하는 &quot;삼박자 투자법&quot;(차트·재무제표·재료를 함께 확인)과 연결해 설명한다.</li>
+</ol>
+<p>※ 이 절차는 반도체 대형주만을 겨냥한 별도의 &quot;매도 신호&quot; 공식이 아니라, 금리 국면 판단에 기반한 화자의 전반적 투자 접근법이다. 투자 조언이 아닌 화자 개인 견해로 참고할 것.</p></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>보유 종목 점검</strong>: 고밸류에이션 성장주·AI 관련주를 보유했다면 해당 기업의 부채비율·이자보상배율·현금흐름을 확인해 금리 <span class="up">상승</span> 국면에서의 버티는 힘을 점검한다.</li>
+<li><strong>매수 타이밍 판단</strong>: 지수 반등 국면에서 추격 매수 대신, 미국 10년물·30년물 국채 금리가 안정되는지 확인한 뒤 분할 매수 여부를 결정하는 참고 체크리스트로 활용한다.</li>
+<li><strong>포트폴리오 분산 아이디어</strong>: AI 데이터센터 투자 확산 범위(전력기기, 냉각장비, 네트워크 장비 등)를 참고해 반도체 외 관련 섹터로 관심을 넓히는 데 참고한다.</li>
+<li><strong>거시 지표 루틴 점검</strong>: 소매 판매 발표, 미국 장기 국채 금리, 기업 파산 통계 등을 정기적으로 확인하는 개인 투자 점검 루틴을 구성하는 데 참고한다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 현재 상황을 경기 침체 우려, AI 성장 기대, 높은 장기 금리라는 세 요인이 서로 충돌하는 구간으로 규정한다. 지수가 120일선을 회복하며 단기 저점을 형성했을 가능성은 있지만, 이것이 모든 위험이 해소된 <span class="up">상승</span>장 전환을 의미하지는 않는다고 선을 긋는다. 미국-이란 관계 등 지정학적 불확실성과 유가 변동성이 여전히 남아 있다고 언급한다. 화자는 앞으로 주식 시장의 관건이 &quot;AI 관련주인가 아닌가&quot;가 아니라 &quot;높은 금리를 이겨낼 실적과 재무구조를 갖췄는가&quot;로 옮겨갈 것이라고 전망한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>실질 금리</td><td>명목 금리에서 기대 인플레이션을 뺀 금리</td><td>30년물 명목금리 5%, 물가 2%면 실질금리는 약 3%</td></tr><tr><td>명목 금리</td><td>물가 <span class="up">상승</span>분을 반영하지 않은 표면상 금리</td><td>우리가 흔히 뉴스에서 보는 국채 금리 수치</td></tr><tr><td>하이퍼스케일러</td><td>대규모 데이터센터를 운영하는 초대형 IT 기업</td><td>알파벳·아마존·메타 등</td></tr><tr><td>회사채 발행</td><td>기업이 채권을 팔아 자금을 조달하는 방식</td><td>하이퍼스케일러가 올해 약 2,200억 달러 발행</td></tr><tr><td>할인율</td><td>미래 이익을 현재 가치로 환산할 때 적용하는 비율</td><td>금리가 오르면 할인율도 올라 기업가치 평가가 낮아짐</td></tr><tr><td>이자보상배율</td><td>영업이익이 이자비용을 몇 배 감당하는지 나타내는 지표</td><td>배율이 낮을수록 이자 부담에 취약</td></tr><tr><td>삼박자 투자법</td><td>차트·재무제표·재료를 함께 확인하는 매매 원칙</td><td>이세무사TV가 반복 강조하는 종목 선정 기준</td></tr><tr><td>무점포 소매 판매</td><td>온라인 등 매장을 거치지 않는 소매 판매</td><td>최근 2.2% <span class="dn">하락</span>한 항목으로 언급됨</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/6bJVBVCDP9k?t=41" target="_blank" rel="noopener">00:41</a> 결론 제시 — 금리 <span class="up">상승</span>은 물가 때문만이 아니다</li>
+<li><a href="https://youtu.be/6bJVBVCDP9k?t=166" target="_blank" rel="noopener">02:46</a> 오픈AI 연환산 매출 400억 달러 돌파 언급</li>
+<li><a href="https://youtu.be/6bJVBVCDP9k?t=327" target="_blank" rel="noopener">05:27</a> 정부·빅테크·AI 투자기관이 동시에 장기자금을 구하는 상황</li>
+<li><a href="https://youtu.be/6bJVBVCDP9k?t=417" target="_blank" rel="noopener">06:56</a> 실질 금리 3%대, 18년 만에 최고 수준 근접</li>
+<li><a href="https://youtu.be/6bJVBVCDP9k?t=506" target="_blank" rel="noopener">08:26</a> 미국 기업 파산 신청 증가와 금리 인상의 후행 효과</li>
+<li><a href="https://youtu.be/6bJVBVCDP9k?t=630" target="_blank" rel="noopener">10:30</a> 지수 반등에도 금리·실적을 함께 확인해야 하는 이유</li>
+<li><a href="https://youtu.be/6bJVBVCDP9k?t=743" target="_blank" rel="noopener">12:23</a> 실적·재무구조 기반 종목 선별과 현금 비중 유지 전략</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/6bJVBVCDP9k" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-08-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

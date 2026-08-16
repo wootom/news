@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="매일 쓰는 유튜브 자동화 스킬 통째로 뜯어보기 — 메이커 에반의 실패 기록"><title>매일 쓰는 유튜브 자동화 스킬 통째로 뜯어보기 — 메이커 에반의 실패 기록</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-08-17 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>매일 쓰는 유튜브 자동화 스킬 통째로 뜯어보기 — 메이커 에반의 실패 기록</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>영상 성격</td><td>화자(메이커 에반)가 자신의 유튜브 롱폼 제작을 자동화하는 클로드(Claude) 스킬 하나를 공개하고, 그 안의 구조와 시행착오를 그대로 뜯어본다. 이 영상 자체도 그 스킬로 만들어졌다고 밝힌다.</td></tr><tr><td>문제의식</td><td>대본, 목소리, 자막 타이밍, 화면, 렌더, 썸네일, 업로드, 예약까지 8단계를 매번 말로 시키다 보니 결과가 매번 달랐고, 이미 아는 규칙(목소리 종류, 해상도, 자막 위치)을 계속 다시 타이핑해야 했다.</td></tr><tr><td>해결 방향</td><td>하나의 스킬이 하나의 결과물만 만들도록 범위를 좁히고, 본문·참고 문서·실행 파일 세 층으로 분리해 필요할 때만 해당 문서를 읽게 설계했다.</td></tr><tr><td>스킬 구조</td><td>본문(순서만 기록, 300줄 미만) + 참고 문서 4개(목소리·화면·썸네일·업로드) + 실행 파일 5개(코드). 참고 문서 합계가 본문보다 길지만 필요한 시점에만 로드된다.</td></tr><tr><td>핵심 수치</td><td>화자 목소리 합성 속도는 초당 8.69자, 10분 영상 대본은 약 5,200자. 자막 한 줄은 30자 이하(1260픽셀 화면 기준 글자당 42픽셀). 문단 간 음량 편차를 3데시벨 이내로 맞춘다.</td></tr><tr><td>핵심 태도</td><td>스킬은 &quot;매뉴얼이 아니라 흉터&quot;라고 정의한다. 처음부터 완벽하게 설계하기보다 짧게 시작해 틀릴 때마다 규칙을 한 줄씩 추가하는 방식을 권한다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 도입부에서 &quot;이 영상은 사람이 편집하지 않았다&quot;고 선언하며 시작해, 지난 영상에서 예고한 &quot;매일 쓰는 스킬 하나를 통째로 뜯어보기&quot;를 실행한다. 전체는 스킬을 만든 이유, 스킬을 나눈 기준, 다섯 단계별 실패와 해법, 실행 파일 다섯 개의 역할, 스킬을 쓰지 않는 경우, 비용 관리 습관 순으로 전개된다. 먼저 왜 스킬로 묶었는지를 설명한다. 대본 작성부터 목소리 합성, 자막 타이밍, 화면 제작, 렌더, 썸네일, 업로드, 예약까지 여덟 단계를 매번 개별 지시로 처리하다 보니 결과가 들쭉날쭉했고, 이미 알고 있는 설정값을 반복 입력해야 했다는 것이 출발점이다. 이어서 스킬의 범위를 어디까지 잡을지 고민한 과정을 설명한다. 처음에는 영상 제작, 쇼츠 편집, 인스타그램 업로드까지 하나의 거대한 스킬로 묶으려 했으나 본문이 길어지자 클로드가 중간 내용을 놓치는 문제가 발생해, 결국 롱폼 제작·쇼츠·인스타그램을 별도 스킬로 쪼갰다고 밝힌다. 스킬의 물리적 구조는 본문(순서 기록) 하나, 참고 문서(목소리·화면·썸네일·업로드 제작법) 네 개, 실행 파일(코드) 다섯 개로 이뤄지며, 참고 문서를 본문에서 분리한 이유로 &quot;필요한 시점에만 읽게 해서 매뉴얼 200장을 매번 다시 읽는 문제를 피한다&quot;는 원칙을 든다. 이후 대본, 나레이션·자막, 화면, 렌더, 썸네일, 업로드까지 다섯 단계를 순서대로 짚으며 각 단계에서 겪은 구체적 실패와 그로부터 도출한 규칙을 나열한다. 마지막으로 실행 파일 다섯 개의 개별 역할, 스킬을 사용하지 않는 예외 상황(쇼츠 제작, 대본만 필요할 때), 목소리 합성 비용을 사전에 알리는 습관을 소개하고, 시청자에게 반복 작업을 댓글로 물으며 마무리한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>영상에서 언급되는 기술 스택은 명시적 제품명 없이 기능 단위로 설명된다. 텍스트 음성 합성(TTS)은 대본을 문단 단위(약 800자)로 묶어 합성하며, 이 과정에서 글자별 타임스탬프를 함께 받아 자막을 별도로 받아쓰기(STT)할 필요를 없앤다. 이는 &quot;자막을 먼저 쓰고 그대로 읽혀서 타이밍을 역으로 얻는&quot; 방식으로, 음성 인식이 고유명사를 틀리는 문제를 원천적으로 피하는 설계다. 화면 렌더링은 초당 60프레임이 채널의 기본 규격이며, 11분 영상 기준 약 4만 프레임을 생성한다. 렌더 실패의 주된 원인으로는 폰트를 외부에서 불러오다 멈추는 현상을 꼽으며, 해법으로 시스템 내장 폰트를 사용하도록 고정했다고 설명한다. 화면 흔들림 진단은 눈으로 하지 않고 &quot;연속된 프레임 두 장의 픽셀 차이 비율&quot;을 계산하는 방식으로 정량화했다고 밝힌다. 업로드 자동화는 브라우저 자동화 도구가 로컬 파일을 직접 첨부하지 못하는 보안 제약에 부딪히자, 로컬에 임시 웹서버를 띄워 파일을 페이지로 전달하는 방식으로 우회했다고 설명한다. 이 밖에 업로드 화면의 제목·설명 입력창이 일반 입력 요소가 아니라 붙여넣기가 동작하지 않는 점, ESC 키가 자동완성 창이 아니라 업로드 창 전체를 닫아버리는 점 등 특정 UI의 비표준 동작도 함정 사례로 제시한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자가 반복해서 강조하는 것은 &quot;스킬은 완성된 매뉴얼이 아니라 실패의 흔적(흉터)&quot;이라는 관점이다. 처음부터 완벽한 설계를 붙잡고 있기보다 짧게 만들어 쓰고, 틀릴 때마다 규칙을 한 줄씩 추가하는 편이 실질적으로 더 빠르다는 주장이다. 이는 개인 크리에이터의 반복 작업을 코드와 문서로 응고시켜 재현성을 확보하는 전략으로, 대규모 조직의 SOP(표준운영절차)를 개인 단위로 축소 구현한 사례로 볼 수 있다. 스킬을 하나의 결과물 단위로 쪼갠 결정은, 대형 언어 모델에게 넘기는 컨텍스트(맥락)가 길어질수록 지시 준수율이 떨어진다는 경험적 관찰에서 나온 설계 원칙이며, 이는 이 채널이 지난 영상에서 다뤘다는 &quot;매뉴얼 200장 문제&quot;와도 연결된다. 또한 &quot;예상치보다 실측을 신뢰하라&quot;(TTS 길이 예측 vs 실제 측정), &quot;레퍼런스는 복사 대상이 아니다&quot;(잘된 썸네일을 그대로 베끼면 피드에서 식별되지 않는다는 관찰) 등은 자동화를 설계할 때 도구의 공식 스펙보다 자신의 실측 데이터를 우선해야 한다는 일반화 가능한 원칙으로 제시된다. 비용 측면에서는 TTS가 글자 수 기준 과금되므로, 생성 직전에 예상 비용을 먼저 알리도록 스킬에 규칙을 넣었다는 대목은 자동화가 통제 불능의 지출로 이어지지 않도록 인간의 승인 지점을 의도적으로 남겨둔 설계로 해석할 수 있다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><p>영상이 다루는 다섯 단계 워크플로우와 각 단계의 실패-교정 사례는 다음과 같다.</p>
+<ol>
+<li><strong>대본 작성</strong>: 길이 계산을 감으로 하지 않고 실측한다. 화자 목소리로 짧게 한 번 합성해 글자 수를 오디오 길이로 나누면 초당 글자 수가 나온다(화자의 경우 초당 8.69자, 10분이면 약 5,200자). TTS 프로그램이 보여주는 예상 시간은 실제보다 50% 이상 짧게 나올 수 있어 신뢰하지 않는다. 대본은 문단이 아니라 자막 한 줄 단위로 작성해, 그 배열이 그대로 읽을 대본이자 화면 자막이 되게 한다.</li>
+<li><strong>나레이션·자막</strong>: 통상적인 &quot;음성 생성 후 재인식(STT)으로 자막 추출&quot; 순서를 역전시켜, 자막을 한 줄(30자 이하)로 먼저 쓰고 그것을 그대로 읽혀 음성을 만든다. 이때 TTS가 각 글자의 발화 시점을 함께 반환해 자막 타이밍을 별도 계산 없이 확보한다. 이 방식은 고유명사를 잘못 인식하는 STT의 고질적 오류를 원천 차단한다. 자막 30자 제한의 근거는 화면 폭 1260픽셀, 글자당 약 42픽셀이라는 실측값이다. 음성은 문장 단위가 아니라 약 800자 문단 단위로 합성해야 억양이 자연스럽게 이어진다(문장마다 따로 합성하면 억양이 초기화돼 끊긴다). 문단별 음량 편차가 10데시벨을 넘는 사례가 있어, 문단마다 음량을 측정해 맞추고 재측정으로 3데시벨 이내인지 재확인한다. 대본을 수정하면 캐시된 임시 음성 파일을 반드시 삭제해야 하며, 삭제하지 않으면 이전 버전 음성이 재사용되는 문제가 있었다.</li>
+<li><strong>화면 제작</strong>: 초당 60프레임 규격을 30으로 낮췄다가 모션이 끊기는 결과를 겪고 원복했다. 장면 전환마다 넣은 화면 확대 효과와 배경 요소 간격 변화가 여러 장면이 이어지면 화면 전체가 흔들리는 것처럼 보여 모두 제거했다. 콘텐츠 분량에 맞춰 자동으로 글자 크기를 줄이는 로직이 제목까지 함께 축소시켜(최소 26픽셀까지, 최대 대비 10배 차이) 화면 상단 300픽셀을 제목 전용 고정 영역으로 분리하고 자동 축소는 하단 그림 영역에만 적용했다. 이런 미세한 흔들림은 육안으로 잡기 어려워, 연속 프레임 두 장의 픽셀 차이 비율을 계산해 정량적으로 검출한다.</li>
+<li><strong>렌더</strong>: 11분 영상이 약 4만 프레임에 달해 시간이 오래 걸리므로 병행 작업을 하되, 완료 후 영상 길이와 오디오 길이의 일치 여부를 반드시 확인한다(어긋나면 자막 전체가 밀린다). 렌더 실패의 주 원인은 폰트 로딩 중단이었으며, 미리보기에서는 재현되지 않고 렌더링에서만 발생해 외부 폰트 대신 시스템 폰트를 사용하도록 고정했다.</li>
+<li><strong>썸네일</strong>: 기존에 가장 잘된 썸네일 스타일을 그대로 재사용했다가 반응이 나빴는데, 시청자가 이미 수십 번 본 스타일이라 피드에서 눈에 띄지 않았기 때문이라고 분석하고 색상을 반전시켰다. 세 장을 한 번에 요청하면 일부가 조용히 누락되는 문제가 있어 한 장씩 만들고 그때마다 파일 존재와 한글 글자 깨짐(받침 누락, 오자)을 육안으로 대조한다. 제목도 세 개를 준비해 썸네일과 조합한 뒤 유튜브 자체 비교 기능에 맡긴다.</li>
+<li><strong>업로드</strong>: 브라우저 자동화가 로컬 파일을 직접 넣지 못하는 보안 제약을, 로컬 임시 웹서버로 파일을 페이지에 전달하는 방식으로 우회했다. 제목·설명 입력창은 일반 입력 요소가 아니라 붙여넣기가 동작하지 않아 다른 입력 방식을 써야 하고, 자동완성 창을 닫으려 ESC를 누르면 업로드 창 전체가 닫힌다(임시저장은 유지됨). 예약 날짜는 기본값이 내일로 설정돼 있어 당일 예약 시 직접 선택해야 하며, 시간 입력란은 클릭으로 커서를 잡은 뒤 타이핑해야 값이 들어간다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>1인 유튜브 크리에이터의 롱폼 제작 자동화</strong>: 대본부터 업로드·예약까지 8단계를 스킬 하나로 표준화해, 매번 반복 지시하지 않고 실행 파일을 호출하는 방식으로 제작 편차를 줄인다.</li>
+<li><strong>반복 업무를 스킬 단위로 쪼개는 설계 참고</strong>: 하나의 스킬이 하나의 결과물만 담당하도록 범위를 제한하고, 본문(순서)·참고 문서(세부 규칙)·실행 파일(코드)로 계층을 분리하는 패턴은 유튜브 제작 외의 반복 업무(보고서 작성, 데이터 처리 등)에도 응용할 수 있다.</li>
+<li><strong>TTS·자막 파이프라인 설계</strong>: 음성 인식(STT) 대신 음성 합성(TTS)이 반환하는 타임스탬프로 자막을 만드는 역방향 설계는, 고유명사 오인식 문제를 겪는 다른 음성 콘텐츠 제작 워크플로우에도 적용 가능하다.</li>
+<li><strong>브라우저 자동화의 파일 업로드 우회</strong>: 로컬 파일 첨부가 보안상 막히는 웹 서비스에 자동화로 파일을 넣어야 할 때, 임시 로컬 웹서버로 파일을 서빙하는 방식은 유사한 업로드 자동화 과제에 재사용할 수 있다.</li>
+<li><strong>비용 통제가 필요한 생성형 AI 파이프라인</strong>: 글자 수·토큰 수 기준으로 과금되는 TTS·LLM 호출 전에 예상 비용을 먼저 안내하도록 규칙을 넣는 습관은, 반복 실행되는 다른 생성형 AI 자동화에도 적용할 수 있는 비용 관리 패턴이다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 이 스킬이 완성형이 아니라 계속 누적되는 규칙의 집합이라는 점을 강조하며 마무리한다. &quot;예상치를 믿지 마라&quot;, &quot;재인식(받아쓰기)에 의존하지 마라&quot;, &quot;프레임을 낮추지 마라&quot;, &quot;화면 전체를 흔들지 마라&quot;, &quot;레퍼런스를 그대로 베끼지 마라&quot; 같은 규칙은 모두 실패 이후에 추가된 것이라고 밝히며, 스킬을 &quot;매뉴얼이 아니라 흉터&quot;로 규정한다. 향후 계획으로는 다음 영상에서 이 스킬이 처음부터 끝까지 실제로 작동하는 과정을 시연할 예정이라고 예고한다. 또한 시청자에게 자신이 가장 자주 반복하는 업무가 무엇인지 댓글로 물으며, 이를 스킬로 묶는 방법을 함께 고민하겠다고 제안해 채널의 후속 콘텐츠 방향(개인화된 스킬 설계 상담)을 시사한다. 화자는 스킬샵과 오픈톡방에서 더 깊은 논의가 이어지고 있다고 언급해, 커뮤니티 기반의 확장도 예고한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>스킬</td><td>반복 작업의 절차·규칙·코드를 묶어 AI에게 통째로 맡기는 단위</td><td>이 영상 자체를 만든 도구</td></tr><tr><td>TTS</td><td>텍스트를 음성으로 바꾸는 합성 기술</td><td>대본을 화자 목소리로 읽어주는 기능</td></tr><tr><td>STT</td><td>음성을 텍스트로 바꾸는 인식 기술(받아쓰기)</td><td>화자는 고유명사 오류 때문에 사용을 배제</td></tr><tr><td>매뉴얼 200장 문제</td><td>지시문이 길수록 AI가 중간 내용을 놓치는 현상</td><td>참고 문서를 본문에서 분리한 이유</td></tr><tr><td>초당 글자 수</td><td>특정 목소리가 1초에 발화하는 평균 글자 수</td><td>화자 목소리는 초당 8.69자</td></tr><tr><td>데시벨(dB) 편차</td><td>문단 간 음량 차이를 재는 단위</td><td>편차 10dB는 소리가 확연히 들쭉날쭉함</td></tr><tr><td>픽셀 차이 비율</td><td>연속 프레임을 비교해 화면 변화량을 수치화하는 검출법</td><td>화면 흔들림을 육안 대신 수치로 판정</td></tr><tr><td>임시 웹서버 우회</td><td>브라우저 자동화의 파일 첨부 제한을 로컬 서버 경유로 회피하는 방법</td><td>보안 때문에 막힌 파일 첨부를 페이지로 전달</td></tr><tr><td>실행 파일</td><td>반복 로직을 코드로 고정해 매번 다시 짜지 않게 하는 구성 요소</td><td>목소리·썸네일·캡처·서버·자막 보조 5종</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/yPMd6k7KljA?t=0" target="_blank" rel="noopener">00:00</a> 이 영상 자체가 스킬로 편집 없이 만들어졌다는 도입 선언</li>
+<li><a href="https://youtu.be/yPMd6k7KljA?t=149" target="_blank" rel="noopener">02:29</a> 10분 영상 대본 분량 실측(초당 8.69자, 약 5,200자)</li>
+<li><a href="https://youtu.be/yPMd6k7KljA?t=297" target="_blank" rel="noopener">04:57</a> 화면 확대·흔들림 효과를 모두 제거한 경위</li>
+<li><a href="https://youtu.be/yPMd6k7KljA?t=386" target="_blank" rel="noopener">06:26</a> 잘된 썸네일을 그대로 베꼈다가 실패하고 색을 반전시킨 이유</li>
+<li><a href="https://youtu.be/yPMd6k7KljA?t=446" target="_blank" rel="noopener">07:26</a> 브라우저 파일 첨부 제한을 임시 웹서버로 우회한 방법</li>
+<li><a href="https://youtu.be/yPMd6k7KljA?t=574" target="_blank" rel="noopener">09:34</a> 스킬을 매뉴얼이 아니라 흉터로 정의하는 마무리 메시지</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/yPMd6k7KljA" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-08-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

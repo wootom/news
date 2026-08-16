@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="HBM 수요를 갉아먹는 HBF, SK하이닉스는 왜 직접 만드나 — 최태원 인터뷰로 읽는 다음 메모리 전략"><title>HBM 수요를 갉아먹는 HBF, SK하이닉스는 왜 직접 만드나 — 최태원 인터뷰로 읽는 다음 메모리 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-08-17 · 안될공학</span><span class="chip">🎬 영상</span></div><h1>HBM 수요를 갉아먹는 HBF, SK하이닉스는 왜 직접 만드나 — 최태원 인터뷰로 읽는 다음 메모리 전략</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>발단</td><td>2026년 6월 대만 컴퓨텍스 SK하이닉스 부스에서 젠슨 황이 갓 공개된 HBM4 웨이퍼에 &quot;Please make more&quot;라고 서명했다. SK는 2034년까지 메모리 생산 능력을 3배로 늘리는 데 약 7,200억 달러 투자를 계획 중이다.</td></tr><tr><td>역설적 움직임</td><td>HBM을 가장 많이 사는 엔비디아는 HBM 사용량을 줄이는 CMX(컨텍스트 메모리 스토리지)를 내놨고, HBM을 가장 많이 파는 SK하이닉스도 자사 HBM 수요를 깎아먹을 수 있는 HBF(하이 밴드위드 플래시)를 직접 추진 중이다.</td></tr><tr><td>근거 인터뷰</td><td>최태원 SK그룹 회장의 최근 CNBC 인터뷰. AI를 &quot;네 살짜리 아이&quot;에 비유하며 앞으로 5년간 AI 에이전트 사용량이 77배, 10년 뒤 전체 메모리 수요는 현재 생산 능력의 약 5배까지 늘어날 수 있다고 전망했다.</td></tr><tr><td>공급 제약</td><td>HBM은 디램을 수직으로 쌓고 TSV로 연결한 뒤 패키징·고객 검증까지 거쳐야 해, 생산 능력을 의미 있게 늘리는 데 4~5년이 걸린다. 내년 고객 요구 물량은 올해의 거의 두 배로 예상된다.</td></tr><tr><td>핵심 논리</td><td>HBF는 HBM을 대체하는 게 아니라, 모델 웨이트처럼 크지만 자주 안 바뀌는 데이터나 오래된 KV캐시를 낸드플래시로 내려 서버 한 대당 HBM 필요량을 줄이는 역할이다. 그 결과 토큰 비용이 낮아지면 AI 사용량이 늘어 전체 메모리 수요는 오히려 커질 수 있다는 것이 화자의 해석이다.</td></tr><tr><td>비유</td><td>화자는 이를 애플이 아이팟 시장을 지키는 대신 아이폰에 음악 플레이어를 내장해 더 큰 스마트폰 시장을 가져간 사례에 비유한다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 컴퓨텍스에서 젠슨 황이 SK하이닉스 웨이퍼에 남긴 &quot;더 만들어 달라&quot;는 메시지로 문을 열어, HBM 공급 부족이라는 배경을 제시한다. 이어 두 가지 역설적 사실을 던진다. 첫째, 엔비디아가 자사 GPU 옆에 놓일 HBM 사용량을 줄이는 CMX를 발표했다는 것. 둘째, SK하이닉스가 HBM 수요 일부를 잠식할 수 있는 HBF를 직접 개발 중이라는 것이다. 영상은 이 모순을 최태원 회장의 CNBC 인터뷰에서 풀어낸다. AI 에이전트가 오래 작업할수록 늘어나는 KV캐시와 모델 웨이트 저장 부담, PC·스마트폰과 달리 예측하기 어려운 AI 에이전트의 사용 패턴, HBM 자체의 물리적 생산 제약(TSV 적층, 웨이퍼 배정 경쟁으로 인한 &#x27;칩플레이션&#x27;)을 차례로 설명한다. 후반부는 CMX와 HBF가 왜 등장했는지(비싼 HBM에 모든 데이터를 둘 필요가 없다는 논리), SK하이닉스가 HBF를 밀면서도 HBM 수요를 방어하는 전략(커스텀 HBM, TSMC 로직 공정 베이스 다이, LTA 장기 계약, MaaS 검토), 그리고 마지막으로 향후 확인해야 할 변수(CMX·HBF의 실제 채택률, HBF의 신뢰성·내구성 검증)로 마무리된다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락 (HBM/HBF 메모리 기술 배경)</h2><p>HBM(고대역폭 메모리)은 디램 여러 장을 수직으로 쌓고 TSV(실리콘 관통 전극)로 연결해 GPU 옆에 붙이는 방식으로, 같은 용량의 일반 디램보다 웨이퍼 생산 능력을 더 많이 소모한다. HBM에 웨이퍼 배정이 몰리면 PC·스마트폰·서버용 일반 디램 공급에도 영향을 주는데, 최태원 회장이 인터뷰에서 언급한 &#x27;칩플레이션&#x27;이 이 상황을 가리킨다. HBF(하이 밴드위드 플래시)는 낸드플래시를 8단 또는 16단으로 쌓아 프로세서 가까이에 배치하는 신기술로, 이제 막 표준이 만들어진 단계다. 낸드 특성상 HBM보다 접근 지연 시간이 길고 데이터를 쓰고 지우는 특성도 디램과 달라, 빠른 읽기·쓰기가 필요한 데이터는 여전히 HBM이 맡아야 한다. 반면 크기는 크지만 자주 바뀌지 않는 모델 웨이트나, 사용 빈도가 낮아진 오래된 KV캐시는 HBF로 옮길 수 있는 후보다. 한편 엔비디아의 CMX(컨텍스트 메모리 스토리지)는 유사한 목적으로 낸드플래시를 GPU 옆에 배치해 KV캐시 일부를 HBM 밖으로 내리는 장비로, 베라루빈 플랫폼에 실제 제품으로 탑재될 예정이다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미 (SK하이닉스·메모리 업계 경쟁 구도 함의)</h2><p>SK하이닉스 입장에서 HBF는 단순한 신제품 추가가 아니라, 현재 회사 실적을 견인하는 HBM의 일부 수요를 스스로 깎아낼 수도 있는 결정이다. 그럼에도 이를 추진하는 이유는 AI 서비스의 토큰당 비용을 낮춰야 사용량이 늘고, 결과적으로 HBM·HBF·SSD를 아우르는 전체 메모리 시장이 더 커질 수 있다는 판단 때문이다. 서버 구성이 &#x27;GPU+HBM&#x27; 중심에서 &#x27;GPU+HBM+HBF+SSD&#x27;로 데이터 성격에 따라 계층화되면, SK하이닉스가 공급할 수 있는 제품 범위 자체가 넓어진다. 동시에 SK하이닉스는 HBM 수요를 지키기 위한 방어 전략도 병행한다. HBM4부터 베이스 다이를 TSMC의 첨단 로직 공정으로 제작해 고객 맞춤형 커스텀 HBM을 확대하고, 이는 고객이 AI 칩 설계 단계부터 HBM을 함께 맞추게 함으로써 공급사 전환 장벽을 높이는 효과가 있다. 여기에 LTA(장기 공급 계약)와 MaaS(Memory as a Service) 같은 방식을 검토해 증설 비용과 위험을 고객과 분담하려 한다. 다만 삼성전자·마이크론도 같은 AI 메모리 수요를 보고 투자를 확대하고 있어, 수년 뒤 신규 라인이 동시에 가동되면 공급 과잉으로 가격이 무너지는 메모리 산업 특유의 사이클 위험은 여전히 남아 있다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론 (기술 채택 로드맵)</h2><ol>
+<li><strong>수요 진단</strong>: AI 에이전트의 KV캐시·모델 웨이트가 늘어나며 서버당 필요 메모리 총량이 급증한다는 점을 확인한다.</li>
+<li><strong>데이터 계층화</strong>: 빠르게 읽고 써야 하는 데이터(HBM 유지)와 크지만 자주 안 바뀌는 데이터·오래된 캐시(HBF·CMX로 이동 가능)를 구분한다.</li>
+<li><strong>신기술 검증</strong>: HBF는 낸드 기반이라 신뢰성·내구성·접근 지연을 AI 서버 요구 수준에 맞출 수 있는지 검증이 필요한 초기 단계다.</li>
+<li><strong>비용 절감 → 수요 확대 선순환 확인</strong>: 서버당 HBM 사용량이 줄면 서버 운영 비용이 낮아지고, 같은 예산으로 더 많은 서버·에이전트·컨텍스트를 운용할 수 있어 전체 메모리 수요가 순증할 가능성을 관찰한다.</li>
+<li><strong>공급망 락인 강화</strong>: 커스텀 HBM 설계 협업, TSMC 로직 공정 베이스 다이, LTA·MaaS 계약으로 고객을 장기간 묶어두는 전략을 병행한다.</li>
+<li><strong>증설 리스크 관리</strong>: 7,200억 달러 규모 투자를 한 번에 집행하지 않고 시장 상황을 보며 단계적으로 결정해 공급 과잉 사이클에 대비한다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>AI 인프라 투자자·분석가</strong>: HBM 생산량 지표만으로 메모리 시장을 판단하면 HBF·CMX로의 데이터 이동분을 놓칠 수 있다는 점을 투자 판단에 반영할 수 있다.</li>
+<li><strong>하이퍼스케일러·데이터센터 설계자</strong>: 서버 한 대에 필요한 HBM·HBF·SSD 비율을 재설계해 토큰당 비용을 낮추는 아키텍처 전환을 검토할 수 있다.</li>
+<li><strong>반도체 공급망 담당자</strong>: SK하이닉스의 커스텀 HBM·LTA·MaaS 전략을 참고해 장기 공급 계약과 공동 설계 협력 모델을 벤치마킹할 수 있다.</li>
+<li><strong>메모리 업계 경쟁사(삼성전자·마이크론)</strong>: HBF·CMX 채택 속도에 따라 자사의 차세대 메모리 계층 제품 로드맵을 조정하는 참고 사례로 활용할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>CMX는 엔비디아 베라루빈 플랫폼에 실제 제품으로 탑재될 예정이며, 향후 관건은 하이퍼스케일러·데이터센터 고객이 이 계층을 얼마나 적극적으로 채택해 KV캐시를 HBM 밖으로 옮기느냐다. HBF는 이보다 이른 단계로, 표준이 막 만들어졌고 실제 제품·시스템 검증이 남아 있다. 특히 낸드 기반 메모리가 AI 서버가 요구하는 신뢰성·내구성 수준을 충족하면서 모델 웨이트·일부 캐시를 실제로 감당할 성능을 낼 수 있는지가 핵심 관찰 포인트다. 최태원 회장은 메모리 사이클 자체가 사라졌다고 보지는 않지만, AI로 인한 이번 수요 사이클이 과거보다 오래 이어질 가능성이 있다고 본다. SK하이닉스는 HBF가 자리 잡으면 서버당 HBM 용량은 줄어들 수 있지만, 그만큼 AI 사용량과 전체 메모리 시장이 더 커질 것이라는 베팅 위에서 움직이고 있으며, 이 베팅의 성패는 향후 실제 데이터센터 채택률로 확인될 것이다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>HBM</td><td>디램을 수직 적층해 GPU 옆에 붙이는 고대역폭 메모리</td><td>AI 칩 성능을 좌우하는 핵심 부품, 컴퓨텍스에서 젠슨 황이 &quot;더 만들어달라&quot;고 서명</td></tr><tr><td>HBF</td><td>낸드플래시를 적층해 프로세서 가까이 두는 신형 메모리</td><td>HBM보다 느리지만 저장 용량은 큰 &#x27;보조 창고&#x27;</td></tr><tr><td>CMX</td><td>엔비디아의 컨텍스트 메모리 스토리지, 낸드 기반</td><td>오래된 KV캐시를 넣어두는 GPU 옆 보관함</td></tr><tr><td>TSV</td><td>디램을 수직 관통해 층간을 연결하는 실리콘 전극</td><td>여러 층 건물을 잇는 엘리베이터 통로</td></tr><tr><td>KV캐시</td><td>AI가 이전 계산 값을 저장해 재사용하는 데이터</td><td>대화가 길어질수록 계속 쌓이는 메모장</td></tr><tr><td>칩플레이션</td><td>메모리 웨이퍼가 HBM에 몰려 다른 제품 공급이 줄고 가격이 오르는 현상</td><td>HBM 증설이 스마트폰·PC 메모리값도 밀어올림</td></tr><tr><td>LTA</td><td>고객과 미리 맺는 장기 메모리 공급 계약</td><td>짓기 전에 팔 곳부터 확보해두는 방식</td></tr><tr><td>MaaS</td><td>Memory as a Service, 메모리를 서비스 형태로 제공하는 계약 방식</td><td>증설 비용과 위험을 고객과 나눠 지는 합작 모델</td></tr><tr><td>베이스 다이</td><td>HBM 하단에서 디램과 GPU 간 데이터 이동을 담당하는 층</td><td>HBM4부터 TSMC 로직 공정으로 제작해 고객 맞춤화</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/N55e6QRhyu8?t=0" target="_blank" rel="noopener">00:00</a> 젠슨 황이 SK하이닉스 HBM4 웨이퍼에 &quot;Please make more&quot; 서명</li>
+<li><a href="https://youtu.be/N55e6QRhyu8?t=46" target="_blank" rel="noopener">00:46</a> 엔비디아 CMX(컨텍스트 메모리 스토리지) 공개, HBM 사용량 절감 목적</li>
+<li><a href="https://youtu.be/N55e6QRhyu8?t=139" target="_blank" rel="noopener">02:19</a> 최태원 회장, AI 에이전트 사용량 5년 내 77배 전망</li>
+<li><a href="https://youtu.be/N55e6QRhyu8?t=341" target="_blank" rel="noopener">05:41</a> CMX가 겨냥하는 것은 오래된 KV캐시, HBM에 계속 둘 필요 없는 데이터</li>
+<li><a href="https://youtu.be/N55e6QRhyu8?t=516" target="_blank" rel="noopener">08:36</a> 애플 아이팟-아이폰 비유로 설명하는 SK하이닉스의 HBF 전략</li>
+<li><a href="https://youtu.be/N55e6QRhyu8?t=871" target="_blank" rel="noopener">14:31</a> HBM 생산량만으로 메모리 시장을 보면 놓치는 부분이 있다는 결론</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/N55e6QRhyu8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 · 2026-08-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
