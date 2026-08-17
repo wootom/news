@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="클로드 비더(claude-video) 완벽 소개 — AI에게 영상을 보여주고 3분 만에 정리하기"><title>클로드 비더(claude-video) 완벽 소개 — AI에게 영상을 보여주고 3분 만에 정리하기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-08-18 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>클로드 비더(claude-video) 완벽 소개 — AI에게 영상을 보여주고 3분 만에 정리하기</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>도구명</td><td>클로드 비더(claude-video). 개발자 비렛 보난노가 만든 오픈소스 프로젝트로 MIT 라이선스다.</td></tr><tr><td>핵심 기능</td><td>명령어 하나(<code>watch</code> + 영상 주소)로 유튜브·틱톡·인스타그램·룸·X 영상은 물론 로컬 파일까지 클로드가 직접 &quot;보고&quot; 분석하게 해준다.</td></tr><tr><td>문제의식</td><td>영상으로 정보를 얻으려면 처음부터 끝까지 다 봐야 하고, 필요한 구간만 골라 AI에게 전달하기도 번거롭다는 불편을 해소하려는 도구다.</td></tr><tr><td>작동 구조</td><td>영상 다운로드(yt-dlp) → 자막 추출(기존 자막 우선, 없으면 위스퍼 ASR) → 핵심 프레임 추출(ffmpeg, 장면 전환 감지)의 3단계 파이프라인을 거쳐 클로드가 멀티모달로 분석한다.</td></tr><tr><td>인기도</td><td>2026년 4월 출시 후 4개월 만에 깃허브 스타 15,000개, 포크 1,500개를 넘겼다.</td></tr><tr><td>지원 범위</td><td>클로드 코드뿐 아니라 코덱스, 컬설(claude 계열 CLI 도구 추정 발음), 코파일럿 등 50개 넘는 에이전트 호스트에서 동작한다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 발표자가 실제로 겪은 불편—45분짜리 튜토리얼에서 필요한 건 설정 부분 5분뿐인데 어디가 그 구간인지 몰라 처음부터 봐야 했던 경험—으로 시작한다. 스크린샷은 앞뒤 문맥이 빠지고, 자막만 복사해 넣으면 화면에서 무슨 동작을 하는지(코드를 치는지 브라우저를 여는지) 알 수 없다는 두 가지 기존 방법의 한계를 짚은 뒤, 이를 해결하는 도구로 클로드 비더를 소개한다. 도구의 작동 방식은 &quot;영상 분석 공장&quot;에 비유되는 3단계 라인으로 설명된다. 첫째 라인은 yt-dlp를 이용한 영상 다운로드, 둘째 라인은 자막 추출로 이미 자막이 있으면 무료로 그대로 가져오고 없으면 위스퍼 기반 음성 인식(1차로 특정 서비스, 실패 시 OpenAI API로 폴백)을 사용한다. 셋째 라인은 ffmpeg로 장면이 바뀌는 지점을 감지해 핵심 프레임만 추출하고 비슷한 프레임은 자동으로 걸러내는 방식이다. 이렇게 얻은 자막(맥락)과 프레임(화면)을 클로드가 함께 받아 멀티모달로 분석한다. 이어서 분석 깊이를 조절하는 4단계 모드(트랜스크립트/에피션트/밸런스드/토버너)를 설명하고, 설치 방법(플러그인 마켓 또는 에이전트 스킬로 직접 추가, ffmpeg·yt-dlp 자동 설치)과 실전 활용 팁(구간 지정, 후속 질문 대화형 활용)을 소개한 뒤, 개발자 비렛 보난노의 다른 오픈소스 프로젝트(헤드업 콘텐츠, 세컨드 브레인, 컨텐츠 아이디아)를 언급하며 마무리한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>클로드 비더는 세 가지 오픈소스 도구를 조합한 파이프라인이다. yt-dlp는 유튜브를 포함한 거의 모든 영상 사이트에서 다운로드를 지원하는 범용 다운로더이고, ffmpeg는 영상에서 프레임을 추출하는 표준 도구다. 자막 추출 단계는 비용 최적화가 핵심 설계 원칙으로, 영상에 이미 게시자가 등록한 자막이 있으면 이를 무료로 재사용하고, 자막이 없는 경우에만 유료 음성 인식(위스퍼 계열, 발표자는 &quot;기록키&quot;라는 서비스를 1차로 쓰고 실패 시 OpenAI로 전환한다고 설명하지만 정확한 서비스명은 발음상 확인이 어렵다)을 사용해 불필요한 비용 발생을 막는다. 프레임 추출도 일정 간격이 아니라 장면 전환을 감지하는 방식이라, PPT 강의처럼 같은 화면이 오래 지속되는 영상에서 동일 프레임을 반복 추출해 토큰을 낭비하는 문제를 방지한다. 분석 깊이는 트랜스크립트 모드(자막만, 4초 내 처리), 에피션트 모드(핵심 프레임 약 50장), 밸런스드 모드(기본값, 프레임 약 100장), 토큰버너 모드(프레임 수 제한 없이 최대한 추출)의 4단계로 나뉘어, 용도에 따라 처리 속도·정확도·비용을 사용자가 직접 조절할 수 있다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>발표자는 이 도구의 핵심 가치를 &quot;AI에게 눈을 붙여주는 것&quot;으로 규정한다. 텍스트 기반 질의응답을 넘어, 화면의 흐름과 순서가 중요한 코딩 데모·제품 데모·회의 녹화본 등을 AI가 사람처럼 &quot;보고&quot; 이해하게 만든다는 점에서 기존 자막 복사·수동 메모 방식과 근본적으로 다르다고 강조한다. 비용과 속도를 동시에 관리하는 4단계 분석 모드 설계는 &quot;간단한 요약에는 비용을 안 쓰고 정밀 분석이 필요할 때만 토큰을 쓰는&quot; 실용적 접근으로 평가된다. 또한 50개 이상의 에이전트 호스트에서 동작한다는 점은 특정 AI 서비스에 종속되지 않는 범용 스킬로 설계되었음을 보여준다. 4개월 만에 스타 15,000개·포크 1,500개를 확보한 성장세는 &quot;영상을 AI에게 보여주고 싶다&quot;는 수요가 컸다는 방증으로 제시되며, 발표자는 이를 오픈소스 커뮤니티가 개인 도구를 빠르게 성장시키는 사례로 해석한다. 개발자가 만든 다른 도구들(마케팅 콘텐츠 리서치, 세컨드 브레인, 경쟁사 콘텐츠 트래킹)과 묶어, &quot;AI 에이전트에게 능력을 하나씩 붙여준다&quot;는 스킬 조합형 AI 활용 전략의 사례로 소개한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ol>
+<li><strong>설치</strong>: 클로드 코드에서는 플러그인 마켓에서 &quot;클로드 비더(claude-video)&quot;를 검색해 설치하거나, 다른 에이전트 호스트에서는 에이전트 스킬로 직접 추가한다. 첫 실행 시 ffmpeg와 yt-dlp가 없으면 자동 설치되며(맥은 brew), 윈도우·리눅스도 지원한다.</li>
+<li><strong>키 설정(선택)</strong>: 위스퍼 음성 인식을 쓰려면 관련 서비스 API 키를 설정한다. 영상에 자막이 이미 있으면 키 없이도 분석이 가능하다.</li>
+<li><strong>실행</strong>: <code>watch</code> 명령에 영상 주소(유튜브·틱톡·인스타그램·룸·X 링크 또는 로컬 파일 경로)를 입력하면 다운로드→자막 추출→프레임 추출→분석이 자동으로 이어진다.</li>
+<li><strong>구간 지정(선택)</strong>: 한 시간짜리 영상 전체가 아니라 필요한 부분만 보려면 시작·종료 옵션으로 구간을 지정해 시간과 토큰을 절약한다.</li>
+<li><strong>분석 모드 선택(선택)</strong>: 회의록처럼 화면이 중요하지 않으면 트랜스크립트 모드, 데모 영상처럼 화면이 중요하면 에피션트·밸런스드·토큰버너 모드 중 필요도에 맞게 고른다.</li>
+<li><strong>후속 질의</strong>: 최초 분석(예: 요약) 후에도 &quot;설정 부분만 정리해줘&quot;, &quot;발표자가 추천한 도구 목록을 뽑아줘&quot;처럼 대화형으로 추가 질문을 이어갈 수 있다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>코드 리뷰/데모 분석</strong>: 코딩 강의나 제품 데모 영상을 보여주고 &quot;이 코드의 문제점이 뭐야&quot;, &quot;기능 목록을 정리해줘&quot;처럼 화면 흐름이 중요한 질문에 답을 받을 수 있다.</li>
+<li><strong>경쟁사 제품 분석</strong>: 경쟁사의 제품 소개 영상을 넣고 핵심 기능을 표로 비교 정리해달라고 요청해 벤치마킹 자료를 빠르게 만들 수 있다.</li>
+<li><strong>회의 녹화본 액션 아이템 추출</strong>: 회의 녹화본을 넣어 참석자별 할 일(액션 아이템)을 정리하게 해, 회의록 작성 시간을 줄일 수 있다.</li>
+<li><strong>긴 컨퍼런스 발표 요약</strong>: 한 시간짜리 키노트 영상을 몇 분 만에 파악하고, 발표자가 강조한 지점과 발언 순서를 한눈에 확인할 수 있다.</li>
+<li><strong>버그 리포트/사용자 테스트 분석</strong>: 화면 녹화한 버그 리포트나 사용자 테스트 영상을 보여주고 문제 지점이나 사용자가 헤매는 구간을 짚어내게 할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>클로드 비더는 2026년 4월 출시돼 4개월 만에 깃허브 스타 15,000개, 포크 1,500개를 넘긴 것으로 소개된다. 발표자는 이를 &quot;영상을 AI에게 보여주고 싶다&quot;는 잠재 수요가 컸다는 신호로 해석하며, 오픈소스 커뮤니티에서 활발히 기능 <span class="up">개선</span>이 이루어지고 있다고 전한다. 개발자 비렛 보난노는 클로드 코드 생태계에서 이미 알려진 개발자로, 헤드업 콘텐츠(소셜 미디어 콘텐츠 리서치, 스타 200개 이상), 세컨드 브레인(개인 지식관리 시스템, 스타 200개 이상), 컨텐츠 아이디아(경쟁사 콘텐츠 트래킹) 등 유사한 &quot;AI 에이전트에 능력을 붙여주는&quot; 계열의 도구를 계속 만들고 있다고 소개된다. 발표자는 향후에도 이런 스킬들을 조합할수록 AI 에이전트가 처리할 수 있는 일의 범위가 넓어질 것이라는 전망을 제시하며, 시청자에게 다른 스킬들도 함께 살펴볼 것을 권한다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/8TPOsi3WFqs?t=105" target="_blank" rel="noopener">01:45</a> 클로드 비더 소개 — 비렛 보난노 개발, MIT 라이선스 오픈소스</li>
+<li><a href="https://youtu.be/8TPOsi3WFqs?t=128" target="_blank" rel="noopener">02:08</a> 자막 추출과 핵심 장면 캡처를 종합해 분석한다는 설명</li>
+<li><a href="https://youtu.be/8TPOsi3WFqs?t=152" target="_blank" rel="noopener">02:32</a> &quot;영상 분석 공장&quot; 비유 — 3단계 파이프라인(다운로드·자막·프레임) 설명 시작</li>
+<li><a href="https://youtu.be/8TPOsi3WFqs?t=252" target="_blank" rel="noopener">04:12</a> 분석 깊이 4단계 중 마지막 &quot;토큰버너 모드&quot; 설명</li>
+<li><a href="https://youtu.be/8TPOsi3WFqs?t=278" target="_blank" rel="noopener">04:38</a> 클로드 코드 외 코덱스 등 50개 이상 에이전트 호스트에서 동작한다는 설명</li>
+<li><a href="https://youtu.be/8TPOsi3WFqs?t=328" target="_blank" rel="noopener">05:28</a> 구간(시작·종료) 지정으로 필요한 부분만 분석하는 팁</li>
+</ul></section><section class="card s12" id="s9"><h2><span class="seq">09</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>클로드 비더(claude-video)</td><td>영상을 AI에게 보여주고 분석시키는 오픈소스 도구</td><td>클로드 옆에 모니터를 하나 더 놓는 것</td></tr><tr><td>yt-dlp</td><td>유튜브 등 영상 사이트에서 영상을 내려받는 오픈소스 도구</td><td>이 파이프라인의 다운로드 담당</td></tr><tr><td>ffmpeg</td><td>영상에서 프레임(장면)을 추출·편집하는 표준 도구</td><td>영상에서 핵심 장면만 사진처럼 뽑아냄</td></tr><tr><td>위스퍼(ASR)</td><td>음성을 텍스트로 바꾸는 음성 인식 기술</td><td>자막이 없는 영상의 대사를 받아쓰기</td></tr><tr><td>밸런스드 모드</td><td>프레임 약 100장을 뽑는 기본 분석 모드</td><td>코딩 튜토리얼 등 대부분의 영상에 적합</td></tr><tr><td>토큰버너 모드</td><td>프레임 수 제한 없이 최대한 뽑는 정밀 분석 모드</td><td>의료·보안 영상처럼 프레임 하나하나가 중요할 때</td></tr><tr><td>에이전트 스킬</td><td>AI 에이전트에 특정 기능을 추가하는 플러그인 단위</td><td>클로드 비더는 &quot;눈&quot;을, 다른 도구는 &quot;마케팅 센스&quot;를 붙여주는 식</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/8TPOsi3WFqs" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-08-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 티 나는 웹사이트 탈출법 — Claude로 1만 달러급 디자인 만드는 4단계 시스템"><title>AI 티 나는 웹사이트 탈출법 — Claude로 1만 달러급 디자인 만드는 4단계 시스템</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">MORNING DIGEST · 2026-08-18 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>AI 티 나는 웹사이트 탈출법 — Claude로 1만 달러급 디자인 만드는 4단계 시스템</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>화자·형식</td><td>유튜버 Jack Roberts가 진행하는 실전 튜토리얼 영상. Claude(코드 생성)와 Higsfield(이미지·영상 생성)를 연결해 웹사이트를 처음부터 만드는 과정을 화면 녹화로 보여준다.</td></tr><tr><td>문제의식</td><td>요즘 AI로 만든 웹사이트가 다들 똑같아 보인다는 것. 인디고-보라 그라데이션, 3개짜리 기능 카드, 같은 서체, 같은 문구 등 화자는 이를 &quot;AI 슬롭(AI slop) 괴물&quot;이라 부른다.</td></tr><tr><td>핵심 주장</td><td>Claude에게 그냥 &quot;웹사이트 만들어줘&quot;라고 프롬프트만 던지면 슬롭이 나온다. 대신 참조할 디자인 시스템, 이미지·영상 생성 파이프라인, 폰트 선택, 카피라이팅 검수까지 갖춘 &quot;시스템&quot;을 줘야 한다.</td></tr><tr><td>실습 대상</td><td>화자는 &quot;AI 교육 앱계의 듀오링고&quot;라는 가상 프로젝트(가칭 Neuro)를 예시로, 듀오링고 디자인을 참조 삼아 웹사이트를 처음부터 끝까지 만들어 보인다.</td></tr><tr><td>사용 도구</td><td>Claude(Fable 5 모델, 코드 생성), 프론트엔드 레퍼런스 갤러리 사이트(디자인 영감), Higsfield(이미지·영상 생성, Seed to Dance 2.5 모델), &quot;디자인 루프(gauntlet loop)&quot; 커스텀 스킬, GPT-5.6 기반 카피 교정 시스템.</td></tr><tr><td>결론</td><td>디자인 참조 → 이미지/영상 생성 → 타이포그래피 → 카피라이팅, 이 네 층위를 모두 갖춰야 AI 티가 안 나는 완성도 높은 웹사이트가 나온다는 것이 화자의 결론이다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 크게 네 개의 &quot;레벨&quot;로 구성된다. 첫째, 화자는 요즘 AI가 만드는 웹사이트들이 왜 다 비슷해 보이는지 진단한다. 같은 프롬프트를 주니 같은 결과(같은 그라데이션, 같은 카드 개수, 같은 서체, 같은 문구)가 나온다는 것이다. 둘째 레벨은 &quot;시스템을 줘라&quot;는 해법이다. Claude 자체는 무엇이 좋은 디자인인지 모르므로, 수백 개의 잘 만들어진 실제 프론트엔드 사이트를 모아놓은 레퍼런스 갤러리 사이트를 보여주고, 그중 만들고자 하는 사업과 가장 가까운 예시 3개를 Claude가 직접 고르게 한 뒤, 하나를 골라 그 디자인 시스템을 그대로 학습시켜 새 웹사이트 초안을 만든다. 셋째 레벨은 이미지·영상 생성이다. Higsfield라는 생성 도구를 Claude Code CLI에 연결해, 레퍼런스 사이트를 &quot;골드 스탠다드&quot;로 놓고 고유한 캐릭터·그래픽·애니메이션을 반복 생성·심사하는 &quot;디자인 루프&quot; 스킬을 사용한다. 넷째 레벨은 타이포그래피와 카피라이팅이다. 폰트가 디자인 완성도에 미치는 영향을 강조하고, 무료 폰트 사이트와 폰트 추천 시스템을 소개한 뒤, 마지막으로 AI 특유의 문체(&quot;AI 슬롭 카피&quot;)를 GPT-5.6 기반 시스템으로 걸러내고 사람처럼 자연스럽고 설득력 있는 카피로 다듬는 과정을 보여준다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>화자가 사용하는 파이프라인은 두 개의 서로 다른 AI 도구를 CLI 레벨에서 연결하는 구조다. 코드와 레이아웃 생성은 Claude(Fable 5 모델, 사고 강도는 &quot;extra&quot; 또는 &quot;high&quot;)가 담당하고, 이미지·영상 에셋 생성은 Higsfield라는 별도 생성형 AI 플랫폼이 담당한다. 화자는 Higsfield의 CLI 연동 페이지를 스크린샷째로 Claude에 붙여넣어 &quot;이 CLI에 연결해줘&quot;라고 지시하면 브라우저 인증 창이 뜨고, 이후 Claude Code 안에서 바로 Higsfield의 여러 생성 모델(영상은 &quot;Seed to Dance 2.5&quot;)을 호출할 수 있게 된다고 설명한다. 핵심 장치는 &quot;디자인 루프(gauntlet loop)&quot;라는 커스텀 스킬로, 이는 별도 영상에서 만든 스킬을 그대로 재사용한 것이다. 이 스킬은 목표 레퍼런스(예: 듀오링고)를 &quot;골드 스탠다드&quot;로 지정하면, Claude가 생성한 결과물을 판정하는 &quot;심사(judge)&quot; 로직을 반복 적용해 기준에 못 미치면 다시 생성하는 방식으로 동작한다. 화자는 이를 통해 &quot;디자인을 <span class="up">개선</span>해줘&quot;라고 다섯 번 요청하면 다섯 번 다른 대답이 나오는 비일관성 문제를 줄일 수 있다고 설명한다. 카피라이팅 단계에서는 GitHub에 공개된 &quot;AI 문체 탐지&quot; 로직을 가져와 초안의 AI 티 나는 표현을 걸러내고, 이를 GPT-5.6에 다시 통과시켜 사람이 쓴 것처럼 자연스럽게 바꾼다. Claude로 생성한 카피가 오히려 &quot;클로드스럽다&quot;고 티가 나는 역설을 GPT 계열 모델로 상쇄하는 방식이다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자의 핵심 통찰은 &quot;AI가 잘 만드는 것&quot;과 &quot;AI가 좋은 디자인을 아는 것&quot;은 다르다는 점이다. Claude는 코드를 잘 짜지만 심미안이 내장되어 있지 않으므로, 잘 만들어진 실제 사이트들을 참조 자료로 명시적으로 주입해야 한다는 것이 첫 번째 전략이다. 두 번째는 &quot;복제가 아니라 참조&quot;라는 원칙이다. 화자는 영상 후반부에서 실제로는 듀오링고 하나만 베끼는 게 아니라 여러 디자인 시스템을 조합해 자기만의 스타일을 만들어야 한다고 강조하며, 캐릭터 디자인(&quot;로보 상어&quot; 등 구체적 브랜드 요소)은 AI에게 맡기지 않고 사람이 직접 결정한다. 이는 &quot;AI는 창의성을 대체하는 게 아니라 창작 과정의 반복 작업을 대체하는 도구&quot;라는 화자의 명시적 입장과 연결된다. 세 번째는 카피라이팅을 디자인과 동급으로 취급하는 관점이다. 아무리 그래픽이 아름다워도 문구가 AI 티 나면 신뢰를 잃는다는 것이며, 이 때문에 별도의 카피 검수 시스템(경쟁사 벤치마킹 + AI 문체 제거 + 인간화)을 구축했다고 설명한다. 전체적으로 이 영상은 &quot;AI 슬롭&quot;이라는 업계 공통의 문제를 프롬프트 엔지니어링이 아니라 워크플로우·도구체인 설계로 해결하려는 접근을 보여준다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ol>
+<li><strong>레퍼런스 수집</strong>: 잘 만들어진 프론트엔드 사이트 모음(레퍼런스 갤러리)에서 만들려는 사업과 가장 유사한 예시 3개를 Claude에게 고르게 한다.</li>
+<li><strong>디자인 시스템 이식</strong>: 선택한 레퍼런스(예: 듀오링고)의 링크를 Claude에 주고 &quot;이 디자인 시스템에서 영감을 받되 우리 브랜드로 만들어달라&quot;고 요청, 앱 이름·색상 등 후속 질문에 답하며 1차 초안(코드화된 디자인 시스템 포함)을 받는다.</li>
+<li><strong>이미지·영상 생성 연동</strong>: Higsfield를 Claude Code CLI에 연결하고, &quot;디자인 루프&quot; 스킬을 설치한다(<code>/loop</code> 명령으로 호출).</li>
+<li><strong>골드 스탠다드 비교 생성</strong>: 레퍼런스 사이트를 기준점으로 지정하고, 고유 캐릭터·그래픽·모션 스타일을 정의한 뒤 Higsfield로 이미지·영상(Seed to Dance 2.5)을 생성·심사·재생성하는 루프를 돌린다(먼저 소규모 파일럿으로 확인 후 전체 적용).</li>
+<li><strong>타이포그래피 선정</strong>: 무료 폰트 사이트(fonts.com 등)와 브랜드 톤에 맞는 폰트 추천 시스템을 활용해 서체를 정한다(라이선스 확인 필수).</li>
+<li><strong>카피라이팅 검수</strong>: 초안 카피를 AI 문체 탐지 → GPT-5.6 인간화 → 경쟁사 벤치마킹 → &quot;Don&#x27;t Make Me Think&quot;류 원칙(첫 화면당 메시지 하나, 고통 포인트 먼저 언급 등) 적용의 순서로 재작성한다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>1인 창업자·프리랜서의 랜딩페이지 제작</strong>: 별도 디자이너 없이도 레퍼런스 갤러리 + Claude + 이미지 생성 도구 조합으로 차별화된 브랜드 웹사이트 초안을 빠르게 만드는 데 이 워크플로우를 그대로 적용할 수 있다.</li>
+<li><strong>에이전시의 클라이언트 제안용 목업 제작</strong>: 클라이언트 업종과 유사한 레퍼런스 3개를 뽑아 여러 디자인 방향성 시안을 짧은 시간에 병렬로 제시하는 데 활용할 수 있다.</li>
+<li><strong>제품 마케팅팀의 카피 품질 관리</strong>: 이미 완성된 사이트라도 AI로 작성된 카피가 있다면, 영상에서 소개한 AI 문체 탐지·인간화·벤치마킹 3단계 검수 프로세스를 별도로 적용해 카피만 <span class="up">개선</span>할 수 있다.</li>
+<li><strong>디자인 시스템 문서화가 필요한 팀</strong>: Claude가 생성한 &quot;디자인 시스템 페이지&quot;(색상 팔레트, 버튼, 폼 요소 등 코드화된 규칙 모음)를 자체 프로젝트의 스타일 가이드 초안으로 활용할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 이 워크플로우가 개인 커뮤니티 안에서 이미 여러 무료 리소스(디자인 시스템 가이드, 카피 검수 시스템, 폰트 추천 섹션)로 공유되고 있다고 밝힌다. Higsfield 연동과 &quot;디자인 루프&quot; 스킬은 화자의 이전 영상에서 이미 소개된 것을 재사용한 것으로, 하나의 완결된 개인 &quot;에이전틱 운영체제&quot;의 일부로 계속 확장 중이라고 설명한다. 화자는 폰트·카피 시스템에 &quot;더 많은 로직을 추가해 업그레이드할 것&quot;이라 언급하며, 향후에는 디자인 시스템 하나만이 아니라 생산성·자동화·AI를 결합한 통합 운영체제로 나아가야 한다고 예고한다(다음 영상에서 다룰 주제로 제시). 전체적으로 이 영상은 특정 제품 출시 뉴스라기보다는, 여러 기존 도구(Claude, Higsfield, 무료 폰트 사이트, GPT-5.6)를 조합한 개인 워크플로우 노하우 공유에 가깝다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>AI 슬롭(AI slop)</td><td>AI가 생성한 티가 나는 획일적이고 진부한 결과물</td><td>인디고-보라 그라데이션, 3개짜리 카드, 뻔한 헤드라인 문구</td></tr><tr><td>디자인 루프(gauntlet loop)</td><td>골드 스탠다드 레퍼런스와 비교해 생성물을 반복 심사·재생성하는 커스텀 스킬</td><td>&quot;이 디자인이 기준을 통과했는가&quot;를 자동 판정하는 게이트</td></tr><tr><td>골드 스탠다드</td><td>목표 품질 기준으로 지정한 레퍼런스 사이트</td><td>이 영상에서는 듀오링고</td></tr><tr><td>Higsfield</td><td>이미지·영상 생성 전용 AI 플랫폼, CLI로 Claude와 연동 가능</td><td>Seed to Dance 2.5 모델로 영상 생성</td></tr><tr><td>Don&#x27;t Make Me Think</td><td>사용자가 생각하지 않아도 직관적으로 이해되게 설계하라는 UX 원칙</td><td>스티브 크룩의 동명 저서에서 인용</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/VwGrXe2ricE?t=0" target="_blank" rel="noopener">00:00</a> 인트로 — &quot;AI 슬롭 괴물&quot;이라는 문제 제기</li>
+<li><a href="https://youtu.be/VwGrXe2ricE?t=137" target="_blank" rel="noopener">02:17</a> 레벨 1: 레퍼런스 갤러리 사이트에서 디자인 영감 수집</li>
+<li><a href="https://youtu.be/VwGrXe2ricE?t=463" target="_blank" rel="noopener">07:43</a> Higsfield CLI를 Claude Code에 연동하는 방법</li>
+<li><a href="https://youtu.be/VwGrXe2ricE?t=663" target="_blank" rel="noopener">11:03</a> &quot;디자인 루프&quot; 스킬로 캐릭터·그래픽 생성 프롬프트 작성</li>
+<li><a href="https://youtu.be/VwGrXe2ricE?t=793" target="_blank" rel="noopener">13:13</a> 레벨 3: 타이포그래피(폰트)가 디자인에 미치는 영향</li>
+<li><a href="https://youtu.be/VwGrXe2ricE?t=1020" target="_blank" rel="noopener">17:00</a> 레벨 4: 카피라이팅 — AI 문체 제거와 GPT-5.6 인간화</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/VwGrXe2ricE" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-08-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
