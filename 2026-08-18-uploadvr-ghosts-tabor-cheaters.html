@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="VR 슈팅 게임의 치팅과의 전쟁 — Ghosts of Tabor 개발사가 만든 안티치트 &#x27;토마호크"><title>VR 슈팅 게임의 치팅과의 전쟁 — Ghosts of Tabor 개발사가 만든 안티치트 &#x27;토마호크</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>UploadVR</span><span class="ey">MORNING DIGEST · 2026-08-18 · UploadVR</span><span class="chip">🎬 영상</span></div><h1>VR 슈팅 게임의 치팅과의 전쟁 — Ghosts of Tabor 개발사가 만든 안티치트 &#x27;토마호크</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>출연·형식</td><td>UploadVR의 팟캐스트형 인터뷰. 진행자 Mike Johnson이 VR 슈팅 게임 &#x27;Ghosts of Tabor&#x27; 개발사 Combat Waffle Studios의 CEO 스콧 올브라이트(Scott Albright)와 대담한다.</td></tr><tr><td>계기</td><td>VR 경쟁 슈팅 게임에서 치팅이 커뮤니티(레딧·디스코드)에서 계속 회자되는데도 이를 정면으로 다루는 개발사가 드물어, 자체 안티치트 시스템 &#x27;토마호크(Tomahawk)&#x27;를 만든 올브라이트를 인터뷰했다.</td></tr><tr><td>핵심 주장</td><td>화자는 메타(Meta)의 공식 안티치트인 애드 어테스테이션(App Attestation)이 사실상 무력하며, 배틀아이·이지 안티치트 같은 PC용 상용 솔루션도 스탠드얼론 VR 환경에서는 애초에 작동하지 않는다고 지적한다. 이 공백을 메우기 위해 자체 개발한 토마호크를 다른 VR 개발사에도 서비스로 제공 중이다.</td></tr><tr><td>규모</td><td>토마호크는 현재 자사 포함 여러 VR 타이틀에서 누적 6억 2,400만 게임 세션을 보호하고 있으며, 2,600개 계정을 실시간 보호, 4,000명의 변조 APK 사용자와 약 5,000명의 치팅 시도자를 차단했고 1,000건 이상의 밴이 활성화되어 있다고 밝힌다.</td></tr><tr><td>비즈니스 구조</td><td>Tabor(Combat Waffle Studios)가 토마호크 서버 비용의 상당 부분(약 4분의 3)을 자체 부담하며, 다른 개발사에는 시장 최저가 수준으로 제공해 생태계 전체의 치팅 대응력을 높이는 것을 목표로 한다고 설명한다.</td></tr><tr><td>플랫폼별 위협도</td><td>퀘스트(스탠드얼론)가 가장 심각하고 그다음이 스팀 PCVR, 플레이스테이션 VR2는 사실상 치터를 본 적이 없을 정도로 안전하다고 진단한다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 UploadVR 진행자가 Combat Waffle Studios CEO 스콧 올브라이트를 소개하며 시작해, VR 치팅이라는 잘 다뤄지지 않는 주제를 심층 인터뷰 형식으로 풀어간다. 전체는 크게 네 블록으로 구성된다. 첫 블록은 문제 정의로, 기존 PC용 안티치트(배틀아이, 이지 안티치트)는 스탠드얼론 VR 환경을 위해 설계된 적이 없어 작동하지 않으며, 메타의 자체 솔루션인 애드 어테스테이션은 있으나 AI를 활용하는 초보 해커(&quot;스크립트 키디&quot;)조차 순식간에 우회한다는 점을 지적한다. 둘째 블록은 토마호크의 탄생과 작동 원리로, Tabor 내부 대응팀에서 출발했으며 자사가 직접 스카우트한 전직 치터 출신 3인 보안팀이 핵심 개발·운영을 맡고, OS 레벨보다 낮은 곳에서 동작해 헤드셋 루팅(탈옥)이나 변조 APK를 자동 탐지·차단한다고 설명한다. 셋째 블록은 생태계 전반의 확산 패턴으로, 한 게임이 토마호크로 봉쇄되면 치터들이 다음 타겟(현재는 Scary Baboon, Animal Rivals 등 신작 무료 게임)으로 옮겨간다는 &quot;치터 이동&quot; 현상과, 개발사들이 매출 <span class="dn">감소</span>를 체감하고 나서야 적극적으로 협조를 요청하게 되는 정황을 전한다. 넷째 블록은 플랫폼별 비교와 향후 계획으로, 퀘스트·PCVR·Pico·플레이스테이션 VR2·스팀 프레임(휴대용 PC)까지 플랫폼별 치팅 위협 수준과 대응 로드맵을 정리하며 마무리한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>VR 헤드셋의 &#x27;루팅(rooting)&#x27;은 스마트폰 탈옥(jailbreak)과 유사한 개념으로, 헤드셋 운영체제(OS) 아래 단까지 완전한 접근 권한을 얻어 게임에 임의로 파일을 사이드로드하거나 코드를 조작하는 행위다. 루팅된 기기에서는 개발사가 게임에 심어둔 일반적인 안티치트 로직조차 이를 감지하지 못하는데, 그 이유는 토마호크가 이보다 더 낮은 시스템 레벨에서 상시 감시하도록 설계됐기 때문이라고 화자는 설명한다. 화자는 변조된 APK(안드로이드 설치 파일)를 매 비트 단위로 원본과 대조해 100% 일치 여부를 검증하는 방식을 핵심 기법으로 제시한다. 또한 PCVR에서는 치터가 자신의 플랫폼을 &#x27;스팀(Steam)&#x27;으로 스푸핑(위장)해 메타 세션을 감시하도록 설계된 토마호크의 탐지를 피하는 사례가 있어, 개발사의 백엔드 시스템 자체도 보안이 견고해야 한다고 강조한다. PCVR용 치팅은 스탠드얼론과 달리 컴퓨터 커널(운영체제 최하위) 수준에서 벌어지는 전통적인 PC 해킹 방식이라 &quot;끝나지 않는 창과 방패 싸움&quot;이라고 설명하며, 곧 출시될 밸브(Valve)의 휴대용 PC 기기 &#x27;스팀 프레임&#x27;은 사실상 완전 개방형(오픈소스에 가까운) 구조로 설계되고 있어 대응이 특히 어려울 것으로 예상한다고 밝힌다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자가 반복해서 지적하는 것은 플랫폼 사업자(메타)가 치팅 문제의 존재 자체를 부정하다가 사후에야 현실을 인정하는 패턴이다. Combat Waffle Studios는 메타 보안팀에 스탠드얼론 치팅과 헤드셋 루팅 위험을 사전에 경고하고 해결책까지 제안했으나 &quot;그런 일은 일어날 수 없다&quot;는 답변과 함께 거절당했고, 실제로 두 문제 모두 현실화된 뒤에야 자체적으로 해결했다고 밝힌다. 이는 플랫폼 홀더가 보안을 서드파티 개발사에 전가하는 구조적 공백을 보여주며, 토마호크 같은 제3자 안티치트가 사실상 업계 표준 인프라 역할을 하게 된 배경을 설명한다. 비즈니스 측면에서는 Combat Waffle Studios가 자사 서버 비용의 대부분을 부담하면서 타 개발사에 저가로 서비스를 제공하는 구조를 택했는데, 이는 단순 수익 사업이 아니라 VR 경쟁 슈팅 생태계 전체의 신뢰도를 지키기 위한 산업 공공재적 접근으로 해석할 수 있다. 또한 개발사들이 처음에는 매출 <span class="dn">감소</span>를 우려해 안티치트 도입을 주저하다가, 실제로 치팅으로 매출이 줄어드는 것을 체감한 뒤에야 도입을 서두르는 패턴은, 치팅 대응이 초기 비용이 아니라 장기 생존의 전제 조건으로 인식되는 산업 전환점을 시사한다. Pico나 스팀 프레임처럼 아직 시장이 작은 신흥 플랫폼에 대해서도 선제적으로 보안 구조를 논의해야 한다는 화자의 제언은, 생태계가 커진 뒤에는 이미 늦다는 경고이기도 하다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론</h2><ol>
+<li><strong>탐지</strong>: 토마호크는 OS보다 낮은 레벨에서 상시 모니터링하며, APK 파일을 원본과 비트 단위로 대조해 변조 여부를 확인하고, 루팅된 기기의 비정상 권한 상태를 자동 감지한다.</li>
+<li><strong>차단·밴</strong>: 탐지된 치터는 대부분 자동으로 밴 처리되며, PCVR 환경에서도 부정 행위 발생 후 약 5분 이내에 조치가 이뤄진다고 설명한다.</li>
+<li><strong>정보 공유</strong>: 보안팀이 치터들이 활동하는 디스코드 서버에 10개의 부계정으로 잠입해 동향을 감시하고, 치터가 다른 게임으로 옮겨가는 정황을 포착하면 해당 개발사에 스크린샷 증거와 함께 선제적으로 알려준다.</li>
+<li><strong>백엔드 취약점 공유</strong>: 협력 개발사의 백엔드 코드에서 스푸핑이 가능한 보안 허점을 발견하면 이를 직접 알려주고 패치를 지원한다.</li>
+<li><strong>온보딩</strong>: 신규 개발사는 요청 후 24~48시간 내 토마호크 연동이 가능하며, 3인 보안팀을 포함한 24시간 고객 지원 체계를 운영한다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>VR 게임 개발사의 보안 벤더 선정</strong>: 스탠드얼론·PCVR 환경별 위협 특성과 토마호크의 대응 범위를 참고해, 자사 타이틀에 맞는 안티치트 솔루션 도입 여부와 시점을 판단하는 데 활용할 수 있다.</li>
+<li><strong>VR 플랫폼 사업자의 보안 정책 수립</strong>: 메타가 애드 어테스테이션의 한계를 인정하지 않고 있다는 사례를 참고해, 신흥 플랫폼(Pico, 스팀 프레임 등)이 생태계 확장 이전에 선제적으로 보안 인프라를 갖춰야 하는 근거로 활용할 수 있다.</li>
+<li><strong>게임 커뮤니티 매니저의 치팅 대응 커뮤니케이션</strong>: 치터가 봉쇄된 게임에서 다른(특히 신작 무료) 게임으로 이동하는 패턴을 이해해, 신작 출시 직후 보안 강화 시점을 앞당기는 운영 전략에 참고할 수 있다.</li>
+<li><strong>투자자·산업 분석가의 VR 생태계 리스크 평가</strong>: 무료 플레이(F2P) 타이틀일수록 치팅 신고 건수가 유료 타이틀보다 최대 20배 가까이 많다는 사례를 근거로, VR 게임사의 수익 모델별 운영 리스크를 비교 평가하는 데 활용할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>인터뷰 시점 기준 토마호크는 자사(Tabor)를 포함해 Animal Company, EEPs(YEEPs로 언급), Zombell, Hero X Hero, Triangle Factory 등 여러 VR 스튜디오의 타이틀을 보호하고 있으며, 누적 6억 2,400만 게임 세션 보호, 2,600개 계정 실시간 보호, 4,000명의 변조 APK 사용자 및 약 5,000명의 치팅 시도자 차단, 1,000건 이상의 활성 밴이라는 수치를 제시한다. 스탠드얼론(퀘스트) 환경은 사실상 완전히 봉쇄됐다고 자평하며, 현재 남은 주요 전장은 PCVR이다. PCVR용 토마호크는 현재 Ghosts of Tabor에 이식되어 부분 가동 중이며 지속적인 개발이 필요한 상태다. 회사는 모바일과 밸브의 신형 휴대용 PC &#x27;스팀 프레임&#x27;용 대응도 준비 중으로, 밸브의 비공개 하드웨어 테스트 프로그램에 참여했으나 밸브 측의 백엔드 협조는 받지 못하고 있다고 밝힌다(&quot;플레이스테이션과 협업하는 것과 마찬가지로 어렵다&quot;). Pico는 아직 시장이 작아 본격 대응은 시작하지 않았지만 논의는 진행 중이며, 미국 진출을 앞둔 것으로 알려진 신형 헤드셋(Project Swan) 출시 시 문제가 커질 수 있다고 경고한다. 플레이스테이션 VR2는 개발자 키트 접근 장벽이 높아 치터를 사실상 본 적이 없을 정도로 안전한 환경으로 평가된다. 화자는 앞으로 진전이 있으면 다시 출연해 업데이트를 공유하겠다고 예고하며 인터뷰를 마무리한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>토마호크(Tomahawk)</td><td>Combat Waffle Studios가 개발해 여러 VR 개발사에 서비스로 제공하는 자체 안티치트 시스템</td><td>OS보다 낮은 레벨에서 상시 감시하는 VR 전용 보안 솔루션</td></tr><tr><td>애드 어테스테이션(App Attestation)</td><td>메타가 제공하는 공식 스탠드얼론 안티치트 기능</td><td>화자에 따르면 AI를 쓰는 초보 해커에게도 수십 초 만에 우회당하는 수준</td></tr><tr><td>루팅(rooting)</td><td>헤드셋 OS 최하위까지 완전한 접근 권한을 얻는 행위</td><td>스마트폰 탈옥(jailbreak)의 VR 헤드셋 버전</td></tr><tr><td>변조 APK</td><td>원본 안드로이드 설치 파일을 조작해 치트 기능을 심은 파일</td><td>토마호크가 비트 단위로 원본과 대조해 탐지</td></tr><tr><td>스크립트 키디(script kid)</td><td>AI 도구를 활용해 손쉽게 치트를 만드는 초보 해커를 지칭하는 업계 은어</td><td>화자가 실력보다 손쉬운 도구 의존을 지적하며 사용</td></tr><tr><td>PCVR</td><td>PC에 연결해 구동하는 VR(스탠드얼론과 대비되는 개념)</td><td>컴퓨터 커널 단의 전통적 해킹 기법이 적용되는 환경</td></tr><tr><td>스팀 프레임(Steam Frame)</td><td>밸브가 준비 중인 휴대용 PC형 기기</td><td>화자는 사실상 개방형이라 치팅 대응이 특히 어려울 것으로 전망</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=6" target="_blank" rel="noopener">00:06</a> 인트로 - UploadVR과 Combat Waffle Studios CEO 스콧 올브라이트 소개</li>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=77" target="_blank" rel="noopener">01:17</a> 기존 PC 안티치트(배틀아이 등)는 스탠드얼론 VR용으로 설계되지 않아 무력하다는 진단</li>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=153" target="_blank" rel="noopener">02:33</a> 스탠드얼론은 완전 봉쇄, 남은 문제는 PCVR(메타·스팀)이라는 현황 설명</li>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=227" target="_blank" rel="noopener">03:47</a> 헤드셋 &#x27;루팅&#x27;의 정의와 위험성 설명</li>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=300" target="_blank" rel="noopener">05:00</a> 누적 2,600개 계정 보호, 4,000명 변조 APK 차단 등 수치 공개</li>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=369" target="_blank" rel="noopener">06:09</a> 메타에 취약점을 미리 알렸지만 &quot;그럴 리 없다&quot;며 거절당한 일화</li>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=545" target="_blank" rel="noopener">09:05</a> 토마호크가 보호 중인 스튜디오·타이틀 목록(Animal Company 등)</li>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=862" target="_blank" rel="noopener">14:22</a> 치터가 플랫폼을 스팀으로 위장(스푸핑)해 탐지를 피하는 사례</li>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=984" target="_blank" rel="noopener">16:24</a> PCVR용 토마호크는 &quot;끝나지 않는 창과 방패 싸움&quot;이라는 진단과 스팀 프레임 대응 계획</li>
+<li><a href="https://youtu.be/rHjaJNv9uT4?t=1224" target="_blank" rel="noopener">20:24</a> &quot;VR은 현실 탈출인데 치팅까지 당해선 안 된다&quot;는 마무리 발언</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/rHjaJNv9uT4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>UploadVR · 2026-08-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

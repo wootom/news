@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="촉각 글러브로 로봇을 가르친다 — 오픈그래프랩스, 창업 6개월 만에 엔비디아 파트너·매출 10억"><title>촉각 글러브로 로봇을 가르친다 — 오픈그래프랩스, 창업 6개월 만에 엔비디아 파트너·매출 10억</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>EO Korea</span><span class="ey">MORNING DIGEST · 2026-08-18 · EO Korea</span><span class="chip">🎬 영상</span></div><h1>촉각 글러브로 로봇을 가르친다 — 오픈그래프랩스, 창업 6개월 만에 엔비디아 파트너·매출 10억</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>출연·형식</td><td>EO Korea의 창업가 인터뷰. 오픈그래프랩스(OpenGraph Labs)의 공동창업자 3인(대표 김조우 28세, CTO 한송호 28세, CPO 손범수 24세)이 등장한다.</td></tr><tr><td>회사</td><td>피지컬 AI(로봇·자율 시스템이 물리 세계를 이해하도록 만드는 AI) 학습에 필요한 사람의 1인칭 시점 영상과 촉각 데이터를 직접 만든 카메라·촉각 글러브로 수집·가공해 판매하는 데이터 스타트업이다.</td></tr><tr><td>창업 시점</td><td>2026년 1월 법인 설립. 방송 시점 기준 약 6~7개월 차 스타트업이다.</td></tr><tr><td>성과</td><td>엔비디아의 오픈소스 로봇 생태계 &#x27;아이작(Isaac)&#x27;의 9개 공식 파트너 제품 중 하나로 선정됐고, 올해 Q3부터 매출이 발생해 이번 분기 예상 매출은 약 10억 원이다.</td></tr><tr><td>핵심 통찰</td><td>화자들은 오픈AI 소라·루마AI 같은 영상 생성 AI가 &quot;손대지 않은 상자가 저절로 열리는&quot; 등 물리 법칙을 이해하지 못하는 오류를 보고, 시각·청각 데이터는 이미 충분한데 촉각 데이터가 빠져 있다는 데서 사업 기회를 포착했다.</td></tr><tr><td>고객·시장</td><td>미국 빅테크·프론티어 AI 연구소, 한국 제조 대기업, 유럽 데이터 수집사 마이크로AI(소프트웨어 공급) 등과 협업 중이며, 한국 여수 산업단지의 숙련공 기술 데이터 수집 등 제조업 현장으로 확장하고 있다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 창업자 3인의 자기소개와 회사 미션 설명으로 시작해, 창업의 기술적 계기(영상 생성 AI의 물리 이해 실패)와 세 사람의 성장 배경(중국 유학·서울대 진학·미국 이주), 팀 결성 과정(해커톤에서 만난 공동창업자들), 실리콘밸리 진출과 엔비디아 파트너십 확보 과정, 중국에서의 하드웨어 양산 스토리, 한국 시장 확장(여수 산단 숙련공 데이터 수집)까지 시간 순으로 이어진다. 마지막은 세 사람이 이전 창업 실패에서 배운 교훈과 피지컬 AI·로봇이 인간을 대체하지 않고 협업하는 미래에 대한 각자의 소회로 마무리된다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>오픈그래프랩스가 푸는 문제는 &quot;피지컬 AI&quot;(로봇이 물리 세계를 인식하고 조작하도록 학습시키는 AI) 학습 데이터의 병목이다. 화자들은 사람이 어릴 때 시각·청각·촉각 등 감각 신호로 세상을 배우듯, AI도 같은 종류의 감각 데이터를 학습해야 현실을 이해할 수 있다고 본다. 시각·청각 데이터는 스마트폰 카메라·마이크로 이미 대량 확보가 가능하지만, 촉각 데이터를 수집할 완성된 하드웨어가 시장에 없다고 판단해 직접 카메라와 촉각 글러브를 개발했다. 데이터 수집 시 가장 어려웠던 기술적 난제는 &quot;싱크로(sync) 문제&quot;였다. 머리·손목 등에 착용하는 여러 카메라가 각각 다른 내부 시계를 갖고 있어 동시에 촬영을 시작·종료해도 시간축이 어긋나는데, 이를 정밀하게 맞추는 동기화 기술이 데이터 품질의 핵심 차별화 요소라고 설명한다. 하드웨어 양산은 중국에서 진행했으며, 프로토타입을 4일 만에 받아 이틀간 수정하고 다시 맡기는 &quot;7일 사이클&quot;의 초고속 이터레이션으로 버전을 <span class="up">개선</span>했다. 최종적으로 PCB·센서·장갑 패브릭 모두 중국 공장에서 생산 중이며 두 달 내 약 500대 양산을 목표로 한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자들은 회사의 경쟁력을 하드웨어·소프트웨어·오퍼레이션(데이터 수집 운영 역량) 세 축을 모두 수직 통합했다는 점에서 찾는다. 기존 데이터 수집 업체들은 이 중 한 축만 다루는 경우가 많은데, 오픈그래프랩스는 세 가지를 동시에 갖춰 고품질 데이터를 만들 수 있다고 주장한다. 고객 확보 전략도 특징적이다. 데이터를 먼저 모으기보다 링크드인과 논문 저자 이메일로 잠재 고객(연구자·엔지니어)에게 먼저 접촉했고, 이 중 엔비디아 연구자들의 응답률이 유독 높았다. 첫 미팅에서 만난 엔비디아 리서처가 실제로 데이터 구매·파트너 선정 의사결정권자였던 점이 빠른 파트너십 성사로 이어졌다. 한국 시장 전략은 제조업의 인력 공백 문제와 연결된다. 여수 산업단지처럼 신규 채용이 끊긴 제조 현장에서 은퇴를 앞둔 숙련공의 암묵적 기술(안목·노하우)을 전수할 곳이 없다는 문제를 포착하고, 촉각 글러브와 카메라로 숙련공의 작업 데이터를 수집해 휴머노이드 로봇이 학습할 수 있는 형태로 변환하는 POC(개념 검증)를 대기업과 진행 중이다. 이는 데이터 사업을 &quot;로봇의 기술 전수&quot; 문제로 재정의하는 전략적 포지셔닝이다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·성장 전략</h2><ol>
+<li><strong>문제 발견</strong>: 영상 생성 AI(소라·루마)가 물리 법칙을 이해하지 못하는 현상을 목격 → 촉각 데이터 공백이 원인이라는 가설 수립.</li>
+<li><strong>팀 결성</strong>: 해커톤에서 만난 개발자(제리)와 친분을 쌓고, 하드웨어 역량을 가진 손범수를 발견해 2주간 함께 지내며 공동창업 여부를 검증(트라이얼)한 뒤 합류 결정.</li>
+<li><strong>초기 리서치</strong>: 법인 설립 직후 한 달간 관련 논문을 전부 읽고 최소 10가지 데이터 수집 방식을 직접 시도, 실패 지점을 파악.</li>
+<li><strong>네트워킹 선점</strong>: 스탠퍼드 로보틱스 센터(SRC)에서 발표 기회를 만들어 교수·연구자와 연결, 이어 논문 저자·엔지니어에게 콜드 이메일을 대량 발송.</li>
+<li><strong>속전속결 데모</strong>: 엔비디아 팀 전체 미팅이 갑자기 잡히자, 부품 조달을 위해 중국 전자상가를 뒤지고 비행기 탑승 1시간 반 전까지 하드웨어를 조립해 완성도보다 &quot;실물로 보여주는 인상&quot;을 우선했다.</li>
+<li><strong>시장 검증 반복</strong>: 2~4월 여러 프로토타입을 빅테크 대상으로 테스트해 &quot;시제품이 나오면 사고 싶다&quot;는 실수요 확인 후 곧바로 중국 양산 절차에 착수.</li>
+<li><strong>지역 확장</strong>: 멕시코에서 첫 데이터 수집 경험을 쌓아 동기화 등 실무 노하우를 축적한 뒤, 한국(여수 산단, 서울대 로봇 동아리 20명 모집)으로 운영 범위를 넓힘.</li>
+<li><strong>고객 우선 원칙 정착</strong>: 이전 창업(핸지, 블록체인 투자 플랫폼)에서 &quot;내가 풀고 싶은 문제&quot;에 매몰돼 유저 목소리를 못 들은 실패를 겪은 뒤, 이번에는 리서처(고객) 수요를 먼저 확인하고 그다음 문제를 푸는 순서로 방식을 바꿨다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>초기 스타트업 팀빌딩 참고 사례</strong>: 해커톤에서 만난 인연을 2주 트라이얼로 검증한 뒤 공동창업자로 합류시키는 방식은, 기술 공동창업자를 찾는 예비 창업자가 팀 결성 프로세스를 설계할 때 참고할 수 있다.</li>
+<li><strong>B2B 딥테크 스타트업의 콜드 아웃바운드 전략 벤치마크</strong>: 데이터를 먼저 모으지 않고 잠재 고객(논문 저자·리서처)에게 먼저 연락해 수요를 검증한 접근은, 하드웨어·데이터 기반 B2B 스타트업이 초기 고객 개발(customer discovery) 전략을 세울 때 참고 모델이 된다.</li>
+<li><strong>제조업 인력난 대응 기술 도입 검토</strong>: 여수 산단 사례처럼 숙련공 은퇴로 기술 전수가 끊기는 제조 현장의 관리자나 정책 담당자가, 웨어러블 센서로 암묵지를 데이터화하는 접근법의 실현 가능성을 검토하는 참고 자료로 쓸 수 있다.</li>
+<li><strong>로봇·피지컬 AI 투자자의 밸류체인 분석</strong>: GPU·모델보다 상류에 있는 &quot;고품질 학습 데이터 수집&quot; 영역이 별도 사업으로 성립한다는 점을, 피지컬 AI 밸류체인에서 투자 기회를 찾는 투자자가 참고할 수 있다.</li>
+<li><strong>해외 진출(특히 미국) 초기 세팅 사례</strong>: 코워킹·해커하우스 등 최소 자원으로 실리콘밸리에 정착해 네트워킹으로 대기업 파트너십을 뚫은 과정은, 미국 진출을 계획하는 한국 스타트업 창업자에게 실행 참고가 된다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>2026년 1월 법인 설립 이후 약 6~7개월 만에 엔비디아 아이작 생태계의 공식 파트너(9개 제품 중 하나)로 선정됐고, Q3부터 매출이 발생해 이번 분기 예상 매출은 약 10억 원이다. 유럽에서 가장 큰 규모로 데이터를 수집하는 팀 중 하나인 마이크로AI에 소프트웨어 인프라 일부를 공급하고 있어, 자체 평가로도 소프트웨어 성숙도에 자신감을 보인다. 하드웨어는 중국에서 버전1 양산 준비가 끝나 PCB·센서·장갑 패브릭 생산이 진행 중이며, 두 달 내 약 500대 양산이 목표다. 한국에서는 여수 산단 등 제조 대기업과 숙련공 데이터 수집 POC를 진행하며 서울대 로봇 동아리에서 인력 20명을 모집해 물류창고·카페 등 다양한 환경의 데이터를 확보하고 있다. 회사는 향후 한국에서 사업이 성장하면 부품을 상시 비축해 엔지니어들이 활용할 수 있는 &quot;오픈그래프 해커하우스&quot;를 만들 계획도 밝혔다. 창업자들은 로봇이 인간의 일을 완전히 대체하기보다 &quot;오늘의 일을 인수인계하고 내일 할 일을 찾는&quot; 방향으로 공존해야 한다는 관점을 미래 비전으로 제시한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>피지컬 AI</td><td>로봇 등 물리적 실체를 가진 시스템이 현실 세계를 인식·조작하도록 학습시키는 AI 분야</td><td>텍스트만 다루는 언어 모델과 달리 몸(로봇)을 가진 AI</td></tr><tr><td>촉각 데이터</td><td>손·손가락이 느끼는 압력·질감 등 촉각 감각을 수치화한 데이터</td><td>사람이 물건을 쥘 때 손끝으로 느끼는 정보를 로봇 학습용으로 기록한 것</td></tr><tr><td>아이작(Isaac)</td><td>엔비디아의 로봇 개발용 오픈소스 생태계</td><td>로봇 개발자들이 쓰는 엔비디아의 표준 플랫폼</td></tr><tr><td>1인칭 시점 데이터</td><td>사람이 직접 착용한 카메라로 촬영한, 행위자 본인 시야의 영상 데이터</td><td>로봇이 &quot;내가 하는 것처럼&quot; 배우도록 만드는 학습 자료</td></tr><tr><td>싱크(동기화) 문제</td><td>여러 대의 카메라·센서가 서로 다른 내부 시계를 가져 촬영 시점이 어긋나는 현상</td><td>여러 카메라로 찍었는데 시간이 조금씩 안 맞아 데이터가 쓸모없어지는 문제</td></tr><tr><td>휴머노이드</td><td>사람과 유사한 형태로 만들어진 로봇</td><td>팔다리·손을 가진 인간형 로봇</td></tr><tr><td>POC(개념 검증)</td><td>신기술·아이디어가 실제로 작동하는지 소규모로 미리 검증하는 절차</td><td>본격 도입 전에 &quot;일단 되는지&quot; 확인하는 시범 프로젝트</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul>
+<li><a href="https://youtu.be/favRMy-9XNk?t=54" target="_blank" rel="noopener">00:54</a> 회사 소개 - 엔비디아 파트너십, 이번 분기 예상 매출 약 10억 원</li>
+<li><a href="https://youtu.be/favRMy-9XNk?t=110" target="_blank" rel="noopener">01:50</a> 창업 계기 - 영상 생성 AI가 물리 법칙을 이해하지 못하는 사례 목격</li>
+<li><a href="https://youtu.be/favRMy-9XNk?t=442" target="_blank" rel="noopener">07:22</a> 엔비디아 리서처와의 첫 접촉이 실제 의사결정권자였다는 것을 알게 된 순간</li>
+<li><a href="https://youtu.be/favRMy-9XNk?t=617" target="_blank" rel="noopener">10:17</a> 중국 공장에서 확립한 &quot;7일 이터레이션 사이클&quot; 양산 스토리</li>
+<li><a href="https://youtu.be/favRMy-9XNk?t=725" target="_blank" rel="noopener">12:05</a> 여수 산단 숙련공 기술 전수 문제와 데이터 수집 POC</li>
+<li><a href="https://youtu.be/favRMy-9XNk?t=957" target="_blank" rel="noopener">15:57</a> 로봇과 인간의 미래 - &quot;대체가 아니라 인수인계&quot; 비전</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/favRMy-9XNk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>EO Korea · 2026-08-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
