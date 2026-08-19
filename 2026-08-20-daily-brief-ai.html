@@ -1,0 +1,295 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Youtube Brief · AI·기술 · 2026-08-20</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+
+/* ─ Daily Brief 전용(b- 접두사) ─ */
+.b-sec{margin:26px 0 0}
+.b-sec-h{
+  display:flex;align-items:center;gap:9px;margin:0 2px 12px;
+  font-size:15px;font-weight:800;color:var(--accent-ink);letter-spacing:-.01em
+}
+.b-sec-h::before{content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none}
+.b-sec-h .n{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:2px 8px;border-radius:999px;letter-spacing:0
+}
+/* 1열 고정에 가깝게 둔다(minmax 600px). 2열로 쪼개면 썸네일 폭이 절반이 되어
+   인포그래픽이 뭔지 안 보인다. auto-fit이라 아주 넓은 화면에서만 2열이 된다. */
+.b-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,600px),1fr));gap:16px}
+.b-card{
+  display:flex;flex-direction:row;background:var(--bg);
+  border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  text-decoration:none;color:inherit;box-shadow:0 1px 3px rgba(22,32,43,.05);
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease
+}
+.b-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(22,32,43,.10);border-color:var(--accent)}
+/* 인포그래픽 원본은 16:9 가로형(1672x941). 크롭하면 무슨 그림인지 안 보이므로
+   자르지 않고 전체를 축소한 '썸네일'로 보여준다(전문은 카드를 눌러 확인).
+   aspect-ratio 16/9 → 이 칸이 보통 카드 높이를 결정한다.
+   텍스트가 더 길어 늘어나는 경우에도 contain이라 잘리지 않고 위아래 여백만 생긴다. */
+.b-shot{
+  width:44%;flex:none;aspect-ratio:16/9;overflow:hidden;position:relative;
+  min-height:132px;background:var(--surface);border-right:1px solid var(--border)
+}
+.b-thumb{
+  display:block;position:absolute;top:8px;left:8px;
+  width:calc(100% - 16px);height:calc(100% - 16px);
+  object-fit:contain;border-radius:5px
+}
+.b-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
+.b-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;font-weight:800}
+.b-src{
+  display:inline-flex;align-items:center;gap:6px;color:var(--accent-ink);
+  background:var(--accent-light);border-radius:999px;padding:3px 10px
+}
+.b-src .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
+.b-date{color:var(--muted);letter-spacing:.03em}
+.b-title{
+  font-size:15.5px;font-weight:800;line-height:1.38;letter-spacing:-.015em;
+  color:var(--text);word-break:keep-all
+}
+.b-sum{list-style:none;display:flex;flex-direction:column;gap:5px;margin:0}
+.b-sum li{
+  position:relative;padding-left:13px;font-size:13px;line-height:1.55;
+  color:var(--ink-700);word-break:keep-all
+}
+.b-sum li::before{
+  content:"";position:absolute;left:0;top:8px;width:5px;height:5px;
+  border-radius:50%;background:var(--accent);opacity:.55
+}
+.b-noimg{
+  display:flex;align-items:center;justify-content:center;width:44%;flex:none;
+  align-self:stretch;min-height:132px;
+  background:var(--surface);border-right:1px solid var(--border);
+  color:var(--muted);font-size:12.5px;font-weight:700
+}
+
+/* ─ 헤더 캘린더 ─ */
+.hdr-flex{display:flex;gap:28px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.hdr-main{flex:1 1 420px;min-width:0}
+.hdr-date{
+  margin-top:10px;font-size:15px;font-weight:800;color:#fff;
+  letter-spacing:.01em;font-variant-numeric:tabular-nums
+}
+.cal{
+  flex:none;width:262px;background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:12px 13px 13px
+}
+.cal-h{
+  font-size:12px;font-weight:800;letter-spacing:.1em;color:rgba(255,255,255,.9);
+  margin-bottom:9px;text-align:center;font-variant-numeric:tabular-nums
+}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-wd{
+  font-size:10.5px;font-weight:800;color:rgba(255,255,255,.72);
+  text-align:center;padding-bottom:4px
+}
+.cal-d{
+  display:flex;align-items:center;justify-content:center;aspect-ratio:1/1;
+  font-size:12px;font-weight:700;border-radius:7px;text-decoration:none;
+  font-variant-numeric:tabular-nums
+}
+.cal-out{visibility:hidden}
+.cal-off{color:rgba(255,255,255,.42)}
+.cal-on{color:#fff;background:rgba(255,255,255,.22);font-weight:800}
+.cal-on:hover{background:rgba(255,255,255,.42)}
+.cal-on:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.cal-now{background:#fff;color:var(--accent-ink);font-weight:900}
+.b-back{
+  display:inline-flex;align-items:center;gap:7px;margin:26px 0 0;
+  background:var(--bg);border:1px solid var(--border);border-radius:999px;
+  padding:9px 18px;font-size:13px;font-weight:800;color:var(--accent-ink);text-decoration:none
+}
+.b-back:hover{border-color:var(--accent);background:var(--accent-light)}
+@media (max-width:860px){
+  .cal{width:100%}
+}
+@media (max-width:640px){
+  .b-grid{grid-template-columns:1fr;gap:13px}
+  .b-card{flex-direction:column}
+  .b-shot,.b-noimg{width:100%;align-self:auto;border-right:0;border-bottom:1px solid var(--border)}
+  .b-thumb{top:0;left:0;width:100%;height:100%;border-radius:0}
+  .b-noimg{aspect-ratio:16/7;min-height:0}
+  .b-title{font-size:15px}
+  /* 정사각 칸이면 캘린더만 320px를 먹어 첫 화면이 캘린더로 채워진다 → 납작하게. */
+  .cal{padding:10px 11px 11px}
+  .cal-d{aspect-ratio:auto;height:31px;border-radius:6px}
+  .cal-h{margin-bottom:6px}
+  .cal-wd{padding-bottom:2px}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-flex"><div class="hdr-main"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>DAYBREAK</span><span class="chip">AI·기술</span><span class="chip">43편</span></div><h1>Youtube Brief</h1><div class="hdr-date">2026. 08. 20. (목)</div><p class="lead">오늘 수집한 AI·기술 영상 43편의 리포트입니다. 카드를 누르면 해당 리포트 전문으로 이동합니다.</p></div><!--daybreak:cal--><div class="cal"><div style="position:relative;margin-bottom:9px"><a class="cal-nav-prev" href="./2026-07-31-daily-brief-ai.html" title="이전 달 브리프로 이동" style="left:0;position:absolute;top:50%;transform:translateY(-50%);font-size:10.5px;font-weight:800;letter-spacing:.02em;text-decoration:none;color:#fff;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:2px 8px;line-height:1.5;white-space:nowrap">← 이전 달</a><div class="cal-h" style="margin:0">2026. 08</div><a class="cal-today" href="./latest-brief-ai.html" title="가장 최신 브리프로 이동" style="right:0;position:absolute;top:50%;transform:translateY(-50%);font-size:10.5px;font-weight:800;letter-spacing:.02em;text-decoration:none;color:#fff;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:2px 8px;line-height:1.5;white-space:nowrap">오늘 →</a></div><div class="cal-g"><span class="cal-wd">월</span><span class="cal-wd">화</span><span class="cal-wd">수</span><span class="cal-wd">목</span><span class="cal-wd">금</span><span class="cal-wd">토</span><span class="cal-wd">일</span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><a class="cal-d cal-on" href="./2026-08-01-daily-brief-ai.html">1<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">8</span></a><a class="cal-d cal-on" href="./2026-08-02-daily-brief-ai.html">2<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">10</span></a><a class="cal-d cal-on" href="./2026-08-03-daily-brief-ai.html">3<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">5</span></a><a class="cal-d cal-on" href="./2026-08-04-daily-brief-ai.html">4<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">7</span></a><a class="cal-d cal-on" href="./2026-08-05-daily-brief-ai.html">5<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">9</span></a><a class="cal-d cal-on" href="./2026-08-06-daily-brief-ai.html">6<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">6</span></a><a class="cal-d cal-on" href="./2026-08-07-daily-brief-ai.html">7<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">11</span></a><a class="cal-d cal-on" href="./2026-08-08-daily-brief-ai.html">8<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">9</span></a><a class="cal-d cal-on" href="./2026-08-09-daily-brief-ai.html">9<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">8</span></a><a class="cal-d cal-on" href="./2026-08-10-daily-brief-ai.html">10<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">6</span></a><a class="cal-d cal-on" href="./2026-08-11-daily-brief-ai.html">11<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">4</span></a><a class="cal-d cal-on" href="./2026-08-12-daily-brief-ai.html">12<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">6</span></a><a class="cal-d cal-on" href="./2026-08-13-daily-brief-ai.html">13<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">4</span></a><a class="cal-d cal-on" href="./2026-08-14-daily-brief-ai.html">14<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">7</span></a><a class="cal-d cal-on" href="./2026-08-15-daily-brief-ai.html">15<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">8</span></a><span class="cal-d cal-off">16</span><a class="cal-d cal-on" href="./2026-08-17-daily-brief-ai.html">17<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">7</span></a><a class="cal-d cal-on" href="./2026-08-18-daily-brief-ai.html">18<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">8</span></a><a class="cal-d cal-on" href="./2026-08-19-daily-brief-ai.html">19<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">32</span></a><span class="cal-d cal-now" aria-current="date">20<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">43</span></span><span class="cal-d cal-off">21</span><span class="cal-d cal-off">22</span><span class="cal-d cal-off">23</span><span class="cal-d cal-off">24</span><span class="cal-d cal-off">25</span><span class="cal-d cal-off">26</span><span class="cal-d cal-off">27</span><span class="cal-d cal-off">28</span><span class="cal-d cal-off">29</span><span class="cal-d cal-off">30</span><span class="cal-d cal-off">31</span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span></div></div><!--/daybreak:cal--></div></header><section class="b-sec"><div class="b-sec-h">AI기술<span class="n">6</span></div><div class="b-grid"><a class="b-card" href="./2026-08-14-ttimes-china-humanoid-robot-brain.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-14-ttimes-china-humanoid-robot-brain.jpg" alt="" loading="eager" fetchpriority="high" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>티타임즈TV</span><span class="b-date">2026-08-20</span></div><div class="b-title">휴머노이드 몸 장악한 중국, 뇌 장악에 나섰다</div><ul class="b-sum"><li>중국은 로봇 몸(공급망) 장악했지만 손과 뇌는 미국일본독일에 여전히 의존</li><li>생산목표 2026년 상반기 4만대 초과, 연말 10만대지만 실제 산업납품은 유비테크 500대뿐</li><li>부품원가 2025년 3.5만달러에서 2030년 1.7만달러 미만 전망, 유니트리는 1.35만달러부터 판매</li><li>남은 병목은 볼스크류(독일일본 90% 공급)와 AI칩(엔비디아 젯슨토르 의존) 두 곳</li></ul></div></a><a class="b-card" href="./2026-08-17-ttimes-gpu-memory-factory-kim-jungho.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-17-ttimes-gpu-memory-factory-kim-jungho.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>티타임즈TV</span><span class="b-date">2026-08-20</span></div><div class="b-title">GPU 발전은 멈췄다, AI 데이터센터는 메모리 팩토리다 — 김정호 카이스트 교수</div><ul class="b-sum"><li>GPU 성능은 정체됐고 AI 지능은 메모리 용량과 속도에서 나온다는 게 김정호 교수의 핵심 진단</li><li>삼성전자는 GPU 위에 메모리를 쌓는 GHBM을, SK하이닉스·샌디스크·구글은 낸드 기반 HBF를 각각 공개</li><li>엔비디아는 삼성·SK하이닉스 의존 확대를 꺼려 HBF에 소극적, 구글·AMD·LPU 진영이 표준화 주도</li><li>메모리부터 전력·모델·서비스까지 풀스택을 갖추면 한국이 미중과 겨루는 3대 AI 강국 될 수 있다는 전망</li></ul></div></a><a class="b-card" href="./2026-08-18-jackroberts-claude-design-websites.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-18-jackroberts-claude-design-websites.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Jack Roberts</span><span class="b-date">2026-08-20</span></div><div class="b-title">AI 티 나는 웹사이트 탈출법 — Claude로 1만 달러급 디자인 만드는 4단계 시스템</div><ul class="b-sum"><li>레퍼런스 갤러리에서 유사 사이트 3개를 클로드가 직접 골라 디자인 시스템으로 이식</li><li>Higsfield 연동한 &#x27;디자인 루프&#x27; 스킬로 캐릭터·그래픽을 골드 스탠다드 기준 반복 심사</li><li>AI 문체 탐지로 슬롭 카피를 걸러낸 뒤 GPT-5.6으로 사람처럼 자연스럽게 인간화</li><li>폰트 선택도 디자인 완성도의 핵심 요소로 강조, 무료 폰트·추천 시스템까지 체계화</li></ul></div></a><a class="b-card" href="./2026-08-19-ttimes-token-efficiency-4ways.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-19-ttimes-token-efficiency-4ways.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>티타임즈TV</span><span class="b-date">2026-08-20</span></div><div class="b-title">토큰사용 줄이면서 품질은 유지하는 4가지 방법 (표철민 AI3 대표)</div><ul class="b-sum"><li>티타임즈TV의 &#x27;AX 인사이트&#x27; 대담 코너. 표철민 AI3 대표가 진행자와 함께 기업 AI 에이전트 도입 현장에서 벌어지는 토큰…</li><li>AX(AI 전환)가 &quot;얼마나 많이 쓰게 할까&quot;에서 &quot;얼마나 가치를 창출하고 어떻게 측정할까(밸류맥스)&quot;로 넘어가는 국면에서, 에이…</li><li>① 스마트 라우팅(작업 난이도별 모델 자동 배분) ② 맥락(컨텍스트) 정보 경량화 ③ 토큰 프루닝(도구 호출 결과 가지치기) ④…</li><li>코딩 에이전트가 그랩(파일 탐색) 도구로 214줄을 읽어오던 것을 14줄로 프루닝했더니, 토큰은 줄었는데 결과물 품질이 오히려 2…</li></ul></div></a><a class="b-card" href="./2026-08-20-jackroberts-claude-design-consistency-system.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-jackroberts-claude-design-consistency-system.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Jack Roberts</span><span class="b-date">2026-08-20</span></div><div class="b-title">클로드 디자인, 드디어 &#x27;일관성 문제&#x27;를 해결하다</div><ul class="b-sum"><li>Jack Roberts 채널의 실습형 튜토리얼 영상. 진행자가 화면을 공유하며 클로드(Claude)로 디자인을 만들고 이를 재사용…</li><li>Jack(진행자, 이전 테크 스타트업을 매각한 경험이 있으며 현재 AI 스타트업 및 커뮤니티를 운영)</li><li>클로드로 만든 디자인의 99%는 일반적이거나 일관성이 없다는 &#x27;일관성 문제(consistency problem)&#x27;를 제기하고, 좋…</li><li>① 디자인 루프(design loop) 스킬로 좋은 디자인 만들기 ② 완성된 디자인의 &#x27;DNA&#x27;를 분해해 규칙 문서로 만들고 스킬…</li></ul></div></a><a class="b-card" href="./2026-08-20-ttimes-broadcom-nvidia-monopoly-xpu.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-ttimes-broadcom-nvidia-monopoly-xpu.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>티타임즈TV</span><span class="b-date">2026-08-20</span></div><div class="b-title">AI칩의 혈관을 설계하면서 엔비디아 독점 흔드는 브로드컴</div><ul class="b-sum"><li>티타임즈TV의 단독 기자 해설 영상. 이사민 기자가 브로드컴의 성장 배경과 전략을 심층 분석한다.</li><li>이사민 기자(티타임즈TV)</li><li>2026년 7월 샌프란시스코 AI 서밋에서 이재명 대통령 옆에 엔비디아 젠슨 황 CEO와 나란히 선 브로드컴 혹탄 CEO의 존재감…</li><li>브로드컴은 구글·메타·오픈AI·앤트로픽 등 빅테크의 맞춤형 AI칩(XPU) 설계와 칩 간 네트워킹(서데스) 기술을 대행하며 시가총…</li></ul></div></a></div></section><section class="b-sec"><div class="b-sec-h">AI응용<span class="n">10</span></div><div class="b-grid"><a class="b-card" href="./2026-08-17-jocoding-grok-46-riemann-hypothesis-gemini-37.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-17-jocoding-grok-46-riemann-hypothesis-gemini-37.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>조코딩 JoCoding</span><span class="b-date">2026-08-20</span></div><div class="b-title">그록 4.6·그록봇 출시부터 앤트로픽 리만 가설 진전까지, 이번 주 AI 뉴스 총정리</div><ul class="b-sum"><li>그록 4.6이 아티피셜 아날리시스 종합점수에서 GPT-5.6 소울맥스와 동점, GDP벤치마크는 1위 기록</li><li>270억 파라미터 오픈웨이트 큐엔 3.8이 에이전트 코딩에서 오퍼스 4.6 맥스를 앞서며 소비자 GPU로 무료 구동</li><li>앤트로픽 연구용 클로드가 리만 가설 영점 비율 하한을 41.6%에서 67.2%까지 끌어올림</li><li>한국 모티프 모델이 오픈웨이트 국가 순위에서 중국 키미 K3에 이어 글로벌 2위 기록</li></ul></div></a><a class="b-card" href="./2026-08-18-eokorea-startup-nvidia-revenue.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-18-eokorea-startup-nvidia-revenue.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>EO Korea</span><span class="b-date">2026-08-20</span></div><div class="b-title">촉각 글러브로 로봇을 가르친다 — 오픈그래프랩스, 창업 6개월 만에 엔비디아 파트너·매출 10억</div><ul class="b-sum"><li>촉각 글러브·카메라 직접 개발해 로봇 학습용 촉각·1인칭 데이터 수집·판매하는 스타트업</li><li>창업 6~7개월 만에 엔비디아 아이작 9개 공식 파트너 제품 선정, 이번 분기 매출 약 10억 원</li><li>여러 카메라 시간축을 맞추는 싱크로 기술이 데이터 품질의 핵심 차별화 요소로 작동</li><li>한국 여수 산단 숙련공 기술을 데이터화하는 POC 진행, 제조업 기술 전수 문제로 사업 확장</li></ul></div></a><a class="b-card" href="./2026-08-18-jocoding-grok46-riemann-gemini37.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-18-jocoding-grok46-riemann-gemini37.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>조코딩 JoCoding</span><span class="b-date">2026-08-20</span></div><div class="b-title">Grok 4.6·Grok Bot부터 앤트로픽 리만 가설 도전까지 — 이번 주 AI 뉴스 총정리</div><ul class="b-sum"><li>xAI Grok 4.6, 코딩 벤치마크 1위 기록, 원격 컴퓨터 조작 에이전트 Grok Bot도 출시</li><li>오픈AI, 컴퓨터 사용 이력 자동기록 기능과 초당 750토큰 울트라패스트 모드 공개</li><li>앤트로픽 클로드, 리만 가설 영점 비율 하한을 인간 기록 41.6%에서 67.2%로 경신</li><li>앤트로픽 텍스트 워터마크 도입, 제거 도구 즉시 등장하며 실효성 논쟁과 반발 확산</li></ul></div></a><a class="b-card" href="./2026-08-19-maker-evan-chrome-extension-claude-desktop.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-19-maker-evan-chrome-extension-claude-desktop.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="b-date">2026-08-20</span></div><div class="b-title">크롬 익스텐션 + 클로드 데스크탑 앱, 브라우저 자동화를 한 줄 명령으로 끝내는 법</div><ul class="b-sum"><li>1인 유튜브 채널 운영자가 자신의 실제 작업 화면(대본 작성부터 영상 업로드까지)을 그대로 보여주며 설명하는 실전 튜토리얼형 영상.</li><li>여러 자동화 도구와 자체 프로그램을 시도한 끝에, 결국 &quot;크롬 익스텐션 + 클로드 데스크탑 앱&quot; 조합으로 정착했다고 밝힌다.</li><li>크롬 익스텐션은 브라우저를 조작하는 &#x27;손&#x27;, 클로드 데스크탑 앱은 그 손을 움직이는 &#x27;머리&#x27; 역할을 하며, 데스크탑 앱이 꺼져 있…</li><li>① 로그인된 화면까지 사람처럼 읽어오는 &#x27;읽기&#x27;(크롤링), ② 클릭·입력·업로드를 직접 수행하는 &#x27;조작&#x27; 두 가지로 나뉜다.</li></ul></div></a><a class="b-card" href="./2026-08-19-maker-evan-vibe-coding-starter-kit.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-19-maker-evan-vibe-coding-starter-kit.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="b-date">2026-08-20</span></div><div class="b-title">코딩 몰라도 앱이 나온다, 바이브 코딩 스타터킷으로 세팅 지옥 건너뛰기</div><ul class="b-sum"><li>메이커 에반(Maker Evan) 채널의 8분짜리 제품 소개 영상. 진행자가 자신이 직접 만든 유료 템플릿 &#x27;바이브 코딩 스타터킷…</li><li>바이브 코딩(AI에게 말로 시켜 프로그램을 만드는 방식)에서 진짜 어려운 부분은 코드 작성이 아니라 로그인·데이터 저장·배포 같은…</li><li>스타터킷은 로그인·데이터 저장·화면까지 이미 동작하는 앱 뼈대, 상황별 레시피(설명서) 9개, 기획·검토·조사를 나눠 맡는 AI…</li><li>이 구성으로 실제 서비스(스킬샵)가 운영 중이며, 압축 해제부터 클로드 코드 실행까지 보통 10분 안에 프로젝트 준비가 끝난다.</li></ul></div></a><a class="b-card" href="./2026-08-19-nateherk-sell-claude-workflows.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-19-nateherk-sell-claude-workflows.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Nate Herk | AI Automation</span><span class="b-date">2026-08-20</span></div><div class="b-title">에이전시 없이 뜨는 법, 사내 &#x27;AI 담당자&#x27;가 되는 3단계 로드맵</div><ul class="b-sum"><li>Nate Herk</li><li>2026년 AI로 돈 버는 방법은 &#x27;AI 에이전시 창업&#x27;이 아니라 회사 내부에서 대체 불가능한 &#x27;AI 담당자(AI person)&#x27;…</li><li>PwC 2026 보고서에 따르면 AI 스킬 보유자는 동일 직무 대비 62%의 임금 프리미엄을 받으며, 이는 몇 년 전 25%에서…</li><li>MIT 연구에 따르면 2025년 기업 AI 파일럿 프로젝트의 95%가 측정 가능한 수익을 내지 못했고, 맥킨지 조사에서는 기업의…</li></ul></div></a><a class="b-card" href="./2026-08-20-chaseai-claude-code-10-concepts.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-chaseai-claude-code-10-concepts.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Chase AI</span><span class="b-date">2026-08-20</span></div><div class="b-title">21분 만에 끝내는 클로드 코드 핵심 개념 10가지</div><ul class="b-sum"><li>Chase AI 채널의 튜토리얼 영상. 진행자가 클로드 코드(Claude Code)의 핵심 개념 10가지를 기초부터 고급까지 순서…</li><li>Chase(진행자, Chase AI Plus 마스터클래스 운영자)</li><li>클로드 코드를 마스터하려면 배울 게 너무 많아 보이지만, 실제로 중요한 것은 10가지로 압축된다는 전제 아래, 숙련도와 무관하게…</li><li>① 모델·노력 수준 ② 프롬프트 작성법(계획 모드) ③ 토큰·컨텍스트 관리 ④ CLAUDE.md와 메모리 ⑤ 스킬 ⑥ 플러그인/M…</li></ul></div></a><a class="b-card" href="./2026-08-20-makerevan-aside-ai-browser-naver-cafe.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-makerevan-aside-ai-browser-naver-cafe.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="b-date">2026-08-20</span></div><div class="b-title">AI 브라우저한테 네이버 카페 글쓰기까지 시켜봤습니다 | Aside 하루 실사용</div><ul class="b-sum"><li>메이커 에반의 실사용 리뷰 영상. AI 브라우저 &#x27;Aside&#x27;에 세 가지 실제 작업을 시키고 화면을 그대로 보여준다.</li><li>메이커 에반(유튜버)</li><li>웹에서 반복되는 단순 작업(뉴스 수집, 글쓰기, 가격 비교)을 AI 브라우저에 맡겼을 때 실제로 얼마나 믿고 쓸 수 있는가를 하루…</li><li>유어사이드(Your Side), Y콤비네이터 출신 3인 스타트업. 브라우저는 2026년 6월 출시로 아직 2개월이 채 안 된 초기…</li></ul></div></a><a class="b-card" href="./2026-08-20-nateherk-grok-bot-lessons-week.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-nateherk-grok-bot-lessons-week.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Nate Herk | AI Automation</span><span class="b-date">2026-08-20</span></div><div class="b-title">일주일간 배운 Grok Bot 활용 노하우 9가지 (10분 요약)</div><ul class="b-sum"><li>Nate Herk의 AI 자동화 실전 팁 영상. 10분 안에 Grok Bot을 활용한 9가지 해킹(노하우)을 시연 화면과 함께 빠…</li><li>Nate Herk(유튜버, Uppercut AI 대표)</li><li>Grok Bot을 이미 설정해본 사용자를 대상으로, 단순 설치를 넘어 실제 업무에 최대한 활용하는 실전 노하우(비전문가도 따라할…</li><li>① 그릴미(Grill Me) 스킬로 에이전트에게 자기 사업·목표 학습시키기 ② 비서 역할의 &#x27;치프 오브 스태프&#x27; 에이전트가 여러…</li></ul></div></a><a class="b-card" href="./2026-08-20-tusol-claude-codex-skills-5picks.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-tusol-claude-codex-skills-5picks.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>투쏠ㅣAI 에이전트</span><span class="b-date">2026-08-20</span></div><div class="b-title">아 이거 비밀인데 (클로드 스킬)</div><ul class="b-sum"><li>투쏠(AI 에이전트) 채널의 실전 데모 영상. 코덱스와 클로드 코드 두 세션을 동시에 띄워놓고 다섯 가지 스킬을 직접 실행해 보여준다.</li><li>투쏠(유튜버)</li><li>클로드 코드·코덱스 사용자들이 잘 모르거나 놓치고 있는 유용한 스킬(확장 기능)들을 실사용 데모로 소개하고, 바이브 코딩(AI와…</li><li>① 워치비디오(유튜브 영상을 프레임 단위로 직접 &quot;보게&quot; 해주는 스킬) ② 슈퍼파워스(브레인스토밍→계획→구현을 체계화하는 운영 시…</li></ul></div></a></div></section><section class="b-sec"><div class="b-sec-h">AI영상<span class="n">6</span></div><div class="b-grid"><a class="b-card" href="./2026-08-14-curious-refuge-wan-3-ai-video-review.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-14-curious-refuge-wan-3-ai-video-review.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Curious Refuge</span><span class="b-date">2026-08-20</span></div><div class="b-title">안 써본 최고의 AI 영상 생성기? — Wan 3.0 리뷰 (vs Seedance·MiniMax H3)</div><ul class="b-sum"><li>이미지 10장 영상 5개 오디오 5개에 문서 웹사이트까지 넣는 옴니 모델, 1080p 30초 클립 생성</li><li>30초 720p 약 3달러로 Seedance 2.5의 13달러 대비 4배 저렴, 최대 강점은 가격 경쟁력</li><li>감정 연기 립싱크 샷 연속성은 Seedance 2.0·2.5 우위, 배경 디테일 컷엔 Wan 3.0 유용</li><li>종합 2~3위 워크호스 모델, 완전 무료로는 로컬 구동 MiniMax H3 오픈웨이트가 대안</li></ul></div></a><a class="b-card" href="./2026-08-14-matt-wolfe-flood-of-new-ai-models.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-14-matt-wolfe-flood-of-new-ai-models.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Matt Wolfe</span><span class="b-date">2026-08-20</span></div><div class="b-title">쏟아진 신규 모델, 무엇이 중요한가 — 이번 주 AI 뉴스 총정리</div><ul class="b-sum"><li>이번 주 최대 도약은 그록 4.6, 입력 100만토큰당 2달러 출력 6달러로 상위 코딩모델 대비 대폭 저렴</li><li>구글 제미니 3.7 플래시는 연말까지 입력 0.75 출력 3.75달러 특가, 저가에도 SVG 생성 벤치 1위 차지</li><li>앤트로픽 수노 스포티파이가 나란히 AI 표시 도입, 텍스트 워터마크와 9월 다운로드 제한 배지로 대응</li><li>텐센트 월드모델은 텍스트로 편집가능한 3D 세계 생성, xAI 그록봇은 에이전트별 클라우드PC로 자동화</li></ul></div></a><a class="b-card" href="./2026-08-17-futurepedia-claude-power-user-tips.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-17-futurepedia-claude-power-user-tips.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Futurepedia</span><span class="b-date">2026-08-20</span></div><div class="b-title">클로드를 상위 1%처럼 쓰는 법 — 모델 선택부터 코워크·코드까지</div><ul class="b-sum"><li>프로 플랜은 소넷을 기본값으로 어려운 문제만 오퍼스로 전환하라고 화자는 권고</li><li>이펏 레벨은 미디엄은 일상작업, 하이는 코딩·분석, 익스트라하이는 멀티스텝 에이전틱 작업에 쓰라고 조언</li><li>커넥터로 Gmail·캘린더·드라이브를 연결하고 스킬로 반복 워크플로를 레시피처럼 저장해두라고 제안</li><li>코워크는 목표만 던지면 스스로 계획해 수행하는 비서, 코드는 자연어로 앱을 만드는 엔지니어로 구분</li></ul></div></a><a class="b-card" href="./2026-08-18-theoreticallymedia-ai-video-models.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-18-theoreticallymedia-ai-video-models.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Theoretically Media</span><span class="b-date">2026-08-20</span></div><div class="b-title">정체불명의 신형 AI 영상모델 2종(Polaris·Vega)과 영화 스틸컷 프롬프트 자료 Stills Lab</div><ul class="b-sum"><li>Artificial Analysis 벤치마크에 정체불명 텍스트투비디오 모델 Polaris·Vega 익명 등장</li><li>물리 표현·프롬프트 반영도는 Polaris 우세, 텍스트 렌더링은 Vega가 인상적으로 평가</li><li>두 모델 중 하나는 메타 신형 영상모델일 가능성 높다고 추정, 공식 확인은 아직 없음</li><li>영화 스틸컷에 색상·렌즈·카메라 정보를 더한 프롬프트 자료 Stills Lab 함께 소개</li></ul></div></a><a class="b-card" href="./2026-08-19-curiousrefuge-ltx25-miniax-ai-video-news.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-19-curiousrefuge-ltx25-miniax-ai-video-news.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Curious Refuge</span><span class="b-date">2026-08-20</span></div><div class="b-title">LTX 2.5 vs 미니맥스 H3, 무료 AI 영상 생성기 대전과 이번 주 AI 필름 뉴스</div><ul class="b-sum"><li>Curious Refuge 채널의 주간 AI 필름 뉴스. 진행자가 신규 AI 영상·3D·이미지 생성 도구를 직접 시연하며 비교 평…</li><li>오픈웨이트(무료 다운로드·로컬 실행) AI 영상 생성기 LTX 2.5가 출시되어, 기존 최강자였던 Miniax H3와 정면 비교됐다.</li><li>속도·해상도(4K HDR)는 LTX 2.5가 우세하지만, 물리 법칙 표현·사실감·프롬프트 준수도는 Miniax H3가 전반적으로…</li><li>Meshi 팀이 이미지 한 장을 업로드하면 텍스처까지 자동 적용된 3D 모델을 만들어주는 &#x27;Meshi 7&#x27;을 출시, 경쟁 도구 대…</li></ul></div></a><a class="b-card" href="./2026-08-20-mattwolfe-automated-ai-dashboard-livestream.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-mattwolfe-automated-ai-dashboard-livestream.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Matt Wolfe</span><span class="b-date">2026-08-20</span></div><div class="b-title">Matt Wolfe의 자동화 AI 시스템 비하인드 라이브</div><ul class="b-sum"><li>Future Tools 운영자 Matt Wolfe가 약 1년 만에 재개한 라이브 스트림. 오랜 친구이자 옛 공동 진행자 Joe F…</li><li>매일 아침 AI 뉴스·신규 도구를 수작업으로 훑는 대신, 여러 소스를 자동 수집·정리해주는 개인용 백엔드 대시보드를 구축해 콘텐츠…</li><li>대시보드는 AI Intel(RSS/사이트맵 기반 기업 뉴스 수집), Newsletters(전용 Gmail로 받은 모든 AI 뉴스레…</li><li>AI Intel 탭은 Anthropic·OpenAI·Alibaba·ByteDance·MidJourney 등 기업 사이트를 RSS…</li></ul></div></a></div></section><section class="b-sec"><div class="b-sec-h">XR<span class="n">1</span></div><div class="b-grid"><a class="b-card" href="./2026-08-18-uploadvr-ghosts-tabor-cheaters.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-18-uploadvr-ghosts-tabor-cheaters.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>UploadVR</span><span class="b-date">2026-08-20</span></div><div class="b-title">VR 슈팅 게임의 치팅과의 전쟁 — Ghosts of Tabor 개발사가 만든 안티치트 &#x27;토마호크</div><ul class="b-sum"><li>메타 공식 안티치트 애드 어테스테이션 사실상 무력, 개발사가 자체 안티치트 토마호크 개발</li><li>누적 6억 2,400만 세션 보호, 변조 APK 4,000명·치팅 시도 5,000명 차단, 밴 1,000건 이상</li><li>메타에 사전 경고했으나 거절당한 뒤 실제 문제 현실화, 자체 해결에 나선 사례로 소개</li><li>퀘스트는 완전 봉쇄 평가, 남은 전장은 PCVR, PS VR2는 치터를 거의 본 적 없을 만큼 안전</li></ul></div></a></div></section><section class="b-sec"><div class="b-sec-h">로봇<span class="n">2</span></div><div class="b-grid"><a class="b-card" href="./2026-08-13-ai-news-agibot-a3-humanoid-flux3.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-13-ai-news-agibot-a3-humanoid-flux3.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>AI News</span><span class="b-date">2026-08-20</span></div><div class="b-title">AGIBOT A3 휴머노이드 공개: 오픈소스 AI 두뇌 2종·군집제어, 무료 개방된 Flux 3 비디오</div><ul class="b-sum"><li>AGIBOT A3 공개, 173cm 55kg 몸체가 12kW 피크출력, 출력대비무게비 0.218kW/kg로 슈퍼카급 순간성능</li><li>핫스왑 이중배터리로 전원 안 끄고 10초 교체, 한 번 충전 최대 10시간에 24시간 무중단 가동</li><li>단일 노드로 100대 이상 로봇을 1cm 미만 정확도 군집제어, 가격은 모델별 4.5만~7만 달러</li><li>두뇌는 오픈소스 WITA Omni와 GO1에 엔비디아 아이작 그루트 연동, Flux 3 비디오는 8월16일까지 무료</li></ul></div></a><a class="b-card" href="./2026-08-19-ainews-phantom-robot-flying-transformer.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-19-ainews-phantom-robot-flying-transformer.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>AI News</span><span class="b-date">2026-08-20</span></div><div class="b-title">비행·변신 휴머노이드 아크쉘 MX01부터 오카라 AI CMO, 그록봇까지 이번 주 로봇·에이전트 뉴스</div><ul class="b-sum"><li>AI News 채널의 로봇공학·AI 에이전트 중심 주간 뉴스 영상. 여러 기업의 신제품·연구 발표를 순서대로 소개한다.</li><li>아크쉘 로보틱스(Arkshel Robotics)가 세계 최초의 비행 및 형태 변환 휴머노이드 로봇 MX01을 공개, 휴머노이드·사…</li><li>휴머노이드 로봇 기업 파운데이션(Foundation)이 기존 방식보다 약 100배 빠른 로봇 학습 시스템을 공개, 시뮬레이션·모션…</li><li>오카라(Okara)가 SEO·SNS·콘텐츠 작성 등 10개 이상의 자율 마케팅 에이전트를 실행하는 AI 에이전트 CMO를 월 99…</li></ul></div></a></div></section><section class="b-sec"><div class="b-sec-h">기타<span class="n">18</span></div><div class="b-grid"><a class="b-card" href="./2026-08-14-maker-evan-context-engineering-claude-code.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-14-maker-evan-context-engineering-claude-code.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>메이커 에반</span><span class="b-date">2026-08-20</span></div><div class="b-title">같은 클로드 코드인데 왜 결과가 다를까 — 컨텍스트 엔지니어링</div><ul class="b-sum"><li>컨텍스트 파일 유무로 에이전트 작업 완료율이 30%에서 90%로 3배까지 벌어진다는 연구결과</li><li>카르파티의 4원칙, 요약 실행명령어 규칙 자주틀리는 지점을 20줄 이내로 짧게 유지</li><li>세션은 2~3개로 시작해 영역을 나누고, 지시 대신 확인 가능한 성공기준을 부여</li><li>LLM위키로 반복설명을 문서화, 공개 2주만에 깃허브 스타 5천개 돌파해 반향 확인</li></ul></div></a><a class="b-card" href="./2026-08-14-nate-herk-codex-vs-claude-code.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-14-nate-herk-codex-vs-claude-code.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Nate Herk</span><span class="b-date">2026-08-20</span></div><div class="b-title">Codex와 Claude Code로 같은 앱 만들기 대결 — 승자는?</div><ul class="b-sum"><li>동일 프롬프트로 앱 빌드 대결, 속도는 클로드코드 5.5시간 대 코덱스 61시간으로 11배 차이</li><li>비용도 클로드코드 약 800달러 대 코덱스 약 3천달러로 6.6배, 코덱스 자체평가도 클로드코드 승리</li><li>제품판단과 효율성은 클로드코드가, 테스팅과 아키텍처 안정성은 코덱스가 카테고리별 우세</li><li>결론은 절대우열 아닌 프롬프트 스타일 차이, 목표지향엔 클로드 단계별지시엔 코덱스가 적합</li></ul></div></a><a class="b-card" href="./2026-08-14-anbeokong-genspark-secondbrain.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-14-anbeokong-genspark-secondbrain.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>안될공학</span><span class="b-date">2026-08-20</span></div><div class="b-title">AI로 두 번째 뇌 만드는 가장 빠른 방법 — 젠스파크 SecondBrain 체험</div><ul class="b-sum"><li>젠스파크 워크스페이스6.0을 기억 계획 결과물 협업 4계층으로 재설계, 기억이 다음 경쟁축</li><li>하드웨어 녹음기 세컨드브레인노트는 두께 2.95mm 연속녹음 35시간, 199달러서 179달러 할인</li><li>구매시 구독없이 월 300분 전사요약 제공, 플러스프로 플랜은 하루 24시간 무제한 전사 지원</li><li>콘텐츠 소재 정리와 제작진 브리핑 작성을 세컨드브레인 기억 기반으로 자동화하는 시연 진행</li></ul></div></a><a class="b-card" href="./2026-08-14-understanding-real-estate-tax-reform.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-14-understanding-real-estate-tax-reform.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>언더스탠딩</span><span class="b-date">2026-08-20</span></div><div class="b-title">2026 부동산 세제 개편 — 거주 중심 전환과 종부세·양도세 쟁점 (윤태화 교수) — 언더스탠딩</div><ul class="b-sum"><li>장기보유특별공제를 보유서 거주 기준으로 전환, 연 8% 거주공제로 10년 80% 유지하되 2029년 공제한도 10억 신설</li><li>종부세 기본공제 12억서 14억, 공정시장가액비율 60서 70%로 올려 시가 20억까지 종부세 면제</li><li>종부세를 주택 수가 아닌 가액 기준으로 2028년 통일, 고가 상위 0.4%만 세부담 강화</li><li>살지 않을 집이면 팔라는 거주 중심 신호, 다주택 양도세 중과 2주택 5%p 3주택 10%p로 한시 완화</li></ul></div></a><a class="b-card" href="./2026-08-17-maker-evan-api-key-subscription-cost-cut.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-17-maker-evan-api-key-subscription-cost-cut.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>메이커 에반</span><span class="b-date">2026-08-20</span></div><div class="b-title">구독 세 개 끊고 API 키 하나로, 이번 달 이미지·영상 제작비 1,800원</div><ul class="b-sum"><li>이미지·영상·업스케일 구독 세 개를 끊고 클로드+리플리케이트 API로 전환, 월 10만원이 1,800원으로</li><li>이미지 1장 약 200원, 영상 4초 약 400원, 4K 업스케일 400원으로 쓴 만큼만 과금되는 구조</li><li>클로드에 API키와 작업 매뉴얼(스킬)을 등록해두면 자연어 지시만으로 모델 호출·저장까지 자동 실행</li></ul></div></a><a class="b-card" href="./2026-08-17-maker-evan-daily-skill-breakdown.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-17-maker-evan-daily-skill-breakdown.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>메이커 에반</span><span class="b-date">2026-08-20</span></div><div class="b-title">매일 쓰는 유튜브 자동화 스킬 통째로 뜯어보기 — 메이커 에반의 실패 기록</div><ul class="b-sum"><li>대본부터 업로드까지 8단계 유튜브 제작을 클로드 스킬 하나로 자동화, 이 영상도 그 스킬로 제작</li><li>본문 300줄 미만에 참고문서 4개, 실행파일 5개로 나눠 필요한 시점에만 문서를 읽도록 설계</li><li>목소리 합성 초당 8.69자, 자막 한 줄 30자 이하, 문단 간 음량차 3데시벨 이내로 규칙화</li><li>스킬은 완벽한 매뉴얼이 아니라 틀릴 때마다 한 줄씩 규칙을 더하는 흉터라고 화자는 정의</li></ul></div></a><a class="b-card" href="./2026-08-17-anbeokong-hbm-hbf-skhynix-memory-strategy.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-17-anbeokong-hbm-hbf-skhynix-memory-strategy.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>안될공학</span><span class="b-date">2026-08-20</span></div><div class="b-title">HBM 수요를 갉아먹는 HBF, SK하이닉스는 왜 직접 만드나 — 최태원 인터뷰로 읽는 다음 메모리 전략</div><ul class="b-sum"><li>SK하이닉스는 2034년까지 메모리 생산능력 3배 확대에 약 7,200억달러 투자 계획</li><li>최태원 회장은 CNBC서 AI 에이전트 사용량이 5년 내 77배, 10년 뒤 메모리 수요는 현재의 5배로 전망</li><li>엔비디아는 HBM 사용량을 줄이는 CMX를, SK하이닉스는 자사 HBM 수요를 깎을 HBF를 동시에 추진</li><li>HBF로 토큰 비용이 낮아지면 AI 사용량이 늘어 전체 메모리 수요는 오히려 커진다는 게 화자의 해석</li></ul></div></a><a class="b-card" href="./2026-08-17-understanding-nvidia-chip-ban-china-chatgpt.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-17-understanding-nvidia-chip-ban-china-chatgpt.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>언더스탠딩</span><span class="b-date">2026-08-20</span></div><div class="b-title">엔비디아 칩을 막아도 뚫리는 이유 — 김상훈 기자가 짚은 중국 AI의 세 가지 뒷구멍</div><ul class="b-sum"><li>미국의 반도체 수출통제에도 중국 AI가 따라잡는 경로를 밀수·원격접속·증류 세 가지로 화자는 정리</li><li>에포크AI 추정 중국의 2025년 H100 환산 컴퓨팅파워 약 112만개 중 밀반입분은 중간값 약 66만개</li><li>엔비디아가 판 GPU 약 2천만개 중 중국의 정식 소유는 약 5%, 미국이 약 80%를 보유</li><li>젠슨 황은 수출통제가 중국 반도체 자립을 자극한 패착이라 주장, 미 정부는 구멍부터 막아야 한다는 입장</li></ul></div></a><a class="b-card" href="./2026-08-18-maker-evan-ai-shorts-production.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-18-maker-evan-ai-shorts-production.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>메이커 에반</span><span class="b-date">2026-08-20</span></div><div class="b-title">촬영 없이 만드는 동물 쇼츠 — 레플리케이트로 뽑는 59초 영상 실전 공개</div><ul class="b-sum"><li>화면·소리 전부 AI로 생성, 카메라 없이 59초 동물 다큐 쇼츠 제작, 코딩 지식 불필요</li><li>Seedance Pro는 초당 약 2.5원 과금, 컷 14개로 편당 제작비 1,700~2,000원 수준</li><li>제작 과정을 스킬 문서로 자동화해 편당 제작 시간을 3시간에서 20분으로 단축</li><li>해상도 낮추고 컷 길이 늘리는 방식으로 비용 절감, 재생성 판단 4대 검수 기준 마련</li></ul></div></a><a class="b-card" href="./2026-08-18-maker-evan-claude-video-tool.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-18-maker-evan-claude-video-tool.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>메이커 에반</span><span class="b-date">2026-08-20</span></div><div class="b-title">클로드 비더(claude-video) 완벽 소개 — AI에게 영상을 보여주고 3분 만에 정리하기</div><ul class="b-sum"><li>yt-dlp 다운로드, 자막 추출, ffmpeg 장면감지 프레임 추출 3단계로 영상을 멀티모달 분석</li><li>출시 4개월 만에 깃허브 스타 15,000개·포크 1,500개, 클로드 외 50개 이상 호스트 지원</li><li>분석 깊이 4단계(트랜스크립트·에피션트·밸런스드·토큰버너)로 속도·비용을 직접 조절</li><li>구간 지정과 대화형 후속 질의로 코드리뷰·경쟁사 분석·회의록 액션아이템 추출에 활용</li></ul></div></a><a class="b-card" href="./2026-08-18-understanding-tesla-slowdown-musk.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-18-understanding-tesla-slowdown-musk.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>언더스탠딩</span><span class="b-date">2026-08-20</span></div><div class="b-title">테슬라 정체기의 진짜 이유 — 4가지 허들과 머스크 유니버스 (HMG경영연구원 박형근)</div><ul class="b-sum"><li>2분기 매출 최고치에도 ESS 마진 급락으로 현금흐름 마이너스, 테라팹 투자기로 해석</li><li>텍사스에 짓는 반도체공장 테라팹, 전 세계 생산능력의 약 20배 규모(연 1TW)로 AI칩 자립</li><li>피지컬 AI 4대 허들(디바이스·데이터·연산·공간) 프레임워크로 테슬라 현황 진단</li><li>미국은 AI 지능은 앞서나 제조기반 취약, 한국 반도체·배터리·자동차가 결합 기회로 진단</li></ul></div></a><a class="b-card" href="./2026-08-19-understanding-robot-bottleneck-part2.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-19-understanding-robot-bottleneck-part2.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>언더스탠딩</span><span class="b-date">2026-08-20</span></div><div class="b-title">머스크가 숨기는 로봇의 진짜 병목 — 부품 생태계와 타임라인의 현실</div><ul class="b-sum"><li>언더스탠딩 채널의 대담 영상(2부). HMG경영연구원 박형근 실장이 테슬라 연구자이자 자동차산업 전문가로 출연해 피지컬 AI(자율…</li><li>자율주행과 휴머노이드 로봇 모두 기술 자체보다 규제·사회적 수용성·부품 공급망이라는 비기술적 장벽이 상용화 시점을 결정한다는 것이…</li><li>국내는 2027년 9월부터 UNECE 국제규정에 따른 레벨2+(디카스2) 규제가 도입될 전망이며, 규제 통과 후에도 소비자 신뢰…</li><li>휴머노이드 로봇 양산의 최대 병목은 기술이 아니라 고정밀 부품(하모닉 감속기, 소형 고출력 구동기 등) 공급망이며, 이 영역은 중…</li></ul></div></a><a class="b-card" href="./2026-08-19-understanding-villa-supply-policy.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-19-understanding-villa-supply-policy.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>언더스탠딩</span><span class="b-date">2026-08-20</span></div><div class="b-title">일조권 규제 풀고 대출 늘리고, 정부의 &#x27;10평 더&#x27; 빌라 공급대책 효과는</div><ul class="b-sum"><li>언더스탠딩 채널의 시사 대담. 장순원 기자가 정부의 비아파트(빌라·다가구·오피스�텔) 공급 대책을 슬라이드로 설명하고 진행자와 문…</li><li>서울 주택의 약 절반이 비아파트(빌라·다가구·오피스텔)인데, 비아파트 신축 착공 물량이 10년 평균(약 5만 6천 호) 대비 25…</li><li>2022~2023년 금리 급등과 전세사기(빌라왕) 사태로 세입자들이 빌라를 기피하면서, 사업자가 공사비를 회수하지 못해 신축을 포…</li><li>2030년까지 수도권에서 비아파트 약 13만 가구 착공을 목표로 제시했다.</li></ul></div></a><a class="b-card" href="./2026-08-19-videomug-chinilpa-jaesan-hwansu.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-19-videomug-chinilpa-jaesan-hwansu.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>비디오머그</span><span class="b-date">2026-08-20</span></div><div class="b-title">배우 하영 증조부 친일 논란이 되살린 16년 만의 친일재산 환수 조사위</div><ul class="b-sum"><li>배우 하영 씨의 증조부 안상호가 1909년 이토 히로부미 추도 모임, 1916년 대정친목회 평의원 명단에 이름이 올라 있던 사실이…</li><li>안상호는 친일인명사전 등재 인물도, 친일반민족행위진상규명위원회의 확정 명단(1,006명 상당)에도 포함되지 않아 현행법상 재산 환…</li><li>2006~2010년 활동한 친일재산조사위원회는 4년간 친일파 후손 소유 토지 2,359필지를 국가에 귀속시켰다.</li><li>2010년 위원회 해산 후 16년간 새 친일재산을 찾는 공식 기구가 없어, 후손들이 부동산 매각·명의 분산으로 환수를 피해왔다…</li></ul></div></a><a class="b-card" href="./2026-08-20-understanding-china-ai-low-interest-rate.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-understanding-china-ai-low-interest-rate.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>언더스탠딩 : 세상의 모든 지식</span><span class="b-date">2026-08-20</span></div><div class="b-title">미국은 고금리로 난리났는데, 중국 AI는 2% 금리에 빌린다</div><ul class="b-sum"><li>&#x27;세상의 모든 지식 언더스탠딩&#x27;의 대담 코너. 진행자와 김상훈 기자가 중국의 금리 정책을 주제로 문답을 이어간다.</li><li>진행자, 김상훈 기자(언더스탠딩)</li><li>미국은 30년물 국채금리가 19년 만에 최고(5.32%)로 치솟아 AI 투자 비용 부담과 버블 우려가 커지는 반면, 중국은 같은…</li><li>중국은 2022년 도입한 &#x27;예금 금리 시장화 조정 메커니즘&#x27;으로 수신 금리(예금 금리)와 대출 금리(LPR)를 모두 사실상 정부가…</li></ul></div></a><a class="b-card" href="./2026-08-20-understanding-china-physical-ai-manufacturing.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-understanding-china-physical-ai-manufacturing.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>언더스탠딩 : 세상의 모든 지식</span><span class="b-date">2026-08-20</span></div><div class="b-title">세계의 공장 다시 노리는 중국, 인건비 0원 시대 온다 (딥엑스 김녹원 대표)</div><ul class="b-sum"><li>언더스탠딩 채널의 대담 코너. 온디바이스 AI 반도체 기업 딥엑스(DEEPX)의 김녹원 대표(전 애플 반도체 엔지니어)가 진행자와…</li><li>김녹원(딥엑스 대표, 전 애플 실리콘 엔지니어), 언더스탠딩 진행자</li><li>중국이 키미 K2, 딥시크 등 저비용 오픈소스 모델로 미국 AI 개발사들의 &quot;비용 정당성&quot;을 무력화시키는 동시에, 세계 최대 제조…</li><li>① 중국의 지식 증류·오픈소스 전략과 AI 버블 붕괴 리스크 ② 피지컬 AI에서 중국이 미국보다 앞서는 이유(제조 데이터 독점)…</li></ul></div></a><a class="b-card" href="./2026-08-20-videomug-google-ai-talent-exodus.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-videomug-google-ai-talent-exodus.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>비디오머그 - VIDEOMUG</span><span class="b-date">2026-08-20</span></div><div class="b-title">구글에 무슨 일이? &#x27;전설급&#x27; AI 인재 다 떠난다 / 오그랲 / 비디오머그</div><ul class="b-sum"><li>비디오머그의 데이터 분석 코너 &#x27;오그랩&#x27;. 아네 기자가 5개 그래프를 통해 구글의 현재 상황을 진단한다.</li><li>아네 기자(비디오머그)</li><li>구글의 전설적 개발자들이 줄줄이 퇴사하고 프런티어 모델 경쟁에서 밀리고 있다는 우려가 커지는 가운데, 실제 실적·트래픽 지표는 나…</li><li>제프딘·데미스 허사비스 등 핵심 인재 유출, 딥마인드→앤트로픽 인재 이동이 10배 많은 추세, 반면 구글 클라우드 매출 82% 급…</li></ul></div></a><a class="b-card" href="./2026-08-20-videomug-taiwan-tsmc-ai-cash-dividend.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-08-20-videomug-taiwan-tsmc-ai-cash-dividend.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>비디오머그 - VIDEOMUG</span><span class="b-date">2026-08-20</span></div><div class="b-title">AI 열풍에 대만 전 국민 &#x27;현금 골든벨&#x27; 울리나?</div><ul class="b-sum"><li>비디오머그 &#x27;머그인사이트&#x27; 코너의 짧은 시사 브리핑 영상(약 4분)</li><li>내레이션 중심의 뉴스 브리핑(별도 출연자 없음)</li><li>세계 최대 반도체 위탁생산기업 TSMC를 보유한 대만이 AI發 반도체 호황으로 사상 최고 수준의 경제 성장을 기록하자, 그 성과를…</li><li>라이칭더 총통이 2027년도 예산에서 전 국민 AI 현금 보너스 지급을 선포했으나, 야당은 11월 지방선거를 겨냥한 포퓰리즘이라…</li></ul></div></a></div></section><a class="b-back" href="./index.html">← 목록으로</a><div class="foot"><span class="dot"></span>Daybreak · Youtube Brief · 2026. 08. 20. (목)</div></div></body></html>
