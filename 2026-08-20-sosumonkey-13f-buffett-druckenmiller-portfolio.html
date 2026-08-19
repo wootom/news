@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="월가 초고수들은 뭘 사고 뭘 팔았을까, 동시에 찍은 주식들의 공통점"><title>월가 초고수들은 뭘 사고 뭘 팔았을까, 동시에 찍은 주식들의 공통점</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>소수몽키</span><span class="ey">MORNING DIGEST · 2026-08-20 · 소수몽키</span><span class="chip">🎬 영상</span></div><h1>월가 초고수들은 뭘 사고 뭘 팔았을까, 동시에 찍은 주식들의 공통점</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>소수몽키 채널의 분기별 정기 코너. 3개월마다 주요 기관투자자의 13F 공시(2분기 4~6월 기준)를 분석해 공유한다.</td></tr><tr><td>화자</td><td>소수몽키(진행자, 약 20개 주요 기관 공시를 상시 모니터링)</td></tr><tr><td>핵심 문제의식</td><td>2분기 공시 기준 대다수 기관이 종목수·자산 규모를 늘리며 낙관적으로 매매했는데, 어떤 공통된 베팅 패턴이 있는지, 그리고 7~8월 현재 시점과는 어떻게 달라질 수 있는지를 짚는다.</td></tr><tr><td>핵심 내용</td><td>워런 버핏(버크셔 해서웨이), 스탠리 드러켄밀러, 레오폴드 애셴브레너(월가 천재), 빌 애크먼(비크먼), 엔비디아, 알파벳 등 6개 기관·기업의 2분기 포트폴리오 변화</td></tr><tr><td>실증 사례</td><td>버크셔가 알파벳 비중을 3연속 매수로 12.6%까지(3위) 끌어올림, 레오폴드가 200억 달러 포트폴리오의 절반을 메모리(샌디스크·마이크론)에 배팅한 뒤 4배 레버리지를 걸었다가 7월 폭락장에 70% 손실로 청산</td></tr><tr><td>공통 신호</td><td>버핏·드러켄밀러·애크먼 모두 빅테크와 경기소비재(항공주·백화점·외식 브랜드)를 동시에 늘려, 경기 침체를 크게 우려하지 않는 포지셔닝을 시사</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 2026년 2분기(4~6월) 13F 공시를 기준으로 6개 주요 기관·기업의 포트폴리오 변화를 순서대로 짚는다.</p>
+<ol>
+<li><strong>총론</strong>: 공시된 대다수 기관이 종목수와 자산 규모를 함께 늘려 낙관적 매매를 했다는 공통점이 먼저 제시된다. 단, 이 데이터는 2분기(4~6월) 기준으로 현재(7~8월)와는 달라질 수 있다는 전제를 명확히 한다.</li>
+<li><strong>워런 버핏(버크셔 해서웨이)</strong>: 알파벳(구글) A주·C주를 3분기 연속 매수해 포트폴리오 비중을 애플에 이은 3위(약 12.6%)까지 끌어올렸다. 최초 매수 60억 달러에서 160억 달러, 360억 달러로 이어지는 3연속 &#x27;불타기&#x27;(추가매수) 패턴을 보였다. 비중은 작지만 델타항공, 레나(고급 주택건설사), 메이시스(백화점) 등 경기 민감 소비재를 담아 경기 비관론에 베팅하지 않는 모습을 보였고, 뉴욕타임즈(미디어)도 추가 매수했다. 크게 줄인 종목은 없었다.</li>
+<li><strong>스탠리 드러켄밀러</strong>: 빅테크·반도체 비중을 대폭 확대했고, 보유 종목 수를 70개에서 95~100개 수준으로 늘렸다. 버핏과 마찬가지로 알파벳을 신규 매수하고 아마존도 크게 늘렸으며, TSMC와 유럽 반도체 기업 ST마이크로일렉트로닉스, 메모리 기업 시게이트도 확대했다. 전체 포트폴리오의 30% 이상이 헬스케어(주로 바이오·희귀질환 관련)이며, 그중 &#x27;나테라&#x27;는 2년 넘게 지속 매수 중인 종목으로 계속 신고가를 경신하고 있다. 항공주(델타항공·유나이티드항공)를 버핏과 동일하게 매수했고, 미디어주로는 폭스뉴스를 매수(버핏의 뉴욕타임즈와 대비)했다. AMD, 보안주 팔로알토, 데이터센터 관련주도 소폭 매수했으나 메모리 종목 중 샌디스크·마이크론·광통신주는 일부 매도해 AI 인프라 내에서 선택과 집중을 하는 모습을 보였다.</li>
+<li><strong>레오폴드 애셴브레너(&#x27;월가 천재&#x27;)</strong>: AI 노스트라다무스로 불리며 급부상했던 인물로, 6월 말 기준 200억 달러 포트폴리오의 약 50%(100억 달러)를 메모리(샌디스크·마이크론)에 배팅한 뒤 4배 레버리지를 걸었다. 블루오벌에너지 비중은 소폭 줄였지만 데이터센터 종목(네비우스, 코어위브)과 ST마이크로일렉트로닉스(TSMC와 함께 드러켄밀러와 동일한 반도체 픽)를 크게 늘렸다. 그러나 7월 폭락장에서 레버리지 포지션이 청산되며 고점 대비 약 70% 손실을 입었고, 포트폴리오 규모는 100억 달러 수준으로 축소됐다(연초 대비로는 여전히 2배 수익). 방향성 판단 자체는 정확했으나 과도한 레버리지로 청산당한 사례로 소개된다.</li>
+<li><strong>빌 애크먼(&#x27;리틀 버핏&#x27;)</strong>: 연평균 15~20% 수익률을 지향하는 투자자로, 이번 분기 포트폴리오를 크게 개편했다. 마이크로소프트·아마존·메타 등 빅테크 비중은 조정하되(알파벳은 매도) 유지했고, 비자·마스터카드·넷플릭스를 저평가 판단하에 신규 매수하며 주주서한으로 투자 논리를 공개했다. 총 11개 종목에 집중 투자하는 방식이며, 레스토랑브랜즈(버거킹 보유사) 등 외식 프랜차이즈 비중도 늘려 경기 비관론과는 거리를 두는 모습이다. 넷플릭스는 2022년 저점 판단으로 매수했다가 이후 40% 추가 <span class="dn">하락</span>으로 손절한 아픈 이력이 있는데, 이번에 4년 만에 재매수해 &#x27;복수전&#x27;으로 묘사된다. SNP글로벌(신용평가·지수 라이선스), ICE(뉴욕증권거래소 보유사), 알콘(세계 1위권 안과 의료기기) 등도 &quot;업계 1위인데 저평가&quot;라는 일관된 투자 원칙 아래 매수했다.</li>
+<li><strong>엔비디아(투자자로서)</strong>: 엔비디아 자체도 대규모 지분투자자로 부상했다. 스페이스X에 상장 전 지분투자를 해뒀다가 상장 후 평가이익이 반영되며 최소 50% 이상 추정 수익률을 기록했다. 스페이스X는 엔비디아의 대형 고객사이기도 해, 엔비디아→스페이스X 지분투자→스페이스X의 엔비디아 반도체 구매→엔비디아 매출 증가로 이어지는 순환 구조에 대해 &quot;돌려막기 아니냐&quot;는 비판적 시각도 언론에서 제기되고 있다. 코어위브·네비우스 등 데이터센터 기업에도 지분투자하며 생태계를 확장 중이고, 앤트로픽·오픈AI 등 비상장 AI 기업에도 투자해 향후 이들이 상장하면 평가액이 크게 늘어날 것으로 전망된다. 올해 수익률만 단순 계산해도 인텔 2~3배, 코어위브 약 47배, 노키아 76배, 코일런트 66배, 네비우스 3배 등으로 추정된다.</li>
+<li><strong>알파벳(투자자로서)</strong>: 2015년 스페이스X에 약 9억 달러(약 1조원)를 초기 투자했던 것이 상장 후 100배 수익(약 100조원 평가)으로 확정되며 포트폴리오 2위로 급부상했다. 알파벳 포트폴리오의 95%가 스페이스X 지분(평가액 기준)으로 구성될 정도이며, 다른 종목 매매에는 큰 이슈가 없었다. AMD, 사우디 국부펀드, 하버드대 연금 등 다른 기관들도 스페이스X·xAI 비상장 투자 덕분에 이번 공시에서 평가액이 크게 <span class="up">상승</span>했다.</li>
+<li><strong>종합 정리</strong>: 버핏은 알파벳 확대·경기 낙관 베팅, 드러켄밀러는 헬스케어 확대·AI 인프라(반도체·메모리) 확대·경기소비재(항공주) 확대, 레오폴드는 청산됐지만 메모리·데이터센터를 여전히 좋게 봤던 포지션, 애크먼은 빅테크(마소·메타)와 경기주를 공통으로 매수. 월가 거물들이 빅테크와 경기 확장을 동시에 긍정적으로 봤고, AI 인프라 사이클이 끝나지 않았다고 해석할 수 있는 신호로 정리된다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장/정책 맥락</h2><p>13F 공시는 자산 1억 달러 이상 기관투자자가 분기마다 의무 제출하는 보유 종목 내역으로, 공시 시점(2분기, 4~6월 기준)과 실제 공개 시점 사이에 최소 45일의 시차가 있어 현재(7~8월) 상황과는 괴리가 있을 수 있다는 점이 영상 초반부터 명시된다. 이 시차 때문에 레오폴드 애셴브레너의 사례처럼 &quot;공시 시점엔 최상의 포지션이었지만 이후 폭락장으로 청산된&quot; 극적인 반전이 발생할 수 있다. 2026년 2분기는 AI 인프라 투자 사이클이 여전히 진행 중인 국면으로, 메모리(샌디스크·마이크론), 반도체(TSMC·ST마이크로일렉트로닉스), 데이터센터(코어위브·네비우스) 관련주에 대한 기관 매수가 두드러졌다. 동시에 스페이스X·xAI 등 일론 머스크 계열 비상장 기업의 잇따른 기업가치 <span class="up">상승</span>(스페이스X 상장 등)이 엔비디아·알파벳 등 초기 투자자들의 평가 자산을 폭발적으로 늘리며 13F 상 포트폴리오 순위 변동의 주요 원인이 되고 있다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, 서로 다른 스타일의 투자자(가치투자의 버핏, 매크로의 드러켄밀러, 집중투자의 애크먼)가 공통적으로 빅테크와 경기소비재(항공주·백화점·외식 브랜드)를 동시에 확대했다는 사실은, 최소한 2분기 시점에는 이들이 경기침체 가능성을 낮게 봤다는 신호로 해석할 수 있다. 이는 개인 투자자가 매크로 전망을 세울 때 참고할 수 있는 교차검증 지표가 된다. 둘째, 레오폴드 애셴브레너 사례는 &quot;방향성이 맞아도 레버리지 관리에 실패하면 청산당할 수 있다&quot;는 리스크 관리의 중요성을 극명하게 보여준다. 100억 달러 규모의 전문 투자자도 4배 레버리지 앞에서는 70% 손실을 피하지 못했다는 점은 개인 투자자에게도 강력한 경고가 된다. 셋째, 엔비디아·알파벳이 비상장 기업(스페이스X 등) 초기 투자로 얻은 평가이익이 본업 이상의 수익을 내고 있다는 점은, 빅테크 기업의 기업가치 평가 시 단순 매출·이익뿐 아니라 지분투자 포트폴리오까지 함께 살펴야 함을 시사한다. 넷째, 애크먼의 넷플릭스 재매수(4년 전 손절 후 재도전) 같은 사례는 대형 투자자도 감정적 판단(&quot;복수전&quot;)을 배제하지 못한다는 인간적 측면을 보여주며, 동시에 &quot;업계 1위·저평가&quot;라는 명확한 투자 원칙을 공개하는 방식은 개인 투자자의 종목 선정 기준 수립에 참고가 된다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>투자자/기관</th><th>핵심 매수</th><th>핵심 특징</th></tr></thead><tbody><tr><td>워런 버핏(버크셔)</td><td>알파벳(3연속 매수, 비중 3위), 델타항공, 레나, 메이시스, 뉴욕타임즈</td><td>경기 민감 소비재 확대로 경기 낙관 시사</td></tr><tr><td>스탠리 드러켄밀러</td><td>알파벳(신규), 아마존, TSMC, ST마이크로, 시게이트, 항공주, 폭스뉴스</td><td>종목수 70→95~100개로 확대, 헬스케어 비중 30%+</td></tr><tr><td>레오폴드 애셴브레너</td><td>샌디스크·마이크론(메모리, 포트폴리오 50%), 데이터센터주, 4배 레버리지</td><td>방향성 적중했으나 7월 폭락으로 70% 손실·청산</td></tr><tr><td>빌 애크먼(비크먼)</td><td>비자, 마스터카드, 넷플릭스(재매수), SNP글로벌, ICE, 알콘</td><td>11개 종목 집중투자, &quot;1위·저평가&quot; 원칙 공개</td></tr><tr><td>엔비디아</td><td>스페이스X, 코어위브, 네비우스, 앤트로픽·오픈AI(비상장)</td><td>순환투자 논란 속 지분투자 평가익 급증</td></tr><tr><td>알파벳</td><td>스페이스X(2015년 초기투자, 100배 수익 확정)</td><td>포트폴리오 95%가 스페이스X 평가액</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>분기별 13F 공시 팔로업 루틴 구축</strong>: 개인 투자자가 3개월마다 주요 기관의 공시를 확인할 때, 이 영상에서 제시한 6개 기관 리스트와 체크포인트(신규매수·비중확대·비중축소)를 참고해 자신만의 모니터링 루틴을 만들 수 있다.</li>
+<li><strong>경기 국면 판단의 교차검증</strong>: 여러 스타일의 투자자가 동시에 경기소비재(항공주·백화점·외식주)를 늘렸는지 확인하는 방식으로, 매크로 전망 수립 시 기관 자금 흐름을 보조 지표로 활용할 수 있다.</li>
+<li><strong>레버리지 리스크 관리 교육 사례</strong>: 레오폴드 애셴브레너의 4배 레버리지·70% 손실 사례를 레버리지 상품(선물, 레버리지 ETF) 투자 전 리스크 교육 자료로 활용할 수 있다.</li>
+<li><strong>비상장 투자 밸류체인 추적</strong>: 엔비디아·알파벳의 스페이스X 투자처럼, 빅테크의 비상장 AI·우주 기업 지분투자 현황을 추적해 향후 상장(앤트로픽, 오픈AI 등) 시 수혜가 예상되는 기관·기업을 미리 리스트업하는 데 참고할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>2분기 13F 공시는 대다수 주요 기관이 종목수와 자산 규모를 확대하며 낙관적 스탠스를 취했음을 보여줬으나, 이 데이터는 4~6월 기준으로 7월 폭락장(레오폴드 사례가 보여주듯) 이후에는 상당한 변화가 있었을 가능성이 크다. 워런 버핏·드러켄밀러·애크먼이 공통적으로 보여준 빅테크+경기소비재 확대 기조가 유지되는지, 혹은 8~9월 이후 공시에서 방향이 바뀌는지가 다음 분기 관전포인트로 제시된다. 스페이스X·xAI 등 머스크 계열 비상장 기업의 연쇄 상장 랠리는 엔비디아·알파벳 외에도 AMD, 사우디 국부펀드, 하버드대 연금 등 초기 투자자들의 평가자산을 계속 밀어올릴 것으로 보이며, 향후 오픈AI·앤트로픽 상장 시(앤트로픽 예상 시가총액 약 2조 달러) 관련 초기 투자 기관들의 포트폴리오 가치가 재차 급등할 가능성이 언급된다. 진행자는 다음 분기(3개월 후)에도 동일한 포맷으로 팔로업할 예정임을 밝혔다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>13F 공시</td><td>자산 1억 달러 이상 기관투자자가 분기마다 제출하는 보유 종목 공시</td><td>기관투자자의 &#x27;성적표 겸 포트폴리오 스냅샷&#x27;</td></tr><tr><td>불타기</td><td>매수한 종목의 가격이 오르는 상황에서 추가로 매수하는 전략</td><td>버핏이 알파벳을 60억→160억→360억 달러로 늘린 사례</td></tr><tr><td>레버리지</td><td>차입을 통해 투자 규모를 원금보다 크게 늘리는 기법</td><td>레오폴드가 포트폴리오에 4배 레버리지를 건 것</td></tr><tr><td>청산</td><td>레버리지 손실이 임계치를 넘어 강제로 포지션이 정리되는 것</td><td>레오폴드가 7월 폭락장에서 겪은 상황</td></tr><tr><td>순환투자(돌려막기 의혹)</td><td>투자자가 피투자기업에 자금을 대고 그 기업이 다시 투자자의 제품을 사는 구조</td><td>엔비디아-스페이스X 간 지분투자·반도체 구매 관계</td></tr><tr><td>영양(평가) 이익</td><td>비상장 지분이 상장 등을 계기로 장부상 가치가 오르는 것</td><td>알파벳의 스페이스X 지분이 100배로 평가된 사례</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/8JAo0OuKLzs" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>소수몽키 · 2026-08-20</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
