@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Oh My Hermes 사용법: Hermes Agent 메모리·스킬·모델 라우팅 전부 딸깍!"><title>Oh My Hermes 사용법: Hermes Agent 메모리·스킬·모델 라우팅 전부 딸깍!</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">MORNING DIGEST · 2026-08-21 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>Oh My Hermes 사용법: Hermes Agent 메모리·스킬·모델 라우팅 전부 딸깍!</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>평범한 사업가 채널의 대담(2부 중 관련 회차). 진행자와 사이오닉 AI(Psyonic AI)의 김희망(닉네임 K Hope, 직함 &#x27;울트라띵크 엔지니어&#x27;)이 오픈소스 프로젝트 &#x27;오마이 에르메스(Oh My Hermes)&#x27;를 주제로 대화한다.</td></tr><tr><td>화자</td><td>김희망(K Hope, 사이오닉 AI 개발자, 오마이 에르메스 제작자), 평범한 사업가 진행자</td></tr><tr><td>핵심 문제의식</td><td>헬메스(에르메스) 에이전트는 셀프 이볼빙(self-evolving) 철학의 퍼스널 AI 에이전트이지만 메모리 훼손·리콜 재현율 저하 등 장기 기억 관리에 약점이 있고, 스킬·플러그인이 난립해 사용자가 무엇을 써야 할지 판단하기 어렵다는 진단에서 출발.</td></tr><tr><td>핵심 내용</td><td>&#x27;오마이 에르메스&#x27;는 에르메스 에이전트를 설치만 하면 메모리 시스템 강화, 스킬 자동 라우팅, 도메인 스페셜리스트 지식, 코딩 오케스트레이션/모델 라우팅 추천을 한 번에 제공하는 래퍼(플러그인)다. 철학은 &quot;Anyone can use Hermes agent professionally&quot;.</td></tr><tr><td>실증 지표</td><td>대담 시점(8월 3일 기준) 저장소 스타 약 470개. 첫 접촉 당시 스타 약 30개에서 4~5일 만에 하루 100개씩 증가해 급성장.</td></tr><tr><td>개발 배경</td><td>제작자는 오마이 코덱스·오마이 클로드 코드·오마이 오픈 에이전트(레이지 코덱스 제작자 &#x27;연규&#x27;와 사무실 옆자리) 등 &#x27;오마이(OM) 시리즈&#x27;의 철학(설치만 하면 알아서 똑똑해짐)과 울트라워크·딥 인터뷰 같은 코딩 오케스트레이션 개념을 참고해 에르메스 전용으로 확장했다.</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>오마이 에르메스의 철학과 포지셔닝</strong>: &quot;누구든 에르메스 에이전트를 프로페셔널하게 쓸 수 있게 한다&quot;는 문장으로 요약. 코딩 오케스트레이션, MoE(Mixture of Experts) 방식 활용, 루프 엔지니어링 지원 등 기능이 방대해 &quot;그냥 깔면 좋아진다(파워 인텔리전스)&quot;로 설명된다. 오마이 코덱스·오마이 클로드 코드 같은 코딩 에이전트용 하네스와 달리, 에르메스는 코딩 특화가 아닌 퍼스널 에이전트라는 점에서 결이 다르다.</li>
+<li><strong>메모리 계층 구조(L0~L3)</strong>: 에르메스 에이전트 자체는 L0~L2까지 지원하며, 오마이 에르메스는 특히 L2의 &#x27;품질&#x27;을 강화하는 데 집중한다.</li>
+</ol>
+<p>- L0: <code>soul.md</code> 파일 — 에르메스의 말투·정체성·역할을 정의하는 자기 정체성 레이어. - L1: <code>memory.md</code> 파일 — 프로젝트 스펙 등 기본 기조 정보를 담는 간단한 기억 창구. - L2: SQLite·파일시스템(마크다운)에 라벨링된 데이터를 별도 저장해두고, 세션이 전체를 항상 로딩하지 않고 필요할 때만 찾아가 조회하는 연속성 저장소. - L3: 세션 단위를 넘어선 에르메스의 전체 생명주기 관리 레이어. 다른 세션도 침범(공유)할 수 있는 더 큰 단위.</p>
+<ol>
+<li><strong>메모리 라벨링 4유형</strong>: 리콜(recall) 재현율을 높이기 위해 기억을 유형별로 라벨링하고 블록 단위로 관리·서치 가능하게 한다.</li>
+</ol>
+<p>- 팩트·디시전(Fact &amp; Decision): 변하지 않는 사실과 결정+이유. 예 — &quot;레포지토리는 파이썬 3.11+ 대상&quot;, &quot;인증 방식은 세션 쿠키로 가고 JWT는 폐기&quot;. - 리즌(Reason, 교훈): 실패에서 얻은 교훈. 예 — &quot;마이그레이션은 인덱스를 먼저 만들어야 안 죽는다&quot;. - 프로시저(Procedure): 재현 가능한 절차. 예 — 워크플로우/스킬 계약이 변경됐을 때 어떤 기준으로 유닛 테스트를 통과시킬지. - 에피소드(Episode): 특정 사건의 인과관계. 예 — &quot;8월 1일 배포 후 롤백해 오류가 발생했다&quot;는 사건 맥락. - 여기에 TTL(Time To Live) 개념도 적용해, 계약이 끝나 더 이상 유효하지 않은 협력사 관련 기억 등을 자동 만료시킬 수 있다.</p>
+<ol>
+<li><strong>메모리 관리 스킬 — 드리밍(Dreaming)·프루닝(Pruning)·싱크(Sync)</strong>: 드리밍은 컴팩션 발생, 세션 종료, 또는 N번의 대화 완료 시점마다 주기적으로 기억을 정리해주는 스킬(사람이 자는 동안 정보가 정리되는 것에 비유). 프루닝은 에이전트가 현재 기억하고 있는 내용(예: &quot;이 프로젝트는 파이썬으로 개발 중이고 유저도 파이썬을 선호하는 것으로 기억합니다, 맞습니까?&quot;)을 사용자에게 되물어 확인·수정·삭제하게 하는 스킬. 셀프 이볼빙은 유저의 인지 부하를 줄이지만 잘못된 데이터를 기억하면 생산성에 큰 타격을 줄 수 있어, 이런 확인 질문 루프가 필수라고 강조.</li>
+<li><strong>스킬 생태계와의 공생 전략</strong>: 오마이 에르메스는 에르메스 에이전트 자체 내장 스킬을 대체하지 않고, 필요할 때만 오마이 에르메스가 정의한 확장 스킬로 넘어가는 &#x27;어댑티브&#x27; 구조를 지향한다. 또한 오마이 클로드 코드·오마이 오픈 에이전트 사용자를 위해, 에르메스가 그쪽 스킬셋을 인지한 프롬프트를 만들어 코딩 위임 시 활용하도록 설계했다. 스킬은 캐퍼빌리티 스킬(기술적, 모델이 강해지면 유효기간이 짧아짐)과 프리퍼런스 스킬(조직·개인 맥락 결합, 유효기간이 김) 두 종류로 구분되며, 제작자는 에르메스의 강점이 프리퍼런스 스킬의 유연성에 있다고 본다.</li>
+<li><strong>모델 라우팅과 믹스처 오브 에이전트(MoA)</strong>: 오마이 오픈 에이전트의 믹스처 오브 모델 개념에서 영감을 받았다. 설치 시 자동 구축되는 게 아니라, 인터뷰 프로세스에서 사용자가 쓰는 모델을 파악해 세팅을 추천한다(헤비 유저는 GPT-5.1이나 페이블을 메인 브레인으로, 라이트 유저는 소넷/하이쿠 등 하위 모델도 활용). 각 모델의 강점(클로드=비주얼/프론트엔드, GLM=단순 코드, GPT-5.1=고난도 추론)을 라벨링해두고 AI가 스스로 라우팅 판단을 내리게 한다. 여러 모델을 동시에 돌려 최고 결과를 선출하는 방식은 비용 낭비로 보고 채택하지 않았으며, 실험을 통해 검증된 &#x27;리더&#x27; 모델을 미리 선출해 프롬프팅으로 고정하는 방식을 쓴다.</li>
+<li><strong>코딩 위임 방식(ACP 유사)</strong>: 에르메스 에이전트 세션 내에서 모델(뇌)을 바꿔 끼우는 것이 아니라, 클로드 코드·코덱스 등 완전히 별도의 외부 세션을 파괴(생성)한 뒤 프롬프트를 주입(프롬프트 피드, prompt feed)해 작업을 위임하는 방식이다. 제작자는 오마이 클로드 코드의 스킬셋을 읽은 뒤 서브 에이전트에게 웹서치·기능A·기능B·기능C 등을 병렬 분할해 울트라워크로 처리하도록 프롬프팅한다. 이 방식의 단점은 옵저버빌리티(observability) 저하이며, 이를 보완하기 위해 브리핑 스킬셋과 로컬 대시보드를 별도로 세팅해둔다고 설명한다.</li>
+<li><strong>무한 루프 방지 설계</strong>: 추론을 깊게 하는 모델(예: GPT-5.1)이 검증 루프에 반복 진입해 5분이면 끝날 작업이 30~40분 걸리는 문제가 있어, 오케스트레이션을 맡는 메인 브레인이 &quot;루프를 끝내는 명확한 기준점&quot;을 미리 설정하도록 설계했다고 밝힌다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>오마이 에르메스는 헬메스(Hermes) 에이전트 위에 얹는 오픈소스 플러그인/래퍼로, 제작자가 이미 만든 오마이 코덱스·오마이 클로드 코드·오마이 오픈 에이전트(&#x27;OM 시리즈&#x27;)의 철학(설치만 하면 자동으로 지능이 강화됨)을 계승했다. 코딩 에이전트(클로드 코드·코덱스)와 퍼스널 에이전트(에르메스)는 사용 맥락이 다르다는 전제 하에, 코딩 오케스트레이션·모델 라우팅 개념만 차용하고 메모리 시스템은 별도로 설계했다. 모델 라우팅은 YAML 파일 기반 설정(에르메스 에이전트 자체 기능)과, 오마이 에르메스가 제공하는 &#x27;추천 스킬&#x27;(어떤 작업에 어떤 모델을 쓸지 컨피그 파일에 권장안을 제시) 두 층위로 나뉜다. 대시보드/데스크탑 앱 등 GUI는 에르메스 본체가 이미 잘 만들고 있어 오마이 에르메스가 손대지 않는 영역으로 구분한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, 정보 과잉 시대에 &quot;AI를 잘 쓰는 법을 사람에게 배우기보다 AI에게 세팅을 맡기는&quot; 흐름(제작자 표현으로 &#x27;대딸깍 시대&#x27;)이 하네스 엔지니어링의 다음 트렌드로 제시된다. 툴이 매일 업데이트되는 상황에서 사용자는 도구 학습이 아니라 자신의 도메인에 어떻게 활용할지에 집중해야 한다는 주장이다. 둘째, 캐퍼빌리티 스킬(기술적)은 모델이 강해지면 자동 소멸하지만 프리퍼런스 스킬(조직·개인 맥락)은 유효기간이 길다는 구분은, AI 에이전트 도구 투자 우선순위를 정하는 데 실질적 기준이 된다 — 조직 워크플로우를 스캔해 스킬로 변환하는 기능이 장기적으로 더 방어력 있는 자산이라는 뜻. 셋째, 플러그인 생태계를 대체하지 않고 &quot;단일 진입점(single point)&quot;으로 흡수해 공생하는 전략은, 오픈소스 확장성이 큰 생태계에서 개인/소규모 팀이 취할 수 있는 현실적인 포지셔닝 모델을 보여준다. 넷째, 메모리 셀프 이볼빙의 양날의 검(잘못된 기억이 누적되면 생산성에 타격) 문제를 프루닝 질문 루프로 해결하려는 접근은, 자율 학습형 에이전트를 실무에 도입할 때 반드시 갖춰야 할 안전장치로 시사하는 바가 크다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>레이어</th><th>저장 형태</th><th>담당 정보</th><th>관리 스킬</th></tr></thead><tbody><tr><td>L0</td><td>soul.md</td><td>에이전트 정체성·말투·역할</td><td>초기 설정 시 고정</td></tr><tr><td>L1</td><td>memory.md</td><td>프로젝트 기본 기조 정보</td><td>프로젝트 시작 시 작성</td></tr><tr><td>L2</td><td>SQLite / 파일시스템(md)</td><td>라벨링된 팩트·디시전·리즌·프로시저·에피소드, TTL 부여</td><td>드리밍(주기 정리), 프루닝(확인 질문), 싱크 — 오마이 에르메스가 품질 강화</td></tr><tr><td>L3</td><td>세션 생명주기 관리</td><td>세션 간 공유 가능한 전체 생애주기</td><td>에르메스 에이전트 자체 기능(오마이 에르메스 미확장)</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th>구분</th><th>에르메스 에이전트 자체 모델 라우팅</th><th>오마이 에르메스의 역할</th></tr></thead><tbody><tr><td>방식</td><td>YAML 파일로 작업별 모델·폴백 설정</td><td>컨피그에 &quot;이 작업엔 이 모델 추천&quot; 스킬 삽입</td></tr><tr><td>코딩 위임</td><td>세션 내 모델(뇌) 교체 아님</td><td>클로드/코덱스 등 별도 외부 세션을 생성해 프롬프트 주입(ACP 유사)</td></tr><tr><td>최종 결정</td><td>사용자가 직접 YAML 수정</td><td>유저 인터뷰로 헤비/라이트 유저 파악 후 세팅 추천만 제공</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>에르메스 에이전트를 이미 쓰고 있지만 메모리 관리가 번거로운 사용자</strong>: 잘못 기억된 선호도나 오래된 프로젝트 맥락을 방치해 생산성이 떨어지는 경우, 오마이 에르메스의 드리밍·프루닝 스킬을 설치해 주기적으로 기억을 재확인·정리하는 루틴을 자동화할 수 있다.</li>
+<li><strong>여러 LLM(클로드, GPT, GLM, 키미 등)을 병행 사용하는 개발자</strong>: 작업 성격(비주얼=클로드, 단순 코드=GLM, 고난도 추론=GPT-5.1)에 따라 어떤 모델에 위임할지 매번 판단하기 번거로울 때, 오마이 에르메스의 모델별 라벨링·추천 스킬을 참고해 라우팅 기준을 세울 수 있다.</li>
+<li><strong>비개발자·바이브 코더가 스페셜리스트 수준의 워크플로우를 구축하고 싶을 때</strong>: 도메인 스페셜리스트(재무·마케팅·세일즈 등) 배경지식이 내장돼 있어, 코딩 맥락이 없는 사용자도 회사 워크플로우를 빠르게 학습시킨 에이전트를 구성할 수 있다.</li>
+<li><strong>다수의 서브 에이전트를 병렬로 오케스트레이션해야 하는 대규모 작업</strong>: 기능 A/B/C를 독립적인 코덱스·클로드 세션으로 나눠 울트라워크로 병렬 처리하고 싶을 때, 오마이 에르메스가 제공하는 브리핑 스킬셋과 로컬 대시보드로 옵저버빌리티를 확보하며 위임할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>대담 시점 기준 오마이 에르메스 저장소는 8월 3일 기준 스타 약 470개로, 첫 접촉 당시(약 30개)에서 4~5일 만에 하루 100개씩 증가하는 급성장세를 보였다고 언급된다. 제작자는 프로젝트가 오마이 오픈 에이전트·오마이 클로드 코드 대비 상대적으로 신생이라 아직 완성도가 100%는 아니라고 인정하며, 향후 로드맵으로 (1) 자동 업데이트 기능 추가(현재는 <code>ohm update</code> 명령으로 커밋 단위 수동 업데이트만 지원), (2) 헤비/라이트 유저를 4단계로 세분화해 맞춤 추천 패키지를 제공하는 기능, (3) 에르메스 에이전트 생태계의 &#x27;대표 플러그인&#x27;이 되는 것을 목표로 제시한다. 장기적으로는 사이오닉 AI가 다루는 AI 활용 문제 전반으로 확장할 계획이며, 채용도 열려 있다고 밝힌다. 제작자는 모델이 충분히 강력해지면 하네스 엔지니어링 자체의 의미가 옅어질 수 있다는 견해도 덧붙이며, 그 경우에도 프리퍼런스 스킬(조직·개인 맥락)의 가치는 유지될 것으로 전망한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>오마이 에르메스(Oh My Hermes)</td><td>헬메스(Hermes) AI 에이전트에 메모리·스킬·모델 라우팅 기능을 강화해주는 오픈소스 플러그인</td><td>설치만 하면 에르메스가 더 똑똑해지는 &#x27;파워 인텔리전스&#x27; 패키지</td></tr><tr><td>셀프 이볼빙(Self-Evolving)</td><td>에이전트가 스스로 학습·기억을 <span class="up">개선</span>해 나가는 방식</td><td>에르메스 에이전트의 핵심 모토</td></tr><tr><td>메모리 레이어 L0~L3</td><td>기억을 정체성(L0)→기본정보(L1)→라벨링 저장소(L2)→세션 생명주기(L3) 순으로 계층화한 구조</td><td>soul.md(L0), memory.md(L1), SQLite/md(L2), 세션 관리(L3)</td></tr><tr><td>드리밍(Dreaming)</td><td>세션 종료·컴팩션·N회 대화 후 주기적으로 기억을 자동 정리하는 스킬</td><td>사람이 잠들며 기억을 정리하는 것에 비유</td></tr><tr><td>프루닝(Pruning)</td><td>에이전트가 기억 내용을 사용자에게 되물어 확인·수정·삭제하는 스킬</td><td>&quot;이 프로젝트는 파이썬 기반으로 기억하고 있습니다, 맞습니까?&quot;</td></tr><tr><td>팩트·디시전(Fact &amp; Decision)</td><td>변하지 않는 사실과, 그 사실에 근거한 결정+이유를 기록하는 메모리 유형</td><td>&quot;인증 방식은 세션 쿠키, JWT는 폐기&quot;</td></tr><tr><td>에피소드(Episode)</td><td>특정 사건의 인과관계를 기록하는 메모리 유형</td><td>&quot;8월 1일 배포 후 롤백으로 오류 발생&quot;</td></tr><tr><td>TTL(Time To Live)</td><td>특정 시점 이후 자동 만료되는 기억의 유효기간 설정</td><td>계약 종료일이 지나면 협력사 관련 맥락을 자동 삭제</td></tr><tr><td>캐퍼빌리티 스킬 vs 프리퍼런스 스킬</td><td>전자는 기술적 스킬(모델 발전 시 유효기간 짧음), 후자는 조직·개인 맥락 스킬(유효기간 김)</td><td>리액트 기능 사용법(캐퍼빌리티) vs 사내 코드리뷰 워크플로우(프리퍼런스)</td></tr><tr><td>믹스처 오브 에이전트(MoA) / 믹스처 오브 모델</td><td>여러 LLM을 역할별로 나눠 오케스트레이션하는 방식</td><td>메인 오케스트레이터는 페이블, 세부 작업은 GPT/그록에 위임</td></tr><tr><td>ACP(Agent Control Protocol) 방식</td><td>한 에이전트가 다른 CLI 도구(클로드 코드, 코덱스 등)를 외부에서 제어·위임하는 방식</td><td>에르메스가 클로드 코드 세션을 생성해 프롬프트를 주입</td></tr><tr><td>옵저버빌리티(Observability)</td><td>여러 서브 에이전트가 병렬로 작업할 때 진행 상황을 파악할 수 있는 가시성</td><td>로컬 대시보드로 병렬 작업 상태를 모니터링</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/wNZkp9fvW0E" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-08-21</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

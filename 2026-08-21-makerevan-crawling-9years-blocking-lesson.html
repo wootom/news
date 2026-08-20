@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="크롤링 9년 하고 내린 결론 — 차단을 이기지 말고 이유를 없애세요"><title>크롤링 9년 하고 내린 결론 — 차단을 이기지 말고 이유를 없애세요</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-08-21 · 메이커 에반</span><span class="chip">영상</span></div><h1>크롤링 9년 하고 내린 결론 — 차단을 이기지 말고 이유를 없애세요</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>메이커 에반 채널의 단독 강의형 영상. 개발자인 발표자가 9년간 크롤러를 만들고 차단당한 경험을 정리하고, 자신이 만든 &quot;크롤링 스타터킷&quot;을 화면으로 시연한다.</td></tr><tr><td>화자</td><td>메이커 에반(개발자, 크롤링 스타터킷 제작자)</td></tr><tr><td>핵심 문제의식</td><td>셀레늄으로 새 브라우저를 띄워 사람인 척 위장하는 전통적 크롤링 방식은 안티봇 탐지 기술의 고도화로 더 이상 통하지 않는다. 우회 기술은 개인이 취미로 만들지만 차단 기술은 회사가 돈을 받고 판다는 비대칭 때문에 이 싸움 자체가 성립하지 않는다는 진단.</td></tr><tr><td>핵심 내용</td><td>해법은 새 브라우저를 위장하는 게 아니라, 이미 로그인·쿠키·사용 기록이 쌓인 사용자의 실제 크롬 브라우저를 AI(클로드)가 그대로 붙잡아 화면에 렌더링된 내용을 읽고 조작하는 방식이다. 새 브라우저(깡통 브라우저)가 아니라 &quot;지저분한 지문&quot;을 가진 진짜 브라우저를 쓰는 것이 핵심.</td></tr><tr><td>실증 사례</td><td>영상 내 시연에서 기존 방식(클로드에게 그냥 네이버 카페 글을 긁어오라고 시킴)은 &quot;접근이 차단되었습니다&quot;로 실패했고, 스타터킷 스킬을 설치한 뒤 동일 명령을 시키자 로그인된 기존 브라우저가 열려 차단 화면 없이 페이지가 정상적으로 넘어가며 목록(제목·작성자·날짜·링크)이 표로 정리됐다.</td></tr><tr><td>리스크/한계</td><td>로그인 없이 애초에 못 보는 자료는 이 방식으로도 못 본다. 사이트 약관 확인과 사람이 보는 속도(짧은 간격 연타 자제)를 지켜야 한다는 전제가 붙는다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>왜 막히는가 — 새 브라우저(깡통 브라우저)의 정체</strong>: 셀레늄으로 파이썬을 켜고 크롬 드라이버를 맞춰 띄우는 브라우저는 로그인 기록·쿠키·마우스 움직임 흔적이 전혀 없는 &quot;방금 태어난&quot; 브라우저다. <code>navigator.webdriver</code> 값이 자동화로 켜졌다는 사실을 자바스크립트 한 줄로 스스로 신고하며, 화면 크기·설치 폰트 목록·그래픽카드 렌더링 방식·오디오 장치 수치 등 지문(fingerprint)이 비정상적으로 &quot;깨끗해서&quot; 오히려 자동화의 증거가 된다.</li>
+<li><strong>탐지 기술의 비대칭 구조</strong>: 2019년경에는 헤더 몇 줄만 고쳐도 크롤링이 통했지만, 지금은 차단 기술을 파는 전문 회사들이 전 세계 트래픽의 상당 부분을 거치며 수십억 건의 접속 데이터로 사람과 봇 패턴을 계속 학습한다. 개인이 어제 짠 우회 코드는 이미 그쪽에서 학습된 패턴이라 애초에 이길 수 없는 싸움이라는 진단.</li>
+<li><strong>공식 API의 한계</strong>: 공식 API가 있으면 최선이지만 대부분 없거나, 있어도 필요한 항목이 빠져 있고, 승인까지 몇 주가 걸리며, 호출 수마다 과금된다. 카페 글 목록 하나 보려고 제휴 신청서를 쓸 수는 없다는 현실적 장벽.</li>
+<li><strong>전통적 우회 시도의 소모전</strong>: 유저 에이전트 조작 → 막힘, 스텔스 플러그인 설치 → 이틀 뒤 막힘, 프록시 구매 → 비용 지출 후 막힘, 헤드리스 해제+마우스 랜덤 흔들기+클릭 딜레이 추가로 코드가 200줄을 넘어가도 사이트가 구조를 살짝 바꾸면 전부 무용지물이 된다. 크롤러는 &quot;만들 때보다 살려둘 때&quot; 유지보수 비용이 더 크다는 점이 강조된다.</li>
+<li><strong>캡차의 진화</strong>: 최근 캡차는 그림 선택이 아니라 체크박스 클릭 전 마우스 움직임 패턴으로 이미 판정이 끝나 있는 방식이라, 코드로 흉내 내는 것 자체가 오래가지 못한다.</li>
+<li><strong>발상의 전환 — &quot;왜 새 브라우저를 띄우는가&quot;</strong>: 사용자 컴퓨터에는 이미 네이버 로그인·쿠키·몇 년 치 사용 기록이 쌓인 &quot;완벽한 브라우저&quot;가 있다. 이 브라우저는 지문이 지저분하기 때문에(=사람 컴퓨터의 정상적 특성) 오히려 차단 대상이 되지 않는다.</li>
+<li><strong>원격 디버깅의 함정과 핵심 기법</strong>: 크롬 원격 디버깅 기능으로 새 창을 띄우면 기본 프로필을 물고 오지 않아 결국 또 깡통 브라우저가 되는 경우가 많다. 핵심은 &quot;새로 만드는&quot; 게 아니라 &quot;쓰던 프로필을 그대로 붙잡는&quot; 것. 동작 순서는 (1) 쓰던 브라우저를 붙잡음 → (2) 클로드가 그 안에서 페이지를 엶 → (3) 화면에 실제로 렌더링된 내용을 읽음(소스 코드 파싱이 아닌 사람이 보는 화면 기준) → (4) 다음 페이지 버튼 클릭 반복 → (5) 결과를 정리해 저장, 5단계로 요약된다.</li>
+<li><strong>결과물 시연 3종</strong>: ① 네이버 카페 글 목록 수집(제목·작성자·날짜·링크, 여러 페이지 자동 순회, 차단 화면 미발생), ② 쇼핑몰 상품 목록 수집(상품명·가격·할인율·재고, 이미지 지연 로딩도 사람처럼 대기 후 읽음, 엑셀 저장), ③ 반응(평판) 수집(제품명으로 카페·블로그 검색 결과를 모아 그 자리에서 불만/칭찬 요약까지 완료, 수집과 분석이 한 번에 끝나는 것이 예전 크롤러와의 핵심 차이).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 방식의 기술적 핵심은 &quot;브라우저 지문(fingerprinting)&quot;에 대한 이해다. 안티봇 시스템은 <code>navigator.webdriver</code> 플래그, 화면 해상도, 설치된 폰트 목록, GPU 렌더링 특성(캔버스/WebGL 지문), 오디오 컨텍스트 지문 등 다수의 신호를 조합해 자동화 여부를 판별한다. 새로 띄운 브라우저는 이 모든 값이 기본값·초기값으로 지나치게 &quot;깨끗하기&quot; 때문에 역설적으로 탐지된다. 반면 사용자가 실제로 쓰던 브라우저 프로필(로그인 세션, 쿠키, 방문 기록, 확장 프로그램, 자동완성 등)을 그대로 재사용하면 이런 신호들이 자연스러운 사용자 패턴과 동일해진다. 또한 크롤러가 DOM/소스 코드를 파싱하는 대신 &quot;화면에 렌더링된 내용을 사람이 보는 방식으로&quot; 읽는다는 점도 중요한 차이로, 사이트의 HTML 구조(클래스명 등)가 바뀌어도 시각적으로 인식 가능한 요소는 계속 읽을 수 있어 유지보수 부담이 줄어든다. 크롬 원격 디버깅 프로토콜을 사용하되 새 프로필이 아닌 기존 사용자 프로필을 그대로 붙잡는 것이 구현의 핵심 포인트로 언급된다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, 차단 기술과 우회 기술 사이의 자원 비대칭(회사 대 개인)을 인정하고 &quot;이기려는&quot; 접근을 포기한 것이 발상 전환의 출발점이다. 이는 안티봇 탐지가 갈수록 정교해지는 산업 전반의 흐름에서, 개별 우회 스크립트의 수명이 구조적으로 짧아질 수밖에 없다는 것을 시사한다. 둘째, &quot;가짜 신원을 정교하게 위장&quot;하는 대신 &quot;진짜 신원을 그대로 활용&quot;하는 방향 전환은 크롤링뿐 아니라 AI 에이전트가 웹을 다루는 방식 전반(에이전틱 브라우징)에 적용 가능한 원칙이다. 셋째, 소스 코드 파싱 대신 렌더링된 화면을 사람처럼 읽는 방식은 사이트 구조 변경에 대한 내성을 높여, 유지보수 비용이라는 크롤러의 고질적 문제를 상당 부분 해소한다. 넷째, 수집과 분석(요약)이 한 번의 명령으로 동시에 처리되는 것은 LLM 기반 자동화가 전통적 파이프라인(수집→저장→별도 분석 코드 작성)을 압축하는 사례로 볼 수 있다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>예전 방식(셀레늄)</th><th>지금 방식(로그인된 브라우저+AI)</th></tr></thead><tbody><tr><td>준비 시간</td><td>반나절(환경 구축, 드라이버 버전 맞춤)</td><td>약 2분(스킬 설치)</td></tr><tr><td>차단율</td><td>대부분 막힘</td><td>로그인된 화면이면 그대로 조회 가능</td></tr><tr><td>유지보수</td><td>사이트 구조 변경 시마다 코드 수정 필요</td><td>화면이 바뀌어도 대부분 그대로 동작</td></tr><tr><td>필요 지식</td><td>파이썬, HTML/CSS 셀렉터</td><td>한국어 문장 한 줄(자연어 명령)</td></tr><tr><td>캡차/프록시/스텔스 플러그인</td><td>필수적으로 조합 사용</td><td>불필요</td></tr><tr><td>결과 확인</td><td>터미널 로그만 표시</td><td>브라우저 화면이 그대로 보여 작업 과정 확인 가능</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>경쟁사 모니터링</strong>: 경쟁사 쇼핑몰의 상품명·가격·할인율·재고를 매일 아침 자동 수집해 가격 변동을 추적하는 용도로, 로그인 없이도 접근 가능한 공개 페이지에서 특히 유용하다.</li>
+<li><strong>브랜드 평판 관리</strong>: 자사 제품명으로 카페·블로그를 검색해 언급을 모으고, 그 자리에서 불만/칭찬 요약까지 AI에게 맡겨 고객 피드백 파악 소요 시간을 줄일 수 있다.</li>
+<li><strong>채용 공고·공공기관 공고 비교 수집</strong>: 여러 채용 사이트나 공공기관 공지사항 페이지를 조건별로 정리해 놓치는 공고 없이 비교표를 만드는 데 활용할 수 있다.</li>
+<li><strong>부동산 매물·중고거래 시세 추적</strong>: 조건별 매물 목록이나 중고 거래 시세를 주기적으로 수집해 가격 추이를 파악하는 개인용 자동화로 쓸 수 있다.</li>
+<li><strong>로그인 기반 커뮤니티 데이터 수집</strong>: 네이버 카페처럼 로그인이 전제된 폐쇄형 커뮤니티에서, 기존에는 API도 없고 셀레늄으로는 차단됐던 데이터를 사용자 본인 계정의 정상 브라우징처럼 수집할 수 있다(단, 원래 로그인 없이 못 보는 자료는 동일하게 접근 불가).</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>발표자는 자신이 만든 &quot;크롤링 스타터킷&quot;을 배포 중이며, 설치는 파일을 폴더에 넣고 클로드를 재시작하면 스킬 목록에 자동으로 나타나는 방식으로 복잡한 터미널 조작이 필요 없다고 설명한다. 코딩 지식 없이 한국어 명령만으로 작동하며 윈도우에서도 동일하게 동작한다고 언급된다. 실전 팁으로는 (1) 한 번에 전체 작업을 시키지 말고 먼저 한 페이지로 결과 형태를 확인할 것, (2) 저장 형식(엑셀 등)을 미리 지정할 것, (3) 오래 걸리는 작업은 자리를 비울 때 실행하고 브라우저를 동시에 쓰지 말 것, (4) 로그인이 풀리면 창에서 직접 재로그인하면 되고 코드 수정이 불필요하다는 점, (5) 결과가 이상하면 브라우저가 눈앞에 떠 있으므로 어디서 멈췄는지 직접 확인 가능하다는 점을 든다. 발표자는 로그인 정보가 외부로 전송되지 않고 로컬 브라우저의 쿠키가 원래 자리에 그대로 유지된다는 점, 작업 중에는 해당 브라우저 창을 다른 용도로 쓰지 말아야 한다는 점을 FAQ 형태로 답한다. 결론으로 &quot;차단을 이기려 하지 말고 차단당할 이유를 없애라&quot;는 원칙을 9년간 크롤러를 만들며 가장 늦게 깨달은 교훈으로 제시한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>브라우저 핑거프린팅(지문 수집)</td><td>화면 크기, 폰트 목록, GPU 렌더링 특성, 오디오 장치 값 등을 조합해 브라우저(및 사용자)를 식별하는 기술</td><td>자동화 브라우저는 이 값들이 비정상적으로 &quot;깨끗해서&quot; 오히려 봇으로 탐지됨</td></tr><tr><td>navigator.webdriver</td><td>브라우저가 자동화 도구(셀레늄 등)로 제어되고 있는지 알려주는 자바스크립트 속성</td><td>이 값이 true면 사이트가 자바스크립트 한 줄로 자동화 여부를 즉시 확인 가능</td></tr><tr><td>깡통 브라우저</td><td>로그인 기록·쿠키·사용 이력이 전혀 없는, 방금 새로 실행된 브라우저</td><td>셀레늄으로 새로 띄운 브라우저가 전형적인 예</td></tr><tr><td>헤드리스 브라우저</td><td>화면 없이 백그라운드에서 실행되는 브라우저 모드</td><td>크롤링 시 화면을 안 띄우려고 쓰지만 탐지 신호가 됨</td></tr><tr><td>스텔스 플러그인</td><td>자동화 흔적을 감추도록 설계된 셀레늄/퍼펫티어 확장 도구</td><td>설치해도 보통 며칠 내 재탐지되어 무력화됨</td></tr><tr><td>크롬 원격 디버깅(Remote Debugging Protocol)</td><td>실행 중인 크롬 인스턴스에 외부 프로그램이 연결해 페이지를 제어할 수 있게 하는 프로토콜</td><td>이 영상에서 핵심 기법의 기반 기술로 언급, 단 기본 프로필을 물고 오지 않으면 무용지물</td></tr><tr><td>캡차(CAPTCHA)</td><td>사람과 봇을 구분하기 위한 인증 절차</td><td>최근에는 이미지 선택이 아니라 클릭 전 마우스 움직임 패턴으로 판별</td></tr><tr><td>크롤링 스타터킷</td><td>발표자가 배포하는, 로그인된 기존 브라우저를 AI가 붙잡아 자동화하는 도구 패키지(스킬 형태)</td><td>설치 후 클로드 재시작만으로 스킬 목록에 자동 등록</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/vceXZEkEjzc" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-08-21</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
