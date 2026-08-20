@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코스피 5% 상승했지만 아직 따라가면 안 됩니다 박스권 전략 그대로 유지!"><title>코스피 5% 상승했지만 아직 따라가면 안 됩니다 박스권 전략 그대로 유지!</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-08-21 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>코스피 5% 상승했지만 아직 따라가면 안 됩니다 박스권 전략 그대로 유지!</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>슈퍼개미 이세무사TV의 장마감 브리핑 코너. 대표님(이세무사) 부재로 &#x27;몽땅님&#x27;이 대타 진행하며 8월 21일 목요일 코스피·코스닥 마감 시황과 수급, <span class="up">상승</span> 종목을 정리한다.</td></tr><tr><td>화자</td><td>몽땅님(진행), 연정 씨(보조 진행)</td></tr><tr><td>핵심 문제의식</td><td>코스피가 하루 만에 5.89% 급등했지만, 이를 추세 전환의 신호로 보고 풀 포지션·레버리지로 따라붙어도 되는지 판단하는 것. 결론은 아직 기술적 조건이 충족되지 않아 박스권 전략을 유지해야 한다는 것.</td></tr><tr><td>핵심 내용</td><td>코스피 6,852 마감(<span class="up">+5.89%</span>), 코스닥 840 마감(<span class="up">+1.99%</span>). SK하이닉스 자사주 매입 공시가 트리거가 되어 삼성전자·SK하이닉스·SK스퀘어 등 시가총액 상위주가 급등을 견인했다. 5일선·20일선이 중장기 이동평균선 위로 안착해야 정배열 초입으로 볼 수 있는데 아직 시간이 더 필요하다는 진단.</td></tr><tr><td>실증 사례</td><td>SK하이닉스 종가 169만1,000원(전고점 179만2,000원), 삼성전자 전고점 약 28만8,000원. 삼성전자 외국인 420만 주 매수, SK하이닉스 외국인 32만 주 매수 + 기타법인 62만 주(자사주 취득 개시분 추정).</td></tr><tr><td>리스크 요인</td><td>중동발 유가 변동 가능성, 각국 장기 국채금리 <span class="up">상승</span>, 목요일물 위클리옵션 만기일에 따른 변동성 왜곡 가능성.</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>마감 지수 및 등락률</strong>: 코스피는 5.89% <span class="up">상승</span>한 6,852로 마감, 코스닥은 1.99% <span class="up">상승</span>한 840으로 마감. 코스닥 대비 코스피의 상대적 강세가 뚜렷했던 하루였다.</li>
+<li><strong>급등의 트리거</strong>: 전일(8월 20일) SK하이닉스가 대규모 주주환원 정책(자사주 매입 등)을 발표한 것이 방아쇠 역할을 했다. 이에 따라 삼성전자 <span class="up">+9%</span>, SK하이닉스 <span class="up">+12%</span>, SK스퀘어 <span class="up">+11%</span>로 시가총액 1~3위 종목이 나란히 강하게 <span class="up">상승</span>하며 코스피 지수를 밀어올렸다.</li>
+<li><strong>수급 디테일</strong>: 외국인은 현물시장에서 약 2조 6천억 원대를 순매도했다고 언급되나, 동시에 삼성전자(420만 주)·SK하이닉스(32만 주)는 외국인 순매수가 확인된다. 선물은 외국인 매도 우위였다. 지수 전체 수급과 개별 대형주 수급이 엇갈린 하루로, 목요일물 위클리옵션 만기가 방향성을 증폭시켰을 가능성이 언급된다.</li>
+<li><strong>추세 전환 판단 기준</strong>: 삼성전자를 예로 들면 5일선과 20일선이 중장기 이동평균선 위로 올라와야 정배열 초입 구간으로 볼 수 있는데, 아직 추가적인 시간과 등락이 필요한 상태다. 그 전까지는 박스권 전략 구간이 연장되고 있다고 보는 것이 합리적이라는 결론.</li>
+<li><strong>가격대별 추세 전환 조건</strong>: 코스피가 7,000선에 안착하거나, 삼성전자가 현재가(전고점 28만8,000원)보다 만 원 더 위, SK하이닉스가 170만 원 중반 이상까지 오르고 이동평균선이 따라붙어야 박스권 뷰를 바꿀 수 있는 위치가 된다는 구체적 기준을 제시한다.</li>
+<li><strong>양방향 압력 요인</strong>: 상방을 누르는 힘(중동 유가 변화, 각국 장기 국채금리 <span class="up">상승</span>)과 하방에서 밀어올리는 힘(주주환원 정책 모멘텀)이 공존하는 국면이라 두 힘을 절충하면 여전히 박스권 장세로 판단된다.</li>
+<li><strong>코스피200 <span class="up">상승</span>률 상위 종목</strong>: 1위 SK하이닉스(탑30 중 29위 진입), SK스퀘어 동반 <span class="up">상승</span>, 삼성전자, 카카오페이(<span class="up">+9%</span>, 트럼프 가상화폐 법안의 9월 상원 상정 기대), 삼성그룹주(증권·물산·생명), 국제 금값 <span class="up">상승</span> 수혜의 고려아연, 화장품 ODM/OEM인 한국콜마·코스맥스가 <span class="up">상승</span> 종목으로 꼽힌다.</li>
+<li><strong><span class="dn">하락</span> 종목</strong>: 자동차 부품주 DN오토모티브, 정유주 S-Oil, 지주사 LS·GS 등이 약세를 보였다.</li>
+<li><strong>거래대금 상위 및 수급 근거</strong>: 거래대금 1위 SK하이닉스(외국인 32만 주 + 기타법인 62만 주 매수, 자사주 취득 공시 반영分 추정), 2위권에 지수 영향력이 컸던 삼성전자(외국인 420만 주 매수). 에너지 관련 이터닉스(SK그룹 신재생에너지)·OCI홀딩스도 상대적 강세.</li>
+<li><strong>모더나 관련주 테마 경계</strong>: 전일 미국에서 모더나 mRNA 백신 임상 3상 결과 발표로 급등하자, 국내에서도 알테오젠·소마젠·에스티팜·파미셀 등 &#x27;모더나 관련주&#x27;가 무리지어 <span class="up">상승</span>했다. 다만 이들 대부분이 코로나 시기 테마성 움직임이 강했던 종목군이라 시가총액이 작은 종목일수록 매기가 빠지면 급락 위험이 크므로 추격 매매를 지양해야 한다는 경고가 나온다.</li>
+<li><strong>탑30 섹터 클러스터</strong>: ① 모더나 관련주(엔투텍, 소마젠, 삼양바이오팜, 제넥신, 알테오젠), ② 반도체 소부장 클러스터(금호전기·금호건설·서산 등 호남 반도체 관련주), ③ 금 관련주(IT싸이언, 고려아연), ④ 가상화폐 관련주(카카오페이 등), ⑤ SK하이닉스 계열 군집 등 5개 그룹으로 요약된다.</li>
+<li><strong>미국 증시와의 비교</strong>: 미국에서는 전일 반도체보다 제약바이오(모더나 주도)의 <span class="up">상승</span>이 두드러졌고, SK하이닉스 ADR·마이크론은 상대적으로 둔탁한 움직임이었다. 그럼에도 국내에서는 삼성전자·SK하이닉스·SK스퀘어 등 시가총액 상위주가 강하게 오르며 코스피가 5% 넘게 <span class="up">상승</span>한 차별화된 하루였다.</li>
+<li><strong>포지션 관리 원칙</strong>: 박스권 국면에서는 풀 포지션이나 레버리지 사용을 자제하고, 적정 비율의 포지션과 현금 보유, 레버리지를 쓰더라도 감내 가능한 수준으로 제한해야 한다는 원칙을 재확인한다.</li>
+<li><strong>공지사항</strong>: 8월 29일(토) 단기 매매 강연이 예정되어 있으며, 우상고님과 몽당연필 두 강사가 참여해 9~12월 전략을 논의한다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장/정책 맥락</h2><p>이번 급등은 정책 모멘텀보다는 개별 기업 이벤트(SK하이닉스 자사주 매입 공시)가 촉발한 수급 쏠림으로 해석된다. 삼성전자·SK하이닉스의 주주환원 정책이 동시에 작동하는 환경이라는 점이 강조되며, 이는 반도체 대형주에 대한 시장 신뢰를 뒷받침하는 요인이다. 다만 거시 변수(중동 지정학 리스크에 따른 유가, 각국 장기 국채금리 <span class="up">상승</span>)가 여전히 상방을 제약하고 있고, 목요일물 위클리옵션 만기일이라는 파생 수급 요인도 당일 변동성을 증폭시켰을 가능성이 언급된다. 미국에서는 모더나의 mRNA 백신 임상 3상 결과가 제약바이오 섹터 전반의 급등을 이끌었고, 이 온기가 국내 모더나 관련주(알테오젠 등)로 전이됐다. 반면 SK하이닉스 ADR·마이크론 등 미국 반도체는 상대적으로 조용해, 국내 반도체 대형주 강세가 국내 고유 이벤트(자사주 매입)에 기인함을 뒷받침한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, 하루 5%대 급등이라는 인상적인 수치에도 불구하고 추세 전환을 선언하려면 5일선·20일선이 중장기 이동평균선 위로 정배열되는 초입 구간이 확인돼야 하며, 이는 하루이틀에 완성되지 않는 시간 개념이 필요한 조건이다. 급등 다음 날 무리하게 추격 매수하는 것은 이 기준에 어긋난다. 둘째, 코스피 7,000 안착, 삼성전자 전고점(28만8,000원) 대비 만 원 이상 상회, SK하이닉스 170만 원 중반 이상이라는 구체적 가격 레벨이 박스권 뷰 전환의 트리거로 제시돼, 투자자는 이 숫자를 관찰 기준점으로 삼을 수 있다. 셋째, 지수 급등을 이끈 대형주(삼성전자·SK하이닉스)의 <span class="up">상승</span> 배경이 주주환원 정책이라는 펀더멘털 이슈인 반면, 테마성 급등 종목(모더나 관련주)은 재료 소멸 시 매기가 빠르게 빠질 수 있어 종목별로 <span class="up">상승</span> 근거를 구분해서 접근해야 한다는 원칙이 재확인된다. 넷째, 박스권 국면에서의 포지션 관리 원칙(풀 포지션·과도한 레버리지 자제, 현금 비중 유지)은 급등장에서 오히려 더 중요해지는 리스크 관리 지침이다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>8월 21일 상황</th><th>박스권 뷰 유지 근거</th></tr></thead><tbody><tr><td>코스피</td><td>6,852 마감(<span class="up">+5.89%</span>)</td><td>7,000선 안착 전까지는 박스권 연장으로 판단</td></tr><tr><td>코스닥</td><td>840 마감(<span class="up">+1.99%</span>)</td><td>코스피 대비 상대적 약세, 순환 자금 흐름 아님</td></tr><tr><td>삼성전자</td><td><span class="up">+9%</span>, 외국인 420만 주 순매수</td><td>전고점(28만8,000원) 대비 만 원 이상 더 올라야 전환 신호</td></tr><tr><td>SK하이닉스</td><td><span class="up">+12%</span>, 종가 169만1,000원, 외국인 32만 주+기타법인 62만 주 매수</td><td>170만 원 중반 이상 + 전고점(179만2,000원) 회복 필요</td></tr><tr><td>모더나 관련주(알테오젠 등)</td><td>테마성 동반 <span class="up">상승</span></td><td>코로나 시기 테마 재현 위험, 추격 매매 지양 권고</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>급등장에서 추격 매수를 고민하는 투자자</strong>: 코스피가 하루 5.89% 오른 것을 보고 즉시 풀 포지션으로 들어갈지 고민할 때, 이동평균선 정배열이라는 명확한 기준이 충족되기 전까지는 박스권 전략을 유지하라는 이 영상의 판단 근거를 참고할 수 있다.</li>
+<li><strong>삼성전자·SK하이닉스 보유자</strong>: 전고점(각각 28만8,000원, 179만2,000원) 대비 현재 위치를 확인하고, 추가 <span class="up">상승</span> 시 어느 가격대에서 추세 전환으로 판단을 바꿀지 구체적 레벨(삼성전자 전고점+만 원, 하이닉스 170만 원 중반)을 매매 기준으로 삼을 수 있다.</li>
+<li><strong>테마주 추격을 자제하려는 투자자</strong>: 모더나 관련주(알테오젠, 소마젠, 에스티팜, 파미셀 등)처럼 해외 뉴스에 연동해 무리지어 오르는 종목군에 뒤늦게 진입하는 것의 위험성을 점검할 때, 코로나 시기 테마성 이력이 있는 소형주는 매기 이탈 시 급락한다는 경고를 리스크 체크리스트로 쓸 수 있다.</li>
+<li><strong>파생 만기일 변동성을 고려하는 트레이더</strong>: 목요일물 위클리옵션 만기일에 지수 방향성이 과장될 수 있다는 언급을 참고해, 옵션 만기일 전후의 급등락을 곧바로 추세로 해석하지 않고 다음 거래일 흐름까지 확인하는 습관을 들일 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>8월 21일 목요일 기준 남은 거래일이 하루 있는 가운데, 대표님이 자리를 비운 상태에서도 박스권 뷰가 유지될 것이라는 진단이 나온다. 코스피가 추세적 <span class="up">상승</span>으로 인정받으려면 단기 이평선이 중장기 이평선 위로 안착하는 정배열 초입 구간이 시간을 두고 형성돼야 하며, 구체적으로는 코스피 7,000선 안착, 삼성전자 전고점 대비 만 원 이상 추가 <span class="up">상승</span>, SK하이닉스 170만 원 중반 이상이 관찰 기준으로 제시됐다. 그때까지는 작은 변동성 안에서 오르내림이 반복될 것으로 예상되므로, 적정 비율의 포지션과 현금 보유, 레버리지 사용 시 감내 가능한 수준 제한이 권고된다. 8월 29일(토) 단기 매매 강연에서 9~12월 하반기 전략이 별도로 논의될 예정이다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>박스권</td><td>주가가 일정 범위(고점-저점) 안에서만 오르내리는 국면</td><td>코스피 7,000선 안착 전까지 유지되는 현재 국면</td></tr><tr><td>정배열</td><td>단기 이동평균선이 중장기 이동평균선 위로 순서대로 배열되는 상태로, <span class="up">상승</span> 추세의 기술적 신호</td><td>5일선·20일선이 중장기선 위로 안착해야 초입 구간 인정</td></tr><tr><td>자사주 매입</td><td>기업이 자기 회사 주식을 시장에서 직접 사들여 주주가치를 높이는 주주환원 정책</td><td>SK하이닉스가 발표해 급등의 트리거가 됨</td></tr><tr><td>위클리옵션 만기</td><td>매주 특정 요일(이 경우 목요일)에 만기가 도래하는 단기 옵션 상품의 결제일</td><td>당일 지수 변동성을 증폭시킬 수 있는 파생 수급 요인</td></tr><tr><td>기타법인</td><td>수급 주체 분류상 금융·외국인·개인 외의 국내 법인(자사주 취득 주체 등 포함)</td><td>SK하이닉스 62만 주 매수 주체로 자사주 취득 개시분 추정</td></tr><tr><td>ADR</td><td>미국 예탁증서(American Depositary Receipt), 해외 기업 주식을 미국 시장에서 거래할 수 있게 만든 증서</td><td>SK하이닉스 ADR이 국내 본주 대비 둔탁한 움직임을 보임</td></tr><tr><td>모더나 관련주</td><td>미국 모더나의 mRNA 백신·바이오 이슈에 연동해 함께 움직이는 국내 테마주</td><td>알테오젠, 소마젠, 에스티팜, 파미셀 등</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/fu9OJNp3w5Y" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-08-21</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
