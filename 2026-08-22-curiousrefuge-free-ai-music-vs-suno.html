@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="무료 AI 음악 도구, Suno보다 나을까 — 6개 도구 실전 비교"><title>무료 AI 음악 도구, Suno보다 나을까 — 6개 도구 실전 비교</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Curious Refuge</span><span class="ey">MORNING DIGEST · 2026-08-22 · Curious Refuge</span><span class="chip">🎬 영상</span></div><h1>무료 AI 음악 도구, Suno보다 나을까 — 6개 도구 실전 비교</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>Curious Refuge 진행자가 최근 몇 주 사이 새로 출시된 AI 음악 생성 도구들을 동일한 조건(같은 스타일 프롬프트 &quot;바나나빵에 관한 현대 팝 컨트리 노래&quot;)으로 나란히 재생하며 비교하는 단독 데모 영상</td></tr><tr><td>비교 대상</td><td>Suno 5.5, 11 Music(11 Labs), Google LRA 3.5, Alibaba Happy Shrimp, Pika Audio, Miniax Music 3(오픈소스), Udio(언급만)</td></tr><tr><td>핵심 결론</td><td>진행자가 실제 제작 프로젝트 기준으로 가장 선호하는 도구는 Suno 5.5 — 창의성과 현실감 사이 균형이 가장 좋다고 평가하지만, 매번 완벽하지는 않아 여러 번 생성이 필요하다고 언급</td></tr><tr><td>부가 기능</td><td>자신의 목소리를 학습시켜 노래에 입히는 음성 복제(voice clone) 기능과, 흥얼거림·간단한 반주를 업로드해 완성곡으로 발전시키는 허밍-투-송(humming-to-song) 워크플로우를 Suno에서 직접 시연</td></tr><tr><td>도구 선택 기준</td><td>모든 도구가 팝 장르 기준으로는 비슷한 수준에 도달했기 때문에, 절대적 품질보다 라이선스 안전성·워크플로우 편의성·비용(무료 여부) 같은 &quot;부차적 이유&quot;가 실제 선택을 좌우한다고 주장</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>1차 비교 — 컨트리 장르(&quot;바나나빵&quot; 노래)</strong>: 동일 스타일 프롬프트로 Suno 5.5, 11 Music, LRA 3.5, Happy Shrimp, Pika Audio, Miniax Music 3를 차례로 재생. Suno 5.5는 전형적인 컨트리 사운드를 안정적으로 재현했고, 11 Music은 보컬에 AI 특유의 금속성 음색이 남아 있지만 Suno에 근접한 수준으로 평가. LRA 3.5는 부분적으로 진부하게 느껴지는 구간이 있어 3위권으로 언급. Happy Shrimp는 요청하지 않은 전주(프리코스)가 임의로 추가되는 등 인상적이지만 상위권 도구에는 못 미친다고 평가. Pika Audio는 &quot;불안감을 준다&quot;고 표현할 정도로 낮은 평가를 받으며 전문 워크플로우에는 부적합하다고 결론. Miniax Music 3는 오픈소스로 로컬 무료 실행이 가능해 흥미롭지만, 라이선스 정책이 다른 도구보다 훨씬 불분명하다는 한계가 지적됨.</li>
+<li><strong>2차 비교 — 데스메탈 장르</strong>: 팝보다 학습 데이터가 적은 메탈 장르에서는 여러 모델이 트랙 완성도에 어려움을 겪었으나, Suno 5.5가 &quot;밝고 행복한 하루&quot;를 데스메탈 사운드로 표현하는 데 가장 성공적이었다고 평가.</li>
+<li><strong>3차 비교 — 초콜릿 테마 뮤지컬</strong>: 대부분의 모델이 양호했지만 진행자는 LRA 3.5의 결과물을 가장 선호한다고 밝힘. 장르에 따라 우열이 바뀌는 점을 근거로, 특정 도구가 모든 상황에서 절대적으로 우월하지는 않다고 결론.</li>
+<li><strong>도구별 차별화 포인트</strong>: 11 Music은 라이선스가 확인된 데이터로만 학습되어 생성물에 대한 완전한 소유권을 주장할 수 있다는 점이 최대 강점(수익화·상업적 사용 시 안전). Suno는 웹사이트 내 타임라인 편집 기능으로 곡의 특정 구간만 골라 재프롬프트할 수 있다는 점이 실무 편의성 측면 강점. LRA 3.5는 개별 도구 사용법을 익히는 대신 대화형으로 요청하면 담당 에이전트가 곡을 만들어주는 방식이라 초보자 접근성이 가장 높다고 평가.</li>
+<li><strong>음성 복제(Voice Clone) 시연</strong>: Suno 고급 탭 → 음성(Voice) 섹션에서 음성 파일을 업로드하거나 직접 녹음해 모델을 학습시킨 뒤, 해당 목소리로 노래를 생성. 진행자는 컨트리 곡을 부른 샘플로 학습시켰는데, 학습 데이터 품질이 낮아 결과물에서 원치 않는 보드빌풍 콧소리가 섞였다고 언급. 같은 가사를 음성 복제 없이 일반 Suno 5.5로 생성한 버전과 비교했을 때, 일반 생성 버전이 음질·완성도 면에서 확연히 우수했다 — 즉 음성 복제는 재미 목적에는 적합하나 퀄리티를 우선한다면 텍스트-투-뮤직 방식이 낫다는 결론.</li>
+<li><strong>허밍-투-송(Humming-to-Song) 시연</strong>: 팀 동료가 마이크로 녹음한 매우 거친 허밍/즉흥 반주 오디오를 Suno 업로드 섹션에 넣고, 동일 가사·스타일로 재생성. 결과물은 원본의 막연한 멜로디 아이디어를 완성도 있는 곡으로 발전시켰으며, 진행자는 이를 &quot;막연한 음악 아이디어를 실제 곡으로 바꾸는&quot; 실용적 워크플로우로 소개.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 영상에서 다뤄지는 6개 도구는 모두 텍스트(가사·스타일 태그) 또는 오디오(허밍·음성 샘플)를 입력받아 완성된 악곡을 생성하는 텍스트-투-뮤직(text-to-music) / 오디오-투-뮤직 생성 모델이라는 공통점이 있다. 이 중 Miniax Music 3만 오픈 웨이트(open-weight) 모델로, 가중치 파일을 다운로드해 로컬 컴퓨터(자체 GPU)에서 API 비용 없이 실행할 수 있다는 점이 나머지 클라우드 전용 도구들과 구조적으로 다르다. 다만 오픈 웨이트라는 특성상 상업적 사용에 대한 라이선스 조항이 다른 상용 서비스보다 불명확하다는 트레이드오프가 있다. 음성 복제 기능은 소량의 사용자 음성 샘플로 보컬 특성을 학습(fine-tuning 유사 방식)한 뒤 임의의 가사·멜로디에 그 목소리를 입히는 방식이며, 학습 데이터(샘플 음질·발성 다양성)의 품질이 결과물 퀄리티를 좌우한다는 한계가 실제 시연에서 확인됐다. 허밍-투-송은 사용자가 제공한 저품질 멜로디 스케치(오디오)를 조건(condition)으로 삼아 모델이 동일한 선율 구조를 고품질 사운드로 재생성하는 방식으로, 별도의 작곡·편곡 지식 없이도 아이디어를 구체화할 수 있게 해준다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, 진행자는 &quot;AI 비디오 분야와 달리, AI 음악 분야에서는 다른 도구들을 압도적으로 능가하는 단일 승자가 없다&quot;고 명시적으로 밝힌다 — 이는 텍스트-투-비디오 시장과 달리 음악 생성 시장이 이미 여러 강력한 경쟁자가 비슷한 수준에서 경합하는 성숙 단계에 진입했음을 시사한다. 둘째, 도구 선택 기준이 &quot;어느 것이 더 잘 만드나&quot;에서 &quot;어느 것이 내 사용 목적(상업적 소유권 필요 여부, 비용, 워크플로우 편의성)에 맞는가&quot;로 이동했다는 점이 중요한 시장 신호다 — 11 Music의 라이선스 안전성, Suno의 편집 편의성, LRA 3.5의 대화형 접근성, Miniax의 무료 로컬 실행이 각각 다른 사용자군을 겨냥한 차별화 전략으로 해석된다. 셋째, 음성 복제 시연에서 드러난 &quot;학습 데이터 품질이 곧 결과물 품질&quot;이라는 한계는, 개인이 자기 목소리로 곡을 만들려는 크리에이터 워크플로우에 실질적 진입장벽(양질의 음성 샘플 확보 필요)이 남아있음을 보여준다. 넷째, 오픈소스 모델(Miniax Music 3)의 등장은 클라우드 종속 없는 무료 대안이 실용 수준에 도달했다는 신호이지만, 라이선스 불확실성 때문에 상업적 수익화를 노리는 크리에이터에게는 여전히 리스크 요인으로 남는다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>도구</th><th>제작사</th><th>실행 방식</th><th>이 영상에서의 평가</th><th>최적 사용자</th></tr></thead><tbody><tr><td>Suno 5.5</td><td>Suno</td><td>클라우드(유료)</td><td>진행자 1순위, 창의성·현실감 균형 최고, 타임라인 부분 재편집 가능</td><td>종합 완성도·편집 편의성을 원하는 제작자</td></tr><tr><td>11 Music</td><td>11 Labs</td><td>클라우드(유료)</td><td>Suno에 근접, 보컬에 약간의 금속성 음색</td><td>생성물의 완전한 상업적 소유권이 필요한 사용자</td></tr><tr><td>LRA 3.5</td><td>Google</td><td>클라우드(유료)</td><td>장르에 따라 최고 평가(초콜릿 테마), 대화형 워크플로우</td><td>개별 도구 학습 없이 쉽게 쓰고 싶은 초보자</td></tr><tr><td>Happy Shrimp</td><td>Alibaba</td><td>온라인 무료 체험</td><td>인상적이나 상위권 미달, 미요청 전주 임의 추가</td><td>가볍게 실험해보려는 사용자</td></tr><tr><td>Pika Audio</td><td>Pika Labs</td><td>클라우드</td><td>진행자 평가 최저(&quot;불안감&quot;), 전문 워크플로우 부적합</td><td>권장하지 않음</td></tr><tr><td>Miniax Music 3</td><td>Minimax</td><td>로컬 실행(오픈소스, 무료)</td><td>준수한 품질이나 라이선스 정책 불명확</td><td>비용 없이 로컬 실험하려는 사용자(수익화 비권장)</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>상업용 배경음악이 필요한 콘텐츠 제작자</strong>: 유튜브 영상·광고 등에 삽입할 음악의 저작권 분쟁 리스크를 최소화하고 싶다면, 라이선스 데이터로만 학습된 11 Music을 우선 검토하고 완전한 소유권 확보 여부를 확인하는 데 이 비교를 참고할 수 있다.</li>
+<li><strong>빠른 반복 작업이 필요한 제작팀</strong>: 곡의 특정 구간(도입부·후렴 등)만 다시 만들고 싶을 때, Suno의 타임라인 부분 재편집 기능을 활용하면 전체 곡을 처음부터 다시 생성하지 않고도 원하는 부분만 수정할 수 있어 제작 시간을 단축할 수 있다.</li>
+<li><strong>예산 제약이 있는 개인 크리에이터/스타트업</strong>: 유료 구독 없이 음악을 실험하고 싶다면 Miniax Music 3를 로컬에 설치해 무료로 테스트하되, 실제 수익화(광고 수익, 판매 등)가 목적이라면 라이선스 조항을 별도로 검토해야 한다는 점을 이 영상의 경고로 확인할 수 있다.</li>
+<li><strong>자신의 목소리로 커버곡·데모를 만들고 싶은 개인 사용자</strong>: 음성 복제 기능을 쓸 경우 결과물 품질이 학습 샘플의 발성 다양성·음질에 크게 좌우된다는 점을 미리 인지하고, 친구·가족과의 재미 목적이 아니라 퀄리티가 중요하다면 텍스트-투-뮤직 방식을 우선 고려하는 것이 이 시연에서 얻는 실전 교훈이다.</li>
+<li><strong>작곡 지식이 없는 초심자</strong>: 마이크로 흥얼거린 멜로디나 간단한 반주 녹음만으로도 허밍-투-송 기능을 통해 완성도 있는 곡으로 발전시킬 수 있어, 악기 연주·편곡 기술 없이도 아이디어를 구체적인 음악으로 구현하는 진입점으로 활용 가능하다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>AI 음악 생성 도구 시장은 지난 몇 주 사이 Miniax Music 3(오픈소스)와 Alibaba Happy Shrimp 같은 신규 도구가 연이어 출시되며 경쟁이 빠르게 격화되고 있다. 진행자는 AI 비디오 분야와 달리 음악 분야에서는 특정 도구가 압도적 우위를 점하지 못한 상태로, 장르별로 우열이 뒤바뀌는 &quot;혼전&quot; 양상이라고 진단한다. 이런 흐름은 향후 음악 생성 도구 선택이 절대적 품질 경쟁보다 라이선스 정책, 비용 구조(무료/오픈소스 vs 유료 클라우드), 편집·통합 워크플로우 같은 부차적 요소를 중심으로 세분화될 가능성을 시사한다. 특히 오픈 웨이트 모델의 등장은 비용 장벽을 낮추는 동시에, 저작권·라이선스 불확실성이라는 새로운 리스크를 상업적 사용자에게 부과하는 이중적 영향을 낳고 있어, 이 부분의 표준화 여부가 다음 국면의 관전 포인트가 될 것으로 보인다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유</th></tr></thead><tbody><tr><td>텍스트-투-뮤직(Text-to-Music)</td><td>가사·스타일 설명 같은 텍스트 입력만으로 완성된 악곡(멜로디+보컬+반주)을 생성하는 AI 방식</td><td>요리사에게 &quot;레시피&quot;만 주면 완성된 요리가 나오는 것과 유사</td></tr><tr><td>오픈 웨이트(Open-weight) 모델</td><td>모델의 학습된 가중치 파일을 공개해 누구나 다운로드 후 로컬에서 실행할 수 있게 한 AI 모델</td><td>앱을 클라우드 구독이 아니라 내 컴퓨터에 설치해 쓰는 것</td></tr><tr><td>음성 복제(Voice Clone)</td><td>소량의 사용자 음성 샘플을 학습시켜, 그 목소리로 임의의 가사를 노래하게 만드는 기능</td><td>성우의 목소리 샘플을 듣고 흉내내는 것과 유사한 AI 버전</td></tr><tr><td>허밍-투-송(Humming-to-Song)</td><td>사용자가 흥얼거리거나 간단히 연주한 저품질 멜로디 오디오를 입력받아 완성도 높은 곡으로 재생성하는 기능</td><td>스케치를 주면 완성된 그림으로 그려주는 것의 음악 버전</td></tr><tr><td>라이선스 데이터 학습(Licensed Training Data)</td><td>저작권이 확인·허가된 음원만으로 AI 모델을 학습시켜, 생성물의 권리 분쟁 소지를 줄이는 방식</td><td>정식 계약된 재료만 쓰는 레스토랑처럼 원산지가 투명한 것</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/wEU5yR9koeg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Curious Refuge · 2026-08-22</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

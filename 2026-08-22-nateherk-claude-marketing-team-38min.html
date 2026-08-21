@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Claude로 38분 만에 1인 마케팅팀 구축하기"><title>Claude로 38분 만에 1인 마케팅팀 구축하기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">MORNING DIGEST · 2026-08-22 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>Claude로 38분 만에 1인 마케팅팀 구축하기</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>Nate Herk가 가상의 캔 커피-단백질 음료 브랜드 &quot;Perk Form&quot;을 예시로, Claude Code 프로젝트를 처음부터 구성해 Higsfield(AI 이미지·영상 생성 툴)와 MCP로 연결하고, 웹사이트부터 광고 크리에이티브·소셜 콘텐츠·UGC 영상·분석 시트까지 실시간으로 생성하는 실습형 튜토리얼 영상</td></tr><tr><td>화자</td><td>Nate Herk (AI Automation 채널 운영자)</td></tr><tr><td>핵심 문제의식</td><td>기술 지식이나 영상·이미지 편집 능력이 없어도, Claude Code에 &quot;무엇을 요청할지&quot;만 알면 1인이 마케팅팀 전체 역할(브랜딩, 웹사이트, 광고, 소셜, UGC, 분석)을 수행할 수 있다는 주장</td></tr><tr><td>핵심 전제 — 3P 프레임워크</td><td>AI 마케팅 자산이 &quot;제네릭한 AI 슬롭&quot;으로 전락하지 않으려면 사전에 Pain(고객이 겪는 문제)·Person(그 문제를 겪는 구체적 인물)·Promise(브랜드가 그 문제를 해결한다는 약속) 세 가지를 명확히 정의해 Claude에게 컨텍스트로 제공해야 한다는 것이 전체 워크플로우의 출발점</td></tr><tr><td>사용 도구</td><td>Claude Code(데스크톱), Higsfield(Kling 2.5·Gemini·Flux·Sora·GPT Image 2·Nano Banana 등 다중 이미지/영상 모델을 하나의 구독으로 통합 제공하는 AI 생성 플랫폼, MCP로 Claude와 연결), Scroll World(스크롤 인터랙션 기반 3D 웹사이트를 만드는 오픈소스 GitHub 리포)</td></tr><tr><td>예시 브랜드</td><td>Perk Form — 커피 향과 단백질을 결합한 캔 음료(바닐라 라떼, 솔티드 캐러멜, 볼드 모카 3종). 타겟 페르소나는 &quot;커피에 의존하고 단백질을 챙기지만 아침을 자주 거르는 바쁜 피트니스 지향 직장인&quot;</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>Claude Code 프로젝트 폴더 설정 및 CLAUDE.md 작성</strong>: 데스크톱에 빈 폴더를 만들고 Claude Code(로컬 데스크톱 앱)로 열어 &quot;trust workspace&quot;를 승인한 뒤, 자연어로 비즈니스 정보(이름, 업종, 3P 등)를 덤프하면 Claude가 자동으로 <code>claude.md</code>(프로젝트 운영 문서 — 향후 세션이 무엇을 참고해야 하는지 안내)와 <code>context/</code>(브랜드 포지셔닝, 페르소나, 제품 정보, 보이스&amp;카피, 메시지 뱅크, 플레이북, 랜드스케이프 문서), <code>assets/</code>(로고·제품샷 원본), <code>output/</code>(생성물 저장) 폴더 구조를 자동 생성. CLAUDE.md는 매일·매주 업데이트하는 살아있는 문서로 취급하며 &quot;이것도 CLAUDE.md에 추가해줘&quot;라고 지시하면 됨.</li>
+<li><strong>&quot;Grill Me&quot; 스킬을 활용한 비즈니스 인터뷰</strong>: 사용자가 어떤 정보를 줘야 할지 막막할 때 쓰는 재사용 워크플로우(스킬)로, 마크다운 파일 형태의 프롬프트를 프로젝트에 설치하면 Claude가 사용자의 마케팅 사고방식을 파악할 때까지 한 문항씩 계속 질문하며 인터뷰하고 그 결과를 저장해 향후 컨텍스트로 활용. Nate Herk 본인의 무료 스쿨 커뮤니티에서 배포.</li>
+<li><strong>에셋 투입 및 검증</strong>: 로고(라이트/다크 모드, 텍스트형, 아이콘형), 제품샷(스튜디오컷 포함 11장), 브랜드 가이드라인 PDF(컬러, 로고 시스템, 타이포그래피)를 <code>assets/</code> 폴더에 드래그해 넣음. 폴더가 UI상 깨져 보이는 경우에도 &quot;이 폴더 안의 파일들이 보이는지&quot; 직접 물어보면 Claude가 실제로 파일을 읽어 목록을 확인해주는 방식으로 검증 가능.</li>
+<li><strong>Higsfield MCP 연결</strong>: Higsfield 계정에서 &quot;MCP and CLI&quot; 메뉴로 들어가 Claude용 연결 URL을 복사 → Claude의 Customize → Connectors → Add custom connector에 붙여넣고 이름 지정 → 로그인 승인. 연결 후에는 Claude에게 &quot;이미지 만들어줘&quot;, &quot;마케팅 스튜디오로 가줘&quot;라고 말하면 Claude가 Higsfield UI를 대신 조작하므로 사용자가 직접 Higsfield 화면을 들어갈 필요가 없어짐.</li>
+<li><strong>Scroll World 기반 인터랙티브 웹사이트 생성</strong>: Scroll World GitHub 리포 URL을 Claude에 붙여넣고 &quot;우리 로고·브랜드 가이드라인·제품샷과 이 리포를 결합해 프리미엄하고 인터랙티브한 웹사이트를 만들어달라, 3P와 페르소나를 반영해 카피와 구조를 설계해달라&quot;고 한 번에 요청. Claude는 브랜드 가이드라인 PDF에서 색상 체계를 그대로 가져오고, 페인포인트(&quot;아침에 두 가지 음료가 필요 없어야 한다&quot;)로 문을 열고, 스크롤에 따라 커피와 단백질 이미지가 하나로 합쳐지는 애니메이션, 3가지 맛별 Higsfield 생성 영상(Kling 2.5)이 스크롤과 연동되는 인터랙션을 한 번의 프롬프트로 구현. 로컬호스트에서 확인 후 GitHub→Vercel 연결로 퍼블릭 배포(영상에서는 상세 과정 생략, 별도 영상 안내).</li>
+<li><strong>4종 마케팅 에셋 동시 생성 요청</strong>: 같은 채팅에서 병렬로 아래 4개 프롬프트를 순차 전송해 백그라운드로 동시 처리시킴. 각 프롬프트에 &quot;브랜드 컨텍스트를 반영해서&quot;, &quot;완료 후 비용을 알려달라&quot;, &quot;output 폴더 내 지정 폴더에 저장해달라&quot;를 공통으로 포함시키는 것이 패턴.</li>
+</ol>
+<p>- <strong>광고 크리에이티브</strong>: BOGO(1+1) 프로모션용 이미지 광고 세트를 대량 생성 요청 → 18개 생성, 총 $3.43. 카피 없는 빈 템플릿도 함께 생성해 향후 카피만 교체 재사용 가능. - <strong>시즐릴(Sizzle Reel)</strong>: Higsfield 마케팅 스튜디오(음악·편집·템포를 자동으로 붙여주는 기능) 활용, 세로형·가로형 각 1편 생성 → 약 $17.55(영상이 이미지보다 고비용). - <strong>인스타그램 캐러셀</strong>: 브랜드 스토리·타겟·문제해결·맛 소개를 담은 캐러셀 5세트(세트당 7~8장) 생성 → 약 $9.56. - <strong>UGC(사용자 생성 콘텐츠) 스타일 영상 광고</strong>: 세로형, 실제 사용자가 제품을 들고 리뷰하는 듯한 연출로 여러 버전 생성. Higsfield는 이 과정에서 (a) 캐릭터 이미지 4종 생성 → (b) 스토리보드(보드) 생성으로 장면을 사전 계획 → (c) Kling 2.5 등으로 영상 생성 → (d) QA 패스(스크린샷 검수, 로고나 텍스트 오류 있는 컷은 자동 반려)의 4단계 파이프라인을 거침. 결과물은 사실적이지만 다소 &quot;광고스러운&quot; 톤이라는 한계를 화자가 직접 지적.</p>
+<ol>
+<li><strong>재사용 가능한 스킬화</strong>: 생성된 결과물 중 마음에 드는 스타일(예: 특정 캐러셀 디자인)을 &quot;이 스타일로 스킬을 만들어줘&quot;라고 요청하면 이후 동일 스타일 반복 생성이 가능해지고, 반대로 &quot;이 스타일은 다시 쓰지 말아줘&quot;로 배제도 가능.</li>
+<li><strong>분석 트래커(Excel) 자동 생성</strong>: 4라운드 생성이 끝난 뒤 &quot;생성 이력을 추적할 엑셀 시트를 만들어달라&quot;고 요청 → 약 8분 만에 <code>output/analytics/</code>에 브랜드 컬러·탭 디자인까지 브랜드 가이드라인을 반영한 Excel 파일 생성. 시트 구성은 생성 로그(ID·날짜·유형·캠페인·채널·핵심 앵글·산출물·사용 모델·크레딧·비용·상태), 크리에이티브 에셋 목록, 앵글별 성과, 카피 뱅크, 비용 요약 탭으로 구성되며 향후 조회수·참여도·전환 데이터를 추가해 성과 분석에 활용 가능.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 워크플로우의 핵심은 Claude Code가 단순 채팅 도구가 아니라 &quot;디렉터리/프로젝트 기반&quot;으로 동작한다는 점을 활용해, 프로젝트 폴더 자체를 지속적으로 성장하는 비즈니스 지식 베이스로 만드는 것이다. Higsfield는 MCP(Model Context Protocol) 커넥터를 통해 Claude와 연결되며, 이로써 Claude가 자연어 요청을 Higsfield의 다양한 모델(이미지: GPT Image 2·Nano Banana·Flux 등, 영상: Kling 2.5·Gemini·Sora 등)에 대한 구체적 API/UI 조작으로 자동 변환한다. 즉 사용자는 모델 선택이나 프롬프트 엔지니어링을 직접 하지 않고, 비즈니스 목표와 맥락만 자연어로 전달하면 된다. 웹사이트 구축에는 별도 오픈소스 리포(Scroll World)를 Claude에게 링크만 전달해 통합시키는 &quot;리포 URL 투입&quot; 패턴이 사용됐다. UGC 영상 생성은 캐릭터 생성 → 스토리보드 → 영상 생성 → QA 검수의 4단계 파이프라인으로 자동화되어 있어, 단일 프롬프트가 아니라 Claude가 내부적으로 여러 서브태스크를 계획하고 실행하는 에이전틱 워크플로우임을 보여준다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, &quot;AI 슬롭&quot;과 &quot;온브랜드 자산&quot;을 가르는 결정적 차이는 모델 성능이 아니라 사전에 얼마나 명확한 비즈니스 컨텍스트(3P, 브랜드 가이드라인, 페르소나)를 시스템에 심어주었는가에 있다는 것이 영상 전체를 관통하는 메시지다. 둘째, CLAUDE.md·context 폴더·스킬이라는 3층 구조(운영 지침, 지식 베이스, 재사용 워크플로우)는 비개발자도 소프트웨어 프로젝트처럼 &quot;누적되는 자산&quot;을 구축할 수 있게 해주며, 매 세션 처음부터 설명을 반복할 필요가 없어진다. 셋째, MCP 커넥터를 통해 Claude가 전문 SaaS 툴(Higsfield)의 UI를 대신 조작하는 패턴은 향후 다른 마케팅·디자인 툴에도 일반화 가능한 &quot;에이전트가 도구를 운전한다&quot;는 상호작용 모델을 제시한다. 넷째, 볼륨 생성(18개 광고, 5세트 캐러셀 등)과 비용 투명성(건별 비용 자동 보고)을 결합해 &quot;많이 만들고 데이터로 검증한다&quot;는 퍼포먼스 마케팅 사이클을 코딩 지식 없이 실행 가능하게 만들었다는 점에서, 향후 실제 성과 데이터(조회수·전환)를 다시 Claude에 연결해 &quot;무엇이 잘 됐는지 분석 → 잘 된 것 더 생성&quot;하는 폐루프 최적화로 확장 가능하다고 시사한다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>무엇을 하는가</th><th>산출물</th><th>비용(예시)</th></tr></thead><tbody><tr><td>1. 프로젝트 설정</td><td>빈 폴더 생성 → Claude Code로 열기 → 비즈니스 정보 자연어 덤프</td><td>CLAUDE.md, context/, assets/, output/ 폴더</td><td>무료</td></tr><tr><td>2. (선택) Grill Me 스킬</td><td>마크다운 스킬 설치 후 실행 → Claude가 사용자 인터뷰</td><td>인터뷰 결과 컨텍스트</td><td>무료</td></tr><tr><td>3. 에셋 투입</td><td>로고·제품샷·브랜드가이드 PDF를 assets/에 드래그</td><td>프로젝트 내 참조 가능한 원본 자산</td><td>무료</td></tr><tr><td>4. Higsfield 연결</td><td>MCP 커넥터 URL 발급 → Claude Connectors에 등록 → 로그인 승인</td><td>Claude ↔ Higsfield 연동</td><td>구독료(모델 통합)</td></tr><tr><td>5. 웹사이트 생성</td><td>Scroll World 리포 링크 + 브랜드 컨텍스트로 1회 프롬프트</td><td>로컬호스트 인터랙티브 3D 웹사이트</td><td>별도 언급 없음</td></tr><tr><td>6. 광고 크리에이티브</td><td>BOGO 프로모션 이미지 대량 생성 요청</td><td>이미지 18개</td><td>$3.43</td></tr><tr><td>7. 시즐 릴</td><td>마케팅 스튜디오로 음악·편집 포함 영상</td><td>세로/가로 각 1편</td><td>$17.55</td></tr><tr><td>8. 인스타 캐러셀</td><td>스토리·타겟·맛 소개 캐러셀 요청</td><td>5세트(세트당 7~8장)</td><td>$9.56</td></tr><tr><td>9. UGC 영상 광고</td><td>캐릭터→보드→영상→QA 4단계 파이프라인</td><td>세로형 UGC 영상 여러 편</td><td>가장 고비용(구체 수치 미공개)</td></tr><tr><td>10. 분석 시트 생성</td><td>&quot;생성 이력 트래커 만들어줘&quot; 1회 요청</td><td>브랜드 컬러 반영 Excel(생성로그·에셋목록·앵글성과·카피뱅크·비용요약)</td><td>약 8분 소요</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>신규 D2C 브랜드의 초기 마케팅 자산 구축</strong>: 정식 마케팅팀이나 에이전시 없이도 창업자가 3P(Pain·Person·Promise)만 명확히 정리해 Claude Code 프로젝트에 입력하면, 로고·웹사이트·광고·소셜 콘텐츠까지 하루 안에 일관된 브랜드 톤으로 초안을 확보할 수 있다.</li>
+<li><strong>AI 마케팅 서비스를 제공하려는 프리랜서/에이전시의 클라이언트 온보딩</strong>: 클라이언트별로 별도 Claude Code 프로젝트 폴더를 만들어 브랜드 가이드라인과 3P를 컨텍스트로 저장해두면, 이후 프로젝트마다 반복 설명 없이 온브랜드 산출물을 빠르게 생성하는 표준 온보딩 프로세스로 활용할 수 있다.</li>
+<li><strong>프로모션 시즌마다 광고 크리에이티브를 대량으로 테스트해야 하는 퍼포먼스 마케터</strong>: BOGO 같은 프로모션 문구만 바꿔 &quot;브랜드 컨텍스트 반영 + 비용 보고&quot;를 조건으로 건별 요청하면, 카피 없는 템플릿을 재사용해 다음 프로모션에서 카피만 교체하는 방식으로 제작 비용과 시간을 절감할 수 있다.</li>
+<li><strong>UGC 스타일 영상이 필요하지만 실제 크리에이터 섭외가 어려운 소규모 브랜드</strong>: 캐릭터 생성부터 스토리보드, QA 검수까지 자동화된 파이프라인을 활용해 초기 소셜 콘텐츠 실험을 진행하되, 결과물이 다소 &quot;광고스럽다&quot;는 한계를 인지하고 실제 UGC 벤치마킹이나 스크립트 검수 단계를 추가로 설계할 수 있다.</li>
+<li><strong>콘텐츠 생성과 성과 분석을 연결하려는 그로스팀</strong>: 매 생성 라운드마다 Excel 트래커에 앵글·비용·산출물을 자동 기록하게 하고, 추후 조회수·전환 데이터를 붙여 &quot;어떤 앵글과 카피가 잘 통했는지&quot; 주기적으로 리뷰하는 폐루프 최적화 프로세스를 구축할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>Higsfield는 다중 AI 생성 모델(이미지·영상)을 단일 구독으로 통합 제공하며 MCP를 통해 Claude와 직접 연동되는 초기 단계의 생태계를 보여준다. 화자는 Higsfield가 &quot;가장 저렴한 툴은 아니&quot;라고 인정하면서도, 여러 모델을 개별 구독하는 것보다 통합된 편의성과 마케팅 스튜디오 같은 부가 기능의 가치를 강조한다. 영상은 UGC 영상 결과물이 아직 &quot;광고처럼 느껴지는&quot; 한계, 로고 디테일이 가끔 틀리는 등 완전 자동화의 한계도 솔직하게 노출하며, 향후 방향으로는 (1) 성과 데이터와의 연결을 통한 폐루프 최적화, (2) 실제 UGC 벤치마킹 자료를 학습시켜 더 organic한 톤 구현, (3) 스킬 축적을 통한 브랜드별 재사용 가능한 제작 레시피 확장을 제시한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유</th></tr></thead><tbody><tr><td>3P (Pain·Person·Promise)</td><td>마케팅 자산 제작 전 정의해야 할 세 요소: 고객의 문제, 그 문제를 겪는 구체적 인물, 브랜드의 해결 약속</td><td>소설을 쓰기 전 인물·갈등·결말을 정하는 것과 같은 사전 설계 단계</td></tr><tr><td>MCP (Model Context Protocol)</td><td>AI 모델(Claude)이 외부 서비스(Higsfield)를 직접 조작할 수 있게 연결하는 표준 프로토콜</td><td>리모컨을 하나로 통합해 여러 가전을 한 번에 조작하는 유니버설 리모컨</td></tr><tr><td>CLAUDE.md</td><td>Claude Code 프로젝트의 운영 지침을 담은 마크다운 문서로, 매 세션마다 무엇을 참고할지 안내</td><td>신입 직원에게 주는 업무 매뉴얼 겸 온보딩 문서</td></tr><tr><td>스킬(Skill)</td><td>특정 작업 방식을 저장해 반복 재사용할 수 있는 마크다운 기반 프롬프트 워크플로우</td><td>요리 레시피 — 한 번 정리해두면 매번 같은 결과를 재현</td></tr><tr><td>UGC(User-Generated Content) 스타일 영상</td><td>실제 사용자가 제품을 리뷰하듯 촬영한 것처럼 보이게 만든 AI 생성 영상</td><td>인플루언서 리뷰 영상을 흉내 낸 연출된 &quot;가짜 리얼&quot; 콘텐츠</td></tr><tr><td>시즐 릴(Sizzle Reel)</td><td>음악·빠른 편집·강조 효과를 넣어 제품의 매력을 압축해 보여주는 짧은 홍보 영상</td><td>영화 예고편처럼 하이라이트만 모은 홍보용 티저</td></tr><tr><td>QA 패스</td><td>생성된 영상/이미지를 검수해 로고·텍스트 오류 등이 있는 결과물을 자동으로 반려하는 단계</td><td>공장 출고 전 품질검사 라인</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/yCACmFTiCto" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-08-22</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
