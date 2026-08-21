@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="이제 AI 에이전트가 대신하는 시대! 그록봇 vs 버즈 vs 엘엠스 비교"><title>이제 AI 에이전트가 대신하는 시대! 그록봇 vs 버즈 vs 엘엠스 비교</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>배움의 달인</span><span class="ey">MORNING DIGEST · 2026-08-22 · 배움의 달인 (AI·자동화)</span><span class="chip">🎬 영상</span></div><h1>이제 AI 에이전트가 대신하는 시대! 그록봇 vs 버즈 vs 엘엠스 비교</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>배움의 달인 채널 운영자 김문정이 본인이 실제로 굴리고 있는 3개 멀티에이전트 플랫폼(xAI 그록봇, 버즈, 엘엠스/LMS)의 화면을 직접 보여주며 사용법과 체감 장단점을 비교하는 단독 진행 영상</td></tr><tr><td>화자</td><td>김문정 (배움의 달인 채널 운영자)</td></tr><tr><td>배경</td><td>최근 그록봇(xAI), 에르메스(LMS) 봇 모드가 잇달아 출시되었고, 화자는 한 달 전부터 버즈를 써오던 상황에서 세 플랫폼을 비교하게 됨</td></tr><tr><td>핵심 주장</td><td>과거에는 &quot;하나의 에이전트와 인간의 협업&quot;이었다면, 이제는 &quot;에이전트와 에이전트, 또는 에이전트 집단 간의 협업&quot; 사이에 사람이 개입(휴먼 인 더 루프)하는 방식으로 업무 형태가 바뀌고 있다는 것</td></tr><tr><td>공통 운영 방식</td><td>화자는 각 플랫폼에서 개별 에이전트에게 직접 지시하지 않고, 전체를 총괄하는 &quot;본사(다린 홀딩스)&quot; 역할의 상위 에이전트에게만 요청을 던지면 본사가 하위 에이전트들을 알아서 조율해 처리하는 방식을 쓰고 있음</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>그록봇(xAI Grok Bot) — 가장 쉬운 입문용</strong>: xAI가 만든 봇 플랫폼으로, 봇 하나를 만들면 그 봇이 다시 다른 봇들을 생성하도록 위임할 수 있다. 화자는 자신의 취향·관심사·업무 방식을 총괄 봇(&quot;참모실/치프 오브 커맨더&quot;)에게 한 번에 입력했더니 필요한 하위 봇들을 알아서 세팅해줬다고 소개한다. 가장 큰 특징은 봇마다 가상 컴퓨터(VM)가 딸려 있다는 점 — 메모리 약 16GB, 저장공간 약 128GB 수준의 VM 안에 옵시디언을 설치하고 본인의 실제 옵시디언 볼트와 싱크시켜, 자기 컴퓨터가 꺼져 있어도 그록봇을 통해 노트를 열람·작성할 수 있다. 이는 과거 유행했던 &quot;맥미니에 오픈클로드를 깔아 24시간 상시 에이전트를 돌리는&quot; 방식과 달리 별도 물리 머신이 필요 없다는 장점으로 이어진다. 투자 관리용으로는 김기헌 대표가 만든 &quot;분리자&quot; MCP와 토스 API를 연동한 에이전트를 운용해 리포트 생성과 계좌 매매를 함께 처리하며, 실제로 주가 <span class="dn">하락</span> 시 &quot;추가 매수하지 말라&quot;는 조언을 받아 따른 경험도 소개한다. 이 밖에 여러 에이전트가 서로 회의(토론)하도록 팀을 구성하는 기능, Gmail 플러그인으로 파트너십 제안 메일만 골라 응대 초안을 만드는 비서 에이전트, 챗GPT 앱을 원격 컨트롤하는 에이전트 등 플러그인 생태계가 풍부하다는 점을 강조한다.</li>
+<li><strong>버즈(Buzz) — 커스터마이즈 가능한 오픈소스</strong>: 슬랙과 비슷한 쓰레드 기반 UI로, 작업별로 쓰레드가 생성되어 업무 이력 관리에 유리하다. &quot;펄스&quot;에서 진행한 작업을 확인할 수 있고 인박스로 알림도 받는다. 그록봇과의 결정적 차이는 에이전트를 구동하는 AI 모델(두뇌)을 직접 선택할 수 있다는 점 — 코덱스, xAI, 커서, 페이블, 업스테이지 등 다양한 모델을 에이전트 목적에 맞게 조합할 수 있다. 예시로 엑스필드(Hexfield) MCP가 연결된 에이전트 &quot;세린&quot;과, X(트위터)에서 이미지를 조사하는 &quot;소연&quot; 에이전트를 연계해, 소연이 조사한 내용을 세린에게 넘기면 세린이 엑스필드로 이미지를 생성하는 식의 에이전트 간 협업(체이닝)을 시연한다. 오픈소스이며 깃허브에서 내려받아 레일웨이(Railway)에 배포하면 거의 비용 없이 운영 가능하고, 도커 설치도 지원한다. 화자는 레일웨이에 올려 사용 중이며 비용 부담이 거의 없다고 언급한다.</li>
+<li><strong>엘엠스(LMS) — 봇 간 커뮤니케이션에 강점</strong>: 기존에 LMS에서 쓰던 &quot;프로파일&quot;들을 봇 형식으로 전환한 구조. 버즈와 유사하게 에이전트별로 구동 모델(브레인)을 다양하게 선택할 수 있으며, 특히 누 포털(모델 제공 플랫폼) 가입 시 업스테이지 솔라 프로 4, 롱캣 등 여러 모델을 한시적으로 무료 제공받아 활용할 수 있다(업스테이지 솔라 프로 4는 8월 25일까지 무료). LMS의 장점은 봇과 봇 사이의 커뮤니케이션이 특히 원활하다는 점이며, 단점은 공식 모바일 앱이 없어 이동 중 활용도가 그록봇·버즈보다 떨어진다는 점이다.</li>
+<li><strong>결론 — 용도별 선택 기준</strong>: 화자는 &quot;그록봇의 기능이 더 뛰어나다&quot;기보다 &quot;쉽다&quot;는 점에서 입문자에게 가장 추천할 만하다고 평가한다. 반면 기존에 구축해둔 스킬이나 MCP 자산이 있는 사람에게는 모델 커스터마이즈가 자유로운 버즈가 적합하다고 본다. 세 플랫폼 모두 화자 개인 회사(&quot;다린 홀딩스&quot;) 산하의 &quot;본사&quot; 에이전트가 총괄하며, 개별 에이전트 기능을 일일이 외우는 대신 본사에만 요청하면 본사가 하위 에이전트를 조율하는 방식을 취하고 있다고 설명한다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>세 플랫폼 모두 공통적으로 &quot;멀티에이전트 오케스트레이션&quot;을 지향한다는 점에서 기술적 뿌리를 공유한다. 그록봇은 에이전트마다 격리된 가상 컴퓨터(VM) 환경을 제공해 파일시스템 상태(옵시디언 볼트 등)를 유지한 채 상시 구동할 수 있게 하며, 이는 로컬 머신에 상시 프로세스를 띄워야 했던 기존 &quot;맥미니 + 오픈클로드&quot; 방식의 인프라 부담을 클라우드 쪽으로 옮긴 것으로 볼 수 있다. 버즈와 LMS는 VM 제공보다는 &quot;모델 선택의 자유도&quot;와 &quot;봇 간 메시지 전달(쓰레드/커뮤니케이션)&quot;에 무게를 둔 아키텍처로, 사용자가 이미 구축한 MCP(Model Context Protocol) 연동이나 스킬 자산을 재사용하기 쉽다는 차별점이 있다. 영상에서 언급된 MCP 연동 사례로는 분리자(투자 리포트), 엑스필드(이미지 생성), 김기헌 대표가 만든 커스텀 MCP 등이 있으며, 이는 각 플랫폼이 표준 MCP 프로토콜을 통해 외부 도구·데이터 소스와 연결되는 구조임을 보여준다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, 화자가 반복 강조하는 &quot;본사(상위 에이전트)에게만 요청하고 본사가 하위 에이전트를 조율한다&quot;는 운영 패턴은, 에이전트 수가 늘어날수록 사용자가 각 에이전트의 기능을 일일이 기억하기 어려워지는 문제에 대한 실전 해법으로, 향후 &quot;에이전트 오브 에이전트(오케스트레이터 계층)&quot; 설계가 개인 사용자 단에서도 표준적인 대응 패턴이 될 수 있음을 시사한다. 둘째, 그록봇의 VM 내장 방식은 로컬 상시구동 인프라(맥미니 등)의 필요성을 낮춰, 저사양 기기(16GB 미만 메모리) 사용자도 무거운 에이전트 워크플로우를 클라우드에서 상시 실행할 수 있게 한다는 점에서 에이전트 활용의 진입장벽을 낮추는 방향으로 작동한다. 셋째, 화자가 &quot;에이전트와 에이전트, 에이전트 집단의 협업 사이에 휴먼 인 더 루프가 들어간다&quot;고 정리한 표현은, AI 활용의 무게중심이 &quot;사람이 AI를 직접 조작&quot;하는 단계에서 &quot;AI 팀을 사람이 감독·승인&quot;하는 단계로 이동하고 있음을 보여주는 관찰로 읽을 수 있다. 넷째, 무료 모델 프로모션(업스테이지 솔라 프로 4, 롱캣 등)을 활용해 비용 없이 여러 브레인 모델을 실험해볼 수 있다는 점은, 멀티에이전트 플랫폼 입문 시 초기 비용 부담을 낮추는 실용적 팁으로 기능한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>플랫폼</th><th>운영 주체</th><th>핵심 특징</th><th>모델 선택 자유도</th><th>모바일 지원</th><th>비용</th><th>화자 평가</th></tr></thead><tbody><tr><td>그록봇 (xAI)</td><td>xAI</td><td>에이전트별 가상 컴퓨터(VM) 내장, 옵시디언 등 상시 파일시스템 유지</td><td>낮음(주로 xAI 모델)</td><td>지원</td><td>별도 언급 없음</td><td>가장 쉬움, 입문자 추천</td></tr><tr><td>버즈 (Buzz)</td><td>오픈소스</td><td>슬랙형 쓰레드 UI, 에이전트 간 체이닝(예: 소연→세린) 시연</td><td>높음(코덱스·xAI·커서·페이블·업스테이지 등)</td><td>지원</td><td>레일웨이 배포 시 거의 무료</td><td>기존 MCP·스킬 자산 있는 사용자에게 적합</td></tr><tr><td>엘엠스 (LMS)</td><td>LMS</td><td>봇 간 커뮤니케이션 특화, 프로파일→봇 전환</td><td>높음(누 포털 통해 무료 모델 다수)</td><td>미지원(공식 앱 없음)</td><td>무료 모델 프로모션 활용 가능</td><td>봇 간 협업엔 강점, 이동 중 활용도는 낮음</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>저사양 개인 컴퓨터로 상시 에이전트를 운영하려는 사용자</strong>: 맥미니 등 별도 상시구동 머신을 마련하기 어려운 경우, 그록봇의 VM 내장 구조를 활용해 옵시디언 볼트를 클라우드에 싱크하고 외출 중에도 노트 열람·작성 업무를 에이전트에게 위임하는 방식을 참고할 수 있다.</li>
+<li><strong>이미 MCP·스킬 자산을 구축한 파워유저의 플랫폼 전환 검토</strong>: 특정 워크플로우(투자 리포트, 이미지 생성 등)를 위한 MCP 연동을 이미 만들어둔 사용자가, 모델 선택 자유도가 높은 버즈나 LMS로 옮겨 기존 자산을 재사용하며 모델별 성능·비용을 실험하는 데 이 비교를 참고할 수 있다.</li>
+<li><strong>에이전트 수가 늘어나 관리가 어려워진 사용자의 오케스트레이터 도입</strong>: 여러 목적의 에이전트를 개별적으로 호출하다 관리 부담이 커진 경우, 화자의 &quot;본사에만 요청 → 본사가 하위 에이전트 조율&quot; 패턴을 벤치마킹해 상위 오케스트레이터 에이전트를 구성하는 설계에 참고할 수 있다.</li>
+<li><strong>무료 모델 프로모션을 활용한 비용 절감 실험</strong>: 업스테이지 솔라 프로 4, 롱캣 등 한시 무료 모델을 제공하는 누 포털 같은 서비스를 통해, 비용 부담 없이 여러 브레인 모델의 실제 업무 성능을 비교 테스트하려는 사용자에게 실용적인 진입 경로가 된다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>영상 시점 기준 그록봇(xAI), 버즈, 엘엠스(LMS) 봇 모드는 모두 최근 수개월 내 출시·업데이트된 상태로, 화자는 &quot;에이전트들이 너무 빠르게 계속 나오고 업데이트되고 있어&quot; 구체적인 세부 활용법을 깊게 다루기보다는 전체적인 사용 감각과 선택 기준을 전달하는 데 집중했다고 밝힌다. 업스테이지 솔라 프로 4 무료 제공은 2026년 8월 25일까지로 한정되어 있어 시의성이 있다. 화자는 세 플랫폼을 용도별로 병행 사용 중이며, 특히 최근에는 그록봇의 접근성과 플러그인 다양성에 이끌려 그록봇을 더 집중적으로 연구하고 있다고 언급해, 향후 개인 단위 멀티에이전트 운영에서 &quot;쉬운 입문 플랫폼 + 커스터마이즈 가능한 백엔드 플랫폼&quot;을 함께 쓰는 하이브리드 운영이 늘어날 가능성을 시사한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유</th></tr></thead><tbody><tr><td>그록봇(Grok Bot)</td><td>xAI가 제공하는 에이전트 플랫폼으로, 에이전트마다 가상 컴퓨터(VM)가 딸려 있어 파일시스템 상태를 상시 유지</td><td>각 봇에게 개인 노트북 한 대씩 쥐여준 것과 유사</td></tr><tr><td>버즈(Buzz)</td><td>쓰레드 기반 UI를 가진 오픈소스 멀티에이전트 플랫폼, 구동 모델을 자유롭게 선택 가능</td><td>업무별 대화방을 만들고 방마다 다른 담당 직원(모델)을 배치하는 것과 유사</td></tr><tr><td>엘엠스(LMS)</td><td>기존 프로파일을 봇 형식으로 전환한 플랫폼, 봇 간 커뮤니케이션에 특화</td><td>여러 비서가 서로 메모를 주고받으며 협업하는 사무실 구조</td></tr><tr><td>MCP (Model Context Protocol)</td><td>AI 에이전트가 외부 도구·데이터 소스에 표준화된 방식으로 연결되도록 하는 프로토콜</td><td>에이전트에게 꽂아 쓰는 확장 어댑터</td></tr><tr><td>휴먼 인 더 루프(Human in the Loop)</td><td>에이전트(들)의 자동화 프로세스 중간에 사람이 검토·승인·개입하는 구조</td><td>자동 조립 라인 중간에 품질 검사원이 서 있는 것</td></tr><tr><td>본사(오케스트레이터 에이전트)</td><td>여러 하위 에이전트를 조율·관리하는 상위 에이전트</td><td>실무자에게 직접 지시하지 않고 팀장에게만 업무를 맡기는 구조</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/UMDSNYu7iNU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>배움의 달인 · 2026-08-22</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
