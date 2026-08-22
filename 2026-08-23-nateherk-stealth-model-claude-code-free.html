@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="OpenRouter 익명 스텔스 모델로 Claude Code 무료로 쓰기 — 설정법과 실사용 한계"><title>OpenRouter 익명 스텔스 모델로 Claude Code 무료로 쓰기 — 설정법과 실사용 한계</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk</span><span class="ey">MORNING DIGEST · 2026-08-23 · Nate Herk</span><span class="chip">🎬 영상</span></div><h1>OpenRouter 익명 스텔스 모델로 Claude Code 무료로 쓰기 — 설정법과 실사용 한계</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>Nate Herk가 자신의 AI 운영체제 &quot;Herk 2&quot;에서 직접 화면을 공유하며 설정 과정과 실사용 결과를 시연하는 튜토리얼 겸 리뷰 영상</td></tr><tr><td>화자</td><td>Nate Herk (AI 자동화/에이전트 워크플로우 채널 운영자)</td></tr><tr><td>핵심 문제의식</td><td>Claude Code 안에서 유료 Claude 모델 대신 OpenRouter의 무료·익명 모델(Stealth 사의 Ox Alpha 등)로 바꿔치기해 완전 무료로 에이전틱 코딩을 돌릴 수 있는지, 그리고 그것이 실제로 쓸 만한 품질과 속도를 내는지 검증</td></tr><tr><td>핵심 내용</td><td>(1) OpenRouter 계정·API 키 발급 및 Claude Code settings 파일의 env 값 교체로 무료 모델 연결하는 방법, (2) Stealth Ox Alpha 모델의 정체 불명성과 데이터 보안 주의사항, (3) 랜딩페이지 생성·유튜브 분기 리포트·커뮤니티 스레드 분석 등 4가지 실사용 테스트 결과(모두 정상 작동하되 5~45분 걸리던 작업이 6시간 이상 소요), (4) 무료 모델의 강점(지식노동)과 약점(딥 기술 작업)에 대한 결론</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>설정 방법</strong>: OpenRouter.ai에서 계정을 만들고 API Keys 메뉴에서 새 키를 발급받은 뒤, Claude Code의 settings 파일 안 <code>env</code> 섹션에서 Anthropic 토큰 자리에 이 OpenRouter 키를 넣고, 모델명 자리에 <code>stealth/ox-alpha</code> 같은 문자열을 채워 넣으면 된다. 단, Claude Code 데스크톱 앱은 이 설정을 강제로 덮어써 클라우드 모델만 쓰게 하므로 이 방법이 불가능하며, VS Code(무료) + Claude Code 확장 또는 터미널 사용이 필수다.</li>
+<li><strong>Stealth Ox Alpha 모델의 비용과 정체</strong>: OpenRouter에 이날 새로 등록된 &quot;Ox Alpha&quot; 모델은 입력·출력 모두 100만 토큰당 $0로 표시되며, 화자가 하루 종일 6,160만 토큰을 사용하고도 실제 청구액은 약 13센트에 불과했다. 이 모델은 &quot;Stealth&quot;라는 익명 제공사가 배포한 것으로, 중국산인지 등 출처가 전혀 공개되지 않아 민감 데이터 입력을 자제해야 한다고 경고한다.</li>
+<li><strong>모델 교체 및 대체 옵션</strong>: Ox Alpha가 만약 유료로 전환되거나 사라지면, OpenRouter에서 &quot;free&quot;로 검색하거나, 매 요청마다 사용 가능한 무료 모델 중 무작위로 라우팅해주는 &quot;OpenRouter free models router&quot;를 대신 넣으면 된다. 서브에이전트(Sonnet/Opus 서브에이전트 등)를 호출할 때도 같은 모델로 통일하려면 settings 파일 내 모든 모델 지정 슬롯을 동일하게 바꿔야 한다.</li>
+<li><strong>실사용 테스트 1 — 랜딩페이지 생성(6시간 소요)</strong>: <code>/goal</code> 명령으로 다른 프로젝트 디렉터리의 브랜드 자료를 참고해 제품 소개 랜딩페이지를 만들도록 지시했다. 중간에 &quot;upstream idle timeout exceeded&quot; 에러가 반복 발생했으나, 작업을 작은 단위로 나누라고 지시하자 해결됐다. 결과물은 로고·색상·타이포그래피 등 브랜드 가이드라인을 정확히 반영했고, 장바구니 담기 등 기능도 실제로 작동했으며 기술/기능/시각적 검증까지 자체 수행했다. 다만 소요 시간이 6시간으로, 일반 Claude라면 이 정도 걸리지 않았을 것이라고 언급했다.</li>
+<li><strong>실사용 테스트 2 — 유튜브 분기·연간 리포트(6시간 소요)</strong>: 유튜브 채널 데이터를 분석해 분기·연간 리포트와 2027년 콘텐츠 예측을 구글 시트로 만들도록 지시했다. 프로젝트 폴더 안에 관련 CLAUDE.md나 컨텍스트가 전혀 없었음에도 다른 프로젝트를 스스로 탐색해 기존 API 키·스크립트를 찾아내 활용했다. 월별 조회수·시청시간·구독자·평균 시청자·인기 영상·국가/기기별 데이터, 전체 469개 영상 분석, 2027년 전망까지 포함한 리포트를 만들었으나, 화자는 &quot;일반 Claude Code라면 20~30분이면 될 일&quot;이었고 수동으로 하는 것과 비슷하거나 더 빠를 뻔했다고 평가했다.</li>
+<li><strong>실사용 테스트 3 — 스킬 데이터베이스 등록(45분, 결국 실패)</strong>: 자신의 &quot;Herk 2&quot; 프로젝트에서 유튜브 영상을 리소스 시트에 등록하는 작업을 지시하자, CLAUDE.md와 스킬을 정확히 찾아 활용했지만 44분이 지나서야 &quot;로컬 작업은 끝났지만 Claude Code 인프라 이슈로 막혔다&quot;며 스스로 재시도용 크론잡까지 만들고 결국 실패를 보고했다. 참고로 이 작업은 일반 Claude로는 5분 이내면 끝나는 작업이라고 밝혔다.</li>
+<li><strong>실사용 테스트 4 — 커뮤니티 스레드 분석(25분)</strong>: AIS+ 커뮤니티에서 &quot;지원 필요&quot; 스레드 166개를 수집해 공통 주제 3가지(30건, 15건, 35건)로 분류하는 작업은 25분 만에 완료됐다. 일반 Claude보다는 느리지만 앞선 사례들보다는 양호했고, 스킬 호출·Claude Code의 fetch·웹 검색 기능도 정상적으로 작동했다.</li>
+<li><strong>결론 — 강점과 한계</strong>: 화자는 딥 기술 작업(소프트웨어 개발, 복잡한 오케스트레이션)에는 무료/로컬 소형 모델이 Claude나 GPT 수준에 못 미치지만, 지식노동(리포트 작성, 데이터 정리, 스킬 실행)에는 충분히 쓸 만하다고 결론지었다. 또한 평소 업무 대부분은 Opus 5나 GPT-5.6 Soul 같은 고성능 모델이 &quot;오버킬&quot;이며, 크레딧이 소진됐을 때 가벼운 작업용으로 무료 모델을 대안으로 활용할 가치가 있다고 제안했다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 영상의 핵심은 Claude Code가 Anthropic 모델에 종속되지 않고 임의의 OpenAI 호환 엔드포인트(OpenRouter)로 라우팅될 수 있다는 구조적 특성을 이용한 것이다. Claude Code의 settings 파일 <code>env</code> 섹션에서 Anthropic 인증 토큰과 모델명을 OpenRouter API 키·임의 모델 문자열로 교체하면, 하네스 자체(파일 탐색, 도구 호출, 스킬 인보크, 웹 검색/fetch, 서브에이전트 오케스트레이션, <code>/goal</code> 워크플로우)는 그대로 유지된 채 두뇌 역할만 교체된다는 점이 확인됐다. 다만 데스크톱 앱은 이 오버라이드를 차단해 VS Code/터미널 환경에서만 가능하며, 무료 모델 특유의 &quot;upstream idle timeout exceeded&quot; 같은 인프라 에러, 작업당 5분~45분이던 일이 6시간까지 늘어나는 지연, 대형 작업 중단 등 안정성 이슈가 반복적으로 관찰됐다. 이는 무료/익명 모델의 추론 인프라가 유료 프론티어 모델 대비 처리 용량이나 우선순위가 낮게 배정되어 있음을 시사한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, OpenRouter 같은 모델 라우팅 계층이 존재하는 한 특정 하네스(Claude Code)와 특정 모델 제공사(Anthropic) 간의 결합이 느슨해지고 있으며, 이는 코딩 에이전트 하네스의 가치가 모델 자체가 아니라 도구 생태계·워크플로우 설계에 있다는 점을 강화한다. 둘째, 출처를 알 수 없는 &quot;스텔스&quot; 모델을 프로덕션 코드베이스나 민감 데이터에 연결하는 것은 데이터 유출·공급망 리스크를 수반하며, 화자 스스로도 반복적으로 &quot;민감 데이터는 주의하라&quot;고 경고한 점에서 이런 무료 모델 활용은 개인 실험·저위험 지식노동에 한정하는 것이 안전하다. 셋째, 동일 작업이 정상 모델 대비 6~10배 이상 느려지는 사례는 &quot;무료&quot;의 실제 비용이 금전이 아니라 시간과 신뢰성으로 지불된다는 점을 보여주며, 이는 크레딧 소진 시의 임시 대안 이상의 상시 대체재로 보기는 어렵다는 판단 근거가 된다. 넷째, Opus/GPT 최상위 모델이 일상 작업 대부분에는 &quot;오버킬&quot;이라는 화자의 관찰은, 작업 난이도에 따라 모델 등급을 세분화해서 쓰는 비용 최적화 전략(라우팅·티어링)이 에이전틱 코딩 운영에서 점점 더 중요해지고 있음을 시사한다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>설정 단계</th><th>내용</th></tr></thead><tbody><tr><td>1. 계정 생성</td><td>OpenRouter.ai 가입</td></tr><tr><td>2. API 키 발급</td><td>Credits → API Keys → Create new key</td></tr><tr><td>3. Claude Code 실행 환경</td><td>VS Code + Claude Code 확장 또는 터미널 (데스크톱 앱 불가)</td></tr><tr><td>4. settings 파일 수정</td><td><code>env</code> 섹션의 Anthropic 토큰 → OpenRouter 키로 교체</td></tr><tr><td>5. 모델명 지정</td><td>모든 모델 슬롯에 <code>stealth/ox-alpha</code> 등 원하는 모델명 기입 (서브에이전트용 슬롯 포함)</td></tr><tr><td>6. 대체 모델 전환</td><td>모델 소진/유료화 시 &quot;free&quot; 검색 또는 &quot;OpenRouter free models router&quot;로 교체</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th>테스트 작업</th><th>소요 시간</th><th>일반 Claude 대비</th><th>결과</th></tr></thead><tbody><tr><td>랜딩페이지 생성</td><td>6시간</td><td>훨씬 느림(추정)</td><td>성공, 브랜드 반영·기능 정상, 3단계 자체 검증 완료</td></tr><tr><td>유튜브 분기/연간 리포트</td><td>6시간</td><td>20~30분이면 될 일</td><td>성공, 469개 영상 분석·구글시트 산출</td></tr><tr><td>스킬 DB 등록</td><td>44분</td><td>5분 이내면 될 일</td><td>실패, 인프라 이슈로 중단·재시도 크론 자체 생성</td></tr><tr><td>커뮤니티 스레드 분석(166건)</td><td>25분</td><td>더 빠름(추정)</td><td>성공, 3개 공통 주제 분류 완료</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>개인 개발자/사이드 프로젝트 운영자</strong>: 월간 크레딧이 소진되었을 때, 코드 작성처럼 무거운 작업이 아니라 리포트 정리·데이터 요약 같은 지식노동에 한해 OpenRouter 무료 모델을 Claude Code에 임시 연결해 작업을 이어갈 수 있다.</li>
+<li><strong>AI 자동화 실험가</strong>: 여러 무료 모델(Stealth Ox Alpha, GLM 5.2 free 등)을 순차로 settings 파일에 교체 투입하며 자신의 워크플로우(<code>/goal</code>, 스킬 호출, 서브에이전트)가 모델을 바꿔도 동일하게 재현되는지 벤치마킹하는 데 참고할 수 있다.</li>
+<li><strong>비용에 민감한 소규모 팀/1인 기업 운영자</strong>: 비민감 데이터(공개 유튜브 통계, 커뮤니티 공개 게시글 등)에 한정해 무료 모델로 지식노동성 리포트를 저비용으로 생성하되, 고객 데이터·사내 기밀 등 민감 정보는 절대 익명 모델에 노출하지 않는 원칙을 세우는 데 이 사례를 근거로 삼을 수 있다.</li>
+<li><strong>에이전틱 코딩 러너/오케스트레이션 설계자</strong>: 딥 기술 작업(복잡한 소프트웨어 개발, 다단계 오케스트레이션)에는 여전히 Opus/GPT급 모델이 필요하다는 검증 결과를 참고해, 작업 난이도별로 모델 등급을 나누는 라우팅 전략을 세울 때 참고 사례로 활용할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>Stealth Ox Alpha는 영상 녹화 시점 기준 OpenRouter에 막 등록된 신규 무료 모델로, 화자는 OpenRouter가 무료 모델 라인업을 수시로 교체하므로 이 영상을 나중에 보는 시청자에게는 해당 모델이 이미 유료로 전환되었거나 사라졌을 수 있다고 명시했다. 이 경우 &quot;free&quot; 검색이나 자동 무료 라우터로 대체하면 동일한 설정 방식이 계속 유효하다. 화자는 딥 기술 작업에서는 여전히 프론티어 모델(Claude, GPT)이 압도적으로 우위에 있음을 재확인했으며, 향후에는 완전 무료·로컬(온디바이스) 모델을 Claude Code와 유사한 하네스에 연결하는 후속 영상도 고려하고 있다고 언급했다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유</th></tr></thead><tbody><tr><td>OpenRouter</td><td>500개 이상의 AI 모델에 단일 API 키로 접근할 수 있게 해주는 모델 라우팅 서비스</td><td>여러 통신사 회선을 하나의 SIM으로 골라 쓰는 알뜰폰 허브</td></tr><tr><td>스텔스 모델(Stealth model)</td><td>제공사·출처를 공개하지 않은 채 벤치마크·피드백 확보를 위해 익명으로 배포되는 신규 모델</td><td>브랜드를 가린 채 시장 반응부터 떠보는 무명 시제품</td></tr><tr><td>Claude Code 하네스</td><td>모델의 추론 능력에 파일 탐색·도구 호출·서브에이전트·스킬 실행 등을 얹어주는 에이전틱 실행 프레임워크</td><td>엔진(모델)을 갈아 끼울 수 있는 자동차 차체와 배선</td></tr><tr><td>env 설정(환경변수)</td><td>애플리케이션이 실행 시 참조하는 인증키·모델명 등 외부 설정값</td><td>기기에 꽂는 열쇠와 주소록 같은 외부 설정 카드</td></tr><tr><td>upstream idle timeout</td><td>요청을 처리하는 상위 서버가 응답 없이 대기하다 연결을 끊는 에러</td><td>전화 상담원이 응답 없이 대기시키다 자동으로 끊어버리는 상황</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/_kK_4cOYF4o" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk · 2026-08-23</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

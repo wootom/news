@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="탑다운 분석 6단계 — 반도체 집중 포트폴리오의 함정과 성장주 매매법"><title>탑다운 분석 6단계 — 반도체 집중 포트폴리오의 함정과 성장주 매매법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-08-23 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>탑다운 분석 6단계 — 반도체 집중 포트폴리오의 함정과 성장주 매매법</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>2026년 8월 20일 촬영, 슈퍼개미 이세무사TV 채널의 단독 강의형 영상. 이정윤 대표(밸런스 투자 아카데미)의 성장주 집중투자 내용을 바탕으로 진행자가 직접 탑다운 분석 방법론을 설명</td></tr><tr><td>화자</td><td>슈퍼개미 이세무사TV 진행자 (밸런스 투자 아카데미 관계자, 포트폴리오·주식 상담 진행)</td></tr><tr><td>핵심 문제의식</td><td>포트폴리오 상담 시 반도체 등 특정 산업에 쏠린 투자자가 많고, 종목 추천만 듣고 매수한 뒤 손실이 나면 매도 기준 없이 장기 투자로 전략이 바뀌는 문제가 반복됨. 이를 막기 위해 시장→산업→기업 순서로 내려가는 탑다운 분석 체계가 필요하다는 문제의식</td></tr><tr><td>핵심 내용</td><td>(1) 탑다운 vs 바텀업 분석의 차이, (2) 탑다운 분석 6단계(글로벌 시장→한국 시장→강한 산업→산업 내 1등 종목→매수 타이밍→매도 기준), (3) ETF+개별주 조합이 실제로는 반도체 한 산업에 쏠린 사례, (4) 탑다운 분석의 3가지 효과(통찰력, 선택과 집중, 포트폴리오 비중 조절), (5) 뉴스 해석의 확장 사고(엔비디아→HBM→장비→냉각→전력기기→ESS→원전), (6) 매수 전 6가지 체크리스트, (7) 8월 29일 강남역 단기 매매 특별 강연 안내(참가비 8만원)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>탑다운 vs 바텀업 정의</strong>: 탑다운은 경제→산업→기업→종목 순서로 좁혀가는 분석(숲을 먼저 보는 방식), 바텀업은 개별 기업 재무제표·경쟁력·밸류에이션에서 출발해 산업·경제로 올라가는 방식(나무부터 보는 방식). 밸런스 투자 아카데미는 기본적으로 탑다운 분석 기반으로 종목 선정법을 교육한다.</li>
+<li><strong>개인 투자자의 전형적 실패 패턴</strong>: &quot;이 종목 좋대&quot;라는 말만 듣고 매수 후 30% 목표로 단기 매매를 시작하지만, <span class="dn">-5%</span>~<span class="dn">-20%</span> 손실이 나면 &quot;좋은 회사니까 언젠가 오르겠지&quot;라며 뒤늦게 기업 공부를 시작해 단기 매매가 강제로 장기 투자로 전환되는 패턴을 지적. 원인은 매수 전에 시장·산업을 보지 않았기 때문이라고 진단.</li>
+<li><strong>탑다운 분석 6단계</strong>: ①미국 증시·국채 금리·달러·유가·금/원자재 흐름 확인(자금은 항상 이동하므로), ②한국 시장 점검(외국인 수급, 원달러 환율, 기업 실적 전망, 코스피/코스닥 강도 비교), ③강한 산업 선별(반도체·자동차·로봇·조선·방산·바이오·전력기기·2차전지·화장품 등으로 압축), ④산업 내 1등 종목 발굴(매출 성장 속도, 이익 증가, 신기술/신제품 보유, 실제 주가 강도), ⑤매수 타이밍 판단(<span class="up">상승</span> 추세 여부, 저항 돌파, 거래량 증가, 외국인·기관 수급, 조정 후 추세 재개), ⑥매도 기준 사전 설정(성장 논리 훼손, 주도 산업 교체, 실적 전망 <span class="dn">하락</span>, 추세선 이탈 시 대응 기준을 매수 전에 정해둘 것).</li>
+<li><strong>반도체 편중 포트폴리오 사례</strong>: 삼성전자·SK하이닉스·한미반도체·HPSP·원익IPS 5종목을 보유해도 사실상 반도체 한 산업에만 집중된 것이며, &quot;반도체 탑2 ETF&quot;·&quot;반도체 탑5 ETF&quot;·&quot;AI 탑3 ETF&quot;에 더해 삼성전자·SK하이닉스까지 개별 보유하면 분산 투자가 아니라 반도체 올인이 된다고 경고. 네이버 증권에서 ETF 구성 종목을 직접 확인해 실질 분산 여부를 점검할 것을 권고.</li>
+<li><strong>뉴스 해석의 확장 사고 사례</strong>: &quot;AI 데이터센터 투자 증가&quot; 뉴스에서 엔비디아만 떠올리면 1차원적 해석이며, HBM 반도체→반도체 장비→냉각 시스템→전력기기→변압기→ESS(에너지저장장치)→원전력 인프라까지 연쇄적으로 연결하는 사고가 초과수익의 차이를 만든다고 설명.</li>
+<li><strong>탑다운 분석의 3가지 효과</strong>: (1)통찰력 — 금리·환율·경기 변화가 어떤 산업에 어떻게 반응하는지 지속 관찰하며 시장 흐름을 읽는 능력이 축적됨. (2)선택과 집중 — 돈과 시간이 한정된 투자자가 강한 산업 4개(예: 반도체·전력기기·로봇·바이오)로 압축하면 수천 개 종목을 다 볼 필요가 없어짐. (3)포트폴리오 구성 — 산업별 강도(반도체 강함/전력기기 <span class="up">상승</span>추세/바이오 초기<span class="up">상승</span>/2차전지 약함)에 따라 균등 25%가 아닌 차등 비중 배분이 가능하며, 시장이 전반적으로 약하면 현금 비중을 높이는 것도 하나의 전략.</li>
+<li><strong>매수 전 6가지 체크리스트</strong>: 글로벌 시장이 위험자산 선호 국면인가, 한국 증시가 글로벌 대비 상대적으로 강한가, 현재 주도 산업은 무엇인가, 산업 내 최강 기업은 무엇인가, 주가가 <span class="up">상승</span> 추세에 있는가, 판단이 틀렸을 때 언제 매도할 것인가 — 이 6가지에 답하지 못하면 매수를 보류하고 추가 공부를 권장.</li>
+<li><strong>8월 29일 특별 강연 안내</strong>: 밸런스 투자 아카데미가 매월 1회 진행하는 단기 매매 강연회를 8월 29일(토) 오후 1시 강남역에서 개최. 우상향 연구이사(주도주 포착 전문)와 몽당연필 연구부장(집중투자·추세 전문)이 강연하며 참가비 8만원, 신청은 영상 고정 댓글 참조.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 영상은 특정 종목 매매 신호가 아니라 투자 의사결정의 상위 프레임워크(탑다운 분석)를 다루며, 핵심은 &quot;종목 선택&quot;보다 &quot;산업·시장 국면 판단&quot;을 선행 조건으로 삼는 것이다. 6단계 체크리스트는 거시(미국 금리·달러·유가) → 중시(한국 시장 수급·환율) → 산업(반도체·로봇·바이오 등 소수로 압축) → 개별 종목(매출·이익 성장, 실제 주가 강도) → 타이밍(추세·거래량·수급) → 리스크 관리(사전 매도 기준)의 계층 구조로 설계되어 있으며, 이는 하향식(top-down) 자산배분 이론의 실전 적용 버전에 가깝다. 또한 ETF와 개별주를 병행 보유할 때 실질 산업 집중도를 재계산해야 한다는 지적은, 명목상 종목 수가 많아도 상관관계가 높은 자산군에 몰리면 분산 효과가 사라진다는 포트폴리오 이론의 기본 원리(상관계수 기반 분산)를 반도체 투자자에게 구체적으로 적용한 사례다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, 개인 투자자가 반도체(삼성전자·SK하이닉스 등)에 자산이 쏠려 있다면 이는 종목 수가 아니라 산업 노출도 기준으로 재점검해야 하며, ETF 구성 종목을 직접 확인하는 습관이 실질적 분산 투자의 전제 조건이 된다. 둘째, 매수 시점에 매도 기준(성장 논리 훼손, 주도 산업 교체, 추세선 이탈)을 미리 설정하지 않으면 손실 발생 시 단기 매매가 의도치 않게 장기 보유로 전환되는 행동 편향이 반복되므로, 매수와 매도 계획을 분리하지 않고 동시에 세우는 규율이 강조된다. 셋째, 동일한 뉴스(예: AI 데이터센터 투자 확대)를 접했을 때 엔비디아라는 단일 종목에 그치지 않고 HBM·장비·냉각·전력기기·ESS·원전까지 산업 밸류체인 전체로 사고를 확장하는 습관이 초과수익 창출의 실질적 차별점이라는 점에서, 뉴스 해석력 자체가 투자 역량의 핵심 변수로 제시된다. 넷째, 시장 전체가 약할 때는 종목을 억지로 찾기보다 현금 비중을 높이는 것도 정당한 전략이라는 관점은, 항상 매수 종목을 찾아야 한다는 강박에서 벗어나 자산배분 관점의 유연성을 갖추라는 메시지로 해석된다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>점검 항목</th><th>확인 지표</th></tr></thead><tbody><tr><td>1. 글로벌 시장</td><td>위험자산 선호 여부</td><td>미국 증시, 국채 금리, 달러 강약, 유가, 금/원자재</td></tr><tr><td>2. 한국 시장</td><td>상대적 강도</td><td>외국인 수급, 원달러 환율, 기업 실적 전망, 코스피/코스닥 비교</td></tr><tr><td>3. 강한 산업</td><td>자금 유입 산업</td><td>반도체·자동차·로봇·조선·방산·바이오·전력기기·2차전지·화장품</td></tr><tr><td>4. 산업 내 1등 종목</td><td>성장·경쟁력</td><td>매출 성장 속도, 이익 증가, 신기술/신제품, 실제 주가 강도</td></tr><tr><td>5. 매수 타이밍</td><td>추세·수급</td><td><span class="up">상승</span> 추세, 저항 돌파, 거래량 증가, 외국인·기관 매수, 조정 후 추세 재개</td></tr><tr><td>6. 매도 기준(사전 설정)</td><td>리스크 관리</td><td>성장 논리 훼손, 주도 산업 교체, 실적 전망 <span class="dn">하락</span>, 추세선 이탈</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>반도체 집중형 개인 투자자</strong>: 삼성전자·SK하이닉스와 반도체 ETF를 동시 보유 중이라면 네이버 증권에서 ETF 구성 종목을 직접 확인해 실질 산업 집중도를 재계산하고, 전력기기·로봇·바이오 등 상관관계가 낮은 산업으로 비중을 재분배하는 데 이 체크리스트를 활용할 수 있다.</li>
+<li><strong>종목 추천에 의존해 매매하는 초보 투자자</strong>: 매수 전 6가지 체크리스트(글로벌 위험선호, 한국 증시 강도, 주도 산업, 산업 내 1위 기업, <span class="up">상승</span> 추세 여부, 사전 매도 기준)를 캡처해 실제 매수 직전 점검표로 활용하면, 손실 시 장기 보유로 전략이 바뀌는 패턴을 예방할 수 있다.</li>
+<li><strong>뉴스 기반 종목 발굴자</strong>: AI·데이터센터 등 특정 테마 뉴스를 접했을 때 단일 종목(예: 엔비디아)에 그치지 않고 HBM→장비→냉각→전력기기→ESS→원전으로 밸류체인을 확장해 관련 산업 전반의 수혜주를 스크리닝하는 사고 프레임으로 적용할 수 있다.</li>
+<li><strong>자산배분을 고민하는 포트폴리오 관리자</strong>: 반도체 강세·전력기기 <span class="up">상승</span>추세·바이오 초기<span class="up">상승</span>·2차전지 약세처럼 산업별 강도를 평가한 뒤, 균등 비중이 아닌 차등 비중(강한 산업 비중 확대, 약한 산업 축소, 시장 전체 약세 시 현금 비중 확대)으로 리밸런싱하는 실무 기준으로 활용할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>영상은 특정 시점의 시장 전망보다 매매 방법론에 초점을 맞추고 있어 향후 지속적으로 재사용 가능한 프레임워크로 제시된다. 밸런스 투자 아카데미는 이정윤 대표의 성장주 집중투자 철학을 바탕으로 매월 1회 단기 매매 특별 강연을 운영 중이며, 8월 29일 강남역 강연에서는 우상향 연구이사(주도주 포착)와 몽당연필 연구부장(집중투자·추세)이 탑다운 분석을 심화한 종목 선정 실무를 다룰 예정이다. 진행자는 반도체 편중 투자자가 늘어나는 현재 시장 상황을 지적하며, 앞으로도 산업별 자금 흐름 변화(반도체·로봇·바이오·전력기기 등)를 지속적으로 모니터링해 포트폴리오 비중을 조정해야 한다는 원칙을 재확인했다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유</th></tr></thead><tbody><tr><td>탑다운 분석(Top-down)</td><td>경제→산업→기업→종목 순서로 범위를 좁혀가는 투자 분석법</td><td>숲 전체를 먼저 살핀 뒤 좋은 나무를 찾는 것</td></tr><tr><td>바텀업 분석(Bottom-up)</td><td>개별 기업의 재무·경쟁력부터 분석해 산업·경제로 확장하는 투자 분석법</td><td>나무 하나하나를 뜯어본 뒤 숲의 상태를 파악하는 것</td></tr><tr><td>주도주</td><td>산업 성장·실적 성장·주가 <span class="up">상승</span>이 동시에 나타나며 시장을 이끄는 종목</td><td>반 전체 성적을 끌어올리는 상위권 학생</td></tr><tr><td>HBM(고대역폭메모리)</td><td>AI 반도체에 탑재되는 고속·고용량 메모리 반도체</td><td>좁은 도로 대신 다차선 고속도로를 놓아 데이터 전송량을 늘린 것</td></tr><tr><td>ESS(에너지저장장치)</td><td>전력을 저장했다가 필요할 때 공급하는 대용량 배터리 시스템</td><td>전기를 미리 받아두는 대형 저수지</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/hpdnUYN-kYQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-08-23</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
