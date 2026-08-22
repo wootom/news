@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="DeepSeek 하네스 — 클로드 코드급 에이전트를 무료 오픈소스로 구동하는 법"><title>DeepSeek 하네스 — 클로드 코드급 에이전트를 무료 오픈소스로 구동하는 법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">MORNING DIGEST · 2026-08-23 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>DeepSeek 하네스 — 클로드 코드급 에이전트를 무료 오픈소스로 구동하는 법</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>Jack Roberts가 직접 화면을 시연하며 설치·설정·활용법을 단계별로 안내하는 튜토리얼형 영상</td></tr><tr><td>화자</td><td>Jack Roberts (AI 도구·에이전틱 워크플로우 채널 운영자, Claude Code Masterclass 판매)</td></tr><tr><td>핵심 문제의식</td><td>DeepSeek가 공개한 오픈소스 &quot;하네스&quot;가 클로드 코드에 필적하는 에이전트 기능을 완전 무료로 제공하는데도, 이를 어떻게 실제 도구·서비스와 연동해 활용하는지 다루는 채널이 없다는 공백을 메운다</td></tr><tr><td>핵심 내용</td><td>(1) 모델과 하네스의 개념 구분, (2) DeepSeek 하네스가 역대 최고 속도로 성장 중인 깃허브 레포(약 17만 스타, MIT 라이선스)라는 사실, (3) 설치 및 모델 전환 방법, (4) Zapier를 통한 Gmail 등 외부 서비스 연동 시연, (5) 클로드 코드 대비 사용처 구분 기준, (6) 가격·보안·호환성 관련 FAQ</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>모델(brain) vs 하네스(body) 개념 구분</strong>: 저자는 &quot;모델은 두뇌, 하네스는 몸&quot;이라는 비유로 설명하며, 클로드라는 모델에 클로드 코드라는 하네스가 붙듯, DeepSeek 모델(V4 flash)에도 이번에 무료 하네스가 새로 공개됐다고 소개한다. 하네스가 UI, 플러그인, 채팅 툴을 모두 교체 가능하게 만드는 껍데기 역할을 한다는 점이 핵심이다.</li>
+<li><strong>폭발적 성장과 라이선스</strong>: 공개된 지 얼마 되지 않아 약 17만(170,000) 개의 깃허브 스타를 받아 &quot;역대 가장 빠르게 성장한 레포&quot;로 소개되며, MIT 라이선스로 배포돼 사용자가 자유롭게 수정·재배포할 수 있다.</li>
+<li><strong>설치 방법</strong>: 공식 웹사이트에서 &quot;View on GitHub&quot;를 클릭해 레포 링크를 복사한 뒤, 클로드(또는 유사 코딩 어시스턴트)의 새 채팅창에 &quot;이 깃허브 레포를 다운로드해서 로컬호스트에 열어달라&quot;고 요청하면 클로드가 설치를 대행해준다. 설치 후 열리는 로컬 페이지에서 모델 선택, effort(추론 강도) 설정 등을 조정할 수 있다.</li>
+<li><strong>완전한 모델 애그노스틱 구조</strong>: 하네스 내에서 DeepSeek뿐 아니라 클로드 코드 모델, OpenRouter의 무료 모델까지 자유롭게 전환하며 사용할 수 있다. 시연에서는 &quot;메모리 도구를 직접 만들어달라&quot;는 요청을 하네스에 실행시켜, 작업 단계별 세부 로그(토큰 수, 소요 시간 등)를 확인하는 과정을 보여준다.</li>
+<li><strong>네 가지 작업 모드</strong>: Standard 모드(음성 코딩 에이전트, 파일 편집 등 기본 기능), PTC 모드(Standard 기능에 Code Mode SDK로 다단계 작업을 하나의 TypeScript 프로그램으로 결합하는 기능 추가), Minimal 모드, Creative 모드(런타임 인스펙션을 포함한 커스텀 에이전트 프리셋 제작용)로 구성되며, 저자는 실제로는 대부분 Standard 모드만으로 충분했다고 언급한다.</li>
+<li><strong>Zapier를 통한 외부 서비스 연동 시연</strong>: 하네스에 Zapier를 인증 레이어로 연동해 Gmail 초안 작성을 지시하는 실제 시연을 진행한다. Zapier를 선택한 이유로 Outlook 등 다른 플랫폼과의 연동이 School(저자의 커뮤니티 플랫폼)에서는 불가능했던 것과 달리 손쉽게 가능하다는 점을 든다. 실제로 &quot;Gmail에 가서 부다페스트가 얼마나 아름다운 도시인지 설명하는 이메일 초안을 나에게 써달라&quot;는 요청을 실행해 스킬 카탈로그·툴 콜 실행 과정을 보여준다.</li>
+<li><strong>가격 구조와 벤치마크</strong>: DeepSeek 모델은 Opus·GPT-5.6 대비 성능이 &quot;한 단계 아래&quot;지만 &quot;비용 대비 90~95%의 성능&quot;이라는 위치로 소개되며, OpenRouter 기준 누적 사용량이 11조(11 trillion) 토큰을 넘어 OpenRouter 내 최대 트래픽 모델이라는 수치가 제시된다.</li>
+<li><strong>클로드 코드 사용 vs DeepSeek 하네스 사용 기준</strong>: 클라이언트에게 보여줄 완성도 높은 결과물(예: 채널에서 만드는 웹사이트)이 필요하거나 디자인 감각이 중요할 때는 클로드 코드를 권장하고, 대량 작업이라 비용이 중요하거나 신모델을 빠르게 테스트하고 싶을 때는 DeepSeek 하네스를 &quot;워크호스(workhorse)&quot;로 쓰라고 구분한다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 영상이 다루는 핵심 기술 구조는 &quot;모델(brain)&quot;과 &quot;하네스(body, 에이전틱 오케스트레이션 레이어)&quot;의 분리이며, DeepSeek 하네스는 이 하네스 레이어 자체를 MIT 라이선스 오픈소스로 공개함으로써 클로드 코드·Codex처럼 특정 벤더에 종속된 폐쇄형 하네스와 대비되는 완전 커스터마이징 가능한 대안을 제공한다. 하네스는 로컬 머신에서 구동되며(클라우드 아님), 텔레메트리가 기본 꺼짐 상태이고 API 키 기반으로만 인증되므로 클로드 코드/Codex 구독을 그대로 재사용할 수는 없다. Standard/PTC/Minimal/Creative 네 가지 모드 구분과 Code Mode SDK를 통한 다단계 TypeScript 프로그램 결합 기능은, 단순 챗봇을 넘어 실제 에이전틱 자동화(멀티스텝 툴 호출, 외부 서비스 인증 연동)를 지원하는 구조임을 보여주며, Zapier 같은 인증 레이어를 매개로 Gmail·Outlook 등 실제 생산성 도구와 연결되는 점이 이번 시연의 기술적 핵심이다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>DeepSeek 하네스의 오픈소스·무료 공개는 에이전틱 코딩 도구 시장에서 &quot;모델 종속형 하네스&quot;에서 &quot;모델 애그노스틱 하네스&quot;로 무게중심이 이동할 수 있음을 시사한다. 사용자가 브랜드에 상관없이 최신 모델(DeepSeek, 클로드, ChatGPT, 로컬 Ollama 모델까지)을 하나의 하네스 안에서 자유롭게 교체할 수 있게 되면서, 특정 랩(Anthropic, OpenAI)의 폐쇄형 워크플로우 락인 효과가 약화될 가능성이 있다. 동시에 저자가 제시하는 &quot;프론티어 모델(클로드, GPT) vs 워크호스 모델(DeepSeek)&quot;이라는 이분법은, 고품질·고비용 결과물과 대량·저비용 반복 작업을 서로 다른 모델에 분리해 배정하는 하이브리드 운영 전략이 실무에 자리잡고 있음을 보여준다. 다만 하네스가 아직 초기 단계라 불안정할 수 있다는 저자의 경고, 그리고 클로드 코드 특유의 &quot;내장된 디자인 감각&quot;이 하네스만으로는 완전히 대체되지 않는다는 관찰은, 오픈소스 하네스가 범용성은 확보했지만 완성도 면에서는 아직 벤더 통합형 도구를 완전히 대체하지 못했다는 한계도 동시에 드러낸다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>클로드 코드(Claude Code)</th><th>DeepSeek 하네스</th></tr></thead><tbody><tr><td>비용</td><td>구독 기반(고가)</td><td>무료 앱 + 토큰 사용료만(저가)</td></tr><tr><td>권장 사용처</td><td>클라이언트 대상 결과물, 디자인 완성도가 중요한 작업(예: 웹사이트 제작)</td><td>대량 작업, 비용이 중요한 워크로드, 신규 모델 테스트</td></tr><tr><td>모델 유연성</td><td>클로드 계열 중심</td><td>DeepSeek·클로드·OpenRouter 무료 모델·로컬 Ollama 모델 등 완전 교체 가능</td></tr><tr><td>인증 방식</td><td>클로드 코드/Codex 구독</td><td>API 키만 사용(구독 재사용 불가)</td></tr><tr><td>성능 포지션</td><td>Opus·GPT-5.6 수준(최상위)</td><td>최상위 대비 한 단계 아래, &quot;90~95% 성능을 훨씬 낮은 비용에&quot;</td></tr><tr><td>라이선스/설치</td><td>벤더 종속 폐쇄형</td><td>MIT 라이선스, 깃허브에서 직접 설치, 완전 커스터마이징 가능</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>비용에 민감한 개발자/1인 창업자</strong>: 대량의 반복적 코딩·문서 작업을 처리할 때 클로드 코드 대신 DeepSeek 하네스를 &quot;워크호스&quot;로 배정해, 토큰 비용만 지불하며 90~95% 수준의 결과물을 확보하는 방식으로 운영 비용을 절감할 수 있다.</li>
+<li><strong>여러 모델을 비교 테스트하려는 실험적 사용자</strong>: 신모델이 출시될 때마다 별도 구독 없이 DeepSeek 하네스에 API 키만 꽂아 즉시 성능을 체험해보고, 자신의 워크플로우에 맞는 모델을 선택하는 용도로 활용할 수 있다.</li>
+<li><strong>자동화 워크플로우 구축자</strong>: Zapier 같은 인증 레이어를 하네스에 연동해 Gmail 초안 작성, Outlook 연동 등 반복적인 이메일·커뮤니케이션 업무를 에이전트에게 위임하는 자동화 파이프라인을 구축할 수 있다.</li>
+<li><strong>자체 에이전트 프리셋을 만들고 싶은 파워유저</strong>: Creative 모드나 PTC 모드(Code Mode SDK)를 활용해 표준 UI에 얽매이지 않는 커스텀 에이전트를 직접 설계하고, 이를 플러그인·스킬 형태로 재배포할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>DeepSeek 하네스는 공개 직후 약 17만 스타를 확보하며 &quot;역대 가장 빠르게 성장한 레포&quot;라는 초기 흥행을 보이고 있으나, 저자는 &quot;아직 초기 단계이므로 완벽함을 기대하지 말라&quot;고 명시하며 안정성 면에서는 검증이 더 필요하다고 밝힌다. OpenRouter 기준 DeepSeek V4 flash가 누적 11조 토큰으로 최대 트래픽 모델 자리를 차지하고 있어 실제 채택률은 이미 상당한 수준이며, 향후 하네스 생태계(플러그인 스토어 포함)가 성숙할수록 모델 애그노스틱 에이전틱 워크플로우가 클로드 코드·Codex와 나란히 표준 옵션으로 자리잡을 가능성이 있다. 저자는 후속 영상에서 에이전틱 시스템을 제대로 구축하는 법을 더 다루겠다고 예고했다.</p></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유</th></tr></thead><tbody><tr><td>하네스(Harness)</td><td>LLM 모델을 감싸 UI·툴 호출·파일 편집 등 실제 작업 실행을 담당하는 오케스트레이션 레이어</td><td>두뇌(모델)를 조종하는 몸(하네스)</td></tr><tr><td>MIT 라이선스</td><td>사용·수정·재배포가 거의 제한 없이 허용되는 오픈소스 라이선스</td><td>완전히 열린 설계도를 무료로 나눠주는 것</td></tr><tr><td>PTC 모드 / Code Mode SDK</td><td>여러 단계의 작업을 하나의 TypeScript 프로그램으로 묶어 한 번에 실행하게 하는 모드</td><td>낱개 심부름 여러 번 대신 통합된 매뉴얼 한 장으로 처리</td></tr><tr><td>워크호스(Workhorse) 모델</td><td>최상위 프론티어 모델 대비 약간 낮은 성능을 훨씬 낮은 비용에 제공해 대량 작업에 적합한 모델</td><td>경주마 대신 짐 나르는 일소</td></tr><tr><td>Zapier 인증 레이어</td><td>여러 외부 서비스(Gmail, Outlook 등) 로그인·권한을 한 번에 연결해주는 중개 서비스</td><td>여러 건물 출입증을 하나의 마스터키로 통합하는 것</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/RkNafW_Mv9w" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-08-23</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
