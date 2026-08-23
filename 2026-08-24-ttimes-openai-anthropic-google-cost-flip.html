@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="대답할 때마다 돈 나가는 오픈AI·앤스로픽, 돈 들어오는 구글 — LLM 왕좌 경쟁을 떠난 구글의 광고 반전 전략"><title>대답할 때마다 돈 나가는 오픈AI·앤스로픽, 돈 들어오는 구글 — LLM 왕좌 경쟁을 떠난 구글의 광고 반전 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-08-24 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>대답할 때마다 돈 나가는 오픈AI·앤스로픽, 돈 들어오는 구글 — LLM 왕좌 경쟁을 떠난 구글의 광고 반전 전략</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>티타임즈TV(진행자 이현)가 구글의 최근 AI 전략 변화를 딥마인드 인사 개편, 모델 성능 순위, 조직 개편, 제품·과금 전략 네 축으로 정리한 분석 영상</td></tr><tr><td>화자</td><td>이현 (티타임즈TV)</td></tr><tr><td>핵심 문제의식</td><td>코딩·모델 성능 순위에서 뒤처지는 것처럼 보이는 구글이 정말 AI 경쟁에서 밀려나고 있는가, 아니면 &quot;가장 똑똑한 모델(왕좌)&quot;이 아니라 &quot;가장 싸고 널리 제공되는 서비스&quot;로 승부 기준 자체를 바꾼 의도된 전략 전환인가</td></tr><tr><td>핵심 내용</td><td>(1) 코딩 AI 지출·오픈라우터 사용량·벤치마크 모두에서 제미나이가 열세, (2) 딥마인드 핵심 인력(제프 딘 퇴사, 데미스 하사비스 사실상 은퇴성 승진, 노암 셰이저·존 점퍼 유출)과 연구→제품 중심 조직 개편, (3) 구글만 가진 10억 MAU 규모·풀스택 서비스(안드로이드·크롬·Gmail·유튜브·클라우드)라는 체급 차이, (4) 작은 모델(제미나이 3.5 플래시)·훈련/추론 분리 TPU·24시간 에이전트(제미나이 스파크)·AI 검색 답변 옆 광고(29% 노출)로 이어지는 4가지 행동 증거, (5) 오픈AI·앤스로픽은 토큰을 쓸수록 비용만 나가는 구조인 반면 구글은 토큰을 쓸수록 광고 지면이 늘어나 수익이 되는 구조적 반전</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>코딩·순위·벤치마크 3중 열세</strong>: 한 VC 조사에서 코딩 용도 AI 지출 비중은 앤스로픽 42%, 오픈AI 21%로 1·2위를 차지했고 구글은 그 아래에 머물렀다. 개발자들이 모델을 골라 쓰는 오픈라우터 사용량 순위에서도 제미나이 계열은 3위는커녕 10위 안에도 들지 못했다. 성능 평가 기관 아티피셜 애널리시스는 구글의 최신 모델인 제미나이 3.7 플래시가 앤스로픽·오픈AI·xAI·메타는 물론 중국 상위 모델보다도 뒤처진다고 평가했다. 이 세 가지 지표가 겹치면서 &quot;구글이 LLM 모델 경쟁에서 밀리고 있다&quot;는 진단이 나온다. (<a href="https://youtu.be/vd__njvqkqc?t=22" target="_blank" rel="noopener">0:22</a>)</li>
+<li><strong>딥마인드발 3대 신호 — 모델 지연·코딩 방향 전환·인력 유출</strong>: 악시오스(7월)와 포춘(8월)이 각각 딥마인드 전·현직 직원을 취재한 결과 공통적으로 세 가지가 확인됐다. 첫째, 5월 개발자 행사에서 &quot;다음 달 출시&quot;를 예고했던 최상위 모델 제미나이 3.5가 두 달 넘게 지연되고 있으며 그사이 나온 것은 작고 빠른 플래시 모델뿐이다. 둘째, 지난해 여름 구글이 챗GPT로부터 검색 트래픽을 지키는 데 집중하는 사이 경쟁사들은 에이전트·코딩으로 방향을 틀었고, 코딩 AI 역량이 곧 &quot;일을 단계별로 쪼개고 도구를 골라 쓰고 스스로 고치는&quot; 에이전트 능력의 기반이기 때문에 이 지연은 개발자 시장을 넘어 다음 시장까지 놓칠 위험으로 이어진다. 셋째, 제미나이 공동 리더였던 노암 셰이저가 오픈AI로, 노벨화학상 수상자이자 알파폴드 공동개발자인 존 점퍼가 앤스로픽으로 이직하는 등 경쟁사의 현금 스카우트와 뒤처지고 있다는 내부 좌절감이 겹쳐 인력 유출이 이어졌다. (<a href="https://youtu.be/vd__njvqkqc?t=88" target="_blank" rel="noopener">1:28</a>)</li>
+<li><strong>대형 인사로 드러난 &quot;연구에서 제품으로&quot; 무게중심 이동</strong>: 입사 순번 30번대로 검색 인프라와 텐서플로우를 사실상 설계한 제프 딘이 27년 만에 구글을 떠나 AI로 과학 실험을 자동화하는 스타트업 디스커버리 루프를 창업했다. 같은 날 데미스 하사비스는 딥마인드 CEO에서 구글 딥마인드 회장 겸 알파벳 최고 과학자로 승진했지만 운영에서는 손을 떼고 신약개발 자회사 아이소모픽 랩스에 집중하게 되면서 직원들 사이에서도 &quot;승진이자 사실상 은퇴&quot;라는 해석이 나온다. 딥마인드에는 새 CEO가 임명되지 않았고, 대신 CTO였던 코라이 카부크추올루가 부사장으로 승진해 순다르 피차이에게 직접 보고하는 구조가 되면서 2014년 인수 당시 보장받았던 딥마인드의 연구 독립성이 사실상 구글 본체 조직으로 흡수됐다. 카부크추올루는 이미 1년 전부터 모델 개발을 총괄했고 2025년 &quot;구글 최고 AI 아키텍트&quot; 직함까지 받아 제미나이를 전 제품에 심는 임무를 맡아온 상업화 중심 인물이다. (<a href="https://youtu.be/vd__njvqkqc?t=155" target="_blank" rel="noopener">2:35</a>)</li>
+<li><strong>구글만 가진 체급 — 10억 MAU와 감당해야 할 원가</strong>: 제미나이 앱은 8월 11일 월간활성사용자(MAU) 10억 명을 돌파했는데, 지메일이 같은 규모에 도달하기까지 14년이 걸린 반면 제미나이는 1년이 채 걸리지 않았다. 구글 모델 API가 처리하는 토큰량은 2분기 기준 분당 220억 개로 전분기(160억 개) 대비 한 분기 만에 급증했다. 이 정도 규모의 트래픽에 가장 비싼 최상위 모델을 그대로 적용하면 비용이 천문학적일 뿐 아니라 애초에 감당할 연산 자원 자체가 지구상에 없기 때문에, 서비스 단가를 신경 쓰지 않을 수 없는 구조다. 반면 오픈AI·앤스로픽은 모델 자체가 사업의 전부라 순위 1위를 놓치면 존재 이유가 사라지지만, 구글은 안드로이드·크롬·Gmail·지도·유튜브라는 이미 확보된 서비스를 갖고 있어 1등 모델의 이득보다 원가가 먼저 보이는 딜레마에 놓여 있다. 실제로 순위 1위는 제미나이 3.0(작년 말) → 앤스로픽 → 다시 오픈AI 순으로 몇 주~몇 달 단위로 계속 바뀌고 있어, 짧은 주기의 순위 다툼에 과도한 지출을 하지 않으려는 유인이 구글에는 이미 존재한다. (<a href="https://youtu.be/vd__njvqkqc?t=247" target="_blank" rel="noopener">4:07</a>)</li>
+<li><strong>행동으로 확인되는 4가지 전환 증거</strong>: 첫째, 5월 개발자 행사의 주인공은 거대 모델이 아니라 작고 빠른 제미나이 3.5 플래시였고, 직전 최상위 모델 3.1 프로를 코딩·에이전트에서 모두 이기면서 속도는 4배 빨랐다. 이후에도 모델 등급을 잘게 쪼개 작업마다 가장 싼 모델을 배치하는 방향으로 가고 있다. 둘째, 8세대 TPU를 훈련용과 추론용으로 아예 나눠 만들겠다고 예고해, 앞으로 비용 경쟁의 핵심 무대가 추론이라는 점을 공개적으로 선언했다. 셋째, 5월 공개된 제미나이 스파크는 챗봇이 아니라 24시간 상시 작업을 처리하는 에이전트로 Gmail·드라이브·캘린더·유튜브·크롬과 연동되며, 성능 순위보다 &quot;다양한 서비스를 실제로 활용해 업무를 처리하는지&quot;가 더 중요하다는 프레임 전환을 보여준다. 넷째, 구글 검색의 AI 모드(AI가 직접 답을 작성하는 기능)는 답변 옆에 광고를 붙이는데, 구매 의향이 있는 검색어 5만 개를 조사한 결과 답변의 29%에 광고가 붙었고 클릭당 10달러 이상인 보험·대출 등 고가 검색어에서는 절반이 넘게 광고가 붙었다. (<a href="https://youtu.be/vd__njvqkqc?t=382" target="_blank" rel="noopener">6:22</a>)</li>
+<li><strong>핵심 반전 — 토큰 비용의 부호가 다르다</strong>: 오픈AI와 앤스로픽은 AI가 답을 길게 쓸수록 비용만 늘어나는 구조인 반면, 구글은 답을 쓸수록 광고를 붙일 지면이 늘어나는 구조다. 결국 동일한 토큰을 소비해도 경쟁사는 마이너스에서, 구글은 플러스에서 출발하는 셈이 되며, 이는 영상 제목(&quot;대답할 때마다 돈 나가는 오픈AI·앤스로픽, 돈 들어오는 구글&quot;)이 요약하는 핵심 논지다. 화자는 이를 근거로 구글이 &quot;모델을 포기한 게 아니라 모델을 만드는 목적을 바꿨다&quot;는 해석을 제시한다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>영상은 구글의 AI 전략을 판단할 두 개의 축, 즉 &quot;모델 성능 순위(왕좌)&quot;와 &quot;실제 서비스 원가·수익 구조&quot;를 대비시킨다. 기술적으로는 8세대 TPU를 훈련용·추론용으로 분리 설계하는 하드웨어 전략, 제미나이 3.5 플래시처럼 파라미터 규모를 줄이면서도 코딩·에이전트 벤치마크에서 상위 모델을 이기고 속도를 4배 높인 소형 고효율 모델 전략, 그리고 제미나이 스파크와 같이 Gmail·드라이브·캘린더·유튜브·크롬을 넘나드는 멀티서비스 에이전트 오케스트레이션이 핵심 축으로 제시된다. 여기에 검색 AI 모드의 광고 삽입(구매 의향 검색어의 29%, 고가 검색어의 50%+ 노출)이 결합되면서, 모델 추론(인퍼런스) 비용을 광고 수익으로 상쇄하는 구조가 만들어진다. 이는 전통적인 LLM 벤더의 &quot;성능이 곧 매출&quot;이라는 사업 모델과 달리, 구글이 이미 보유한 방대한 트래픽·서비스 생태계를 활용해 토큰 원가 자체를 수익원으로 전환하는 접근이다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>첫째, 딥마인드의 연구 독립성(2014년 인수 당시 보장) 사실상 소멸과 상업화 중심 인물(카부크추올루)의 실권 장악은, 구글이 순수 연구 우선순위에서 제품·상업화 우선순위로 조직 무게중심을 명시적으로 옮겼다는 신호다. 둘째, 제미나이 앱의 MAU 10억 돌파(지메일 대비 14년 vs 1년 미만)가 보여주듯 구글은 경쟁사와 체급 자체가 달라, 최상위 모델 1위 경쟁보다 대규모 트래픽의 단가 관리가 더 시급한 과제가 된다. 셋째, 토큰 사용량이 늘어날수록 오픈AI·앤스로픽은 비용 부담이, 구글은 광고 수익이 늘어나는 구조적 비대칭은 향후 AI 서비스 가격 경쟁에서 구글에 유리한 손익 구조를 제공할 수 있다. 넷째, 다만 이 전략에는 반론도 뚜렷하다 — 코딩 시장을 놓치면 그 위에 &quot;남의 AI&quot;가 얹히는 모델 유통망 종속 위험이 있고, 원가 우위는 성능이 비슷할 때만 무기가 되며, 성능이 뒤처진 채 저가로 가면 그냥 &quot;저가 모델&quot;로 전락할 위험이 있고, 무엇보다 2등 모델에는 최상급 연구자가 오지 않는다는 인력 확보의 딜레마가 남는다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>오픈AI·앤스로픽</th><th>구글</th></tr></thead><tbody><tr><td>사업 구조</td><td>모델 성능이 사업의 전부, 1위 실패 시 존재이유 상실</td><td>안드로이드·크롬·Gmail·지도·유튜브 등 이미 확보된 서비스 보유</td></tr><tr><td>토큰 소비 시 손익</td><td>답이 길어질수록 비용만 증가 (마이너스)</td><td>답이 길어질수록 광고 지면 증가 (플러스)</td></tr><tr><td>코딩 AI 지출 점유율</td><td>앤스로픽 42%, 오픈AI 21% (VC 조사)</td><td>두 회사보다 아래</td></tr><tr><td>최근 순위 1위 이력</td><td>앤스로픽 → 다시 오픈AI (몇 주~몇 달 주기로 교체)</td><td>작년 말 제미나이 3.0 이후 밀려남</td></tr><tr><td>최근 모델 전략</td><td>최상위 모델 성능 경쟁 지속</td><td>제미나이 3.5는 두 달 지연, 대신 소형 3.5 플래시 우선 출시</td></tr><tr><td>조직 방향</td><td>(해당 없음, 비교 대상 아님)</td><td>연구(딥마인드) 독립성 축소, 제품·상업화 중심 인물 실권 이양</td></tr><tr><td>TPU/하드웨어</td><td>자체 칩 전략 상대적으로 약함</td><td>8세대 TPU를 훈련용·추론용으로 분리 설계</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>AI 산업 투자자·애널리스트</strong>: 모델 벤치마크 순위만으로 빅테크 AI 경쟁력을 평가하지 않고, 각 사의 트래픽 규모·기존 서비스 생태계·토큰당 손익 구조(비용형 vs 광고 수익형)를 함께 봐야 한다는 프레임을 실적 분석에 적용할 수 있다.</li>
+<li><strong>AI 서비스 기획자·프로덕트 매니저</strong>: 제미나이 스파크처럼 챗봇형이 아닌 24시간 상시 에이전트가 여러 서비스(캘린더·드라이브·이메일)를 오케스트레이션하는 구조를 참고해, 단일 모델 성능보다 멀티 서비스 연동을 우선하는 제품 로드맵을 설계하는 데 활용할 수 있다.</li>
+<li><strong>광고·검색 마케팅 담당자</strong>: AI 검색 답변에 광고가 삽입되는 비율(구매 의향 검색어 29%, 고가 검색어 50%+)을 근거로, AI 기반 검색 환경에서 광고 입찰 전략과 예산 배분을 재점검하는 데 참고할 수 있다.</li>
+<li><strong>개발자·엔지니어링 리더</strong>: 코딩 AI 지출 점유율(앤스로픽 42%, 오픈AI 21%)과 오픈라우터 사용량 데이터를 근거로 사내 도구 선정 시 구글 계열 모델의 상대적 열세를 감안한 벤더 다변화를 검토할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>현재 구글은 모델 성능 순위·코딩 AI 지출·오픈라우터 사용량 등 전통적 지표에서는 뚜렷한 열세에 있으며, 딥마인드 핵심 인력 유출과 최상위 모델(제미나이 3.5) 두 달 이상 지연이 이를 뒷받침한다. 그러나 제미나이 앱 MAU 10억 돌파, 분당 220억 토큰 처리(전분기 대비 한 분기 만에 40억 증가), 8세대 TPU의 훈련/추론 분리, 제미나이 스파크의 멀티서비스 에이전트화, AI 검색 광고 수익화라는 네 가지 행동 증거는 구글이 &quot;가장 똑똑한 모델&quot;이 아니라 &quot;가장 싸게, 가장 많은 사람에게, 매일 제공하는&quot; 것으로 경쟁 기준 자체를 바꾸고 있음을 시사한다. 화자는 이 전략이 성공하려면 코딩 시장에서 완전히 밀려나지 않아야 하고 원가 우위가 무기가 되려면 성능 격차가 과도하게 벌어지지 않아야 한다는 전제가 필요하다고 진단하며, 이 구글식 저비용·서비스 통합 전략이 성공할 경우 AI 산업 전반의 경쟁 기준(왕좌의 정의)을 바꿀 수 있다고 전망했다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유</th></tr></thead><tbody><tr><td>왕좌(모델 순위) 경쟁</td><td>벤치마크·성능 평가에서 가장 뛰어난 LLM을 가려내는 경쟁 구도</td><td>누가 가장 똑똑한지 겨루는 시험 성적 1등 다툼</td></tr><tr><td>오픈라우터(OpenRouter)</td><td>개발자들이 여러 LLM을 골라 API로 호출해 사용량을 비교할 수 있는 플랫폼</td><td>여러 브랜드 상품을 한곳에서 골라 쓰는 편집숍</td></tr><tr><td>토큰(Token)</td><td>AI 모델이 텍스트를 처리하는 최소 단위로, 사용량에 비례해 연산 비용이 발생</td><td>AI가 글을 읽고 쓸 때마다 소모하는 연료 단위</td></tr><tr><td>TPU(Tensor Processing Unit)</td><td>구글이 자체 설계한 AI 연산 전용 반도체 칩</td><td>AI 계산만을 위해 특별히 튜닝된 전용 엔진</td></tr><tr><td>추론(Inference)</td><td>학습이 끝난 모델이 실제 질문에 답을 생성하는 연산 과정 (훈련과 대비되는 개념)</td><td>이미 배운 지식으로 실전 문제를 푸는 단계</td></tr><tr><td>제미나이 스파크(Gemini Spark)</td><td>챗봇형이 아닌 24시간 상시 작업을 처리하며 여러 구글 서비스와 연동되는 에이전트 제품</td><td>퇴근 없이 계속 일하며 여러 부서를 오가는 비서</td></tr><tr><td>AI 모드(구글 검색)</td><td>검색 결과에 AI가 직접 답변을 작성해 보여주는 구글 검색 기능, 답변 옆에 광고 삽입</td><td>검색창이 곧 답을 말해주는 상담원으로 바뀐 것</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/vd__njvqkqc" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-08-24</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
