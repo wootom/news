@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="유튜브 자동화, 제가 쓰는 스킬 5종 전부 공개합니다"><title>유튜브 자동화, 제가 쓰는 스킬 5종 전부 공개합니다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">MORNING DIGEST · 2026-08-25 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>유튜브 자동화, 제가 쓰는 스킬 5종 전부 공개합니다</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>메이커 에반 \</td><td>Maker Evan</td></tr><tr><td>주제</td><td>클로드 코드 스킬 5종으로 유튜브 제작 전 과정을 자동화한 사례 공개</td></tr><tr><td>핵심 도구</td><td>클로드 코드(Claude Code) 스킬 5개: 자료 조사, 대본, 편집, 쇼츠, 게시</td></tr><tr><td>성과 지표</td><td>90일 조회수 152만 3,000회, 28일 구독자 3,192명 증가(현재 3만 명), 두 달간 영상 129편 발행</td></tr><tr><td>편집 엔진</td><td>리모션(Remotion, 영상을 코드로 만드는 라이브러리)</td></tr><tr><td>필요 환경</td><td>Node.js, PNPM, 레플리케이트(Replicate) API 토큰</td></tr><tr><td>판매처</td><td>스킬샵(제작자가 직접 판매하는 디지털 파일, 환불 불가)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 &quot;왜 이 도구를 만들었는가 → 어떻게 동작하는가 → 어떤 함정을 메웠는가 → 무엇이 안 되는가&quot; 순서로 전개됩니다.</p>
+<ul>
+<li><strong>문제 제기</strong>: 외주 편당 수십만 원, 월 4편이면 100만 원 이상 지출. 직접 하면 대본에 새벽까지 매달리고 썸네일 반복 수정, 편집 배우다 채널을 접는 흐름이 반복됨 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=0s" target="_blank" rel="noopener">0초</a>)</li>
+<li><strong>해법 요약</strong>: 클로드 코드 스킬 5개를 하나의 파이프라인으로 연결, 주제만 입력하면 영상이 산출되는 구조 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=54s" target="_blank" rel="noopener">54초</a>)</li>
+<li><strong>파이프라인 5단계</strong>: 자료 조사 → 대본 → 편집 → 쇼츠 → 게시. 앞 단계 산출물이 뒤 단계 입력으로 그대로 이어져 파일을 옮기는 중간 작업이 없음 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=83s" target="_blank" rel="noopener">83초</a>)</li>
+<li><strong>사람의 역할</strong>: 주제 선정과 결과 검수만 담당. 제작자는 매일 아침 원고를 10분 검토</li>
+<li><strong>함정 극복기</strong>: 음성 음량 편차, 자막 밀림, 쇼츠 화면 잘림 등 129편을 돌리며 발견한 3가지 문제와 해결책 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=392s" target="_blank" rel="noopener">392초</a>)</li>
+<li><strong>한계 고지</strong>: 결과 미보장, 주제 선정은 여전히 사람 몫, 디자인 변주 한계, 개발 환경 진입장벽 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=450s" target="_blank" rel="noopener">450초</a>)</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>스킬(Skill)의 정체</strong>: 순서와 기준을 파일 하나에 적어둔 &quot;업무 매뉴얼&quot;. 클로드 코드가 읽는 스킬 폴더에 설치 스크립트로 넣으면 끝. 커서(Cursor)나 코덱스(Codex) 등 다른 에이전트에서도 동일 방식으로 동작한다고 언급됨</li>
+<li><strong>리모션(Remotion)</strong>: React 기반으로 영상을 &quot;코드로&quot; 만드는 오픈소스 라이브러리. 이 때문에 Node.js·PNPM 환경이 전제 조건이 됨</li>
+<li><strong>레플리케이트(Replicate)</strong>: 썸네일 이미지 생성 등에 쓰이는 AI 모델 호스팅 API. 토큰 발급이 준비물 중 하나</li>
+<li><strong>음성 합성 단위 문제</strong>: 문장 단위로 음성을 나눠 만들면 구간마다 음량이 들쭉날쭉해져 실측 편차가 17데시벨까지 벌어짐. 대본 전체를 한 번에 합성하는 방식으로 바꿔 편차를 크게 줄임 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=392s" target="_blank" rel="noopener">392초</a>)</li>
+<li><strong>단어 단위 타임코드 정렬</strong>: 완성된 음성을 다시 분석해 단어 단위로 정확한 발화 시각을 뽑아내고, 그 시각에 맞춰 자막을 붙이는 방식(강제 정렬, forced alignment)으로 싱크 밀림을 방지. 문장 단위로만 끊으면 3초씩 밀리는 문제가 있었다고 설명</li>
+<li><strong>쇼츠 세로 변환</strong>: 가로 화면을 단순히 잘라내지 않고 &quot;안전 영역(세이프존)&quot;을 자동 계산해 자막과 핵심 요소가 세로 화면 안에 들어오도록 재배치</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>유튜브 제작을 &quot;편집을 배우는 일&quot;에서 &quot;이미 돌아가는 공장을 통째로 넘겨받는 일&quot;로 재정의. 개인이 도구를 익히는 대신 검증된 워크플로우를 이식하는 방향으로 병목을 옮김</li>
+<li>자료 조사와 대본을 분리하지 않고 한 파이프라인에 묶어, 근거 없는 대본(내용이 비어 보이는 대본)이 나오는 문제를 구조적으로 차단</li>
+<li>반복 제작(129편)에서 나온 실패 패턴(음량 편차, 자막 밀림, 쇼츠 잘림)을 스킬 안에 규칙으로 박아 넣어, 사용자가 같은 시행착오를 반복하지 않도록 설계</li>
+<li>&quot;결과는 보장하지 않는다&quot;는 점을 명확히 구분: 도구는 제작 시간을 줄여 시도 횟수를 늘리는 역할일 뿐, 조회수는 채널 정체성과 시청자층에 좌우된다고 선을 그음 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=450s" target="_blank" rel="noopener">450초</a>)</li>
+<li>판매 모델(스킬샵 디지털 파일)과 커뮤니티(카카오톡 오픈채팅, 디스코드)를 결합해 구매 후 자립을 돕는 지원 구조를 함께 제공</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론 (YouTube 전용)</h2><ol>
+<li><strong>자료 조사</strong>: 주제 한 줄을 입력하면 스킬이 웹에서 공식 문서, 뉴스, 실사용 후기를 수집. &quot;검색을 먼저 하고 글은 나중에 쓴다&quot;는 원칙 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=196s" target="_blank" rel="noopener">196초</a>)</li>
+<li><strong>대본</strong>: 수집한 자료를 구어체로 재작성. 전문성을 낮추지 않으면서 초심자도 이해하도록, 비유를 먼저 제시하고 숫자·용어를 뒤에 붙이는 순서를 고정. 대본은 줄 단위로 출력되며 한 줄 = 자막 한 덩어리 = 화면 한 장으로 대응, 챕터 표시도 대본 안에 함께 기록되어 타임스탬프를 별도로 만들 필요가 없음 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=224s" target="_blank" rel="noopener">224초</a>)</li>
+<li><strong>편집</strong>: 나레이션 타임코드를 먼저 확정한 뒤 그 위에 화면을 얹는 순서(화면을 먼저 만들면 음성과 어긋난다는 반례를 명시). 음성은 대본 전체를 한 번에 합성해 톤 일관성을 확보하고, 자막은 음성을 재분석한 단어 단위 시각에 맞춰 배치. 화면은 흰 배경에 검은 선으로 그린 인포그래픽 스타일을 기본으로 하고, 강조는 색상 대신 반전(검은 배경에 흰 글자)으로 처리하며, 동일 화면(캡처) 중복 사용 시 자동으로 에러를 내고 멈추는 규칙을 둠</li>
+<li><strong>쇼츠</strong>: 완성된 긴 영상에서 세로 영상을 재추출. 안전 영역을 자동 계산해 자막·핵심 요소가 세로 프레임 안에 들어오도록 재배치. 새로 촬영·제작하지 않고 같은 재료를 재활용하는 방식</li>
+<li><strong>게시</strong>: 제목, 설명, 타임스탬프(대본 챕터 표시에서 자동 추출), 썸네일을 생성. 썸네일은 채널에 누적된 데이터를 기준으로 잘 눌린 배경·글자 배치를 재현하고, 문구는 위(선언)·아래(호소) 두 줄로 짧게 구성. 썸네일 3장, 제목 3개(결과 선언형·정면 대비형·호기심 유발형)를 만들어 A/B 테스트로 데이터가 각도를 결정하도록 함 (<a href="https://youtu.be/A-DT1jLBbyw&amp;t=334s" target="_blank" rel="noopener">334초</a>)</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>1인 지식 채널 운영자</strong>: 의료·법률 등 전문 지식을 다루면서도 일반인이 이해할 수 있는 대본이 필요한 경우. 영상 속 후기에서도 의료 종사자가 &quot;전문성이 필요한 주제인데 일반인이 알아듣게 나온다&quot;고 평가</li>
+<li><strong>기업 홍보 채널 신규 개설</strong>: 자료 조사부터 대본까지 한 번에 연결되는 구조 덕분에, 콘텐츠 제작 인력 없이 회사 홍보 채널을 시작한 사례가 언급됨</li>
+<li><strong>분석·벤치마킹 특화 채널</strong>: 구매자 중 스킬 파일을 직접 열어 커스터마이즈해 &quot;하시슈 분석&quot;이나 &quot;대형 채널 벤치마킹&quot; 기능을 붙인 사례</li>
+<li><strong>소규모 크리에이터의 롱폼+쇼츠 동시 운영</strong>: 긴 영상 한 편 제작 시 쇼츠가 부산물로 함께 나와, 긴 영상은 검색 유입을, 쇼츠는 추천 알고리즘 유입을 동시에 노리는 배포 전략에 활용 가능</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>제작자 본인 채널 기준 90일간 조회수 152만 3,000회, 28일간 구독자 3,192명 증가(누적 약 3만 명), 두 달간 영상 129편 발행이라는 구체적 실적을 근거로 제시</li>
+<li>다만 초반에는 조회수가 오래 붙지 않았다고 밝혀, 도구 자체보다 채널이 누적되는 시간이 필요함을 인정</li>
+<li>스킬은 스킬샵에서 디지털 파일로 판매 중이며, 카카오톡 오픈채팅과 디스코드 커뮤니티를 통해 구매자 간 문제 해결을 지원하는 생태계를 병행 운영</li>
+<li>개발 환경(Node, 리모션, API 토큰)이 없는 초심자는 진입 전 준비 과정에서 시간이 걸린다고 명시, 디지털 상품 특성상 환불 불가 조건도 사전 고지</li>
+<li>향후 방향은 명시적으로 제시되지 않았으나, &quot;스킬 파일을 열어 고칠 수 있다&quot;는 확장성을 강조하며 사용자별 커스터마이징 사례(업종 특화 분석 기능 추가 등)를 소개해 커뮤니티 주도 확장 가능성을 시사</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>클로드 코드 스킬</td><td>AI 에이전트가 따르는 절차·기준을 적어둔 매뉴얼 파일</td><td>신입사원에게 주는 업무 체크리스트</td></tr><tr><td>리모션(Remotion)</td><td>코드로 영상을 조립하는 오픈소스 라이브러리</td><td>포토샵 대신 코드로 그리는 영상 편집기</td></tr><tr><td>레플리케이트(Replicate)</td><td>AI 이미지·모델을 API로 호출하는 서비스</td><td>썸네일 그림을 대신 그려주는 외주 화가 API</td></tr><tr><td>안전 영역(세이프존)</td><td>세로 화면 변환 시 글자가 잘리지 않게 남기는 여백 기준선</td><td>액자에 사진 넣을 때 잘리지 않는 안쪽 테두리</td></tr><tr><td>단어 단위 타임코드 정렬</td><td>음성의 각 단어가 시작되는 정확한 시각을 계산하는 기술</td><td>노래방 자막이 가사에 딱 맞춰 넘어가는 방식</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/A-DT1jLBbyw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-08-25</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

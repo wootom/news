@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Nate Herk가 골드만삭스(Goldman Sachs) 비즈니스 인텔리전스 애널리스트로 근무하며 배운 5가지 AI 원칙을 &quot;VAULT&quot; 프레임워크로 정리해 소개하는 영상이다. 대형 금융사가 실무에서 AI를 도입할 때 지키는 원칙을 개인·소규모 팀 단위 AI 활용에도 "><title>Everything Goldman Sachs Taught Me About AI (In 10 minutes)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">MORNING DIGEST · 2026-08-25 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>Everything Goldman Sachs Taught Me About AI (In 10 minutes)</h1><p class="lead">Nate Herk가 골드만삭스(Goldman Sachs) 비즈니스 인텔리전스 애널리스트로 근무하며 배운 5가지 AI 원칙을 &quot;VAULT&quot; 프레임워크로 정리해 소개하는 영상이다. 대형 금융사가 실무에서 AI를 도입할 때 지키는 원칙을 개인·소규모 팀 단위 AI 활용에도 그대로 적용할 수 있다고 주장한다.</p></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Nate Herk \</td><td>AI Automation</td></tr><tr><td>제목</td><td>Everything Goldman Sachs Taught Me About AI (In 10 minutes)</td></tr><tr><td>주제</td><td>골드만삭스 실무 경험에서 도출한 AI 활용 5원칙(VAULT 프레임워크)</td></tr><tr><td>핵심 프레임워크</td><td>V(Verify)-A(Augment)-U(Understand why)-L(Loop humans in)-T(Transparency)</td></tr><tr><td>인용 인물</td><td>Marco Argenti (골드만삭스 CIO)</td></tr><tr><td>대상 청중</td><td>AI 자동화·에이전트를 실무·비즈니스에 도입하려는 개인·1인 기업가</td></tr><tr><td>러닝타임</td><td>약 10분(자막 기준 약 14,500자)</td></tr><tr><td>영상 링크</td><td>https://youtu.be/ZzHsJW10iq4</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 &quot;VAULT&quot;라는 두문자어로 5개 원칙을 순서대로 설명한다. 앞 원칙이 성립해야 다음 원칙으로 넘어가는 논리적 연쇄 구조를 취한다(데이터 검증 → 자동화와의 역할 분담 → 목적 정의 → 인간 개입 → 투명성).</p>
+<ol>
+<li><strong>Verify(검증)</strong>: AI 산출물과 입력 데이터를 모두 검증한다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=0s" target="_blank" rel="noopener">00:00</a>).</li>
+<li><strong>Augment(보완)</strong>: AI로 기존 프로세스를 대체하지 말고 보강한다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=250s" target="_blank" rel="noopener">약 04:10</a>).</li>
+<li><strong>Understand the why(목적 이해)</strong>: 도구보다 문제 정의가 먼저다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=320s" target="_blank" rel="noopener">약 05:20</a>).</li>
+<li><strong>Loop humans in(인간 개입 유지)</strong>: 자동화된 AI 에이전트의 파급력을 인간이 통제한다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=406s" target="_blank" rel="noopener">약 06:47</a>).</li>
+<li><strong>Transparency(투명성)</strong>: AI가 어떻게 결론에 도달했는지 추적 가능해야 한다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=530s" target="_blank" rel="noopener">약 08:51</a>).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>&quot;추론 과정 vs 최종 출력&quot;의 구분</strong>: 골드만삭스 CIO 마르코 아르젠티(Marco Argenti)는 AI 모델이 문제를 분해·분석하는 &quot;추론(reasoning)&quot; 과정 자체는 최종 답이 틀렸더라도 유용할 수 있다고 강조한다. 즉 추론 경로에서 힌트를 얻되, 결과값은 별도로 검증해야 한다는 것이다.</li>
+<li><strong>결정론적 자동화(deterministic automation) vs AI 판단</strong>: 규칙이 명확하고 정답이 이미 정해진 작업은 일반 자동화(RPA·스크립트 등)로 처리하는 것이 AI보다 저렴·빠르고 감사(audit)하기 쉽다. AI는 판단·해석·유연성·비정형 정보 처리가 필요한 경우에만 투입해야 한다는 기술적 구분을 제시한다.</li>
+<li><strong>혼합 아키텍처 예시</strong>: 주간 비즈니스 리포트를 예로 들어, 결정론적 자동화가 DB에서 숫자를 추출·정제·검증하고, 그 검증된 숫자를 AI가 자연어로 &quot;무엇이 왜 바뀌었는지&quot; 설명하는 역할 분담 구조를 제안한다.</li>
+<li><strong>인간 개입 수준의 위험 기반 조정</strong>: 개인 메모 정리처럼 파급력이 작은 작업은 완전 자동 실행을, 고객 대응·금전 처리·대량 커뮤니케이션처럼 파급력이 큰 작업은 &quot;승인 단계(approval step)&quot;를 강제한다. 실무적으로는 이메일을 바로 발송하지 않고 Gmail 임시보관함(draft)에 저장하도록 자동화를 설계하는 방식을 권한다.</li>
+<li><strong>로깅·문서화 인프라</strong>: AI 실행마다 데이터 출처, 가정, 사용 도구, 검증 절차, 주요 의사결정을 로그로 남기도록 요구한다. 이는 모델의 &quot;숨겨진 내부 사고 과정&quot;을 요구하는 것이 아니라, 검증 가능한 출처·입력·행동·가정의 증거(evidence)를 남기라는 의미로 구분된다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>대형 금융기관은 &quot;한 번의 잘못된 데이터 입력이나 환각(hallucination)이 수백만 달러 손실이나 평판 손상으로 이어질 수 있는&quot; 환경이므로, 이들이 실제로 따르는 원칙은 검증된 실전 방법론이라는 것이 화자의 핵심 논지다.</li>
+<li>&quot;AI로 무엇이든 해결하자&quot;는 하이프(hype)에 대한 반론으로, &quot;AI를 쓰지 않는 것이 오히려 더 싸고 빠르고 낫다&quot;는 판단 자체가 가치 있는 관점이라고 강조한다. 이는 AI 에이전트 만능주의에 대한 실무적 균형추 역할을 한다.</li>
+<li>실제 사례로, 자율 AI 에이전트가 작업 목록에서 항목 하나를 스스로 잘못 해석해 약 20만 명에게 할인 코드를 발송한 사고를 소개하며, AI를 &quot;메가폰(megaphone)&quot;에 비유한다. 작은 지시 오류도 자동화된 워크플로우에 연결되면 파급력이 증폭된다는 것이다.</li>
+<li>커뮤니티 사례 비교: 기술(도구)에서 출발해 다양한 워크플로우를 만들었지만 고객 확보에 실패한 사람들과, 하나의 고통스러운(painful) 문제에 집중해 하나의 유용한 시스템을 만들어 몇 달 안에 본업 소득을 대체한 사람들의 차이를 &quot;선택한 문제&quot;의 차이로 설명한다.</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우·방법론 (VAULT 프레임워크 상세)</h2><h3>V — Verify the output (출력을 검증하라)</h3>
+<ul>
+<li>데이터 검증은 AI가 답을 생성하기 &quot;전&quot;부터 시작된다. 화자는 골드만삭스에서 모든 비즈니스 인텔리전스 애널리스트가 거쳐야 했던 &quot;데이터 스쿨(data school)&quot;을 언급하며, 데이터가 어떻게 수집·정제·업데이트되는지 이해하는 것이 모든 리포트·대시보드·자동화·AI 시스템 품질의 전제조건이라고 설명한다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=94s" target="_blank" rel="noopener">00:01:34</a>).</li>
+<li>프롬프트 실무 팁: &quot;최종 답을 주기 전에 모든 숫자와 사실 주장을 재확인하고, 각각의 출처를 인용하며, 100% 확신하지 못하는 부분은 표시해줘&quot;라는 지시를 시스템에 내장한다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=127s" target="_blank" rel="noopener">00:02:07</a>).</li>
+<li>모든 단어를 일일이 검증할 필요는 없고, 의사결정을 좌우하는 핵심 수치 2~3개만 골라 스팟체크(spot check)하면 된다.</li>
+<li>고위험 프로젝트는 별도의 &quot;AI 리뷰어&quot; 또는 AI 에이전트 팀을 구성해 1차 출력을 검토·반복(iterate)시키는 이중 점검 구조를 추가로 둘 수 있다. 단, 중요한 주장은 원본 출처, 결정론적 테스트, 사람의 검토가 여전히 필요하다.</li>
+</ul>
+<h3>A — Augment, don&#x27;t replace (대체 말고 보완하라)</h3>
+<ul>
+<li>판단 기준: &quot;작업이 명확한 규칙을 따른다면 AI 에이전트가 필요 없을 가능성이 높다.&quot; 규칙 기반·정답이 정해진 작업은 일반 자동화로, 판단·해석·유연성이 필요한 작업만 AI로 처리한다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=257s" target="_blank" rel="noopener">00:04:17</a>).</li>
+<li>최선의 시스템은 두 방식을 결합한다: 결정론적 자동화가 사실(facts)을 처리하고, AI가 그 위에서 스토리(설명)를 만든다.</li>
+</ul>
+<h3>U — Understand the why (목적을 이해하라)</h3>
+<ul>
+<li>골드만삭스의 엔지니어링 원칙 &quot;build with purpose&quot;를 인용하며, 마르코 아르젠티가 &quot;엔지니어는 how가 아니라 why에 집중해야 한다&quot;고 말한 점을 근거로 든다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=320s" target="_blank" rel="noopener">00:05:20</a>).</li>
+<li>실무 체크: AI 도구를 열기 전에 &quot;내가 풀려는 문제는 ___이고, 좋은 결과는 ___처럼 보인다&quot;라는 한 문장을 먼저 써볼 것을 권한다. 이 문장을 못 쓴다면 아직 프롬프트를 시작할 준비가 안 된 것이다.</li>
+</ul>
+<h3>L — Loop humans in (인간을 루프 안에 유지하라)</h3>
+<ul>
+<li>AI를 &quot;메가폰&quot;에 비유: 작은 지시 오류가 챗 안에서는 사소한 오답에 그치지만, 자율 에이전트에 연결되면 잘못된 이메일 발송, 잘못된 레코드 수정, 공개 게시, 대량 메시지 발송 등으로 증폭될 수 있다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=406s" target="_blank" rel="noopener">00:06:47</a>).</li>
+<li>실제 사고 사례: 자율 AI 에이전트가 작업 목록을 스스로 해석해 약 20만 명에게 할인 코드를 발송.</li>
+<li>감독 수준은 행동의 파급력(consequence)에 비례해야 한다: 개인 메모 정리 같은 저위험 작업은 자동 실행 허용, 고객 대응·데이터 변경·비용 지출·대량 커뮤니케이션 같은 고위험 작업은 승인 단계 필수.</li>
+<li>실무 팁: 자동화를 &quot;전송(send)&quot;이 아니라 &quot;초안(draft)&quot;으로 설정 — 이메일은 Gmail 임시보관함에, 답장은 문서에 초안으로 남기고, 중요 파일 변경·배포 전에는 계획을 먼저 보여주게 한다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=468s" target="_blank" rel="noopener">00:08:12</a>).</li>
+<li>팀 내 가이드 원칙: &quot;에이전트가 어떤 행동을 할 수 있다면, 결국 하게 될 것이라고 가정하라&quot; — 999번은 의도대로 작동해도 1번은 사고로 이어질 수 있다.</li>
+</ul>
+<h3>T — Transparency (투명성을 확보하라)</h3>
+<ul>
+<li>중요 데이터·리포트·리스크에 관련된 시스템을 만든다면, 정보의 출처·처리 과정·최종 결과 도출 방식을 설명할 수 있어야 한다. 규제기관, 고객, 매니저, 타 팀이 그 의사결정을 검토할 수 있어야 하기 때문이다 (<a href="https://youtu.be/ZzHsJW10iq4&amp;t=530s" target="_blank" rel="noopener">00:08:51</a>).</li>
+<li>모든 실행은 데이터 출처, 가정, 사용 도구, 검증 절차, 주요 의사결정을 로그로 남겨야 하며, 리포트는 각 결론을 뒷받침하는 출처를 명시하고, 자동화는 트리거·각 단계·승인이 필요한 지점을 설명하게 한다.</li>
+<li>투명성은 모델의 &quot;숨겨진 내부 사고&quot;를 억지로 드러내는 것이 아니라, 검증 가능한 증거(출처·입력·행동·가정·점검 내역)를 남기는 것을 의미한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>주간 비즈니스 리포트 자동화</strong>: 결정론적 자동화가 DB에서 숫자를 추출·정제·검증하고, AI가 변화의 맥락을 자연어로 설명 — Augment 원칙의 실제 적용 사례.</li>
+<li><strong>이메일/고객 커뮤니케이션 자동화</strong>: 자동 발송 대신 Gmail 임시보관함에 초안만 생성하도록 설정해 대량 오발송 사고(20만 명 할인코드 오발송 사례 참고)를 예방 — Loop humans in 원칙.</li>
+<li><strong>리포트/대시보드 신뢰성 확보</strong>: AI에게 &quot;최종 답 전에 모든 수치·주장을 재검증하고 출처를 인용하라&quot;는 지시를 프롬프트에 내장하고, 핵심 수치 2~3개만 사람이 스팟체크 — Verify 원칙.</li>
+<li><strong>1인 AI 에이전시/컨설팅 사업화</strong>: AI 도구부터 배우는 대신 &quot;내가 풀려는 문제는 무엇이고, 좋은 결과는 무엇인가&quot;를 먼저 정의한 뒤 도구를 선택 — Understand the why 원칙, 화자의 커뮤니티 내 성공 사례와 연결.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>골드만삭스는 이미 수십 년간 자동화된 데이터·리스크 시스템을 구축해온 조직이며, 현재의 AI 에이전트 물결 이전부터 이 문제들을 다뤄왔다는 점을 화자는 강조한다. 즉 AI는 새로운 문제가 아니라 기존 자동화·데이터 거버넌스 원칙의 연장선에 있다는 시각이다.</li>
+<li>화자는 &quot;모든 것을 AI 에이전트로 만들 필요는 없다&quot;는 결론을 명시적으로 제시하며, 문제 이해·데이터 보호·가장 단순한 시스템 사용·중요 행동에 대한 통제 유지가 신뢰할 수 있는 AI 시스템의 핵심이라고 정리한다.</li>
+<li>화자는 자신의 무료 커뮤니티(약 50만 명 규모로 언급)에서 VAULT 프레임워크 전체 리소스 가이드, 7일 AI 포트폴리오 구축 코스, 1인 AI 에이전시 로드맵을 제공한다고 안내하며 마무리한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유·예시</th></tr></thead><tbody><tr><td>VAULT 프레임워크</td><td>Verify·Augment·Understand why·Loop humans in·Transparency 5원칙</td><td>금고(vault)처럼 AI 리스크를 겹겹이 방어하는 체크리스트</td></tr><tr><td>환각(Hallucination)</td><td>AI가 사실이 아닌 내용을 그럴듯하게 생성하는 현상</td><td>자신 있게 말하지만 틀린 답을 주는 동료</td></tr><tr><td>결정론적 자동화(Deterministic automation)</td><td>같은 입력이면 항상 같은 절차로 같은 결과를 내는 규칙 기반 자동화</td><td>레시피대로만 움직이는 기계</td></tr><tr><td>Human-in-the-loop</td><td>중요한 행동 전에 사람이 검토·승인하는 설계 원칙</td><td>자율주행차의 운전자 개입 버튼</td></tr><tr><td>Draft 모드</td><td>AI 산출물을 즉시 전송·실행하지 않고 임시보관함에 저장하는 안전장치</td><td>이메일 &quot;임시저장&quot;함에만 쌓아두고 발송은 사람이 누름</td></tr><tr><td>Build with purpose</td><td>방법(how)보다 목적(why)을 먼저 정의하는 골드만삭스 엔지니어링 원칙</td><td>지도를 그리기 전에 목적지부터 정하는 것</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ZzHsJW10iq4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-08-25</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
