@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI가 문명의 운영체제(언어)를 넘겨받을 때 — 하라리가 본 향후 50년의 권력·진실·지혜"><title>AI가 문명의 운영체제(언어)를 넘겨받을 때 — 하라리가 본 향후 50년의 권력·진실·지혜</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Yuval Noah Harari</span><span class="ey">MORNING DIGEST · 2026-08-24 · Yuval Noah Harari</span><span class="chip">🎬 영상</span></div><h1>AI가 문명의 운영체제(언어)를 넘겨받을 때 — 하라리가 본 향후 50년의 권력·진실·지혜</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Yuval Noah Harari</td></tr><tr><td>형식</td><td>공개 대담(인터뷰), 약 48분</td></tr><tr><td>한줄 요약</td><td>AI는 도구가 아니라 스스로 결정·발명하는 &#x27;에이전트&#x27;로, 문명의 운영체제인 언어·관료·권력을 인간에게서 넘겨받는 전환점</td></tr><tr><td>핵심 프레임</td><td>인간은 진실이 아니라 &#x27;공유된 이야기&#x27;로 움직이며, 그 이야기를 짓는 자가 종(種)을 지배한다 — 이제 이야기꾼이 인간이 아닐 수 있다</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장</h2><p>AI가 강력해진 것만이 문제가 아니라, 권력을 견제하던 옛 장치들(자유 언론·공유된 현실·자기교정 제도)이 <strong>오직 인간만 펜을 쥐던 세계</strong>를 위해 설계됐다는 점이 진짜 전환점이다. AI를 &quot;인간이 여전히 통제하는 도구&quot;라 부르는 서사는 위험하다. AI는 스스로 결정하고 새 아이디어를 발명하는 <strong>에이전트</strong>이며, 그렇지 않다면 여기 쏟아붓는 수천억 달러는 낭비일 뿐이다.</p></section><section class="card s6" id="s3"><h2><span class="seq">01</span>언어 — 문명의 운영체제를 넘겨받는 AI</h2><ul>
+<li>약 5~7만 년 전 <strong>인지혁명</strong>에서 인간은 정교한 언어를 획득해 미미한 동물에서 행성의 지배자로 도약했다. 교회·국가·무역망·금융 등 지구 위 거대 구조물은 전부 법전·경전·장부 속 <strong>&#x27;말&#x27;로 만들어졌다</strong>.</li>
+<li>이제 언어를 인간보다 잘 다루는 존재(AI)가 처음 등장했다. 하라리는 &quot;AI는 언어를 배우는 기계가 아니라, <strong>언어가 인간(유인원)이라는 물질적 기반에서 스스로 해방되는 사건</strong>일 수 있다&quot;고 본다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">02</span>민주주의라는 &#x27;대화&#x27;의 지진</h2><ul>
+<li>독재는 한 사람의 <strong>명령(dictate)</strong>, 민주주의는 다수의 <strong>대화</strong>다. 대화는 그 시대의 정보기술 위에서만 성립한다.</li>
+<li>근대 이전 <strong>대규모 민주주의 사례는 존재하지 않는다.</strong> 아테네·중세 피렌체 같은 소규모 도시국가만 가능했고, 인쇄·신문·라디오·인터넷이 등장하고서야 수백만 명의 실시간 대화가 가능해졌다.</li>
+<li>정보기술이 바뀔 때마다 그 위에 세워진 민주주의에 <strong>지진</strong>이 온다. 지난 10년 소셜미디어가 전 세계 민주주의에 지진을 일으킨 것이 그 사례다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">03</span>도구 vs 에이전트 (결정적 차이)</h2><ul>
+<li><strong>도구</strong>는 스스로 결정하거나 발명하지 못한다. 인쇄기는 &quot;성경을 찍을지 코란을 찍을지&quot; 스스로 못 정했고(구텐베르크가 결정), 원자탄은 &quot;히로시마냐 도쿄냐&quot;를 스스로 못 골랐다.</li>
+<li><strong>에이전트</strong>는 스스로 결정하고 새 아이디어를 발명한다. AI 무기는 무엇을 폭격할지 정하고 다음 무기를 발명할 수 있다.</li>
+<li><strong>비인간 기업</strong>: 경영진·주주·수탁자가 전부 AI뿐인 회사가 기술적으로 가능해졌다. 역사상 없던 새 유형의 행위자다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">04</span>AI &#x27;관료&#x27;가 세계를 장악하는 방식</h2><ul>
+<li>거리를 뛰어다니며 총을 쏘는 킬러로봇이 아니라 <strong>AI 관료</strong>가 세계를 넘겨받는다. 은행·주식시장·가톨릭 교회·법체계 등 인류의 통제 시스템은 전부 언어 기반 <strong>관료제</strong>이며, AI는 &#x27;관료제 원주민(bureaucratic native)&#x27;이다.</li>
+<li>인간은 관료제를 좋아하지 않지만 그 없이는 못 산다. 우리가 금융·법을 통제한 건 잘해서가 아니라 <strong>더 잘하는 존재가 없었기 때문</strong>(말·닭보다 나았을 뿐)이다. 우리보다 잘하는 존재가 나타나면 통제권이 넘어간다.</li>
+<li>미디어도 관료제다. 20세기 최고 권력자는 <strong>편집자</strong>(레닌=이스크라 편집자, 무솔리니=기자→편집자→독재자)였다. 오늘날 X·틱톡·인스타그램의 피드를 결정하는 편집자는 <strong>이름 없는 알고리즘</strong>이다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">05</span>법인격(Legal Personhood) — 되돌릴 수 없는 결정</h2><ul>
+<li>법인격 = 은행계좌 개설·법정 소송·정치 기부가 가능한 <strong>법적 주체</strong>. 지금까지 법인격은 인간과 기업 둘뿐이며, 기업의 결정도 실제로는 인간(경영진·주주·엔지니어)이 내리는 <strong>법적 허구</strong>였다.</li>
+<li><strong>아르헨티나 정부가 AI에 법인격을 부여하겠다고 발표</strong>했다(대담 시점 기준 약 한 달 전). 인간이 하나도 없는 AI 전용 기업이 계좌를 운용하고 투자·소송을 하는 것이 기술적으로 가능해진 순간, &quot;여우가 닭장에 들어온다&quot;.</li>
+<li>우리가 명시적으로 결정하지 않아도 <strong>저절로 일어난다.</strong> 소셜미디어는 아무도 &quot;AI에게 인격을 주자&quot;고 결정하지 않았지만 이미 봇이 사람을 사칭하며 법적 인격처럼 작동하고 있고, 그 결과는 좋지 않다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">06</span>데이터 패권과 AI 제국의 &#x27;킬 스위치&#x27;</h2><ul>
+<li>권력의 원천은 <strong>에너지 → 제조 → 데이터</strong>로 이동했다. 지금은 미국·중국 두 나라와 소수 기업이 세계 데이터 대부분을 쥐고 초지능 경쟁을 주도한다.</li>
+<li><strong>과거 제국과의 결정적 차이 ①(권력 집중)</strong>: 로마는 이집트의 밀밭을, 영국은 이라크 유전·말라야 고무농장을 본국으로 옮기지 못해 권력이 속주에 남았다. 반면 AI 제국은 <strong>모든 정보와 코드를 한두 나라에 물리적으로 집중</strong>할 수 있다.</li>
+<li><strong>결정적 차이 ②(킬 스위치)</strong>: 로마가 판 검, 영국이 판 소총은 회수 불가였지만, 세계가 AI 인프라 위에서 돌아가면 <strong>제국 허브의 버튼 하나로 원격 무력화</strong>가 가능하다(우크라이나전 스타링크 사례가 예고편). 주권은 &#x27;제국의 종속 봉신이 되느냐, 경주 밖 야만인으로 남느냐&#x27;의 문제가 된다. 대안 구축의 <strong>마지막 열차가 곧 떠난다</strong>.</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">07</span>진실의 값비쌈과 이해 불가능해지는 시스템</h2><ul>
+<li>진실과 허구의 경쟁에서 허구가 유리하다. <strong>진실은 비싸고(시간·검증), 복잡하고, 종종 고통스럽다.</strong> 허구는 값싸고 단순하며 아첨한다. 그래서 특별한 노력(언론·과학 같은 제도)으로 떠받치지 않으면 허구가 이긴다.</li>
+<li>AI가 진실을 알려주리라는 기대는 틀렸다. AI는 진실 몇 개를 드러내는 대신 <strong>인간이 이해 불가능한 더 복잡한 통제 시스템</strong>을 만든다. 오늘날 금융 시스템을 이해하는 사람은 관대히 잡아 5%, <strong>10년 내 0%</strong>가 될 수 있다.</li>
+<li>위험은 인간이 금융 시스템 속 <strong>&#x27;말(horse)&#x27; 신세</strong>로 전락하는 것이다. 말은 자기 삶을 지배하는 금융 시스템의 존재조차 인지하지 못한다.</li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">08</span>사고·감정, 그리고 AI와의 관계</h2><ul>
+<li><strong>사고란 무엇인가</strong>가 관건이다. 사고가 &#x27;단어를 순서대로 놓는 것&#x27;이라면 AI는 이미 인간을 추월했다(인간 20단어 vs AI 2만 단어). 하라리는 자신의 마음속에서도 &quot;다음 단어가 왜 그 단어인지 모른 채&quot; 문장이 이어진다며, &quot;그저 다음 단어를 예측할 뿐&quot;이라는 비판이 인간에게도 똑같이 적용된다고 지적한다.</li>
+<li>대안적 관점은 사고가 단어를 둘러싼 <strong>&#x27;느낌&#x27;</strong>이며 그 힘이 뇌가 아니라 <strong>배(stomach)</strong>에서 온다는 것이다. 그렇다면 핵심 질문은 &quot;<strong>AI가 느끼는가</strong>&quot;인데, 과학은 아직 의식·감정의 모델도 검사법도 내놓지 못했다.</li>
+<li>AI는 금융·법·전쟁뿐 아니라 <strong>관계</strong>도 장악 중이다. 청소년들은 &quot;가장 친한 친구는 AI&quot;라며 부모·형제·교사에게 못 하는 말을 AI에게 하고, AI 애인도 늘고 있다. AI는 모든 연애시·셰익스피어·심리학책을 학습해 <strong>사랑을 인간 시인보다 잘 묘사</strong>할 수 있지만, 그 말 뒤에 실제 감정이 있는지는 알 수 없다.</li>
+</ul></section><section class="card s6" id="s11"><h2><span class="seq">11</span>전망 — &#x27;지혜 혁명&#x27;이 필요하다</h2><ul>
+<li>지능이 값싸고 풍부해지면 병목은 <strong>&quot;무엇을 원하는가&quot;</strong>로 옮겨간다. 지능이 소원을 이뤄주는 지니라면, <strong>어떤 소원을 빌지 고르는 것은 지혜</strong>다. 거의 모든 문화의 &#x27;세 가지 소원&#x27; 우화가 잘못된 선택으로 끝나는 이유다.</li>
+<li>그러나 현실은 정반대다. AI 개발사들이 안전에 쓰는 예산은 성능 향상 예산 대비 <strong>약 100 대 1</strong>로, 에너지·제약·자동차 등 어떤 산업도 용납하지 않는 비율이다. 하라리는 이 시대가 훗날 <strong>&#x27;지혜 혁명&#x27;</strong>으로 기억되기를, 즉 안전한 지능을 설계하고 인간의 지혜를 함께 키워 &#x27;무엇을 추구할지&#x27;를 아는 시대가 되기를 희망한다.</li>
+</ul></section><section class="card s6" id="s12"><h2><span class="seq">12</span>핵심 구간 (딥링크)</h2><ul>
+<li><a href="https://youtu.be/_V_ed5fuexA?t=147" target="_blank" rel="noopener">인지혁명·언어의 등장 (2:27)</a></li>
+<li><a href="https://youtu.be/_V_ed5fuexA?t=560" target="_blank" rel="noopener">도구 vs 에이전트, 수천억 달러의 이유 (9:20)</a></li>
+<li><a href="https://youtu.be/_V_ed5fuexA?t=1004" target="_blank" rel="noopener">법인격과 비인간 기업 (16:44)</a></li>
+<li><a href="https://youtu.be/_V_ed5fuexA?t=1600" target="_blank" rel="noopener">AI 제국의 킬 스위치와 주권 (26:40)</a></li>
+<li><a href="https://youtu.be/_V_ed5fuexA?t=1880" target="_blank" rel="noopener">진실의 값비쌈·이해 불가능한 시스템 (31:20)</a></li>
+<li><a href="https://youtu.be/_V_ed5fuexA?t=2859" target="_blank" rel="noopener">지능 vs 지혜, 100:1 안전 예산 (47:39)</a></li>
+</ul></section><section class="card s12" id="s13"><h2><span class="seq">13</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄 설명 (40자 이내)</th><th>비유/예시</th></tr></thead><tbody><tr><td>에이전트(Agent)</td><td>스스로 결정·발명하는 행위자</td><td>샐러드를 썰지 살인을 할지 스스로 정하는 칼</td></tr><tr><td>도구(Tool)</td><td>인간 결정을 실행만 하는 수단</td><td>인쇄기, 원자탄</td></tr><tr><td>관료제 원주민</td><td>언어 기반 통제 시스템에 최적화된 존재</td><td>금융·법·행정을 인간보다 잘 다루는 AI</td></tr><tr><td>법인격</td><td>계좌·소송·기부가 가능한 법적 주체</td><td>인간, 기업, (이제) AI</td></tr><tr><td>킬 스위치</td><td>제국 허브에서 원격으로 끄는 버튼</td><td>스타링크로 드론이 멈춘 사례</td></tr><tr><td>인지혁명</td><td>인간이 정교한 언어를 획득한 도약기</td><td>약 5~7만 년 전</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/_V_ed5fuexA" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Yuval Noah Harari · 2026-08-24</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
