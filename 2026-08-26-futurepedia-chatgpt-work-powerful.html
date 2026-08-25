@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ChatGPT &#x27;Work&#x27; 탭, 생각보다 훨씬 강력하다 — 완전 활용 가이드"><title>ChatGPT &#x27;Work&#x27; 탭, 생각보다 훨씬 강력하다 — 완전 활용 가이드</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Futurepedia</span><span class="ey">MORNING DIGEST · 2026-08-26 · Futurepedia</span><span class="chip">🎬 영상</span></div><h1>ChatGPT &#x27;Work&#x27; 탭, 생각보다 훨씬 강력하다 — 완전 활용 가이드</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>발표 채널</td><td>Futurepedia (유튜브)</td></tr><tr><td>핵심 주제</td><td>ChatGPT의 &#x27;Work&#x27; 탭(에이전트 모드) 기능 총정리</td></tr><tr><td>Chat과의 차이</td><td>Chat=대화형 반복 작업 / Work=목표만 주면 스스로 계획·실행·결과물 완성</td></tr><tr><td>대표 기능</td><td>웹사이트 생성, 플러그인, 인앱 브라우저, 블록, 스킬, 스케줄 작업</td></tr><tr><td>처리 방식</td><td>작업마다 전용 클라우드 컴퓨터 할당, 동시 다중 세션 가능</td></tr><tr><td>동기화</td><td>웹·모바일·데스크톱 앱 간 세션 동기화 지원</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>Chat vs Work 응답 방식 차이</strong>: 동일한 프롬프트(&quot;디즈니랜드 여행 계획&quot;)를 Chat과 Work에 동시에 보내면, Chat은 약 5분 만에 대화형 답변을 주지만 Work는 10분 이상 걸려 색상 코딩·체크리스트·표가 포함된 완성된 문서를 자동으로 만들어낸다. Work는 물어보지 않고도 문서화하는 것이 기본 성향이다 (<a href="https://youtu.be/18Ih4w16UP0?t=122" target="_blank" rel="noopener">02:02</a>).</li>
+<li><strong>멀티 세션 동시 실행</strong>: 작업이 오래 걸리는 동안 새 세션을 여러 개 동시에 띄워 멀티태스킹할 수 있다 (<a href="https://youtu.be/18Ih4w16UP0?t=79" target="_blank" rel="noopener">01:19</a>).</li>
+<li><strong>공유 가능한 라이브 웹사이트 생성</strong>: Work는 ChatGPT가 직접 호스팅하는 라이브 웹사이트를 즉석에서 만들 수 있고, 공개(public) 전환 후 URL을 커스텀해 누구에게나 공유 가능하다. 커스텀 도메인 연결과 환경변수(예: 다른 AI 모델 연동) 설정도 지원한다 (<a href="https://youtu.be/18Ih4w16UP0?t=242" target="_blank" rel="noopener">04:02</a>).</li>
+<li><strong>플러그인(외부 도구 연동)</strong>: 사이드 패널의 Plugins에서 캘린더, Gmail, Granola(회의 메모) 등을 연결하면 Work가 여러 도구를 오가며 정보를 취합해 프레젠테이션까지 자동 제작한다. 실제 시연에서 캘린더 일정→Granola 메모→Gmail 내용을 스스로 조합해 8장짜리 PPT를 완성하고, 시각적 검수까지 거쳐 오류 2건을 스스로 수정했다 (<a href="https://youtu.be/18Ih4w16UP0?t=412" target="_blank" rel="noopener">06:52</a>).</li>
+<li><strong>데스크톱 전용 플러그인 — Remotion(모션그래픽)</strong>: 데스크톱 앱에서만 동작하는 플러그인으로, 로고 이미지와 설명을 주면 편집 가능한 모션그래픽을 12분여 만에 제작한다. 결과물은 인앱 에디터에서 바로 수정 가능하다 (<a href="https://youtu.be/18Ih4w16UP0?t=584" target="_blank" rel="noopener">09:44</a>).</li>
+<li><strong>인앱 브라우저를 통한 자율 브라우징</strong>: 데스크톱 앱 우측에 열리는 내장 브라우저로 ChatGPT가 직접 사이트를 클릭·입력·탐색한다. 예시로 유타주 임야 매물을 조건에 맞게 검색해 지역별 최적 매물을 각각 탭으로 열어 정리했다 (<a href="https://youtu.be/18Ih4w16UP0?t=706" target="_blank" rel="noopener">11:46</a>).</li>
+<li><strong>쿠키·로그인 정보 가져오기</strong>: 설정에서 Chrome 등 기존 브라우저의 쿠키·비밀번호를 가져오거나, 로그인 정보 목록 파일을 제공해 자동 로그인하도록 만들 수 있다 (<a href="https://youtu.be/18Ih4w16UP0?t=764" target="_blank" rel="noopener">12:44</a>).</li>
+<li><strong>블록(Blocks) 기능</strong>: 글쓰기 블록(이메일 초안 작성 후 바로 발송 가능), 코드 블록(칸반보드, 대시보드, 계산기, 타임라인, 플로우차트, 티어리스트 등 인터랙티브 결과물)을 즉석 생성 (<a href="https://youtu.be/18Ih4w16UP0?t=875" target="_blank" rel="noopener">14:35</a>).</li>
+<li><strong>채팅 분기(Branch)</strong>: 특정 응답 지점에서 대화를 새 채팅으로 분기해 원본은 유지한 채 다른 방향을 탐색할 수 있다 (<a href="https://youtu.be/18Ih4w16UP0?t=1057" target="_blank" rel="noopener">17:37</a>, 인접 구간).</li>
+<li><strong>스킬(Skills)</strong>: 반복할 작업을 &quot;레시피 카드&quot;처럼 패키징해 이후 짧은 호출만으로 동일 워크플로우를 재현. Claude의 스킬 파일을 다운로드해 ChatGPT에 드래그하면 그대로 변환도 가능하다 (<a href="https://youtu.be/18Ih4w16UP0?t=1099" target="_blank" rel="noopener">18:19</a>).</li>
+<li><strong>스케줄 작업(Scheduled Tasks)</strong>: 사이드 패널의 Scheduled 탭에서 일회성 또는 매일/매주/매시간 반복 작업을 완전 자동화. 클라우드 실행 시 컴퓨터를 꺼둬도 동작하며, 스킬을 먼저 만든 뒤 그 스킬을 스케줄에 태우는 방식을 권장한다 (<a href="https://youtu.be/18Ih4w16UP0?t=1172" target="_blank" rel="noopener">19:32</a>).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>전용 클라우드 컴퓨터 할당</strong>: Work는 작업마다 별도의 클라우드 컴퓨터를 부여받아 세션 내내 작업을 누적하며 진행한다. 이는 Codex의 에이전틱 능력을 일반 사용자용으로 쉽게 만든 것이라고 설명된다 (<a href="https://youtu.be/18Ih4w16UP0?t=316" target="_blank" rel="noopener">05:16</a>).</li>
+<li><strong>플러그인 = 연결(connection) + 스킬(skill) 조합</strong>: 각 플러그인은 도구 접근 권한뿐 아니라 &quot;그 도구를 올바르게 쓰는 법&quot;을 가르치는 스킬 세트를 함께 탑재한다.</li>
+<li><strong>데스크톱 앱 전용 기능</strong>: 로컬 파일 접근, 터미널, 인앱 브라우저, 컴퓨터 사용(computer use) 기능은 데스크톱 앱에서만 가능하며, 클라우드/온컴퓨터 실행 모드를 우측에서 전환할 수 있다 (<a href="https://youtu.be/18Ih4w16UP0?t=530" target="_blank" rel="noopener">08:50</a>).</li>
+<li><strong>인앱 브라우저의 진보</strong>: 과거 Chrome 확장 프로그램 기반 브라우저 사용보다 네이티브 인앱 브라우저의 탐색·클릭·입력 정확도가 크게 <span class="up">개선</span>되었다고 언급된다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>&quot;대화&quot;에서 &quot;위임&quot;으로의 전환</strong>: Chat은 사용자가 결과를 만들어가는 과정에 계속 개입해야 하지만, Work는 최종 목표만 던지면 계획 수립부터 도구 사용, 결과물 완성까지 위임할 수 있어 업무 방식 자체가 바뀐다.</li>
+<li><strong>일반 사용자의 에이전트 접근성 확대</strong>: 기존에는 개발자용 Codex 수준의 에이전틱 자동화가 필요했던 작업(다중 도구 연동, 장시간 자율 실행)을 비개발자도 플러그인과 스킬만으로 활용할 수 있게 되었다.</li>
+<li><strong>완전 자동화 루프의 완성</strong>: 스킬(반복 작업 표준화) + 스케줄 작업(무인 실행)의 조합은 사람이 매번 프롬프트를 입력하지 않아도 되는 완전 자동화 워크플로우를 가능하게 한다.</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>Chat</th><th>Work</th></tr></thead><tbody><tr><td>상호작용 방식</td><td>대화하며 반복·수정</td><td>목표 제시 후 자율 실행</td></tr><tr><td>소요 시간</td><td>상대적으로 짧음(예: ~5분)</td><td>상대적으로 긺(예: 10분~)</td></tr><tr><td>기본 산출물</td><td>대화형 텍스트 답변</td><td>색상 코딩·체크리스트·표가 포함된 완성 문서(요청 없이도)</td></tr><tr><td>도구 사용</td><td>제한적, 프롬프트로 유도 필요</td><td>플러그인·브라우저·코드 실행 등을 스스로 판단해 사용</td></tr><tr><td>대표 산출물</td><td>답변, 요약</td><td>라이브 웹사이트, PPT, 모션그래픽, 대시보드 등</td></tr><tr><td>실행 환경</td><td>세션 내 대화만</td><td>세션별 전용 클라우드 컴퓨터, 다중 세션 동시 실행</td></tr><tr><td>적합한 작업</td><td>짧고 즉각적인 질의응답</td><td>결과물(deliverable)이 필요한 긴 작업</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>여행/이벤트 기획 커맨드 센터 제작</strong>: 여행 계획 프롬프트를 Work에 보내면 호텔 비교, 일정표, 예산 계산기, 체크리스트가 포함된 인터랙티브 웹사이트를 자동 생성하고, 가족 등과 공개 URL로 공유할 수 있다.</li>
+<li><strong>회의 준비 자동화</strong>: 캘린더·이메일·회의 메모 플러그인을 연결해두면 &quot;오늘 회의 준비해줘&quot;라는 한 줄 지시만으로 관련 자료를 스스로 찾아 종합해 편집 가능한 프레젠테이션(PPTX)까지 완성한다.</li>
+<li><strong>웹사이트 QA 및 버그 탐색</strong>: 인앱 브라우저로 신규 사용자처럼 사이트 곳곳을 클릭·탐색하게 하여 버그를 찾아내는 테스트 자동화에 활용할 수 있다.</li>
+<li><strong>콘텐츠 제작 파이프라인 자동화</strong>: Remotion 플러그인으로 로고·설명만 주고 편집 가능한 모션그래픽을 만들거나, 특정 비주얼 스타일을 스킬로 저장해 반복 요청 없이 일관된 결과물을 뽑아낼 수 있다.</li>
+<li><strong>정기 리포트/업무 완전 자동화</strong>: 매일/매주 반복되는 데이터 분석이나 보고서 작성을 스킬로 만든 뒤 스케줄 작업에 등록해 컴퓨터를 켜두지 않아도 클라우드에서 자동 실행되게 할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>영상 시점 기준 Work는 이미 상당 기간 출시되어 있었고, 제작자는 실사용 경험을 바탕으로 이번 가이드를 제작했다고 밝힌다.</li>
+<li>플러그인 생태계는 &quot;수천 개&quot; 규모로 이미 크고, 검색을 통해 필요한 도구를 계속 발굴해 연결하는 것이 권장된다.</li>
+<li>데스크톱 앱의 컴퓨터 사용(computer use) 기능은 아직 일반 사용자 수요가 크지 않다고 평가되며, 대부분의 실용 사례는 인앱 브라우저 수준에서 충분히 커버된다는 관찰이 제시된다.</li>
+<li>스킬을 매개로 Claude 등 타사 에이전트와의 워크플로우 자산을 상호 이전할 수 있다는 점에서, 에이전트 플랫폼 간 &quot;스킬 이식성&quot;이 향후 경쟁·표준화 포인트가 될 가능성이 있다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>Work (ChatGPT Work)</td><td>목표 지향적 자율 실행을 지원하는 ChatGPT의 에이전트 모드 탭. 전용 클라우드 컴퓨터에서 장시간 다단계 작업을 수행</td></tr><tr><td>플러그인(Plugins)</td><td>캘린더·Gmail·Granola 등 외부 도구에 접근 권한과 사용법(스킬)을 함께 연결하는 확장 기능</td></tr><tr><td>스킬(Skills)</td><td>특정 작업 절차를 재사용 가능하게 패키징한 지침 묶음. 반복 작업을 짧은 호출로 재현 가능</td></tr><tr><td>스케줄 작업(Scheduled Tasks)</td><td>일회성 또는 주기적(매일·매주·매시간)으로 작업을 무인 자동 실행하는 기능</td></tr><tr><td>블록(Blocks)</td><td>Work가 생성하는 즉석 인터랙티브 산출물. 글쓰기 블록(이메일 등)과 코드 블록(대시보드·계산기 등)으로 구분</td></tr><tr><td>인앱 브라우저</td><td>데스크톱 앱 내장 브라우저로, 사용자와 ChatGPT가 함께 웹을 탐색·조작할 수 있는 기능</td></tr><tr><td>컴퓨터 사용(Computer Use)</td><td>데스크톱 앱에서 ChatGPT가 사용자의 컴퓨터 전체(앱 실행 등)를 직접 조작하는 기능</td></tr><tr><td>Remotion</td><td>모션그래픽 편집을 지원하는 데스크톱 전용 플러그인</td></tr><tr><td>채팅 분기(Branch)</td><td>대화의 특정 지점에서 새로운 채팅으로 갈라져 원본은 그대로 둔 채 다른 방향을 탐색하는 기능</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/18Ih4w16UP0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Futurepedia · 2026-08-26</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

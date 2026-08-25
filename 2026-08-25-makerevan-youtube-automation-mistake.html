@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="유튜브 자동화, 이거 모르고 하면 영상 다시 만듭니다"><title>유튜브 자동화, 이거 모르고 하면 영상 다시 만듭니다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">MORNING DIGEST · 2026-08-25 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>유튜브 자동화, 이거 모르고 하면 영상 다시 만듭니다</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>메이커 에반 (Maker Evan)</td></tr><tr><td>제작 경험치</td><td>129편 자동화 파이프라인 운영</td></tr><tr><td>핵심 문제의식</td><td>자동화의 위험은 &quot;결과가 안 나옴&quot;이 아니라 &quot;다시 만들어야 함&quot;</td></tr><tr><td>함정 개수</td><td>7개 (순서, 음성 단위, 자막, 화면, 캡처, 생성 비용, 업로드)</td></tr><tr><td>되돌릴 수 있는 함정</td><td>순서, 음성 단위, 자막 시각, 화면 계수, 중복 — 비싸지만 복구 가능</td></tr><tr><td>되돌릴 수 없는 함정</td><td>캡처에 박힌 개인정보, 눌려버린 게시 버튼</td></tr><tr><td>핵심 교훈</td><td>자동화는 실수를 없애는 도구가 아니라 같은 실수를 빠르게 반복하는 도구</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>제작 순서 역전 — 나레이션 먼저, 화면은 나중</strong> 사람이 편집할 때는 화면을 먼저 짜고 음성을 맞추지만, 자동화에서는 음성 길이를 만들어보기 전엔 알 수 없어 화면과 어긋난다. 컷이 200개면 하나만 밀어도 뒤가 전부 밀리므로, 나레이션으로 시각(타임코드)을 먼저 확정하고 화면을 그 위에 얹는 순서로 뒤집었다. (<a href="https://youtu.be/Bd6eEr5WIzo?t=74" target="_blank" rel="noopener">01:14</a>)</li>
+<li><strong>음성 합성 단위 — 문장별 분할이 아닌 전체 통합 요청</strong> 문장 단위로 따로 합성하면 구간별 음량 편차가 17dB(옆사람 말소리와 속삭임 차이 수준)까지 벌어지고 억양도 매번 끊긴다. 컴프레서로 음량만 보정해서는 해결되지 않았고, 대본 전체를 한 번의 요청으로 합성하니 편차가 크게 줄었다. (<a href="https://youtu.be/Bd6eEr5WIzo?t=122" target="_blank" rel="noopener">02:02</a>)</li>
+<li><strong>자막 동기화 — 단어 단위 타임스탬프 + 원문 텍스트 결합</strong> 음성 인식이 만든 자막을 문장 덩어리째 붙이면 3초씩 밀리고, 글자수 기준 분할도 말 속도가 균등하지 않아 어긋난다. 해결책은 단어별 등장 시각만 음성 인식에서 가져오고 실제 글자는 원문(고유명사 오타 방지)을 쓰는 방식이다. 배속을 파일에 구워 넣을 경우 자막도 최종 배속 파일 기준으로 다시 만들어야 하며, 그렇지 않으면 10분 영상 기준 끝부분에서 45초가 밀린다. (<a href="https://youtu.be/Bd6eEr5WIzo?t=172" target="_blank" rel="noopener">02:52</a>)</li>
+<li><strong>화면 개수·중복 관리 — 렌더 전 계수 대조 + 중복 시 강제 에러</strong> 대본 줄수와 화면수가 어긋나면 챕터 전체가 밀리므로 렌더 전에 챕터별 줄수와 화면수를 대조해 다르면 멈춘다. 같은 화면(카드·목록·캡처)이 반복되면 아예 에러로 생성을 중단시켜, 이를 &quot;같은 말을 두 번 하고 있다&quot;는 신호로 활용한다. (<a href="https://youtu.be/Bd6eEr5WIzo?t=220" target="_blank" rel="noopener">03:40</a>)</li>
+<li><strong>캡처 사고 — 확대 검수 + 창 단위 녹화</strong> 캡처는 이미 게시된 뒤 발견되는 사고라 가장 위험하다. 축소 미리보기에서는 안 보이던 대화 제목, 파일 경로, 로그인 이메일, 사용 금액이 확대하면 드러난다. 화면 영역 지정 녹화는 겹친 다른 창까지 찍히므로, 창 단위 캡처와 자동화 도구로 특정 웹페이지만 여는 방식으로 전환했다. (<a href="https://youtu.be/Bd6eEr5WIzo?t=326" target="_blank" rel="noopener">05:26</a>)</li>
+<li><strong>생성 도구 비용 — 순차 재시도 + 통짜 음성의 트레이드오프</strong> 이미지·영상 생성을 병렬로 던지면 API가 몰려 셋 다 실패하므로 한 장씩 순서대로 처리하고, 실패 시 프롬프트를 바꾸지 말고 같은 요청을 그대로 재시도한다. 썸네일 한글은 받침·모음이 깨질 수 있어 한 글자씩 대조 검수하고, 틀리면 획이 단순한 표현으로 문구 자체를 바꾼다. 음성을 대본 전체로 통짜 합성하면 품질은 좋지만 한 줄만 고쳐도 전체(5천자 등)를 다시 태워야 해 비용이 크므로, 분량·구성을 먼저 확정한 뒤 음성을 만드는 순서로 바꿨다. (<a href="https://youtu.be/Bd6eEr5WIzo?t=364" target="_blank" rel="noopener">06:04</a>)</li>
+<li><strong>업로드 — 게시 직전 한 칸만 사람이 담당</strong> 업로드 화면은 다음 버튼이 매번 같은 위치에 있어 연속 클릭이 검수용 초안을 실수로 공개 게시까지 밀어버릴 수 있다(실제 사고 경험). 파일 업로드~자막까지는 자동화하되 &quot;공개 상태&quot; 결정 버튼만 사람이 직접 누르는 규칙을 세웠고, 예약 게시 시 날짜 기본값이 내일로 잡히는 점과 지난 시각은 예약 불가라는 점도 함정으로 지적했다. (<a href="https://youtu.be/Bd6eEr5WIzo?t=426" target="_blank" rel="noopener">07:06</a>)</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>TTS(음성 합성) 단위의 물리적 한계</strong>: 문장을 잘라 개별 API 호출로 합성하면 각 호출이 억양 곡선을 처음부터 새로 시작하므로, 후처리(컴프레서·게인 보정)로는 문장 간 자연스러운 흐름을 복원할 수 없다. 합성 요청 단위 자체가 음질의 상한을 결정한다.</li>
+<li><strong>자막-오디오 동기화의 근본 문제</strong>: 음성 인식(STT)이 반환하는 타임스탬프는 신뢰하되 텍스트는 신뢰하지 않는 &quot;위치와 내용 분리&quot; 전략이 핵심이다. 단어 단위 타임코드 + 원문 텍스트 결합이 문장 덩어리 붙이기나 글자수 균등분할보다 정확하다.</li>
+<li><strong>렌더링 파이프라인의 계수 검증</strong>: 대본 줄수·화면 수·챕터 수를 렌더 전 자동 대조하는 게이트를 두어, 어긋남을 &quot;애니메이션이 음성과 안 맞는다&quot;는 눈에 보이는 증상이 아니라 &quot;계수 불일치&quot;라는 근본 원인 단계에서 차단한다.</li>
+<li><strong>속도 처리 위치의 중요성</strong>: 재생 속도(배속)를 플레이어 옵션으로 걸면 미리보기와 최종 파일이 달라지므로, 배속을 파일 자체에 렌더링하고 자막도 그 최종 파일 기준 시각으로 재생성해야 한다.</li>
+<li><strong>캡처 자동화 도구의 스코프 제한</strong>: 전체 화면 영역 녹화 대신 창 단위 캡처, 웹 페이지는 자동화 도구로 해당 페이지만 별도로 열어 캡처 범위를 물리적으로 좁히는 방식.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>자동화는 실수 제거 도구가 아니라 실수 증폭 도구</strong>라는 프레임 전환이 핵심 메시지다. 사람이 손으로 만들 때는 한두 컷의 오차를 즉석에서 고치지만, 자동화 파이프라인은 같은 오차를 200개 컷·129편에 걸쳐 동일하게 반복 생산한다.</li>
+<li><strong>증상 발생 지점과 원인 발생 지점의 분리</strong>라는 디버깅 원칙이 전체 7개 사례를 관통한다. 음량이 튀면 음량이 아니라 합성 단위를, 자막이 밀리면 자막이 아니라 시각 출처를, 화면이 안 맞으면 화면이 아니라 줄수를 봐야 한다는 것이다.</li>
+<li><strong>되돌릴 수 있는 실수와 되돌릴 수 없는 실수를 구분해 자동화 범위를 설계</strong>하는 접근은 일반적인 자동화/AI 파이프라인 설계에도 적용 가능한 원칙이다. 비용이 드는 재작업(음성·자막·화면)은 자동화하되, 게시·개인정보 노출처럼 되돌릴 수 없는 지점은 반드시 사람이 마지막 확인을 담당한다.</li>
+<li>1인 또는 소규모 팀이 콘텐츠 생산을 스케일업할 때, 품질 저하가 아니라 <strong>되돌릴 수 없는 사고(개인정보 유출, 오게시)가 실질적인 리스크의 핵심</strong>이라는 시사점을 준다.</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>기존 방식 (문제 발생)</th><th>개선 방식 (에반의 해법)</th></tr></thead><tbody><tr><td>제작 순서</td><td>화면 먼저 → 음성 맞춤</td><td>나레이션(타임코드) 먼저 → 화면을 붙임</td></tr><tr><td>음성 합성 단위</td><td>문장별 개별 합성</td><td>대본 전체 1회 요청으로 합성</td></tr><tr><td>자막 시각</td><td>STT 문장 덩어리 그대로 사용</td><td>단어 단위 시각 + 원문 텍스트 결합</td></tr><tr><td>배속 처리</td><td>재생 속도로 처리(미리보기와 결과물 불일치)</td><td>배속을 파일에 구워넣고 자막도 재생성</td></tr><tr><td>화면-대본 정합성</td><td>사후 발견</td><td>렌더 전 챕터별 줄수·화면수 자동 대조</td></tr><tr><td>화면 중복</td><td>방치</td><td>중복 감지 시 생성 강제 중단(에러 처리)</td></tr><tr><td>캡처 검수</td><td>축소 미리보기로 확인</td><td>확대해서 한 장씩 확인 + 창 단위 녹화</td></tr><tr><td>이미지/영상 생성 실패</td><td>병렬 요청, 프롬프트 수정 재시도</td><td>순차 요청, 동일 프롬프트 그대로 재시도</td></tr><tr><td>업로드 공개 결정</td><td>전 과정 자동 클릭</td><td>공개 상태 버튼만 사람이 수동 클릭</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th>유형</th><th>함정</th><th>되돌림 가능 여부</th></tr></thead><tbody><tr><td>되돌릴 수 있음(비용만 발생)</td><td>제작 순서, 음성 합성 단위, 자막 시각, 화면 계수, 화면 중복</td><td>다시 만들면 복구</td></tr><tr><td>되돌릴 수 없음(사고)</td><td>캡처에 노출된 개인정보/경로/계정, 눌려버린 게시 버튼</td><td>이미 노출·게시되어 원상복구 불가</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>1인 유튜버·크리에이터의 자동화 파이프라인 구축</strong>: 대본→음성→자막→화면 자동 생성 파이프라인을 만들 때 순서 설계(나레이션 우선)와 계수 검증 게이트를 처음부터 반영해 재작업 비용을 줄인다.</li>
+<li><strong>AI 콘텐츠 제작 도구(TTS·STT·이미지 생성 API) 통합 개발자</strong>: 음성 합성 요청 단위 설계, 단어 단위 타임스탬프 활용, 병렬 요청 실패 처리 로직(순차 재시도) 등 API 사용 패턴을 실무에 바로 적용할 수 있다.</li>
+<li><strong>화면 녹화/캡처 기반 튜토리얼 제작자</strong>: 개인정보·계정 정보 노출 방지를 위한 창 단위 캡처, 확대 검수, 자동화 도구를 통한 페이지 단독 오픈 습관을 체크리스트로 활용한다.</li>
+<li><strong>업로드 자동화(RPA/봇) 설계자</strong>: 되돌릴 수 없는 최종 단계(게시, 발송, 결제 확정 등)는 사람이 수동으로 확인하는 &quot;안전장치 1칸&quot; 설계 원칙을 다른 자동화 도메인(이메일 발송, 결제 승인 등)에도 응용할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>에반은 현재 129편의 영상을 자동화 파이프라인으로 제작한 경험을 바탕으로 각 함정을 하나씩 메워왔으며, 이번 영상은 그 시행착오를 정리해 공유하는 후속편 성격이다(전편은 &quot;유튜브 제작을 스킬로 묶은&quot; 내용).</li>
+<li>자동화 도구(TTS, STT, 이미지/영상 생성 API)의 신뢰도가 계속 높아지고 있지만, 영상에서 지적된 문제들(음량 편차, 자막 어긋남, 한글 깨짐, 병렬 요청 실패)은 여전히 현재 시점 생성형 AI 도구들의 공통적 한계로 남아있다.</li>
+<li>향후 방향으로는 되돌릴 수 없는 지점(게시, 개인정보 노출)에 대한 사람의 최종 검수를 유지하면서, 나머지 반복 작업의 자동화 범위를 계속 넓혀가는 하이브리드 워크플로우가 계속될 것으로 보인다. 영상 말미에 시청자 제보를 요청해 다음 영상에 추가 함정 사례를 반영하겠다고 밝혔다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>TTS (Text-to-Speech)</td><td>텍스트를 음성으로 변환하는 합성 기술. 합성 요청 단위(문장별 vs 전체)에 따라 음량·억양 일관성이 달라진다</td></tr><tr><td>STT (Speech-to-Text)</td><td>음성을 텍스트로 변환하는 인식 기술. 자막 생성에 쓰이며 고유명사 인식 오류가 잦아 위치(타임스탬프)만 활용하는 게 안전하다</td></tr><tr><td>dB (데시벨)</td><td>음량 크기 단위. 영상에서 언급된 17dB 편차는 옆 사람 말소리와 속삭임 수준의 차이에 해당</td></tr><tr><td>배속 굽기</td><td>재생 속도를 플레이어 옵션이 아닌 파일 자체에 렌더링해 고정하는 방식. 미리보기와 최종 결과물의 불일치를 방지</td></tr><tr><td>렌더 전 계수 대조</td><td>영상 렌더링 전에 대본 줄수와 화면(컷) 수를 자동으로 세어 일치 여부를 검증하는 절차</td></tr><tr><td>창 단위 캡처</td><td>화면 전체나 임의 영역이 아니라 특정 애플리케이션 창만 선택해 녹화·캡처하는 방식으로 개인정보 노출을 방지</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Bd6eEr5WIzo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-08-25</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

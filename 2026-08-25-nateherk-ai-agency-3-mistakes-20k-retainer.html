@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 에이전시가 월 $20K 리테이너를 놓치는 3가지 실수 (제약·KPI·가격)"><title>AI 에이전시가 월 $20K 리테이너를 놓치는 3가지 실수 (제약·KPI·가격)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">MORNING DIGEST · 2026-08-25 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>AI 에이전시가 월 $20K 리테이너를 놓치는 3가지 실수 (제약·KPI·가격)</h1></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>형식</td><td>컨퍼런스 강연 실황(몬테네그로 Workless AI 행사, 발표 + Q&amp;A)</td></tr><tr><td>화자</td><td>Nate Herk — 前 Goldman Sachs 애널리스트, AI 자동화 에이전시 설립·매각 경험자, 유튜브 채널 &quot;Nate Herk \</td><td>AI Automation&quot; 운영</td></tr><tr><td>핵심 문제의식</td><td>클라이언트가 요청한 것(예: &quot;개인 비서 AI&quot;)을 그대로 만들어주면 사업의 진짜 병목을 해결하지 못해 &quot;낸 돈만큼 가치를 못 받았다&quot;는 불만으로 이어진다</td></tr><tr><td>기준 수치</td><td>월 $20,000 리테이너 최소 계약, 월 매출 $100,000 달성 후 에이전시 매각, 디스커버리콜 300회 이상 진행, 가치의 10%를 가격으로 책정</td></tr><tr><td>핵심 내용</td><td>(1) 사업의 진짜 제약(공급/수요 병목)을 진단하라 (2) 착수 전 단일 KPI를 클라이언트와 합의하라 (3) 시간당 요금이 아닌 가치 기반으로 가격을 책정하고 10배 수익률을 증명하라</td></tr></tbody></table></div></section><section class="card s12" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>실패담으로 문제 제기</strong>: 23세에 퇴사 후 개인 비서 AI 에이전트를 만들어준 클라이언트로부터 &quot;우리가 지불한 만큼의 가치를 못 받고 있다&quot;는 항의를 받았다. 원인은 세 가지 실수 — (1) 만든 것이 사업의 진짜 제약이 아니었고 (2) KPI를 정하지 않았고 (3) 가격을 감으로 정했다는 점이었다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=0" target="_blank" rel="noopener">00:00</a>).</li>
+</ol>
+<ol>
+<li><strong>&quot;티켓 처리자&quot;에서 &quot;진단하는 의사&quot;로</strong>: 저자는 사업을 스케일업하기 전 큰 깨달음을 얻었다고 말한다. 단순히 요청받은 티켓을 처리하는 사람에서 벗어나, 고객이 느끼는 통증(pain)을 진단하는 &quot;의사&quot; 역할로 진화해야 하며, 그다음엔 그 가치를 증명까지 해야 한다는 것이다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=171" target="_blank" rel="noopener">02:51</a>).</li>
+</ol>
+<ol>
+<li><strong>골드만삭스 경험에서 얻은 3가지 교훈</strong>: (1) 지루하지만 결정론적인(deterministic) 자동화가 더 만들기 쉽고 평가하기 쉬우며 리스크가 적다 (2) 대기업은 변화관리 이슈와 규제 때문에 AI 도입 속도가 느리다 (3) 자신의 가치를 스스로 드러내지 않으면 인정받지 못한다 — 회의록을 자동화해 보냈지만 상사가 발표자 이름조차 기억 못하고 &quot;Arthur, 잘했어&quot;라고 답장한 일화를 예로 든다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=332" target="_blank" rel="noopener">05:32</a>).</li>
+</ol>
+<ol>
+<li><strong>실수 1: 진짜 제약이 아닌 것을 만듦 — &quot;안도감을 파는 것&quot;</strong>: 사업은 병목을 제거해야만 성장한다. 클라이언트들은 바이럴 영상이나 이사회 압박, 경쟁사의 LinkedIn 게시물을 보고 &quot;AI 에이전트가 필요하다&quot;고 말하지만, 이는 실제 필요가 아니라 &quot;우리도 AI 전략이 있다&quot;고 말할 수 있는 안도감(relief)을 사는 것에 가깝다. 300회 이상의 디스커버리콜에서 깨달은 것은 고객이 말하는 요청이 진짜 필요와 거의 일치하지 않는다는 점이다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=415" target="_blank" rel="noopener">06:55</a>).</li>
+</ol>
+<ol>
+<li><strong>파이프-병목 프레임워크</strong>: 사업은 공급 제약형(고객은 몰리는데 응대·전환이 막힘) 또는 수요 제약형(고객 유입 자체가 부족함) 중 하나다. 매출을 파이프 속 물로 비유하면, 공급 제약은 &quot;파이프 중간이 막혀 물이 새는 것&quot;, 수요 제약은 &quot;애초에 파이프에 물이 거의 없는 것&quot;이다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=588" target="_blank" rel="noopener">09:48</a>).</li>
+</ol>
+<ol>
+<li><strong>의료스파(med spa) 사례와 침묵의 힘</strong>: 한 의료스파 원장이 &quot;리드 제너레이션 AI 에이전트&quot;를 요청했지만, 실제로는 예약 노쇼와 사후 팔로업 부재로 LTV(고객생애가치)가 낮은 것이 진짜 문제였다. 저자는 &quot;왜 이 콜을 예약하셨나요?&quot;라고 묻고 침묵을 지켜 상대가 스스로 진짜 통증을 털어놓게 만드는 기법을 강조한다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=671" target="_blank" rel="noopener">11:11</a>).</li>
+</ol>
+<ol>
+<li><strong>진단 질문 2가지</strong>: 공급 제약형에는 &quot;내일 당장 사업이 10배로 커지면 무엇이 가장 먼저 무너질까요?&quot;(가장 먼저 = 첫 번째 병목), 수요 제약형에는 &quot;내일 당장 유입을 10배로 늘리려면 무엇을 해야 할까요?&quot;라고 묻는다. 하나의 병목을 해결하면 다음 병목이 드러나며, 이것이 바로 리테이너 계약으로 이어지는 방식이다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=750" target="_blank" rel="noopener">12:30</a>).</li>
+</ol>
+<ol>
+<li><strong>실수 2: KPI 미설정</strong>: 앞서 나온 &quot;개인 비서&quot; 클라이언트의 진짜 원인은 그가 제안서를 손으로 작성하느라 바빴던 것이었다. 사전에 &quot;제안서 자동화 90% 완료&quot;같은 숫자를 합의했다면 명확히 증명할 수 있었을 것이다. &quot;생산성&quot;은 주관적이라 증명이 불가능하지만, &quot;주간 예약 건수를 5건에서 10건으로&quot;처럼 객관적 지표는 증명 가능하다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=834" target="_blank" rel="noopener">13:54</a>, <a href="https://youtu.be/DoHPZf7jEQ4?t=915" target="_blank" rel="noopener">15:15</a>).</li>
+</ol>
+<ol>
+<li><strong>실수 3: 가격을 추측함 — 인센티브의 역설</strong>: 시간당 과금은 인센티브가 거꾸로 작동한다(느리고 실력 낮은 개발자가 더 오래 걸려 더 많은 돈을 받게 됨). 저자는 시간당 과금은 신뢰를 쌓는 초기 단계에서만 쓰고, 본격적으로는 가치 기반 가격(value-based pricing)으로 전환해야 한다고 말한다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=1077" target="_blank" rel="noopener">17:57</a>).</li>
+</ol>
+<ol>
+<li><strong>10배 법칙과 가격 산정 공식</strong>: &quot;고객은 투자 대비 10배의 가치를 받는다는 것을 이해해야 한다&quot;는 것이 황금률이다. 방법은 자동화가 대체하는 수작업의 연간 환산 비용을 계산한 뒤 그 10%를 가격으로 책정하는 것이다. 예: 시간당 $40인 직원이 주 10시간 고객지원 티켓을 처리 → 연간 약 $21,000(원문 발화상 &quot;$2,100&quot;이나 문맥상 연 환산액을 의미) 비용 발생 → 그 10%인 약 $2,100~2,800을 프로젝트 가격으로 제시 (<a href="https://youtu.be/DoHPZf7jEQ4?t=1168" target="_blank" rel="noopener">19:28</a>).</li>
+</ol>
+<ol>
+<li><strong>비용은 가격을 정당화하지 않는다, 가치가 정당화한다</strong>: 잔디 깎는 사람이 트럭을 새로 사서 비용이 늘었다고 같은 잔디 작업에 요금을 2배 올리면 고객은 받아들이지 않는다. 마찬가지로 에이전시의 원가(세금, 인건비, API 비용)가 아니라 클라이언트가 얻는 가치가 가격의 근거가 되어야 한다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=1349" target="_blank" rel="noopener">22:29</a>).</li>
+</ol>
+<ol>
+<li><strong>가격을 깎지 말고 스코프를 줄여라</strong>: 가치 산정 결과가 $15,000인데 고객 예산이 $7,000이라면, 가격을 $7,000으로 깎는 대신 &quot;이 자동화는 $15,000 가치이며, 예산에 맞춰 V1으로 기능을 줄여 $7,000 상당을 먼저 제공하고, 다음 분기에 확장하자&quot;고 제안해야 한다. 처음부터 깎아주면 이후에도 계속 깎아달라는 요구를 받게 된다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=1422" target="_blank" rel="noopener">23:42</a>).</li>
+</ol>
+<ol>
+<li><strong>청중 Q&amp;A 실전 사례</strong>: 한 참가자(Allejo)는 수요 제약형(콘텐츠는 있으나 전환 안 됨: 웨비나 참석 20명 중 예약 전환 0건)이었고, 저자는 &quot;세일즈콜에서 반복적으로 나온 문제를 영상 콘텐츠로 전환하라&quot;는 구체적 병목 해소책을 제시했다. 또한 &quot;grill me skill&quot;(AI가 본인을 집요하게 인터뷰하도록 만드는 프롬프트로, 전문지식을 AI 워크플로우에 이식하는 기법)을 소개했다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=1508" target="_blank" rel="noopener">25:08</a>, <a href="https://youtu.be/DoHPZf7jEQ4?t=1600" target="_blank" rel="noopener">26:40</a>).</li>
+</ol>
+<ol>
+<li><strong>결론: 리테이너로 가는 경로</strong>: 첫 프로젝트는 가치 기반 프로젝트 요금으로 시작하고, 병목을 하나씩 해결하며 성과를 수치로 증명한 뒤 &quot;매번 스코핑·가격 협상을 반복하지 말고 계속 함께 일하자&quot;는 제안으로 자연스럽게 월 리테이너로 전환한다 (<a href="https://youtu.be/DoHPZf7jEQ4?t=1681" target="_blank" rel="noopener">28:01</a>).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 강연은 특정 AI 도구나 모델을 다루지 않고, AI 자동화 에이전시의 <strong>비즈니스 컨설팅 방법론</strong>에 초점을 맞춘다. 다만 몇 가지 기술적 함의가 있다.</p>
+<ul>
+<li><strong>결정론적(deterministic) 자동화 우선</strong>: 저자는 골드만삭스 근무 경험을 바탕으로, 입력과 출력이 명확히 정의된 규칙 기반/워크플로우 자동화가 확률적(probabilistic) LLM 에이전트보다 구축·검증·리스크 관리 측면에서 유리하다고 강조한다. 이는 &quot;AI 에이전트&quot;라는 유행어보다 실제 문제 해결 여부가 중요하다는 관점과 연결된다.</li>
+<li><strong>&quot;AI 네이티브&quot; 컨설턴트의 정의</strong>: AI를 모든 곳에 적용하는 사람이 아니라, &quot;언제 AI를 쓰지 않아야 하는지&quot;까지 판단하는 사람이라고 정의한다(예: 채용 병목은 AI 채용 에이전트보다 단순 인력 충원이 더 나을 수 있음).</li>
+<li><strong>자동화 유형 사례</strong>: 리드 팔로업/예약 알림 리액티베이션 시스템, 제안서 자동 작성(90% 자동화 + 사람 검수), 고객지원 티켓 응대 에이전트, 예약 음성 에이전트(부재중 전화 대응), 콘텐츠 재활용 파이프라인(세일즈콜 인사이트 → 영상 콘텐츠) 등이 언급된다.</li>
+<li><strong>&quot;grill me skill&quot;</strong>: AI에게 사용자를 집요하게 인터뷰하도록 지시하는 프롬프트 기법으로, 전문가의 암묵지(domain expertise)를 명시적 데이터로 추출해 이후 자동화 설계에 반영하는 데 쓰인다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li><strong>가격 결정권의 이동</strong>: 시간당 과금에서 가치 기반 과금으로 전환하면 에이전시는 &quot;얼마나 빨리 일했는가&quot;가 아니라 &quot;얼마나 많은 병목을 제거했는가&quot;로 보상받는 구조가 되어, 고성과 인력·자동화 도구 투자의 인센티브가 정렬된다.</li>
+<li><strong>리테이너 전환의 구조적 논리</strong>: 단발성 프로젝트가 아니라 지속적 병목 발견·해결 사이클을 제시함으로써, 클라이언트 입장에서도 &quot;매번 재협상&quot;보다 &quot;계속 함께 일하는 것&quot;이 합리적 선택이 되게 만든다. 이는 SaaS의 확장 매출(expansion revenue) 논리와 유사하다.</li>
+<li><strong>AI 붐 속 차별화 지점</strong>: 시장에 &quot;AI 에이전트를 만들어준다&quot;는 공급자가 넘치는 상황에서, 진단(diagnose)-증명(prove) 역량이 실질적 해자(moat)가 된다는 메시지다. 기술 구현력보다 컨설팅·질문 설계 역량이 에이전시의 지속가능성을 좌우한다는 시사점을 준다.</li>
+<li><strong>소규모 에이전시/프리랜서에 대한 실용적 함의</strong>: 대형 컨설팅펌의 가치기반 가격 이론(예: Alan Weiss, Jonathan Stark 계열)을 AI 자동화라는 신흥 서비스 영역에 그대로 이식할 수 있음을 보여준다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>목표</th><th>핵심 질문/행동</th><th>실패 시 결과</th></tr></thead><tbody><tr><td>1. 제약 진단</td><td>사업의 진짜 병목(공급형/수요형) 파악</td><td>&quot;10배로 커지면 무엇이 먼저 무너지나요?&quot; / &quot;10배 유입을 어떻게 만드나요?&quot; + 침묵</td><td>클라이언트가 원한 것은 만들었지만 사업 성과는 안 바뀜</td></tr><tr><td>2. KPI 합의</td><td>착수 전 단일 객관적 지표 확정</td><td>&quot;완벽하게 작동하면 어떤 모습인가요?&quot;로 기준선(baseline)과 목표(target) 수치 도출</td><td>&quot;가치를 못 받았다&quot;는 주관적 불만에 반박 불가</td></tr><tr><td>3. 가치 기반 가격</td><td>연간 절감/창출 가치의 10%를 가격으로 제시</td><td>수작업 비용(시급×시간×52주) 계산 → 10% 산정 → 근거 설명 → 침묵</td><td>마진 방어에 매몰되거나 가격 협상에서 스스로 가치 절하</td></tr></tbody></table></div>
+<div class="tbl-wrap"><table><thead><tr><th>방식</th><th>인센티브 구조</th><th>장점</th><th>단점</th></tr></thead><tbody><tr><td>시간당 과금</td><td>느릴수록 더 많이 받음(역인센티브)</td><td>초기 신뢰 구축에 유리, 진입장벽 낮음</td><td>비즈니스 확장에 부적합, 우수 인력에게 불리</td></tr><tr><td>가치 기반 과금</td><td>병목 해결·성과 창출에 비례해 보상</td><td>인센티브 정렬, 대형 계약·리테이너 전환 용이</td><td>가치 산정과 근거 설명 역량 필요, 신규 에이전시엔 진입장벽</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>AI 자동화 에이전시 창업자</strong>: 디스커버리콜 스크립트에 &quot;10배로 커지면 무엇이 먼저 무너지나요?&quot; 질문과 침묵 기법을 도입해, 클라이언트가 요청한 기능이 아니라 실제 병목에 맞춘 제안서를 작성하는 데 활용할 수 있다.</li>
+<li><strong>사내 AI 전환 담당자(내부 컨설턴트)</strong>: 외부 클라이언트가 아니어도, 사내 예산 승인을 받을 때 &quot;이 자동화 프로젝트가 어떤 병목을 제거하고, 어떤 단일 KPI로 증명할 것인지&quot;를 사전에 임원진과 합의해 예산 승인 이후 성과 입증 리스크를 줄일 수 있다.</li>
+<li><strong>프리랜서 개발자/노코드 빌더</strong>: 시간당 요금 협상에서 벗어나기 어려운 초보 단계에서, 본 영상의 &quot;연간 환산 비용의 10%&quot; 공식을 활용해 첫 가치기반 견적을 산출해보고 점진적으로 과금 모델을 전환하는 로드맵으로 삼을 수 있다.</li>
+<li><strong>에이전시 세일즈/영업 담당자</strong>: 가격 협상에서 고객이 예산 부족을 이유로 할인을 요구할 때, 가격을 깎는 대신 스코프를 줄여 V1을 제공하는 협상 스크립트를 준비하는 데 참고할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>발표자는 자신의 에이전시를 월 매출 $100,000 규모까지 키운 뒤 매각하고 현재는 유튜브 채널과 무료 커뮤니티(&quot;Automation Society&quot;)를 통한 교육에 집중하고 있다고 밝힌다. 이는 AI 자동화 서비스 시장이 &quot;누가 더 그럴듯한 데모를 만드는가&quot; 경쟁에서 &quot;누가 더 정확히 병목을 진단하고 성과를 증명하는가&quot; 경쟁으로 성숙해가고 있음을 보여주는 사례로 해석할 수 있다. 발표자는 강연 중 &quot;전체 AI 자동화의 50% 이상이 리드젠/세일즈/마케팅 자동화&quot;라는 통계를 인용하며(단, 정확한 출처는 언급하지 않고 최신성이 낮을 수 있다고 스스로 밝힘), 이 영역의 수요가 여전히 집중되어 있음을 시사한다. 향후에는 가치 기반 가격 산정을 지원하는 표준화된 프레임워크나 도구(ROI 계산기 등)가 에이전시 업계에 더 널리 보급될 가능성이 있으며, 대형 컨설팅펌들도 가격 모델을 지속적으로 실험 중이라는 언급에서 업계 전반의 과금 방식 표준화가 아직 이루어지지 않았음을 알 수 있다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명(40자 이내)</th><th>비유/예시</th></tr></thead><tbody><tr><td>공급 제약(Supply Constrained)</td><td>고객은 몰리는데 처리·전환 역량이 부족한 상태</td><td>손님은 많은데 주방이 못 따라가는 식당</td></tr><tr><td>수요 제약(Demand Constrained)</td><td>애초에 유입 고객 수 자체가 부족한 상태</td><td>주방은 완벽한데 손님이 안 오는 식당</td></tr><tr><td>가치 기반 가격(Value-based Pricing)</td><td>원가 아닌 고객이 얻는 가치로 값을 매기는 방식</td><td>잔디깎이 기름값 아닌 잔디 관리 가치로 요금 책정</td></tr><tr><td>KPI(핵심성과지표)</td><td>사전에 합의한, 성과를 증명할 단일 숫자 지표</td><td>주간 예약 건수 5건→10건</td></tr><tr><td>디스커버리콜(Discovery Call)</td><td>고객의 진짜 니즈를 파악하는 초기 상담 통화</td><td>의사의 문진(問診) 단계</td></tr><tr><td>리테이너(Retainer)</td><td>매달 정기적으로 지불하는 고정 계약 방식</td><td>헬스장 월 회원권처럼 매달 자동 결제</td></tr><tr><td>grill me skill</td><td>AI가 사용자를 집요하게 인터뷰하게 만드는 프롬프트 기법</td><td>기자가 취재원을 파고들며 질문하는 인터뷰</td></tr><tr><td>LTV(고객생애가치)</td><td>한 고객이 평생 발생시키는 총 매출 가치</td><td>단골 카페 손님이 10년간 쓴 총 커피값</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/DoHPZf7jEQ4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-08-25</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
