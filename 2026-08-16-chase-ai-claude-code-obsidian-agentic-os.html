@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="옵시디언을 클로드 코드 커맨드센터로 만드는 3층 구조"><title>옵시디언을 클로드 코드 커맨드센터로 만드는 3층 구조</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">MORNING DIGEST · 2026-08-16 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>옵시디언을 클로드 코드 커맨드센터로 만드는 3층 구조</h1><p class="lead">채널: Chase AI · 주제: 옵시디언 플러그인·스킬 백본·메모리 맵으로 구성한 클로드 코드 운영 체계</p></header>
+<div style="max-width:1100px;margin:32px auto;padding:0 16px"><img src="assets/ig/2026-08-16-chase-ai-claude-code-obsidian-agentic-os.jpg" alt="인포그래픽 요약" style="display:block;width:100%;height:auto;border-radius:8px"></div>
+<main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>주제</td><td>옵시디언을 단순 마크다운 저장소가 아니라 클로드 코드(Claude Code) 전체를 조작하는 커맨드센터로 구성하는 방법을 다룬다.</td></tr><tr><td>3대 구성요소</td><td>시각 대시보드 + 로컬 음성 인터페이스, 스킬·자동화 백본, 옵시디언 메모리 레이어의 세 축으로 정리된다.</td></tr><tr><td>대시보드</td><td>클로드 코드가 직접 제작해 설치한 커스텀 옵시디언 플러그인. 토큰 사용량, 소셜 지표, 구글 캘린더 일정, 조간 헤드라인, 스킬 실행 버튼을 한 화면에 배치한다.</td></tr><tr><td>음성 파이프라인</td><td>faster-whisper 전사 → Haiku 4.5 라우팅 → 3단계 티어 실행 → Kokoro 음성 합성 순으로 동작하며 옵시디언 밖에서도 단축키로 호출된다.</td></tr><tr><td>스킬 백본</td><td>화자는 일상 업무를 도메인별(메모리, 생산성, 리서치, 콘텐츠, 커뮤니티, 에이전시, 세일즈)로 나눠 스킬화한 뒤 일부를 자동화로 승격한다고 설명한다.</td></tr><tr><td>메모리 레이어</td><td>카르파티(Karpathy)의 4월 트윗(조회 약 2,200만)에서 유래한 raw/wiki/output 3폴더 + 인덱스 파일 구조. 화자는 이를 그래프 RAG가 아닌 &quot;지도&quot;라고 규정한다.</td></tr><tr><td>핵심 주장</td><td>스킬·자동화 기반이 없으면 대시보드는 알맹이 없는 시각적 볼거리에 그친다고 화자는 본다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 &quot;왜 이것이 터미널이나 데스크톱 앱보다 나은가&quot;라는 질문을 먼저 던지고, 그 답을 세 층으로 나눠 제시하는 구성이다. 전반부는 완성된 커맨드센터 화면을 시연한다. 단일 지표 요약, 소셜 채널 지표, 구글 캘린더 연동 일정과 세부 태스크, 조간 헤드라인, 원클릭 스킬 실행 버튼, 그리고 리서치·오디언스 탭이 차례로 등장한다. 리서치 탭은 모닝 인텔 자동화의 산출물로 최근 7일·30일 깃허브 트렌딩 저장소, 유튜브 아웃라이어 영상, 해커뉴스 인기 항목을 담는다. 이어 음성 모드를 시연하며 옵시디언 내부에서 터미널을 띄우거나, 탭을 벗어난 상태에서 단축키로 오늘 일정과 AI 뉴스를 물어보는 장면을 보여준다. 중반부는 음성 파이프라인의 내부 구조와 3단계 라우팅 티어를 도식으로 설명하고, 후반부는 스킬을 도출하는 3가지 방법, 스킬에서 자동화로 넘어가는 판단 기준, 옵시디언 메모리 구조 설계, 마지막으로 클로드 디자인(Claude Design)을 이용한 플러그인 UI 제작 과정을 다룬다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>음성 계층은 전부 로컬 실행을 전제로 설계됐다. 발화는 오픈소스 faster-whisper로 전사되고, 변환된 텍스트는 Haiku 4.5로 전달된다. 화자는 가장 작고 저렴하며 빠른 모델이라는 이유로 Haiku를 택했고, 하드웨어만 받쳐주면 Qwen 등 로컬 모델로 교체해 100% 로컬 구성이 가능하다고 설명한다. 라우팅은 세 티어로 나뉜다. 티어 1은 스킬 실행으로, &quot;모닝 인텔 리포트 실행&quot; 같은 명령을 추가 해석 없이 그대로 수행한다. 티어 2는 지표 조회로, 이미 생성된 리포트만 참조해 최대한 빠르게 답한다. 웹 검색이나 재조사를 하지 않는 것이 설계 의도다. 티어 3은 catch-all로, 헤드리스 클로드 코드 인스턴스를 띄워 심층 리서치나 기획 같은 무거운 작업을 수행한 뒤 완료를 보고한다. 응답 텍스트는 오픈소스 Kokoro로 음성 합성돼 돌아온다. UI 측면에서는 커스텀 플러그인 개발 시 깃허브에서 받는 hot reload 커뮤니티 플러그인 활성화가 권장되며, 클로드 디자인에서 5개 변형 목업을 생성한 뒤 선택안을 다시 변형해 좁혀 나가고, 최종 코드 zip을 클로드 코드에 넘겨 플러그인으로 빌드·설치하는 흐름이다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자가 반복해 강조하는 지점은 시각화가 아니라 기반 구조다. 스킬과 자동화가 없으면 대시보드에 흐를 데이터 자체가 없고, 호출할 대상도 없으므로 전체가 무의미해진다고 본다. 스킬화의 근거로는 AI의 비결정성을 든다. 같은 지시를 10번 내리면 10가지 방식으로 처리되므로, 수행 방식과 종료 상태를 명시해 스킬로 코드화하면 결정론에 가깝게 만들 수 있다는 논리다. 스킬 도출은 세 경로가 제시된다. 첫째, 마이크를 켜고 일·주 단위 업무를 의식의 흐름대로 말한 뒤 클로드 코드에 스킬화 가능한 부분을 뽑게 하는 방식. 둘째, 컴퓨터에 남는 클로드 코드 로그(모든 툴 호출·명령·텍스트)를 30·60·90일 단위로 분석해 실제 사용 패턴에서 스킬을 추출하는 방식. 셋째, 두 방법의 조합이며 화자는 이를 권장한다. 자동화 승격 기준은 &quot;매일 특정 시각에 반복 실행되는가&quot;이며, 모범 사례는 일정 기간 스킬 상태로 운용해 산출물이 만족스러워진 뒤 자동화로 넘기는 것이다. 더 나아가 과거 산출물과 비교해 목표 기준 미달 시 스스로 조정하는 루프 엔지니어링까지 확장 가능하다고 언급한다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>커맨드센터 3계층 구조</h2><blockquote>요지: 음성·UI는 접점, 스킬·자동화는 실체, 옵시디언 볼트는 지도 역할을 맡는 3계층 분업이다.</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>계층</th><th>구성 요소</th><th>실제 동작</th><th>제공 가치</th></tr></thead><tbody><tr><td>인터페이스</td><td>커스텀 옵시디언 플러그인 대시보드</td><td>토큰 사용량, 소셜 지표, 캘린더 일정, 조간 헤드라인, 스킬 버튼 표시</td><td>터미널·데스크톱 앱에서 얻을 수 없는 한눈 조망</td></tr><tr><td>인터페이스</td><td>로컬 음성 모드</td><td>faster-whisper 전사 후 Haiku 4.5 라우팅, Kokoro로 응답 합성</td><td>탭을 벗어난 상태에서도 단축키 호출 가능</td></tr><tr><td>실행</td><td>티어 1 스킬 실행</td><td>지정 스킬을 해석 없이 그대로 수행 후 완료 보고</td><td>반복 업무의 결정론적 처리</td></tr><tr><td>실행</td><td>티어 2 지표 조회</td><td>기존 리포트만 참조, 별도 검색·조사 없음</td><td>응답 속도 최우선</td></tr><tr><td>실행</td><td>티어 3 헤드리스 실행</td><td>클로드 코드 인스턴스를 띄워 심층 작업 수행</td><td>무거운 리서치·기획까지 위임</td></tr><tr><td>메모리</td><td>raw 폴더</td><td>수집한 원본 자료와 소스 보관</td><td>출처 추적 가능성</td></tr><tr><td>메모리</td><td>wiki 폴더</td><td>원본을 위키 형식 문서로 종합, 주제별 하위 폴더</td><td>재사용 가능한 지식 자산화</td></tr><tr><td>메모리</td><td>output 폴더</td><td>슬라이드 덱 등 최종 산출물 저장</td><td>결과물과 중간 자료의 분리</td></tr><tr><td>메모리</td><td>index.md 인덱스</td><td>각 층위마다 목차 역할, CLAUDE.md에 볼트 구조 명시</td><td>탐색 경로 제공으로 토큰 절감</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol><li><strong>조간 인텔 자동화</strong>: 깃허브 트렌딩(7일·30일), 유튜브 아웃라이어 영상, 해커뉴스 트렌드를 하나의 리포트로 매일 생성하고 대시보드 탭에 노출한다.</li><li><strong>음성 기반 일정 확인</strong>: 다른 앱에서 작업 중 단축키로 호출해 당일 최우선 일정과 시간대를 음성으로 확인한다. 티어 2 경로라 응답이 빠르다.</li><li><strong>로그 기반 스킬 발굴</strong>: 최근 30~90일 클로드 코드 사용 로그를 분석해 실제 반복 작업을 찾아내고, 인식과 실제 사용의 차이를 보정한다.</li><li><strong>볼트 구조 명세화</strong>: raw/wiki/output을 그대로 쓰지 않더라도 자신의 폴더 체계와 탐색 규칙을 CLAUDE.md에 서술해 탐색 지도를 제공한다.</li><li><strong>UI 목업 반복 설계</strong>: 핀터레스트 등에서 대시보드 레퍼런스를 모아 클로드 디자인에 투입하고, 5개 변형에서 선택안을 재변형해 최종 플러그인 코드로 확정한다.</li></ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 이 구성이 웹 기반 버전과 이전 옵시디언 버전을 거친 세 번째 반복이며, 웹 버전의 강점이던 로컬 음성 기능을 옵시디언 커맨드센터에 통합한 결과라고 설명한다. 옵시디언 메모리 레이어에 대해서는 기대를 낮출 것을 권한다. 그래프 화면이 화려해 보이지만 그래프 RAG가 아니며, 본질은 사람이 읽기 좋게 마크다운을 정리하는 것이고 클로드 코드에는 부수적 이득만 발생한다는 입장이다. 그 이득은 파일이 수천, 수만 개로 늘었을 때 인덱스가 탐색 경로를 제공해 답변 속도를 높이고 토큰 소모를 줄이는 데서 나온다. 카르파티가 제시한 구조를 그대로 따를 필요는 없고, 자신의 체계를 만든 뒤 CLAUDE.md에 명시하거나 해당 트윗 전문을 클로드에 붙여 원칙대로 세팅하게 해도 된다고 안내한다. 마지막으로 컴퓨터 사용(computer use) 기능을 켜면 클로드 코드가 스스로 스크린샷을 찍으며 디자인을 반복하도록 만들 수 있다고 덧붙인다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>커맨드센터</td><td>지표·일정·스킬 실행을 한 화면에 모은 대시보드 플러그인</td><td>여러 계기판을 하나로 모은 조종석</td></tr><tr><td>스킬(Skill)</td><td>반복 업무의 수행 방식과 종료 상태를 문서로 코드화한 것</td><td>매번 즉흥 요리 대신 확정된 레시피를 쓰는 방식</td></tr><tr><td>자동화(Automation)</td><td>검증된 스킬을 사람 개입 없이 일정에 따라 실행하는 형태</td><td>손으로 돌리던 세탁을 예약 모드로 전환</td></tr><tr><td>faster-whisper</td><td>로컬에서 동작하는 오픈소스 음성 전사 도구</td><td>컴퓨터 안에 상주하는 속기사</td></tr><tr><td>Kokoro</td><td>텍스트를 음성으로 변환하는 오픈소스 합성 도구</td><td>답변을 읽어 주는 성우</td></tr><tr><td>헤드리스 실행</td><td>화면 없이 백그라운드에서 클로드 코드를 구동하는 방식</td><td>사무실 밖에서 대신 일하는 대리인</td></tr><tr><td>라우팅 티어</td><td>명령을 스킬·지표·심층작업 세 갈래로 분류하는 규칙</td><td>민원 창구를 난이도별로 나눈 접수대</td></tr><tr><td>메모리 레이어</td><td>볼트 폴더와 인덱스로 구성한 정보 정리 구조</td><td>도서관의 서가 배치와 안내도</td></tr><tr><td>마스터 인덱스</td><td>각 폴더 계층에 두는 목차 마크다운 파일</td><td>책 앞머리의 차례</td></tr><tr><td>핫 리로드 플러그인</td><td>플러그인 수정 사항을 즉시 반영하는 개발용 옵시디언 플러그인</td><td>코드 저장 즉시 화면이 갱신되는 개발 서버</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul><li><a href="https://youtu.be/njHuj8OxIVI?t=29" target="_blank" rel="noopener">00:29</a> 시각적 볼거리에 그치지 않는 조건</li><li><a href="https://youtu.be/njHuj8OxIVI?t=57" target="_blank" rel="noopener">00:57</a> 웹 버전 음성 기능을 옵시디언에 통합</li><li><a href="https://youtu.be/njHuj8OxIVI?t=115" target="_blank" rel="noopener">01:55</a> 토큰 사용량·소셜 지표·캘린더 표시</li><li><a href="https://youtu.be/njHuj8OxIVI?t=142" target="_blank" rel="noopener">02:22</a> 모닝 인텔 리포트 구성 항목 소개</li><li><a href="https://youtu.be/njHuj8OxIVI?t=171" target="_blank" rel="noopener">02:51</a> 옵시디언 내 터미널 음성 호출 시연</li><li><a href="https://youtu.be/njHuj8OxIVI?t=284" target="_blank" rel="noopener">04:44</a> 헤드리스 모드로 심층 작업 위임</li><li><a href="https://youtu.be/njHuj8OxIVI?t=338" target="_blank" rel="noopener">05:38</a> 스킬·자동화 백본이 실제 가치의 원천</li><li><a href="https://youtu.be/njHuj8OxIVI?t=393" target="_blank" rel="noopener">06:33</a> 도메인별 업무 분류와 스킬 전환 절차</li><li><a href="https://youtu.be/njHuj8OxIVI?t=562" target="_blank" rel="noopener">09:22</a> 음성 파이프라인 전체 흐름 설명</li><li><a href="https://youtu.be/njHuj8OxIVI?t=619" target="_blank" rel="noopener">10:19</a> 3단계 라우팅 티어 구분 기준</li><li><a href="https://youtu.be/njHuj8OxIVI?t=758" target="_blank" rel="noopener">12:38</a> 비결정성 문제와 스킬 정의 3방법</li><li><a href="https://youtu.be/njHuj8OxIVI?t=1014" target="_blank" rel="noopener">16:54</a> raw·wiki·output 볼트 구조 설명</li><li><a href="https://youtu.be/njHuj8OxIVI?t=1130" target="_blank" rel="noopener">18:50</a> 인덱스 파일이 필요한 이유</li><li><a href="https://youtu.be/njHuj8OxIVI?t=1295" target="_blank" rel="noopener">21:35</a> 클로드 디자인 목업에서 플러그인 빌드</li></ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>비주얼 리포트</h2><ul><li>로컬: ~/Sites/ai-infographic/2026-08-16-chase-ai-claude-code-obsidian-agentic-os.html</li><li>외부: https://wootom.github.io/news/2026-08-16-chase-ai-claude-code-obsidian-agentic-os.html</li></ul></section><section class="card s6" id="s11"><h2><span class="seq">11</span>출처</h2><ul><li><a href="https://youtu.be/njHuj8OxIVI" target="_blank" rel="noopener">This Claude Code x Obsidian Agentic OS Will Be The New Meta</a> — Chase AI</li></ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/njHuj8OxIVI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-08-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="반등해도 불안한 이유 — 현물가·창신메모리로 읽는 반도체 사이클"><title>반등해도 불안한 이유 — 현물가·창신메모리로 읽는 반도체 사이클</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>언더스탠딩</span><span class="ey">MORNING DIGEST · 2026-08-16 · 언더스탠딩</span><span class="chip">🎬 영상</span></div><h1>반등해도 불안한 이유 — 현물가·창신메모리로 읽는 반도체 사이클</h1><p class="lead">채널: 언더스탠딩 · 주제: 메모리 사이클의 선반영 구조와 중국 증설·레버리지 상품이 만든 급락의 해부</p></header>
+<div style="max-width:1100px;margin:32px auto;padding:0 16px"><img src="assets/ig/2026-08-14-understanding-parkseik-semiconductor-cycle.jpg" alt="인포그래픽 요약" style="display:block;width:100%;height:auto;border-radius:8px"></div>
+<main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>화자</td><td>박세익 체슬리투자자문 대표. 1994년 8월 입사, 33년차라고 밝힘</td></tr><tr><td>핵심 주장</td><td>화자는 이번 메모리 사이클의 주가 고점이 지난 6월에 나온 것으로 본다. 다만 40~60% 급락 구간은 매수가 맞았다고 판단</td></tr><tr><td>급락 원인</td><td>7월 27일 창신메모리(CXMT) 상장에 따른 수급 이탈, 애플 팀 쿡의 중국산 메모리 사용 요청, 종목형 2배 레버리지 상품이 겹친 결과로 정리</td></tr><tr><td>판단 지표</td><td>현물가격이 고정거래가격을 하향 돌파하는 시점이 주가 꺾임의 선행 신호. 현재는 현물가가 고정거래가보다 크게 위에 있다고 설명</td></tr><tr><td>시간표</td><td>2028년 증설 물량이 나오면 범용 가격 하락, 이를 선반영해 내년 하반기 조정, 주가 고점은 내년 상반기~여름 가능성</td></tr><tr><td>대응 제안</td><td>화자는 내년 1월 실적 발표 무렵 전고점 언저리에서 비중을 줄이고, 내년 하반기 하락 시 다시 사는 방식을 제시</td></tr><tr><td>대체 아이디어</td><td>반도체가 쉬는 동안 코스피 소형주·코스닥의 한풀이 장세가 온다는 것이 화자의 내년 시나리오</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>언더스탠딩의 75분 대담으로, 이진우·김프로 진행자가 질문하고 박세익 대표가 차트를 띄워 설명하는 형식이다. 도입부는 한국 시장의 구조적 한계를 짚는다. 삼성전자와 SK하이닉스가 시총의 55%를 차지하는데 둘 다 사이클 기업이라 워런 버핏·찰리 멍거조차 손대지 않는 영역이라는 것이다. 이어 저PER에 사고 고PER에 파는 반도체 특유의 역설을 2015년, 2018년, 2023년 사례로 검증한다. 중반부는 이번 급락의 세 가지 원인 분석이다. 중국 창신메모리 상장, 애플의 중국산 메모리 요청, 종목형 2배 레버리지 상품의 음의 복리 효과를 차례로 다룬다. 후반부는 현물가와 고정거래가의 관계를 통한 선행 지표 설명, 필라델피아 반도체지수의 조정 10개월 패턴, 1987년 블랙먼데이와의 구조적 유사성 비교로 이어진다. 마지막은 2013~2015년 삼성전자 3년 연속 음봉기에 소형주가 급등했던 사례를 근거로 한 내년 시장 전망이다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장·데이터 맥락</h2><p>화자가 인용한 숫자는 대부분 과거 사이클의 실측치다. 2018년 SK하이닉스 영업이익 20조 7,000억 원, 삼성전자 58조 8,000억 원에서 2019년 각각 2조 7,000억 원과 27조 원으로 급감했는데, 하이닉스는 약 85% 감소다. 당시 주가 고점은 사상 최대 실적이 나오던 2018년 3분기가 아니라 2018년 5월이었고, 현물가격이 고정거래가격을 깨고 내려간 시점이 신호였다. 반대로 2023년 삼성전자 영업이익 6조 원, 하이닉스 마이너스 9조 원이던 해에 삼성전자는 40% 이상, 하이닉스는 60% 올랐다. 반도체 수출이 전년 대비 30~40% 감소한 해는 2019년과 2023년인데 주가는 그 전에 미리 빠졌다는 설명이다. 선반영 기간은 빠르면 3개월, 이르면 6개월로 제시한다. 밸류에이션 지표로는 최근 PER 3.5배와 10년 평균 PER 9.8배가 대비된다. 중국 변수는 창신메모리의 D램 점유율 약 8%, 양쯔메모리(YMTC)의 낸드 출하 기준 14%로 3위라는 수치로 제시되며, 창신은 IPO로 약 12조 원을 조달했고 외국인은 커촹반에서 47조 원을 순매수했다고 언급한다. 낸드 시장의 48%가 기업용 eSSD로 나간다는 점, 필라델피아 반도체지수의 조정이 2015년·2018년·2022년·2024년 모두 10개월이었다는 점도 근거로 쓰인다. 이번 한국 시장 하락률은 44%로, 과거 글로벌 금융위기와 2000년 나스닥 붕괴기의 57%, 56%, 45%와 비교된다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자의 논지는 &quot;좋은 주식을 모으는 것은 맞지만 사이클 주식을 모으는 것은 아니다&quot;로 요약된다. 이는 반도체 장기 보유론에 대한 정면 반론이다. 근거는 공급 측 통제력의 변화다. 과거에는 삼성전자·SK하이닉스·마이크론 3사가 암묵적으로 감산해 가격을 회복시킬 수 있었지만, 캡티브 마켓을 가진 중국 창신과 양쯔는 통제 대상이 아니므로 2028년 증설 물량이 나오면 범용 메모리 가격 하락은 불가피하다고 본다. 다만 이 논리에는 방어선도 있다. HBM은 GPU 설계 단계부터 맞춤 제작되는 스페셜티 반도체이므로 중국이 진입하기 어렵고, 이 비중이 커질수록 업앤다운이 완화돼 잘하면 TSMC처럼 안정적 이익 구조로 갈 수 있다는 것이다. 화자는 이를 앞으로 3년간 확인해야 할 시나리오로 남겨둔다. 낸드에 대해서는 반대로 중국이 300단대 적층에서 특허 공격을 걸어올 만큼 경쟁력을 갖췄다며 조심하자는 입장이다. 개인 투자자 보호 측면에서는 종목형 2배·3배 레버리지 상품을 강하게 비판한다. 5월 27일 상장한 2배 상품이 2만 8,000원에서 9,000원이 됐고 역방향도 반토막이 나 양쪽이 모두 터졌으며, 영국 상장 하이닉스 3배는 마이너스 97%라는 사례를 든다. 변동성이 클수록 음의 복리가 가속되므로 종목형 레버리지는 금지하고 지수형 2배 정도만 허용해야 한다는 것이 화자의 정책 제언이다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>반도체 사이클 국면별 신호 정리</h2><blockquote>요지: 화자가 과거 사이클에서 반복 확인했다는 신호와 이번 국면의 대응 위치를 정리한 표.</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>국면</th><th>관찰 신호</th><th>과거 사례</th><th>이번 사이클 해석</th></tr></thead><tbody><tr><td>고점 근처</td><td>사상 최대 실적 발표와 증설 발표가 겹침</td><td>2015년, 2018년 모두 사상 최대 실적 직후 하락</td><td>화자는 6월을 이번 사이클 주가 고점으로 판단</td></tr><tr><td>하락 전환</td><td>현물가격이 고정거래가격을 하향 돌파</td><td>2018년 5월 주가 고점 직전 신호 발생</td><td>현재 현물가가 고정거래가보다 크게 위에 위치</td></tr><tr><td>급락 국면</td><td>수급 이탈과 레버리지 청산이 겹침</td><td>1987년 포트폴리오 인슈어런스 매도</td><td>창신 상장, 애플 발언, 종목형 2배 상품이 결합</td></tr><tr><td>실적 급감</td><td>수출액 전년 대비 30~40% 감소</td><td>2019년, 2023년</td><td>화자는 내년 하반기를 범용 가격 하락 시점으로 예상</td></tr><tr><td>저점 형성</td><td>적자 발표 시점에 주가는 이미 상승</td><td>2023년 하이닉스 마이너스 9조에 주가 60% 상승</td><td>2028년 실적 꺾임 국면에서 주가는 먼저 반등할 것으로 전망</td></tr><tr><td>조정 길이</td><td>필라델피아 반도체지수 조정은 약 10개월</td><td>2015년, 2018년, 2022년, 2024년 모두 10개월</td><td>조정은 짧고 랠리는 길다는 것이 화자의 결론</td></tr><tr><td>매크로 확인</td><td>위기라면 환율이 급등해야 정상</td><td>실제 위기 국면의 전형적 패턴</td><td>급락 중 환율이 오히려 하락해 매수 근거로 삼았다고 설명</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol><li><strong>선행 지표 모니터링</strong>: 산업통상자원부의 10일 단위 수출 발표와 D램·낸드 현물가, 고정거래가를 함께 추적해 현물가가 고정거래가에 접근하는지 확인한다.</li><li><strong>비중 축소 시점 설계</strong>: 화자가 제시한 내년 1월 실적 발표 전후 전고점 언저리를 비중 축소 후보 구간으로 두고, 절반 정도 이익 실현하는 방식을 검토한다.</li><li><strong>레버리지 상품 점검</strong>: 보유 중인 종목형 2배·3배 상품이 있다면 변동성 구간에서 발생한 음의 복리 손실 규모를 계산하고 정리 여부를 판단한다.</li><li><strong>중국 경쟁 노출도 구분</strong>: 포트폴리오를 HBM·커스터마이즈 영역과 범용 D램·낸드 영역으로 나눠, 중국 진입 가능성이 큰 쪽의 비중을 별도로 관리한다.</li><li><strong>내년 순환 대비</strong>: 반도체가 쉬는 구간에서 코스피 소형주·코스닥으로 자금이 도는 한풀이 장세 가능성을 염두에 두고 후보 섹터를 미리 추린다.</li></ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 이번 급락을 펀더멘털 훼손이 아니라 수급과 심리가 겹쳐 만든 사건으로 규정한다. 1987년 블랙먼데이가 하루 22%, 한 달 36% 하락했던 것과 이번 한국 시장의 44% 하락을 나란히 놓고, 앨런 그린스펀이 1987년 8월 취임한 뒤 두 달 만에 급락이 왔던 것처럼 이번에도 신임 연준 의장 취임 두 달 시점이 7월이었다는 우연을 지적한다. 다만 7월 29일 FOMC가 동결로 끝났고 CPI가 3.5에서 3.4로 꺾이며 9월 인상 확률이 50% 아래로 내려간 점, 급락 중 환율이 오히려 떨어진 점을 근거로 시스템 위기는 아니라고 결론짓는다. 회복 경로는 V자가 아니라 등락을 반복하며 위에서 물린 물량이 정리된 뒤 상승하는 형태로 본다. 내년 시장은 삼성전자가 3년 연속 음봉이던 2013~2015년에 바이오·화장품 중심으로 소형주가 급등했던 패턴이 재현될 수 있다고 전망하며, 환율 1,400원대에서 수출 기업 전반이 돈을 벌고 있다는 점을 숫자 근거로 든다. 마지막으로 눈에 보이는 마이너스 35%도, 그 전에 봤던 플러스 70%도 원래 내 돈이 아니었다는 관점 전환을 권한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>현물가격(스팟)</td><td>시장에서 즉시 거래되는 메모리 가격</td><td>고정거래가보다 먼저 움직여 선행 지표 역할</td></tr><tr><td>고정거래가격</td><td>대형 고객과 분기 단위로 협상해 정하는 계약 가격</td><td>현물가가 이를 깨고 내려가면 다음 협상가 하락이 예고됨</td></tr><tr><td>회색 코뿔소</td><td>이미 알려져 있으나 방치된 큰 위험</td><td>화자는 금리 인상과 창신메모리 상장을 두 마리로 지목</td></tr><tr><td>창신메모리(CXMT)</td><td>중국 D램 업체, 점유율 약 8%</td><td>7월 27일 상장, IPO로 약 12조 원 조달</td></tr><tr><td>양쯔메모리(YMTC)</td><td>중국 낸드 업체, 출하 기준 점유율 14%로 3위</td><td>내년 초 상장 예정으로 언급</td></tr><tr><td>캡티브 마켓</td><td>자국 수요가 보장된 내수 시장</td><td>중국 기업이 감산 압력 없이 증설을 이어갈 수 있는 배경</td></tr><tr><td>음의 복리</td><td>변동성이 클수록 레버리지 상품 가치가 깎이는 효과</td><td>2배 상품과 역방향 상품이 동시에 손실난 사례</td></tr><tr><td>포트폴리오 인슈어런스</td><td>오르면 사고 내리면 파는 기계적 매매 전략</td><td>1987년 블랙먼데이 낙폭을 키운 요인</td></tr><tr><td>P와 Q</td><td>가격(Price)과 수량(Quantity), 곱이 매출</td><td>P가 50% 빠지면 Q가 2배 늘어야 본전</td></tr><tr><td>스페셜티 반도체</td><td>고객 요구에 맞춰 설계되는 맞춤형 제품</td><td>HBM은 GPU 설계 단계부터 커스터마이즈됨</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul><li><a href="https://youtu.be/QzutGZHlu3M?t=87" target="_blank" rel="noopener">01:27</a> 시총 1·2위가 모두 사이클 기업인 한국 시장</li><li><a href="https://youtu.be/QzutGZHlu3M?t=290" target="_blank" rel="noopener">04:50</a> 증설 발표 시점이 거의 항상 꼭지</li><li><a href="https://youtu.be/QzutGZHlu3M?t=458" target="_blank" rel="noopener">07:38</a> 이번 사이클 고점은 지난 6월이라는 판단</li><li><a href="https://youtu.be/QzutGZHlu3M?t=572" target="_blank" rel="noopener">09:32</a> 주가는 실적을 3~6개월 선반영</li><li><a href="https://youtu.be/QzutGZHlu3M?t=1133" target="_blank" rel="noopener">18:53</a> 최태원 회장 7월 17일 발언 해석</li><li><a href="https://youtu.be/QzutGZHlu3M?t=1356" target="_blank" rel="noopener">22:36</a> 창신 상장이라는 회색 코뿔소</li><li><a href="https://youtu.be/QzutGZHlu3M?t=1637" target="_blank" rel="noopener">27:17</a> 애플 팀 쿡의 중국산 요청이 결정타</li><li><a href="https://youtu.be/QzutGZHlu3M?t=2007" target="_blank" rel="noopener">33:27</a> 현물가와 고정거래가로 꺾임을 읽는 법</li><li><a href="https://youtu.be/QzutGZHlu3M?t=2355" target="_blank" rel="noopener">39:15</a> 종목형 2배·3배 레버리지 상품 비판</li><li><a href="https://youtu.be/QzutGZHlu3M?t=2640" target="_blank" rel="noopener">44:00</a> 2028년 범용 메모리 가격 하락 전망</li><li><a href="https://youtu.be/QzutGZHlu3M?t=2895" target="_blank" rel="noopener">48:15</a> 필라델피아 반도체 조정 10개월 패턴</li><li><a href="https://youtu.be/QzutGZHlu3M?t=3712" target="_blank" rel="noopener">61:52</a> 1987년 블랙먼데이와의 구조적 유사성</li><li><a href="https://youtu.be/QzutGZHlu3M?t=3995" target="_blank" rel="noopener">66:35</a> 환율 하락이 위기 아님을 알려준 신호</li><li><a href="https://youtu.be/QzutGZHlu3M?t=4203" target="_blank" rel="noopener">70:03</a> 내년 소형주 한풀이 장세 전망</li></ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>비주얼 리포트</h2><ul><li>로컬: ~/Sites/ai-infographic/2026-08-14-understanding-parkseik-semiconductor-cycle.html</li><li>외부: https://wootom.github.io/news/2026-08-14-understanding-parkseik-semiconductor-cycle.html</li></ul></section><section class="card s6" id="s11"><h2><span class="seq">11</span>출처</h2><ul><li><a href="https://youtu.be/QzutGZHlu3M" target="_blank" rel="noopener">삼전·닉스 반등해도 이래서 불안합니다 (체슬리투자자문 박세익 대표이사) | 2026년 08월 13일 방송</a> — 언더스탠딩</li></ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/QzutGZHlu3M" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>언더스탠딩 · 2026-08-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

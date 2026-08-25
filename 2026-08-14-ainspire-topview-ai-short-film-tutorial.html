@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="탑뷰로 만든 AI 단편영화, 몽타주·커버리지와 시댄스 2.5 제작 규칙"><title>탑뷰로 만든 AI 단편영화, 몽타주·커버리지와 시댄스 2.5 제작 규칙</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>AInspire</span><span class="ey">MORNING DIGEST · 2026-08-16 · AInspire</span><span class="chip">🎬 영상</span></div><h1>탑뷰로 만든 AI 단편영화, 몽타주·커버리지와 시댄스 2.5 제작 규칙</h1><p class="lead">채널: AInspire · 주제: 탑뷰 캔버스와 시댄스 2.5로 단편영화를 제작한 전 과정 해설</p></header>
+<div style="max-width:1100px;margin:32px auto;padding:0 16px"><img src="assets/ig/2026-08-14-ainspire-topview-ai-short-film-tutorial.jpg" alt="인포그래픽 요약" style="display:block;width:100%;height:auto;border-radius:8px"></div>
+<main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>결과물</td><td>단편영화 「태엽 도서관」. 주인공은 야곱 할아버지와 노라, 크게 일곱 개 덩어리로 구성.</td></tr><tr><td>사용 도구</td><td>탑뷰(Topview) 캔버스 + 시댄스 2.5(Seedance 2.5) 옴니 레퍼런스. 이미지 생성은 시드림 5 프로 사용.</td></tr><tr><td>핵심 원칙</td><td>영상용 이미지는 단 한 장도 생성하지 않고 캐릭터 시트 2장과 환경 레퍼런스 1개만으로 전 신을 구성.</td></tr><tr><td>연출 개념</td><td>몽타주(컷 조합으로 의미 생성)와 커버리지(한 신을 여러 앵글·사이즈로 확보) 두 가지를 사전 개념으로 강조.</td></tr><tr><td>생성 길이</td><td>시댄스 2.5의 30초 모드는 컷이 늘어져 20초 모드로 분할. 16:9, 720p 작업 후 토파즈로 업스케일.</td></tr><tr><td>필수 프롬프트 규칙</td><td>최상단에 &quot;BGM 없이 효과음·대사만&quot; 명시, 마지막 1~2초는 새 동작 없이 홀드하고 사운드 페이드.</td></tr><tr><td>화자 관점</td><td>화자는 시나리오 다음으로 캐릭터 시트 제작이 가장 중요하며, 시트가 어긋나면 이후 수정 비용이 급증한다고 본다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 완성작 일부를 먼저 보여준 뒤 튜토리얼로 넘어가는 구성이다. 도입에서 연출 개념 두 가지를 설명한다. 첫째는 몽타주로, 프랑스어 &quot;조립하다&quot;에서 온 말이며 따로 찍은 숏을 이어붙이고 자르고 순서를 바꿔 새로운 의미를 만드는 편집 기법이다. 화자는 「업」 오프닝 4분과 「사이코」 샤워신, 쿨레쇼프 효과를 사례로 든다. 둘째는 커버리지로, 한 신을 풀샷부터 사이드·후면·오버더숄더·클로즈업까지 여러 앵글과 사이즈로 확보해 두는 실사 촬영 관행이다. 이어 실제 제작에 적용한 프롬프트 공통 규칙과 색·조명 설계를 설명하고, 탑뷰 캔버스로 화면을 옮겨 노드 기반 작업을 시연한다. 캐릭터 시트 업로드, 옴니 레퍼런스 지정, 20초 영상 생성, 3D 월드와 3D 디렉터 스테이지, 자산(스타일·캐릭터·오브젝트·배경) 등록, 표정·조명·부분 편집, 스토리보드 생성, 비디오 에이전트와 스킬 활용까지 기능을 순서대로 훑는다. 마지막에는 실패 사례와 후반 작업을 정리한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>제작 규격은 상당히 구체적이다. 전 클립에 시댄스 2.5의 20초 모드와 16:9를 공통 적용했고, 30초로 생성하면 몽타주 방식으로 1~2초 단위 컷 분할을 지시해도 약 10초가량이 늘어졌다고 설명한다. 사운드는 효과음과 대사만 생성하고 BGM은 후반 편집에서 덮는 방식을 예외 없이 적용하며, 이 지시는 프롬프트 최상단에 둔다. 대사는 한국어 연기가 어색해 영어만 사용했고, 인물 얼굴은 학습 데이터가 많고 시청자가 차이를 덜 인지하는 서양인 기준으로 잡았다. 풀샷에서는 얼굴이 클로즈업과 달라지거나 뭉개지는 경향이 있어 정면 얼굴을 블러 처리했고, 이는 시댄스 측에서도 권장하는 방식이라고 언급한다. 시간축 구분은 색으로 처리했다. 현재 시점은 앰버 골드 계열 텅스텐 조명(화자는 약 5,800K대로 언급), 플래시백은 더 따뜻하고 채도를 뺀 빛의 질감으로 구분해 내레이션 없이 전환을 이해시킨다. 캐릭터 시트는 배경이 흰색이나 검정보다 회색 계통일수록 좋고, 책 같은 소품은 모두 빼고 요소 위치를 통일해야 한다고 조언한다. 캔버스 안에서는 시드림 5 프로로 2K 시트를 만들고, 오디오는 시드 오디오, 음악은 미니맥스 뮤직 계열 도구가 연결된다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>이 튜토리얼의 요점은 도구 사용법이 아니라 전통 영화 문법을 AI 생성 파이프라인에 이식하는 데 있다. 화자는 AI로 스토리보드를 만들면 스토리보드에 적힌 컷만 생성하기 때문에 편집 단계에서 쓸 컷이 부족해지고 연출이 단조로워진다고 지적한다. 실사 촬영은 미술과 조명을 한 번 세팅한 상태에서 풀샷부터 클로즈업까지 훑어 커버리지를 확보하는데, AI 영상은 언제든 재생성이 가능함에도 오히려 이 습관이 빠져 있다는 진단이다. 몽타주 역시 같은 맥락에서 제시된다. 대사를 구구절절 넣으면 1차원적인 영상이 되므로 대사를 최소화하고 컷의 배열로 맥락을 전달하는 편이 낫다는 주장이다. 실무적으로 더 중요한 부분은 일관성 관리다. 캐릭터 시트, 오브젝트, 배경을 자산으로 등록해 두면 신이 바뀌어도 인물과 장소가 유지되며, 화자는 시트 제작이 어긋났을 때 뒤에서 수정할 일이 크게 늘어난다고 반복해 강조한다. 마지막으로 전체 작업 절차를 스킬로 저장해 다음 프로젝트에 재사용하는 방식은, 개인 제작자가 매번 처음부터 프롬프트를 설계하지 않아도 되는 구조를 만든다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>제작 규칙·설정 정리</h2><blockquote>요지: 생성 길이, 사운드, 언어, 얼굴 처리, 색 설계까지 규칙을 고정해 컷 간 연결과 일관성을 확보한다.</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>구분</th><th>적용 설정</th><th>이유</th></tr></thead><tbody><tr><td>생성 길이</td><td>시댄스 2.5 20초 모드(30초 대신)</td><td>30초는 약 10초가량 컷이 늘어짐</td></tr><tr><td>화면비·해상도</td><td>16:9, 720p 작업 후 토파즈 업스케일</td><td>작업 속도 확보 후 화질 보정</td></tr><tr><td>사운드</td><td>효과음·대사만 생성, BGM은 후반 편집에서 삽입</td><td>프롬프트 최상단 명시, 예외 없음</td></tr><tr><td>컷 마무리</td><td>마지막 1~2초 새 동작 금지, 홀드와 사운드 페이드</td><td>컷이 뚝뚝 끊기는 인상 방지</td></tr><tr><td>대사 언어</td><td>영어만 사용</td><td>한국어 연기가 어색하게 생성됨</td></tr><tr><td>인물 얼굴</td><td>서양인 기준, 풀샷은 정면 얼굴 블러</td><td>학습 데이터 우위, 풀샷 얼굴 뭉개짐 대응</td></tr><tr><td>레퍼런스</td><td>옴니 레퍼런스에 캐릭터 시트 2장 + 환경 1개</td><td>영상용 이미지를 따로 생성하지 않음</td></tr><tr><td>색 설계</td><td>현재는 앰버 골드 텅스텐, 플래시백은 채도 낮춘 따뜻한 톤</td><td>내레이션 없이 시점 전환 전달</td></tr><tr><td>캐릭터 시트</td><td>회색 계열 배경, 소품 제거, 요소 위치 통일</td><td>시트 불일치 시 후속 수정 폭증</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol><li><strong>캐릭터 일관성 확보</strong>: LLM으로 로그라인과 시나리오를 만든 뒤 캐릭터 시트를 먼저 제작하고, 탑뷰 자산에 성격·메모·음성 파일까지 등록해 전 신에서 동일 인물을 유지한다.</li><li><strong>커버리지 컷 보강</strong>: 스토리보드에 있는 컷만 생성하지 말고 풀샷, 오버더숄더, 걸쳐 찍는 앵글, 클로즈업을 추가로 확보해 편집 여유를 만든다.</li><li><strong>3D 블록아웃 활용</strong>: 3D 월드와 3D 디렉터 스테이지에서 포즈와 카메라를 잡아 스크린샷을 뜬 뒤 캔버스로 보내 이미지·영상 생성의 가이드로 건다.</li><li><strong>초보자용 에이전트 진입</strong>: 비디오 에이전트에서 웨스 앤더슨 스타일 스킬 같은 프리셋을 실행해 시나리오와 구도 설계를 자동으로 받아 시작점을 만든다.</li><li><strong>워크플로 스킬화</strong>: 한 편을 완주한 절차를 스킬로 저장해 다음 작품에서 프롬프트 규칙과 자산 구성을 그대로 재사용한다.</li></ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 제작이 매끄럽게만 진행되지는 않았다고 밝힌다. 책이 레일에 실려 나가는 장면은 오류가 잦아 여러 테이크를 돌린 뒤 교차 편집으로 해결했고, 마지막 장면은 장소 일관성이 무너져 별도 장소 레퍼런스를 첨부해 잡았으며, 인물이 돌리는 손잡이는 방향과 크기가 계속 바뀌어 앞뒤 신이 붙지 않는 문제가 있었다. 노라가 작별 인사를 위해 등장하는 장면도 지나치게 무섭거나 유치하게 나와 여러 테이크가 필요했다. 저작권 필터에 걸려 클립이 거절되는 경우도 있었는데, 책이 스스로 떠오르는 장면처럼 의도하지 않은 지점에서 기존 창작물과 유사하다는 판단이 나오기도 했다. 화자는 이럴 때 해당 부분의 프롬프트를 역추적해 수정하면 해결된다며, 오류를 찾아 보완하는 과정 자체가 AI 작업의 특성이라고 정리한다. 마무리는 클리프행어와 쿠키 영상으로 다음 편을 기대하게 만드는 방식을 권한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>몽타주</td><td>따로 찍은 숏을 이어붙이고 순서를 바꿔 새 의미를 만드는 편집 기법</td><td>「업」 오프닝 4분의 무대사 시퀀스</td></tr><tr><td>쿨레쇼프 효과</td><td>무표정한 얼굴에 무엇을 붙이느냐로 감정이 달라지는 현상</td><td>음식이면 배고픔, 관이면 슬픔</td></tr><tr><td>커버리지</td><td>한 신을 여러 앵글과 사이즈로 미리 확보해 두는 촬영 관행</td><td>풀샷부터 클로즈업까지 한 세트로 찍기</td></tr><tr><td>옴니 레퍼런스</td><td>참조 이미지 여러 장을 태그로 물려 영상 생성에 반영하는 기능</td><td>인물 사진과 장소 사진을 함께 건네기</td></tr><tr><td>캐릭터 시트</td><td>인물의 외형과 톤 매너를 고정한 기준 이미지 묶음</td><td>배역 확정 후 찍어 두는 프로필 세트</td></tr><tr><td>3D 블록아웃</td><td>3D 공간에 인물과 카메라를 대충 배치해 구도를 잡는 단계</td><td>촬영 전 종이 인형으로 동선 짜기</td></tr><tr><td>3D 디렉터 스테이지</td><td>포즈 프리셋과 카메라를 조작해 목업 장면을 만드는 기능</td><td>게임 캐릭터 편집 화면과 유사</td></tr><tr><td>캔버스(노드)</td><td>이미지·영상·오디오 작업을 노드로 연결해 시각적으로 다루는 작업판</td><td>작업 흐름을 선으로 이은 화이트보드</td></tr><tr><td>홀드 여유</td><td>컷 끝 1~2초에 새 동작 없이 사운드만 남기는 처리</td><td>문장 끝에 여운을 남기는 쉼표</td></tr><tr><td>클리프행어</td><td>결말을 열어 두어 다음 편을 기대하게 만드는 마무리</td><td>드라마 엔딩 직전의 끊김</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul><li><a href="https://youtu.be/2TTjdetRf0k?t=15" target="_blank" rel="noopener">00:15</a> 완성작 「태엽 도서관」 일부 선공개</li><li><a href="https://youtu.be/2TTjdetRf0k?t=278" target="_blank" rel="noopener">04:38</a> 몽타주 개념과 어원 설명</li><li><a href="https://youtu.be/2TTjdetRf0k?t=424" target="_blank" rel="noopener">07:04</a> 커버리지 개념과 실사 촬영 관행</li><li><a href="https://youtu.be/2TTjdetRf0k?t=573" target="_blank" rel="noopener">09:33</a> 30초 대신 20초 모드를 택한 이유</li><li><a href="https://youtu.be/2TTjdetRf0k?t=601" target="_blank" rel="noopener">10:01</a> 홀드 여유와 BGM 배제 규칙</li><li><a href="https://youtu.be/2TTjdetRf0k?t=714" target="_blank" rel="noopener">11:54</a> 영어 대사와 서양인 얼굴 선택 근거</li><li><a href="https://youtu.be/2TTjdetRf0k?t=828" target="_blank" rel="noopener">13:48</a> 캐릭터 시트 제작 시 주의 사항</li><li><a href="https://youtu.be/2TTjdetRf0k?t=856" target="_blank" rel="noopener">14:16</a> 탑뷰 캔버스에서 영상 생성 시연</li><li><a href="https://youtu.be/2TTjdetRf0k?t=1026" target="_blank" rel="noopener">17:06</a> 3D 디렉터 스테이지 포즈 프리셋</li><li><a href="https://youtu.be/2TTjdetRf0k?t=1168" target="_blank" rel="noopener">19:28</a> 캐릭터·오브젝트·배경 자산 등록</li><li><a href="https://youtu.be/2TTjdetRf0k?t=1516" target="_blank" rel="noopener">25:16</a> 웨스 앤더슨 스타일 스킬 실행</li><li><a href="https://youtu.be/2TTjdetRf0k?t=1747" target="_blank" rel="noopener">29:07</a> 저작권 필터 거절과 프롬프트 역추적</li><li><a href="https://youtu.be/2TTjdetRf0k?t=1890" target="_blank" rel="noopener">31:30</a> 후반 업스케일과 워크플로 스킬 저장</li></ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>비주얼 리포트</h2><ul><li>로컬: ~/Sites/ai-infographic/2026-08-14-ainspire-topview-ai-short-film-tutorial.html</li><li>외부: https://wootom.github.io/news/2026-08-14-ainspire-topview-ai-short-film-tutorial.html</li></ul></section><section class="card s6" id="s11"><h2><span class="seq">11</span>출처</h2><ul><li>[\[AI튜토리얼\] AI로 감동적인 이야기의 단편영화 만들기 | Topview](https://youtu.be/2TTjdetRf0k) — AInspire</li></ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/2TTjdetRf0k" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>AInspire · 2026-08-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
