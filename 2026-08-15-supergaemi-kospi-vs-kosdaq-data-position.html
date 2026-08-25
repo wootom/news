@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="금리 듀레이션으로 읽는 코스닥 반등과 실적주 우위"><title>금리 듀레이션으로 읽는 코스닥 반등과 실적주 우위</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-08-16 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>금리 듀레이션으로 읽는 코스닥 반등과 실적주 우위</h1><p class="lead">채널: 슈퍼개미 이세무사TV · 주제: 증권사 리포트 두 건으로 금리 듀레이션과 이평선 데드크로스를 짚어 현재 증시 위치를 진단</p></header>
+<div style="max-width:1100px;margin:32px auto;padding:0 16px"><img src="assets/ig/2026-08-15-supergaemi-kospi-vs-kosdaq-data-position.jpg" alt="인포그래픽 요약" style="display:block;width:100%;height:auto;border-radius:8px"></div>
+<main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>촬영 기준일</td><td>2026년 8월 13일 목요일 기준으로 녹화. 변동성 국면 이후 코스닥이 먼저 반등하고 코스피가 뒤따르는 구간이라고 화자는 설명한다.</td></tr><tr><td>다룬 리포트</td><td>DB증권의 금리·업종별 흐름 리포트와 KB증권의 &quot;기술적으로 본 증시 위치, 반등이 가능할까&quot; 리포트 두 건을 화면으로 함께 읽는 형식이다.</td></tr><tr><td>핵심 변수</td><td>화자는 6~7월 국내 시장 변동성 확대의 단일 변수로 금리를 꼽는다. 미래 현금흐름 듀레이션이 긴 기업일수록 금리 상승에 먼저 취약해진다는 논리다.</td></tr><tr><td>고점 순서</td><td>코스닥 4월 27일, 자동차 6월 1일, 반도체 6월 22일 순으로 고점을 찍고 하락했다. 듀레이션이 긴 순서대로 먼저 무너진 흐름이다.</td></tr><tr><td>기술적 위치</td><td>코스피가 50일 이동평균선을 예상보다 크게 이탈해 과매도권에 진입했고, 21일·101일 이평선 데드크로스 상태라고 정리한다.</td></tr><tr><td>역사적 비교</td><td>1975년 이후 코스피가 지금처럼 빠르게 급등한 사례는 3저 호황 랠리와 1990년대 닷컴 버블 두 차례뿐이며, 두 사례 모두 랠리 중 연 1회꼴 데드크로스가 있었다.</td></tr><tr><td>화자 결론</td><td>상승장이 끝났다고 단정할 근거는 아직 없으나 즉각적인 V자 반등도 기대하기 어렵고, 실적 가시성이 뚜렷한 반도체·자동차의 재반등 여부를 관찰하자는 입장이다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 시황 코멘트 없이 곧바로 리포트 두 건을 순서대로 읽어 내려가는 구성이다. 전반부는 DB증권 리포트로, 듀레이션이라는 개념을 &quot;내가 투자한 자금을 회수하는 데 걸리는 평균 기간&quot;으로 먼저 정의한 뒤 금리 상승 국면에서 코스닥, 자동차, 반도체가 각각 다른 시점에 고점을 찍은 표를 짚는다. 이어 최근 코스닥이 반등한 이유를 &quot;금리 상승 방향이 잠시 멈췄기 때문&quot;으로 해석하고, 절대 금리 수준은 여전히 높다는 단서를 붙인다. 후반부는 KB증권 리포트로 전환해 투자자 심리, 50일선 이탈, 데드크로스의 역사적 사례, 닷컴 버블과의 유사성을 차례로 다룬다. 마지막 2분은 두 리포트를 화자가 직접 종합하는 구간으로, 결론을 서둘러 내리지 말고 실적 기반 종목의 버티는 힘을 긴 호흡으로 지켜보라는 당부로 마무리한다. 각 리포트마다 원문을 낭독한 뒤 화자가 쉬운 말로 다시 풀어주는 2단 구조가 반복된다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장·데이터 맥락</h2><p>DB증권 리포트의 골자는 금리 상승 국면에서 주가 하락 순서가 듀레이션 길이를 따른다는 점이다. 실제 고점 시점은 코스닥 4월 27일, 자동차 6월 1일, 반도체 6월 22일로 약 두 달의 시차가 있었고, 듀레이션이 짧은 업종일수록 더 오래 버텼다. 최근 코스닥의 반등은 금리의 상승 방향성이 주춤한 결과로 해석되며, 리포트는 &quot;1년의 흐름이 일단락되면 시장은 다시 시중금리의 수준에 반응할 수 있다&quot;는 단서를 달았다. 화자는 이를 두고 금리의 절대 수준이 여전히 높은 이상 불리한 순서는 코스닥, 자동차, 반도체 순이며 실적 가시성이 뚜렷한 주식이 더 낫다는 결론으로 요약한다. KB증권 리포트는 기술적 지표에 초점을 맞춘다. 코스피가 그동안 50일선을 지지선 삼아 반등해 왔지만 이번 급락에서는 50일선이 예상보다 크게 무너졌고, 과매도권에서는 같은 악재도 더 큰 공포로 인식된다는 심리 요인을 지적한다. 1975년 이후 급등 사례인 3저 호황 랠리와 1990년대 닷컴 버블 두 차례 모두 랠리 진행 중 대략 1년에 한 번씩 21일·101일 이평선 데드크로스가 나타났고, 그것이 곧 랠리 종료를 의미하지는 않았다는 점이 핵심 근거다. 리포트는 이번 조정이 닷컴 버블 국면과 가장 유사하다고 보며, 원인을 펀더멘털 훼손이 아니라 금리와 AI 캐펙스 지속 가능성에 대한 의심에서 찾는다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>두 리포트를 겹쳐 보면 시장을 읽는 축이 &quot;지수 방향&quot;에서 &quot;듀레이션과 실적 가시성&quot;으로 옮겨간다. 금리가 더 오르지 않는다는 사실만으로 코스닥의 반등을 추세 전환으로 읽는 것은 이르며, 절대 금리 수준이 높게 유지되는 한 자금 회수 기간이 긴 성장주는 구조적으로 불리하다는 것이 화자의 정리다. 반대로 반도체와 자동차처럼 당장 실적이 찍히는 업종은 하락도 늦었고 재반등의 명분도 상대적으로 뚜렷하다. 기술적 측면에서는 50일선 이탈과 데드크로스가 흔히 상승장 종료 신호로 받아들여지지만, 과거 두 차례 대세 상승장에서도 연 1회꼴로 같은 신호가 나왔다는 데이터는 지지선 붕괴를 곧바로 폭락의 시작으로 단정할 필요가 없다는 반례가 된다. 특히 이번 조정의 원인이 기업 이익 훼손이 아니라 AI 투자 지속성에 대한 의심이라는 진단은, 향후 AI 캐펙스 관련 뉴스 흐름이 지수 방향을 좌우할 가능성을 시사한다. 반등 시 매도를 노리는 쪽과 저점을 찾는 쪽이 팽팽하게 맞선 구간이라는 표현대로, 지금 필요한 것은 방향에 대한 조기 결론이 아니라 실적주의 상대 강도를 확인하는 관찰이라는 점이 이 영상의 실질적 메시지다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>지수·업종별 고점 시점과 금리 민감도</h2><blockquote>요지: 금리 상승 국면에서 듀레이션이 긴 순서대로 먼저 고점을 찍고 하락했으며, 반등 국면에서도 같은 순서가 역으로 작동할 수 있다.</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>구분</th><th>고점 시점</th><th>듀레이션 특성</th><th>리포트·화자 평가</th></tr></thead><tbody><tr><td>코스닥</td><td>4월 27일</td><td>가장 김</td><td>금리 상승에 가장 먼저 반응해 하락. 최근 금리 상승 주춤으로 먼저 반등했으나 높은 금리 수준 유지 시 불리한 순서 1번</td></tr><tr><td>자동차</td><td>6월 1일</td><td>중간</td><td>코스닥보다 약 한 달 더 버팀. 실적 가시성이 있어 재반등 후보로 지목</td></tr><tr><td>반도체</td><td>6월 22일</td><td>가장 짧음</td><td>가장 늦게 고점을 찍음. 실적 가시성이 뚜렷해 리포트가 상대적으로 선호</td></tr><tr><td>코스피(지수)</td><td>최근 급락 구간</td><td>해당 없음</td><td>50일선을 예상보다 크게 이탈, 과매도권 진입. 21일·101일 데드크로스 상태</td></tr><tr><td>과거 급등 사례</td><td>3저 호황 랠리, 1990년대 닷컴 버블</td><td>해당 없음</td><td>랠리 진행 중 연 1회꼴 중장기 이평선 데드크로스 발생. 랠리 종료를 의미하지 않았음</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol><li><strong>업종 배분 점검</strong>: 보유 포트폴리오를 듀레이션 기준으로 재분류해 금리 민감도가 높은 성장주 비중이 과도한지 확인한다.</li><li><strong>반등 성격 판별</strong>: 코스닥의 단기 반등이 금리 방향 정체에 따른 것인지, 실적 개선에 따른 것인지 구분해 추격 여부를 판단한다.</li><li><strong>기술적 신호 해석</strong>: 50일선 이탈이나 데드크로스를 만났을 때 과거 대세 상승장 사례를 함께 놓고 과잉 반응 여부를 점검한다.</li><li><strong>관찰 지표 선정</strong>: 시중금리의 방향과 절대 수준, AI 캐펙스 지속성 관련 뉴스를 지수 방향의 선행 변수로 삼아 추적한다.</li><li><strong>매매 템포 조절</strong>: 반등 매도와 저점 매수가 맞서는 구간에서 결론을 서두르지 않고 실적주의 상대 강도를 일정 기간 관찰한다.</li></ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 두 리포트를 종합해 &quot;시장이 완전히 끝난 것은 아니다&quot;라는 판단을 내린다. 다만 환경이 복잡해 당장 V자 반등이 나오기는 어렵고, 자동차와 반도체처럼 실적이 나오는 쪽에서 랠리가 다시 이어질 가능성을 열어 둔다. 현재 구간을 반등 시 매도를 벼르는 투자자와 저점을 찾는 투자자가 팽팽하게 맞선 상태로 규정하며, 지금 시점에서 한 번에 결론을 내리려 하지 말고 조급함을 내려놓은 채 신중하게 관찰하라고 권한다. 특히 실적이 든든한 기업이 이번 조정에서 어떻게 버티는지를 긴 호흡으로 지켜보라는 것이 마무리 메시지다. 다음 주에도 참고할 만한 리포트가 나오면 같은 방식으로 함께 읽겠다는 예고로 영상을 닫는다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>듀레이션</td><td>투자한 자금을 회수하는 데 걸리는 평균 기간</td><td>원금 회수까지 10년 걸리는 사업과 2년 걸리는 사업의 차이</td></tr><tr><td>성장주</td><td>현재 이익보다 미래 현금흐름 기대가 주가를 지탱하는 주식</td><td>코스닥 중소형 기술주 다수</td></tr><tr><td>50일선</td><td>최근 50거래일 종가 평균을 이은 중기 이동평균선</td><td>중기 추세의 지지선 역할을 하던 바닥</td></tr><tr><td>데드크로스</td><td>단기 이평선이 장기 이평선을 아래로 뚫고 내려가는 신호</td><td>영상에서는 21일선이 101일선을 하향 돌파</td></tr><tr><td>과매도권</td><td>하락 폭이 과도해 기술적으로 저평가로 분류되는 구간</td><td>작은 악재에도 공포가 증폭되는 심리 상태</td></tr><tr><td>3저 호황</td><td>저금리·저유가·저달러가 겹쳐 나타난 과거 한국 증시 급등 국면</td><td>1975년 이후 두 차례 급등 사례 중 하나</td></tr><tr><td>닷컴 버블</td><td>1990년대 후반 기술주 중심 급등과 조정이 나타난 국면</td><td>이번 조정과 원인 구조가 유사하다는 비교 대상</td></tr><tr><td>AI 캐펙스</td><td>AI 인프라 구축을 위한 기업의 대규모 설비투자 지출</td><td>투자 지속 여부에 대한 의심이 이번 조정의 원인으로 지목</td></tr><tr><td>실적 가시성</td><td>향후 이익 규모를 비교적 명확히 예측할 수 있는 정도</td><td>반도체·자동차가 코스닥보다 높다고 평가</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul><li><a href="https://youtu.be/GzHqSZ6CYX8?t=28" target="_blank" rel="noopener">00:28</a> 8월 13일 기준 코스닥 선반등 코스피 동반</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=56" target="_blank" rel="noopener">00:56</a> 듀레이션 정의와 금리 리포트 도입</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=86" target="_blank" rel="noopener">01:26</a> 6~7월 변동성의 단일 변수는 금리</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=114" target="_blank" rel="noopener">01:54</a> 코스닥 4월 27일, 반도체 6월 22일 고점</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=144" target="_blank" rel="noopener">02:24</a> 듀레이션 길이에 따른 하락 시차 설명</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=173" target="_blank" rel="noopener">02:53</a> 금리 상승 주춤으로 코스닥 반등 해석</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=203" target="_blank" rel="noopener">03:23</a> 불리한 순서는 코스닥, 자동차, 반도체</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=233" target="_blank" rel="noopener">03:53</a> KB증권 기술적 증시 위치 리포트 전환</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=262" target="_blank" rel="noopener">04:22</a> 과열과 과매도에서 달라지는 투자자 심리</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=290" target="_blank" rel="noopener">04:50</a> 코스피 50일선 이탈 그래프 확인</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=318" target="_blank" rel="noopener">05:18</a> 1975년 이후 급등 사례 두 차례 소개</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=346" target="_blank" rel="noopener">05:46</a> 랠리 중 연 1회 데드크로스 사례 근거</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=404" target="_blank" rel="noopener">06:44</a> 닷컴 버블 유사성과 AI 캐펙스 의심</li><li><a href="https://youtu.be/GzHqSZ6CYX8?t=461" target="_blank" rel="noopener">07:41</a> V자 반등 어렵고 실적주 재랠리 가능성</li></ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>비주얼 리포트</h2><ul><li>로컬: ~/Sites/ai-infographic/2026-08-15-supergaemi-kospi-vs-kosdaq-data-position.html</li><li>외부: https://wootom.github.io/news/2026-08-15-supergaemi-kospi-vs-kosdaq-data-position.html</li></ul></section><section class="card s6" id="s11"><h2><span class="seq">11</span>출처</h2><ul><li><a href="https://youtu.be/GzHqSZ6CYX8" target="_blank" rel="noopener">코스피 vs 코스닥, 우리가 가장 궁금한 것! 데이터로 보는 현재 증시 위치</a> — 슈퍼개미 이세무사TV</li></ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/GzHqSZ6CYX8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-08-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

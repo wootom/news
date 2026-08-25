@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="제미나이 3.7 플래시, 초당 340토큰 디코드로 에이전트 루프를 가속"><title>제미나이 3.7 플래시, 초당 340토큰 디코드로 에이전트 루프를 가속</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학 - IT 테크 신기술</span><span class="ey">MORNING DIGEST · 2026-08-16 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>제미나이 3.7 플래시, 초당 340토큰 디코드로 에이전트 루프를 가속</h1><p class="lead">채널: 안될공학 - IT 테크 신기술 · 주제: 제미나이 3.7 플래시의 디코드 속도와 에이전트 성능 상승폭 분석</p></header>
+<div style="max-width:1100px;margin:32px auto;padding:0 16px"><img src="assets/ig/2026-08-15-anbeokong-gemini-3-7-flash-agentic.jpg" alt="인포그래픽 요약" style="display:block;width:100%;height:auto;border-radius:8px"></div>
+<main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>대상 모델</td><td>구글 딥마인드 제미나이 3.7 플래시. 8월 13일 공개, 7월 21일 모델 카드가 갱신된 3.6 플래시를 기반으로 한 약 3주 만의 업데이트.</td></tr><tr><td>출력 속도</td><td>아티피셜 애널리시스가 하이 리즈닝 설정에서 측정한 디코드 속도 초당 340토큰. 반면 첫 토큰까지는 약 9.8초가 소요.</td></tr><tr><td>지능 지수</td><td>인텔리전스 인덱스 56점. 3.6 플래시 52점 대비 4점 상승이며, 57점대 상위 모델(GPT-5.6 테라, 뮤지스 스파크 1.2) 바로 아래.</td></tr><tr><td>벤치마크 상승</td><td>프런티어 코드 1.1 메인 34.4%→43.6%, 오토메이션 벤치 17%→30.4%, OS월드 2.0 33.8%→47.9%.</td></tr><tr><td>가격</td><td>2026년 말까지 프로모션가 입력 0.75달러 · 출력 3.75달러, 2027년부터 각각 1.5달러 · 7.5달러. 인텔리전스 인덱스 과제당 비용은 약 40달러.</td></tr><tr><td>포지셔닝</td><td>구글이 &quot;코딩과 에이전트를 위한 워크호스 모델&quot;로 소개. 24시간 작업을 맡기는 제미나이 스파크에 이미 투입.</td></tr><tr><td>화자 관점</td><td>화자는 답변 하나의 완성도보다 판단·생성·툴 호출·재판단이 반복되는 루프의 회전 속도가 이 모델의 핵심이라고 본다.</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>영상은 신규 모델 발표를 일상적으로 다루지 않는다는 전제에서 출발해, 이번 제미나이 3.7 플래시에서만 관찰되는 숫자 조합을 근거로 논의를 연다. 첫 축은 속도다. 초당 340토큰이 전체 응답 시간이 아니라 생성 시작 이후의 디코드 속도라는 점을 짚고, 첫 토큰까지 약 9.8초가 걸린다는 상반된 수치를 함께 제시한다. 이어 LLM 추론을 프리필과 디코드로 나눠 각 단계에서 무엇이 병목인지 설명한다. 두 번째 축은 성능이다. 인텔리전스 인덱스 4점 상승과 코딩·자동화·컴퓨터 조작 벤치마크의 상승폭을 나열하되, 개별 수치보다 코딩과 툴 사용 영역의 상승이 두드러진다는 방향성에 무게를 둔다. 세 번째 축은 비용과 시간이다. 프로모션 단가, 과제당 비용, 타임 투 태스크 1.7분을 묶어 에이전트 운영 관점에서 세 지표가 함께 움직여야 한다고 정리한다. 마지막으로 제미나이 스파크 적용 사례와 측정값의 변동 가능성을 덧붙이며 마무리한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>화자는 LLM 추론을 입력 전체를 읽어 처리하는 프리필과 토큰을 하나씩 만들어내는 디코드로 구분한다. 프리필 구간에서는 입력 전체에 대한 연산과 함께 이후 생성에 쓰일 KV 캐시가 만들어지고, 일반적으로 보고되는 TTFT에는 프리필뿐 아니라 요청 대기와 네트워크 시간, 리즈닝 모델이라면 답을 내기 전의 내부 추론 시간까지 포함된다. 따라서 약 9.8초를 전부 KV 캐시 생성 시간으로 볼 수는 없다는 단서를 단다. 엔비디아 역시 프리필은 연산량에, 디코드는 메모리 대역폭과 지연 시간에 크게 좌우되는 별개 단계로 설명하며, 서버에서 두 단계를 따로 최적화할 수 있다. 구글은 이번 발표에서 알고리즘 이노베이션을 언급했으나 그것이 새로운 디코드 알고리즘이라고 명시하지는 않았고, 화자는 모델 구조 <span class="up">개선</span>, 서빙 단계의 배칭·커널·메모리 접근 최적화, 하드웨어 활용도 <span class="up">개선</span> 가운데 무엇이 기여했는지 현재 공개 정보로는 단정하기 어렵다고 본다. 성능 쪽에서는 프런티어 코드 1.1 메인 34.4%→43.6%, 오토메이션 벤치 17%→30.4%, OS월드 2.0 33.8%→47.9%로 코딩과 다단계 툴 사용 축의 상승폭이 특히 크다. 구글 설명도 작업 중 막혔을 때의 대응 능력을 높이고 다단계 계획과 툴 콜에 더 많은 연산을 배분하도록 개선했다는 같은 방향이다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>챗봇은 사람이 몇 번 질문하면 끝나지만, 에이전트는 작업 하나 안에서 모델을 반복 호출한다. 호출이 10회, 20회로 늘어나면 API 단가가 그대로 운영비가 되므로 지능·속도·비용 세 지표는 분리해서 볼 수 없다. 제미나이 3.7 플래시는 인텔리전스 56점, 초당 340토큰, 과제당 약 40달러라는 조합을 제시하고, 아티피셜 애널리시스의 타임 투 태스크에서도 하이 리즈닝 기준 평균 1.7분으로 GPT-5.6 테라 대비 약 40% 짧으며 지능과 소요 시간을 함께 놓은 비교에서 파레토 프런티어에 올랐다. 다만 화자는 이 1.7분이 출력 토큰 수를 실제 디코드 속도로 환산한 평균 생성 시간이며 TTFT와 기타 오버헤드는 제외된 값이라고 명시적으로 경고한다. 더 주목할 지점은 기반 모델을 새로 학습하지 않고도 실제 사용 성능을 크게 움직일 여지가 남아 있다는 사실이다. 3.6 플래시 모델 카드 갱신 3주 만에 나온 이번 업데이트가 개발자 피드백과 알고리즘 개선의 결과라면, 성능 향상 경로가 더 큰 모델과 더 많은 GPU에만 있지 않다는 뜻이 된다. 코딩 에이전트를 운영하는 팀에는 모델 교체 주기와 단가 재협상 주기가 함께 짧아진다는 의미이기도 하다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>지표·비용 비교 정리</h2><blockquote>요지: 지능 지수는 소폭, 코딩·에이전트 벤치마크는 큰 폭으로 올랐고, 속도와 단가가 함께 제시된다.</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>지표</th><th>3.6 플래시</th><th>3.7 플래시</th><th>비고</th></tr></thead><tbody><tr><td>인텔리전스 인덱스</td><td>52점</td><td>56점</td><td>아티피셜 애널리시스 기준, 상위 모델은 57점</td></tr><tr><td>프런티어 코드 1.1 메인</td><td>34.4%</td><td>43.6%</td><td>구글 자체 평가, 실제 코드 품질</td></tr><tr><td>오토메이션 벤치</td><td>17%</td><td>30.4%</td><td>실제 업무 자동화 수행 평가</td></tr><tr><td>OS월드 2.0</td><td>33.8%</td><td>47.9%</td><td>컴퓨터 직접 조작 과제</td></tr><tr><td>디코드 속도</td><td>자막 미언급</td><td>초당 340토큰</td><td>하이 리즈닝 설정, 구글 API에서 측정</td></tr><tr><td>첫 토큰까지 시간</td><td>자막 미언급</td><td>약 9.8초</td><td>요청 대기·네트워크·내부 추론 포함</td></tr><tr><td>타임 투 태스크</td><td>자막 미언급</td><td>평균 1.7분</td><td>GPT-5.6 테라 대비 약 40% 단축, TTFT 제외</td></tr><tr><td>입력 단가</td><td>자막 미언급</td><td>0.75달러(프로모션)</td><td>2027년부터 1.5달러</td></tr><tr><td>출력 단가</td><td>자막 미언급</td><td>3.75달러(프로모션)</td><td>2027년부터 7.5달러</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol><li><strong>코딩 에이전트 루프 단축</strong>: 파일 읽기, 원인 추론, 코드 수정, 실행, 로그 재확인이 반복되는 작업에서 생성 구간을 짧게 가져가 다음 단계로 빨리 넘어간다.</li><li><strong>다단계 업무 자동화</strong>: 오토메이션 벤치와 OS월드 상승폭을 근거로, 툴 호출이 여러 번 겹치는 업무 자동화 파이프라인의 실패·재시도 횟수를 줄인다.</li><li><strong>장시간 위임형 에이전트</strong>: 24시간 작업을 맡기는 제미나이 스파크처럼 파일 수집, 이메일 초안 작성, 상태 문서 갱신을 오가는 복합 작업에 투입한다.</li><li><strong>운영비 시뮬레이션</strong>: 호출 횟수 × 프로모션 단가와 2027년 정가를 함께 계산해, 에이전트 도입 시점과 계약 구조를 미리 설계한다.</li><li><strong>모델 선택 기준 재정의</strong>: 벤치마크 점수 단독이 아니라 지능·디코드 속도·과제당 비용 세 축을 묶어 후보 모델을 비교하는 내부 기준을 만든다.</li></ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 초당 340토큰이 아티피셜 애널리시스가 구글 API에서 측정한 값이므로 서버 부하, 요청 조건, 리즈닝 설정에 따라 달라질 수 있다고 선을 긋는다. 구글 모델 카드에도 간헐적 지연과 타임아웃 가능성이 적혀 있다. 그럼에도 이번 모델에서 분명한 특징은 답을 내기 전에는 리즈닝에 시간을 쓰고 디코드가 시작된 뒤에는 초당 340토큰까지 뽑아내는 구조이며, 코딩과 에이전트 성능이 동시에 올라왔고 그것이 3주 만에 나왔다는 점이다. 화자는 구글이 이 디코드 속도를 어떤 방법으로 만들었는지 공개하지 않은 부분을 오히려 다음에 확인할 포인트로 꼽는다. 모델 자체의 디코드 방식을 손본 것인지, 서빙과 하드웨어 최적화가 큰 역할을 한 것인지, 둘이 함께 움직인 것인지에 따라 후속 모델의 <span class="up">개선</span> 여지도 달라진다고 본다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>프리필(Prefill)</td><td>입력 전체를 한 번에 읽어 연산하고 KV 캐시를 만드는 단계</td><td>발표 전에 자료 전체를 훑어보는 준비 시간</td></tr><tr><td>디코드(Decode)</td><td>토큰을 하나씩 이어서 생성하는 단계</td><td>준비를 마친 뒤 실제로 말을 쏟아내는 구간</td></tr><tr><td>KV 캐시</td><td>프리필에서 만들어져 이후 생성에 재사용되는 중간 상태 저장소</td><td>매번 다시 읽지 않도록 접어둔 책갈피</td></tr><tr><td>TTFT</td><td>요청부터 첫 토큰이 나올 때까지의 시간</td><td>주문 후 첫 접시가 나오기까지의 대기</td></tr><tr><td>인텔리전스 인덱스</td><td>아티피셜 애널리시스가 여러 평가를 묶어 산출한 종합 지능 점수</td><td>여러 과목 점수를 합친 내신 평균</td></tr><tr><td>타임 투 태스크</td><td>출력 토큰 수를 디코드 속도로 환산한 평균 생성 시간 지표</td><td>실제 배송이 아닌 포장 소요 시간만 잰 값</td></tr><tr><td>파레토 프런티어</td><td>두 지표를 동시에 개선한 모델들이 놓이는 경계선</td><td>가성비 표에서 맨 바깥줄에 서는 제품</td></tr><tr><td>워크호스 모델</td><td>반복 호출을 견디며 일상 업무를 도맡는 주력 모델</td><td>화물 운반을 계속 감당하는 짐말</td></tr><tr><td>에이전틱 루프</td><td>판단, 생성, 툴 호출, 결과 확인이 반복되는 실행 구조</td><td>확인하고 고치기를 반복하는 정비 작업</td></tr><tr><td>배칭(Batching)</td><td>여러 요청을 묶어 서버 자원 효율을 올리는 서빙 기법</td><td>엘리베이터를 여러 명이 함께 타는 방식</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul><li><a href="https://youtu.be/BpZI_QowF3o?t=0" target="_blank" rel="noopener">00:00</a> 초당 340토큰과 인덱스 56점 조합 제시</li><li><a href="https://youtu.be/BpZI_QowF3o?t=57" target="_blank" rel="noopener">00:57</a> 프리필과 디코드 단계 구분</li><li><a href="https://youtu.be/BpZI_QowF3o?t=85" target="_blank" rel="noopener">01:25</a> TTFT 9.8초와 디코드 속도의 대비</li><li><a href="https://youtu.be/BpZI_QowF3o?t=141" target="_blank" rel="noopener">02:21</a> 코딩·에이전트용 워크호스 모델 규정</li><li><a href="https://youtu.be/BpZI_QowF3o?t=169" target="_blank" rel="noopener">02:49</a> 반복 루프에서 생성 속도가 갖는 의미</li><li><a href="https://youtu.be/BpZI_QowF3o?t=197" target="_blank" rel="noopener">03:17</a> 코드·자동화 벤치마크 상승 수치</li><li><a href="https://youtu.be/BpZI_QowF3o?t=225" target="_blank" rel="noopener">03:45</a> 다단계 계획과 툴 콜 <span class="up">개선</span> 방향</li><li><a href="https://youtu.be/BpZI_QowF3o?t=255" target="_blank" rel="noopener">04:15</a> 3주 만의 업데이트와 알고리즘 <span class="up">개선</span></li><li><a href="https://youtu.be/BpZI_QowF3o?t=310" target="_blank" rel="noopener">05:10</a> 프로모션 단가와 2027년 정가</li><li><a href="https://youtu.be/BpZI_QowF3o?t=339" target="_blank" rel="noopener">05:39</a> 지능·속도·비용 세 지표의 동반 이동</li><li><a href="https://youtu.be/BpZI_QowF3o?t=366" target="_blank" rel="noopener">06:06</a> 1.7분 지표의 산출 기준 주의</li><li><a href="https://youtu.be/BpZI_QowF3o?t=395" target="_blank" rel="noopener">06:35</a> 제미나이 스파크 적용 사례</li><li><a href="https://youtu.be/BpZI_QowF3o?t=452" target="_blank" rel="noopener">07:32</a> 측정값 변동 가능성과 남은 과제</li></ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>비주얼 리포트</h2><ul><li>로컬: ~/Sites/ai-infographic/2026-08-15-anbeokong-gemini-3-7-flash-agentic.html</li><li>외부: https://wootom.github.io/news/2026-08-15-anbeokong-gemini-3-7-flash-agentic.html</li></ul></section><section class="card s6" id="s11"><h2><span class="seq">11</span>출처</h2><ul><li><a href="https://youtu.be/BpZI_QowF3o" target="_blank" rel="noopener">구글 Gemini 3.7 Flash, 대체 뭘 바꾼건지... 초당 340토큰, 코딩만 아니라 에이전틱 AI 특화</a> — 안될공학 - IT 테크 신기술</li></ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/BpZI_QowF3o" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 - IT 테크 신기술 · 2026-08-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

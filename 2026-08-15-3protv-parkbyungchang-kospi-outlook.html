@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코스피 반등 국면 점검 — 7,100~7,500 목표 구간과 종목 대응"><title>코스피 반등 국면 점검 — 7,100~7,500 목표 구간과 종목 대응</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>삼프로TV 3PROTV</span><span class="ey">MORNING DIGEST · 2026-08-16 · 삼프로TV 3PROTV</span><span class="chip">🎬 영상</span></div><h1>코스피 반등 국면 점검 — 7,100~7,500 목표 구간과 종목 대응</h1><p class="lead">채널: 삼프로TV 3PROTV · 주제: 7월 급락 뒤 변동성 축소 국면에서 코스피 7,100~7,500 목표와 종목 대응</p></header>
+<div style="max-width:1100px;margin:32px auto;padding:0 16px"><img src="assets/ig/2026-08-15-3protv-parkbyungchang-kospi-outlook.jpg" alt="인포그래픽 요약" style="display:block;width:100%;height:auto;border-radius:8px"></div>
+<main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>화자</td><td>박병창 MP파트너스 대표. 증권사 31년 근무 후 올해 퇴사, 6년째 데일리 시황을 작성 중이라고 밝힘</td></tr><tr><td>시장 진단</td><td>코스피는 9,300포인트 고점에서 5,200포인트대까지 하락 후 녹화 시점 6,800선. 화자는 대세 하락이 아니라 쏠림의 후유증으로 본다</td></tr><tr><td>지수 목표</td><td>화자는 연내 코스피 1차 목표를 7,100~7,500포인트, 코스닥은 900~950으로 제시</td></tr><tr><td>반도체 견해</td><td>SK하이닉스 고점 300만 원 부근, 220~240만 원 매수자는 약 25% 손실. 코스피 7,100~7,500 도달 시 하이닉스는 190만 원 전후~200만 원 직전으로 추정</td></tr><tr><td>하락 원인</td><td>연초 300조 원이던 ETF 잔고가 5월 말 540조 원으로 240조 원 유입되며 생긴 쏠림의 반작용이라고 설명</td></tr><tr><td>매크로 판단</td><td>화자는 미 연준 금리 동결을 전제로 투자 중이라고 밝힘. 대세 하락의 핵심 변수는 금리와 환율이라고 정리</td></tr><tr><td>마무리 메시지</td><td>좋은 기업이 곧 좋은 주식은 아니며, 좋은 산업을 믿는 것과 좋은 가격에 사는 것은 다른 문제라고 강조</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><p>68분 분량의 주말 인터뷰로, 진행자 여도훈 아나운서가 질문하고 박병창 대표가 답하는 1대1 대담 형식이다. 전개는 크게 다섯 단계다. 먼저 7월 급락 전후 화자 본인의 매매 기록을 복기하며 6월 중순 &quot;반 팝니다&quot; 발언과 4분할 매수 계획, 그리고 7월 마지막 주 폭락에 당한 실수를 공개한다. 둘째로 고점 매수자의 손실 회복 시나리오를 SK하이닉스 가격대별로 구체화한다. 셋째로 코스피와 코스닥의 성격 차이, 쏠림 강도의 변화, 거버넌스 개혁 정책과 섹터 ETF 선별 방법을 다룬다. 넷째로 삼성전자·SK하이닉스의 목표주가 하향 배경, LTA 장기계약이 주가 변동성에 미치는 영향, 주주환원 발표 타이밍 문제를 짚는다. 마지막으로 미국 금리와 AI 자본지출이 만들어내는 시스템 리스크의 전조 신호를 논의하고 투자 심리·자금 관리 원칙으로 마무리한다.</p></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시장·데이터 맥락</h2><p>화자가 제시한 수치를 순서대로 보면, 코스피는 작년 6월부터 올해 3월까지 대세 상승했고 3월 급락 뒤 4월부터 재상승한 출발점이 5,400포인트다. 9,300포인트 고점에서 5,200포인트대까지 밀린 것은 결국 4월 상승분의 원위치이며, 1년 전 지수는 2,500~2,600포인트였다는 점을 반복해 언급한다. 종목 단에서는 삼성전자 39만 원, SK하이닉스 300만 원이 고점 매수 가격대로 거론되고, 실제 개인 보유 단가는 SK하이닉스 220만~240만 원 구간이 많아 약 25% 손실 상태라고 진단한다. 수급 측면에서는 ETF 잔고가 연초 300조 원에서 5월 말 540조 원으로 240조 원 늘어난 것을 이번 쏠림의 실체로 지목한다. 코스닥은 1,200포인트에서 700포인트까지 밀렸다가 800을 회복하고 900을 앞둔 상태이며, 저점 대비 50% 이상 오른 개별 종목이 다수라고 설명한다. 쏠림 강도를 상반기 100으로 놓으면 하반기는 60~70이고 나머지 30 안에서 순환매가 돈다는 것이 화자의 정량적 표현이다. 밸류에이션은 SK하이닉스 PER이 3~4배까지 내려갔던 것을 과도한 반영으로 보고, 사이클을 벗어난 상태라면 6~7배 적용 시 200만~240만 원 수준이 나온다고 계산한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>이 대담의 실질적 함의는 지수 전망보다 대응 프레임에 있다. 화자는 리스크 관리는 시황으로 하고 수익은 종목으로 낸다는 원칙을 반복하며, 같은 재료라도 주가의 위치에 따라 반응이 완전히 달라진다고 강조한다. 예컨대 SK하이닉스가 350만 원일 때 나오는 주주환원 정책과 120만 원일 때 나오는 정책은 효과가 다르며, 삼성전자는 8월 내, SK하이닉스는 3분기 내 발표를 예고한 상태여서 발표 타이밍 자체가 변수가 된다고 본다. 고점 매수자에게는 한 번에 해결하려 하지 말고 목표 구간에서 일부만 정리해 손실률을 10% 수준으로 낮춘 뒤 재진입 여부를 판단하라는 단계적 접근을 제시한다. 10%는 시장에서 언제든 복구 가능한 폭이라는 것이 근거다. 또한 코스닥·중소형주에 대해서는 작년 7월부터 3차까지 진행된 상법 개정 국면에서 금융지주·대형주·지주사만 반응했고 중소기업은 아직 움직이지 않았다는 점을 들어, 9월 말로 예상되는 코스닥 거버넌스 정책의 강도에 따라 판이 달라질 수 있다고 본다. 이는 지수 방향에 베팅하기보다 정책·수급·주가 위치의 조합을 보고 섹터를 고르라는 주문에 가깝다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>지수·종목 목표치 및 판단 근거 정리</h2><blockquote>요지: 화자가 방송에서 직접 제시한 숫자와 그 근거를 한 화면에 모은 표.</blockquote>
+<div class="tbl-wrap"><table><thead><tr><th>대상</th><th>화자가 제시한 수치</th><th>판단 근거</th></tr></thead><tbody><tr><td>코스피 1차 목표</td><td>7,100~7,500포인트 (연내 7,200~7,500 언급)</td><td>9,300에서 5,200대까지 밀린 구간의 중간대는 무난한 지수라고 판단</td></tr><tr><td>코스닥 목표</td><td>900~950포인트</td><td>코스피 대비 여전히 약하나 하반기 상대 강도가 <span class="up">개선</span></td></tr><tr><td>SK하이닉스</td><td>코스피 목표 도달 시 190만 원 전후~200만 원 직전</td><td>지수 목표 구간과 연동한 환산치</td></tr><tr><td>SK하이닉스 밸류</td><td>멀티플 6~7배 적용 시 200만~240만 원</td><td>사이클을 벗어났다면 과거 5~6배 고점 논리는 부적합</td></tr><tr><td>쏠림 강도</td><td>상반기 100 → 하반기 60~70</td><td>나머지 30이 코스닥·중소형주 순환매로 이동</td></tr><tr><td>ETF 유입</td><td>연초 300조 원 → 5월 말 540조 원</td><td>240조 원 유입이 이번 쏠림과 후유증의 실체</td></tr><tr><td>미국 기준금리</td><td>동결 전제로 매매</td><td>대선 국면, 케빈 워시 의장의 원래 성향, 채권시장 선반영 등을 근거로 제시</td></tr><tr><td>손실 관리선</td><td>손실률 10% 수준으로 축소</td><td>10%는 시장에서 하루 이틀에도 복구 가능한 폭이라는 경험적 판단</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol><li><strong>고점 매수 종목 정리</strong>: SK하이닉스를 220만~240만 원에 담아 손실 중이라면, 화자가 제시한 190만~200만 원 구간에서 일부만 덜어내 손실률을 10%대로 낮추는 단계적 축소를 검토한다.</li><li><strong>섹터 ETF 선별</strong>: 반도체 소부장 ETF만 수십 개인 상황에서 코덱스와 타이거처럼 편입 종목이 다른 상품의 수익률 격차를 비교한다. 삼성전자·SK하이닉스 비중이 줄수록 격차가 커진다는 것이 화자의 관점이다.</li><li><strong>코스닥 정책 모멘텀 대기</strong>: 9월 말로 예상되는 코스닥 거버넌스 개혁 정책의 강도를 확인한 뒤 중소형주 비중을 조정한다. 일본이 10년에 걸쳐 개혁을 진행한 사례를 벤치마크로 삼는다.</li><li><strong>위기 전조 모니터링</strong>: 미 국채 금리 상승 추세와 국가·정책금융의 기업 지원 발표를 위험 신호 체크리스트로 삼는다. 화자는 산업은행급 공적 자금 투입 소식이 나오면 진짜 위험이라고 본다.</li><li><strong>자금 관리 훈련</strong>: 원금 규모를 고정하고 수익만 출금하는 방식으로 계좌를 운영해, 시드를 키우며 하락 때 타격이 커지는 패턴을 피한다.</li></ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>화자는 7월의 급락을 매크로가 만든 대세 하락이 아니라 급격한 쏠림의 후유증으로 규정하며, 8월은 그 변동성이 줄어드는 소화 기간이라고 본다. 삼성전자·SK하이닉스에 대해서는 증권가 목표주가 하향의 이유가 사이클 피크아웃이 아니라 메모리 가격 상승률 둔화에 따른 성장률 저하라고 해석하고, LTA 장기계약으로 하방이 막힌 대신 상방도 제한돼 엔비디아가 6개월 횡보했던 것과 비슷한 흐름을 예상한다. 다만 에이전틱 AI가 실생활에 가시화되면 추론 단계의 KV 캐시 수요 때문에 메모리가 재해석될 가능성은 열려 있다고 본다. 금리에 대해서는 동결을 기본 시나리오로 두되, 국채 금리 상승의 원인이 인플레이션 자체보다 AI 자본지출로 풀린 돈에 있다고 진단한다. 마지막으로 조급함을 경계하며, 좋은 기업과 좋은 주식은 다르고 좋은 가격에 사는 것이 별개의 문제라는 말로 대담을 닫는다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>한줄설명</th><th>비유/예시</th></tr></thead><tbody><tr><td>기간 조정</td><td>가격이 크게 빠지지 않고 시간이 흐르며 매물을 소화하는 국면</td><td>화자는 7월 말까지를 기간 조정으로 봤다고 설명</td></tr><tr><td>쏠림(집중)</td><td>특정 종목·섹터로 자금이 몰리는 현상</td><td>ETF 240조 원 유입이 반도체 대형주로 집중된 사례</td></tr><tr><td>LTA</td><td>장기 구매 계약. 가격과 물량을 다년간 고정하는 계약</td><td>하방을 막는 대신 상방도 제한, 화자는 고점 약간 아래 체결을 추정</td></tr><tr><td>피크아웃</td><td>실적 사이클이 정점을 지났다는 판단</td><td>화자는 이번 목표주가 하향은 피크아웃 판단이 아니라고 해석</td></tr><tr><td>멀티플</td><td>이익 대비 주가 배수, 즉 PER 수준</td><td>과거 사이클 고점 5~6배 vs 현재 3~4배 논쟁</td></tr><tr><td>거버넌스 개혁</td><td>지배구조·주주환원 제도를 바꾸는 정책 흐름</td><td>작년 7월 1차부터 3차까지의 상법 개정, 일본은 10년간 추진</td></tr><tr><td>에이전틱 AI</td><td>질의응답을 넘어 예약·실행까지 대신하는 AI</td><td>항공·여행사·음식점 연결이 필요해 아직 초기 단계라고 설명</td></tr><tr><td>KV 캐시</td><td>추론 과정에서 중간 결과를 저장하는 메모리 영역</td><td>추론 확산 시 메모리 수요가 늘어나는 근거로 언급</td></tr><tr><td>주주환원</td><td>배당·자사주 매입 등으로 이익을 주주에게 돌려주는 정책</td><td>삼성전자 8월 내, SK하이닉스 3분기 내 발표 예고</td></tr><tr><td>소부장</td><td>소재·부품·장비 기업군</td><td>화자는 상반기 고평가로 판단해 추천을 자제했다고 밝힘</td></tr></tbody></table></div></section><section class="card s6" id="s9"><h2><span class="seq">09</span>딥링크</h2><ul><li><a href="https://youtu.be/11LuxBjp4t4?t=28" target="_blank" rel="noopener">00:28</a> 7월 변동성이 둔화되는 과정이라는 진단</li><li><a href="https://youtu.be/11LuxBjp4t4?t=414" target="_blank" rel="noopener">06:54</a> 저점 5,200대와 5,400 원위치 논리</li><li><a href="https://youtu.be/11LuxBjp4t4?t=581" target="_blank" rel="noopener">09:41</a> 코스피 7,100~7,500, 코스닥 900~950 제시</li><li><a href="https://youtu.be/11LuxBjp4t4?t=807" target="_blank" rel="noopener">13:27</a> ETF 300조에서 540조로 늘어난 쏠림</li><li><a href="https://youtu.be/11LuxBjp4t4?t=978" target="_blank" rel="noopener">16:18</a> 하이닉스 200만 원 부근 분할 정리 시나리오</li><li><a href="https://youtu.be/11LuxBjp4t4?t=1291" target="_blank" rel="noopener">21:31</a> 대세 하락 아님, 금리와 환율이 핵심 변수</li><li><a href="https://youtu.be/11LuxBjp4t4?t=1714" target="_blank" rel="noopener">28:34</a> 코스닥 거버넌스 정책과 일본 10년 사례</li><li><a href="https://youtu.be/11LuxBjp4t4?t=2254" target="_blank" rel="noopener">37:34</a> 삼전·하이닉스 목표주가 하향의 진짜 이유</li><li><a href="https://youtu.be/11LuxBjp4t4?t=2308" target="_blank" rel="noopener">38:28</a> 엔비디아식 횡보 전망과 LTA 효과</li><li><a href="https://youtu.be/11LuxBjp4t4?t=2726" target="_blank" rel="noopener">45:26</a> 에이전틱 AI 가시화와 메모리 재해석</li><li><a href="https://youtu.be/11LuxBjp4t4?t=2979" target="_blank" rel="noopener">49:39</a> 주주환원 발표는 타이밍이 관건</li><li><a href="https://youtu.be/11LuxBjp4t4?t=3170" target="_blank" rel="noopener">52:50</a> 미 연준 금리 동결을 전제로 한 투자</li><li><a href="https://youtu.be/11LuxBjp4t4?t=3536" target="_blank" rel="noopener">58:56</a> 국가 공적자금 투입은 진짜 위험 신호</li><li><a href="https://youtu.be/11LuxBjp4t4?t=3729" target="_blank" rel="noopener">62:09</a> 좋은 기업과 좋은 주식은 다르다</li></ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>비주얼 리포트</h2><ul><li>로컬: ~/Sites/ai-infographic/2026-08-15-3protv-parkbyungchang-kospi-outlook.html</li><li>외부: https://wootom.github.io/news/2026-08-15-3protv-parkbyungchang-kospi-outlook.html</li></ul></section><section class="card s6" id="s11"><h2><span class="seq">11</span>출처</h2><ul><li>[다시 오른 코스피, 안심하긴 이르다? 앞으로가 중요한 이유 | 박병창 MP파트너스 대표 [주말 인터뷰]](https://youtu.be/11LuxBjp4t4) — 삼프로TV 3PROTV</li></ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/11LuxBjp4t4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>삼프로TV 3PROTV · 2026-08-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
