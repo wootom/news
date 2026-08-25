@@ -54,8 +54,9 @@ mark{background:transparent;color:inherit}</style>
         <a id="backToday" href="기술.html" style="display:none;font-size:11.5px;font-weight:700;color:#2E5FE0;margin-left:auto">← 오늘로</a>
       </div>
         <!-- ② 오늘의 AI 소식 이미지 (hero 16:6 커버) -->
-        <div style="display:block;border-radius:12px;overflow:hidden;border:1px solid rgba(21,23,28,.10);background:#F8F8F6;margin-top:12px">
+        <div id="coverWrap" style="display:block;border-radius:12px;overflow:hidden;border:1px solid rgba(21,23,28,.10);background:#F8F8F6;margin-top:12px">
           <img id="coverImg" src="./cover-2026-08-25.png" alt="오늘의 AI 소식 인포그래픽 · 2026.08.25"
+               onerror="var w=document.getElementById('coverWrap'); if(w) w.style.display='none';"
                style="display:block;width:100%;aspect-ratio:16/6;object-fit:cover;object-position:top center;background:#F8F8F6">
         </div>
 
@@ -338,15 +339,15 @@ mark{background:transparent;color:inherit}</style>
       <div style="background:#F4F4F1;border:1px solid rgba(21,23,28,.10);border-radius:13px;padding:12px 13px 4px">
   <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(21,23,28,.10)">
     <span style="font-size:10px;font-weight:800;letter-spacing:.12em;color:#2E5FE0">MARKET SNAPSHOT</span>
-    <span style="font-size:9.5px;color:#9298A3;font-weight:600;letter-spacing:.02em">장중</span>
+    <span style="font-size:9.5px;color:#9298A3;font-weight:600;letter-spacing:.02em">08.25 마감</span>
   </div>
   <div style="padding-top:3px">
     <div style="padding:7px 0;border-bottom:1px solid rgba(21,23,28,.10)">
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#565C68">코스피</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">6,574.07</span>
-          <span style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-1.83%</span>
+          <span style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">6,742.74</span>
+          <span style="font-size:11px;font-weight:800;color:#C0392B;min-width:44px;text-align:right">+0.68%</span>
         </span>
       </div>
       
@@ -355,8 +356,8 @@ mark{background:transparent;color:inherit}</style>
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#565C68">코스닥</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">798.84</span>
-          <span style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-1.78%</span>
+          <span style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">827.15</span>
+          <span style="font-size:11px;font-weight:800;color:#C0392B;min-width:44px;text-align:right">+1.70%</span>
         </span>
       </div>
       
@@ -385,15 +386,15 @@ mark{background:transparent;color:inherit}</style>
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#565C68">원/달러</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">1,382.58</span>
-          <span style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-0.17%</span>
+          <span style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">1,383.88</span>
+          <span style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-0.08%</span>
         </span>
       </div>
       
     </div>
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid rgba(21,23,28,.10)">
       <span style="font-size:10px;font-weight:800;letter-spacing:.06em;color:#9298A3">날씨</span>
-      <span style="font-size:11.5px;font-weight:700;color:#565C68">서울 29°C 비</span>
+      <span style="font-size:11.5px;font-weight:700;color:#565C68">서울 30°C 비</span>
     </div>
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:7px 0">
       <span style="font-size:10px;font-weight:800;letter-spacing:.06em;color:#9298A3">다음 공휴일</span>
@@ -588,6 +589,7 @@ function renderDaily(dateIso){
   var lbl=document.getElementById('dailyDateLabel'); if(lbl) lbl.textContent=dotd(dateIso)+' ('+dowLabel(dateIso)+')';
   var back=document.getElementById('backToday'); if(back) back.style.display=(dateIso===LATEST?'none':'inline');
   var cover=document.getElementById('coverImg');
+  var cw=document.getElementById('coverWrap'); if(cw) cw.style.display='block';  // 새 날짜: 일단 표시(없으면 onerror 가 다시 숨김)
   if(cover){ cover.src='./cover-'+dateIso+'.png'; cover.alt='오늘의 AI 소식 인포그래픽 · '+dotd(dateIso); }
   var slot=document.getElementById('insightSlot'); if(slot) slot.innerHTML=insightHtml(insightCards(rows));
   // ytWrap 교체(없으면 heroTop 다음에 삽입/삭제)
