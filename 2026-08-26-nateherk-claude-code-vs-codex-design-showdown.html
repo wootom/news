@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="클로드코드 vs 코덱스, 웹디자인 8종 실전 대결 결과"><title>클로드코드 vs 코덱스, 웹디자인 8종 실전 대결 결과</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">MORNING DIGEST · 2026-08-27 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>클로드코드 vs 코덱스, 웹디자인 8종 실전 대결 결과</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Nate Herk \</td><td>AI Automation</td></tr><tr><td>핵심 주제</td><td>클로드 코드 vs 코덱스, 동일 조건 웹사이트 8종 빌드 대결(디자인·속도·비용)</td></tr><tr><td>비교 대상</td><td>클로드 코드(Opus 5) vs 코덱스(GPT-5.1 Codex, &quot;Soul&quot;)</td></tr><tr><td>테스트 방식</td><td>동일 브랜드 가이드라인·카피·로고를 주고 랜딩페이지 8개를 각각 빌드</td></tr><tr><td>누적 서브에이전트 수</td><td>클로드 코드 25개 vs 코덱스 9개</td></tr><tr><td>누적 소요 시간</td><td>클로드 코드 14시간 vs 코덱스 5시간</td></tr><tr><td>누적 출력 토큰</td><td>클로드 코드 약 300만 vs 코덱스 약 55만</td></tr><tr><td>누적 API 환산 비용</td><td>클로드 코드 약 444달러 vs 코덱스 약 100달러</td></tr><tr><td>디자인 승패(8종 기준)</td><td>코덱스가 대체로 우세(사례별 상세는 본문 참고)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>밀키트 사이트 &quot;Bowl and Bloom&quot;</strong>: 동일 브랜드·카피를 줬지만 코덱스는 상단 내비게이션과 명확한 CTA로 &quot;한눈에 이해되는&quot; 구성을, 클로드 코드는 텍스트가 많고 스토리텔링 위주 구성을 택함. 장바구니(케어박스 구성) 기능에서 코덱스는 수량 변경 시 색상 표시가 정확히 반영되지 않는 버그가 있었음(<a href="https://youtu.be/bg0C-2iUUqM?t=0" target="_blank" rel="noopener">00:00</a>). 클로드 코드 4개 서브에이전트·2시간·출력토큰 약 50만·53달러, 코덱스 1개 에이전트·50분·약 10만 토큰·20달러 미만으로 코덱스가 디자인·비용·속도 모두 우세.</li>
+<li><strong>AI 미팅 노트 서비스 &quot;Minutecraft&quot;</strong>: 양쪽 다 &quot;정보 과부하&quot;라는 평가를 받았으나, 클로드 코드는 랜딩페이지라기보다 대시보드/데모에 가까웠고 풀스크린에서도 UI 이미지가 깨지는 버그가 발생함. 코덱스는 상대적으로 정보가 컬럼별로 정리되어 덜 산만함. 클로드 코드 2.5시간·약 50만 토큰·65달러, 코덱스 1시간12분·약 10만 토큰·20달러 미만.</li>
+<li><strong>캠핑 조리 장비 &quot;Trail Latch&quot;</strong>: 이 사례는 예외적으로 클로드 코드가 우세했음. 스크롤에 따라 장비가 펼쳐지는 인터랙션과 &quot;가격까지 한 화면에 답이 있는&quot; 구성이 좋은 평가를 받음. 코덱스는 스크롤 애니메이션이 과했고 첫 화면이 산만해 &quot;보자마자 이탈하고 싶은&quot; 인상을 줬으나, 서브페이지(빌드 유어 셋업)는 오히려 클로드보다 낫다는 평가. 비용은 여전히 코덱스가 우세(클로드 4에이전트·2시간·약 40만 토큰·42달러, 코덱스 1에이전트·1시간·약 10만 토큰·20달러 미만). 이 시점 디자인 스코어는 코덱스 2 : 클로드 1.</li>
+<li><strong>발표 코칭 서비스 &quot;Present and Clear&quot;</strong>: 코덱스는 &quot;charisma&quot;라는 단어에 취소선을 긋고 &quot;clearer way through&quot;를 강조하는 등 색상·구성 변화가 다채로워 승리. 클로드 코드는 애니메이션은 있었지만 페이지 깊이가 부족하고 산만했음. 클로드 4에이전트·2시간·약 44만 토큰·42달러, 코덱스 1에이전트·1시간 미만·9만2천 토큰·20달러 미만.</li>
+<li><strong>프랙셔널 CFO 서비스 &quot;North Ledger Studio&quot;</strong>: 코덱스가 로고·버튼 등으로 더 &quot;브랜드화된&quot; 느낌을 줬고, 스크롤 경로와 숫자 강조(예: 18명 규모 에이전시, 연 430만 달러 매출) 제시가 더 매끄러웠음. 클로드 코드는 텍스트 위주로 보고서처럼 느껴짐. 비용은 동일 패턴(클로드 2시간·약 50만 토큰·52달러, 코덱스 1시간·약 10만 토큰·18달러).</li>
+<li><strong>완전 자유형 프롬프트(&quot;나를 감동시켜봐&quot;)</strong>: 브랜드 가이드 없이 &quot;알아서 만들어봐&quot;라는 개방형 지시. 클로드 코드는 파동/사운드웨이브 컨셉으로 화려하지만 다소 산만한 결과물을, 코덱스는 &quot;우주의 정적&quot; 컨셉으로 카피가 간결하고 폰트·색감이 깔끔한 결과물을 냄. 코덱스는 8분·1.5달러, 클로드 코드는 약 3시간·33만 토큰·50달러로 격차가 가장 극단적이었던 사례.</li>
+<li><strong>초구체적 프롬프트 실험</strong>: 모든 요소를 세세하게 지정한 프롬프트를 주자 두 모델의 결과물은 아이콘 등 미세한 차이를 빼면 거의 동일했음. 이는 &quot;프롬프트가 충분히 구체적이면 어떤 모델·하니스든 원하는 결과를 낼 수 있다&quot;는 것을 보여주지만, 이 경우에도 코덱스가 훨씬 적은 토큰·시간·비용으로 동일 품질을 냈다는 점이 핵심 시사점.</li>
+<li><strong>HTML 리포트 빌드 비교</strong>: 동일 정보를 담은 HTML 리포트를 만들게 한 결과도 디자인은 거의 동일했지만, 비용·속도 면에서 코덱스가 명확히 더 효율적이었음.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>비교에 사용된 모델은 클로드 코드 쪽이 Opus 5, 코덱스 쪽이 &quot;GPT-5.1 Codex(별칭 Soul)&quot;임.</li>
+<li>두 하니스 모두 영상 제작자가 만든 동일한 &quot;스크롤 애니메이션 스킬(skill)&quot;을 활용해 웹사이트를 빌드함(스킬 자체는 별도 영상에서 공개).</li>
+<li>클로드 코드는 이번 테스트에서 매 사례마다 4개의 서브에이전트를 병렬 활용한 반면, 코덱스는 대부분 1개 에이전트로 작업을 완료함 — 이 구조 차이가 시간·토큰·비용 격차의 핵심 원인으로 지목됨.</li>
+<li>결과물 검증(비전 루프) 측면에서 클로드 코드가 이미지 깨짐 버그를 스스로 잡아내지 못한 사례가 두 차례 확인됨(Minutecraft 풀스크린 UI 이미지, Bowl and Bloom 케어박스 수량-색상 불일치).</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>&quot;다다익선&quot; 서브에이전트 투입이 항상 더 나은 결과로 이어지는 것은 아니며, 오히려 텍스트 과잉·정보 밀도 초과로 사용자 경험을 해칠 수 있음을 시사함.</li>
+<li>디자인 품질만으로 도구를 고르면 안 되고, &quot;동일 지시를 따르는 데 걸리는 시간과 비용 대비 효율&quot;까지 고려해야 한다는 저자의 관점이 반복 강조됨. 개방형 프롬프트에서는 코덱스가 압도적으로 효율적이나, 긴 대화형 반복 작업에서는 결과가 달라질 수 있다는 단서를 남김.</li>
+<li>프롬프트 구체성이 모델·하니스 간 결과물 격차를 거의 없앨 수 있다는 점은, &quot;어떤 AI 코딩 도구를 쓰느냐&quot;보다 &quot;얼마나 명확하게 요구사항을 정의하느냐&quot;가 실무에서 더 중요한 변수일 수 있음을 보여줌.</li>
+<li>비용 격차(누적 444달러 대 100달러, 약 4.4배)는 대량으로 랜딩페이지·리포트를 생성해야 하는 에이전시나 1인 창업자에게 직접적인 의사결정 근거가 될 수 있음.</li>
+</ul></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>빌드 사례</th><th>클로드 코드 (에이전트/시간/토큰/비용)</th><th>코덱스 (에이전트/시간/토큰/비용)</th><th>디자인 우세</th></tr></thead><tbody><tr><td>Bowl and Bloom (밀키트)</td><td>4개 / 2시간 / 약 50만 / $53</td><td>1개 / 50분 / 약 10만 / $20 미만</td><td>코덱스</td></tr><tr><td>Minutecraft (AI 노트)</td><td>4개 / 2.5시간 / 약 50만 / $65</td><td>1개 / 1시간12분 / 약 10만 / $20 미만</td><td>코덱스</td></tr><tr><td>Trail Latch (캠핑장비)</td><td>4개 / 2시간 / 약 40만 / $42</td><td>1개 / 1시간 / 약 10만 / $20 미만</td><td>클로드 코드</td></tr><tr><td>Present and Clear (발표코칭)</td><td>4개 / 2시간 / 약 44만 / $42</td><td>1개 / 1시간 미만 / 9.2만 / $20 미만</td><td>코덱스</td></tr><tr><td>North Ledger Studio (CFO)</td><td>- / 2시간 / 약 50만 / $52</td><td>- / 1시간 / 약 10만 / $18</td><td>코덱스</td></tr><tr><td>완전 자유형 (&quot;감동시켜봐&quot;)</td><td>- / 약 3시간 / 33만 / $50</td><td>- / 8분 / - / $1.5</td><td>코덱스</td></tr><tr><td>초구체적 프롬프트</td><td>결과 거의 동일</td><td>결과 거의 동일(훨씬 저비용)</td><td>무승부(비용은 코덱스)</td></tr><tr><td>HTML 리포트</td><td>결과 거의 동일</td><td>결과 거의 동일(훨씬 저비용)</td><td>무승부(비용은 코덱스)</td></tr><tr><td><strong>누적 총합</strong></td><td><strong>25에이전트 / 14시간 / 약 300만 토큰 / 약 $444</strong></td><td><strong>9에이전트 / 5시간 / 약 55만 토큰 / 약 $100</strong></td><td><strong>코덱스(효율), 디자인은 대체로 코덱스 우세</strong></td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>소규모 창업자·프리랜서의 랜딩페이지 초안 제작</strong>: 여러 개의 랜딩페이지 시안을 빠르게 저비용으로 뽑아야 할 때 코덱스를 우선 활용하고, 특정 인터랙션(스크롤 기반 스토리텔링 등)이 중요한 페이지는 클로드 코드로 별도 실험.</li>
+<li><strong>에이전시의 클라이언트 제안용 프로토타입 대량 생성</strong>: 동일 브랜드 가이드로 여러 시안을 만들어야 하는 경우, 코덱스로 1차 대량 생성 후 마음에 드는 방향만 클로드 코드로 디테일 다듬기.</li>
+<li><strong>AI 코딩 도구 예산 관리</strong>: 팀 내 AI 코딩 비용이 급증할 때, 서브에이전트 수와 하니스 구조(1개 vs 다중 에이전트)가 비용에 미치는 영향을 파악해 작업 유형별로 도구를 나눠 쓰는 정책 수립.</li>
+<li><strong>프롬프트 엔지니어링 학습</strong>: 동일한 결과를 원한다면 프롬프트를 최대한 구체화하는 것이 모델 선택보다 우선한다는 사례를 팀 교육 자료로 활용.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>두 도구 모두 매우 빠르게 발전 중이며(코덱스가 GPT-5.1 기반, 클로드가 Opus 5 기반), 저자는 &quot;지금은 코덱스가 낫다&quot;가 아니라 &quot;매일 바뀌는 상황을 계속 테스트해야 한다&quot;는 입장을 명확히 함.</li>
+<li>클로드 코드의 다중 서브에이전트 구조는 비용·시간 면에서 비효율적일 수 있으나, 복잡한 인터랙션(예: Trail Latch의 스크롤 기반 언박싱 애니메이션)에서는 여전히 더 나은 결과를 낼 가능성이 있음.</li>
+<li>코덱스의 낮은 토큰 소비와 단일 에이전트 구조는 향후 &quot;저비용 대량 생성&quot; 워크플로우에서 경쟁 우위를 가질 것으로 보이나, UI 디테일(예: 수량 변경 시 색상 미반영 버그)에서는 검증이 더 필요함.</li>
+<li>저자는 두 서비스 모두 구독 중이며 지속적으로 비교를 이어갈 계획임을 시사함.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>클로드 코드(Claude Code)</td><td>Anthropic의 CLI 기반 AI 코딩 에이전트 도구</td></tr><tr><td>코덱스(Codex)</td><td>OpenAI의 CLI 기반 AI 코딩 에이전트 도구(영상 시점 GPT-5.1 Codex 기반)</td></tr><tr><td>서브에이전트(Sub-agent)</td><td>메인 작업을 나눠 병렬 처리하는 하위 AI 에이전트 인스턴스</td></tr><tr><td>출력 토큰(Output tokens)</td><td>AI가 응답으로 생성한 텍스트/코드의 양을 세는 단위, 비용 산정 기준</td></tr><tr><td>하니스(Harness)</td><td>AI 모델을 감싸 실제 작업(파일 조작, 실행 등)을 수행하게 하는 실행 프레임워크</td></tr><tr><td>CTA(Call to Action)</td><td>웹페이지에서 사용자의 행동(구매, 가입 등)을 유도하는 버튼/문구</td></tr><tr><td>랜딩페이지(Landing page)</td><td>방문자가 처음 도착해 전환을 유도하는 목적으로 설계된 단일 웹페이지</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/bg0C-2iUUqM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

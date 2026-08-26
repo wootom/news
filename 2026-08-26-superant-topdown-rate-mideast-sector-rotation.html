@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="탑다운 분석으로 본 금리·중동·반도체·바이오 자금흐름"><title>탑다운 분석으로 본 금리·중동·반도체·바이오 자금흐름</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-08-27 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>탑다운 분석으로 본 금리·중동·반도체·바이오 자금흐름</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>슈퍼개미 이세무사TV (정보의바다 이정윤 대표 대담)</td></tr><tr><td>핵심 주제</td><td>탑다운 분석: 금리·중동정세 → 업종 → 종목 순서로 자금흐름 파악</td></tr><tr><td>시장 상황</td><td>6월 19일 고점 이후 변동성 확대, 한미약품 상한가 다음날 <span class="dn">-10%</span> 급락 등 주도주 부재</td></tr><tr><td>핵심 변수1</td><td>미국 국채금리 — 재무부 TGA(약 9,500억 달러) 활용한 국채 매입 안정화 정책</td></tr><tr><td>핵심 변수2</td><td>중동 리스크 — 미국의 이란 2차 제재(원유·디지털자산·금융·항공·해운 포괄)</td></tr><tr><td>업종 이슈</td><td>반도체(중국 메모리 굴기), 바이오(한미약품 기술이전), 2차전지(삼성SDI ESS 전환), 가상자산(두나무 미국 상장), AI로봇(현대차 인베스터데이), K뷰티(에이블씨엔씨 등)</td></tr><tr><td>투자 조언</td><td>변동성 장에서는 비중 관리, 확인 후 매매, 뉴스에 급하게 따라가지 않기</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>미국 국채금리와 재무부 TGA 정책</strong>: 재무부가 뉴욕연은에 보유한 약 9,500억 달러 규모의 TGA(재무부 일반계정) 자금 일부로 국채를 매입하면 국채 수요 증가 → 가격 <span class="up">상승</span> → 금리 <span class="dn">하락</span> 효과. 다만 연준의 기준금리 인하와 달리 재무부는 화폐 발행 권한이 없어 자금 한계가 있으므로 장기 방향 전환이 아닌 &quot;안전판&quot; 성격(<a href="https://youtu.be/eKOnL9EZTu4?t=57" target="_blank" rel="noopener">00:57</a>, <a href="https://youtu.be/eKOnL9EZTu4?t=146" target="_blank" rel="noopener">02:26</a>).</li>
+<li><strong>이란 2차 제재와 유가·해운 리스크</strong>: 미국이 이란뿐 아니라 이란과 거래하는 제3국 기업까지 제재하는 2차 제재를 발표, 원유·디지털자산·기술·금융·항공·해운까지 포함. 미군이 상선 70여 척의 항로를 변경시켰고, 호르무즈 해협 통과가 줄거나 이란 원유 수출이 <span class="dn">감소</span>하면 국제 유가·해상운임 <span class="up">상승</span> 가능(<a href="https://youtu.be/eKOnL9EZTu4?t=284" target="_blank" rel="noopener">04:44</a>).</li>
+<li><strong>반도체 — 중국 메모리 굴기 리스크</strong>: 미국 정부가 애플에 중국 CXMT(디램)·YMTC(낸드) 메모리 사용을 허용할 가능성이 보도되며 미국 샌디스크 주가 7% 이상 급락. 현재는 중국 내수용 애플 제품 한정 가능성이 거론되나, 두 기업이 IPO로 자금을 확보해 생산시설을 확대하면 중장기적으로 저가 메모리 공급 증가 → 삼성전자·SK하이닉스 가격경쟁 부담 우려(<a href="https://youtu.be/eKOnL9EZTu4?t=567" target="_blank" rel="noopener">09:26</a>).</li>
+<li><strong>바이오 — 한미약품 기술이전과 알테오젠 생산시설 투자</strong>: 한미약품이 비만치료제 후보물질 HM17321을 로슈 자회사 제넨텍에 총 23억 달러(약 3조 1,892억원) 규모로 기술이전(확정 수령액 1억 9천만 달러). 기존 GLP-1 계열과 달리 근육 유지·증가를 목표로 함. 알테오젠은 대전 둔곡지구에 2,532억원을 투자해 바이오의약품 생산시설(2028년 9월 완공 목표) 건설 발표, 자사 ALT-B4 기술이 적용된 키트루다 피하주사제가 일본에서 주요 심의 절차 통과(<a href="https://youtu.be/eKOnL9EZTu4?t=567" target="_blank" rel="noopener">12:47</a>).</li>
+<li><strong>2차전지 — 삼성SDI의 ESS 성장축 전환</strong>: 삼성SDI가 삼성디스플레이 지분 일부를 약 4조 4,500억원에 매각, 미국 인디애나 배터리 공장·북미 사업 확대에 투입 가능성. 전기차 수요 둔화로 배터리 업계가 AI 데이터센터·신재생에너지향 ESS로 성장축 확대 중이며, 기존 전기차 배터리 공장에 LFP 각형 ESS 생산라인 도입 가능성(<a href="https://youtu.be/eKOnL9EZTu4?t=705" target="_blank" rel="noopener">21:45</a>).</li>
+<li><strong>가상자산·AI로봇·원전 — 두나무 상장, 현대차 인베스터데이, 호남 반도체 클러스터</strong>: 두나무가 네이버파이낸셜과 포괄적 주식교환을 통해 ADR 방식 미국 상장 초기 준비 중. 엔비디아와 리벨리온(AI 추론용 NPU 개발사)의 기술협력·지분투자 초기 논의. 현대차가 8월 26일 CEO 인베스터데이에서 보스턴다이내믹스 중심 로봇·피지컬AI 전략 발표 예정. 정부는 호남 반도체 클러스터 전력수요 대응을 위해 신규 원전·기존 원전 계속운전 연장 검토 중(<a href="https://youtu.be/eKOnL9EZTu4?t=847" target="_blank" rel="noopener">14:07</a>).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>TGA(재무부 일반계정)</strong>: 미국 재무부가 세금을 거둬 뉴욕연방준비은행에 보관했다가 필요시 사용하는 계정. 정부가 은행처럼 화폐를 발행할 수는 없지만, 보유 자금으로 국채를 사들여 단기적으로 국채시장을 안정시킬 수 있다.</li>
+<li><strong>디램(DRAM) vs 낸드(NAND)</strong>: 디램은 데이터를 빠르게 처리하는 작업공간, 낸드(랜드)는 사진·파일을 저장하는 공간. 중국 CXMT는 디램, YMTC는 낸드를 주력 생산해 각각 삼성전자/SK하이닉스, 샌디스크와 직접 경쟁 구도.</li>
+<li><strong>GLP-1 계열 비만치료제와의 차별점</strong>: 기존 GLP-1 계열(위고비·마운자로 등)은 체중 <span class="dn">감소</span> 과정에서 근육 <span class="dn">감소</span> 부작용이 있었는데, 한미약품 HM17321은 다른 기전으로 근육을 유지·증가시키면서 체중을 감량하는 것을 목표로 함.</li>
+<li><strong>ALT-B4(할로자임 유사 기술)</strong>: 정맥주사(IV)로 장시간 투여하던 바이오의약품을 짧은 시간에 피하주사(SC)로 투여할 수 있도록 바꿔주는 알테오젠의 핵심 플랫폼 기술.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>금리는 연준의 기준금리뿐 아니라 재무부의 TGA 운용이라는 새로운 변수가 추가되어, 시장 참여자는 연준 발언과 별개로 재무부 정책 코멘트도 함께 모니터링해야 한다.</li>
+<li>중동發 지정학 리스크는 원유·해운·조선·금·방산 등 다수 섹터에 연쇄적으로 영향을 미치므로, 국제유가·해상운임·호르무즈해협 통과량 등 선행지표를 함께 확인하는 것이 중요하다.</li>
+<li>중국의 메모리 반도체 굴기는 과거 조선업에서 한국이 겪었던 중국발 가격경쟁 압박과 유사한 패턴으로, 삼성전자·SK하이닉스 주주는 중장기 관점에서 주시할 필요가 있다.</li>
+<li>바이오·2차전지·K뷰티 등은 개별 기업의 구체적 실적·기술이전·투자 발표가 재료가 되므로, 뉴스 헤드라인보다 계약 조건(확정금 vs 마일스톤)과 실행 일정(승인 절차, 양산 시점)을 확인하는 습관이 중요하다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 논리·매매판단 근거</h2><ol>
+<li>거시(금리·중동) → 업종(반도체·바이오·2차전지·가상자산·로봇·원전·K뷰티) → 종목 순서로 분석하는 것이 탑다운 분석의 기본 흐름이다.</li>
+<li>변동성이 커진 장에서는 레버리지·거래대금이 줄고 있어 예전보다 일일 등락폭 자체는 작아졌지만, 업종 순환매(로테이션) 속도는 여전히 빨라 하루 이틀 만에 주도주가 바뀌는 패턴이 반복되고 있다.</li>
+<li>뉴스 한 줄에 따라 방향이 바뀔 수 있는 재료(전쟁·제재 관련 종목 등)는 확인 후 매매하는 것이 안전하며, 급하게 뉴스를 쫓아 매수할 필요는 없다.</li>
+<li>현금 비중과 종목당 투자금액 관리를 통해 단일 종목 리스크를 낮추고, 100% 확신 없이는 급하게 진입하지 않는 태도를 권고한다.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>거시 변수 점검 루틴</strong>: 매일 미국 국채금리 방향과 재무부·연준 발언, 중동 등 지정학 이슈를 먼저 체크한 뒤 업종별 자금 이동을 추적하는 탑다운 루틴에 적용.</li>
+<li><strong>테마주 리스크 관리</strong>: 전쟁·제재·정책 기대감에 따라 급등한 종목(방산·조선·원전·가상자산 등)을 매매할 때, 확정된 사실과 아직 검토 단계인 정책을 구분해 과도한 기대감에 따른 매수를 피하는 데 활용.</li>
+<li><strong>바이오 기술이전 뉴스 해석</strong>: 기술이전 계약 발표 시 총 계약규모와 확정 수령액(반환의무 없는 계약금)·마일스톤을 구분해서 해석하는 프레임으로 활용(한미약품 사례).</li>
+<li><strong>업종 순환매 대응</strong>: 특정 업종이 하루이틀 급등 후 조정받는 패턴이 반복될 때, 확인 매매·분할 접근 원칙을 실전 매매 규칙에 반영.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>미국 국채금리는 재무부의 TGA 활용 안정화 시도로 단기 부담이 완화됐으나, 근본적인 물가·통화정책 방향 전환 여부는 지켜봐야 한다.</li>
+<li>이란 2차 제재로 인한 유가·해상운임 변동성은 정유·해운·조선·금·방산 관련주에 지속적인 영향을 줄 수 있는 변수로 남아있다.</li>
+<li>중국 CXMT·YMTC의 메모리 반도체 확장은 아직 초기 단계이나, IPO를 통한 자금 조달이 현실화되면 중장기적으로 한국 메모리 기업의 가격경쟁력에 부담 요인이 될 수 있다.</li>
+<li>두나무 미국 상장은 주주 매수청구권 행사 규모, 정부 심사, 미국 클레리티법·SEC 등록 등 다수 변수가 남아있어 절차 진행 상황을 지속 확인해야 한다.</li>
+<li>현대차 인베스터데이(8월 26일)의 로봇·피지컬AI 전략 발표 구체성과 호남 반도체 클러스터발 원전 확대 논의의 실제 정책 반영 여부가 다음 관찰 포인트다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>탑다운 분석</td><td>거시(금리·정세)→업종→종목 순으로 좁혀가는 투자 분석법</td></tr><tr><td>TGA</td><td>미국 재무부가 연준에 보유한 일반계정, 세금 보관·집행용 통장</td></tr><tr><td>2차 제재</td><td>제재 대상국뿐 아니라 거래한 제3국 기업까지 제재하는 강력한 제재 방식</td></tr><tr><td>CXMT·YMTC</td><td>중국의 디램(CXMT)·낸드(YMTC) 생산 메모리 반도체 기업</td></tr><tr><td>GLP-1 계열</td><td>위고비·마운자로 등 기존 주요 비만치료제 계열 약물</td></tr><tr><td>ALT-B4</td><td>정맥주사를 피하주사로 전환시켜주는 알테오젠의 핵심 기술 물질</td></tr><tr><td>ESS</td><td>전기를 저장했다가 필요할 때 공급하는 대형 배터리 시스템</td></tr><tr><td>ADR</td><td>해외 기업이 자국 법인을 유지한 채 미국 증시에 상장하는 예탁증서 방식</td></tr><tr><td>MPU/NPU</td><td>AI 모델을 추론(서비스 실행) 단계에서 구동하는 전용 반도체</td></tr><tr><td>호르무즈 해협</td><td>중동 원유 수송의 핵심 길목, 통과량 변화가 유가에 직접 영향</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/eKOnL9EZTu4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

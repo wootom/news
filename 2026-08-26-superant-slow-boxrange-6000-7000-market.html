@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코스피 급등락 종료, 6000~7000 느린 박스권 진입"><title>코스피 급등락 종료, 6000~7000 느린 박스권 진입</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>슈퍼개미 이세무사TV</span><span class="ey">MORNING DIGEST · 2026-08-27 · 슈퍼개미 이세무사TV</span><span class="chip">🎬 영상</span></div><h1>코스피 급등락 종료, 6000~7000 느린 박스권 진입</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>슈퍼개미 이세무사TV</td></tr><tr><td>핵심 주제</td><td>코스피 변동성 축소, 느린 박스권 장세 진입</td></tr><tr><td>코스피 종가</td><td>6,821.2포인트, 전일 대비 <span class="up">+0.97%</span> (장중 <span class="up">+2%</span>까지 <span class="up">상승</span> 후 상단 반납)</td></tr><tr><td>코스닥 종가</td><td>보합권, <span class="up">+0.03%</span></td></tr><tr><td>코스피 등락 종목</td><td><span class="up">상승</span> 580개 vs <span class="dn">하락</span> 270개 (<span class="up">상승</span> 우위)</td></tr><tr><td>코스닥 등락 종목</td><td><span class="up">상승</span> 900개 vs <span class="dn">하락</span> 700개</td></tr><tr><td>주도 테마</td><td>원전 관련주(한전기술, 대우건설, 현대건설, 두산에너빌리티), 유통 관련주(신세계, 롯데쇼핑)</td></tr><tr><td>특이 종목</td><td>SK이노베이션 <span class="dn">-11%</span> vs SK아이테크놀로지 상한가(흡수합병 재료)</td></tr><tr><td>수급</td><td>개인 2조 5천억 순매도, 외국인·기관 순매수</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>박스권 진입 비유</strong>: 고속도로에서 120km로 달리다 시내에 들어와 30~40km로 속도를 낮추는 것에 비유하며, 6월 19일까지의 급등과 이후 한 달간의 급락 국면이 끝나고 지수가 완만한 저속 구간에 접어들었다고 설명 (<a href="https://youtu.be/dfgcxB7wOZk?t=2" target="_blank" rel="noopener">00:02</a>).</li>
+<li><strong>코스피 마감 상황</strong>: 시초가는 소폭 마이너스로 출발했으나 장중 2%까지 <span class="up">상승</span>했다가 상단을 일부 반납하며 6,821.2포인트, <span class="up">+0.97%</span>로 마감 (<a href="https://youtu.be/dfgcxB7wOZk?t=56" target="_blank" rel="noopener">00:56</a>).</li>
+<li><strong>변동성 국면 비교</strong>: 8월의 변동성이 7월보다 확연히 낮아졌으며, 6월 19일까지의 강한 <span class="up">상승</span> 속도감과 6월 19일~7월 29일의 강한 <span class="dn">하락</span> 속도감이 끝나고 이제는 &quot;조금 오르고 조금 떨어지는&quot; 완만한 흐름으로 전환됐다고 진단 (<a href="https://youtu.be/dfgcxB7wOZk?t=85" target="_blank" rel="noopener">01:25</a>).</li>
+<li><strong>대형주·테마주 동향</strong>: 삼성전자 <span class="up">+1%</span>대, SK하이닉스 <span class="up">+0.5%</span>대 <span class="up">상승</span>, 삼성물산·삼성생명 각각 <span class="up">+5%</span>, <span class="up">+8%</span> <span class="up">상승</span>. 코스피200 내 SK아이테크놀로지 <span class="up">+30%</span>, 한전기술 <span class="up">+13%</span>, 삼성생명 <span class="up">+8%</span>, SK바이오팜 <span class="up">+8%</span> 급등, 원전 관련주(한전기술·대우건설·현대건설·두산에너빌리티·한국전력)가 이틀 연속 <span class="up">상승</span> (<a href="https://youtu.be/dfgcxB7wOZk?t=154" target="_blank" rel="noopener">02:34</a>).</li>
+<li><strong>거래대금 상위 특이사항</strong>: SK이노베이션이 SK아이테크놀로지를 흡수합병한다는 재료로 SK이노베이션은 <span class="dn">-11%</span> 급락한 반면 피흡수 대상인 SK아이테크놀로지는 상한가를 기록하는 대조적 흐름이 나타남 (<a href="https://youtu.be/dfgcxB7wOZk?t=251" target="_blank" rel="noopener">04:11</a>).</li>
+<li><strong>등락 종목 수 분석</strong>: 코스피는 지수 <span class="up">+1%</span> <span class="up">상승</span>에 <span class="up">상승</span> 종목이 <span class="dn">하락</span> 종목보다 두 배 이상 많은 580 대 270으로 &#x27;정상적인 시장&#x27;이라 평가했고, 코스닥도 지수는 보합이었지만 <span class="up">상승</span> 900개 대 <span class="dn">하락</span> 700개로 양호한 내부 흐름을 보였다고 설명 (<a href="https://youtu.be/dfgcxB7wOZk?t=338" target="_blank" rel="noopener">05:38</a>).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>전략적 의미</h2><p>지수의 변동성이 급격히 낮아진 국면에서는 과거의 빠른 매매 템포(하루 5~10% 등락에 대응하는 조급한 매수·매도)를 그대로 유지하면 오히려 손실 위험이 커진다는 경고다. 투자자들이 이 &#x27;속도감 전환&#x27;에 적응하지 못하면 성급한 진입·청산으로 불필요한 손실을 볼 수 있으므로, 박스권 상단(7,000 부근)과 하단(6,000~6,500 부근)을 인지하고 여유 있게 대응하는 전략이 필요하다는 메시지다. 또한 반도체와 비반도체가 번갈아 오르내리며 균형 있게 <span class="up">상승</span>하는 구조가 특정 업종 쏠림보다 더 건강한 시장 신호로 해석된다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>핵심 논리·매매판단 근거</h2><ul>
+<li>지수 <span class="up">상승</span>률 대비 <span class="up">상승</span> 종목 수가 <span class="dn">하락</span> 종목 수를 크게 앞서면 &#x27;결이 좋은&#x27; 정상적 시장으로 판단.</li>
+<li>반도체 <span class="up">상승</span> 시 비반도체 <span class="dn">하락</span>, 비반도체 <span class="up">상승</span> 시 반도체 <span class="dn">하락</span>하는 시소 구조가 아니라 양쪽이 균형 있게 오르내리는 모습이 더 긍정적 신호.</li>
+<li>개인 순매도에도 외국인·기관이 순매수로 받아내는 수급 구조는 나쁘지 않은 매매 동향으로 평가.</li>
+<li>박스권 상단(7,000 근접)에서는 저항(추가 <span class="up">상승</span> 시 매도 압력), 하단(6,000~6,500 근접)에서는 반등(저가 매수 유입) 가능성을 염두에 두고 대응.</li>
+<li>급등락 국면이 아니므로 매수·매도 결정을 하루 이틀 늦추어도 큰 기회비용이 없다는 판단.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>활용 시나리오</h2><ol>
+<li><strong>단기 트레이더의 매매 속도 조절</strong>: 하루 5~10% 급등락에 익숙해진 트레이더가 완만한 박스권 장세에서 과도하게 빈번한 매매를 자제하고 진입·청산 타이밍을 며칠 단위로 여유 있게 가져가는 데 참고.</li>
+<li><strong>박스권 경계 활용 전략</strong>: 코스피가 7,000에 근접하면 단기 차익 실현을, 6,000~6,500 부근에서는 분할 매수 접근을 고려하는 데 활용.</li>
+<li><strong>테마주 순환매 포착</strong>: 원전 관련주(한전기술·두산에너빌리티 등)와 유통 관련주(신세계·롯데쇼핑 등)의 순환매 흐름을 참고해 업종 로테이션 대응에 활용.</li>
+<li><strong>이벤트성 종목 리스크 관리</strong>: SK이노베이션-SK아이테크놀로지 흡수합병 사례처럼 계열사 재편 재료가 나올 때 흡수 주체와 피흡수 주체의 주가 반응이 반대로 나타날 수 있음을 유의해 개별 종목 리스크를 점검.</li>
+</ol></section><section class="card s6" id="s6"><h2><span class="seq">06</span>현황 및 전망</h2><ul>
+<li>코스피는 8월 들어 7월 대비 변동성이 뚜렷하게 축소되며 6,000~7,000 사이 완만한 박스권에 머무르고 있다.</li>
+<li>원전 관련주(한전기술·대우건설·현대건설·두산에너빌리티·한국전력)가 이틀 연속 <span class="up">상승</span>하며 테마 모멘텀을 이어가는 중이다.</li>
+<li>SK이노베이션의 SK아이테크놀로지 흡수합병 이슈가 계열사 재편 리스크로 부각되며 개별 종목 변동성을 키우고 있다.</li>
+<li>코스피·코스닥 모두 지수 등락폭 대비 <span class="up">상승</span> 종목 수가 우위를 보이며 시장 내부 체력은 양호한 것으로 평가된다.</li>
+<li>반도체(삼성전자·SK하이닉스)와 비반도체(원전·유통·바이오)가 번갈아 순환하며 균형 잡힌 <span class="up">상승</span> 흐름을 보이고 있다.</li>
+</ul></section><section class="card s12" id="s7"><h2><span class="seq">07</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>박스권</td><td>주가지수가 일정 범위(상단·하단) 안에서 오르내리는 장세</td></tr><tr><td>코스피200</td><td>코스피 상장 종목 중 시가총액·유동성 상위 200종목 지수</td></tr><tr><td>흡수합병</td><td>한 회사가 다른 회사를 완전히 합쳐 소멸시키는 합병 방식</td></tr><tr><td>원전 관련주</td><td>원자력발전소 건설·부품·운영과 연관된 종목군</td></tr><tr><td>시총 상위 종목</td><td>시가총액 기준 순위가 높은 대형 종목</td></tr><tr><td>거래대금 상위 종목</td><td>하루 거래된 금액(주가×거래량) 기준 순위가 높은 종목</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/dfgcxB7wOZk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>슈퍼개미 이세무사TV · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

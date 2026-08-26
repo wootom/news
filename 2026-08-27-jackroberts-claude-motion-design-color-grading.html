@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Claude로 색보정·모션·트랜지션까지 만드는 디자인 워크플로우"><title>Claude로 색보정·모션·트랜지션까지 만드는 디자인 워크플로우</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">MORNING DIGEST · 2026-08-27 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>Claude로 색보정·모션·트랜지션까지 만드는 디자인 워크플로우</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Jack Roberts</td></tr><tr><td>핵심 주제</td><td>Claude를 이용한 색보정·모션 디자인·트랜지션 자동화</td></tr><tr><td>핵심 도구</td><td>Claude(Code), Higsfield(이미지·영상 생성), save.com(무드보드/인스피레이션)</td></tr><tr><td>핵심 개념</td><td>&quot;Design Loop Skill&quot; — 잘 만든 디자인을 재사용 가능한 스킬로 코드화</td></tr><tr><td>3단계 레벨</td><td>1) 색보정(LUT) 2) 모션 비디오(B-roll) 3) 트랜지션</td></tr><tr><td>비용 예시</td><td>애니메이션 1건 제작에 약 2달러(Higsfield 사용료)</td></tr><tr><td>화자 배경</td><td>과거 테크 스타트업 창업·매각 경험, 디자인이 강점이었다고 언급</td></tr><tr><td>부가 자료</td><td>무료 리소스(이메일 등록), 유료 커뮤니티(Claude Code 마스터클래스, Design OS)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>레벨 1 – Claude 기반 색보정(LUT) 시스템</strong>: 영상을 업로드하면 Claude가 잉크, 올리브, 그림자, 피부톤, 창문, 나뭇잎 등 색 요소를 자동 식별하고 그레이딩 옵션을 제안한다. 그린 스필 제거, 피부톤 보정, 창문 디테일 복원, 블랙 레벨 조정 등을 자연어로 설명해주며 강도 조절도 가능하다 (<a href="https://youtu.be/hNpC5clEbp4?t=145" target="_blank" rel="noopener">02:25</a>).</li>
+<li><strong>레벨 2 – 모션 비디오(B-roll) 생성</strong>: 마음에 드는 스타일의 이미지/영상을 찾아 &quot;1992년 스타일로 바꿔달라&quot;, &quot;와이드로 바꿔달라&quot;처럼 요청하면 파티클 효과 등을 포함한 결과물을 만들어낸다. 실제 제작은 Higsfield(영상 생성)로 색상·프레임을 편집하고 Claude Code로 조합하는 방식이며, 비용은 약 2달러였다 (<a href="https://youtu.be/hNpC5clEbp4?t=230" target="_blank" rel="noopener">03:50</a>).</li>
+<li><strong>Higsfield 연동 방법</strong>: Higsfield 사이트에서 CLI 연동 화면을 스크린샷 찍어 Claude에 붙여넣고 &quot;Higsfield CLI에 연결해서 이미지·영상을 함께 생성하자&quot;고 요청하면 플랫폼이 열리고 로그인 후 최신 생성 모델을 바로 쓸 수 있다 (<a href="https://youtu.be/hNpC5clEbp4?t=316" target="_blank" rel="noopener">05:16</a>).</li>
+<li><strong>무드보드 기반 디자인 프로세스</strong>: save.com, Pinterest 등에서 마음에 드는 영상·이미지를 모아 무드보드를 구성한 뒤, Claude에 &quot;첫 번째 이미지의 애니메이션과 두 번째 이미지의 색감을 합쳐서 만들어달라&quot;고 요청하고 &quot;Design Loop Skill&quot;을 붙여넣으면 유사한 퀄리티의 결과물을 재현할 수 있다 (<a href="https://youtu.be/hNpC5clEbp4?t=439" target="_blank" rel="noopener">07:19</a>).</li>
+<li><strong>디자인 리버스 엔지니어링</strong>: 마음에 든 이미지(예: 20장의 사진이 겹쳐지는 스타일)를 Claude에 &quot;왜 이렇게 좋아 보이는지 단계별로 분해해달라&quot;고 요청하면 이미지 크기, 색보정, 초점 등을 분석해준다. 이를 통해 &quot;그레이딩 하나로 전체를 통일, 하이라이트엔 그린이 레드 위에, 그림자는 깊고 깨끗하게, 그레인으로 이음새를 덮는다&quot; 같은 원칙을 도출했다 (<a href="https://youtu.be/hNpC5clEbp4?t=796" target="_blank" rel="noopener">13:16</a> 부근, 트랜스크립트 기준 재구성).</li>
+<li><strong>레벨 3 – 트랜지션 자동화</strong>: 모션 디자인 에셋 사이트에서 트랜지션(필름 번, 라이트 리크 등)을 다운로드해 Design OS의 &quot;트랜지션 탭&quot;에 등록해두고, 영상을 업로드하면 Claude가 컷 지점을 스캔해 자동으로 트랜지션을 적용해준다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li>화자는 Claude 자체가 트랜지션을 처음부터 잘 만들어내지는 못한다고 인정한다(&quot;Claude는 아직 이 작업에 뛰어나지 않다&quot;). 그래서 기존 에셋 사이트에서 다운로드한 트랜지션을 워크플로우에 편입시키는 하이브리드 방식을 택했다.</li>
+<li>핵심은 &quot;AI 슬롭(AI slop)&quot;을 피하는 것으로, 이는 Claude를 단순 챗봇처럼 사용해서 생기는 결과라고 설명한다. 올바른 도구(Higsfield 등 생성 도구)와 올바른 시스템(무드보드 → 프롬프트 → 스킬화)을 사용해야 퀄리티가 나온다는 것이 핵심 주장이다.</li>
+<li>&quot;Design Loop Skill&quot;은 화자가 별도로 만든 스킬로, 좋은 디자인 결과가 나오면 그 원칙(color grading rule, 프레임 홀드 규칙 등)을 Claude에 &quot;이걸 스킬로 만들어줘&quot;라고 요청해 재사용 가능한 규칙 세트로 코드화하는 절차다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>전문 색보정 아티스트, 모션 그래픽 디자이너를 고용하지 않고도 개인 크리에이터가 Claude+생성형 영상 도구 조합만으로 방송급 비주얼을 만들 수 있다는 것을 보여준다.</li>
+<li>&quot;한 번 잘 만든 결과를 스킬로 코드화&quot;하는 패턴은 디자인뿐 아니라 반복적 크리에이티브 작업 전반(썸네일, 카피, B-roll 등)에 적용 가능한 일반화된 워크플로우로 제시된다.</li>
+<li>유튜브·인스타그램 등 소셜 콘텐츠 제작자에게는 편집 소프트웨어 비용과 학습곡선을 크게 낮추는 대안이 될 수 있다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>목표</th><th>사용 도구/사이트</th><th>결과물</th></tr></thead><tbody><tr><td>1. 영감 수집</td><td>마음에 드는 스타일 찾기</td><td>save.com, Pinterest, Motion Array류 사이트</td><td>무드보드(이미지·영상 모음)</td></tr><tr><td>2. 생성</td><td>무드보드 스타일 재현</td><td>Higsfield(이미지·영상 생성) + Claude(Code)</td><td>색보정 영상, B-roll, 트랜지션</td></tr><tr><td>3. 분석</td><td>왜 좋아 보이는지 분해</td><td>Claude(프롬프트로 단계별 분해 요청)</td><td>색보정/구도 원칙 목록</td></tr><tr><td>4. 코드화</td><td>재사용 가능하게 저장</td><td>Claude &quot;이걸 스킬로 만들어줘&quot;</td><td>Design Loop Skill(재사용 규칙)</td></tr><tr><td>5. 적용</td><td>실제 콘텐츠에 반영</td><td>Design OS(화자의 개인 운영체제형 워크스페이스)</td><td>최종 영상/이미지</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>유튜브 B-roll 자동 생성</strong>: 크리에이터가 무드보드로 원하는 스타일을 정한 뒤 Higsfield+Claude로 저비용(건당 약 2달러)에 배경 영상을 대량 생산한다.</li>
+<li><strong>인스타그램 릴스용 색보정</strong>: 전문 LUT 없이도 Claude에 영상만 업로드하면 색 요소별 보정 옵션을 받아 브랜드 톤에 맞는 그레이딩을 적용한다.</li>
+<li><strong>개인 디자인 시스템(Design OS) 구축</strong>: 색보정, 모션, 트랜지션 탭을 갖춘 개인용 워크스페이스를 만들어 반복 작업을 스킬화해 매번 처음부터 다시 설명하지 않고 재사용한다.</li>
+<li><strong>경쟁사/레퍼런스 디자인 리버스 엔지니어링</strong>: 잘 만든 타 브랜드의 비주얼을 Claude로 분석해 그 원칙만 추출하고 자기 콘텐츠에 이식한다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>화자는 &quot;Claude가 방금 모션 디자인 문제를 풀었다(Claude has just solved motion design)&quot;고 주장하며, 이는 모델 성능 향상 자체보다 올바른 도구·시스템 사용법이 관건이라고 강조한다.</li>
+<li>트랜지션 생성은 아직 Claude 단독으로는 한계가 있어 기존 에셋과의 결합이 필요한 과도기 단계로 보인다.</li>
+<li>화자는 관련 스킬(Design Loop Skill)과 Design OS를 무료 리소스 및 유료 커뮤니티(Claude Code 마스터클래스)로 확장 공개하며 수익화하고 있어, 향후 유사한 &quot;디자인 자동화 스킬 판매&quot; 생태계가 늘어날 가능성을 시사한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>LUT (Look-Up Table)</td><td>영상 색상을 특정 톤으로 일괄 변환하는 색보정 프리셋</td></tr><tr><td>색 그레이딩(Color Grading)</td><td>영상의 색감·명암·톤을 조정해 원하는 분<span class="dn">위기</span>를 만드는 후반작업</td></tr><tr><td>B-roll</td><td>본 영상 사이에 삽입하는 보조/배경 영상</td></tr><tr><td>Higsfield</td><td>이미지·영상 생성 AI 플랫폼(CLI로 Claude와 연동 가능)</td></tr><tr><td>Design Loop Skill</td><td>화자가 만든, 좋은 디자인 결과를 재사용 규칙으로 코드화하는 Claude 스킬</td></tr><tr><td>Design OS</td><td>화자가 구축한 개인용 디자인 작업 통합 워크스페이스(색보정·모션·트랜지션 탭 포함)</td></tr><tr><td>AI 슬롭(AI Slop)</td><td>AI를 단순 챗봇처럼 써서 나오는 저품질·전형적인 결과물</td></tr><tr><td>라이트 리크(Light Leak)</td><td>필름 카메라에서 빛이 새어 들어간 듯한 연출 효과, 트랜지션에 자주 사용</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/hNpC5clEbp4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
