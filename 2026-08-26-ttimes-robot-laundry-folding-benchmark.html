@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="휴머노이드 로봇이 너도나도 빨래개기를 시연하는 이유"><title>휴머노이드 로봇이 너도나도 빨래개기를 시연하는 이유</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-08-27 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>휴머노이드 로봇이 너도나도 빨래개기를 시연하는 이유</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>티타임즈TV (진행: 배소진)</td></tr><tr><td>핵심 주제</td><td>휴머노이드 로봇이 빨래개기를 시연 과제로 선택하는 이유</td></tr><tr><td>대표 사례</td><td>LG 클로이(CES), 피규어 AI 02/03, 테슬라 옵티머스, 선데이 로보틱스 메모, 위브 로보틱스 아이작</td></tr><tr><td>핵심 수치</td><td>선데이 로보틱스 메모: 785회 중 778회 성공(성공률 99.1%), 개기 시간 중앙값 2분 13초</td></tr><tr><td>과거 실패 사례</td><td>2010년 UC버클리 PR2, 2015년 런드로이드(일본, 2019년 파산), 폴드메이트(미국, 2021년 폐업)</td></tr><tr><td>핵심 기술</td><td>VLA(Vision-Language-Action) 모델 — 카메라 인식부터 행동 결정까지 통합 학습</td></tr><tr><td>난제의 본질</td><td>천은 형태가 고정되지 않는 &#x27;연성 물체&#x27;라 매번 다른 모습으로 나타남</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>로봇 업계의 공통 시연 패턴</strong>: LG 클로이(2026년 1월 CES), 피규어 AI의 피규어 02·03, 2024년 일론 머스크가 X에 공개한 테슬라 옵티머스까지 모두 빨래개기 장면을 시연에 사용했다.</li>
+<li><strong>빨래개기 전문 스타트업 등장</strong>: 선데이 로보틱스는 바퀴형 가정용 로봇 &#x27;메모&#x27;의 첫 테스트 과제로 옷개기를 선택했고, 위브 로보틱스는 고정형 &#x27;아이작 제로&#x27;에 이어 집안을 이동하며 세탁물을 수거·개기·정리하는 &#x27;아이작 원&#x27;의 사전예약을 받고 있다.</li>
+<li><strong>연성 물체 조작의 어려움</strong>: 컵이나 상자 같은 강체는 손을 대도 형태가 유지되지만, 천은 손을 대는 순간 구겨지고 접히며 매번 다른 형태로 나타나 조작 난이도가 매우 높다. 스펠맨 대학교 총장이자 로봇 공학자인 아얀나 하워드는 이를 &quot;로봇 공학 분야의 성배&quot;라고 표현했다.</li>
+<li><strong>과거 실패의 역사</strong>: 2010년 UC버클리 PR2는 수건 한 장 접는 데 평균 25분이 걸렸고, 2015년 인간 모방 학습 방식 실험도 성공률이 60%(10회 중 6회)에 그쳤다. 상용 제품으로는 일본 세븐드리머스의 런드로이드(옷 한 장 개는 데 최대 10분, 2019년 파산)와 미국 폴드메이트(목표가 980달러, 2021년 폐업)가 있었으나 모두 대중화에 실패했다.</li>
+<li><strong>VLA 모델을 통한 성능 도약</strong>: 과거에는 동작 하나하나를 연구자가 설계했다면, 최근 로봇은 카메라로 옷 상태를 파악하고 손·팔 움직임을 결정하는 전 과정을 데이터로 학습하는 VLA(비전-언어-행동) 모델을 사용해 서로 다른 상황에 유연하게 대응한다.</li>
+<li><strong>최신 성과 수치</strong>: 선데이 로보틱스는 낯선 가정 환경에서 진행한 785회의 빨래개기 시도 중 778회 성공(성공률 99.1%)했고, 개기 시간 중앙값은 2분 13초로 10년 전 대비 획기적으로 단축됐다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>로봇이 빨래를 개려면 (1) 옷과 수건 등 대상 물체 판별 (2) 가장자리·소매 탐지 후 양손으로 펼치기 (3) 방향 전환 및 양쪽 끝 정렬 (4) 순서대로 접기의 단계를 거쳐야 하며, 이 과정 전체에 시각 인식, 양손 협응, 섬세한 힘 조절, 오류 인식 및 복구 능력이 동시에 요구된다. 천은 원단과 크기가 제각각이고 같은 티셔츠도 꺼낼 때마다 다른 형태로 나타나는 &#x27;연성 물체(non-rigid object)&#x27;라서, 정형화된 규칙 기반 프로그래밍으로는 대응이 불가능하다. 최근에는 VLA 모델이 이 문제를 데이터 기반 학습으로 우회하며 돌파구를 열었다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>빨래개기는 로봇 회사 입장에서 &quot;보고 판단하고 행동하는&quot; 능력 전반을 가장 효과적으로 과시할 수 있는 시연 과제다. 동시에 요리(불·칼)나 설거지(파손 위험)와 달리 실패해도 다시 펼쳐 반복하면 되기 때문에 사고 위험과 비용 부담이 낮고, 조립 작업처럼 밀리미터 단위 정밀도가 필요하지 않아 시연자의 팔 각도가 조금 달라도 유효한 학습 데이터로 활용할 수 있다. 즉 기업들은 안전하고 저비용으로 대량의 시행착오 데이터를 축적하기에 최적인 과제로 빨래개기를 선택하고 있으며, 이는 곧 휴머노이드 로봇의 범용 조작 능력(generalist manipulation) 경쟁에서 핵심 벤치마크로 자리잡고 있음을 시사한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>시대</th><th>방식</th><th>대표 사례</th><th>성능/결과</th></tr></thead><tbody><tr><td>2010년대 초</td><td>규칙 기반 단계별 설계</td><td>UC버클리 PR2</td><td>수건 1장 접기 평균 25분</td></tr><tr><td>2015년</td><td>인간 행동 모방 학습</td><td>실험 로봇</td><td>성공률 60%(10회 중 6회)</td></tr><tr><td>2015~2017년 상용화 시도</td><td>전용 하드웨어 기계</td><td>런드로이드(日), 폴드메이트(美)</td><td>접기 최대 10분, 옷 종류 제한, 둘 다 폐업(2019, 2021)</td></tr><tr><td>최근(2026년 기준)</td><td>VLA(비전-언어-행동) 모델</td><td>선데이 로보틱스 메모</td><td>성공률 99.1%, 중앙값 2분 13초</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>로봇 스타트업 기술 검증</strong>: 투자자나 파트너가 휴머노이드 로봇의 실전 성능을 판단할 때, 빨래개기 성공률과 소요 시간을 핵심 벤치마크 지표로 활용할 수 있다.</li>
+<li><strong>VLA 모델 도입 검토</strong>: 제조·물류 자동화 기업이 연성 물체(포장재, 직물, 케이블 등) 취급 공정을 자동화할 때, 규칙 기반 대신 VLA 방식 도입을 검토하는 참고 사례로 쓸 수 있다.</li>
+<li><strong>가정용 로봇 구매 판단</strong>: 소비자가 가정용 로봇(선데이 로보틱스 메모, 위브 로보틱스 아이작 원 등) 사전예약이나 구매를 고려할 때, 발표되는 성공률·소요시간 수치의 의미와 한계를 이해하는 데 참고할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>2026년 1월 CES를 기점으로 LG, 피규어 AI, 테슬라 등 주요 로봇 기업 모두 빨래개기를 대표 시연 과제로 채택하는 추세가 뚜렷해졌다.</li>
+<li>선데이 로보틱스, 위브 로보틱스 등 빨래개기를 핵심 기능으로 내건 전문 스타트업이 다수 등장하며 시장이 세분화되고 있다.</li>
+<li>VLA 모델 도입으로 2010년대 대비 성공률과 속도가 비약적으로 <span class="up">개선</span>됐으나(25분→2분대), 10년 전 런드로이드·폴드메이트의 상용화 실패 전례가 있어 실제 가정 보급까지는 가격·내구성·범용성 검증이 더 필요할 것으로 보인다.</li>
+<li>빨래개기 성공 지표(99.1%, 2분 13초)가 업계 표준 벤치마크로 자리잡으면서 향후 로봇 기업 간 경쟁이 이 수치를 중심으로 전개될 가능성이 크다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>VLA 모델</td><td>비전-언어-행동(Vision-Language-Action) 모델, 인식부터 행동까지 통합 학습</td></tr><tr><td>연성 물체</td><td>천처럼 형태가 고정되지 않고 매번 다르게 변형되는 물체</td></tr><tr><td>휴머노이드 로봇</td><td>사람과 유사한 형태·동작을 갖춘 로봇</td></tr><tr><td>옵티머스</td><td>테슬라가 개발 중인 휴머노이드 로봇</td></tr><tr><td>클로이</td><td>LG전자의 가정용 로봇 브랜드</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/dUVHJOpzTBI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

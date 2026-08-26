@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="비트코인·이더리움 11개 지표로 본 추세 전환 신호"><title>비트코인·이더리움 11개 지표로 본 추세 전환 신호</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>미국주식으로 은퇴하기 - 미주은</span><span class="ey">MORNING DIGEST · 2026-08-27 · 미국주식으로 은퇴하기 - 미주은</span><span class="chip">🎬 영상</span></div><h1>비트코인·이더리움 11개 지표로 본 추세 전환 신호</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>미국주식으로 은퇴하기 - 미준</td></tr><tr><td>방송일</td><td>2026년 8월 26일 (녹화 8월 25일)</td></tr><tr><td>핵심 주제</td><td>비트코인·이더리움 10개월 <span class="dn">하락</span> 종료 여부를 11개 지표로 검증</td></tr><tr><td>비트코인 가격 흐름</td><td>8월 중순 6.2만 달러 → 8월 20일 7.2만 → 21일 7.67만 → 현재 8만 달러 돌파</td></tr><tr><td>이더리움 가격 흐름</td><td>24시간 만에 20% 이상 폭등, 2,374달러 → 2,494달러</td></tr><tr><td>급등 촉발 요인</td><td>워싱턴발 규제 명확성(클레리티 법안), 11억 달러 이상 숏 청산, 재무부 장기국채 매입 확대</td></tr><tr><td>저자 포지션</td><td>가상화폐 관련 종목을 모멘텀 포트폴리오 내 비중 3위로 매수</td></tr><tr><td>미국 증시 시황(동반 언급)</td><td>VIX 15.7(낮음), 시장폭 72%가 200일선 위, 반도체만 급락하고 나머지 섹터는 강세</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>미국 증시 시황 점검</strong>: 지난 일주일간 <span class="up">상승</span> 종목이 <span class="dn">하락</span> 종목보다 많았고 메타·테슬라 등 메가테크 대부분 <span class="up">상승</span>했지만, 반도체·AI 인프라주만 급락해 체감 경기가 냉랭했다고 진단한다.</li>
+<li><strong>밸류에이션 순환매 해석</strong>: 테슬라(포워드 PER 200배), 세일즈포스(CRM, PER 14.8배로 반토막), 어도비(PER 11배)의 최근 반등은 펀더멘탈 <span class="up">개선</span>이 아니라 밸류에이션이 낮아진 종목으로 자금이 이동한 결과라고 분석한다.</li>
+<li><strong>VIX와 공포지수 괴리 지적</strong>: 뉴스 헤드라인은 공포를 조성하지만 VIX는 15.7(18 이하면 안정권)로 매우 낮고, AAII 개인투자자 서베이는 40%가 향후 6개월 <span class="dn">하락</span>을 전망해 개인과 기관 심리가 괴리돼 있음을 지적한다.</li>
+<li><strong>온체인·밸류에이션 지표 5종</strong>: 파이사이클 톱(111일선과 350일선×2가 큰 간격 유지 = 버블 아님), Q멀티플(0.89로 저평가 구간에서 반등), MVRV(0.28→0.82로 <span class="up">상승</span> 중이나 여전히 낮음), 레인보우 차트(하단 차가운 밴드), ETF 넷플로우(순유출→순유입 전환)를 종합해 반등의 초기~중기 국면이라고 판단한다.</li>
+<li><strong>가격 추세 확인</strong>: 비트코인·이더리움 모두 200일·100일·50일·20일 이동평균선이 수렴한 지점에서 거래량 폭증과 함께 골든크로스가 발생했고, 이더리움은 전고점(수평 저항선)까지 돌파했다고 설명한다(<a href="https://youtu.be/OSl7nUMdSz0?t=1928" target="_blank" rel="noopener">32:08</a> 부근 이동평균 수렴 설명).</li>
+<li><strong>추세 전환 3대 조건</strong>: 주요 저항 돌파, 200일선(장기 추세) 회복, 거래량 증가라는 세 조건 중 비트코인·이더리움이 상당 부분을 충족했으나, 이동평균 정배열과 코인베이스 프리미엄 플러스 전환은 아직 미확정이라고 결론짓는다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><ul>
+<li><strong>파이사이클 톱(Pi Cycle Top)</strong>: 단기(111일 이동평균)와 장기(350일 이동평균×2) 두 선의 교차 여부로 시장 과열(꼭지) 여부를 판단하는 지표. 두 선이 멀리 떨어져 있으면 버블과 거리가 멀다는 신호다.</li>
+<li><strong>Q멀티플, MVRV, 레인보우 차트</strong>: 각각 채굴 비용, 투자자 평균 매입가 대비 현재가, 장기 밸류에이션 밴드를 기준으로 저평가·고평가 국면을 진단하는 온체인 지표들이다.</li>
+<li><strong>MOVE 지수</strong>: 미국 채권 시장의 변동성을 나타내는 지표(채권판 VIX)로, 코로나·2022년 인플레이션·2024년 대선·관세전쟁·이란전쟁 때 100 이상으로 급등했으나 현재 73 수준에 머물러 금융 시스템 스트레스가 낮음을 시사한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>시청자에게 헤드라인 기반 공포 심리와 실제 데이터(VIX, MOVE 지수, 온체인 지표)의 괴리를 인식시키고, 역발상 저가 매수 관점을 제시한다. 동시에 2026년 초 모멘텀 전략을 지키지 않아 손실을 본 경험을 반성하며, 이번 재진입 시에는 모멘텀이 꺾이면 즉시 회수하는 원칙을 강조해 규율 있는 투자 실행의 중요성을 부각한다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 논리·매매판단 근거</h2><div class="tbl-wrap"><table><thead><tr><th>조건</th><th>현재 상태</th><th>판단</th></tr></thead><tbody><tr><td>주요 저항 돌파</td><td>이더리움 전고점 돌파, 비트코인은 저항선 일부 잔존</td><td>부분 충족</td></tr><tr><td>200일선(장기 추세) 회복</td><td>비트코인·이더리움 모두 4개 이동평균선 동시 돌파(골든크로스)</td><td>충족</td></tr><tr><td>거래량 증가</td><td>장기 저조 후 폭발적 증가</td><td>충족</td></tr><tr><td>이동평균 정배열</td><td>20일선이 200일·50일선 상회했으나 완전 정배열 아직 미완성</td><td>미확정</td></tr><tr><td>코인베이스 프리미엄(개인투자자 심리)</td><td>여전히 마이너스, 기관 주도 반등 가능성</td><td>미확정</td></tr><tr><td>ETF 자금 흐름</td><td>순유출에서 순유입으로 전환</td><td>긍정적</td></tr><tr><td>매크로(MOVE 지수)</td><td>73 수준으로 안정, 100 이상이던 <span class="dn">위기</span> 국면과 대비</td><td>긍정적</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>암호화폐 재진입 판단</strong>: 개인 투자자가 비트코인·이더리움 매수 시점을 저울질할 때, 단일 지표가 아닌 온체인·가격·자금흐름·매크로 지표를 종합 확인하는 체크리스트로 활용할 수 있다.</li>
+<li><strong>눌림목 대응 전략</strong>: RSI 과매수(비트코인 76.7)로 인한 단기 조정 시, 이동평균 지지 여부를 확인해 저항선이 지지선으로 전환됐는지 판단하는 기준으로 쓸 수 있다.</li>
+<li><strong>포트폴리오 비중 관리</strong>: 암호화폐는 전체 투자금의 10~15% 이내로 제한하고, 실적 기반 우량 기업 투자보다 낮은 비중으로 리스크를 관리하는 원칙에 참고할 수 있다.</li>
+<li><strong>모멘텀 전략 실행 규율</strong>: 과거 손절 실패 사례를 교훈 삼아, 모멘텀에 근거해 진입했다면 모멘텀 <span class="dn">하락</span> 시 기계적으로 청산하는 원칙을 자신의 매매 규칙에 적용할 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>비트코인은 8월 중순 6.2만 달러에서 현재 8만 달러를 돌파했고, 이더리움은 24시간 만에 20% 이상 급등하며 2,494달러까지 <span class="up">상승</span>했다.</li>
+<li>11개 지표 중 파이사이클 톱, Q멀티플, MVRV, 레인보우 차트, ETF 넷플로우, 이동평균 골든크로스, 거래량, 공포탐욕지수, MOVE 지수, 이더리움/비트코인 레이시오 등 대다수가 저점 통과·반등 초기 신호를 보인다.</li>
+<li>다만 이동평균 정배열 완성과 코인베이스 프리미엄 지수의 플러스 전환이라는 두 가지 확인 신호는 아직 나오지 않아 완전한 추세 전환 확정 단계는 아니다.</li>
+<li>저자는 &quot;10개월 이상 지속된 겨울은 끝나가고 있고 지금은 봄을 알리는 첫 신호가 켜진 자리&quot;라고 표현하며, 확정을 위해 눌림목에서 이동평균 지지 여부·코인베이스 프리미엄 전환·정배열 완성 세 가지를 추가로 지켜봐야 한다고 강조한다.</li>
+<li>개인적으로는 기업 투자(실적 기반)가 암호화폐 투자보다 성공 확률이 높다고 보며, 암호화폐 비중은 전체 자금의 10~15% 이내로 제한할 것을 권고한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>파이사이클 톱</td><td>111일선과 350일선×2의 간격으로 시장 과열(꼭지)을 판단하는 지표</td></tr><tr><td>Q멀티플</td><td>채굴 비용 대비 가격으로 저평가·고평가를 가늠하는 온체인 지표</td></tr><tr><td>MVRV 레이시오</td><td>현재가 대비 투자자 평균 매입가 비율, 1 이하는 손실 구간을 의미</td></tr><tr><td>레인보우 프라이스 차트</td><td>장기 밸류에이션을 색상 밴드로 표시한 비트코인 가격 차트</td></tr><tr><td>골든크로스</td><td>단기 이동평균선이 장기 이동평균선을 상향 돌파하는 강세 신호</td></tr><tr><td>정배열</td><td>주가·단기선·중기선·장기선이 이 순서로 위에서 아래로 배열되는 <span class="up">상승</span> 추세 구조</td></tr><tr><td>MOVE 지수</td><td>미국 채권 시장의 변동성을 나타내는 지표, 채권판 VIX</td></tr><tr><td>코인베이스 프리미엄 지수</td><td>미국 개인 투자자의 현물 매수 심리를 보여주는 지표</td></tr><tr><td>데드캣 바운스</td><td><span class="dn">하락</span> 추세 중 일시적으로 반등한 뒤 다시 <span class="dn">하락</span>하는 기술적 반등</td></tr><tr><td>넷플로우</td><td>ETF 등에서 유입 자금과 유출 자금의 순차액</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/OSl7nUMdSz0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>미국주식으로 은퇴하기 - 미주은 · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

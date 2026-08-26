@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="인스타 카드뉴스 8장 자동화, 스킬샵 &#x27;딸깍 완성&#x27; 도구 분석"><title>인스타 카드뉴스 8장 자동화, 스킬샵 &#x27;딸깍 완성&#x27; 도구 분석</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">MORNING DIGEST · 2026-08-27 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>인스타 카드뉴스 8장 자동화, 스킬샵 &#x27;딸깍 완성&#x27; 도구 분석</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>메이커 에반 \</td><td>Maker Evan</td></tr><tr><td>핵심 주제</td><td>인스타 카드뉴스 8장 자동 제작·업로드 스킬 도구 소개</td></tr><tr><td>도구 이름</td><td>스킬샵 &quot;카드뉴스 딸깍 완성&quot;</td></tr><tr><td>가격</td><td>판매 페이지 기준 29만 9천 원</td></tr><tr><td>산출물</td><td>카드 8장(표지1+본문6+마무리1) + 캡션, 1080×1350(세로), 업로드 시 4:5</td></tr><tr><td>이미지 소스</td><td>AI 생성 이미지 아님, 공식 홈페이지 영상/화면·저작권 프리 이미지 저장소</td></tr><tr><td>사람이 하는 일</td><td>주제 선정, 카피 재작성 판단, 최종 업로드 확인</td></tr><tr><td>자동화 범위</td><td>계정 스타일 학습→소재 수집→카드 렌더링→브라우저 조작 업로드(공유 직전 정지)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>스킬은 프로그램이 아니라 매뉴얼</strong>: 스킬은 설치되는 앱이 아니라 AI에게 주는 업무 매뉴얼(인수인계 문서) 묶음으로, 카드 규격·글자 크기·로고 위치·사진 선정 기준이 문서로 고정되어 매번 같은 결과가 나온다 (<a href="https://youtu.be/KPQpuaC6m14?t=108" target="_blank" rel="noopener">01:48</a>).</li>
+<li><strong>계정 스타일 선학습</strong>: 카드 제작 전 인스타 계정 주소를 받아 소개글과 최근 게시물 12장을 훑어 로고 문구·계정 아이디·주제를 추출하며, 이 정보는 최초 1회만 확인하고 이후 재사용한다 (<a href="https://youtu.be/KPQpuaC6m14?t=182" target="_blank" rel="noopener">03:02</a>).</li>
+<li><strong>8장 뼈대 설계</strong>: 표지(시선)→본문 6장(근거)→마지막 장(행동 요청)의 광고 전단지형 구조를 고정 적용해 계정 피드 전체의 통일감을 만든다 (<a href="https://youtu.be/KPQpuaC6m14?t=204" target="_blank" rel="noopener">03:24</a>).</li>
+<li><strong>AI 생성 이미지 회피, 실제 화면 채택</strong>: 한글 깨짐 문제 때문에 AI 이미지 대신 소개 대상의 공식 홈페이지 영상·화면을 그대로 가져오며, 움직이는 영상 카드를 세트당 4~7장 기본 배치한다 (<a href="https://youtu.be/KPQpuaC6m14?t=254" target="_blank" rel="noopener">04:14</a>).</li>
+<li><strong>소재 부족 시 주제 폐기 규칙</strong>: 공식 영상이 4개 미만이면 해당 주제를 자동으로 버리고 다른 주제로 전환하며, 일반 주제는 저작권이 풀린 공개 이미지 저장소(박물관 소장품 등)에서 수급한다 (<a href="https://youtu.be/KPQpuaC6m14?t=282" target="_blank" rel="noopener">04:42</a>).</li>
+<li><strong>브라우저 자동 업로드, 확인은 사람</strong>: 파일 8장을 순서대로 넣고 비율을 4:5로 맞추며 캡션을 문단별로 나눠 붙여 줄바꿈을 보존하지만, 공유 버튼 직전에서 멈춰 사람의 최종 확인을 거치도록 설계했다 (<a href="https://youtu.be/KPQpuaC6m14?t=407" target="_blank" rel="noopener">06:47</a>, <a href="https://youtu.be/KPQpuaC6m14?t=429" target="_blank" rel="noopener">07:09</a>).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 도구는 생성형 이미지(예: 이미지 생성 AI) 대신 실제 존재하는 화면 캡처·공식 영상을 소재로 쓰는 점이 핵심 기술적 선택이다. AI 이미지 생성 시 한글 텍스트가 깨지는 고질적 문제를 우회하기 위한 결정이며, 이미지 출처는 로컬 컴퓨터에 기록만 남기고 게시물에는 노출하지 않는다. 업로드 단계는 사람이 인스타를 조작하듯 브라우저를 직접 제어하는 방식(RPA형 자동화)으로 구현되어, API 연동이 아닌 화면 조작을 모사한다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>카드뉴스 제작의 5단계(주제 선정·사진 탐색·레이아웃 정렬·캡션 작성·업로드) 중 창의적 판단이 필요한 것은 주제 선정 1단계뿐이며, 나머지 4단계는 반복노동이라는 진단이 이 도구의 존재 이유다. 외주는 건별 비용이, 직원 고용은 고정 인건비가 발생하는 두 선택지 사이에서, &quot;반복 구간만 기계에 위임&quot;하는 제3의 대안을 제시한다. 매주 여러 세트를 지속 발행해야 하는 계정에는 외주 단가 대비 비교 우위가 있을 수 있으나, 월 2~3세트 수준의 저빈도 운영자에게는 실익이 낮다는 점도 영상에서 명시한다.</p></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>사람이 하는 일(기존 방식)</th><th>도구 적용 후</th></tr></thead><tbody><tr><td>1. 주제 선정</td><td>5분, 창의적 판단</td><td>동일하게 사람이 담당</td></tr><tr><td>2. 사진 탐색</td><td>무료 이미지 사이트 순회, 1시간+</td><td>공식 영상/공개 이미지 자동 수집, 소재 부족 시 주제 자동 폐기</td></tr><tr><td>3. 레이아웃 정렬</td><td>캔바 등에서 8장 수동 정렬</td><td>고정 매뉴얼 기준으로 8장 일괄 렌더링(1080×1350)</td></tr><tr><td>4. 캡션 작성</td><td>길이 조정 반복</td><td>자동 생성(카피 재작성 여부는 사람 판단)</td></tr><tr><td>5. 업로드</td><td>순서·비율·줄바꿈 수동 처리</td><td>브라우저 자동 조작, 공유 직전 사람 최종 확인</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>주 2~3회 발행하는 브랜드 계정</strong>: 매번 동일한 톤앤매너(검은 띠+굵은 제목+로고 위치)를 유지해야 하는 계정이 반복 작업 부담 없이 발행 주기를 지킬 수 있다.</li>
+<li><strong>해외 AI/서비스 소개 계정</strong>: 공식 소개 영상 자료가 풍부한 해외 도구·서비스 주제는 소재 확보가 쉬워 이 도구와 궁합이 좋다.</li>
+<li><strong>1인 운영자의 외주 대체</strong>: 건당 외주비가 부담되는 소규모 계정 운영자가 초기 투자(29만 9천 원)로 반복 제작 비용을 대체하는 시나리오.</li>
+<li><strong>다인 협업 계정의 톤 일관성 확보</strong>: 여러 사람이 번갈아 카드를 만들면 스타일이 어긋나기 쉬운데, 매뉴얼화된 스킬로 협업자 간 결과물 편차를 줄일 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>이 도구로 만든 카드는 현재도 실제 계정에 지속 게시 중이며, 다음 영상에서 실제 조회수·반응 데이터를 공개할 예정이라고 예고했다.</li>
+<li>국내의 좁은 지역 소식이나 속보성 주제는 공식 영상 소재가 부족해 이 도구로는 잘 나오지 않는 한계가 명확하다.</li>
+<li>AI 이미지 생성의 한글 깨짐 문제가 해결되지 않는 한, 실제 화면 캡처 기반 접근이 당분간 대안으로 유지될 가능성이 크다.</li>
+<li>첫 사용 시 계정 확인(온보딩) 절차가 필수라 완전 무인화는 아니며, 사람의 개입 지점(주제 선정, 최종 업로드 확인)이 설계상 의도적으로 남아 있다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>스킬(Skill)</td><td>AI에게 업무 절차를 지시하는 매뉴얼 문서 묶음, 설치형 프로그램 아님</td></tr><tr><td>카드뉴스</td><td>인스타그램용 여러 장의 이미지 슬라이드 콘텐츠 형식</td></tr><tr><td>4:5 비율</td><td>인스타그램 세로형 게시물의 표준 가로세로 비율</td></tr><tr><td>RPA형 업로드</td><td>사람처럼 브라우저 화면을 직접 조작해 작업을 대신하는 자동화 방식</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/KPQpuaC6m14" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="M5 울트라 메모리 대역폭 1.2TB/s가 로컬 AI를 바꾸는 이유"><title>M5 울트라 메모리 대역폭 1.2TB/s가 로컬 AI를 바꾸는 이유</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학 - IT 테크 신기술</span><span class="ey">MORNING DIGEST · 2026-08-27 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>M5 울트라 메모리 대역폭 1.2TB/s가 로컬 AI를 바꾸는 이유</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>안될공학 - IT 테크 신기술 (패치)</td></tr><tr><td>핵심 주제</td><td>M5 울트라의 통합 메모리 대역폭 향상과 로컬 AI 실사용성</td></tr><tr><td>핵심 수치 1</td><td>통합 메모리 대역폭 1.2TB/s (M3 울트라 800GB/s 대비 약 50% 향상)</td></tr><tr><td>핵심 수치 2</td><td>최대 통합 메모리 용량은 512GB로 M3 울트라와 동일(용량 자체는 그대로)</td></tr><tr><td>핵심 수치 3</td><td>다이 간 연결(울트라퓨전) 대역폭 4.4TB/s 이상, 연결 밀도 이전 대비 6배 이상</td></tr><tr><td>구조 변화</td><td>M5 맥스 듀얼 다이 2세트를 묶은 M리즈 최초 4다이 구조</td></tr><tr><td>소프트웨어 생태계</td><td>MLX(애플 실리콘용 오픈소스 ML 프레임워크) + MLX LM으로 오픈 모델을 빠르게 이식</td></tr><tr><td>비교 대상</td><td>데이터센터 HBM GPU(엔비디아)는 대규모 학습·다중 사용자 서버에서 여전히 우위</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>메모리 대역폭이 용량보다 중요해진 이유</strong>: M3 울트라도 이미 512GB까지 지원해 큰 모델을 &quot;올리는&quot; 것 자체는 가능했지만, 모델을 얼마나 빠르게 &quot;쓸 수 있는지&quot;는 별개 문제였다. 초당 두세 토큰으로는 몇 시간씩 돌리는 코딩 에이전트 작업에 속도 차이가 그대로 누적된다 (<a href="https://youtu.be/ybhBFLKB4Kg?t=0" target="_blank" rel="noopener">00:00</a>).</li>
+<li><strong>프리필과 디코드의 구분</strong>: LLM 추론은 입력을 한 번에 병렬 처리하는 &#x27;프리필&#x27;(행렬 연산 성능에 좌우, M5세대 GPU 코어의 뉴럴 액셀러레이터가 담당)과, 답을 한 토큰씩 만드는 &#x27;디코드&#x27;(메모리 대역폭에 좌우)로 나뉜다. 코딩 에이전트는 코드·도구 실행 결과를 읽는 입력 토큰이 훨씬 많아 프리필 속도가 느리면 매번 긴 코드를 다시 읽는 데 시간을 낭비한다 (<a href="https://youtu.be/ybhBFLKB4Kg?t=32" target="_blank" rel="noopener">32:48</a> 부근).</li>
+<li><strong>대역폭과 토큰 속도의 단순 계산</strong>: 양자화된 100GB 모델 가중치를 토큰 하나마다 한 번씩 훑는다고 가정하면, 800GB/s 대역폭에서는 이론상 초당 약 8번, 1.2TB/s에서는 약 12번 읽을 수 있다. 실제 토큰 수와 정확히 일치하진 않지만 대역폭 향상이 왜 중요한지 보여주는 근사치다 (<a href="https://youtu.be/ybhBFLKB4Kg?t=180" target="_blank" rel="noopener">03:00</a> 부근).</li>
+<li><strong>4다이 울트라퓨전 구조</strong>: M5 울트라는 듀얼 다이 M5 맥스 2개를 차세대 울트라퓨전으로 묶은 M리즈 최초의 4다이 구조다. 다이를 쪼개면 제조엔 유리하지만 다이 간 통신이 느려지면 전체 성능이 떨어지므로, 패키징 단계에서 다이 간 고속 신호선 밀도를 6배 이상 높이고 다이 간 대역폭을 4.4TB/s 이상으로 끌어올렸다 (<a href="https://youtu.be/ybhBFLKB4Kg?t=255" target="_blank" rel="noopener">04:15</a> 부근).</li>
+<li><strong>MLX 생태계와 오픈 모델의 격차 축소</strong>: 과거엔 오픈AI·구글·앤트로픽 서버 모델과 개인이 받을 수 있는 모델의 성능 차이가 컸지만, 최근 Qwen3.8 27B 같은 멀티모달 모델이 공개 직후 MLX용 4비트/8비트 변환본과 스페큘레이티브 디코딩용 드래프트 모델까지 빠르게 나온다. 허깅페이스 MLX 커뮤니티에는 이미 수천 개 모델이 올라와 있다 (<a href="https://youtu.be/ybhBFLKB4Kg?t=323" target="_blank" rel="noopener">05:23</a> 부근).</li>
+<li><strong>로컬 서버화</strong>: 올해 WWDC에서 MLX LM 서버로 오픈AI API와 호환되는 로컬 서버를 만드는 방법을 공개했다. 기존 코딩 에이전트의 API 주소만 로컬로 바꾸면 에이전트 입장에서는 모델이 클라우드에 있는지 맥 스튜디오에 있는지 신경 쓸 필요가 없어진다 (<a href="https://youtu.be/ybhBFLKB4Kg?t=355" target="_blank" rel="noopener">05:55</a> 부근).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>애플 실리콘은 CPU와 GPU가 하나의 통합 메모리를 공유하는 구조로, 일반 PC의 시스템 램·GPU V램 분리 구조와 근본적으로 다르다. 맥 스튜디오는 GPU가 수백GB 통합 메모리 풀에 직접 접근할 수 있어 대형 모델을 로드하는 데 유리했다. 이번 M5 울트라는 여기에 더해 4다이 구조와 울트라퓨전 인터커넥트 강화로 다이 간 통신 병목을 줄이고, 통합 메모리 대역폭을 50% 끌어올려 &quot;모델을 올릴 수 있다&quot;에서 &quot;모델을 빠르게 쓸 수 있다&quot;로 넘어가는 하드웨어 조건을 갖췄다.</p>
+<p>애플 자체 파운데이션 모델(3세대, 구글과 공동 개발)도 같은 메모리 병목 고민을 공유한다. 기기 내 모델과 프라이빗 클라우드 컴퓨트 서버 모델을 분리 운영하며, 가장 큰 온디바이스 모델은 약 200억 파라미터 규모다. 전체 가중치를 낸드(NAND)에 저장하고 요청에 필요한 전문가(MoE 방식)만 디램으로 가져오는 방식을 사용해, 느린 낸드와 빠른 디램 사이의 데이터 이동을 최소화하도록 설계했다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>애플 인텔리전스 초기에는 애플이 AI 경쟁에서 뒤처졌다는 평가가 지배적이었다. 그러나 자체 파운데이션 모델을 3세대까지 발전시키고, 구글과 협력해 외부 모델을 받아들이며, MLX를 통해 오픈 모델을 애플 실리콘으로 끌어오는 통로를 만들면서 상황이 달라졌다. 세상에 좋은 오픈 모델이 새로 나올수록 애플이 직접 학습하지 않아도 맥에서 할 수 있는 일이 함께 늘어나는 구조가 된 것이다. AI 모델 자체의 경쟁에서는 애플이 밀렸지만, &quot;좋은 모델을 어떤 기기에서 얼마나 빠르고 편하게 오래 돌릴 수 있는가&quot;로 경쟁의 축이 넓어지면 애플 실리콘 설계·통합 메모리 구조·macOS·개발 도구·MLX를 자체 플랫폼에 맞춰온 애플의 강점과 다시 맞물린다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>M3 울트라</th><th>M5 울트라</th></tr></thead><tbody><tr><td>다이 구조</td><td>듀얼 다이 M3 맥스 2개 결합</td><td>M5 맥스(듀얼 다이) 2세트 → 4다이</td></tr><tr><td>통합 메모리 최대 용량</td><td>512GB</td><td>512GB (동일)</td></tr><tr><td>통합 메모리 대역폭</td><td>800GB/s대</td><td>1.2TB/s (약 50% 향상)</td></tr><tr><td>다이 간 연결 밀도</td><td>기준</td><td>6배 이상 향상</td></tr><tr><td>다이 간 대역폭</td><td>-</td><td>4.4TB/s 이상</td></tr><tr><td>로컬 LLM 시사점</td><td>대형 모델 탑재는 가능, 실사용 속도는 제한적</td><td>디코드(토큰 생성) 속도 이론상 유의미하게 향상</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>로컬 코딩 에이전트 장시간 운용</strong>: 프리필·디코드 속도가 모두 빨라지면 토큰 사용량을 신경 쓰지 않고 에이전트를 몇 시간씩 로컬에서 돌릴 수 있게 되어, API 비용과 외부 전송 우려 없이 장기 작업이 가능해진다.</li>
+<li><strong>민감 코드·문서의 완전 로컬 처리</strong>: 외부 서버로 보내기 꺼려지는 사내 코드나 문서를 클라우드 API 대신 맥 스튜디오 로컬 모델로 전량 처리하는 워크플로우.</li>
+<li><strong>오픈 모델 즉시 검증</strong>: 새 오픈 모델이 공개되면 MLX 커뮤니티의 4비트/8비트 변환본을 받아 곧바로 맥에서 성능·속도를 테스트하고, 필요하면 MLX LM 서버로 기존 에이전트 파이프라인에 즉시 연결.</li>
+<li><strong>스페큘레이티브 디코딩 실험</strong>: Qwen3.8 같은 모델에 MTP 드래프트 모델을 붙여 체감 응답 속도를 추가로 끌어올리는 구성.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>M5 울트라는 메모리 용량(512GB) 자체는 M3 울트라와 동일하지만, 대역폭이 1.2TB/s로 50% 향상되어 로컬 LLM의 실질 사용성(토큰/초)을 <span class="up">개선</span>할 잠재력이 크다.</li>
+<li>오픈 모델과 MLX 생태계의 발전 속도가 빨라지면서, 클라우드 프런티어 모델과 로컬 실행 가능 모델 간의 성능 격차가 빠르게 줄고 있다.</li>
+<li>데이터센터급 HBM 가속기(엔비디아 등)는 대규모 학습·다중 사용자 서빙에서 여전히 압도적이며, 맥 스튜디오의 강점은 &quot;개인 한 명이 책상 위에서 대형 모델을 통째로 돌릴 수 있다&quot;는 지점에 있다.</li>
+<li>발표자는 512GB M5 울트라 구매를 고민 중이며, 구매 시 (1) 최대 오픈 모델의 디코드 속도(토큰/초), (2) MTP 드래프터 기반 스페큘레이티브 디코딩의 체감 향상, (3) 코딩 에이전트 장시간 로컬 운용 실사용성 세 가지를 직접 검증하고 싶다고 밝혔다.</li>
+<li>애플은 자체 파운데이션 모델(3세대) 고도화, 구글과의 협력, MLX를 통한 오픈 모델 이식이라는 세 방향을 동시에 추진하며 로컬 AI 하드웨어·소프트웨어 통합 전략을 강화하는 모습이다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>통합 메모리(Unified Memory)</td><td>CPU·GPU가 하나의 메모리 풀을 공유하는 애플 실리콘 구조</td></tr><tr><td>메모리 대역폭</td><td>초당 메모리를 읽고 쓸 수 있는 데이터량(GB/s, TB/s)</td></tr><tr><td>프리필(Prefill)</td><td>LLM이 입력 프롬프트·문서를 한 번에 병렬 처리하는 추론 단계</td></tr><tr><td>디코드(Decode)</td><td>LLM이 답변을 한 토큰씩 순차 생성하는 추론 단계</td></tr><tr><td>울트라퓨전(UltraFusion)</td><td>애플이 여러 다이를 하나의 프로세서처럼 묶는 패키징 인터커넥트 기술</td></tr><tr><td>다이(Die)</td><td>실리콘 웨이퍼에서 잘라낸 개별 반도체 칩 조각</td></tr><tr><td>MLX</td><td>애플 머신러닝 연구팀이 만든 애플 실리콘 전용 오픈소스 ML 프레임워크</td></tr><tr><td>스페큘레이티브 디코딩</td><td>작은 드래프트 모델로 후보 토큰을 미리 생성해 큰 모델 검증으로 속도를 높이는 기법</td></tr><tr><td>MoE(전문가 혼합)</td><td>요청마다 전체 파라미터 중 일부 전문가만 활성화하는 모델 구조</td></tr><tr><td>양자화</td><td>모델 가중치의 정밀도를 낮춰(4비트·8비트 등) 용량과 연산량을 줄이는 기법</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ybhBFLKB4Kg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 - IT 테크 신기술 · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
