@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="클로드 코드 + 탑뷰 MCP + 시덴스 2.5로 아이디어 하나를 광고 영상까지 자동화하기"><title>클로드 코드 + 탑뷰 MCP + 시덴스 2.5로 아이디어 하나를 광고 영상까지 자동화하기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>오후다섯씨</span><span class="ey">MORNING DIGEST · 2026-08-27 · 오후다섯씨</span><span class="chip">🎬 영상</span></div><h1>클로드 코드 + 탑뷰 MCP + 시덴스 2.5로 아이디어 하나를 광고 영상까지 자동화하기</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>오후다섯씨</td></tr><tr><td>핵심 주제</td><td>아이디어 → 제품 기획 → 디자인 이미지 → 광고 영상까지 클로드 에이전트로 자동화하는 워크플로우</td></tr><tr><td>핵심 도구/기술</td><td>클로드 코드(Claude Code, VS Code 확장), 탑뷰(Topview) MCP, 시덴스(Seedance) 2.5, 옵시디언(Obsidian), 핀터레스트</td></tr><tr><td>핵심 개념</td><td>MCP(Model Context Protocol)를 통한 외부 도구 연결, 작업 산출물의 아카이빙과 지식 시스템화, 레퍼런스 기반 디자인 기획</td></tr><tr><td>주요 수치/결과</td><td>이미지 1장당 3.2 크레딧(6장=약 20 크레딧), 영상 6개 합산 29.3초(<span class="up">+1</span>초 카드 포함 30.3초), 시덴스 4~15초·최대 1080p 생성, 영상 1초당 0.12달러, 탑뷰 울트라 연간 회원은 60일간 무제한 생성</td></tr><tr><td>화자 배경</td><td>실무 활용형 AI 유튜버로, 단순 영상 퀄리티가 아니라 비즈니스 적용(제품 기획→홍보 영상)에 초점을 두고 실험을 진행</td></tr><tr><td>데모 아이디어</td><td>거북목 방지용 웨어러블 — 자세가 흐트러지면 진동 알람을 주는 옷깃 부착형 장치</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>문제 정의와 클로드 코드 세팅</strong>: 화자는 거북목(자세가 자꾸 앞으로 숙여지는 문제)을 해결할 웨어러블 장치를 기획하기로 하고, VS Code에 클로드 코드 확장을 설치해 새 프로젝트 폴더(&quot;탑뷰 에이전트&quot;)를 열며 시작한다 (<a href="https://youtu.be/nsx5y_fVbg8?t=126" target="_blank" rel="noopener">02:06</a>). &quot;거북목으로 고생하는데 아무리 신경 써도 자세가 틀어진다, 이를 방지하는 장치를 만들고 싶다&quot;는 프롬프트를 입력하자, 클로드는 뒷목 옷깃에 부착하는 작은 상자 형태로 고개가 앞으로 숙여진 채 일정 시간이 지나면 휴대폰 진동처럼 알려주는 제품 컨셉을 제안한다 (<a href="https://youtu.be/nsx5y_fVbg8?t=166" target="_blank" rel="noopener">02:46</a>).</li>
+<li><strong>탑뷰 MCP 연결과 이미지 생성 시도</strong>: 클로드 자체는 이미지 생성이 불가능하므로, 화자는 탑뷰(Topview)의 MCP(Model Context Protocol)를 연결해 이미지 생성 기능을 확보한다. MCP는 AI에게 외부 도구(tool)를 연결해주는 프로토콜로 소개된다 (<a href="https://youtu.be/nsx5y_fVbg8?t=292" target="_blank" rel="noopener">04:52</a>). 클로드가 탑뷰 MCP를 자동 등록하고 이미지 저장용 폴더까지 스스로 생성한다.</li>
+<li><strong>핀터레스트 레퍼런스 수집과 옵시디언을 통한 지식 전달</strong>: 화자는 핀터레스트에서 &quot;웨어러블 디바이스&quot;를 검색해 가슴 부착형 센서, 목걸이형 장신구 등 참고 이미지를 찾고, 이를 단순 저장이 아니라 AI에게 맥락과 함께 전달하기 위해 옵시디언에 새 문서를 만들어 이미지와 코멘트(&quot;미니멀해서 좋다&quot; 등)를 함께 기록한다 (<a href="https://youtu.be/nsx5y_fVbg8?t=331" target="_blank" rel="noopener">05:31</a>). 옵시디언 문서의 경로를 복사해 클로드 코드 창에 붙여넣으면, 클로드가 문서 속 이미지와 텍스트를 함께 분석해 디자인 기획(MD 파일)을 레퍼런스 기반으로 업데이트한다 (<a href="https://youtu.be/nsx5y_fVbg8?t=375" target="_blank" rel="noopener">06:15</a>). 화자는 이 과정에서 프로젝트 관련 파일들이 &quot;레퍼런스&quot; 폴더로 자동 정리되는 점을 짚으며, 생산되는 모든 문서를 최적화된 형태로 아카이빙하는 것이 지식 시스템을 키우는 핵심이라고 강조한다 (<a href="https://youtu.be/nsx5y_fVbg8?t=497" target="_blank" rel="noopener">08:17</a>).</li>
+<li><strong>탑뷰 MCP로 실제 이미지 생성</strong>: 기획이 정리되자 클로드는 탑뷰 MCP를 호출해 이미지 생성을 진행한다. 크레딧 잔액과 사용 가능한 모델(기본 추천: GPT 이미지 2)을 확인한 뒤, 장당 3.2 크레딧으로 총 6장(제품 단독 이미지, 착용 이미지, 재질 근접 이미지 등)을 생성한다 (<a href="https://youtu.be/nsx5y_fVbg8?t=537" target="_blank" rel="noopener">08:57</a>). 에이전트가 생성 완료 시점을 스스로 모니터링해 사용자에게 알려주는 점이 강조된다.</li>
+<li><strong>시덴스 2.5로 광고 영상 제작 및 병합</strong>: 마음에 드는 디자인이 나오면, 앞서 생성한 이미지를 첫 프레임으로 활용해 시덴스(Seedance) 2.5 모델로 4~15초, 최대 1080p 영상을 만든다. 클로드가 기획안과 시나리오를 &quot;비디오플랜.md&quot;에 작성한 뒤 영상 6개(총 29.3초, 카드 1초 포함 30.3초)와 배경음악까지 생성하고, &quot;최종 영상을 완성해 주세요&quot;라는 요청 한 번으로 세로형 30초 영상 두 편을 이어붙여 완성한다 (<a href="https://youtu.be/nsx5y_fVbg8?t=617" target="_blank" rel="noopener">10:17</a>).</li>
+<li><strong>탑뷰 캔버스로 후속 협업 이관</strong>: 완성된 결과물은 탑뷰의 별도 작업 공간인 &quot;캔버스&quot;로 자동 전송된다. 에이전트가 서버 업로드부터 캔버스 생성까지 처리해, 화자가 직접 파일을 하나하나 올릴 필요가 없다 (<a href="https://youtu.be/nsx5y_fVbg8?t=676" target="_blank" rel="noopener">11:16</a>). 캔버스에는 &quot;스킬&quot; 라이브러리(마이 스킬, 크리에이트 스킬)도 있어 추가 편집이 가능하며, 최종적으로 목선(자세 알림 장치) 30초 컨셉 필름과 쇼츠용 세로 예고편이 완성된다 (<a href="https://youtu.be/nsx5y_fVbg8?t=716" target="_blank" rel="noopener">11:56</a>).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 워크플로우의 기술적 축은 세 가지다. 첫째, 클로드 코드는 텍스트/코드 생성과 오케스트레이션에 강하지만 이미지·영상 생성 능력이 없으므로, MCP(Model Context Protocol)를 통해 탑뷰라는 외부 서비스에 도구 호출 권한을 위임한다. MCP는 AI 모델이 정해진 프로토콜로 외부 도구(API·서비스)를 인식하고 호출할 수 있게 해주는 연결 표준으로, 별도의 API 통합 코드를 짜지 않고도 &quot;탑뷰 MCP를 등록해줘&quot;라는 한 문장으로 연동이 끝난다. 둘째, 탑뷰는 이미지 생성(기본 추천 모델 GPT 이미지 2)과 시덴스 2.5 기반 영상 생성을 크레딧 과금 방식(이미지 장당 3.2 크레딧, 영상 1초당 0.12달러)으로 제공하며, 앞서 생성한 이미지의 파일 ID를 그대로 영상 생성의 첫 프레임으로 재사용할 수 있어 이미지와 영상 파이프라인이 끊김 없이 연결된다. 셋째, 옵시디언은 AI에게 &quot;이미지+설명 텍스트&quot;를 하나의 맥락 단위로 전달하는 매개체로 쓰인다. 단순히 이미지 파일을 폴더에 저장하는 것과 달리, 이미지 아래 코멘트를 남기고 문서 경로를 AI에게 전달하면 AI가 이미지와 텍스트를 함께 해석해 기획 문서에 반영할 수 있다는 점이 실무적으로 중요하게 다뤄진다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>화자가 반복해서 강조하는 지점은 &quot;결과물만 받는 자동화&quot;가 아니라 &quot;과정에서 생성되는 모든 데이터를 아카이빙해 재활용·진화시키는 자동화&quot;다. 즉 AI 에이전트 워크플로우의 가치는 한 번의 결과물 생성에 그치지 않고, 프로젝트 폴더 구조(레퍼런스 폴더, 이미지 폴더, 영상 폴더)와 옵시디언 문서라는 형태로 지식이 누적되어 다음 작업의 재료가 되는 데 있다는 관점이다. 이는 개인 또는 팀이 AI 에이전트를 반복적으로 활용할수록 지식 시스템이 커지고, 그 시스템이 다시 다른 작업의 품질을 높이는 선순환 구조를 만든다는 전략이다. 또한 아이디어 구상부터 제품 디자인, 광고 영상 제작까지 한 사람이 여러 SaaS/모델을 오가지 않고 클로드 코드라는 단일 인터페이스에서 MCP로 도구를 오케스트레이션하는 방식은, 비개발자도 &quot;프롬프트 대화&quot;만으로 제품 기획-비주얼-마케팅 자산 제작의 전체 파이프라인을 운영할 수 있음을 보여준다. 가격 측면에서도 울트라 연간 요금제의 60일 무제한 생성이나 초당 0.12달러라는 종량제 옵션은 소규모 팀이나 1인 창작자가 광고 영상 제작 외주 없이 반복 실험을 저비용으로 돌릴 수 있게 한다는 점에서 실질적 진입장벽을 낮춘다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>수행 주체/도구</th><th>산출물</th></tr></thead><tbody><tr><td>1. 문제/아이디어 정의</td><td>사용자 → 클로드 코드 프롬프트</td><td>거북목 방지 웨어러블 컨셉 텍스트</td></tr><tr><td>2. MCP 연결</td><td>클로드 코드 + 탑뷰 MCP</td><td>탑뷰 도구 등록, 이미지 저장 폴더 생성</td></tr><tr><td>3. 레퍼런스 수집</td><td>사용자(핀터레스트) → 옵시디언 문서</td><td>이미지 + 코멘트가 결합된 옵시디언 노트</td></tr><tr><td>4. 문서 경로 전달</td><td>사용자 → 클로드 코드(경로 붙여넣기)</td><td>클로드가 이미지·텍스트 동시 분석</td></tr><tr><td>5. 디자인 기획 업데이트</td><td>클로드 코드</td><td>디자인 MD 파일(레퍼런스 반영)</td></tr><tr><td>6. 이미지 생성</td><td>탑뷰 MCP(GPT 이미지 2)</td><td>제품/착용/재질 이미지 6장</td></tr><tr><td>7. 영상 기획</td><td>클로드 코드</td><td>비디오플랜.md(시나리오)</td></tr><tr><td>8. 영상 생성</td><td>탑뷰 MCP(시덴스 2.5)</td><td>6개 클립(총 29.3초) + 배경음악</td></tr><tr><td>9. 최종 병합</td><td>클로드 코드 지시 → 자동 처리</td><td>세로형 30초 영상 2편</td></tr><tr><td>10. 후속 협업 이관</td><td>탑뷰 캔버스</td><td>브리프·소스·영상이 모인 협업 공간, 쇼츠용 예고편</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>1인 창작자의 제품 홍보 영상 제작</strong>: 별도 디자이너나 영상 제작 인력 없이, 클로드 코드와 탑뷰 MCP만으로 아이디어 스케치부터 SNS 홍보 영상까지 하루 안에 프로토타입을 완성해 시장 반응을 빠르게 테스트할 수 있다.</li>
+<li><strong>팀 지식 아카이빙 시스템 구축</strong>: 프로젝트마다 옵시디언에 레퍼런스 이미지와 코멘트를 축적하고 클로드 코드로 연결하는 패턴을 표준화하면, 신규 프로젝트에서도 과거 기획 자산을 즉시 재활용할 수 있는 조직 지식 베이스로 발전시킬 수 있다.</li>
+<li><strong>광고 대행 없이 진행하는 A/B 비주얼 테스트</strong>: 동일한 제품 컨셉에 대해 이미지·영상 프롬프트를 조금씩 바꿔 여러 버전을 저비용(장당 3.2 크레딧, 초당 0.12달러)으로 생성한 뒤, 탑뷰 캔버스에서 가장 반응이 좋은 컷을 골라 빠르게 캠페인 소재로 전환할 수 있다.</li>
+<li><strong>비개발자의 MCP 기반 에이전트 활용 입문</strong>: 코드를 몰라도 &quot;탑뷰 MCP를 등록해줘&quot;, &quot;이미지 생성해줘&quot; 같은 자연어 지시만으로 외부 도구를 연결·활용하는 경험을 통해, MCP 생태계 도구를 업무에 도입하는 진입 사례로 삼을 수 있다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>영상 시점 기준 시덴스 2.5는 영화적 또는 애니메이션 스타일 등 다양한 장르에서 준수한 품질을 보여주는 영상 생성 모델로 소개되며, 탑뷰는 이를 MCP로 감싸 이미지 생성부터 영상 생성, 캔버스 협업까지 하나의 마케팅 에이전트 플로우로 묶어 제공하고 있다. 화자는 이번 실험이 &quot;테스트 용도로는 충분한 수준&quot;이라 평가하면서도, 실제 제품(하드웨어)은 아직 개발 전 단계이며 영상은 어디까지나 컨셉 필름이라는 점을 명확히 한다. 클로드 같은 범용 에이전트가 직접 이미지·영상을 만들지 못하는 한계를 MCP로 메우는 방식이 이번 사례에서 실용적으로 검증된 만큼, 앞으로는 이런 식으로 여러 특화 서비스(이미지 생성, 영상 생성, 노트 앱)를 MCP로 연결해 하나의 에이전트 워크플로우 안에서 기획-제작-협업을 잇는 사례가 계속 늘어날 것으로 예상된다. 가격 정책(연간 무제한 vs 종량제) 또한 실험 비용을 낮춰 이러한 워크플로우의 확산을 뒷받침하는 요소로 언급된다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>클로드 코드(Claude Code)</td><td>앤트로픽의 코딩 에이전트로, VS Code 확장 형태로 설치해 프롬프트 대화로 파일 생성·편집·도구 호출을 수행하는 개발 도구</td></tr><tr><td>MCP(Model Context Protocol)</td><td>AI 모델이 외부 도구·서비스(API 등)를 표준화된 방식으로 인식하고 호출할 수 있게 해주는 연결 프로토콜</td></tr><tr><td>탑뷰(Topview)</td><td>시장 조사부터 이미지·영상 생성, 캠페인용 콘텐츠 제작까지 지원하는 마케팅 에이전트 서비스로, MCP를 통해 클로드 등과 연동 가능</td></tr><tr><td>시덴스(Seedance) 2.5</td><td>탑뷰에서 활용하는 AI 영상 생성 모델로, 이미지를 첫 프레임으로 넣어 4~15초, 최대 1080p 영상을 생성</td></tr><tr><td>옵시디언(Obsidian)</td><td>마크다운 기반 노트 앱으로, 이 영상에서는 이미지와 설명 텍스트를 함께 기록해 AI에게 맥락을 전달하는 아카이빙 도구로 활용됨</td></tr><tr><td>캔버스(Canvas, 탑뷰)</td><td>탑뷰 내 별도 협업 작업 공간으로, 생성된 소스·영상·브리프를 모아두고 이어서 편집하거나 스킬을 적용할 수 있는 곳</td></tr><tr><td>스킬(Skill, 탑뷰 캔버스)</td><td>탑뷰 캔버스 내에서 활용할 수 있는 사전 정의된 작업 템플릿/기능 라이브러리(마이 스킬, 크리에이트 스킬 등)</td></tr><tr><td>GPT 이미지 2</td><td>탑뷰가 이미지 생성 시 기본으로 추천하는 이미지 생성 모델</td></tr><tr><td>크레딧</td><td>탑뷰에서 이미지·영상 생성 시 소모되는 과금 단위(이미지 1장 = 3.2 크레딧)</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/nsx5y_fVbg8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>오후다섯씨 · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

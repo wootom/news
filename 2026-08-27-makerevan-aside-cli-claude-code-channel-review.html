@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="클로드 코드가 못 보는 로그인 화면, Aside CLI로 채널 70곳 파도타기 자동화하기"><title>클로드 코드가 못 보는 로그인 화면, Aside CLI로 채널 70곳 파도타기 자동화하기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">MORNING DIGEST · 2026-08-27 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>클로드 코드가 못 보는 로그인 화면, Aside CLI로 채널 70곳 파도타기 자동화하기</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>메이커 에반 \</td><td>Maker Evan</td></tr><tr><td>핵심 주제</td><td>클로드 코드의 웹 탐색 한계를 Aside CLI(브라우저 자동화 도구)로 보완하는 실전 테스트</td></tr><tr><td>핵심 도구/기술</td><td>Aside (Y콤비네이터 출신 스타트업이 만든 크로미움 기반 브라우저), Aside CLI, 울트라브라우즈(UltraBrowse) 모드, MCP 연동, 리플(Repl) 스크립팅</td></tr><tr><td>핵심 개념</td><td>&quot;파도타기&quot;(관련 채널을 계속 넘어가며 탐색), 텍스트 변환 방식의 한계, 로그인 세션 재사용, 자료수집과 코드작업의 도구 분업</td></tr><tr><td>주요 수치/결과</td><td>1차 탐색 40여 채널 → 2차까지 총 70개 수집 → 구독자·대표영상 검증 후 8개로 압축, 전체 소요 6분 50초, 최소 구독자 채널 18,000명</td></tr><tr><td>화자 배경</td><td>클로드 코드로 유튜브 채널 조사를 여러 번 시도했으나 결과가 부실했던 실사용 경험을 바탕으로 비교 시연</td></tr><tr><td>테스트 조건</td><td>&quot;AI 코딩 다루는 한국 채널에서 시작, 관련 채널로 계속 이동, 구독자 1만 명 이상 채널 8곳을 표로 정리&quot;</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>클로드 코드의 웹 탐색 한계 진단</strong> (<a href="https://youtu.be/apgwGvax6M4?t=0" target="_blank" rel="noopener">00:00</a>) — 화자는 유튜브 채널 8개를 찾는 작업(사람이 하면 30분 걸리는, 채널에서 채널로 계속 넘어가야 하는 작업)을 클로드 코드에 시켰으나 결과가 &quot;처참&quot;했다고 밝힌다. 엉뚱한 데이터가 섞여 나온 것이 문제였다.</li>
+</ol>
+<ol>
+<li><strong>왜 안 되는지 3가지 구조적 원인</strong> (<a href="https://youtu.be/apgwGvax6M4?t=51" target="_blank" rel="noopener">00:51</a>) — 첫째, 클로드 코드는 페이지를 텍스트로 변환해서 가져오는데 유튜브처럼 화면이 자바스크립트로 그려지는 사이트는 텍스트 변환 시 껍데기만 남아 구독자 수·관련 채널 목록이 안 보인다. 둘째, 클로드 코드가 가져오는 페이지는 로그아웃 상태라서 로그인 상태에서만 노출되는 관련 채널 추천 정보를 애초에 볼 수 없다. 셋째, 한 페이지씩 개별적으로 가져올 뿐 &quot;여기서 저기로 넘어간다&quot;는 개념 자체가 없어서, 검색 결과를 거르지 않고 그대로 덮어써 버린다. 그 결과 10년 전 영상, 구독자 100명짜리 채널, 코딩과 무관한 채널, 심지어 같은 채널 중복까지 섞여 나왔다.</li>
+</ol>
+<ol>
+<li><strong>Aside 브라우저와 Aside CLI 소개</strong> (<a href="https://youtu.be/apgwGvax6M4?t=101" target="_blank" rel="noopener">01:41</a>) — Aside는 Y콤비네이터 출신 회사가 만든, 크롬과 같은 뿌리(크로미움 기반)를 쓰는 브라우저로 현재 맥에서만 동작한다. 외형은 일반 브라우저와 같지만 옆에 채팅창이 붙어 있어 그곳에 지시하면 브라우저가 직접 클릭·타이핑을 수행한다. 이미 로그인해 둔 세션을 그대로 재사용하기 때문에 별도 연동 절차가 없다. 공식 활용 예시로는 로그인이 걸린 대시보드 확인, 실패한 빌드 로그 열람, 스테이징 화면 스크린샷 촬영 등이 제시된다. 설치는 스크립트 한 줄 또는 설정 화면 버튼으로 가능하며, 설치 후 명령어는 <code>aside</code>(A사이드)로 큰따옴표 안에 한국어로 지시문을 작성해 실행한다.</li>
+</ol>
+<ol>
+<li><strong>핵심 옵션 3가지와 울트라브라우즈 모드</strong> (<a href="https://youtu.be/apgwGvax6M4?t=177" target="_blank" rel="noopener">02:57</a>) — 모델 선택 옵션(클로드 또는 다른 모델), 생각의 깊이 옵션(꺼짐부터 최대 단계까지 있으며 맨 끝이 울트라브라우즈), 세션 이어붙이기 옵션(터미널을 껐다 켜도 조사를 이어감, 계정별로도 골라 쓸 수 있음)이 핵심이다. 울트라브라우즈는 자료가 여러 페이지에 흩어져 있을 때 쓰는 모드로, 공식 설명상 &quot;근거가 많이 필요한 조사, 페이지 사이의 비교&quot;에 해당하며 이 영상에서 다루는 &quot;파도타기&quot; 작업이 바로 이 모드의 용례다.</li>
+</ol>
+<ol>
+<li><strong>실전 시연: 70개 수집 후 8개로 압축</strong> (<a href="https://youtu.be/apgwGvax6M4?t=274" target="_blank" rel="noopener">04:34</a>) — 실제로 &quot;AI 코딩 다루는 한국 채널에서 시작해 관련 채널로 계속 옮겨가며 구독자 1만 명 넘는 채널 8곳을 표로 정리하라&quot;고 지시하자, 방문 기록에서 시작 채널을 찾고 유튜브 검색·채널 페이지 구조 확인·인기 영상 열람·관련 채널 진입을 반복했다. 1차로 40여 채널, 2차까지 총 70개를 모은 뒤 그대로 주지 않고 구독자 수와 대표 영상을 하나씩 실제로 확인해 8개로 걸러냈다. 클로드 코드는 이런 &quot;거르는 단계&quot; 없이 모은 것을 그대로 주는 것과 대비된다. 진행 중에는 한국어로 &quot;파도타기 1차에서 40여개 수집&quot; 같은 실시간 보고가 이뤄져 화자가 중간에 개입할 수 있었다.</li>
+</ol>
+<ol>
+<li><strong>결과물과 스스로 만든 판단·증빙</strong> (<a href="https://youtu.be/apgwGvax6M4?t=326" target="_blank" rel="noopener">05:26</a>) — 최종적으로 채널명·구독자 수·대표 영상 주소가 담긴 표 8행이 나왔고(11만·9만·최소 18,000명 등), 그중 한 곳을 별도로 추천했다. 추천 근거는 &quot;구독자는 적지만 대표 영상 조회수가 20만으로 구독자 대비 배율이 약 10배로 가장 높아 협업 제안하기에 적합하다&quot;는, 시키지 않은 자체 판단이었다. 나아가 채널 페이지를 직접 열어 구독자 수 스크린샷을 증빙으로 남기고 나머지 캡처는 폴더에 저장했다. 전체 과정은 6분 50초가 걸렸다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>클로드 코드의 웹 접근 방식은 &quot;페이지를 텍스트로 변환해서 읽는&quot; 구조다. 이는 정적 텍스트 위주 페이지에서는 문제가 없지만, 유튜브처럼 콘텐츠가 자바스크립트 렌더링으로 그려지는 사이트에서는 변환 시점에 실제 데이터(구독자 수, 관련 채널 목록)가 비어 있는 &quot;껍데기&quot;만 남는다. 또한 클로드 코드가 페이지를 가져오는 방식은 비로그인 상태로 동작하므로, 유튜브의 관련 채널 추천처럼 로그인 세션에 종속된 개인화 정보는 원천적으로 접근 불가능하다. 마지막으로 클로드 코드는 &quot;한 페이지 단위 요청&quot;만 처리할 뿐 페이지 간 이동(내비게이션)이라는 개념이 없어, 여러 페이지를 넘나들며 판단해야 하는 작업에서는 검색 결과를 필터링 없이 그대로 반환하는 한계를 보인다.</p>
+<p>Aside는 이 세 가지 문제를 &quot;실제 브라우저를 대신 조작한다&quot;는 접근으로 해결한다. 크로미움 기반 브라우저이므로 자바스크립트 렌더링을 그대로 처리하고, 사용자가 이미 로그인해 둔 세션을 재사용하므로 로그인 전용 정보에도 접근하며, 브라우저가 페이지 간 클릭·이동을 직접 수행하므로 &quot;여기서 저기로 넘어가는&quot; 탐색이 가능하다. 다만 이는 검색 API가 아니라 실제 브라우저 조작이라는 점이 강조되는데, 이 때문에 방문 기록을 참조하거나(설정에서 끌 수 있음) 운영 환경(로그인 계정) 설정을 건드리지 않는다는 공식 문서상 제약도 함께 따른다. 속도 면에서는 브라우저가 실제로 페이지를 열고 읽는 방식이라 느리며, 이번 시연도 6분 50초가 소요됐다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>이 영상이 시사하는 핵심은 &quot;클로드 코드와 Aside는 경쟁 관계가 아니라 분업 관계&quot;라는 점이다. 클로드 코드는 코드를 고치는 데 강하고, Aside는 로그인된 웹을 여러 페이지에 걸쳐 돌아다니며 자료를 모으는 데 강하다. 화자는 이를 &quot;둘 다 잘하는 도구가 아니라 각자 잘하는 게 다른 도구&quot;라고 명확히 구분하며, 코드 작업을 Aside에 시키는 것은 권장하지 않는다고 못 박는다.</p>
+<p>더 나아가 이 조합은 &quot;사람이 브라우저를 열어 자료를 긁어다 코드 도구에 붙여넣는 단계&quot;를 완전히 없앤다는 점에서 워크플로우 자동화의 의미가 크다. MCP로 Aside를 클로드 코드에 도구로 등록하면, 클로드 코드가 필요할 때 자동으로 Aside를 호출해 웹 자료를 파일로 받아 그대로 활용할 수 있다. 이는 AI 에이전트가 &quot;브라우저 조작&quot;이라는, 기존에는 사람만 할 수 있었던 영역까지 위임받는 흐름을 보여주는 사례다. 동시에 화자는 결과를 맹신하지 말고 원본을 직접 확인하라는 경고, 자체 성능 발표에 대한 유보적 태도 등 과신을 경계하는 균형 잡힌 시각도 함께 제시한다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>구분</th><th>클로드 코드</th><th>Aside CLI</th></tr></thead><tbody><tr><td>웹 페이지 접근 방식</td><td>텍스트로 변환해서 가져옴</td><td>실제 브라우저가 직접 클릭·타이핑</td></tr><tr><td>자바스크립트 렌더링 페이지</td><td>껍데기만 남음(구독자 수 등 누락)</td><td>실제 렌더링 화면 그대로 확인</td></tr><tr><td>로그인 세션</td><td>로그아웃 상태로만 접근</td><td>사용자가 로그인해 둔 세션 그대로 재사용</td></tr><tr><td>페이지 간 이동(내비게이션)</td><td>개념 없음, 한 페이지씩 개별 요청</td><td>관련 채널로 실제로 클릭해 넘어감(&quot;파도타기&quot;)</td></tr><tr><td>결과 필터링</td><td>모은 것을 그대로 반환</td><td>후보를 검증(구독자 수·대표 영상 확인)해 압축</td></tr><tr><td>강점</td><td>코드 작성·수정</td><td>여러 페이지를 넘나드는 로그인 기반 웹 조사</td></tr><tr><td>연동 방법</td><td>—</td><td>대화형 CLI, MCP 서버, 리플(자바스크립트 직접 조작)</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>경쟁·협업 채널 리서치</strong>: 특정 주제(예: AI 코딩) 한국 채널을 시작점으로 관련 채널을 연쇄적으로 탐색해 구독자 조건에 맞는 후보를 표로 정리하고, 구독자 대비 조회수 배율 등 자체 기준으로 협업 제안 우선순위까지 추천받는다.</li>
+<li><strong>로그인 필요 대시보드/빌드 로그 확인</strong>: 공식 활용 예시로 제시된 것처럼, 로그인이 걸린 내부 대시보드 확인이나 실패한 빌드 로그 열람, 스테이징 화면 스크린샷 촬영처럼 개발자가 편집기 밖에서 반복 수행하던 잡무를 자동화한다.</li>
+<li><strong>클로드 코드 파이프라인 내 자료수집 단계</strong>: MCP로 Aside를 등록해, 코드 작업 도중 외부 웹 자료가 필요할 때 클로드 코드가 자동으로 Aside를 호출해 파일로 받아오게 함으로써 사람의 개입 없이 자료수집→코드반영 흐름을 완성한다.</li>
+<li><strong>정해진 절차의 반복 작업(리플)</strong>: 탭 열기, 요소 클릭, 스크린샷 등 순서가 고정된 작업은 리플 방식으로 자바스크립트 직접 조작을 활용해 플레이라이트처럼 정확하게 반복 수행한다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>현재 Aside는 맥 전용으로만 동작해 윈도우 사용자는 이용할 수 없으며, 핵심 기능인 울트라브라우즈 모드는 유료 요금제에서만 제공된다(무료 요금제는 안내 화면만 노출). 속도 면에서도 브라우저가 실제로 페이지를 열람하는 방식 특성상 느리고, 이번 시연도 6분 50초가 소요돼 빠른 답이 필요한 상황에는 맞지 않는다. 화자는 &quot;아직 어린 물건&quot;이라 버전이 계속 바뀌며 오늘 되던 동작이 내일 달라질 수 있다는 불안정성도 언급했다.</p>
+<p>신뢰성 측면에서는 두 가지 유보 사항이 강조된다. 하나는 결과를 그대로 믿지 말라는 것으로, 브라우저가 화면을 읽어 옮긴 숫자이므로 표만 보면 다 맞아 보이지만 원본 채널을 직접 열어 확인해야 한다. 다른 하나는 &quot;성능 1위&quot; 같은 자체 발표 수치는 회사 자체 발표일 뿐이라는 점이다. 또한 시킨 것보다 많은 결과를 주는 경향(8곳 요청에 11곳 추가 제공)과 증빙 이미지 생성 중 세 번 연속 실패했다가 스스로 다른 방법으로 복구한 사례도 실사용상 유의점으로 제시됐다. 전망 측면에서 화자는 &quot;자료는 Aside가, 코드는 클로드 코드가&quot; 나누는 조합이 현재로서는 가장 편한 방식이라 결론짓고, 처음 쓸 때는 작은 요약부터 시작하고 깊이를 목적에 맞게 조절하며 숫자가 나오면 항상 원본을 재확인하라는 3가지 팁을 제시하며 마무리한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>Aside</td><td>Y콤비네이터 출신 스타트업이 만든 크로미움(크롬과 같은 엔진) 기반 브라우저 앱. 옆에 채팅창이 있어 지시하면 브라우저를 대신 조작해준다. 현재 맥 전용</td></tr><tr><td>Aside CLI</td><td>Aside를 터미널 명령어(<code>aside</code>)로 실행할 수 있게 한 도구. 큰따옴표 안에 한국어로 지시문을 넣어 실행</td></tr><tr><td>울트라브라우즈(UltraBrowse)</td><td>Aside의 생각 깊이 옵션 중 최상위 모드. 여러 페이지에 흩어진 자료를 근거 삼아 조사하거나 페이지 간 비교가 필요할 때 쓰며, 유료 요금제 전용 기능</td></tr><tr><td>MCP(Model Context Protocol)</td><td>클로드 코드 같은 AI 도구가 외부 도구(여기서는 Aside)를 표준화된 방식으로 호출해 쓸 수 있게 하는 연동 프로토콜. 설정 파일에 몇 줄 추가하면 클로드 코드가 Aside를 도구로 부를 수 있다</td></tr><tr><td>리플(Repl)</td><td>Aside 브라우저를 자바스크립트 코드로 직접 조종하는 방식. 탭 열기·요소 클릭·스크린샷 촬영 등을 정해진 순서대로 정확히 수행할 때 사용하며, 공식 문서는 이를 플레이라이트(Playwright, 웹 자동화 테스트 도구)에 비유한다</td></tr><tr><td>파도타기</td><td>이 영상에서 화자가 사용한 표현으로, 한 채널의 관련 채널로 계속 넘어가며 새로운 후보를 발굴해가는 탐색 방식을 뜻한다</td></tr><tr><td>클로드 코드(Claude Code)</td><td>앤트로픽의 터미널 기반 AI 코딩 에이전트. 코드 작성·수정에는 강하지만 텍스트 변환 방식의 웹 접근과 로그아웃 상태 접근, 페이지 간 이동 불가라는 한계로 인해 로그인 기반의 다단계 웹 조사에는 취약하다</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/apgwGvax6M4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

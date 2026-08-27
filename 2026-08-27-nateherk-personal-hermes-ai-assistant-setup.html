@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="서버 지식 없이 14분 만에 나만의 AI 비서 만들기: Hostinger 관리형 Hermes 에이전트 설정기"><title>서버 지식 없이 14분 만에 나만의 AI 비서 만들기: Hostinger 관리형 Hermes 에이전트 설정기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">MORNING DIGEST · 2026-08-27 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>서버 지식 없이 14분 만에 나만의 AI 비서 만들기: Hostinger 관리형 Hermes 에이전트 설정기</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Nate Herk \</td><td>AI Automation</td></tr><tr><td>핵심 주제</td><td>Hostinger 관리형 Hermes 에이전트로 서버 지식 없이 개인 AI 비서(텔레그램 봇) 구축하기</td></tr><tr><td>핵심 도구/기술</td><td>Hostinger HPanel, Hermes Agent, 텔레그램 BotFather, ChatGPT/Codex 구독 연동, Tavily 웹 검색 API, YAML 프런트매터 기반 스킬 시스템</td></tr><tr><td>핵심 개념</td><td>관리형(Managed) 에이전트 vs VPS 에이전트, 스킬(Skill) 추가, 메모리·사용자 프로필, 예약 작업/칸반 대시보드</td></tr><tr><td>주요 수치/결과</td><td>관리형 서비스 월 6달러부터, VPS는 그보다 비쌈, 웹 스크래핑 크레딧 1,000개 무료 제공, 연간 플랜 쿠폰 &#x27;Nate Herc&#x27; 10% 할인, Tavily 검색 1회당 크레딧 5개 소모, 전체 설정 소요 약 14분</td></tr><tr><td>화자 배경</td><td>AI 자동화(n8n, AI 에이전트) 콘텐츠를 제작하는 유튜버로, Hostinger 제휴 링크와 쿠폰코드를 통해 관련 파트너십을 보유</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>관리형 에이전트 vs VPS 에이전트 비교</strong>: 영상 초반, 화자는 두 방식의 차이를 정리한다. 관리형 Hermes는 월 6달러 수준으로 VPS보다 약간 저렴하고 서버 구매·유지관리가 불필요하며 원클릭 설치로 끝난다. 반면 VPS는 Docker, SSH, 환경 변수 파일을 직접 다뤄야 하고 설정 항목이 더 많지만, 루트 권한으로 완전한 제어가 가능하고 하나의 서버에 Hermes 외에도 n8n 등 여러 앱을 동시에 설치해 확장할 수 있다는 장점이 있다. 화자는 &quot;대부분(약 98%)의 사용자에게는 관리형 방식으로 충분하다&quot;고 조언한다.</li>
+<li><strong>Hostinger 가입 및 Hermes Agent 앱 설치</strong>: hostinger.com에서 계정을 만들면 HPanel이라는 UI가 제공되며, 왼쪽 메뉴의 &#x27;AI 에이전트&#x27; 섹션에서 Open Claw, Hermes, n8n을 선택할 수 있다(<a href="https://youtu.be/gQef3d3erOs?t=135" target="_blank" rel="noopener">02:15</a>). Hermes Agent를 클릭해 새 앱을 다운로드하고 &#x27;시작하기&#x27;를 누르는 것으로 설치가 시작된다(<a href="https://youtu.be/gQef3d3erOs?t=173" target="_blank" rel="noopener">02:53</a>).</li>
+<li><strong>요금제 선택과 AI 모델 연결</strong>: AI 크레딧 옵션은 끄는 것을 권장하며, 웹 스크래핑 크레딧 1,000개와 Agentic Mail(에이전트 전용 이메일) 기능이 기본 제공된다. 연간 플랜 결제 시 쿠폰 코드 &#x27;Nate Herc&#x27;로 10% 할인을 받을 수 있다. 이후 사용할 AI 모델을 선택하는데, 화자는 API 키 직접 입력 대신 ChatGPT 구독 연동을 추천한다. 더 저렴하면서도 더 강력한 추론 기능을 쓸 수 있기 때문이다. 코드를 복사해 ChatGPT 계정에 로그인하면 약 10초 만에 Codex 연결이 완료된다(<a href="https://youtu.be/gQef3d3erOs?t=256" target="_blank" rel="noopener">04:17</a>).</li>
+<li><strong>텔레그램 봇 생성 및 연동</strong>: 텔레그램에서 BotFather를 찾아 <code>/newbot</code> 명령으로 새 봇을 만들고(&quot;관리형 Hermes 데모&quot;), &#x27;bot&#x27;으로 끝나는 고유 사용자명을 지정한다. 발급된 액세스 토큰을 Hostinger에 붙여넣고, 이어서 텔레그램의 &#x27;사용자 정보 봇&#x27;에서 사용자 ID를 복사해 입력하면 연동이 완료된다(<a href="https://youtu.be/gQef3d3erOs?t=341" target="_blank" rel="noopener">05:41</a>). 이후 사용할 실제 AI 모델(ChatGPT 구독 기준 GPT 계열)을 다시 한번 선택하면 설정이 마무리된다(<a href="https://youtu.be/gQef3d3erOs?t=386" target="_blank" rel="noopener">06:26</a>).</li>
+<li><strong>대시보드 기능과 텔레그램-대시보드 동기화</strong>: &#x27;앱 열기&#x27;를 누르면 Hostinger 대시보드 안에 내장된 Hermes 대시보드가 나타난다. 이 대시보드와 텔레그램 앱이 서로 다른 스레드로 동작하면서도 대화 내용이 실시간 동기화되어, PC의 대시보드와 휴대폰의 텔레그램 어디서 메시지를 보내도 같은 맥락을 공유한다(<a href="https://youtu.be/gQef3d3erOs?t=424" target="_blank" rel="noopener">07:04</a>, <a href="https://youtu.be/gQef3d3erOs?t=509" target="_blank" rel="noopener">08:29</a>). 대시보드에서는 예약 작업 생성, 칸반 보드를 통한 작업 상태(누가 할당받았는지, 진행 상태) 확인이 가능하며, Claude Code·Codex·컴퓨터 활용·이메일·GitHub 등 내장 스킬을 켜고 끌 수 있고, YAML 프런트매터 형식으로 커스텀 스킬(예: Excalidraw 다이어그램 작성)을 직접 추가할 수도 있다.</li>
+<li><strong>환경 변수(API 키) 추가와 Tavily 웹 검색 연동, 개인화 스킬</strong>: HPanel의 환경 설정에서 Tavily API 키 같은 외부 서비스 키를 환경 변수로 추가할 수 있다. 키를 저장하면 대시보드 세션이 초기화되어 비밀번호로 재로그인해야 하며, 간혹 키가 &quot;보이지 않음&quot;으로 표시되면 Hermes 앱을 재시작하면 해결된다. 재시작 후 실제로 Tavily 검색을 실행하자 Tavily 계정에서 크레딧 5개가 소모된 것이 확인되어 연동이 정상 작동함을 증명했다(<a href="https://youtu.be/gQef3d3erOs?t=701" target="_blank" rel="noopener">11:41</a> 부근). 마지막으로 화자는 무료 커뮤니티에서 제공하는 &#x27;그릴 미(Grill Me)&#x27; 스킬을 추가해 에이전트가 사용자에 대해 인터뷰하고 그 정보를 메모리에 저장하도록 하는 개인화 과정을 시연한다.</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>Hermes Agent는 자체 AI 모델을 갖지 않고 Claude, GPT, Gemini 등 기존 LLM을 감싸는 래퍼(wrapper) 형태의 에이전트 플랫폼이다. 사용자는 API 키를 직접 입력하거나, ChatGPT/Codex 같은 기존 구독을 그대로 연결해 추론 능력을 활용할 수 있다. 관리형 버전은 Hostinger가 인프라(컨테이너, 트래픽, 백업 등)를 자동으로 관리해 주는 대신 기본적으로 하나의 에이전트만 제공하고 설정 자유도가 제한적인 반면, VPS 버전은 사용자가 Docker, SSH, 환경 변수, 방화벽 규칙, 컨테이너 상태 관리를 직접 맡아야 하는 대신 여러 에이전트나 n8n 같은 다른 애플리케이션을 동일 서버에 함께 운영할 수 있다. 스킬 시스템은 YAML 프런트매터(이름, 사용 시점 등 메타데이터)와 본문 지침으로 구성되며, Claude Code 등에서 쓰는 스킬 파일을 그대로 복사해 붙여넣는 방식으로 이식할 수 있다. 환경 변수를 통한 외부 API(Tavily 등) 연동은 저장 시 대시보드 세션을 초기화시키는 특성이 있어, 키가 즉시 인식되지 않을 경우 앱 재시작이라는 별도 조치가 필요하다.</p>
+<p>이 구조가 의미 있는 이유는, 서버 운영 경험이 없는 일반 사용자도 &#x27;개인용 AI 운영체제&#x27;를 구축할 수 있게 진입장벽을 낮췄다는 점이다. 텔레그램이라는 이미 익숙한 채널을 인터페이스로 사용하고, 대시보드와 완전히 동기화되므로 PC와 모바일을 오가며 하나의 연속된 대화 맥락을 유지할 수 있다. 또한 예약 작업, 칸반 보드, 다중 하위 에이전트 할당 등 Claude Code나 Codex의 &#x27;루틴&#x27; 기능과 유사한 기능을 제공해, 코딩 에이전트에 익숙한 사용자가 위화감 없이 전환할 수 있도록 설계되어 있다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>이 영상이 보여주는 흐름은 AI 에이전트 인프라가 &#x27;개발자 전용 VPS 설정&#x27;에서 &#x27;누구나 몇 분 안에 쓰는 관리형 서비스&#x27;로 이동하고 있다는 신호다. 월 6달러라는 낮은 진입 비용과 원클릭 설치는 그동안 서버·Docker·SSH 지식 부족으로 개인 AI 비서 구축을 미뤄온 잠재 사용자층을 크게 넓힐 수 있다. 동시에 기존 ChatGPT/Codex 구독을 그대로 재사용할 수 있게 한 점은, 사용자가 API 종량 과금 대신 이미 지불 중인 구독을 활용해 추가 비용 부담 없이 에이전트를 운영할 수 있게 해준다는 점에서 실질적인 비용 효율 전략이다.</p>
+<p>다만 관리형 방식은 유연성과 맞바꾼 편의성이라는 점도 함께 읽어야 한다. 기본적으로 에이전트 하나만 제공되고 세부 서버 설정에 대한 통제권이 제한되므로, 여러 에이전트를 동시에 운영하거나 n8n 같은 별도 자동화 도구를 한 서버에 얹고 싶은 사용자는 결국 VPS로 이전해야 한다. 즉 이 영상은 &#x27;입문 단계에서는 관리형으로 시작하고, 필요에 따라 VPS로 확장한다&#x27;는 단계적 채택 전략을 암묵적으로 제시하고 있으며, 이는 개인 AI 인프라를 처음 구축하는 사람들에게 실질적인 의사결정 기준이 된다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>수행 작업</th></tr></thead><tbody><tr><td>1</td><td>Hostinger 계정 생성 → HPanel 접속</td></tr><tr><td>2</td><td>좌측 &#x27;AI 에이전트&#x27; 메뉴에서 Hermes Agent 선택 후 새 앱 다운로드</td></tr><tr><td>3</td><td>요금제 선택(AI 크레딧 옵션은 끄기 권장), 필요 시 쿠폰 &#x27;Nate Herc&#x27; 입력</td></tr><tr><td>4</td><td>AI 모델 연결 방식 선택: API 키 직접 입력 또는 ChatGPT 구독 로그인(코드 복사·붙여넣기)</td></tr><tr><td>5</td><td>텔레그램 BotFather에서 <code>/newbot</code>으로 봇 생성, 액세스 토큰을 Hostinger에 입력</td></tr><tr><td>6</td><td>텔레그램 &#x27;사용자 정보 봇&#x27;에서 사용자 ID 확인 후 Hostinger에 입력</td></tr><tr><td>7</td><td>텔레그램에서 봇과의 채팅 시작(활성화) → 실제 사용할 GPT 모델 선택</td></tr><tr><td>8</td><td>&#x27;앱 열기&#x27;로 대시보드 진입, 텔레그램과 대시보드 간 실시간 동기화 확인</td></tr><tr><td>9</td><td>필요한 스킬(Claude Code, Codex, GitHub 등) 온/오프 또는 커스텀 스킬(YAML) 추가</td></tr><tr><td>10</td><td>HPanel 환경 변수에 외부 API 키(Tavily 등) 추가 → 앱 재시작 → 기능 검증</td></tr><tr><td>11</td><td>&#x27;그릴 미&#x27; 스킬 추가로 에이전트가 사용자를 인터뷰하며 개인화 정보를 메모리에 축적</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li>서버·Docker·SSH 지식이 전혀 없는 1인 사업자나 프리랜서가 월 6달러 수준의 비용으로 텔레그램을 통해 언제 어디서나 접근 가능한 개인 AI 비서를 구축하는 경우.</li>
+<li>이미 GitHub에 개인 파일 구조, 프로젝트, 비즈니스 정보를 정리해 둔 사용자가 Hermes 에이전트에게 저장소를 학습시켜 자신의 맥락을 이해하는 맞춤형 비서로 활용하는 경우.</li>
+<li>Tavily 같은 외부 리서치 API를 연동해, 에이전트가 최신 정보(예: 음성 AI 에이전트 시장 동향)를 웹에서 조사하고 출처와 함께 보고하도록 활용하는 경우.</li>
+<li>예약 작업과 칸반 보드 기능을 이용해 여러 하위 에이전트에게 반복 업무를 할당하고 진행 상태를 한 화면에서 관리하는 경우.</li>
+<li>Excalidraw 다이어그램 작성처럼 기존에 Claude Code 등에서 쓰던 커스텀 스킬을 YAML 프런트매터 형식으로 그대로 이식해 Hermes에서도 동일하게 활용하는 경우.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>현재 Hermes Agent는 Hostinger를 통해 관리형(Managed)과 VPS 두 가지 배포 방식으로 제공되며, 이번 영상은 그중 진입장벽이 가장 낮은 관리형 방식에 초점을 맞췄다. 화자는 명시적으로 &quot;오늘은 기본 설정만 다뤘다&quot;고 밝히며, 시청자 반응에 따라 스킬 심화 활용이나 다양한 설정 방법을 다루는 후속 영상을 제작할 의향을 내비쳤다. 이는 Hermes/Hostinger 생태계가 아직 초기 소개 단계에 있으며, 향후 스킬 마켓플레이스 확장, 다중 에이전트 협업, 메모리·개인화 기능 고도화 등으로 콘텐츠가 이어질 가능성을 시사한다.</p>
+<p>전반적으로 이 사례는 개인용 AI 에이전트 인프라 시장이 클라우드 호스팅 업체(Hostinger)와 결합해 &#x27;원클릭 SaaS화&#x27;되는 흐름을 보여준다. VPS의 유연성과 관리형의 단순함 사이에서 사용자가 자신의 성장 단계에 맞춰 선택할 수 있는 구조가 자리 잡고 있으며, 텔레그램·ChatGPT 구독 등 기존에 널리 쓰이는 도구와의 연동이 채택을 가속하는 핵심 요인으로 작용하고 있다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>Hermes Agent</td><td>Hostinger에서 제공하는 AI 에이전트 플랫폼으로, Claude/GPT/Gemini 등 외부 LLM을 감싸 텔레그램 등과 연동되는 개인 비서를 구축하게 해주는 도구</td></tr><tr><td>VPS (Virtual Private Server)</td><td>가상 사설 서버. 사용자가 직접 구매·관리하며 루트 권한으로 자유롭게 설정할 수 있는 서버 호스팅 방식</td></tr><tr><td>Hostinger / HPanel</td><td>웹 호스팅 업체 Hostinger와 그 관리용 웹 인터페이스(대시보드) 이름</td></tr><tr><td>Docker</td><td>애플리케이션을 컨테이너 단위로 격리해 실행·배포하는 가상화 기술로, VPS 설정 시 직접 다뤄야 하는 요소 중 하나</td></tr><tr><td>SSH (Secure Shell)</td><td>원격 서버에 안전하게 접속해 명령을 실행하기 위한 프로토콜</td></tr><tr><td>BotFather</td><td>텔레그램에서 새로운 봇을 생성·관리할 수 있게 해주는 공식 관리용 봇</td></tr><tr><td>Codex</td><td>OpenAI가 제공하는 코딩 특화 AI 모델/도구로, 영상에서는 ChatGPT 구독을 통해 Hermes와 연결된다</td></tr><tr><td>Tavily</td><td>AI 에이전트가 웹 검색과 리서치를 수행할 수 있도록 지원하는 외부 검색 API 서비스</td></tr><tr><td>Agentic Mail</td><td>AI 에이전트 전용으로 발급되는 이메일 주소 기능으로, Hostinger 요금제에 포함될 수 있는 부가 서비스</td></tr><tr><td>환경 변수 (Environment Variable)</td><td>API 키 등 민감한 설정 값을 코드에 직접 넣지 않고 서버 환경에 별도로 저장해 애플리케이션이 참조하도록 하는 방식</td></tr><tr><td>YAML 프런트매터</td><td>문서/스킬 파일 맨 앞에 이름, 카테고리, 사용 시점 등 메타데이터를 구조화해 기술하는 형식</td></tr><tr><td>그릴 미(Grill Me) 스킬</td><td>에이전트가 사용자를 인터뷰하듯 질문해 개인 정보·목표·업무 맥락을 파악하고 메모리에 저장하게 하는 커스텀 스킬</td></tr><tr><td>칸반(Kanban) 보드</td><td>작업을 상태별(할 일/진행 중/완료 등) 카드로 배열해 진행 상황을 시각적으로 관리하는 보드 형식</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/gQef3d3erOs" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

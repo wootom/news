@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Pimax 드림 에어 SE 재점검 — 시야각은 고쳤지만 모션 블러라는 새 숙제"><title>Pimax 드림 에어 SE 재점검 — 시야각은 고쳤지만 모션 블러라는 새 숙제</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>MRTV - MIXED REALITY TV</span><span class="ey">MORNING DIGEST · 2026-08-28 · MRTV - MIXED REALITY TV</span><span class="chip">🎬 영상</span></div><h1>Pimax 드림 에어 SE 재점검 — 시야각은 고쳤지만 모션 블러라는 새 숙제</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>MRTV - MIXED REALITY TV (진행자: 세바스찬 앙)</td></tr><tr><td>제품명</td><td>Pimax 드림 에어 SE (Dream Air SE)</td></tr><tr><td>핵심 주제</td><td>신형 &quot;Pro Fit&quot; 안면 인터페이스 및 소프트웨어 업데이트가 기존 결함을 해결했는지 재검증</td></tr><tr><td>이전 문제점</td><td>좁은 시야각(리뷰어가 본 것 중 가장 좁음), 동공간거리(IPD) 보정 오차로 인한 눈 통증, 30분 착용 시 이마 통증, 인조가죽 재질 불호, 리뷰용 개체 자체가 초기 불량</td></tr><tr><td>이번 <span class="up">개선</span>점</td><td>시야각 확대(수평 103도·수직 92도), IPD 오프셋 문제 소프트웨어로 해결, 인터페이스 재질을 인조가죽에서 원단으로 변경, 상단 USB-C 포트 추가</td></tr><tr><td>새로 발견된 문제</td><td>밝기 향상 과정에서 상시 &quot;오버드라이브 모드&quot;가 적용되어 모션 블러가 심해짐, 사용자가 끌 수 없음</td></tr><tr><td>화자 배경</td><td>세바스찬 앙은 VR 헤드셋 추천 서비스(mrtv.co/advisor) 운영자이자, 경쟁 안면 인터페이스를 개발 중인 Avionic의 공동 창립자(이해상충 직접 고지)</td></tr><tr><td>가격/정책</td><td>라이트하우스(Lighthouse) 버전 899달러, 9월 15일까지 주문 시 무료 반품 가능</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>재검토 배경과 스포일러성 결론</strong>: 영상은 &quot;문제를 해결했나, 아니면 새 문제를 만들었나&quot;라는 질문으로 시작하며, 답은 &quot;둘 다&quot;라고 먼저 밝힌다(<a href="https://youtu.be/gkwGjLpSPo0?t=0" target="_blank" rel="noopener">00:00</a>). 초기 리뷰 당시 받은 제품은 아예 작동하지 않았고 동공간거리(IPD) 조절도 제대로 되지 않아 여러 문제가 겹쳤던 상황을 회고한다(<a href="https://youtu.be/gkwGjLpSPo0?t=69" target="_blank" rel="noopener">01:09</a>).</li>
+</ol>
+<ol>
+<li><strong>이전 세대 안면 인터페이스의 결함</strong>: 기존 인터페이스는 인조가죽 재질이었고, 30분 정도 착용하면 이마가 아파올 정도로 압박이 심했다. 무엇보다 눈과 렌즈 사이 거리가 멀어지는 구조여서 시야각이 좁아지는 근본 원인이었다(<a href="https://youtu.be/gkwGjLpSPo0?t=286" target="_blank" rel="noopener">04:46</a>).</li>
+</ol>
+<ol>
+<li><strong>신형 Pro Fit 인터페이스로 시야각 문제 해결</strong>: &quot;프로핏(Pro Fit)&quot;이라 명명된 신형 인터페이스는 이전보다 훨씬 얇아져 눈이 렌즈에 더 가까이 위치하게 됐고, 재질도 인조가죽 대신 원단으로 바뀌었다(<a href="https://youtu.be/gkwGjLpSPo0?t=176" target="_blank" rel="noopener">02:56</a>). 실제 착용 후 측정한 시야각은 수평 103도, 수직 92도로 이전의 &quot;미미한&quot; 수준에서 크게 <span class="up">개선</span>됐으며, 리뷰어는 이 부분에 대해서는 &quot;자신 있게 해결됐다&quot;고 평가한다(<a href="https://youtu.be/gkwGjLpSPo0?t=216" target="_blank" rel="noopener">03:36</a>).</li>
+</ol>
+<ol>
+<li><strong>착용감은 절반만 <span class="up">개선</span></strong>: 이마에 닿는 패드 면적이 넓어져 장시간 착용이 이전보다는 수월해졌지만, 얼굴에 직접 닿는 쿠션 자체는 리뷰어가 본 것 중 가장 얇은 축에 속해 편안함 면에서는 &quot;홈런까지는 아니다&quot;라고 평가한다. 다만 이 쿠션이 무료로 제공되며 기존 구매자·신규 구매자 모두 받을 수 있다는 점은 긍정적으로 언급한다.</li>
+</ol>
+<ol>
+<li><strong>소프트웨어 <span class="up">개선</span>과 새로운 모션 블러 문제</strong>: 소프트웨어에서도 동공간거리(IPD)를 실제 시력보다 4mm 더 크게 설정해야 했던 문제를 해결했다. 그러나 Pixx Play를 재설치하고 애리조나 선샤인 2 등을 플레이하는 과정에서 화면 밝기가 크게 향상된 대신, 항상 켜져 있는 &quot;오버드라이브&quot; 방식의 밝기 강화 모드 때문에 모션 블러가 심해지는 현상을 확인했다(<a href="https://youtu.be/gkwGjLpSPo0?t=423" target="_blank" rel="noopener">07:03</a>). 밝기를 좌우 각각 최대치인 <span class="dn">-5</span>까지 낮춰봐도 블러는 해결되지 않았고, 이를 끄거나 이전 모드로 되돌릴 옵션이 없다는 점을 문제로 지적한다(<a href="https://youtu.be/gkwGjLpSPo0?t=523" target="_blank" rel="noopener">08:43</a>).</li>
+</ol>
+<ol>
+<li><strong>가격 포지셔닝과 최종 판단</strong>: 라이트하우스 버전은 899달러로 드림 에어 2e보다 큰 화면을 제공하며, 디스플레이·렌즈는 동일하지만 업계 선두 토비(Tobii)의 향상된 시선 추적 기능을 탑재한다(<a href="https://youtu.be/gkwGjLpSPo0?t=597" target="_blank" rel="noopener">09:57</a>). 모션 블러 문제만 해결되면 &quot;가격 대비 최고의 만족도&quot;를 주는 헤드셋이 될 수 있다고 평가하되, 현재로서는 예산에 여유가 있다면 여전히 상위 모델 드림 에어를 권한다(<a href="https://youtu.be/gkwGjLpSPo0?t=628" target="_blank" rel="noopener">10:28</a>).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>드림 에어 SE는 Pimax의 경량·저가형 AR/VR 글래스 라인업으로, 무거운 헤드마운트 대신 안경형 폼팩터를 지향하는 제품이다. 이런 폼팩터에서는 안면 인터페이스(얼굴에 닿는 패드와 렌즈 지지 구조)의 형태가 곧 시야각(FOV)을 결정짓는 핵심 변수가 되는데, 영상에서 확인된 것처럼 눈과 렌즈 사이 거리(eye relief)가 조금만 멀어져도 시야각이 급격히 좁아진다. 신형 Pro Fit 인터페이스는 이 거리를 줄이는 얇은 구조로 설계되어 수평 103도·수직 92도까지 시야각을 확보했다.</p>
+<p>동공간거리(IPD, 좌우 눈 사이 거리) 보정 역시 광학계 정합에 중요한 요소로, 기존에는 소프트웨어상 실제 IPD보다 4mm 더 크게 설정해야 눈의 피로를 줄일 수 있었던 임시방편이 있었는데 이번 업데이트로 근본 수정됐다.</p>
+<p>밝기와 모션 블러의 트레이드오프는 디스플레이 구동 방식과 관련이 깊다. 영상에서는 이를 &quot;오버드라이브 모드&quot;에 비유하는데, 이는 모니터 업계에서 픽셀 응답속도를 인위적으로 가속해 잔상(고스팅)을 줄이는 대신 오버슈트로 인한 블러나 이중상이 생기는 현상과 유사한 원리로, 픽셀이 더 오래 빛나도록(발광 지속시간 연장) 만들어 밝기를 높이는 방식이 오히려 움직이는 화면에서 잔상을 유발한 것으로 추정된다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>AR/VR 글래스 시장에서 폼팩터(경량화)와 광학 품질(시야각·밝기·선명도) 사이의 트레이드오프는 지속적인 난제다. Pimax가 사후 교체 가능한 액세서리(Pro Fit 인터페이스) 형태로 핵심 결함인 좁은 시야각을 해결했다는 점은, 하드웨어를 재설계하지 않고도 기존 구매자에게 무상으로 업그레이드를 제공할 수 있다는 점에서 제조사의 기민한 사후 대응 사례로 볼 수 있다.</p>
+<p>반면 밝기를 <span class="up">개선</span>하는 과정에서 예기치 않게 모션 블러라는 새 결함이 발생하고, 이를 끌 수 있는 옵션조차 없다는 점은 소프트웨어 검증(QA) 프로세스의 허점을 드러낸다. 리뷰어는 &quot;어떻게 이런 실수를 반복하는지 놀랍다&quot;고 직접적으로 비판하는데, 이는 저가형 라인업일수록 하드웨어 <span class="up">개선</span> 속도에 비해 소프트웨어 완성도 관리가 뒤처질 수 있음을 시사한다.</p>
+<p>또한 899달러대 라이트하우스 버전이 토비(Tobii)의 시선 추적 기능까지 포함한다는 점은, 파운드리·눈 추적 등 프리미엄 기능이 보급형 가격대로 빠르게 내려오고 있는 XR 하드웨어 시장의 전반적 흐름을 보여준다. 다만 이 흐름이 실제 사용자 경험의 완성도로 이어지려면 시야각 같은 스펙 <span class="up">개선</span>뿐 아니라 모션 블러 같은 실사용 디테일까지 함께 검증돼야 한다는 점을 이 리뷰가 재확인시켜준다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>이전 (초기 인터페이스)</th><th>현재 (Pro Fit 인터페이스)</th></tr></thead><tbody><tr><td>시야각(FOV)</td><td>매우 좁음(리뷰어가 본 것 중 최악 수준)</td><td>수평 103도 · 수직 92도로 대폭 <span class="up">개선</span></td></tr><tr><td>재질</td><td>인조가죽, 30분 착용 시 이마 통증</td><td>원단 소재, 이마 접촉면 확대로 장시간 착용 <span class="up">개선</span></td></tr><tr><td>얼굴 쿠션 두께</td><td>상대적으로 두꺼움(그러나 통증 유발)</td><td>매우 얇음(편안함 면에서는 아쉬움 남음)</td></tr><tr><td>눈-렌즈 거리</td><td>멀어서 시야각 저하 원인</td><td>가까워져 시야각 <span class="up">개선</span>에 직접 기여</td></tr><tr><td>동공간거리(IPD) 보정</td><td>실제보다 <span class="up">+4</span>mm 오프셋 필요, 눈 피로 유발</td><td>소프트웨어 수정으로 오프셋 불필요</td></tr><tr><td>화면 밝기</td><td>상대적으로 어두움, 모션 블러 없음</td><td>크게 밝아짐, 대신 상시 모션 블러 발생</td></tr><tr><td>포트</td><td>-</td><td>상단 USB-C 포트 추가로 편의성 <span class="up">개선</span></td></tr><tr><td>반품 정책</td><td>-</td><td>9월 15일까지 주문 시 무료 반품 가능</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>예산 제약이 있는 입문 VR 사용자</strong>: 상위 모델 드림 에어(약 2,000달러)에 비해 최대 1,000달러 선에서 구매 가능한 드림 에어 SE는, 예산이 빠듯하지만 향상된 시야각과 시선 추적 기능을 원하는 사용자에게 가격 대비 만족도가 높은 선택지가 될 수 있다(단, 모션 블러 문제 해결 이후를 전제로 함).</li>
+<li><strong>모션 블러에 둔감한 캐주얼 사용자</strong>: 리뷰어 스스로도 모션 블러에 민감하지 않은 편이라 밝히면서도 &quot;이 정도는 심하다&quot;고 평가할 만큼 블러가 두드러지므로, 빠른 시점 이동이 적은 콘텐츠(정적인 시뮬레이터, 캐주얼 게임)를 주로 즐기는 사용자라면 현재 상태로도 체감이 덜할 수 있다.</li>
+<li><strong>기존 드림 에어 SE 소유자의 업그레이드</strong>: 이미 제품을 구매한 사용자는 무료로 신형 Pro Fit 인터페이스를 받을 수 있으므로, 착용감과 시야각 <span class="up">개선</span>을 추가 비용 없이 체험할 수 있는 시나리오다.</li>
+<li><strong>구매 보류 후 소프트웨어 업데이트 관망</strong>: 모션 블러 문제에 민감한 사용자는 Pimax가 밝기 강화(오버드라이브) 모드를 끄거나 이전 모드로 되돌릴 수 있는 옵션을 추가하는 후속 업데이트가 나올 때까지 구매를 보류하는 것이 합리적인 선택으로 제시된다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>현재 시점에서 드림 에어 SE는 &quot;시야각 문제는 완전히 해결, 착용감 문제는 절반만 해결, 모션 블러라는 새로운 문제가 등장&quot;한 상태로 요약된다. 리뷰어는 이 세 가지 축 중 가장 치명적이었던 시야각이 해결된 것을 가장 크게 평가하면서도, 모션 블러가 해결되지 않는 한 무조건적인 추천은 유보한다.</p>
+<p>전망 측면에서 리뷰어는 Pimax가 모션 블러 문제(오버드라이브 모드를 끌 수 있는 옵션 제공 등)를 해결한다면 즉시 추가 영상을 통해 재평가하겠다고 예고했다. 즉 이 리뷰는 최종 결론이 아니라 &quot;현재진행형 <span class="up">개선</span> 과정&quot;의 중간 점검이며, 소프트웨어 업데이트만으로 <span class="up">개선</span> 여지가 남아있다는 점에서 구매를 서두르기보다 후속 업데이트를 지켜보는 것이 안전하다는 뉘앙스로 마무리된다. 9월 15일까지 무료 반품이 가능하다는 정책은 이런 불확실성 속에서 구매 장벽을 낮추는 장치로 해석된다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>FOV (시야각, Field of View)</td><td>헤드셋을 착용했을 때 눈으로 볼 수 있는 화면의 각도 범위. 넓을수록 몰입감이 높아짐</td></tr><tr><td>IPD (동공간거리, Interpupillary Distance)</td><td>좌우 눈동자 사이의 거리. 헤드셋 렌즈 간격을 이 값에 맞춰야 초점이 맞고 눈의 피로가 줄어듦</td></tr><tr><td>Pro Fit</td><td>Pimax가 드림 에어 SE에 새로 도입한 안면 인터페이스(얼굴에 닿는 패드+렌즈 지지 구조) 명칭</td></tr><tr><td>오버드라이브 모드</td><td>픽셀 발광 시간을 늘려 화면 밝기를 높이는 구동 방식. 모니터 업계의 응답속도 가속 기법과 유사한 개념으로, 밝기는 높아지지만 움직이는 화면에서 잔상(모션 블러)이 커질 수 있음</td></tr><tr><td>모션 블러 (Motion Blur)</td><td>화면이 빠르게 움직일 때 상이 흐릿하게 번지거나 잔상이 남는 현상</td></tr><tr><td>라이트하우스(Lighthouse) 버전</td><td>드림 에어 SE의 상위 트림으로, 899달러에 판매되며 향상된 시선 추적 기능(토비 탑재)을 제공</td></tr><tr><td>토비(Tobii)</td><td>시선 추적(eye tracking) 기술 분야의 시장 선두 기업</td></tr><tr><td>Avionic</td><td>리뷰어 세바스찬 앙이 공동 창립자로 참여 중인 회사로, 별도의 안면 인터페이스 제품을 자체 개발 중</td></tr><tr><td>Pixx Play</td><td>Pimax 헤드셋용 콘텐츠 실행 소프트웨어(플레이어 앱)</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/gkwGjLpSPo0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>MRTV - MIXED REALITY TV · 2026-08-28</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
