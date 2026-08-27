@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코딩 에이전트로 SaaS 없이 만든 &#x27;올인원 비즈니스 컨트롤타워&#x27; 무료 대시보드"><title>코딩 에이전트로 SaaS 없이 만든 &#x27;올인원 비즈니스 컨트롤타워&#x27; 무료 대시보드</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">MORNING DIGEST · 2026-08-27 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>코딩 에이전트로 SaaS 없이 만든 &#x27;올인원 비즈니스 컨트롤타워&#x27; 무료 대시보드</h1></header><main class="grid"><section class="card s12" id="s1"><h2><span class="seq">01</span>핵심 개요 (표)</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>채널</td><td>Matt Wolfe (구독자 약 100만 명 돌파 시점 공개 영상)</td></tr><tr><td>핵심 주제</td><td>코딩 에이전트(ChatGPT Codex)로 유료 SaaS 없이 개인용 &#x27;올인원 비즈니스 대시보드&#x27;를 직접 만드는 방법</td></tr><tr><td>앱/도구명</td><td>Wolf Control Tower(원본, 저자 개인용) → 이 영상에서 새로 만드는 버전은 &quot;Control Center&quot;</td></tr><tr><td>핵심 기능</td><td>업계 뉴스 큐레이션, 브랜드/개인명 언급 추적(구글 알리미 대체), 뉴스레터 자동 요약, 소셜 오디언스 성장 추적, 할 일 목록, 다크모드</td></tr><tr><td>사용 도구</td><td>ChatGPT 앱의 Codex(코딩 에이전트), GPT-5.6 계열 모델(고성능/저성능 혼용), Google OAuth(Gmail 연동), GitHub(배포)</td></tr><tr><td>화자 배경</td><td>AI 뉴스 큐레이션 유튜버(매주 금요일 AI 뉴스 총정리 영상 제작), futuretools.io 운영자</td></tr><tr><td>배포 방식</td><td>GitHub 공개 저장소(github.com/MrEFlow/control-center), 로컬 실행 또는 ChatGPT Pro 서버 호스팅</td></tr><tr><td>비용</td><td>무료(단, AI 요약 고도화를 위해 선택적으로 OpenAI/Anthropic/Gemini/Grok API 키 또는 로컬 모델 연결 가능)</td></tr></tbody></table></div></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 기능/내용 구조</h2><ol>
+<li><strong>업계 뉴스(Industry) 탭 — 우선순위 기반 뉴스 큐레이션</strong>: OpenAI, Anthropic, DeepMind 같은 특정 소스와 &quot;AI&quot;, &quot;머신러닝&quot;, &quot;뉴럴 네트워크&quot; 같은 키워드를 설정해두면, 관련 기사를 자동으로 긁어와 중요도순으로 정렬해 보여준다(<a href="https://youtu.be/rKo9iLGjUbs?t=242" target="_blank" rel="noopener">242초</a>). 최신순, 오래된순, 관심 사이트 우선순 정렬도 가능하며, 읽은 기사는 리마인더로 저장하거나 보관(archive) 처리할 수 있다. 초기 버전은 22개 기사를 노출했다.</li>
+</ol>
+<ol>
+<li><strong>멘션(Mentions) 탭 — 구글 알리미보다 똑똑한 브랜드/개인명 추적</strong>: 자신의 이름이나 브랜드명이 언급된 글을 찾아주되, 동명이인(예: 골프선수 Matt Wolf, 부동산 중개인 Matt Wolf)이나 무관한 콘텐츠(넷플릭스 드라마 속 &#x27;Matt Wolf&#x27;라는 캐릭터)는 필터링하는 &#x27;아이덴티티 인지형 필터링&#x27;을 갖췄다(<a href="https://youtu.be/rKo9iLGjUbs?t=576" target="_blank" rel="noopener">576초</a>). 실제로 팟캐스트 출연분을 정확히 자신에 관한 콘텐츠로 식별해 고신뢰도로 표시하는 장면이 나온다.</li>
+</ol>
+<ol>
+<li><strong>뉴스레터(Newsletters) 탭 — 이메일 뉴스레터 자동 리딩 &amp; 중복 제거</strong>: Google OAuth로 전용 Gmail 계정(뉴스레터 전용으로 만든 별도 계정)을 연결하면, 구독 중인 모든 AI 뉴스레터(The Rundown, TLDR, Superhuman, AI Pulse 등)를 읽어 기사 단위로 취합하고 중복 보도를 하나로 합쳐준다(<a href="https://youtu.be/rKo9iLGjUbs?t=732" target="_blank" rel="noopener">732초</a>, 설정 방법은 <a href="https://youtu.be/rKo9iLGjUbs?t=815" target="_blank" rel="noopener">815초</a> 부근). 초기엔 단순히 이메일만 감지했지만, 41분짜리 추가 프롬프트 이후 이메일 본문까지 읽어 뉴스로 재구성하도록 <span class="up">개선</span>됐다(<a href="https://youtu.be/rKo9iLGjUbs?t=898" target="_blank" rel="noopener">898초</a>). 시연 시점 기준 뉴스레터 48건에서 156개의 유효 스토리를 중복 제거해 추출했다.</li>
+</ol>
+<ol>
+<li><strong>오디언스(Audience) 탭 — 소셜미디어 성장 통합 추적</strong>: YouTube, X, Instagram, Facebook, LinkedIn, Threads, TikTok 등 여러 플랫폼의 프로필(다중 계정 등록 가능)을 연결하면 각 채널의 팔로워 수와 전일 대비 성장률, 합산 구독자 수를 보여준다(<a href="https://youtu.be/rKo9iLGjUbs?t=654" target="_blank" rel="noopener">654초</a>). 후속 업데이트에서는 파이 차트(플랫폼별 비중), 채널별 성장 추세 미니 그래프 등 시각화가 추가됐다.</li>
+</ol>
+<ol>
+<li><strong>할 일 목록(Tasks) 탭 — 반복/단발 작업 관리</strong>: 매일 반복되는 작업(예: &quot;업계 뉴스 검토&quot;)은 완료 시 자동으로 다음 날짜의 새 작업으로 재생성되고, 단발성 작업(예: &quot;Dave가 보낸 계약서 검토&quot;)은 체크 시 완료 목록으로 이동한다. 오늘 처리해야 할 작업 대비 완료율(%)도 표시된다.</li>
+</ol>
+<ol>
+<li><strong>투데이(Today) 탭 — 데일리 브리핑 요약 화면</strong>: 대시보드 진입 시 첫 화면으로, 업계 뉴스·멘션·뉴스레터 각각에서 가장 중요한 5건씩을 자동으로 뽑아 한 곳에 모아 보여주도록 후속 업데이트됐다(<a href="https://youtu.be/rKo9iLGjUbs?t=1308" target="_blank" rel="noopener">1308초</a>).</li>
+</ol></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기술적 맥락</h2><p>이 대시보드는 전통적인 개발 프로세스 없이 ChatGPT 앱의 코딩 에이전트인 Codex를 사용해 처음부터 끝까지 대화형 프롬프트만으로 제작됐다. 저자는 초기 뼈대(bones)를 잡을 때는 가장 성능이 좋은 모델(영상 내 &quot;5.6 소울 하이&quot;로 언급, GPT-5.6 계열의 고성능 추론 모델을 지칭하는 것으로 보임)을 쓰고, 이후 세부 기능을 다듬을 때는 더 가벼운 모델로 전환하는 전략을 권장한다. 실제 빌드는 초기 15분짜리 뼈대 작업 이후, 20분·23분·31분·2시간 37분짜리 후속 프롬프트가 이어지는 등 총 몇 시간에 걸친 반복 수정으로 완성됐다.</p>
+<p>뉴스레터 연동에는 Google Cloud Console에서 발급하는 OAuth 클라이언트 ID/시크릿이 필요하며, 이를 로컬 앱(control center)의 리디렉션 URI에 등록해 Gmail API 접근 권한을 부여하는 구조다. 저장은 저자 컴퓨터의 로컬 폴더에 프로젝트로 생성되며, 실행은 로컬호스트(localhost) 기반이다. 코드는 GitHub(github.com/MrEFlow/control-center)에 공개되어 있어, 저장소 URL만 있으면 Codex(또는 Claude Code 등 다른 코딩 에이전트)에 &quot;이 저장소를 클론해줘&quot;라고 지시하는 것만으로 동일한 앱을 자신의 컴퓨터에 설치할 수 있다. 클론에는 약 7초, 의존성 설치와 로컬 실행에는 약 2분 30초가 걸렸다고 시연됐다.</p>
+<p>AI 기반 요약·중요도 판단은 기본값으로는 비활성화되어 있으며(AI 없이도 전체 기능 동작), 사용자가 OpenAI·Anthropic·Google Gemini·xAI(Grok) 중 하나의 API 키를 직접 발급해 연결하면 활성화된다. 완전 오프라인 운용을 원하는 사용자를 위해 LM Studio나 Ollama 같은 로컬 모델 연동 옵션도 추가됐다. OpenAI 연결 시 기본 모델은 비용 대비 성능 균형을 이유로 GPT-5 Mini가 채택되어 있으나, 더 강력한 모델(GPT-5.6 Soul 등)로 교체할 수도 있다.</p></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><p>저자는 영상 서두에서 &quot;이미지·영상 생성 모델이나 최신 LLM들이 이제는 그저 점진적 <span class="up">개선</span>처럼 느껴져 지루하다&quot;고 말하며, 대신 AI로 실질적인 도구·워크플로우·맞춤형 앱을 직접 만드는 데서 흥분을 느낀다고 밝힌다. 동시에 &quot;SaaS 비즈니스는 AI 시대에 <span class="dn">위기</span>에 처할 수 있다&quot;는 진단을 내린다. 이는 코딩 에이전트가 충분히 발전하면, 개인이나 소규모 팀이 자신에게 딱 맞는 도구를 몇 시간 만에 직접 만들어 구독료 없이 쓸 수 있게 된다는 시사점을 담고 있다. 실제로 이 영상에서 소개된 대시보드는 뉴스 큐레이션 SaaS, 소셜 리스닝/브랜드 모니터링 SaaS(구글 알리미의 유료 대체재), 뉴스레터 요약 SaaS, 소셜 오디언스 분석 SaaS, 할 일 관리 앱 등 여러 카테고리의 유료 서비스 기능을 한 무료 오픈소스 앱에 통합한 사례로 제시된다.</p>
+<p>또한 이 사례는 &quot;바이브 코딩(vibe coding)&quot;이 단발성 데모를 넘어 실사용 가능한 개인 생산성 인프라로 확장되고 있음을 보여준다. 저자는 이 대시보드를 실제로 자신의 업무에서 &quot;하루 종일 켜두는 단일 탭&quot;으로 쓰고 있다고 밝혀, 단순한 기술 시연이 아니라 실전 운영 도구임을 강조한다. 코드를 GitHub에 무료 공개함으로써, 시청자가 처음부터 다시 만들 필요 없이 즉시 복제해 자신의 산업/관심사에 맞게 커스터마이징할 수 있다는 점도 확산성을 높이는 요소다.</p></section><section class="card s12" id="s5"><h2><span class="seq">05</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>내용</th></tr></thead><tbody><tr><td>1. 프로젝트 생성</td><td>ChatGPT 앱에서 Codex 진입 → 새 로컬 프로젝트 생성 → 소스 폴더 지정(예: <code>code/control-center</code>)</td></tr><tr><td>2. 초기 프롬프트</td><td>&quot;업계 뉴스 대시보드, 리마인더 섹션, 소셜 오디언스 트래커, 뉴스레터 페이지, 할 일 목록을 각각 별도 탭으로 만들어줘. Granola/Gmail/Google Calendar/Slack 등 연결된 플러그인에 접근 가능하게 해줘&quot;라는 취지로 뼈대를 요청(고성능 모델 사용)</td></tr><tr><td>3. 반복 수정</td><td>동작하지 않는 부분(링크, 뉴스레터 설정 등)을 발견할 때마다 추가 프롬프트로 수정 지시 → 수 시간에 걸쳐 세부 기능 완성, 다크모드 등 누락 기능도 추가</td></tr><tr><td>4. 설정(Settings) 페이지 튜닝</td><td>업계 관심사(트래킹 소스, 키워드, 목표 기사 수, 제외 주제) / 멘션 대상(이름, 브랜드, 공식 사이트, 제외 대상) / 오디언스 SNS 계정 / (선택) AI API 키 입력</td></tr><tr><td>5. 뉴스레터 연동</td><td>Google Cloud Console에서 OAuth 클라이언트 생성 → 리디렉션 URI 등록 → 클라이언트 ID/시크릿을 앱에 입력 → 뉴스레터 전용 Gmail 계정 선택</td></tr><tr><td>6. 배포/재사용</td><td>GitHub 저장소 URL을 코딩 에이전트에 전달해 &quot;clone&quot; 지시 → 의존성 설치 및 로컬 실행 지시 → (선택) ChatGPT Pro 계정으로 ChatGPT 서버에 배포해 어디서든 접속 가능한 URL 확보</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ol>
+<li><strong>1인 크리에이터/인플루언서의 브랜드 모니터링</strong>: 자신의 이름·채널명·소셜 핸들이 언급된 콘텐츠를 동명이인 없이 정확히 걸러내는 개인용 구글 알리미 대체 도구로 활용. 유료 소셜 리스닝 툴 구독을 대체할 수 있다.</li>
+<li><strong>업종별 뉴스 큐레이터 구축</strong>: 특정 산업(예: 핀테크, 헬스케어, 게임)에 특화된 소스와 키워드를 설정해, 매일 아침 가장 중요한 뉴스만 우선순위순으로 훑어보는 개인 뉴스룸을 만들 수 있다.</li>
+<li><strong>뉴스레터 다이어트</strong>: 수십 개의 업계 뉴스레터를 구독하지만 다 읽을 시간이 없는 사람이, 전용 Gmail 계정으로 뉴스레터만 모아 받고 이 도구가 자동으로 중복 제거·요약해주는 용도로 사용.</li>
+<li><strong>팀/에이전시의 클라이언트별 소셜 오디언스 리포팅</strong>: 여러 SNS 계정(다중 클라이언트 포함)을 한 화면에서 성장률과 함께 추적해 별도 유료 애널리틱스 툴 없이 리포트를 만들 수 있다.</li>
+<li><strong>비개발자의 맞춤형 내부 도구 제작 학습 사례</strong>: 코딩 경험이 없어도 자연어 프롬프트만으로 실사용 가능한 웹앱을 처음부터 만들 수 있음을 보여주는 실습 템플릿으로, 다른 종류의 개인화 대시보드(예: 재무 관리, 독서 트래커) 제작에도 응용 가능하다.</li>
+</ol></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><p>영상 공개 시점 기준으로 이 대시보드는 이미 저자가 실제 업무에서 매일 사용하는 도구로 자리 잡았으며, 영상 녹화 이후에도 계속 기능이 추가되고 있다고 밝힌다(투데이 탭 자동 요약, 멘션 페이지 AI 요약·우선순위 정렬, 오디언스 페이지 차트 시각화, Grok·로컬 모델(LM Studio/Ollama) 지원 추가 등). 저자는 &quot;GitHub에서 다운로드하는 시점의 버전이 영상에서 보여준 것보다 더 나을 수도 있다&quot;고 언급할 정도로 지속적인 업데이트를 예고한다.</p>
+<p>또한 로컬 실행의 한계(한 대의 컴퓨터에서만 접근 가능, 매번 로컬호스트를 켜야 함)를 보완하기 위해, ChatGPT Pro/유료 플랜 사용자는 별도 비용 없이 ChatGPT 서버에 앱 전체를 배포해 어디서든(모바일, 다른 컴퓨터) 접속 가능한 URL을 받을 수 있는 방법도 함께 소개된다(배포에 약 21분 소요, ChatGPT 로그인으로 접근 제한). 이는 개인 프로젝트 수준의 바이브 코딩 결과물이 별도의 클라우드 인프라 구축 없이도 실서비스처럼 배포될 수 있음을 보여주는 사례로, 향후 코딩 에이전트와 호스팅 플랫폼의 결합이 개인 SaaS 대체 흐름을 더 가속할 가능성을 시사한다.</p></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody><tr><td>Codex</td><td>ChatGPT 앱 내에 통합된 코딩 에이전트로, 자연어 프롬프트를 받아 실제 코드를 작성·수정·실행하는 도구</td></tr><tr><td>바이브 코딩(vibe coding)</td><td>개발자가 코드를 직접 작성하지 않고 AI에게 원하는 결과를 자연어로 설명해 앱을 만들어가는 개발 방식</td></tr><tr><td>OAuth (클라이언트 ID/시크릿)</td><td>사용자의 로그인 정보를 노출하지 않고 제3자 앱이 Gmail 등 구글 서비스에 접근할 수 있도록 허용하는 인증 표준 및 그 접속 키</td></tr><tr><td>아이덴티티 인지형 필터링(identity-aware filtering)</td><td>동명이인이나 무관한 콘텐츠를 구분해 진짜 자신/브랜드에 관한 언급만 걸러내는 필터링 방식</td></tr><tr><td>로컬호스트(localhost)</td><td>외부 서버가 아닌 자신의 컴퓨터 안에서 실행되는 웹 서비스 주소로, 해당 컴퓨터에서만 접속 가능</td></tr><tr><td>LM Studio / Ollama</td><td>클라우드 API 없이 자신의 컴퓨터에서 오픈소스 LLM을 직접 실행할 수 있게 해주는 로컬 AI 실행 도구</td></tr><tr><td>Grok</td><td>xAI가 개발한 대화형 AI 모델로, 이 대시보드에서 선택 가능한 AI 제공자 중 하나로 추가됨</td></tr><tr><td>GPT-5 Mini</td><td>OpenAI의 경량화된 모델로, 이 대시보드의 AI 자동화 기본값으로 설정되어 비용과 성능의 균형을 맞춤</td></tr><tr><td>Granola</td><td>회의록/노트 작성을 돕는 AI 도구로, 대시보드 초기 프롬프트에서 연동 대상으로 언급됨</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/rKo9iLGjUbs" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-08-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
