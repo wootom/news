@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="UploadVR의 마이크 존슨과 제임스 타키오가 최근 2주간 VR 게임 소식을 정리하고, 4개월 남은 2026년 가을 VR 라인업과 하드웨어 전망을 짚는다. 핵심은 &quot;올해는 압도적인 텐트폴 타이틀은 없지만, 괜찮은 게임은 꽤 많다&quot;는 것."><title>VR 게임의 가을 — 텐트폴은 없지만 물량은 있다 (UploadVR Gamescast)</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>UploadVR</span><span class="ey">MORNING DIGEST · 2026-08-31 · UploadVR</span><span class="chip">🎬 영상</span></div><h1>VR 게임의 가을 — 텐트폴은 없지만 물량은 있다 (UploadVR Gamescast)</h1><p class="lead">UploadVR의 마이크 존슨과 제임스 타키오가 최근 2주간 VR 게임 소식을 정리하고, 4개월 남은 2026년 가을 VR 라인업과 하드웨어 전망을 짚는다. 핵심은 &quot;올해는 압도적인 텐트폴 타이틀은 없지만, 괜찮은 게임은 꽤 많다&quot;는 것.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>최근 2주 소식 모음</h2><ul>
+<li><strong>Supernatural 독립 재출시</strong>: 메타가 올해 초 여러 퍼스트파티 스튜디오(카모플라지·산자루·아마추어 등)를 정리하면서, 피트니스 앱 Supernatural 개발사 Within만은 완전히 폐쇄하지 않고 IP를 돌려주며 독립을 허용했다. 200명대였던 팀이 15명 수준으로 줄었지만, 구독 기반 수익모델 덕에 원타임 구매작(배트맨 등)보다 독립 생존 가능성이 높다는 평가.</li>
+<li><strong>Garden of the Sea 플랫스크린 이식 실패 — 실제 수치 공개</strong>: 코지 라이프심 VR작을 스팀 플랫버전으로 이식했으나, CEO가 LinkedIn에 직접 성적을 공개. VR판은 제작비 92만 달러로 186만 달러를 벌어 두 배 수익을 냈지만, 플랫판은 제작비 34.9만 달러에 매출 37만 달러로 사실상 손익분기점 수준. VR 전용 스토어 페이지를 별도로 만들어 발견성이 떨어졌고, 마케팅에도 VR 풋티지를 그대로 써 &#x27;이거 VR게임 아니야?&#x27;라는 오해를 산 점이 원인으로 꼽혔다.</li>
+<li><strong>Demeo 세 번째 캠페인 유료화 논쟁</strong>: 9월 22일 출시하는 3번째 캠페인 &#x27;Twilight&#x27;s End&#x27;가 9.99달러 — 1회성 콘텐츠에 유료 과금이라는 비판이 있었지만, 진행자들은 &quot;개발자도 먹고 살아야 한다&quot;며 옹호.</li>
+<li><strong>레이오프</strong>: 20년 역사의 Shell Games(Among Us 3D, I Expect You To Die 제작사)가 사상 첫 정리해고를 발표 — 2026년 VR 업계 레이오프 목록에 또 하나 추가.</li>
+<li>기타: Into the Radius 2가 Quest 얼리액세스를 벗어나 정식 출시(PSVR2도 곧 출시), Light Brigade가 개발 지원 종료(무료 업데이트 5회 제공 후 개발사는 플랫 신작으로 이동).</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>Payday: Aces High 실플레이 후기</h2><ul>
+<li>8월 12일 개발사 Bash Brothers Games와 함께 실제 강도 미션(금고 드릴링)을 플레이한 소감 — &quot;영화처럼 연출된 게 아니라, 정말로 강도 영화 속에 들어가 있는 느낌&quot;이라는 평가. 한 번의 강도 임무에 약 25분 소요, 숙련되면 20분 내외로 단축 가능해 &#x27;짧고 굵은&#x27; 반복 플레이 루프에 적합.</li>
+<li>금고 암호 위치·건물 진입 경로·NPC 배치가 매번 무작위로 바뀌는 절차적 요소가 내장돼 재플레이성을 높인다.</li>
+<li>조준 시 미묘한 보정(에임 어시스트)이 있지만 과하지 않게 균형이 잡혀 있어 &#x27;내가 잘해서 헤드샷을 맞힌&#x27; 느낌을 해치지 않는다는 평.</li>
+<li>현재 VR 커뮤니티에서 사실상 올해의 최고 기대작 후보로 꼽히지만, 진행자들은 &quot;GTA6급 텐트폴&quot;이라는 무게를 지우고 싶지는 않다고 선을 그었다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>2026년 가을 VR 신작 라인업</h2><ul>
+<li>Knight of Fiona(9월 3일): 퀘스트·스팀 무료 출시 + 18.99달러 스토리 패스로 캠페인 콘텐츠 언락. 플레이어 수 확보를 우선한 결정이라 스토리 캠페인 리소스가 줄어들지 않을지 우려가 제기됨.</li>
+<li>Hot Dogs, Horseshoes and Hand Grenades 2, XREAL Games의 Covert(택티컬 슈터, 사실상 개점휴업 상태인 Onward의 빈자리를 메울 후보)와 Zero Caliber: Frost Bite(파크라이풍) 등 슈터 다수.</li>
+<li>비(非)슈터 계열: Knight of Fiona, Battle of Mark Peace 등도 함께 출시 예정.</li>
+<li>Flat2VR Vault: PSVR2용 좀비 협동 슈터 &#x27;Drop the Cabin&#x27;을 필두로, 소니 前 임원 슈헤이 요시다 등 유명 플레이스테이션 유튜버를 앞세운 마케팅 캠페인 시작 — 아직 공개 안 된 3개 타이틀에 대한 기대감 조성.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>하드웨어 전망</h2><ul>
+<li><strong>밸브 Steam Frame</strong>: &quot;지금 VR 업계에서 가장 기대되는 하드웨어&quot;로 꼽힘. 메타 생태계에 대한 거부감이 있던 잠재 유저층을 끌어들일 것으로 기대되며, 이미 스팀 검증(Verified) VR 게임이 50종 이상 확보돼 스팀 라이브러리를 그대로 활용 가능하다는 점이 강점. 정확한 가격·출시일은 아직 미공개.</li>
+<li><strong>메타</strong>: 커넥트(Connect) 행사에서 신형 웨어러블(글래스 혹은 헤드셋) 공개가 유력, 관련 루머를 정리한 5,000단어 분량의 자체 기사도 소개.</li>
+<li><strong>Pico</strong>: 신형 헤드셋 발표 행사를 계획했다가 돌연 4분기로 연기 — &quot;기회를 살리기 위해서&quot;라는 모호한 해명에 진행자들은 사실상 문제 해결을 위한 지연으로 해석.</li>
+<li><strong>부품가 <span class="up">상승</span> 이슈</strong>: 엔비디아 실적발표에서 부품 가격 <span class="up">상승</span>이 언급된 것과 관련해, RAM·GPU 가격 급등이 PCVR 고사양 헤드셋(Pimax 등)을 소비자 가격대에서 더 멀어지게 만들 수 있어, 오히려 올인원 스탠드얼론 헤드셋의 중요성이 커질 수 있다는 전망이 나왔다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>시사점</h2><ul>
+<li>올해는 지난해 데드풀급 &#x27;텐트폴&#x27; 단일 타이틀은 없지만, Payday: Aces High를 필두로 한 신작 물량과 Steam Frame이라는 하드웨어 이벤트가 가을 VR 업계 모멘텀을 이끌 전망이다.</li>
+<li>Garden of the Sea 사례는 VR 전용으로 설계된 게임을 플랫스크린으로 그대로 이식하는 전략의 한계를 보여준다 — 발견성과 인터랙션 설계 모두 VR과 플랫은 다른 접근이 필요하다.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/5U9GsMSlZsQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>UploadVR · 2026-08-31</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

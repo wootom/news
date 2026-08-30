@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="안될공학(패치)이 삼성·SK하이닉스·샌디스크가 밀고 있는 차세대 메모리 HBF(High Bandwidth Flash)의 핵심 리스크를 짚는다. 대역폭 스펙보다 &#x27;낸드를 GPU 옆 뜨거운 곳에서 몇 년간 안정적으로 굴릴 수 있는가&#x27;가 진짜 관건이라는 주장이다."><title>HBF, 성공 가능성 낮다? 말하지 않는 치명적 난제 — 발열·온도·낸드 신뢰성</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학</span><span class="ey">MORNING DIGEST · 2026-08-31 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>HBF, 성공 가능성 낮다? 말하지 않는 치명적 난제 — 발열·온도·낸드 신뢰성</h1><p class="lead">안될공학(패치)이 삼성·SK하이닉스·샌디스크가 밀고 있는 차세대 메모리 HBF(High Bandwidth Flash)의 핵심 리스크를 짚는다. 대역폭 스펙보다 &#x27;낸드를 GPU 옆 뜨거운 곳에서 몇 년간 안정적으로 굴릴 수 있는가&#x27;가 진짜 관건이라는 주장이다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>HBF란 무엇이 다른가</h2><ul>
+<li>낸드를 HBM처럼 8~16단으로 수직 적층해 GPU 바로 옆에 붙이는 방식으로, 최대 512GB 용량·초당 수 테라바이트급 대역폭을 노린다.</li>
+<li>문제는 기존 컴퓨터가 낸드(SSD)를 연산칩에서 일부러 멀리 떨어뜨려 온도를 관리해온 것과 정반대로, HBF는 낸드를 뜨거운 연산 영역 바로 옆에 두고 사용 패턴도 저장용에서 &#x27;작업 메모리&#x27;에 가깝게 바꾼다는 점이다.</li>
+<li>실측 사례(DGX 스파크 계열)로 보면 같은 워크로드에서 GPU 80~82도, CPU 87~88도인데 SSD는 52~63도로 20도 이상 차이가 난다 — 이 간격을 HBF는 작은 패키지 안에서 다시 만들어내야 한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>온도가 뒤흔드는 낸드 신뢰성 3요소</h2><ul>
+<li>리텐션(보존): 셀 안 전자가 시간이 지나며 이동하는데, 온도가 높을수록 이 변화가 빨라져 저장값 판별이 어려워진다. 클라이언트 SSD 규격 기준 30도 1년 보존을 시험하려면 52도 500시간, 66도 96시간으로 압축 시험한다.</li>
+<li>리드 디스터브: 같은 셀을 반복해서 읽으면 주변 셀 값이 흔들리는 현상. 2025년 연구에서 접근 패턴에 따라 ECC 한계까지 가는 횟수가 약 5만4,560회~51만8,420회로 10배 가까이 차이 났다.</li>
+<li>엔듀런스(쓰기 수명): 프로그램-지우기(P/E) 사이클이 누적될수록 오류가 늘지만, 온도와의 관계는 리텐션만큼 단순하지 않다(일부 조건에서는 고온이 오히려 오류 특성이 낫기도 했다).</li>
+<li>세 지표는 서로 얽혀 있다 — 리텐션이 줄면 컨트롤러가 데이터를 더 자주 재기록해야 하고, 그 관리 쓰기가 늘수록 실질 엔듀런스가 더 빨리 소모된다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>SLC 회귀 — 왜 다시 &#x27;싼 걸 포기&#x27;하는가</h2><ul>
+<li>SSD 업계는 SLC→TLC→QLC로 한 셀에 더 많은 비트(2단→8단→16단 눈금)를 넣어 용량 대비 가격을 낮춰왔다.</li>
+<li>그런데 최근 HBF 연구(플린트, 플래시 엑셀 등)는 오히려 SLC를 전제로 설계된다 — 판독 여유가 넓고 빠르며 반복 쓰기에도 유리하기 때문. 대신 16단 적층+TSV 본딩이 필요해 SSD의 TLC/QLC 가격 수준은 기대하기 어렵다.</li>
+<li>즉 &#x27;HBM보다 용량당 비용이 쌀 가능성&#x27;과 &#x27;SSD만큼 싸다&#x27;는 서로 다른 이야기로 구분해야 한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>컨트롤러·베이스다이가 진짜 승부처</h2><ul>
+<li>HBF에서는 GPU가 데이터를 기다리는 구조상 기존 SSD처럼 여러 번 재시도·강한 오류보정을 반복하면 자랑하는 마이크로초급 접근 시간이 무너진다 — 그만큼 문제를 사전에 줄이는 컨트롤러 설계 비중이 커진다.</li>
+<li>최신 HBF 풀스택 연구는 16단 낸드의 열을 모델링해 뜨거운 플레인 사용을 제한하고 트래픽을 분산하는 &#x27;열 인지 스케줄링&#x27;을 적용한다.</li>
+<li>삼성은 하이칩스 2026에서 HBM 베이스다이에 메모리 컨트롤러·S램 기반 리페어·온도/전압 센서를 넣고, &#x27;히트패스 블록&#x27; 구조로 피크 온도를 35% 이상 낮췄다고 밝혔다(HBM 기준 발표지만 HBF 컨트롤러 설계 방향성을 시사).</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>리드 온리에 가까운 사용법으로 수렴 중</h2><ul>
+<li>린트(Lint) 연구는 모델 웨이트를 배포 시 한 번 기록하고 추론 중엔 거의 다시 쓰지 않는다고 가정, 일반 SSD의 FTL 대신 단순화한 &#x27;Read-only FTL&#x27;을 쓴다.</li>
+<li>SK하이닉스 초기 자료의 &#x27;KV캐시 프로세싱&#x27;은 범위가 넓었지만, H3 논문의 실제 설계는 미리 계산된(공유) KV캐시만 HBF에 두고 실시간으로 계속 생기는 동적 KV캐시는 HBM에 남기는 제한적 방식이다.</li>
+<li>실제 서비스 데이터 연구에서도 실시간 KV캐시를 HBF로 내리면 &#x27;읽기보다 쓰기가 많은(라이트 헤비)&#x27; 부담스러운 패턴이 나타났다 — 리드 온리 설계가 편의가 아니라 신뢰성 확보를 위한 선택임을 뒷받침한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>시사점 — 봐야 할 스펙이 다르다</h2><ul>
+<li>실제 서비스 환경에서는 모델이 자주 교체되는데, HBF 구조(HBM처럼 다이투다이 결합)는 SSD처럼 낸드만 쉽게 뽑아 교체하기 어렵다 — 낸드 신뢰성이 곧 비싼 가속기 보드 수명과 직결된다.</li>
+<li>저자는 향후 HBF 제품을 볼 때 &#x27;초당 몇 테라바이트&#x27; 대신 사용 낸드 셀 종류, 보장 P/E 사이클, 고온 데이터 보존 기간, 반복 읽기 시 재기록 시점, 수년간 모델 교체를 반복해도 초기 성능을 유지하는지를 봐야 한다고 제안한다.</li>
+<li>결론적으로 HBF 경쟁은 &#x27;몇 단을 쌓았는가&#x27;가 아니라 낸드 셀 자체의 리텐션·엔듀런스·리드디스터브 품질과, 이를 정확히 읽고 제어하는 베이스다이 컨트롤러 역량이 함께 결정한다.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/gJTto7SP8w0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 · 2026-08-31</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

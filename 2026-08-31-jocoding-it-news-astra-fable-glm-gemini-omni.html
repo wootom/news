@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="조코딩이 실시간 라이브에서 이번 주 AI 업계 소식을 훑는다. 오픈AI 차세대 모델 &#x27;아스트라&#x27;의 비공개 테스트 소식부터, 앤트로픽의 사용량 한도 논란, 중국 오픈웨이트 모델 러시, 엔비디아의 허깅페이스 인수, 실시간 영상 생성까지 다룬다."><title>아스트라 임박, 할라피뇨 칩, GLM 5.3 오픈웨이트까지 — 이번 주 AI 뉴스 총정리</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩</span><span class="ey">MORNING DIGEST · 2026-08-31 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>아스트라 임박, 할라피뇨 칩, GLM 5.3 오픈웨이트까지 — 이번 주 AI 뉴스 총정리</h1><p class="lead">조코딩이 실시간 라이브에서 이번 주 AI 업계 소식을 훑는다. 오픈AI 차세대 모델 &#x27;아스트라&#x27;의 비공개 테스트 소식부터, 앤트로픽의 사용량 한도 논란, 중국 오픈웨이트 모델 러시, 엔비디아의 허깅페이스 인수, 실시간 영상 생성까지 다룬다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>오픈AI — 아스트라와 &#x27;AGI 연내 달성&#x27; 발언</h2><ul>
+<li>오픈AI 차세대 모델 아스트라(내부 코드명 &#x27;울티마 알파&#x27;)가 비공개 테스터들에게 풀리며 성능이 화제 — 원샷 프롬프트로 만든 GTA 1 클론, 고퀄리티 3D 우주선·게임 에셋 생성 데모가 공유됐다. GPT 이미지 2와 함께 다음 주 공개 가능성이 거론된다.</li>
+<li>비공개 프리뷰를 접한 사용자는 &quot;의미 있는 방식으로 새로운 것을 스스로 발명해내는 최초의 모델&quot;이라며, 수학 증명을 위해 여러 에이전트를 조율하고 며칠~몇 주간 연속 작업이 가능하도록 설계됐다고 전했다.</li>
+<li>샘 알트먼이 타임지 인터뷰에서 &quot;올해 안에 내부적으로 AGI라 부를 수 있는 시스템을 구축하게 될 것&quot;이라며 연내 AGI 도달을 공개 언급 — IPO를 앞둔 시점의 발언이라 다소 과장 논란도 있다.</li>
+<li>오픈AI가 브로드컴과 공동 설계한 추론 전용 칩 &#x27;할라피뇨&#x27;가 초기 A0 실리콘만으로 엔비디아 블랙웰 대비 전력당 처리량이 앞섰고, 차세대 루빈 칩의 공개 스펙도 넘어섰다는 세미어낼리시스 분석이 나왔다.</li>
+<li>ChatGPT 예약 작업이 이벤트 기반으로 확장 — 슬랙·Gmail·깃허브에서 특정 이벤트가 발생하면 자동 실행되도록 설정 가능해졌고, 무료 사용자도 최대 3개까지 예약 작업을 쓸 수 있게 됐다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>앤트로픽 — &#x27;25% 인상&#x27;이라 발표했지만 실질은 17% 감소</h2><ul>
+<li>클로드 코드의 프로/맥스/팀 및 엔터프라이즈 플랜 사용량 한도가 9월 14일부터 &quot;25% 인상&quot;된다고 공지했지만, 실제로는 이벤트 기간 중 50% 증가했던 한도가 9월 14일부터 줄어드는 것이어서 결과적으로 현재 대비 약 17% <span class="dn">감소</span> — 개발자들의 반발을 샀다.</li>
+<li>같은 시점 오픈AI는 코덱스·워크 유료 사용량을 리셋하고 버그 수정으로 동일 할당량이 10~50% 더 오래 지속되도록 <span class="up">개선</span>한다고 발표하며 대조적인 행보를 보였다.</li>
+<li>클로드 페이블 5 사용자 일부가 간헐적으로 &#x27;페이블 5.1&#x27;로 라우팅되는 현상이 포착돼, 정식 출시 전 A/B 테스트가 진행 중인 것으로 추정된다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>오픈웨이트 모델 러시 — 중국이 프론티어를 바짝 추격</h2><ul>
+<li>지난주 화제였던 미지의 &#x27;OX 알파&#x27; 모델의 정체가 GLM 5.3 플래시(액티브 파라미터 18B)로 밝혀졌다 — 작은 크기에도 오퍼스 4.8·GPT 5.6 테라급과 견줄 종합 점수(57점)를 기록, 제미나이 3.7 플래시를 넘어섰다. GLM 5.3 풀버전(753B)도 오픈웨이트로 공개돼 키미 K3·그록 5.6급 성능을 보인다.</li>
+<li>GLM 5.3 플래시는 1비트 양자화 시 100GB 미만 VRAM으로 맥북(128GB)이나 DGX 스파크에서도 구동 가능하며, 오픈웨이트 특성상 무검열(언센서드) 버전이 함께 풀린다.</li>
+<li>텐센트의 후위(Hunyuan) HY4 프리뷰(770B, 액티브 49B)가 공개돼 오퍼스 5급 성능을 보였고, 알리바바는 쿠엔4 아키텍처의 프리뷰인 쿠엔 3.8 플래시 넥스트(180B)를 미리 공개했다.</li>
+<li>GLM 5.3 플래시는 오픈라우터 무료 트래픽 1위를 기록했는데, 이 모든 트래픽이 중국산 AI 칩에서 처리됐다는 점이 화제 — 하루 100조 토큰을 처리할 추론 인프라를 갖췄다는 의미다.</li>
+<li>딥시크는 올 1~7월 API 매출 약 970억 원(매출총이익률 82.9%)을 기록해 오픈웨이트 공개가 손해 보는 장사가 아니라는 인식을 보여줬다(7개월 만에 10배 증가).</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>엔비디아, 허깅페이스를 18조 원에 인수</h2><ul>
+<li>오픈웨이트 모델 배포의 핵심 허브인 허깅페이스를 엔비디아가 인수 — 허깅페이스의 &#x27;다이렉트 디플로이&#x27; 기능으로 신규 공개 모델을 곧바로 GPU에 얹어 유료로 서비스할 수 있는 구조를 엔비디아가 흡수하게 됐다. 기존 엔비디아 API 서비스(build.nvidia.com)의 낮은 인지도를 허깅페이스의 트래픽으로 보완하려는 전략으로 풀이된다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>구글 — 제미나이 옴니 1.1 &amp; 광고 자동화</h2><ul>
+<li>제미나이 옴니 1.1 플래시가 출시 — 이전 영상 최대 10초를 분석해 캐릭터·조명·서사 맥락을 유지한 채 자연스럽게 이어 찍는 기능, 360p 프리뷰 후 4K 업스케일 지원이 특징.</li>
+<li>구글 애즈에 옴니 기반 &#x27;셋 스튜디오&#x27;가 통합돼 브랜드 소재 기획부터 광고 영상 제작, 유튜브/구글 캠페인 송출까지 한 번에 처리할 수 있게 됐다.</li>
+<li>제미나이 3.8 플래시 프리뷰를 일부 구글 직원이 사용 중이라는 보도가 나와, 오픈AI·앤트로픽을 따라잡기 위한 잦은 모델 업데이트 기조가 이어질 전망이다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>xAI/그록 — 컴패니언 분리, 오픈AI와 결별, 쇼핑 에이전트</h2><ul>
+<li>그록의 AI 컴패니언 캐릭터(애니 등)가 9월 1일부로 별도 서비스 &#x27;애니메이츠&#x27;로 이전 — 성인 콘텐츠·중독 등 리스크를 그록 본체에서 분리하려는 조치로 해석된다.</li>
+<li>스페이스X에 인수된 코딩 툴 커서가 11월 12일부로 오픈AI 모델 공식 지원을 종료 — 일론 머스크가 과거 xAI의 오픈AI 데이터 증류(약관 위반) 사실을 인정한 바 있어, 오픈AI 측의 데이터 유출 우려가 배경으로 지목된다.</li>
+<li>그록봇이 스트라이프 링크 연동으로 인터넷 쇼핑 결제를 대신 수행할 수 있게 됐고(미국 사용자 대상), 음성 통화 기능도 곧 추가될 예정. 한편 그록봇 소스코드가 소스맵 설정 실수로 깃허브에 노출되는 사고도 있었다(수노 AI도 별도로 유튜브 뮤직 크롤링 등 학습 데이터 파이프라인이 유출).</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>영상 생성 — &#x27;시청 속도보다 생성 속도가 빨라졌다&#x27;</h2><ul>
+<li>오픈웨이트 영상모델 미니맥스 H3를 기반으로 각 업체가 속도를 끌어올리면서 실시간을 넘어선 영상 생성이 가능해졌다 — 팔(Fal) AI의 H3맥스는 5초 영상을 평균 3.49초(경우에 따라 2.5~3초)에 생성, B200 GPU 4장이면 15초 영상을 13초 만에 뽑아 시청 속도보다 빠른 무한 스트리밍이 가능하다.</li>
+<li>실시간 채팅 입력을 받아 영상을 계속 생성해 트위치로 스트리밍하는 &#x27;인피니티 슬롭&#x27; 같은 실험 서비스가 등장했고, 발표자가 직접 데모에서 프롬프트만으로 2~3초 만에 인물 영상을 생성하는 모습을 시연했다(검열 수준이 낮다는 점도 확인됨).</li>
+<li>이는 24시간 AI 버튜버·AI 방송국처럼 무제한 실시간 콘텐츠 생성 인프라가 현실화되는 신호로 언급됐다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>시사점</h2><ul>
+<li>오픈AI·앤트로픽·구글의 프론티어 모델 경쟁과 별개로, 중국 오픈웨이트 모델들이 몇 주 단위로 격차를 좁히며 GPU 인프라까지 자립하는 모습을 보이고 있어 오픈소스 생태계의 무게중심이 빠르게 이동하고 있다.</li>
+<li>영상 생성이 시청 속도를 추월한 지금, 실시간 개인화 콘텐츠·AI 방송이 조만간 상용화 단계에 진입할 가능성이 커 보인다.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Xs9wHHv-wak" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>조코딩 · 2026-08-31</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
