@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Futurepedia가 소개하는 Claude Design 실전 시스템: 레퍼런스→탐색→종합→트윅→배포까지 한 번에 코드로 연결"><title>Claude Design로 AI 티 나는 홈페이지 대신 6방향 탐색해 완성도 높이는 법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Futurepedia</span><span class="ey">MORNING DIGEST · 2026-09-03 · Futurepedia</span><span class="chip">🎬 영상</span></div><h1>Claude Design로 AI 티 나는 홈페이지 대신 6방향 탐색해 완성도 높이는 법</h1><p class="lead">Futurepedia가 소개하는 Claude Design 실전 시스템: 레퍼런스→탐색→종합→트윅→배포까지 한 번에 코드로 연결</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Claude Design(claude.ai/design)은 유료 Claude 구독에 포함된 웹사이트 디자인 도구, 기본 프롬프트만 쓰면 매번 비슷한 &quot;AI 슬롭&quot; 결과가 나옴</li>
+<li>해법은 5단계 시스템: Reference(레퍼런스 2~5개 취향보드) → Explore(6개의 서로 다른 홈페이지 방향 생성) → Synthesize(마음에 드는 요소 종합) → Explode(트윅으로 세부 옵션 대량 탐색) → Expand(나머지 페이지 확장) → Build(Claude Code로 배포)</li>
+<li>시연 사례는 &quot;Flow Room&quot;이라는 AI 비디오 편집 플랫폼 가상 브랜드, 로고·히어로 이미지는 ChatGPT로 별도 생성해 투입</li>
+<li>인터랙션 트윅에서 CTA 버튼 아래 파형(waveform)에 커서가 반응하는 &quot;시그니처 인터랙션&quot;을 발견해 채택</li>
+<li>완성된 사이트는 Cloud Code로 GitHub 푸시 후 Vercel(영상 내 &quot;Verscell&quot;로 발음) 배포까지 이탈 없이 진행, 배포 중 발견된 버그도 자동 수정됨</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>&quot;매직 프롬프트로 AI 디자인 슬롭을 피하는 게 아니라, 창의적 결정을 스스로 통제하는 시스템을 쓰는 것&quot;이 영상의 핵심 메시지</li>
+<li>단순 프롬프트(&quot;이 브랜드로 웹사이트 만들어줘&quot;)를 10번 반복해도 거의 동일한 결과가 나온다는 것이 문제의 근거로 제시됨</li>
+<li>반대로 레퍼런스 취향보드 + &quot;6개의 의미 있게 다른 홈페이지 방향(6 meaningfully different homepage directions, not six color variations)&quot;을 명시적으로 요구하면 매번 다른 결과가 나옴</li>
+<li>트윅(tweaks) 기능이 Claude Code에서 반복하면 오래 걸릴 세부 조정(내비 스타일, 히어로 레이아웃, 버튼 모션 등)을 드롭다운으로 즉시 탐색 가능하게 해준다는 점을 &quot;옵션+트윅 조합이 Claude Code보다 나은 이유&quot;로 강조</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>5단계 워크플로우 상세</h2><ul>
+<li><strong>1단계 Reference(레퍼런스 수집)</strong>: 2~5개의 레퍼런스를 모으고 각각에서 마음에 드는 요소(예: A의 타이포그래피, B의 히어로 구성, C의 내비바)를 메모. 참고 소스로 Lapa Ninja(랜딩페이지 데이터베이스, 업종·스타일 필터 가능), Landbook, Awwwards(3D·몰입형 스크롤 사이트), Pinterest(폭넓은 영감), React Bits·21st.dev(카드·캐러셀·버튼 등 개별 컴포넌트)를 제시</li>
+<li><strong>2단계 Explore(탐색)</strong>: 프로덕트 설명, 핵심 기능, 실제 자산(제품 사진, 포트폴리오, 로고)과 레퍼런스 노트를 프롬프트에 채워 &quot;6개의 서로 다른 홈페이지 방향&quot;을 생성 요청. 비대칭, 특이한 네거티브 스페이스, 그리드 브레이크 등 기본값에서 벗어난 요소를 명시적으로 요구</li>
+<li><strong>3단계 Synthesize(종합)</strong>: 6개 옵션 각각에 코멘트를 달아 마음에 드는 부분(타이포그래피, 배경 확장, 특정 카드 등)을 지정한 뒤 &quot;각 코멘트가 달린 요소를 통합한 새 옵션&quot;을 요청해 하나의 베이스 방향으로 수렴</li>
+<li><strong>4단계 Explode(트윅 폭발)</strong>: 선택한 방향(예: &quot;2A&quot;)을 기준으로 &quot;많은 트윅을 탐색&quot;하도록 요청. 내비 스타일(글래스 필, 미니멀 인라인, 보더드 레일, 센터 로고), 히어로 레이아웃(센터드, 에디토리얼 스플릿), 제품 프레젠테이션(프레임드 패널, 틸티드 플로트, 풀 블리드), 피처 섹션 레이아웃(벤토 등), CTA 바 스타일, 버튼 필/모양, 폰트 크기·간격, 액센트 컬러까지 드롭다운으로 즉시 비교</li>
+<li><strong>5단계 Expand(확장)</strong>: 확정된 홈페이지를 &quot;시각적 소스 오브 트루스&quot;로 삼아 내비의 각 항목에 대응하는 나머지 페이지(가격 페이지 등)를 일괄 생성, 별도 반복 없이도 동일한 타이포그래피·카드 스타일·컴포넌트가 전 페이지에 일관 적용됨</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>인터랙션 트윅과 시그니처 모먼트</h2><ul>
+<li>사이트를 &quot;더 폴리시되고 살아있게&quot; 만들기 위한 2차 트윅 라운드에서 호버 상태, 버튼 프레스, 스크롤 트리거 리빌, 서틀 패럴랙스 등 옵션을 탐색</li>
+<li>버튼 모션은 &quot;리프트 앤 글로우(lift and glow)&quot;, &quot;샤인 스윕(shine sweep)&quot;, &quot;프레스 인(press in)&quot; 중 리프트 앤 글로우를 채택</li>
+<li>편집 플랫폼이라는 제품 맥락에 맞춰 플레이헤드, 타임코드 틱, 파형(waveform) 등 아이디어가 제시됐고, 그중 CTA 버튼 아래 배치한 파형에 &quot;커서가 반응하는 인터랙티브 버전&quot;을 최종 채택</li>
+<li>원칙으로 &quot;서틀한 인터랙션을 기본으로 유지하되, 시그니처 인터랙션 하나만 강하게(one big one, everything else subtle)&quot;를 제시, 과도한 인터랙션은 산만해진다고 경고</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>전략적 의미</h2><ul>
+<li>디자인 산출물의 다양성은 프롬프트 한 방이 아니라 &quot;명시적으로 여러 방향을 요구 + 좁혀가는 반복 구조&quot;에서 나온다는 점을 재확인시키는 사례</li>
+<li>Claude Design(탐색·비주얼 결정)과 Claude Code(실제 구현·배포)의 역할 분리를 명확히 제시 — 디자인 단계의 세부 반복은 Design에서, 백엔드·DB·결제 API 연동 등 실제 기능은 Code로 이관</li>
+<li>디자인 시스템(design system) 생성 기능은 팀 작업이나 여러 프로젝트에 걸친 비주얼 언어 재사용이 필요할 때만 권장, 단일 사이트 제작에는 불필요하다고 구분</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>배포 워크플로우 (Claude Design → Claude Code → 라이브)</h2><ul>
+<li>Design에서 &quot;Share → More formats → Cloud Code&quot; 경로로 나오는 프롬프트를 그대로 붙여넣기보다, zip 파일을 다운로드해 로컬 폴더로 압축 해제 후 Claude Code(데스크톱 앱)의 작업 폴더로 지정하는 방식을 권장(원래 프롬프트의 MCP 다운로드 지시는 zip을 이미 받았으므로 생략)</li>
+<li>Claude Code가 배포 방식을 질문하면 권장 옵션을 선택, 빌드 완료 후 인앱 브라우저로 미리보기 가능</li>
+<li>라이브 전환은 2단계: GitHub에 코드 푸시 → Vercel로 배포, GitHub·Vercel 커넥터 연결과 양쪽 무료 계정만 있으면 Claude Code를 벗어나지 않고 전 과정 진행</li>
+<li>배포 단계에서 Claude Code가 코드 내 버그를 자체 발견해 수정 후 재배포까지 자동 수행했다고 언급</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>활용 시나리오</h2><ul>
+<li>스타트업 창업자가 SaaS 랜딩페이지를 만들 때: 2~5개 경쟁사/영감 사이트를 레퍼런스로 모으고, 6방향 탐색 후 좋아하는 요소만 종합해 짧은 시간에 차별화된 홈페이지 확보</li>
+<li>1인 개발자가 프로덕트를 배포까지 완결하고 싶을 때: Design에서 비주얼을 확정한 뒤 Claude Code로 넘겨 코드 지식 없이도 GitHub·Vercel 연동까지 진행 가능(영상은 &quot;개발자가 아니어도 사용할 수 있다&quot;고 강조하되 학습에 시간이 든다고 단서를 붙임)</li>
+<li>팀/에이전시가 여러 프로젝트에 일관된 브랜드 언어를 유지해야 할 때: 홈페이지 확정 후 디자인 시스템으로 승격해 프레젠테이션·애니메이션 등 다른 산출물에도 재사용</li>
+<li>브랜드 자산(제품 사진, 로고, 헤드샷)이 이미 있는 경우 이를 레퍼런스와 함께 투입해 Claude가 &quot;실제 제품 기준으로&quot; 디자인하도록 유도, 이미지와 충돌하는 디자인 생성을 방지</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>현황 및 전망</h2><ul>
+<li>Claude Design은 claude.ai/design에서 유료 Claude 구독자에게 제공되는 기능으로, 웹사이트 외에도 피치덱, 경쟁사 스크린샷 기반 랜딩페이지, 소셜미디어 템플릿, 모션 그래픽까지 커버하는 템플릿·프롬프트 세트를 별도 무료 가이드로 제공한다고 언급(설명란 링크)</li>
+<li>영상은 후속으로 &quot;Claude Code 전체 튜토리얼&quot; 영상을 안내하며, Design과 Code를 잇는 워크플로우 콘텐츠가 채널 내 시리즈로 이어지고 있음을 시사</li>
+<li>자막은 유튜브 자동/수동 자막(source: subs:en) 기준이며 화면 UI 조작을 말로 설명하는 방식이라, 정확한 버튼 명칭·메뉴 위치는 실제 화면과 다소 차이가 있을 수 있음(예: Vercel이 &quot;Verscell&quot;로 표기됨은 음성 인식 오기로 추정)</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>용어 사전</h2><ul>
+<li><strong>Claude Design</strong>: Claude 유료 구독에 포함된 웹/프레젠테이션 디자인 생성 도구(claude.ai/design), 레퍼런스 기반 다중 방향 탐색과 트윅 기능 제공</li>
+<li><strong>레퍼런스 취향보드(taste board)</strong>: 디자인 착수 전 2~5개 참고 사이트에서 마음에 드는 요소만 뽑아 정리한 보드, AI 슬롭 방지의 출발점</li>
+<li><strong>트윅(Tweaks)</strong>: 확정된 방향 안에서 내비 스타일·레이아웃·버튼 모션 등 세부 옵션을 드롭다운으로 즉시 비교·전환하는 기능</li>
+<li><strong>디자인 시스템(Design System)</strong>: 여러 프로젝트·산출물에 걸쳐 일관된 비주얼 언어(타이포그래피, 컬러, 컴포넌트)를 재사용하기 위한 저장 단위</li>
+<li><strong>AI 디자인 슬롭(AI design slop)</strong>: 기본 프롬프트만으로 생성해 어디서나 비슷하게 보이는 전형적인 AI 생성 디자인을 가리키는 표현</li>
+<li><strong>시그니처 인터랙션</strong>: 사이트 전반은 서틀한 모션으로 유지하되 한 곳에만 강하게 넣는 임팩트 있는 인터랙션(예: 커서 반응형 파형)</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/TErjuicvK_c" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Futurepedia · 2026-09-03</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

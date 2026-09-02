@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="티타임즈TV·김덕중 퍼브 AI연구소장이 전하는 IBM 에이전트 거버넌스: 스킬 카드부터 은퇴 절차까지"><title>쓰지 않는 에이전트는 굶겨서 내보낸다, IBM 디지털 워커 인사관리 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-09-03 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>쓰지 않는 에이전트는 굶겨서 내보낸다, IBM 디지털 워커 인사관리 전략</h1><p class="lead">티타임즈TV·김덕중 퍼브 AI연구소장이 전하는 IBM 에이전트 거버넌스: 스킬 카드부터 은퇴 절차까지</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>IBM은 AI 에이전트를 &#x27;디지털 워커&#x27;로 부르며 채용·자격검증·배치운영·은퇴 4단계 인사관리 체계로 관리</li>
+<li>피어슨 크레들리와 공동으로 에이전트에게 디지털 배지(자격증)를 발급하는 정책 시행</li>
+<li>잘 쓰지 않는 에이전트는 &quot;굶겨서 내보낸다&quot; — 토큰 차단→자격증 회수→서비스 제거→로그 백업 순 폐기 절차</li>
+<li>MCP 연결을 그린·옐로우·오렌지·레드 4단계 리스크 등급으로 구분 관리</li>
+<li>스킬은 이름·목적·트리거·입출력형식·지식범위·프로세스·MCP도구·가이드레일·예외처리·평가기준 등 10대 구성요소로 규정</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>프롬프트는 구두 지시로 휘발성이지만, 스킬(업무 매뉴얼)은 지침·가이드라인으로 반드시 따라야 하는 것이라는 점에서 근본적으로 다르다.</li>
+<li>스킬 하나는 반드시 하나의 책임만 가져야 하며, 입출력이 명확하고 최소한의 도구(MCP)만 연동돼야 리스크가 낮아진다.</li>
+<li>에이전트를 만들 때는 스킬로 남길지, 별도 에이전트로 승격할지, RPA형 워크플로우로 갈지 여섯 가지 기준(단일 책임성, 명확한 입출력, 절차·정책 적용 가능성, 최소 도구 연동, 평가 세트 존재, 버전관리 가능성)으로 판단해야 한다.</li>
+<li>에이전트 계층은 스킬(카드로 관리)-에이전트(포트폴리오로 관리)의 2단 구조이며, 그 위에 결정형 워크플로우·에이전트형 워크플로우·혼합형 에이전트라는 세 갈래 처리 방식이 존재한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>스킬 카드의 10대 구성요소</h2><ul>
+<li>이름과 목적: 무엇을 하는 스킬인지 명확히 정의</li>
+<li>트리거 조건: 어떤 상황에서 실행되는가</li>
+<li>입력 형식과 지식 범위: 다루는 데이터·정보의 한계를 한정</li>
+<li>업무 프로세스와 사용할 MCP(외부 툴): 읽기 전용인지 쓰기까지 허용하는지 구분</li>
+<li>출력 형식, 해야 할 일/하지 말아야 할 일 가이드레일, 예외 상황 대응, 복구 절차, 평가 방법까지 10가지가 갖춰져야 고차원 에이전트의 시작점이 된다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>에이전트 라이프사이클(ALM) 8단계</h2><ul>
+<li>아이템 선정(기회 발굴) → 가치·위험 평가 → 스킬·SLA 설계 및 프로토타이핑 → 프로토타입 평가 → 파일럿 운영 → 배포 → 운영·학습·<span class="up">개선</span> → 승격 또는 폐기</li>
+<li>배포 전 체크리스트: 업무 결과 품질, 세이프티(해킹·프롬프트 조작 방지), 신뢰성(회사 데이터 기반 팩트 여부), 효율성(토큰비), 사용성, 운영 편의성을 모두 검증</li>
+<li>병목이 발견되면 에이전트 분할을, 활용도가 낮으면(1년에 1~2회 수준) 폐기 절차를 밟아야 한다고 강조</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>MCP 리스크 등급 관리와 킬 스위치</h2><ul>
+<li>레드 등급: 재무·개인정보·계약 관련 MCP — 최소한으로만 연결·관리</li>
+<li>오렌지 등급: 이메일, 메신저, CRM, 채용 시스템 등 크리티컬한 내부 시스템</li>
+<li>옐로우 등급: 노션·컨플루언스 등 사내 업무 일지성 정보</li>
+<li>그린 등급: 상대적으로 안전한 연동</li>
+<li>SAP ERP 해킹 같은 가정 상황에서 기업이 눌러야 할 &#x27;킬 스위치&#x27; 개념 제시 — 안전 복구 전까지 관련 MCP 전면 차단이 필요하다고 설명</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>전략적 의미</h2><ul>
+<li>HR 조직이 에이전트 거버넌스에 적극 개입해야 하는 이유는 인사관리 체계(온보딩·자격검증·평가·퇴출)를 그대로 준용하는 것이 새 관리 체계를 만드는 것보다 훨씬 효율적이고 빠르게 적용 가능했기 때문.</li>
+<li>가장 흔한 거버넌스 형태는 HR과 IT 조직의 합작 관리이며, 일부 극단적 조직에서는 CHRO와 CIO 통합론까지 나오고 있다.</li>
+<li>성과 관리 KPI 자체가 바뀐다 — &quot;개인이 처리했다&quot;에서 &quot;사람+에이전트가 처리했다&quot;로, &quot;토큰 사용량&quot;에서 &quot;작업률 <span class="dn">감소</span>&quot;로, &quot;노하우 축적&quot;에서 &quot;스킬을 얼마나 다양한 에이전트에 학습 인풋으로 공유했는가&quot;로 전환.</li>
+<li>관리자의 역할도 검수자(리뷰어)에서 인간과 에이전트를 함께 설계하는 &#x27;시스테미컬리 디자이너&#x27;로, 직원은 태스크 수행자에서 여러 에이전트·스킬을 지휘하는 &#x27;워크 오케스트레이터&#x27;로 이동.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>조직 도입 로드맵 7단계</h2><ul>
+<li>1단계: 에이전틱 워크(독립적으로 일하는 기술) 개념 이해</li>
+<li>2단계: 조직 차원의 에이전트 포트폴리오 설계(개인·조직·전사, 프론트·도메인·워크플로우 구분) — HR 조직이 주도</li>
+<li>3~4단계: 플랫폼 선정 및 클로드·제미니·구글 클라우드 등 아키텍처 결정</li>
+<li>5단계: 전 임직원의 스킬 엔지니어링(업무를 스킬로 빌드) 및 페르소나 결정</li>
+<li>6단계: MCP 결정·관리, 7단계: 에이전트 옵스(지속 운영) 및 연 1~2회 워크포스 성과·변화 관리</li>
+<li>저자는 &quot;바이브 코딩까지 됐다면 이미 3~4단계&quot;이며, 다음은 프롬프트 엔지니어링이 아니라 본인 업무를 스킬로 만들어 에이전트에 탑재하는 5단계로 바로 넘어가라고 권고</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>활용 시나리오</h2><ul>
+<li>대기업 HR·IT 조직이 사내 AI 에이전트 도입 거버넌스 체계를 설계할 때 참고 프레임워크로 활용</li>
+<li>사내 에이전트 난립(부서별 중복 에이전트, 과도한 MCP 연동으로 인한 리스크)을 통폐합·폐기 기준으로 정리할 때 적용</li>
+<li>개인 업무자가 반복 업무를 스킬로 구조화해 여러 에이전트에 이식하는 실무 가이드로 참고</li>
+<li>MCP 연동 확대 시 재무·인사·개인정보 등 민감 시스템의 접근 등급을 사전에 분류하는 보안 체크리스트로 활용</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>현황 및 전망</h2><ul>
+<li>IBM은 오픈AI, 앤트로픽, 왓슨 등 특정 벤더에 종속되지 않고 기술 중립적으로 디지털 워커를 관리하되, 통합 관리 체계는 동일하게 적용하는 방식을 취하고 있다.</li>
+<li>현재는 에이전트 비용에 대한 경각심이 낮은 투자 시기이지만, 향후 에이전트가 사람만큼의 비용을 지불하는 시점이 올 것이므로 예산 최적화 관리가 필요하다고 전망.</li>
+<li>인류와 어떤 기업도 경험한 적 없는 &quot;에이전트와 인간의 공동 성과 관리&quot; 영역이 본격적으로 대두되는 초기 단계라고 진단.</li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>용어 사전</h2><ul>
+<li>디지털 워커(Digital Worker): IBM이 AI 에이전트를 지칭하는 용어로, 이메일 계정·번호 등을 부여받고 인간 직원처럼 자산으로 관리되는 존재</li>
+<li>스킬 카드: 에이전트가 특정 업무를 수행하기 위해 갖춰야 할 10대 구성요소(이름, 트리거, 입출력, 프로세스, MCP, 가이드레일 등)를 정의한 문서</li>
+<li>ALM(에이전트 라이프사이클 매니지먼트): 아이템 선정부터 폐기까지 8단계로 구성된 에이전트 관리 주기</li>
+<li>MCP(Model Context Protocol): 에이전트가 회사의 레거시 시스템·외부 툴과 연동하는 기술로, 연결이 많아질수록 리스크가 높아짐</li>
+<li>킬 스위치: 특정 MCP 연동 시스템(예: SAP ERP)이 해킹 등 위협에 노출됐을 때 관련 에이전트 연결을 전면 차단하는 안전장치</li>
+<li>워크 오케스트레이터: 과거 태스크 수행자(퍼포머)였던 직원이 여러 에이전트와 스킬을 지휘하며 창의적·고차원 업무를 수행하는 새로운 역할</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Y2_326EUR74" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-09-03</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="오목교 전자상가가 그린 스크린 촬영에 파이어플라이 이미지 편집 기능을 적용해 지하철·사무실 뷰·가상 박물관 배경을 직접 제작한 과정"><title>어도비 파이어플라이 이미지 편집으로 촬영 불가능한 배경까지 만든 실전 후기</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>오목교 전자상가</span><span class="ey">MORNING DIGEST · 2026-09-03 · 오목교 전자상가</span><span class="chip">🎬 영상</span></div><h1>어도비 파이어플라이 이미지 편집으로 촬영 불가능한 배경까지 만든 실전 후기</h1><p class="lead">오목교 전자상가가 그린 스크린 촬영에 파이어플라이 이미지 편집 기능을 적용해 지하철·사무실 뷰·가상 박물관 배경을 직접 제작한 과정</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>월요일 아침 지하철 맞은편 승객 시점은 실촬영이 불가능해 그린 스크린 촬영 후 파이어플라이로 배경만 생성·합성</li>
+<li>마크업 도구의 텍스트·브러시·박스 3가지 방식으로 광고판 제거, 빈 좌석 생성, 창문 밖 도시 풍경 교체를 각각 수행</li>
+<li>디테일 조절 기능으로 &quot;골든 아워&quot; 프롬프트 적용 후 슬라이더로 분<span class="dn">위기</span> 강도를 0.4 등 수치로 직접 선택 가능</li>
+<li>회사 19층 창밖 뷰가 앞 건물 신축으로 곧 사라질 것을 우려해 선택 영역 제거·경도 조절·21:9 배경 확장·업스케일까지 적용해 스튜디오 배경으로 박제</li>
+<li>프롬프트 이미지 생성으로 &quot;오목 기술사 박물관&quot;이라는 가상 공간을 만들고 3종 이미지(참조 이미지) 기능으로 전시물의 일관성을 유지</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>영상 생성 AI로 배경째 만드는 방식은 주인공(피사체)의 정확한 행동·표정을 그대로 유지하기 어려워, 배경만 따로 만들어 합성하는 그린 스크린 방식이 여전히 실무적으로 우월하다</li>
+<li>&quot;이미지를 만드는 것&quot;보다 &quot;뽑힌 이미지를 의도대로 정교하게 고치는 것&quot;이 실제 영상 활용 여부를 가른다는 게 영상의 중심 주장</li>
+<li>파이어플라이는 이미지·비디오·오디오를 한 공간에서 만드는 올인원 크리에이티브 AI 스튜디오이며, 이번 영상은 그중 이미지 편집 메뉴에 집중</li>
+<li>어도비 파이어플라이 모델은 상업적으로 안전한 데이터로 학습되어 자유롭게 상업적 용도로 사용 가능하다는 점을 실무자 관점에서 강조</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>지하철 배경 제작 워크플로우</h2><ul>
+<li>참조 이미지에 지하철 스케치를 그려 넣고 &quot;지하철 실내 좌석에 앉은 사람들이 전부 고개를 숙이고 휴대폰을 보고 있음. 앵글은 정면 유지, 실사 이미지처럼&quot; 프롬프트로 1차 생성</li>
+<li>1차 결과물의 문제 3가지: 좌석이 꽉 차 주인공 앉힐 자리 없음, 위쪽 광고판이 어색함, 지하철 톤이 스튜디오와 불일치</li>
+<li>텍스트 도구로 광고판 위에 &quot;광고판을 아예 지울 것&quot;이라 적어 바로 제거, 브러시 도구로 크기를 줄여 좌석 한 칸만 정밀 선택 후 &quot;빈 좌석으로&quot; 적용해 옆자리 승객은 그대로 유지</li>
+<li>박스로 창문 영역만 잡고 &quot;아침에 도시 풍경&quot;을 입력해 창밖 배경 교체, 이후 비디오 생성 단계에서 &quot;지하철 안 풍경 창문 뒤쪽으로 도시 풍경이 지나감, 카메라 무빙 없이&quot; 프롬프트로 영상화까지 확인</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>색상판·디테일 조절: 정밀 제어의 차별점</h2><ul>
+<li>좌석 색상을 바꿀 때 텍스트 도구로 색상명(예: 옐로우)을 적으면 화면에 색상판이 떠서 정확한 색상값을 직접 선택 가능 — 말로 &quot;조금 더 차분한 노랑&quot;을 반복 설명하는 비효율을 제거</li>
+<li>디테일 조절 기능은 분<span class="dn">위기</span>(퇴근길 특유의 노곤한 느낌 등)를 브러시로 지정한 영역에만 적용하며, &quot;골든 아워&quot; 같은 짧은 프롬프트 입력 후 강도별 베리에이션을 미리보기로 제공</li>
+<li>슬라이더를 좌우로 밀며 수정 강도가 약하게 들어간 버전부터 강하게 들어간 버전까지 눈으로 비교해 원하는 지점을 직접 선택 — &quot;적당히 해달라&quot;는 말 대신 수치로 통제</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>사무실 실사 배경 리터치 파이프라인</h2><ul>
+<li>회사 19층에서 보이는 실제 뷰를 촬영했으나 유리에 사무실 형광등이 비쳐 그대로 사용 불가</li>
+<li>선택 영역 제거 기능은 단순히 지우는 게 아니라 브러시로 칠한 부분을 주변 배경 정보를 읽어 자연스럽게 메꾸며, 브러시의 경도(edge hardness)까지 조절 가능 — 유리 반사처럼 경계가 흐린 대상은 경도를 낮춰 블렌딩, 형체가 명확한 대상은 경도를 높여 딱 떨어지게 처리</li>
+<li>정면·측면 2대의 카메라 촬영을 고려해 21:9 와이드 비율로 배경 확장 기능을 적용, 프롬프트 입력 없이 확장 버튼만 눌러도 원본 분<span class="dn">위기</span>를 읽어 자연스럽게 이어 그림</li>
+<li>향후 몇 년간 방송에 반복 사용할 배경이므로 업스케일 도구로 모델과 배율(2배/4배)을 선택해 고해상도화 — 업스케일 후 멀리 있는 아파트 창문까지 디테일이 살아남을 확인</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>가상 배경 생성: 오목 기술사 박물관 사례</h2><ul>
+<li>오래된 기술 역사를 다루는 채널 코너를 위해 실존하지 않는 &quot;오목 기술사 박물관&quot;을 프롬프트 이미지 생성으로 제작</li>
+<li>파이어플라이 자체 모델 외에 구글 제미나이, 클링, 플럭스 등 파트너 모델도 같은 화면에서 선택 가능하며 모델별 강점이 다르므로 용도에 맞게 선택 권장</li>
+<li>일상 언어 프롬프트(&quot;밝은 박물관 전시실 정면 벽 좌측 위에 가상의 옛날 기계들&quot;) 입력 후에도 결과 이미지 위에서 &quot;왼쪽 좌대의 유물을 다이얼이 큰 기계로&quot;, &quot;바닥을 밝은 원목으로&quot; 등 부분 수정을 반복 적용해 통이미지 재생성 시 발생하는 복불복 문제를 회피</li>
+<li>3종 이미지(참조 이미지 고정) 기능으로 박물관을 여러 각도·장면에서 재생성해도 동일한 유물 형태를 유지시켜 배경 시리즈의 일관성 확보</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>전략적 의미</h2><ul>
+<li>영상 제작 워크플로우에서 &quot;생성&quot;과 &quot;편집&quot;의 역할이 분리되고 있으며, 실무 채택의 관건은 생성 품질이 아니라 뽑힌 결과물을 얼마나 정밀하게 국소 수정할 수 있는가로 이동</li>
+<li>텍스트·브러시·박스 3방식의 마크업, 색상판 직접 선택, 디테일 조절 슬라이더 등은 모두 &quot;말로 설명&quot;에서 &quot;수치·좌표로 직접 지정&quot;으로 제어 방식을 전환하는 흐름을 보여줌</li>
+<li>상업적으로 안전한 학습 데이터 기반이라는 점은 방송·유튜브처럼 저작권 리스크에 민감한 콘텐츠 제작자에게 실질적 채택 장벽을 낮추는 요인</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>활용 시나리오</h2><ul>
+<li>촬영이 물리적·현실적으로 불가능한 장면(출근길 지하철 맞은편 시점 등)을 그린 스크린과 AI 배경 생성으로 대체</li>
+<li>사라질 <span class="dn">위기</span>의 실제 촬영 장소(재건축 예정 뷰 등)를 미리 촬영해 업스케일·배경 확장으로 영구 보존하고 반복 사용</li>
+<li>채널 특성에 맞는 가상 세트(박물관, 스튜디오 등)를 만들어 매번 같은 흰 벽 배경에서 탈피, 참조 이미지 기능으로 시리즈 전반의 시각적 일관성 유지</li>
+<li>색상판·강도 슬라이더 기반 정밀 조정이 필요한 브랜드 컬러 매칭, 미세한 분<span class="dn">위기</span> 톤 조정 작업</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>현황 및 전망</h2><ul>
+<li>파이어플라이는 이미지 편집을 포함해 비디오·오디오·웹·모바일까지 아우르는 올인원 방향으로 확장 중이며, 이번 영상은 그중 이미지 편집 기능에 초점을 맞춤</li>
+<li>구글 제미나이, 클링, 플럭스 등 경쟁 모델을 파트너로 같은 인터페이스에서 통합 제공하는 방식은 개별 생성 성능보다 편집·제어 툴체인의 통합성이 경쟁 우위가 될 것임을 시사</li>
+<li>제작자는 &quot;아무리 다른 툴이 나와도 정교한 편집 단계에서는 여전히 어도비를 쓸 수밖에 없다&quot;는 실무 판단을 제시, 향후 배경 시리즈를 지속 확장할 계획을 밝힘</li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>용어 사전</h2><ul>
+<li>마크업(Markup): 파이어플라이 이미지 편집의 핵심 도구 모음으로 텍스트·브러시·박스 선택 방식을 통해 이미지의 특정 영역을 지시·수정하는 기능</li>
+<li>디테일 조절: 선택 영역의 전반적 분<span class="dn">위기</span>·톤을 프롬프트와 강도 슬라이더로 미세 조정하는 기능</li>
+<li>선택 영역 제거: 브러시로 표시한 부분을 주변 배경을 참조해 자연스럽게 채워 삭제하는 기능, 경도 조절로 경계 처리 방식 선택 가능</li>
+<li>배경 확장(Generative Expand 개념): 원본 이미지의 화각을 벗어난 영역을 별도 프롬프트 없이 원본 분<span class="dn">위기</span>에 맞춰 자동으로 그려 넓히는 기능</li>
+<li>3종 이미지(참조 이미지): 특정 피사체나 오브젝트의 생김새를 고정해 이후 생성물에서도 동일하게 유지시키는 참조 기능</li>
+<li>울트라키(Ultra Key): 프리미어 프로의 크로마키 합성 기능, 그린 스크린 촬영본과 생성 배경을 합성할 때 사용</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Ii5uYrQ9PZg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>오목교 전자상가 · 2026-09-03</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
