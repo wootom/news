@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Matt Wolfe가 이번 주 쏟아진 Anthropic·Google·OpenAI 신모델을 뜯어본 결과, 진짜 주목할 건 가격 대비 성능이었다."><title>Fable 5.1은 최강이지만 최고가, Gemini 3.8 Flash는 저평가된 코딩 가성비 모델</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">MORNING DIGEST · 2026-09-04 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>Fable 5.1은 최강이지만 최고가, Gemini 3.8 Flash는 저평가된 코딩 가성비 모델</h1><p class="lead">Matt Wolfe가 이번 주 쏟아진 Anthropic·Google·OpenAI 신모델을 뜯어본 결과, 진짜 주목할 건 가격 대비 성능이었다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Claude Fable 5.1, Artificial Analysis 지능지수 66으로 현존 최고(직전 1위 Opus 5는 63)</li>
+<li>그러나 작업당 비용 $3.69로 전체 모델 중 최고가, &quot;5보다 25% 저렴&quot; 주장과 실측 데이터 상충</li>
+<li>Gemini 3.8 Flash, DeepSeek 코딩 벤치마크 73.7~74%로 Opus 5와 동급, 비용은 작업당 단 $0.58</li>
+<li>OpenAI Astra는 취약점 악용 성공률 11.5%→40%로 급등, 출시를 의도적으로 지연 중</li>
+<li>Claude Code로 게임 클론 제작 시 Fable 5.1은 1시간30분·$114 이상 소요, Gemini는 압도적으로 저렴</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Matt Wolfe의 중심 주장: &quot;모델 출시 속도는 그대로인데 실제 삶의 변화는 크지 않다&quot; — 대다수 일반 사용자 체감은 정체, 체감 변화는 주로 코딩·수학·과학 영역에 국한.</li>
+<li>Fable 5.1은 콘텐츠 크리에이터들 사이에서 &quot;게임체인저&quot;로 과도하게 포장되고 있지만, 실사용 경제성 관점에서는 오히려 최악의 선택지에 가깝다는 반론.</li>
+<li>Gemini 3.8 Flash는 Google이 오랫동안 화제성에서 밀려난 탓에 실제 성능 대비 언급량이 지나치게 적다는 &quot;저평가&quot; 프레임.</li>
+<li>Astra의 벤치마크는 &quot;더 적은 토큰으로 더 높은 성공률&quot;이라는 효율성 향상이 곧 보안 리스크 증가로 직결된다는 이중적 함의를 지님.</li>
+<li>저자는 개별 벤치마크 몇 % <span class="up">개선</span>에 그치는 잦은 모델 발표보다, 세대를 가르는 큰 도약(GPT-5→GPT-6급)까지 기다렸다 공개하는 편이 낫다고 결론.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>모델별 평가</h2><ul>
+<li><strong>Claude Fable 5.1</strong>: Anthropic이 선별 공개한 벤치마크에서 에이전틱 과학 연구 능력이 GPT-5.6 Sol 대비 거의 2배, 에이전틱 코딩·지식노동에서도 큰 폭 우위. 다만 이는 5.6 Sol이 상대적으로 약한 지표만 골라 비교한 &quot;체리피킹&quot;이라는 지적.</li>
+<li>사이버보안 안전장치를 정밀화해 소프트웨어 취약점 식별에 활용 가능해졌고, 평균 개입(거부) 건수가 60% <span class="dn">감소</span>. 단, 이중용도 사이버보안 작업 일부는 여전히 Opus 계열로 리다이렉트.</li>
+<li>distillation(증류) 방지 장치 강화: 신규 API 계정은 다중 턴 대화에서 Claude의 이전 사고 과정(트랜스크립트)을 유지한 채 프롬프트를 편집할 수 없게 됨 — 중국발 모델들의 증류 의혹을 겨냥한 조치로 해석.</li>
+<li>가격은 입력 $10 / 출력 $50 per million token으로 Fable 5와 동일 유지. Anthropic은 캐시 읽기 비용 절감으로 &quot;전형적 워크로드 기준 25% 저렴&quot;을 주장했으나, Artificial Analysis 실측으로는 작업당 $3.69(Fable 5는 $3.14)로 오히려 더 비쌈.</li>
+<li><strong>Gemini 3.8 Flash</strong>: DeepSeek(소프트웨어 엔지니어링 벤치마크) 73.7%(공식 사이트 기준 74%)로 Claude Opus 5와 동일 순위, Claude Fable 5(70%)를 상회. 평균 비용은 작업당 $2.36으로, Opus 5($11.84)·Fable 5($21.63) 대비 압도적으로 저렴.</li>
+<li>Artificial Analysis 종합 지능지수는 59점(10위권)으로 중위권이지만, 코딩에 특화되어 최적화된 것으로 추정. 지식노동(GDPval) 등 비코딩 영역에서는 상위권 모델에 못 미침.</li>
+<li>작업당 비용 $0.58, 평균 처리 시간 2.5분(Opus 5·Fable은 7.4분)으로 속도와 비용 모두 최상위권. 다만 출력 토큰 사용량은 가장 비효율적(추론에 시간을 많이 씀).</li>
+<li><strong>OpenAI Astra(예고)</strong>: 아직 정식 출시 전이며 &quot;Path to Astra&quot; 공지를 통해 보안 위험성 때문에 출시를 의도적으로 지연 중이라 설명. &quot;이 모델은 적절한 도구와 접근 권한이 있으면 사람의 단계별 지시 없이도 잘 보호된 시스템에서 알려지지 않은 보안 결함을 발견하고 악용 방법을 개발할 수 있는 최초의 모델&quot;이라고 자체 등급 지정.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>프론티어 모델 간 지능 격차는 좁혀지고 있지만, 비용 격차는 오히려 벌어지고 있다 — Fable 5.1과 Gemini 3.8 Flash의 작업당 비용 차이는 약 6배.</li>
+<li>Anthropic의 증류 방지 조치는 &quot;자사 모델은 인터넷 데이터로 학습했으면서 타사의 증류는 막는다&quot;는 이중잣대 논쟁을 재점화시켰다.</li>
+<li>OpenAI가 채택 중인 것으로 알려진 recurrent depth(looped transformer) 기법은 Chain of Thought 투명성 원칙과 충돌할 소지가 있어, 향후 AI 안전성 감사 체계 전반에 파급될 수 있는 이슈.</li>
+<li>실사용자 관점에서는 &quot;가장 똑똑한 모델&quot;보다 &quot;작업당 비용 대비 성능이 가장 좋은 모델&quot;을 고르는 실용주의가 부상하고 있음을 시사.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>벤치마크 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>모델</th><th>DeepSeek 코딩 점수</th><th>작업당 평균 비용</th><th>평균 처리 시간</th><th>Artificial Analysis 지능지수</th></tr></thead><tbody><tr><td>Claude Fable 5.1</td><td>미측정(공개 시점 기준)</td><td>$3.69</td><td>-</td><td>66 (1위)</td></tr><tr><td>Claude Opus 5</td><td>약 74%</td><td>$2.34</td><td>7.4분</td><td>63</td></tr><tr><td>Claude Fable 5</td><td>70%</td><td>$3.14~$21.63(집계 상이)</td><td>7.4분</td><td>-</td></tr><tr><td>Gemini 3.8 Flash</td><td>73.7~74%</td><td>$0.58~$2.36(집계 상이)</td><td>2.5분</td><td>59</td></tr><tr><td>GPT-5.6 Sol</td><td>-</td><td>$0.95</td><td>3.9분</td><td>-</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>예산이 넉넉하고 코딩·과학 리서치에서 최고 성능이 필요한 팀 → Fable 5.1, 단 비용 폭증 리스크를 반드시 사전 고지(예: 게임 클론 1건에 $114 소요 사례).</li>
+<li>반복적인 코딩 작업을 저비용·고속으로 대량 처리해야 하는 개발팀 → Gemini 3.8 Flash가 Opus 5급 성능을 6분의 1 가격에 제공.</li>
+<li>SVG·이미지 생성처럼 소규모 크리에이티브 작업을 빠르게 테스트하고 싶은 사용자 → Gemini 3.8 Flash(9센트/1분32초)가 Fable 5.1(4.35달러/18분)보다 훨씬 실용적.</li>
+<li>보안 연구·레드팀 성격의 취약점 탐지 업무를 다루는 조직 → Astra 출시 이후 안전장치와 감사 가능성(Chain of Thought 투명성)을 반드시 확인 후 도입 검토.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>Fable 5.1은 아직 DeepSeek 벤치마크에 정식 반영되지 않은 상태로, Anthropic이 발표한 벤치마크는 자사 유리 지표 위주로 선별 공개되었다는 점에 유의해야 함.</li>
+<li>Google DeepMind는 Gemini 3.8 Flash로 코딩 가성비 시장에서 존재감을 회복하고 있으나, 화제성 측면에서는 Anthropic·OpenAI에 크게 못 미치는 상황.</li>
+<li>OpenAI Astra는 &quot;이번 주 또는 다음 주 출시&quot; 추측이 나오는 가운데, recurrent depth 기법에 대한 과학계 우려가 출시 시점과 안전성 검증 범위에 영향을 줄 가능성.</li>
+<li>Matt Wolfe는 향후 잦은 소규모 모델 업데이트보다 세대 교체급 발표를 기다리는 편이 낫다는 입장을 유지하며, 관련 후속 논의는 매주 금요일 뉴스 요약 영상에서 이어갈 예정.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><ul>
+<li><strong>Fable 5.1</strong>: Anthropic이 이번 주 공개한 Claude 최신 모델. 기존 Fable 5 가중치에 추가 강화학습(post-training)을 적용한 버전.</li>
+<li><strong>DeepSeek(SWE 벤치마크)</strong>: 소프트웨어 엔지니어링 실전 코딩 능력을 측정하는 벤치마크로, 실사용 코딩 체감과 상관관계가 높다고 평가됨.</li>
+<li><strong>Artificial Analysis</strong>: 여러 벤치마크를 가중 결합해 모델의 전반적 &quot;지능&quot; 순위를 산출하는 제3자 평가 지표.</li>
+<li><strong>Distillation(증류)</strong>: 기존 대형 모델(교사)의 프롬프트·출력을 이용해 신규 모델(학생)을 학습시키는 기법. 중국발 모델의 증류 의혹이 논쟁이 됨.</li>
+<li><strong>Recurrent depth(looped transformer)</strong>: 동일 텍스트를 여러 번 반복 처리해 답변을 <span class="up">개선</span>하는 신기법. Chain of Thought를 사람이 읽기 어렵게 만든다는 우려가 제기됨.</li>
+<li><strong>Chain of Thought(사고 사슬)</strong>: 모델이 최종 답을 내기 전 추론 과정을 텍스트로 드러내는 방식. 감사·안전성 점검의 핵심 수단으로 쓰임.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Po_Dh7WLgmM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-09-04</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
