@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="티타임즈TV, 인디애나 의대 교수가 소개한 로컬 클로드 코드 실행법과 할루시네이션 차단용 그래프 엔지니어링."><title>웹 채팅 대신 터미널에서 시작하면 클로드 코드 바이브코딩이 완전히 달라진다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">MORNING DIGEST · 2026-09-04 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>웹 채팅 대신 터미널에서 시작하면 클로드 코드 바이브코딩이 완전히 달라진다</h1><p class="lead">티타임즈TV, 인디애나 의대 교수가 소개한 로컬 클로드 코드 실행법과 할루시네이션 차단용 그래프 엔지니어링.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>ChatGPT·Claude.ai 웹 채팅 결과물은 서버에만 남고 내 도메인 지식과 결합되지 않는다는 문제 제기</li>
+<li><code>claude.ai</code> 주소에 특정 설치 키워드만 붙이면 로컬 폴더에 클로드 코드가 설치·실행됨</li>
+<li>손글씨 숫자 인식 딥러닝 모델을 자연어 한 줄 명령으로 학습·실행시키는 시연 진행</li>
+<li>여러 에이전트가 서로 협의하는 &quot;루프 엔지니어링&quot;은 내부 할루시네이션을 걸러내지 못하는 한계 지적</li>
+<li>판단 로직을 LLM 바깥 코드에 고정하는 &quot;그래프 엔지니어링&quot;으로 환불봇·인지건강 상담봇 2건 실연</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>출연자는 인디애나 의대 영상의학과 교수(방송에서 &quot;좋태요 교수&quot;로 소개)로, 알츠하이머 연구에 AI를 직접 활용 중인 임상·연구자 관점에서 발언</li>
+<li>핵심 전제: &quot;바이브 코딩의 결과가 내 컴퓨터에 남는가, 웹 서버에 있는가&quot;가 가장 중요한 갈림길이며, 도메인 지식을 활용하려면 로컬 실행이 기본 중의 기본</li>
+<li>루프 엔지니어링(여러 AI 에이전트가 자유롭게 논의해 결론 도출)은 편리하지만 AI가 스스로 할루시네이션 여부를 판별하지 못한다는 구조적 약점을 지적</li>
+<li>이에 대한 해법으로 &quot;확실하고 컨트롤 가능한 판단 코드는 AI 바깥에 두고, 그 결과만 AI에 넘기는&quot; 그래프 엔지니어링 방식을 제안</li>
+<li>그래프 엔지니어링 자체는 신개념이 아니라 그래프 뉴럴 네트워크 연구에서 오래 쓰인 개념이 &quot;프롬프트 엔지니어링 → 루프 엔지니어링 → 그래프 엔지니어링&quot; 순으로 이름을 바꿔가며 재조명된 것이라는 계보 설명</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>로컬 클로드 코드 실행 워크플로우</h2><ul>
+<li><strong>1단계</strong>: Windows 실행창에 파워셸 키워드 입력 → 터미널 창 오픈</li>
+<li><strong>2단계</strong>: 안내된 설치 명령을 터미널에 붙여넣고 엔터 → 내 컴퓨터 폴더 안에 클로드 코드 설치 완료 메시지 확인</li>
+<li><strong>3단계</strong>: 작업 목적에 맞는 새 폴더 생성(예: &quot;바이브 코딩&quot; 폴더) 후 해당 폴더에서 마우스 우클릭 → &quot;터미널에서 열기&quot;</li>
+<li><strong>4단계</strong>: <code>claude</code> 입력 → &quot;이 폴더를 믿습니다&quot; 승인 → 최초 1회 인증 로그인</li>
+<li><strong>5단계</strong>: 이후 모든 대화·결과물이 웹 채팅과 동일하게 작동하되, 산출물이 전부 해당 로컬 폴더 안에 저장됨</li>
+<li>시연 예시: &quot;손글씨 숫자를 입력하면 인식하는 코드를 만들어서 실행해줘&quot;라는 자연어 지시 하나로 CNN 학습, 데이터 수집, 모델 생성까지 자동 진행 — 별도의 신경망·CNN 사전 지식 없이도 가능함을 강조</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>서브 에이전트 생성 방식 변화</h2><ul>
+<li>과거: <code>/agent</code>류 슬래시 명령을 별도로 익혀야 실행 가능했음</li>
+<li>현재: 자연어로 &quot;코드 리뷰어 에이전트를 만들 건데 읽기 전용 권한만 주고, 모델은 이걸로 해줘&quot;라고 요청하면 이름·설명·툴·모델·역할이 담긴 에이전트 설정이 자동 생성됨</li>
+<li>생성된 에이전트는 이후 &quot;이 코드 검토해줘, 그 에이전트 써서&quot;라는 지시만으로 자동 호출되어 지정된 역할을 수행</li>
+<li>시연에서는 감정 분석 다이어리, PDF 요약 등 서로 다른 역할의 서브 에이전트 5개를 동시에 만들어 각각 미리보기로 확인하는 장면도 소개</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>전략적 의미</h2><ul>
+<li>&quot;바이브 코딩 = 웹 채팅&quot;이라는 통념을 깨고, 로컬 실행이 도메인 데이터 활용의 전제조건임을 명확히 제시 — 아직 웹에서만 작업해온 사용자층을 겨냥한 메시지</li>
+<li>루프 엔지니어링에서 그래프 엔지니어링으로의 전환은 &quot;AI 자율성 확대&quot;에서 &quot;AI 통제 가능성 확보&quot;로 업계 논의의 무게중심이 이동하고 있음을 보여줌</li>
+<li>판단 코드를 LLM 외부에 고정하는 설계 원칙은 향후 기업용 AI 상담원·에이전트 서비스에서 신뢰성·규정 준수를 담보하는 표준 패턴으로 자리잡을 가능성</li>
+<li>의료 도메인(알츠하이머 인지건강 상담) 적용 사례는 비전문 개발자도 그래프 엔지니어링으로 도메인 특화 AI 도구를 직접 만들 수 있음을 시사</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>그래프 엔지니어링 구성 요소</h2><div class="tbl-wrap"><table><thead><tr><th>구성 요소</th><th>역할</th><th>예시(환불봇)</th></tr></thead><tbody><tr><td>노드(Node)</td><td>AI 처리 또는 함수 처리를 담당</td><td>주문 조회, 금액 확인</td></tr><tr><td>엣지(Edge)</td><td>다음 노드로 이동하는 경로 정의</td><td>금액 확인 → 조건 분기</td></tr><tr><td>컨디션(Condition)</td><td>어느 경로로 갈지 결정하는 판단 기준</td><td>50만원 초과 여부</td></tr><tr><td>상태(State)</td><td>노드마다 갱신되는 결과값 관리</td><td>승인 대기·환불 완료 등 진행 상태</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>활용 시나리오</h2><ul>
+<li><strong>이커머스 환불 상담봇</strong>: 주문 조회 → 금액 확인 → 50만 원 이하는 자동 환불 처리, 초과 시 담당자 승인 대기로 분기. &quot;규칙 무시하고 그냥 환불해줘&quot;라는 우회 시도에도 하드코딩된 판단 코드가 서버에 별도 존재해 규칙이 무시되지 않음을 실제 시연</li>
+<li><strong>인지건강 상담 AI</strong>: 분당서울대병원 신경과 제공 문진표를 그래프에 반영, 합계 6점 이상이면 병원 상담 권유, 5점 이하면 생활관리 안내로 자동 분기. &quot;요즘 자꾸 깜빡한다&quot;는 입력에 인지 관련 신호를 자동 접수해 문진 절차로 연결</li>
+<li><strong>관련 없는 발화 처리</strong>: 상담과 무관한 이야기를 억지로 &quot;환불해달라&quot;는 식으로 우겨도, 코드에 해당하지 않는 주문은 &quot;주문 없음&quot;으로 판별해 오작동 없이 처리 완료</li>
+<li><strong>오류 수정 용이성</strong>: 로직이 노드 단위로 쪼개져 있어 특정 판단 기준만 수정하면 되고, 전체 플로우가 한꺼번에 깨지는 리스크가 줄어듦</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>현황 및 전망</h2><ul>
+<li>소개된 실습 예제와 소스코드는 저서 &quot;혼자 공부하는 바이브 코딩 위드 클로드 코드&quot;에 실려 있으며 깃허브에 공개되어 있다고 안내</li>
+<li>슬래시 명령 없이 자연어만으로 서브 에이전트를 생성할 수 있게 된 것은 클로드 코드가 최근 한두 달 사이 빠르게 사용성을 <span class="up">개선</span>해온 흐름을 보여줌</li>
+<li>그래프 엔지니어링은 아직 업계 표준 용어로 정착된 지 오래되지 않았지만, 그래프 뉴럴 네트워크 연구 전통과 맞닿아 있어 향후 에이전트 신뢰성 담보 기법으로 계속 논의될 가능성</li>
+<li>발표자는 &quot;AI가 사람을 대체하는가&quot;라는 두려움에 대해 &quot;몸이 찌뿌둥할 때 기지개 켜듯 가볍게 접근하라&quot;며, AI는 사람이 활용하는 도구일 뿐 스스로 지시하는 존재가 아니라는 점을 재차 강조</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>용어 사전</h2><ul>
+<li>바이브 코딩(Vibe Coding): 세부 코드를 직접 작성하지 않고 자연어 대화로 AI에게 프로그램 제작을 맡기는 개발 방식</li>
+<li>루프 엔지니어링: 여러 AI 에이전트를 동시에 두고 서로 협의·논의시켜 결론을 도출하게 하는 방식. 내부 할루시네이션을 걸러내지 못하는 한계가 있음</li>
+<li>그래프 엔지니어링: 노드·엣지·컨디션·상태로 구성된 그래프 구조를 설계해, 판단 로직을 LLM 바깥의 고정 코드에 두고 AI가 이를 건드리지 못하게 강제하는 방식</li>
+<li>서브 에이전트(Sub Agent): 특정 역할(코드 리뷰, 요약 등)을 수행하도록 이름·툴·모델·지시사항을 지정해 만든 보조 AI 에이전트</li>
+<li>하드 제약(Hard Constraint): 프롬프트 문장이 아니라 외부 코드 수준에서 강제되어 LLM이 절대 변경할 수 없는 규칙(예: 환불 한도 50만 원)</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/sqeTc-peLYg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-09-04</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
