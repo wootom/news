@@ -1,0 +1,295 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Youtube Brief · AI·기술 · 2026-09-04</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+
+/* ─ Daily Brief 전용(b- 접두사) ─ */
+.b-sec{margin:26px 0 0}
+.b-sec-h{
+  display:flex;align-items:center;gap:9px;margin:0 2px 12px;
+  font-size:15px;font-weight:800;color:var(--accent-ink);letter-spacing:-.01em
+}
+.b-sec-h::before{content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none}
+.b-sec-h .n{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:2px 8px;border-radius:999px;letter-spacing:0
+}
+/* 1열 고정에 가깝게 둔다(minmax 600px). 2열로 쪼개면 썸네일 폭이 절반이 되어
+   인포그래픽이 뭔지 안 보인다. auto-fit이라 아주 넓은 화면에서만 2열이 된다. */
+.b-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,600px),1fr));gap:16px}
+.b-card{
+  display:flex;flex-direction:row;background:var(--bg);
+  border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  text-decoration:none;color:inherit;box-shadow:0 1px 3px rgba(22,32,43,.05);
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease
+}
+.b-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(22,32,43,.10);border-color:var(--accent)}
+/* 인포그래픽 원본은 16:9 가로형(1672x941). 크롭하면 무슨 그림인지 안 보이므로
+   자르지 않고 전체를 축소한 '썸네일'로 보여준다(전문은 카드를 눌러 확인).
+   aspect-ratio 16/9 → 이 칸이 보통 카드 높이를 결정한다.
+   텍스트가 더 길어 늘어나는 경우에도 contain이라 잘리지 않고 위아래 여백만 생긴다. */
+.b-shot{
+  width:44%;flex:none;aspect-ratio:16/9;overflow:hidden;position:relative;
+  min-height:132px;background:var(--surface);border-right:1px solid var(--border)
+}
+.b-thumb{
+  display:block;position:absolute;top:8px;left:8px;
+  width:calc(100% - 16px);height:calc(100% - 16px);
+  object-fit:contain;border-radius:5px
+}
+.b-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
+.b-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;font-weight:800}
+.b-src{
+  display:inline-flex;align-items:center;gap:6px;color:var(--accent-ink);
+  background:var(--accent-light);border-radius:999px;padding:3px 10px
+}
+.b-src .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
+.b-date{color:var(--muted);letter-spacing:.03em}
+.b-title{
+  font-size:15.5px;font-weight:800;line-height:1.38;letter-spacing:-.015em;
+  color:var(--text);word-break:keep-all
+}
+.b-sum{list-style:none;display:flex;flex-direction:column;gap:5px;margin:0}
+.b-sum li{
+  position:relative;padding-left:13px;font-size:13px;line-height:1.55;
+  color:var(--ink-700);word-break:keep-all
+}
+.b-sum li::before{
+  content:"";position:absolute;left:0;top:8px;width:5px;height:5px;
+  border-radius:50%;background:var(--accent);opacity:.55
+}
+.b-noimg{
+  display:flex;align-items:center;justify-content:center;width:44%;flex:none;
+  align-self:stretch;min-height:132px;
+  background:var(--surface);border-right:1px solid var(--border);
+  color:var(--muted);font-size:12.5px;font-weight:700
+}
+
+/* ─ 헤더 캘린더 ─ */
+.hdr-flex{display:flex;gap:28px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.hdr-main{flex:1 1 420px;min-width:0}
+.hdr-date{
+  margin-top:10px;font-size:15px;font-weight:800;color:#fff;
+  letter-spacing:.01em;font-variant-numeric:tabular-nums
+}
+.cal{
+  flex:none;width:262px;background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:12px 13px 13px
+}
+.cal-h{
+  font-size:12px;font-weight:800;letter-spacing:.1em;color:rgba(255,255,255,.9);
+  margin-bottom:9px;text-align:center;font-variant-numeric:tabular-nums
+}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-wd{
+  font-size:10.5px;font-weight:800;color:rgba(255,255,255,.72);
+  text-align:center;padding-bottom:4px
+}
+.cal-d{
+  display:flex;align-items:center;justify-content:center;aspect-ratio:1/1;
+  font-size:12px;font-weight:700;border-radius:7px;text-decoration:none;
+  font-variant-numeric:tabular-nums
+}
+.cal-out{visibility:hidden}
+.cal-off{color:rgba(255,255,255,.42)}
+.cal-on{color:#fff;background:rgba(255,255,255,.22);font-weight:800}
+.cal-on:hover{background:rgba(255,255,255,.42)}
+.cal-on:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.cal-now{background:#fff;color:var(--accent-ink);font-weight:900}
+.b-back{
+  display:inline-flex;align-items:center;gap:7px;margin:26px 0 0;
+  background:var(--bg);border:1px solid var(--border);border-radius:999px;
+  padding:9px 18px;font-size:13px;font-weight:800;color:var(--accent-ink);text-decoration:none
+}
+.b-back:hover{border-color:var(--accent);background:var(--accent-light)}
+@media (max-width:860px){
+  .cal{width:100%}
+}
+@media (max-width:640px){
+  .b-grid{grid-template-columns:1fr;gap:13px}
+  .b-card{flex-direction:column}
+  .b-shot,.b-noimg{width:100%;align-self:auto;border-right:0;border-bottom:1px solid var(--border)}
+  .b-thumb{top:0;left:0;width:100%;height:100%;border-radius:0}
+  .b-noimg{aspect-ratio:16/7;min-height:0}
+  .b-title{font-size:15px}
+  /* 정사각 칸이면 캘린더만 320px를 먹어 첫 화면이 캘린더로 채워진다 → 납작하게. */
+  .cal{padding:10px 11px 11px}
+  .cal-d{aspect-ratio:auto;height:31px;border-radius:6px}
+  .cal-h{margin-bottom:6px}
+  .cal-wd{padding-bottom:2px}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-flex"><div class="hdr-main"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>DAYBREAK</span><span class="chip">AI·기술</span><span class="chip">14편</span></div><h1>Youtube Brief</h1><div class="hdr-date">2026. 09. 04. (금)</div><p class="lead">오늘 수집한 AI·기술 영상 14편의 리포트입니다. 카드를 누르면 해당 리포트 전문으로 이동합니다.</p></div><!--daybreak:cal--><div class="cal"><div style="position:relative;margin-bottom:9px"><a class="cal-nav-prev" href="./2026-08-31-daily-brief-ai.html" title="이전 달 브리프로 이동" style="left:0;position:absolute;top:50%;transform:translateY(-50%);font-size:10.5px;font-weight:800;letter-spacing:.02em;text-decoration:none;color:#fff;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:2px 8px;line-height:1.5;white-space:nowrap">← 이전 달</a><div class="cal-h" style="margin:0">2026. 09</div><a class="cal-today" href="./latest-brief-ai.html" title="가장 최신 브리프로 이동" style="right:0;position:absolute;top:50%;transform:translateY(-50%);font-size:10.5px;font-weight:800;letter-spacing:.02em;text-decoration:none;color:#fff;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.34);border-radius:999px;padding:2px 8px;line-height:1.5;white-space:nowrap">오늘 →</a></div><div class="cal-g"><span class="cal-wd">월</span><span class="cal-wd">화</span><span class="cal-wd">수</span><span class="cal-wd">목</span><span class="cal-wd">금</span><span class="cal-wd">토</span><span class="cal-wd">일</span><span class="cal-d cal-out"></span><a class="cal-d cal-on" href="./2026-09-01-daily-brief-ai.html">1<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">14</span></a><a class="cal-d cal-on" href="./2026-09-02-daily-brief-ai.html">2<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">15</span></a><a class="cal-d cal-on" href="./2026-09-03-daily-brief-ai.html">3<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">12</span></a><span class="cal-d cal-now" aria-current="date">4<span class="cal-n" style="font-size:50%;font-weight:700;margin-left:1.5px;line-height:1;opacity:.8">14</span></span><span class="cal-d cal-off">5</span><span class="cal-d cal-off">6</span><span class="cal-d cal-off">7</span><span class="cal-d cal-off">8</span><span class="cal-d cal-off">9</span><span class="cal-d cal-off">10</span><span class="cal-d cal-off">11</span><span class="cal-d cal-off">12</span><span class="cal-d cal-off">13</span><span class="cal-d cal-off">14</span><span class="cal-d cal-off">15</span><span class="cal-d cal-off">16</span><span class="cal-d cal-off">17</span><span class="cal-d cal-off">18</span><span class="cal-d cal-off">19</span><span class="cal-d cal-off">20</span><span class="cal-d cal-off">21</span><span class="cal-d cal-off">22</span><span class="cal-d cal-off">23</span><span class="cal-d cal-off">24</span><span class="cal-d cal-off">25</span><span class="cal-d cal-off">26</span><span class="cal-d cal-off">27</span><span class="cal-d cal-off">28</span><span class="cal-d cal-off">29</span><span class="cal-d cal-off">30</span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span><span class="cal-d cal-out"></span></div></div><!--/daybreak:cal--></div></header><section class="b-sec"><div class="b-sec-h">AI기술<span class="n">3</span></div><div class="b-grid"><a class="b-card" href="./2026-09-04-jackroberts-fable-51-ai-slop-fix.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-jackroberts-fable-51-ai-slop-fix.jpg" alt="" loading="eager" fetchpriority="high" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Jack Roberts</span><span class="b-date">2026-09-04</span></div><div class="b-title">Fable 5.1, 원샷 디자인으로 AI 슬롭을 끝내고 ChatGPT 5.6을 압도하다</div><ul class="b-sum"><li>Fable 5.1은 이전 버전보다 저렴하면서 원샷 웹사이트 디자인 품질은 크게 향상</li><li>Notion 클론 테스트에서 &quot;Northern HQ&quot;라는 완전 독자적 브랜드까지 창작</li><li>향수병 365도 회전 테스트, ChatGPT는 루프 어긋남 vs Fable 5.1은 완벽한 루프</li><li>OpenArt CLI 연동 + Slop Monster 안티-AI문체 도구로 워크플로 확장 시연</li></ul></div></a><a class="b-card" href="./2026-09-04-teatimes-ai-doctor-assist-not-replace.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-teatimes-ai-doctor-assist-not-replace.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>티타임즈TV</span><span class="b-date">2026-09-04</span></div><div class="b-title">힌턴의 &quot;영상의학과 소멸&quot; 예언 10년 뒤, 대체된 의사는 없었다</div><ul class="b-sum"><li>제프리 힌턴이 2016년 예언한 &quot;영상의학과 10년 내 소멸&quot;과 달리 2026년 현재 대체 사례 전무</li><li>인디애나 의대 조태호 교수, 뇌영상·유전체·대사체 3축으로 알츠하이머 조기진단 AI 연구</li><li>불확실성 재검토 로직 도입으로 진단 정확도 90.7%→95.5%로 상승</li><li>전 세계 AI 이용률 17%에 불과, 우간다는 의사 1인당 정신질환자 20만 명 담당</li></ul></div></a><a class="b-card" href="./2026-09-04-teatimes-vibecoding-magic-radiology-professor.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-teatimes-vibecoding-magic-radiology-professor.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>티타임즈TV</span><span class="b-date">2026-09-04</span></div><div class="b-title">웹 채팅 대신 터미널에서 시작하면 클로드 코드 바이브코딩이 완전히 달라진다</div><ul class="b-sum"><li>자연어 한 줄 명령으로 손글씨 숫자 인식 CNN 모델을 학습·실행까지 자동 완료</li><li>환불봇 시연: 50만원 이하 자동 처리, 초과 시 담당자 승인 대기로 하드코딩 분기</li><li>분당서울대병원 문진표 기준(6점 이상 상담 권유)을 그래프에 반영한 인지건강 상담 AI 공개</li><li>판단 로직을 LLM 바깥 코드에 고정하는 &#x27;그래프 엔지니어링&#x27;으로 할루시네이션·규칙 우회 차단</li></ul></div></a></div></section><section class="b-sec"><div class="b-sec-h">AI응용<span class="n">2</span></div><div class="b-grid"><a class="b-card" href="./2026-09-04-chaseai-gpt6-astra-vs-fable51.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-chaseai-gpt6-astra-vs-fable51.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Chase AI</span><span class="b-date">2026-09-04</span></div><div class="b-title">GPT-6 Astra, 벤치마크와 비용 모두에서 Fable 5.1을 압박하며 반격에 나서다</div><ul class="b-sum"><li>Terminal-Bench 4.0에서 GPT-6 Astra 57.7%(GPT-5.6 대비 37.3%→급등), 동일 성능 대비 비용은 $7.21 vs Fable 5.1 $19.50</li><li>Deep Suite(장기 에이전틱 벤치마크) 74.1%로 업계 최고, 사이버보안은 5.5%→39%까지 스텝체인지 향상</li><li>환각률 GPT-5.6 계열 9.4%→GPT-6 Astra 2%로 대폭 감소, 컴퓨터 사용 속도는 1.9배 향상</li><li>API 가격은 입력 $10/출력 $50(백만 토큰)로 Fable과 동일 책정, 수일 내 전체 사용자 공개 예정</li></ul></div></a><a class="b-card" href="./2026-09-04-eokorea-twelvelabs-naver-ventures-funding.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-eokorea-twelvelabs-naver-ventures-funding.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>EO Korea</span><span class="b-date">2026-09-04</span></div><div class="b-title">빚 3억 지고 미국행, 영상 AI 트웰브랩스가 시리즈 B 1500억 유치까지 걸어온 길</div><ul class="b-sum"><li>트웰브랩스 시리즈 B에 네이버 벤처스가 공동 리드, 엔비디아·아마존·인덱스 벤처스 참여</li><li>창업자는 국내 시드 투자 거절 후 대출까지 받아 팀 운영, 500만 달러 시드는 인덱스 벤처스가 주도</li><li>검색 모델 &#x27;마랭고&#x27;가 ICCV 계열 대회 영상 이해 1위로 실리콘밸리 VC 눈에 띄어</li><li>서울·샌프란시스코 듀얼 오피스 운영, &#x27;카메라로 찍힌 모든 영상 처리&#x27;가 목표</li></ul></div></a></div></section><section class="b-sec"><div class="b-sec-h">AI영상<span class="n">1</span></div><div class="b-grid"><a class="b-card" href="./2026-09-04-mattwolfe-overhyped-underhyped-ai-models.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-mattwolfe-overhyped-underhyped-ai-models.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Matt Wolfe</span><span class="b-date">2026-09-04</span></div><div class="b-title">Fable 5.1은 최강이지만 최고가, Gemini 3.8 Flash는 저평가된 코딩 가성비 모델</div><ul class="b-sum"><li>Claude Fable 5.1, 지능지수 66으로 1위지만 작업당 비용 $3.69로 전체 최고가</li><li>Gemini 3.8 Flash, DeepSeek 코딩 벤치마크 73.7%로 Opus 5급인데 비용은 작업당 $0.58</li><li>Claude Code로 게임 클론 제작 시 Fable 5.1은 1시간30분·$114 이상 소요</li><li>OpenAI Astra는 취약점 악용 성공률 11.5%→40%로 급등, 출시 의도적 지연 중</li></ul></div></a></div></section><section class="b-sec"><div class="b-sec-h">로봇<span class="n">1</span></div><div class="b-grid"><a class="b-card" href="./2026-09-04-innovationfrontier-humanoid-robot-olympics-whrg.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-innovationfrontier-humanoid-robot-olympics-whrg.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>혁신전파사</span><span class="b-date">2026-09-04</span></div><div class="b-title">베이징 스피드스케이팅장에서 열린 세계 최초 휴먼노이드 올림픽 개막 현장</div><ul class="b-sum"><li>중국 베이징서 제2회 월드 휴먼노이드 로봇 게임스(WHRG) 개막, 100m·1500m·하프마라톤 22km 등 다종목 동시 진행</li><li>400m 허들 등 일부 종목은 자율주행 아닌 오퍼레이터 원격조종 방식으로 운영</li><li>로봇들이 넘어져도 스스로 일어나는 복원력이 관전 포인트, 파손 로봇은 사람처럼 들것에 실려 나가</li><li>아이 동반 가족 관중이 다수, 로고폰 등 비로봇 기업도 참가해 대중 스포츠 이벤트로 자리매김</li></ul></div></a></div></section><section class="b-sec"><div class="b-sec-h">기타<span class="n">7</span></div><div class="b-grid"><a class="b-card" href="./2026-09-04-andoelgong-galaxy-s27-exynos2700.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-andoelgong-galaxy-s27-exynos2700.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>안될공학</span><span class="b-date">2026-09-04</span></div><div class="b-title">삼성, 갤럭시 S27 울트라용 엑시노스2700 메인보드 발주 — 스냅드래곤과 동시 검증 착수</div><ul class="b-sum"><li>CPU 멀티코어 성능 스냅드래곤 대비 최대 +19%, GPU 2.5W 제한 시 격차 20% 이상</li><li>POP 대신 사이드바이사이드 패키지로 전환, 발열 개선 시도하지만 메인보드 면적은 증가</li><li>삼성 DS 이직 의향 조사: 시스템LSI 75.4%, 파운드리 81.5% — 비메모리 조직 불만 배경</li><li>2024년 설문서 62.1%가 &quot;엑시노스라서 구매 안 함&quot; 응답, 브랜드 신뢰 회복이 최대 과제</li></ul></div></a><a class="b-card" href="./2026-09-04-jocoding-ai-education-vs-ax-system-webinar.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-jocoding-ai-education-vs-ax-system-webinar.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>조코딩</span><span class="b-date">2026-09-04</span></div><div class="b-title">AI 정착 실패 기업과 성공 기업의 차이는 교육이 아니라 예산·데이터 거버넌스다</div><ul class="b-sum"><li>정착 기업과 정체 기업, 교육 경험 차이는 1.5배지만 조직 예산 지원 차이는 12배</li><li>응답자 56%가 &quot;AI 없이는 업무 불가&quot;라 답했지만 정착 성공률은 별개 문제</li><li>현대차 H-Chat Pro는 자료검토시간 90% 절감, 약 52억원 효과 실현</li><li>JP모건 LLM 스위트는 23만명 사용, 약 20억달러(3조원) 절감 달성</li></ul></div></a><a class="b-card" href="./2026-09-04-nateherk-anthropic-claude-51-prompting.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-nateherk-anthropic-claude-51-prompting.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Nate Herk</span><span class="b-date">2026-09-04</span></div><div class="b-title">Anthropic 공식 문서로 본 Fable 5.1 활용법 4가지, 사용량 한도를 아낀다</div><ul class="b-sum"><li>Fable 5.1 low 강도는 Fable 5 medium~high급 성능에 비용은 더 저렴</li><li>태스크 나열 대신 &quot;완료 상태&quot;만 정의하면 모델이 스스로 하위 작업 설계</li><li>서브에이전트로 자체 검증시켜 결과물을 5~10차례 반복 개선하는 방식 권장</li><li>병렬 서브에이전트 위임으로 메인 세션 토큰 소모 대폭 절감 가능</li></ul></div></a><a class="b-card" href="./2026-09-04-nateherk-gpt6-astra-ai-news.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-nateherk-gpt6-astra-ai-news.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>Nate Herk</span><span class="b-date">2026-09-04</span></div><div class="b-title">클로드 발표 2시간 만에 맞불, OpenAI가 GPT-6 Astra로 AGI급 도약을 예고했다</div><ul class="b-sum"><li>Astra는 텍사스 스타게이트에서 10만 개 이상 GPU로 훈련, 역대 최대 규모</li><li>컴퓨터 사용 벤치마크 ScreenSpot Pro 약 92% 기록, Sol·Opus 5보다 우위</li><li>안전성 평가서 GPT-5.6 Sol 48% 스코프 이탈 대비 Astra는 0%로 주장</li><li>가격은 Sol의 약 2배, Claude Fable 5.1과 비슷한 수준</li></ul></div></a><a class="b-card" href="./2026-09-04-understanding-nepal-concrete-flood-180kmh.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-understanding-nepal-concrete-flood-180kmh.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>언더스탠딩</span><span class="b-date">2026-09-04</span></div><div class="b-title">시속 180km 콘크리트 반죽이 네팔을 덮쳤다, 빙하호 붕괴설은 틀렸다</div><ul class="b-sum"><li>랑탕리(7,234m) 사면 붕괴, 암설류가 시속 170~180km로 20km를 7분 만에 주파</li><li>규모 5.2 지진은 원인이 아니라 3km 낙하 충격이 만든 결과로 USGS가 정정</li><li>홍수예보 당국 인지 시각은 사태 종료 후인 9시 — 경보가 무의미했던 타임라인</li><li>BBC 등이 지목한 빙하호 붕괴(GLOF)설은 사고 지점에 호수 자체가 없어 반박됨</li></ul></div></a><a class="b-card" href="./2026-09-04-understanding-trump-korea-semiconductor-china-parts.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-understanding-trump-korea-semiconductor-china-parts.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>언더스탠딩</span><span class="b-date">2026-09-04</span></div><div class="b-title">백악관이 &quot;경기 반도체 벨트&quot;를 콕 집었다, 중국산 우회수출 감시 본격화</div><ul class="b-sum"><li>백악관 보고서 &quot;거대한 환적 사기&quot;가 경기도를 중국산 반도체 우회수출 티어원(최고 위험군)으로 명시</li><li>어플라이드 머티리얼즈, 평택 조립으로 SMIC向 수출 세탁 시도하다 2억 5,250만 달러 벌금</li><li>IBK기업은행, 이란 제재 위반(대리석 위장 송금)으로 8,600만 달러 벌금 — 감시 체계 미비가 결정적 사유</li><li>미 BIS, 대만 이어 한국에도 수사관·사무소 배치 추진 — &quot;몰랐다는 변명은 통하지 않는다&quot;</li></ul></div></a><a class="b-card" href="./2026-09-04-videomug-yen-won-decoupling-fx.html"><div class="b-shot"><img class="b-thumb" src="./assets/ig/thumb/2026-09-04-videomug-yen-won-decoupling-fx.jpg" alt="" loading="lazy" decoding="async"></div><div class="b-body"><div class="b-meta"><span class="b-src"><span class="dot"></span>비디오머그</span><span class="b-date">2026-09-04</span></div><div class="b-title">다카이치 감세·투자 승부수에 엔저 심화, 원화만 홀로 강세 뚜렷</div><ul class="b-sum"><li>일본 국채 10년물 금리 장중 3% 돌파, 1996년 9월 이후 약 30년 만의 최고치</li><li>다카이치 정부, 반도체·AI·방위 등 17개 미래산업에 370조엔(약 3,168조원) 투입 계획</li><li>100엔당 원화 환율 두 달 새 100원 하락한 855원대, 원/달러도 1368원으로 13개월 만 최저</li><li>SK하이닉스 ADR 발행 대금 265억 달러 유입이 원화 강세 견인, 엔화와 정반대 흐름</li></ul></div></a></div></section><a class="b-back" href="./index.html">← 목록으로</a><div class="foot"><span class="dot"></span>Daybreak · Youtube Brief · 2026. 09. 04. (금)</div></div></body></html>
