@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Jack Roberts가 소개하는 Grok 4.6 기반 개인 AI 에이전트 &quot;Grokbot&quot; 구축법, 가격 70% 인하로 진입장벽이 크게 낮아졌다."><title>월 20달러 Grokbot으로 24/7 에이전트 팀을 꾸리는 5단계 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">MORNING DIGEST · 2026-09-05 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>월 20달러 Grokbot으로 24/7 에이전트 팀을 꾸리는 5단계 전략</h1><p class="lead">Jack Roberts가 소개하는 Grok 4.6 기반 개인 AI 에이전트 &quot;Grokbot&quot; 구축법, 가격 70% 인하로 진입장벽이 크게 낮아졌다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Grok 4.6 기반 Grokbot이 이번 주 가격 70% 인하, 월 $20부터 시작 가능.</li>
+<li>API 키 설정 없이 맥OS·iOS에서 바로 사용, 클라우드와 로컬 양쪽에서 24시간 작동.</li>
+<li>봇 간 &quot;에이전트 대 에이전트&quot; 통신이 핵심 기능, 하나의 챗 창에서 위임·조율 완결.</li>
+<li>5단계 봇 구성(Grock Master, Digital Army, Chief of Staff, Strategist, Head of Fun) + 보너스 Finance Bot 제안.</li>
+<li>Appify(데이터 스크래핑)·TopView(이미지·영상 생성) 등 외부 도구를 MCP로 연동해 실전 워크플로우 시연.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>진행자는 Grokbot의 강점을 &quot;초보자 친화성&quot;과 &quot;봇 간 통신&quot;으로 규정하며, 이 두 가지가 기존 API 기반 에이전트 구축 방식 대비 진입장벽을 크게 낮췄다고 주장.</li>
+<li>역할을 지나치게 세분화하기보다 5~7개 핵심 카테고리로 압축하고, 그 안에서 세부 미니 에이전트를 두는 방식이 성능과 관리 효율 면에서 낫다고 권장.</li>
+<li>단일 총괄 봇(Chief of Staff)이 모든 것을 직접 처리하지 않고 전문화된 봇에 위임하는 구조가, AI가 &quot;맥락 부족으로 코너를 돌아 생각하지 못하는&quot; 문제를 해결한다고 강조.</li>
+<li>Grockbot과 Hermes Agent를 대비시켜, &quot;그대로 쓰는 관리형 서비스&quot;와 &quot;완전 커스터마이즈 가능한 오픈 시스템&quot;이라는 두 가지 철학 차이를 명확히 구분.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>5단계 봇 구성 상세</h2><ul>
+<li><strong>1단계 Grock Master</strong>: 최초 설정 시 사용자의 브레인덤프(음성 입력 또는 Claude/ChatGPT로 정리한 맥락)를 받아 필요한 5개 봇을 자동 추천·생성하는 총괄 라우터. 문제를 직접 풀지 않고 어느 봇이 담당할지 결정하는 역할.</li>
+<li><strong>2단계 Digital Army(건강봇)</strong>: 캘린더·체중 데이터를 자동으로 확인하며, 사용자가 원하는 캐릭터(예: 아놀드 슈워제네거 이미지의 &quot;아니&quot;)로 커스터마이징 가능. 체중 트래커, 그래픽·표 자산을 자동 생성.</li>
+<li><strong>3단계 Chief of Staff</strong>: &quot;지금 내 시간을 어디에 써야 하는가&quot;라는 질문에 답하는 역할로, 주당 3시간 이상 절약 효과를 주장. Appify로 SNS 통계 수집, TopView로 인스타그램 캐러셀·영상 생성까지 위임 처리.</li>
+<li><strong>4단계 Strategist</strong>: 분석·경쟁사 동향·오디언스·매출 데이터를 담당하는 데이터 전문 봇. Chief of Staff에 통합하거나 별도 분리 가능.</li>
+<li><strong>5단계 Head of Fun + 보너스 Finance Bot</strong>: 캘린더 기반으로 여행지·취미를 추천(매주 소소한 것, 매월 큰 것, 분기 특별한 것 계획), Finance Bot은 Mercury 등 은행 연동으로 개인·비즈니스 P&amp;L을 관리하며 Chief of Staff와 대화해 의사결정을 지원.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>에이전트 간 통신 구조는 &quot;한 봇이 모든 맥락을 알아야 한다&quot;는 기존 AI 비서의 한계를 우회하는 설계로, 전문화된 봇에 맥락을 분산시켜 정확도를 높이는 접근이다.</li>
+<li>월 $20라는 가격과 API 키 불필요라는 조건은 비개발자 개인 사용자층까지 에이전틱 워크플로우를 확산시킬 잠재력을 시사한다.</li>
+<li>콘텐츠 제작(인스타그램 캐러셀·영상), 건강 관리, 재무 관리, 일정 관리를 하나의 생태계에서 연결함으로써 &quot;개인 운영체제(personal OS)&quot;형 AI 활용 트렌드를 대표하는 사례로 볼 수 있다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Grockbot vs Hermes Agent 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>Grockbot</th><th>Hermes Agent</th></tr></thead><tbody><tr><td>커스터마이징</td><td>기성품(off-the-shelf), 설정 위주</td><td>코드 수준 완전 커스터마이즈</td></tr><tr><td>모바일 지원</td><td>iOS·맥OS 기본 지원</td><td>모바일 미지원</td></tr><tr><td>사용 모델</td><td>Grok 4.6 고정</td><td>모델 자유 선택</td></tr><tr><td>실행 위치</td><td>클라우드 전용(단, 로그인된 로컬 앱 접근 가능)</td><td>클라우드 + 100% 로컬 실행 가능</td></tr><tr><td>가격</td><td>월 $20부터</td><td>무료 + API 사용료</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>브레인덤프(음성 메모 또는 Claude/ChatGPT 요약)를 Grock Master에 전달해 자신에게 맞는 5개 전문 봇을 자동 생성.</li>
+<li>Chief of Staff에게 &quot;인스타그램·유튜브·틱톡·링크드인 프로필 정리 + TopView로 캐러셀 이미지 제작&quot;을 한 번에 지시해 SNS 콘텐츠 제작 자동화.</li>
+<li>팟캐스트 커버 이미지를 업로드하고 &quot;5초짜리 배경 애니메이션 영상으로 변환&quot;을 요청해 TopView 연동으로 영상 자산 생성.</li>
+<li>여행 3주 전 &quot;부다페스트에서 할 만한 것&quot; 추천을 Head of Fun에 요청하면 캘린더 맥락을 반영해 자동 조사·일정 반영.</li>
+<li>Finance Bot에 은행(Mercury 등) 연동을 요청해 개인·비즈니스 재무 현황을 상시 모니터링하고 Chief of Staff를 통해 의사결정에 반영.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>이번 주 70% 가격 인하는 Grok 계열 에이전트 서비스의 대중화 전략으로 해석되며, 유사 개인 AI 에이전트 서비스 간 가격 경쟁이 가속화될 가능성을 시사한다.</li>
+<li>진행자는 영상 말미에 별도의 &quot;이번 달 발견한 가장 강력한 AI 에이전트 기법&quot;을 예고하며, 메모리 시스템·에이전틱 운영체제 구축을 다루는 별도 클로드 코드 마스터클래스를 안내(구체 내용은 자막에 명시되지 않음).</li>
+<li>다중 에이전트 간 우선순위 충돌(예: &quot;Fun 에이전트와 Finance 에이전트가 부딪힐 수 있다&quot;는 진행자의 언급) 같은 실사용 이슈가 향후 예산 통제형 워크플로우 설계의 과제로 남아있다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><ul>
+<li><strong>Grokbot</strong>: xAI의 Grok 4.6 모델 기반으로 동작하는 개인용 멀티 에이전트 플랫폼, API 키 없이 맥OS·iOS에서 사용.</li>
+<li><strong>에이전트 간 통신(agent-to-agent)</strong>: 여러 봇이 서로 메시지를 주고받으며 업무를 위임·조율하는 구조.</li>
+<li><strong>Chief of Staff</strong>: 사용자의 시간·우선순위를 관리하고 다른 전문 봇에 작업을 분배하는 총괄 비서 역할의 봇.</li>
+<li><strong>MCP(Model Context Protocol)</strong>: 외부 도구(TopView 등)를 에이전트에 연결해 이미지·영상 생성 같은 기능을 호출할 수 있게 하는 연동 프로토콜.</li>
+<li><strong>Hermes Agent</strong>: Grockbot과 비교 대상으로 언급된, 완전 커스터마이즈 가능하고 로컬 실행도 지원하는 대안 에이전트 프레임워크.</li>
+<li><strong>TopView / Appify</strong>: TopView는 에이전틱 이미지·영상 생성 도구, Appify는 SNS 등 웹 데이터 스크래핑 도구로 Grockbot에 연동되어 사용됨.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/atbUx3Bf4uA" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-09-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Matt Wolfe가 Fable 5.1·Gemini 3.8 Flash·Muse Spark·GPT6를 실사용 테스트로 교차검증한 주간 브리핑."><title>한 주 만에 4개 SOTA 모델 출격, 벤치마크 신뢰도 흔들리다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">MORNING DIGEST · 2026-09-05 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>한 주 만에 4개 SOTA 모델 출격, 벤치마크 신뢰도 흔들리다</h1><p class="lead">Matt Wolfe가 Fable 5.1·Gemini 3.8 Flash·Muse Spark·GPT6를 실사용 테스트로 교차검증한 주간 브리핑.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>4대 랩(Anthropic, Google, Meta, OpenAI)이 한 주 동안 나란히 신모델 출시, 역대급 밀집 발표 주간.</li>
+<li>Fable 5.1은 벤치마크 1위지만 작업당 $3.69로 최고가, Megabonk 게임 클론에 $120 이상 소모.</li>
+<li>Gemini 3.8 Flash는 Deep SWE 73.7%를 작업당 $2.36에 달성해 가성비 1위로 부상.</li>
+<li>Muse Spark 1.3은 Deep SWE·Artificial Analysis 상위권이지만 실제 코딩 결과물은 가장 단순.</li>
+<li>GPT6 Astra는 ARC-AGI-3에서 99.9%를 기록하며 해당 벤치마크를 사실상 무력화.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Matt Wolfe의 핵심 논지: &quot;벤치마크 순위와 실사용 체감이 갈수록 어긋난다.&quot;</li>
+<li>Muse Spark 1.3이 Deep SWE 75.4%로 1위권인데 공식 리더보드에는 아예 등재되지 않는 모순 발견.</li>
+<li>동일한 Megabonk 클론 프롬프트로 4개 모델을 나란히 실행해 비주얼 완성도를 직접 비교하는 방법론 채택.</li>
+<li>Beauty Bench(AI 심사 기반 SVG 생성 평가)는 &quot;참고용일 뿐 직접 눈으로 판단해야 한다&quot;고 재차 강조.</li>
+<li>결론적으로 저자는 &quot;이제 가장 좋아하던 Artificial Analysis 벤치마크조차 완전히 신뢰하기 어렵다&quot;고 선언.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>4개 모델 정면 비교</h2><div class="tbl-wrap"><table><thead><tr><th>모델</th><th>Deep SWE</th><th>작업당 비용</th><th>Beauty Bench 순위</th><th>비고</th></tr></thead><tbody><tr><td>Claude Fable 5.1</td><td>70%</td><td>$3.69</td><td>2위 ($4.35, 18분)</td><td>Fable 5 대비 25% 저렴 주장, 실측은 최고가</td></tr><tr><td>Gemini 3.8 Flash</td><td>73.7%</td><td>$2.36</td><td>공동 3위 (9센트, 1분32초)</td><td>코딩 가성비 최강</td></tr><tr><td>Muse Spark 1.3</td><td>75.4%(리더보드 미등재)</td><td>$0.55</td><td>20위 (1분4초, 무료)</td><td>벤치마크·실사용 괴리 최대</td></tr><tr><td>GPT6 Astra</td><td>74.1%</td><td>약 $1.94(추정)</td><td>1위 (9분)</td><td>ARC-AGI-3 99.9%로 벤치마크 포화</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>Megabonk 클론 실사용 테스트</h2><ul>
+<li>Fable 5.1: 캐릭터·색감은 우수하나 호버 시 깜빡임 등 잔버그, 생성에 2시간 소요.</li>
+<li>Anthropic 20x 플랜($200/월) 크레딧을 전부 소진하고 추가 과금까지 발생해 총 $120 이상 지출.</li>
+<li>Gemini 3.8 Flash(Cursor 경유): 캐릭터가 여우보다 마법사에 가깝지만 전반적 완성도는 Fable 5 초기 결과보다 우수, 크레딧 소모 미미.</li>
+<li>Muse Spark 1.3: 큐브와 실린더 수준의 매우 단순한 결과물 — 코딩 벤치마크 1위와 정면 배치.</li>
+<li>GPT6 Astra: 기사·궁수·마법사 3종 캐릭터, 스켈레톤·박쥐 등 디테일 우수, 12분 만에 생성되어 시각적으로 가장 완성도 높은 게임으로 평가.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>전략적 의미</h2><ul>
+<li>벤치마크 점수만으로 모델을 선택하면 실제 비용·품질 면에서 오판할 위험이 커지고 있음을 시사.</li>
+<li>코딩·에이전트 워크로드에서는 &quot;최고 성능&quot;보다 &quot;성능 대비 비용&quot;이 실질적 채택 기준으로 부상(Gemini 3.8 Flash 사례).</li>
+<li>Nvidia의 Hugging Face 인수는 프론티어 랩들이 자체 칩 개발에 나서는 상황에서 오픈웨이트 모델·온프레미스 컴퓨팅 수요에 베팅하는 전략으로 해석됨.</li>
+<li>ChatGPT 대화가 법정 증거로 채택될 수 있다는 사실은 기업·개인 사용자의 프라이버시 기대치를 재점검하게 만드는 규제 리스크.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>대규모 코딩 에이전트 작업: Gemini 3.8 Flash처럼 벤치마크 상위권이면서 비용이 낮은 모델을 우선 검토.</li>
+<li>이미지·영상 기반 신규 서비스: World Labs Atlas로 소수의 사진만으로 3D 공간을 재구성해 인테리어·부동산·게임 프리비주얼 제작에 활용 가능.</li>
+<li>반복적 콘텐츠 파이프라인: Art List AI Flows의 노드 기반 워크플로우로 이미지·영상·보이스오버 모델을 한 번 구성해 재사용.</li>
+<li>고비용 예산이 있는 디자인 작업에서만 Fable 5.1급 최상위 모델을 선별적으로 투입해 비용 리스크를 관리.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>GPT6 Astra는 현재 일부 조직 대상 제한 공개 단계이며, 향후 ChatGPT Plus/Pro/비즈니스/엔터프라이즈로 순차 확대 예정.</li>
+<li>Runway Solaris(Gen 4.5 기반 실시간 인터랙티브 영상 편집), World Labs Atlas 모두 얼리 액세스 단계로 아직 일반 공개 전.</li>
+<li>AI 영상 슬롭 스트리밍(Fal.Live, InfiniteSlop.ai)이 피크 시청자 3만7천명을 기록하며 새로운 소비 형태로 확산 중.</li>
+<li>9월 한 달간 MetaConnect, Apple 이벤트, OpenAI Dev Day, Made on YouTube 등 대형 행사가 연이어 예정되어 &quot;테크텀버(Techtember)&quot;로 불리는 발표 러시가 지속될 전망.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><ul>
+<li>Deep SWE: 코딩 실무 체감과 상관관계가 높다고 평가받는 소프트웨어 엔지니어링 벤치마크.</li>
+<li>Beauty Bench: AI가 SVG 이미지를 얼마나 미려하게 코드로 생성하는지 AI 심사로 평가하는 벤치마크.</li>
+<li>ARC-AGI: 추상적 추론 능력을 측정하는 벤치마크 시리즈로, 3번째 버전(ARC-AGI-3)까지 출시.</li>
+<li>오픈웨이트 모델: 가중치를 공개해 로컬 실행이 가능한 모델로, Hugging Face가 대표적 배포 허브 역할을 함.</li>
+<li>AI 슬롭(AI Slop): 품질보다 물량 위주로 생성되는 저품질·과잉 생성 AI 콘텐츠를 가리키는 속어.</li>
+<li>Gaussian Splat: 다수의 사진으로 3D 장면을 점 구름 형태로 재구성하는 기존 기법으로, Atlas와 비교 대상으로 언급됨.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/GfPZm9yucQo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-09-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
