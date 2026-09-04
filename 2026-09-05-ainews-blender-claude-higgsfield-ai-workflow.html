@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI News가 소개한 Higgsfield Bridge는 Blender에서 3D 블로킹을 먼저 확정한 뒤 Seedance 2.5로 영상을 생성해 실패 생성을 없앤다."><title>Blender·Claude·Higgsfield 연동으로 크레딧 낭비 없이 카메라를 완전 통제하는 법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>AI News</span><span class="ey">MORNING DIGEST · 2026-09-05 · AI News</span><span class="chip">🎬 영상</span></div><h1>Blender·Claude·Higgsfield 연동으로 크레딧 낭비 없이 카메라를 완전 통제하는 법</h1><p class="lead">AI News가 소개한 Higgsfield Bridge는 Blender에서 3D 블로킹을 먼저 확정한 뒤 Seedance 2.5로 영상을 생성해 실패 생성을 없앤다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Higgsfield Bridge 플러그인이 Claude Desktop과 Blender를 MCP URL(<code>bridge.higgsfield.ai/mcp</code>) 하나로 직결.</li>
+<li>텍스트-투-비디오의 &quot;도박&quot;인 실패 생성을 없애기 위해 3D 블로킹으로 카메라·타이밍을 먼저 잠근 뒤 크레딧 소모.</li>
+<li>최종 렌더는 Seedance 2.5로 진행하며 최대 30초, 워터마크 없는 영상-투-영상 생성 지원.</li>
+<li>출력 스펙은 1920x1080, 24fps, MPEG-4 렌더 플레이블라스트 기준.</li>
+<li>6가지 핵심 기능(카메라 컨트롤, 3D 블로킹, 멀티패스 반복, 재사용 마스터 파일, Seedance 2.5 연동, 단일 URL 커넥터)으로 요약됨.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>기존 텍스트-투-비디오는 프롬프트만으로 카메라·구도를 통제할 수 없어 크레딧을 소모하고도 실패하는 경우가 잦다는 문제의식에서 출발.</li>
+<li>해결책은 순서의 역전: &quot;생성 먼저, 확인 나중&quot;이 아니라 &quot;3D로 확정 먼저, 생성 나중&quot;.</li>
+<li>Blender는 무료 3D 프리비즈 환경 역할을 하고, Claude는 자연어 프롬프트를 Blender 조작 코드/액션으로 번역하는 실행 에이전트 역할을 맡음.</li>
+<li>Higgsfield는 최종 고품질 영상 생성(Seedance 2.5)을 담당해 세 도구가 역할을 분담하는 구조.</li>
+<li>영상 말미의 비교 데모(3D 블록아웃 없는 텍스트-투-비디오 vs 3D 블록아웃 기반 생성)가 이 주장의 핵심 근거로 제시됨.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>설정 및 연동 과정</h2><ul>
+<li>설명란 링크에서 Higgsfield Bridge 플러그인을 무료로 다운로드.</li>
+<li><code>https://bridge.higgsfield.ai/mcp</code> URL을 복사해 Claude Desktop의 Customize → Connectors → Add에서 커스텀 커넥터로 등록.</li>
+<li>Blender에 플러그인 파일을 드래그 앤 드롭 설치하고 &quot;Enable Add-on&quot;을 승인.</li>
+<li>Higgsfield 계정으로 로그인해 Blender와 연결하면 Blender 내부에 전용 프롬프트 바와 씬 빌딩·3D 모델링·캐릭터 애니메이션·이미지/영상/카메라 컨트롤 옵션이 나타남.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전략적 의미</h2><ul>
+<li>&quot;먼저 3D로 잠그고 나중에 생성한다&quot;는 워크플로우는 AI 영상 생성의 고질적 문제인 카메라 드리프트와 반복 생성 비용을 구조적으로 줄이는 접근.</li>
+<li>Blender 전문 지식이 없어도 Claude에 자연어로 지시하면 편집 가능한 3D 프리비즈가 만들어져, 3D 그래픽 진입 장벽을 낮춤.</li>
+<li>재사용 마스터 파일 개념 덕분에 동일한 카메라·편집을 유지한 채 캐릭터나 로케이션만 바꿔 하루에 여러 비주얼 세계관을 시험할 수 있어 제작 효율이 크게 <span class="up">상승</span>.</li>
+<li>Claude(에이전트) - Blender(프리비즈) - Higgsfield/Seedance(최종 렌더)로 이어지는 3단 파이프라인은 향후 다른 AI 영상 툴 연동에도 참고될 수 있는 구조.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>핵심 워크플로우</h2><div class="tbl-wrap"><table><thead><tr><th>단계</th><th>도구</th><th>내용</th></tr></thead><tbody><tr><td>1. 프롬프트 입력</td><td>Claude Desktop</td><td>장면(카메라 무빙, 오브젝트 동작 등)을 자연어로 설명</td></tr><tr><td>2. 3D 빌드</td><td>Blender (Higgsfield Bridge)</td><td>Claude가 실시간으로 3D 씬·카메라를 구성, &quot;Always Allow&quot;로 진행 승인</td></tr><tr><td>3. 레퍼런스 렌더</td><td>Blender Output</td><td>1920x1080, 24fps, MPEG-4로 Render Playblast 저장</td></tr><tr><td>4. 프롬프트 재추출</td><td>Claude</td><td>Blender 출력 영상 + 에셋 이미지를 넣어 Higgsfield용 프롬프트 생성</td></tr><tr><td>5. 최종 생성</td><td>Higgsfield (Seedance 2.5)</td><td>이미지·레퍼런스 영상 업로드 후 시간(예: 14초) 설정, Generate</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>타이트하게 고정된 카메라 경로와 정교한 액션 안무가 필요한 원테이크 시네마틱 샷 제작.</li>
+<li>여러 인물이 등장하는 대화 씬에서 공간 일관성과 아이라인 매칭을 엄격히 유지해야 하는 경우.</li>
+<li>다이내믹한 카메라 무빙이 요구되는 뮤직비디오 제작.</li>
+<li>스피드 램프와 CGI 스타일 통제가 필요한 하이임팩트 제품 광고(하이퍼모션 광고).</li>
+<li>19샷 블록아웃과 사실적인 드리프트 물리, 멀티스타일 패스를 활용한 자동차 광고·체이스 시퀀스 등 멀티샷 프로덕션.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>Higgsfield Bridge는 현재 무료로 다운로드 가능하며 Claude Desktop 커넥터로 즉시 연동되는 형태로 배포 중.</li>
+<li>Seedance 2.5 통합으로 최대 30초 길이의 워터마크 없는 멀티모달(캐릭터·로케이션·스타일 레퍼런스) 영상 생성을 지원해 실제 프로덕션 활용 가능성을 높임.</li>
+<li>&quot;스타일 리스킨&quot; 기능은 하나의 블로킹 마스터 파일로 무한한 비주얼 변주를 만들 수 있다고 소개되어, 반복적인 광고·콘텐츠 제작 파이프라인에 특히 유리할 것으로 예상됨.</li>
+<li>다만 영상은 특정 데모 사례 위주로 구성되어 있어, 복잡한 실사 프로덕션 규모에서의 안정성이나 처리 시간에 대한 정량적 데이터는 제시되지 않음.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><ul>
+<li>Higgsfield Bridge: Claude와 Blender를 MCP URL로 연결해주는 플러그인.</li>
+<li>3D 블로킹(Blocking): 카메라, 오브젝트 동선, 타이밍을 3D 공간에서 미리 배치·고정하는 프리비즈 작업.</li>
+<li>Seedance 2.5: Higgsfield가 최종 영상 생성에 사용하는 영상-투-영상 생성 모델.</li>
+<li>MCP(Model Context Protocol): Claude와 외부 도구(Blender 등)를 연결하는 커넥터 프로토콜.</li>
+<li>Render Playblast: Blender에서 뷰포트 애니메이션을 빠르게 참조용 영상으로 렌더링하는 기능.</li>
+<li>멀티패스 반복(Multipass Iteration): 텍스처, 카메라 느낌, 핸드헬드 무게감 등을 텍스트 지시만으로 반복 수정하는 과정.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/OG7cnI9B4PM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>AI News · 2026-09-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

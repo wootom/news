@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Matt Wolfe가 조기 접근으로 GPT-6 Astra를 직접 테스트, 벤치마크 논란 속 체감 성능은 &quot;진짜 도약&quot;이라 평가."><title>OpenAI GPT-6 Astra 출시, 벤치마크는 애매해도 실사용 임팩트는 확실했다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">MORNING DIGEST · 2026-09-05 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>OpenAI GPT-6 Astra 출시, 벤치마크는 애매해도 실사용 임팩트는 확실했다</h1><p class="lead">Matt Wolfe가 조기 접근으로 GPT-6 Astra를 직접 테스트, 벤치마크 논란 속 체감 성능은 &quot;진짜 도약&quot;이라 평가.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>OpenAI가 9월 3일 GPT-6 Astra를 발표, 일부 조직 우선 롤아웃 후 수일 내 ChatGPT 전 유료 플랜으로 확대.</li>
+<li>ARC-AGI-3 벤치마크 7.8%→99.9%로 사실상 포화, 인간 평균(48%)을 압도.</li>
+<li>SWE-bench는 74.1%로 전작 대비 약 2%p <span class="up">상승</span>에 그쳐 Meta Muse Spark 1.3(75.4%)에 뒤처짐.</li>
+<li>Busey Bench(SVG 드로잉 테스트)에서는 GPT-6이 1위, Muse Spark는 벤치마크 우위에도 실제 이미지 품질은 크게 열세.</li>
+<li>태스크당 비용 약 $1.67~$1.94로 GPT-5.6보다 소폭 <span class="up">상승</span>.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Wolfe의 핵심 논지: &quot;벤치마크 수치와 실제 체감 성능 사이의 괴리가 크다.&quot; Artificial Analysis 종합 랭킹에서 GPT-6은 GPT-5.6과 거의 동률로 5위에 그쳤지만, 실사용 테스트에서는 5.6 대비 확연한 도약을 느꼈다고 강조.</li>
+<li>코딩 벤치마크(SWE-bench)에서 Muse Spark 1.3에 소폭 뒤진 점을 두고 &quot;놀랍다&quot;고 언급하면서도, 같은 코딩 성격의 Busey Bench(SVG 생성)에서는 GPT-6이 압도적으로 앞선 상반된 결과를 근거로 벤치마크 신뢰성에 의문을 제기.</li>
+<li>반면 ARC-AGI-3, Terminal Bench Science, GPQA, Frontier Math Tier 4 등은 대폭 <span class="up">상승</span>하거나 사실상 포화 상태에 도달, &quot;추론·에이전트형 과제&quot;에서는 명확한 세대 교체가 있었다고 판단.</li>
+<li>결론적으로 그는 &quot;이 정도면 단순 뉴스 각주가 아니라 별도 영상이 필요한 수준의 도약&quot;이라고 못 박으며, 전날 올린 &quot;모델 출시가 너무 잦아 피로하다&quot;는 취지의 영상과 대비되는 평가를 내놓음.</li>
+</ul></section><section class="card s12" id="s3"><h2><span class="seq">03</span>벤치마크 상세 비교</h2><div class="tbl-wrap"><table><thead><tr><th>벤치마크</th><th>이전(GPT-5.6)</th><th>GPT-6 Astra</th><th>비고</th></tr></thead><tbody><tr><td>Automation Bench</td><td>18.1%</td><td>41%</td><td>2배 이상 <span class="up">상승</span></td></tr><tr><td>SWE-bench (코딩)</td><td>~72%</td><td>74.1%</td><td>Muse Spark 1.3(75.4%)보다 낮음</td></tr><tr><td>Terminal Bench Science</td><td>22%</td><td>64.6%</td><td>대폭 <span class="up">상승</span></td></tr><tr><td>ARC-AGI-3</td><td>7.8%</td><td>99.9%</td><td>사실상 포화, 인간 평균 48%</td></tr><tr><td>Artificial Analysis 종합</td><td>5.6과 근접</td><td>5위</td><td>체감 대비 순위 낮음</td></tr><tr><td>Busey Bench (SVG)</td><td>-</td><td>1위(AI 심사 기준)</td><td>Muse Spark 1.3(5.7점)를 크게 앞섬</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>실사용 데모: 게임·시뮬레이터 제작</h2><ul>
+<li>&quot;Mega Bonk 3D 클론&quot; 프롬프트 테스트: 기사·레인저·메이지 3개 클래스, 각기 다른 무기(활, 망치형 &quot;bonk&quot; 공격)를 갖춘 3D 게임을 단 8분 만에 완성 — 과거 모델은 동일 테스트에 1.5~2시간 소요.</li>
+<li>&quot;당신의 능력을 보여주는 인터랙티브 웹사이트를 만들어라&quot; 프롬프트에서 &quot;Orbis&quot; 행성 시뮬레이터를 자체 생성: 태양광·해수면·강수량 슬라이더 조작 시 거주 가능성(%)과 인구(수십억 단위)가 실시간 반영되고, 지형 편집(육지 융기, 바다 파기, 운석 충돌 크레이터)까지 가능.</li>
+<li>두 데모 모두 별도 3D 에셋 파일 없이 Three.js(3JS) 코드만으로 렌더링된 점을 Wolfe가 특히 주목.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>컴퓨터 사용(Computer Use) 기능 심층 테스트</h2><ul>
+<li>Blender 제어: &quot;휴머노이드 늑대 피규어를 만들어라&quot; 한 문장 프롬프트로 8분 만에 3D 모델 생성. 이어서 &quot;스탠드 제거 후 리깅·애니메이션&quot; 요청 시 6분 만에 50본(bone) 리그를 추가하고 8초 루프 애니메이션까지 완성.</li>
+<li>&quot;달리는 동작으로 애니메이션 하라&quot;는 추가 프롬프트에 반응해 달리기 모션을 구현(엉덩이 부분 약간의 어색함은 남음).</li>
+<li>Unreal Engine 연동: &quot;숲 월드를 만들고 늑대를 플레이 가능한 캐릭터로 추가하라&quot; 프롬프트로 35분 만에 &quot;Whisperwood&quot;라는 숲(오솔길·연못·야생화 포함)과 플레이 가능한 늑대 캐릭터를 완성, 화살키 이동·점프·Shift 달리기까지 구현.</li>
+<li>Wolfe 본인은 &quot;Blender·Unreal Engine을 전혀 다룰 줄 모른다&quot;고 밝히며, 이 정도 결과물이 프롬프트만으로 나온 것에 강한 인상을 받았다고 서술.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>커뮤니티 활용 사례</h2><ul>
+<li>Matt Berman: Three.js 기반 행성 월드(캐릭터가 이동 가능), Fall Guys 스타일 장애물 게임, 슈팅 요소 없는 3D 호러 게임 제작.</li>
+<li>Matt Schumer: Unreal Engine 기반 맨해튼 월드를 일주일에 걸쳐 구축. 별도 실험에서는 &quot;월드에 인간들을 채우고 각자 Astra 기반 에이전트를 부여해 협력 생존하게 하라&quot;는 프롬프트로, 실제로 다른 방에서 에이전트들끼리 대화하는 소리가 들릴 정도의 시뮬레이션을 구현.</li>
+<li>Pietro: 이미지 한 장에서 3D 모델·애니메이션을 생성, 아틀란티스 해저 시뮬레이터, 플레이 가능한 Beyblade 게임, N64 &quot;Wave Race&quot;급(혹은 그 이상) 그래픽 게임 제작.</li>
+<li>Ethan Mollick: &quot;알렉산드리아 도서관&quot;을 재현하고 음성 내레이션으로 역사적 배경을 설명하는 인터랙티브 데모 공유.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>전략적 의미</h2><ul>
+<li>코딩 벤치마크 수치만으로 모델 우열을 가리기 어려워지는 국면 진입 — Muse Spark 1.3이 SWE-bench·Artificial Analysis에서는 앞서지만 실제 이미지/코드 생성 품질(Busey Bench)에서는 GPT-6에 크게 밀리는 역설이 드러남.</li>
+<li>ARC-AGI-3처럼 &quot;에이전트가 낯선 과제를 스스로 학습해 푸는 능력&quot;을 측정하는 벤치마크가 포화 상태에 도달했다는 것은, 범용 에이전트 능력이 이미 인간 평균을 크게 상회하는 단계에 들어섰다는 신호로 해석 가능.</li>
+<li>Computer Use(컴퓨터 제어) 기능이 Blender·Unreal Engine 같은 전문 툴 조작까지 확장되면서, 비전문가도 자연어만으로 3D 콘텐츠·게임 제작 파이프라인 전체(모델링→리깅→애니메이션→엔진 배치)를 완결할 수 있는 가능성을 보여줌.</li>
+<li>비용 <span class="up">상승</span>(태스크당 $1.67~$1.94)은 API/크레딧 소비량 증가로 이어져, 실무 도입 시 비용 대비 성능 트레이드오프를 재계산해야 하는 요인.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>활용 시나리오</h2><ul>
+<li>인디 게임 개발자: 프롬프트 한두 줄로 캐릭터 클래스·무기 시스템을 갖춘 프로토타입 게임을 수 분 내 제작해 아이디어 검증에 활용.</li>
+<li>3D 아티스트/모션 디자이너: Blender·Unreal Engine 미숙련자도 자연어 지시만으로 모델링-리깅-애니메이션-월드 배치 전 과정을 위임 가능.</li>
+<li>데이터 시각화/교육 콘텐츠 제작자: &quot;Orbis&quot; 유형의 파라미터 기반 인터랙티브 시뮬레이터를 응용해 기후·인구 변화 등 교육용 시각 자료 제작.</li>
+<li>생산성 도구 개발자: Wolfe가 예고한 &quot;대시보드 오버홀&quot; 사례처럼, 개인 워크플로우 자동화 도구를 컴퓨터 사용 기능으로 직접 구축·<span class="up">개선</span>.</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>현황 및 전망</h2><ul>
+<li>영상 녹화 시점(9월 3일) 기준 GPT-6 Astra는 일부 조직에만 롤아웃, 영상 공개 후 2~3일 내 ChatGPT Plus/Pro/Business/Enterprise 전체로 확대 예정.</li>
+<li>Muse Spark 1.3은 Deep Sue(코딩 벤치마크) 및 Meta 자체 웹사이트에는 수치가 게재됐으나 정식 랭킹 사이트에는 아직 미등재 상태로, 교차 검증이 필요한 단계.</li>
+<li>Wolfe는 Muse Spark를 Busey Bench 외에는 아직 본격 테스트하지 못했다고 밝혀, 향후 비교 콘텐츠가 추가될 가능성을 시사.</li>
+<li>저자는 익일 &quot;금요 뉴스 브리핑&quot; 영상에서 GPT-6을 포함한 한 주간의 모델 출시 러시를 종합 정리할 예정이라고 예고.</li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>용어 사전</h2><ul>
+<li><strong>GPT-6 Astra</strong>: OpenAI가 2026년 9월 3일 발표한 신세대 대형언어모델로, 추론·에이전트·컴퓨터 제어 능력이 강화됨.</li>
+<li><strong>Computer Use</strong>: AI가 실제 컴퓨터 화면을 인식하고 마우스·키보드를 제어해 Blender, Unreal Engine 같은 애플리케이션을 직접 조작하는 기능.</li>
+<li><strong>ARC-AGI-3</strong>: 에이전트가 낯선 인터랙티브 과제를 스스로 학습해 해결하는 능력을 측정하는 벤치마크.</li>
+<li><strong>SWE-bench(Deep Sue)</strong>: 실제 소프트웨어 이슈 해결 능력을 측정하는 대표적 코딩 벤치마크.</li>
+<li><strong>Busey Bench</strong>: Wolfe가 자체 운영하는 벤치마크로, AI가 SVG(코드 기반 벡터 이미지)로 특정 인물을 얼마나 잘 그리는지 AI 심사로 채점.</li>
+<li><strong>Artificial Analysis</strong>: 여러 벤치마크 점수에 가중치를 부여해 종합 순위를 산출하는 제3자 집계 사이트.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/GGzT7zVrRTU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-09-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

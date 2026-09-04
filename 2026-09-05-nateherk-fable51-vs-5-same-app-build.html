@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Nate Herk가 동일 프롬프트로 두 모델에 인시던트 대응 워크플로 앱을 위임 개발시켜 비용·품질·속도를 직접 비교했다."><title>Fable 5.1과 Fable 5에 같은 앱을 맡겼더니 품질은 비슷한데 비용은 2.4배 갈렸다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk</span><span class="ey">MORNING DIGEST · 2026-09-05 · Nate Herk</span><span class="chip">🎬 영상</span></div><h1>Fable 5.1과 Fable 5에 같은 앱을 맡겼더니 품질은 비슷한데 비용은 2.4배 갈렸다</h1><p class="lead">Nate Herk가 동일 프롬프트로 두 모델에 인시던트 대응 워크플로 앱을 위임 개발시켜 비용·품질·속도를 직접 비교했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Fable 5.1은 1,200달러·36시간, Fable 5는 500달러·훨씬 짧은 시간으로 동일한 &quot;OpsFlow&quot; 앱을 완성.</li>
+<li>Codex 블라인드 심사 결과 가중 점수는 5.1이 9.1점, 5가 8.4점으로 근소 우세.</li>
+<li>Fable 5.1은 Opus 57%+Sonnet 40%, Fable 5는 Sonnet 80% 중심으로 워커를 배분해 비용 격차 발생.</li>
+<li>두 앱은 워크플로 JSON 임포트 스키마조차 서로 호환되지 않을 만큼 설계가 갈렸다.</li>
+<li>저자 결론: &quot;700달러를 더 낼 가치가 있는 차이는 아니다&quot; — 이번 과제 한정으로 Fable 5 승리 판정.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>실험 설계: 동일한 빅골 프롬프트(&quot;you are Fable 5.1/5, work inside this folder&quot;만 차이)를 두 에이전트에 각각 부여.</li>
+<li>에이전트에게 요구한 역할은 직접 구현이 아니라 오케스트레이션 — 전략·계획·위임·시퀀싱·품질기준·최종 승인만 담당하고, 엔지니어링·디버깅·테스트·비주얼 디자인은 워커에게 위임하도록 명시.</li>
+<li>워커 배정 원칙: 아키텍처/제품·디자인 방향/난제·독립 리뷰는 Opus, 구현/리서치/테스트/디버깅/반복은 Sonnet 우선 사용.</li>
+<li>&quot;그럴듯한 구현&quot;에서 멈추지 말고 &quot;완전히 작동하고 발표 가능한 수준&quot;이라는 객관적 증거가 나올 때까지 오케스트레이션을 지속하라는 완결성 기준을 부여.</li>
+<li>저자의 핵심 반문: 같은 예산(약 519달러)으로 두 모델을 맞췄다면 Fable 5.1이 이 정도 품질을 냈을지 의문 — 비용 정규화 없이 품질만 비교하는 것은 불공정하다는 문제의식.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>빌드 대상: OpsFlow란 무엇인가</h2><ul>
+<li>OpsFlow는 n8n 같은 워크플로 자동화 플랫폼이 아니라, &quot;프로덕션이 터졌을 때 무엇을 할지&quot;를 시각적으로 그리고 리허설하는 로컬 우선 도구.</li>
+<li>트리거·조건·액션·승인·해결(resolution) 노드를 캔버스에 드래그해 인시던트 대응 플로우차트를 구성.</li>
+<li>Run 버튼으로 시뮬레이션을 실행하면 각 노드가 실시간으로 처리되는 과정과 건너뛴 분기, 실행된 분기, 최종 해결 방식(예: &quot;롤백으로 완화됨&quot;)을 시각적으로 확인 가능.</li>
+<li>승인 대기 노드에서 실제로 승인/거부를 선택하면 이후 분기가 달라지는 상호작용까지 구현됨.</li>
+</ul></section><section class="card s12" id="s4"><h2><span class="seq">04</span>UI/UX 비교</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>Fable 5.1</th><th>Fable 5</th></tr></thead><tbody><tr><td>카드 디자인</td><td>둥근 모서리·색상 크롭 카드로 &quot;AI가 만든 티&quot;가 남</td><td>상대적으로 더 깔끔하고 튀지 않음</td></tr><tr><td>확대/축소 시 텍스트</td><td>일정한 크기 유지</td><td>확대할수록 텍스트가 커져 저렴해 보임</td></tr><tr><td>트리거 연결 제약</td><td>여러 개 연결 가능</td><td>트리거 1개당 연결 1개만 허용(초과 시 &quot;connection refused&quot; 에러)</td></tr><tr><td>노드 확장/줌</td><td>결과 패널 확장 시 아쉬움 있음</td><td>결과 패널을 끌어서 확장 가능, 라이트모드 지원</td></tr><tr><td>거부(reject) 처리</td><td>정지 처리</td><td>초기 버전에서 거부해도 true 경로로 계속 진행하는 버그 발견, payload를 &quot;minor degradation&quot;으로 바꾸자 false 분기로 정상 작동</td></tr><tr><td>워크플로 JSON 스키마</td><td>서로 호환 불가</td><td>서로 호환 불가</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>비용·리소스 구조 비교</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>Fable 5.1</th><th>Fable 5</th></tr></thead><tbody><tr><td>총 비용</td><td>약 1,200달러</td><td>약 500달러</td></tr><tr><td>소요 시간</td><td>약 36시간(하루 반)</td><td>훨씬 짧음(약 반나절)</td></tr><tr><td>모델 배분</td><td>Opus 57% / Sonnet 40% / 자체 3%</td><td>Sonnet 80% 중심</td></tr><tr><td>컨텍스트 윈도우 사용률</td><td>약 40%(404,000 토큰)</td><td>약 26%(260,000 토큰)</td></tr><tr><td>Codex 블라인드 평가 가중 점수</td><td>9.1</td><td>8.4</td></tr></tbody></table></div></section><section class="card s6" id="s6"><h2><span class="seq">06</span>전략적 의미</h2><ul>
+<li>오케스트레이터형 에이전트에게 &quot;위임 원칙&quot;만 주면, 어떤 모델을 오케스트레이터로 쓰느냐에 따라 하위 워커 배분 전략이 크게 달라진다 — Fable 5.1은 고비용 Opus에 더 의존, Fable 5는 저비용 Sonnet에 더 의존.</li>
+<li>품질 차이(9.1 vs 8.4, 0.7점)에 비해 비용 차이(2.4배, 700달러)가 지나치게 크다는 점은 &quot;모델 성능&quot;과 &quot;비용 대비 효율&quot;이 별개 지표임을 보여줌.</li>
+<li>저자는 일상적 지식 노동에서는 Fable 5.1이 의도 파악에 더 뛰어나다고 밝혀, &quot;이번 과제 한정 결론&quot;과 &quot;전반적 모델 선호&quot;를 분리해서 봐야 한다고 강조.</li>
+<li>동일 프롬프트라도 위임형 워크플로에서는 결과물의 스키마·UX 디테일까지 크게 갈릴 수 있어, 재현성·예측가능성 측면에서 오케스트레이션 방식의 한계를 시사.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>활용 시나리오</h2><ul>
+<li>인시던트 대응 플레이북을 시각적으로 설계하고 사전에 리허설하려는 SRE/DevOps 팀에게 OpsFlow류 도구가 유용.</li>
+<li>AI 코딩 에이전트에게 대규모 앱을 통째로 맡기기 전에, 동일 프롬프트·다른 모델로 저비용 파일럿을 돌려 비용 대비 품질을 먼저 검증하는 전략.</li>
+<li>오케스트레이터-워커 구조를 설계할 때 Opus/Sonnet 비중을 명시적으로 지정해 비용을 통제하는 프롬프트 설계 참고 사례.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>현황 및 전망</h2><ul>
+<li>Fable 5.1과 Fable 5는 같은 제품군 내에서도 비용·속도·워커 배분 전략이 뚜렷이 다른 별개의 모델로 자리매김하고 있음을 보여주는 사례.</li>
+<li>저자는 별도 영상에서 Fable 5.1로 프리미엄 애니메이션이 들어간 웹사이트(Amation Society 사이트, 개인 사이트 등)를 디자인한 경험을 소개하며, 웹디자인 작업에는 5.1을 계속 활용 중이라고 언급.</li>
+<li>장시간·고비용 오케스트레이션 실험이 늘어나면서, &quot;완결성 게이트(정의된 완료 기준)&quot;를 명시하는 프롬프트 설계가 에이전트 품질 검증의 표준으로 자리잡는 흐름.</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>용어 사전</h2><ul>
+<li>OpsFlow: 인시던트 대응 워크플로를 시각적으로 설계·시뮬레이션하는 로컬 우선 자동화 스튜디오(영상 속 데모 앱명).</li>
+<li>오케스트레이터 프롬프트: 에이전트에게 직접 구현 대신 전략·위임·품질기준·최종 승인만 맡기는 상위 역할 지시.</li>
+<li>Opus/Sonnet 워커: 각각 고난도 아키텍처·디자인·리뷰용, 구현·테스트·디버깅용으로 구분해 배정하는 하위 실행 모델.</li>
+<li>컨텍스트 윈도우 사용률: 에이전트 세션이 전체 허용 토큰 중 실제 사용한 비율(5.1은 40%, 5는 26%).</li>
+<li>완결성 게이트: &quot;그럴듯한 구현&quot;이 아니라 &quot;객관적 증거로 검증된 완전 작동&quot;을 완료 기준으로 못 박는 프롬프트 조항.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/5FukkI4fbiU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk · 2026-09-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

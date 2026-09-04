@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Theoretically Media가 OpenAI의 AGI 선언과 Runway·World Labs의 세계 모델 신제품 러시를 함께 짚는다."><title>OpenAI, GPT-6 &#x27;아스트라&#x27;로 AGI 선언하며 세계 모델 경쟁까지 폭발</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Theoretically Media</span><span class="ey">MORNING DIGEST · 2026-09-05 · Theoretically Media</span><span class="chip">🎬 영상</span></div><h1>OpenAI, GPT-6 &#x27;아스트라&#x27;로 AGI 선언하며 세계 모델 경쟁까지 폭발</h1><p class="lead">Theoretically Media가 OpenAI의 AGI 선언과 Runway·World Labs의 세계 모델 신제품 러시를 함께 짚는다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>OpenAI가 코드네임 &#x27;아스트라&#x27;(GPT-6)를 공개하며 그렉 브록먼이 &quot;AGI 시대&quot;를 선언.</li>
+<li>텍사스 스타게이트에서 10만 개 이상 GPU를 투입한 OpenAI 사상 최대 규모 훈련.</li>
+<li>Arc AGI-3 벤치마크에서 아스트라 99.9점, 오푸스 5는 30.2점, GPT-5.6 Soul은 7.8점.</li>
+<li>World Labs Atlas, Runway Solaris·GWM World 등 세계 모델 신제품이 같은 주에 집중 발표.</li>
+<li>출시는 신뢰할 수 있는 테스터망과 &#x27;프로젝트 데이브레이크&#x27;부터 시작, 이후 단계적 확대.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>발표자는 AGI 선언 자체보다 벤치마크 수치와 실제 사용 가능 시점에 더 주목한다.</li>
+<li>벤치마크는 인상적이지만 아스트라가 &quot;자체 응답 API 하네스&quot;로 테스트를 치렀다는 점에서 수치 신뢰도에 의문을 제기.</li>
+<li>컴퓨터 사용 데모(문의 양식, 엑셀, 법률 문서) 중 일부가 4배속 재생으로 밝혀져 실제 속도 과장 가능성을 지적.</li>
+<li>발표자는 GPT-6가 이전 모델보다 우수할 것이라는 점 자체는 의심하지 않지만, 진짜 관건은 &quot;비용과 효율성&quot;이라고 강조.</li>
+<li>Anthropic의 Claude Fable 5.1과 비교하며 &quot;울트라코드 작업 하나로 주간 토큰 할당량의 약 40%를 소진했다&quot;는 개인 경험을 근거로 든다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>OpenAI 아스트라(GPT-6) 발표 상세</h2><ul>
+<li>발표는 엠바고 상태에서 초기 정보가 흘러나왔고, 공식 블로그 게시물은 언론 보도 2시간 뒤에야 게시됨.</li>
+<li>컴퓨터 활용 모델로서 문의 양식 자동 작성, 엑셀 작업, 법률 문서 재포맷, 디자인 <span class="up">개선</span> 등 데모를 공개.</li>
+<li>플레이코(PlayCo)의 마리오카트 유사 레이싱 게임 반복 개발 데모, 언리얼 엔진 5 + 블렌더 하우스 디자인 데모도 포함.</li>
+<li>홍보 영상 특유의 &quot;빠르게 반복하라&quot;, &quot;사용자 개입 최소화&quot; 같은 마케팅 문구가 다수 등장해 실제 성능 판단을 어렵게 함.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>세계 모델(World Model) 경쟁 격화</h2><ul>
+<li>World Labs Atlas: 멀티모달 자기회귀 확산 변환기로, 이미지를 3D 공간으로 변환해 탐험 가능. 전작 Marble 대비 이미지 품질이 크게 <span class="up">개선</span>되었고 가우시안 스플랫 잔여물 문제가 줄어듦.</li>
+<li>Runway Solaris: &#x27;인터페이스 월드 모델&#x27;로 명명, 상호작용형 앱 생성 가능. 인터랙티브 웹사이트뿐 아니라 비디오 인페인팅·합성용 신규 인터페이스로 발전할 잠재력 언급.</li>
+<li>Runway GWM World: 녹화 중 동시 발표된 인터랙티브 월드 모델. 720p·24fps·48kHz 오디오로 실시간 구동되는 사양이 특징.</li>
+<li>오픈소스 H3 World: MiniMax H3를 월드 모델로 변환하는 프로젝트로, 영속성 문제(물체가 시야 밖으로 나갔다 돌아오면 사라지는 현상)와 초기 지점에서 멀어질수록 화질이 뭉개지는 문제(구글 지니 3에서도 관찰된 현상)가 우려됨.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>전략적 의미</h2><ul>
+<li>OpenAI가 IPO를 앞두고 있어 AGI 선언이 시장 분<span class="dn">위기</span> 조성 목적일 가능성을 발표자가 시사.</li>
+<li>컴퓨터 사용 에이전트 성능이 실제 업무(엑셀, 법률 문서, 디자인)에 근접할수록 지식노동 자동화 논쟁이 재점화될 전망.</li>
+<li>비용 대비 성능이 AGI 여부보다 실질적인 채택 기준이 될 것이라는 관점 제시.</li>
+<li>세계 모델 3사(OpenAI 생태계 밖의 World Labs, Runway, MiniMax 오픈소스 진영)가 동시다발적으로 제품을 내놓으며 영상·게임·인터랙티브 콘텐츠 산업 전반에 파급 효과 예상.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>모델·제품 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>GPT-6(아스트라)</th><th>GPT-5.6 Soul</th><th>오푸스 5</th><th>Claude Fable 5.1</th></tr></thead><tbody><tr><td>Arc AGI-3 점수</td><td>99.9</td><td>7.8</td><td>30.2</td><td>별도 언급 없음</td></tr><tr><td>특징</td><td>자체 하네스 사용, 컴퓨터 활용 강조</td><td>이전 세대 최고 모델</td><td>비교 기준 모델</td><td>현존 최강 공개 모델(발표자 평가), 고비용·고소모</td></tr><tr><td>출시 상태</td><td>테스터망·데이브레이크 우선, 순차 확대</td><td>정식 출시</td><td>정식 출시</td><td>정식 출시</td></tr></tbody></table></div></section><section class="card s6" id="s7"><h2><span class="seq">07</span>활용 시나리오</h2><ul>
+<li>반복적인 사무 업무(문의 양식 작성, 스프레드시트 정리, 법률 문서 재포맷) 자동화에 컴퓨터 사용 에이전트 적용.</li>
+<li>게임 스튜디오가 아스트라를 활용해 레이싱 게임 같은 프로토타입을 빠르게 반복 개발.</li>
+<li>이미지 한 장을 3D 공간으로 확장해 탐험하거나(Atlas), 텍스트로 인터랙티브 앱을 즉석 생성(Solaris)하는 창작 워크플로우.</li>
+<li>향후 스마트 TV에서 시청자별 맞춤형 실시간 인터랙티브 영상 타일이 등장할 가능성(Blendy의 MiniMax H3 Max 래퍼 사례).</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>현황 및 전망</h2><ul>
+<li>GPT-6는 아직 일반 모델 선택기에 노출되지 않았으며, 신뢰할 수 있는 테스터망과 프로젝트 데이브레이크부터 순차 배포.</li>
+<li>발표자는 정식 출시 후 직접 테스트해볼 예정이며, 그 전까지는 Fable 5.1과 Opus를 계속 사용할 계획.</li>
+<li>World Labs Atlas는 얼리 액세스 단계이며 발표자가 조만간 사용 권한을 확보해 후속 리뷰 예정.</li>
+<li>발표자는 &quot;AI 열풍이 예상만큼 뜨겁게 시작하지 않았지만, 이번 가을은 매우 흥미진진한 AI 시대가 될 것&quot;이라 전망.</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>용어 사전</h2><ul>
+<li>AGI(Artificial General Intelligence): 인간 수준 이상으로 다양한 과제를 범용적으로 수행할 수 있는 인공지능.</li>
+<li>Arc AGI-3: AI에게 극도로 어려운 과제를 부여해 범용 추론 능력을 측정하도록 설계된 벤치마크.</li>
+<li>세계 모델(World Model): 이미지·영상을 입력받아 탐험 가능한 3D/인터랙티브 공간으로 변환하는 AI 모델.</li>
+<li>자기회귀 확산 변환기: 순차적 예측(자기회귀)과 확산 모델을 결합한 멀티모달 생성 아키텍처.</li>
+<li>프로젝트 데이브레이크: OpenAI의 신모델 조기 배포 대상 프로그램으로 언급된 명칭.</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/_uZTCOfaSUk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Theoretically Media · 2026-09-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
