@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Nate Herk가 던진 한 줄 프롬프트에 Astra가 대본·B롤·편집·더빙까지 50분·$60 상당으로 완성했다"><title>GPT-6 Astra가 프롬프트 한 줄로 유튜브 영상 전체를 기획·제작했다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk</span><span class="ey">MORNING DIGEST · 2026-09-06 · Nate Herk</span><span class="chip">🎬 영상</span></div><h1>GPT-6 Astra가 프롬프트 한 줄로 유튜브 영상 전체를 기획·제작했다</h1><p class="lead">Nate Herk가 던진 한 줄 프롬프트에 Astra가 대본·B롤·편집·더빙까지 50분·$60 상당으로 완성했다</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>OpenAI가 9월 3일 출시한 GPT-6 Astra, 컴퓨터 사용(computer use)과 장시간 태스크가 핵심 테마</li>
+<li>Nate Herk가 개방형 프롬프트 한 줄만 주고 &quot;아이디어→완성 영상&quot; 전 과정을 위임</li>
+<li>결과물 산출까지 약 50분 소요, API 과금 기준 약 $60 상당(패스트 모드라 실제론 더 비쌌을 가능성)</li>
+<li>프레젠터는 HeyGen Avatar V5, 음성은 Nate의 ElevenLabs 보이스 클론, 편집 툴은 HyperFrames</li>
+<li>Nate는 이미 사용 한도 리셋을 두 번 소진, 세 번째 리셋의 50%만 남은 상태</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Astra는 &quot;내가 이 영상을 만들었다&quot;고 영상 서두에 스스로 밝히도록 지시받았고 실제로 그렇게 함</li>
+<li>프롬프트는 매우 구체적이지 않고 개방형(open-ended)이었으며, Nate는 &quot;일을 시키고 비켜섰다&quot;고 표현</li>
+<li>유일한 명시적 제약은 보이스 클론·아바타 사용, 정체 공개, 검증 절차 포함, 초안이 아닌 완성본 요구 네 가지뿐</li>
+<li>Nate는 검증 루프(초안이 아닌 완성본)를 요구했지만 &quot;Astra가 어차피 알아서 했을 것&quot;이라 언급</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>프롬프트 원문과 제작 파이프라인</h2><ul>
+<li>원문 프롬프트: &quot;아이디어에서 완성된 유튜브 영상까지 데려가 달라. GPT-6 Astra 출시와 사람들이 무엇을 만들고 있는지에 관한 매력적이고 전문적인 영상을 만들어달라. Nate Herk의 보이스 클론과 HeyGen 아바타를 사용하라&quot;</li>
+<li>지시 세부사항: 영상 시작에 &quot;이건 Nate가 아니라 내가 기획·리서치·B롤 수집·스크린샷 수집·편집·제작까지 다 했다&quot;고 고지할 것</li>
+<li>컴퓨터 사용으로 원본 게시물을 열어 캡처하고, Nate의 프로젝트 폴더에서 아바타 설정·보이스 클론·연결된 툴을 스스로 탐색</li>
+<li>내레이션을 짧은 구간으로 분할해 HeyGen Avatar V5로 전송, 결과물을 원본 데모 옆에 정리</li>
+<li>HyperFrames에서 카메라 무빙·단어·클립·전환의 타이밍을 직접 제어해 편집</li>
+<li>렌더링 후 프레임 검수 + 완성 오디오 재전사 후 스크립트 대조까지 자체 QA 루프 수행</li>
+</ul></section><section class="card s12" id="s4"><h2><span class="seq">04</span>소개된 Astra 활용 사례 비교</h2><div class="tbl-wrap"><table><thead><tr><th>제작자</th><th>결과물</th><th>특징/수치</th></tr></thead><tbody><tr><td>Matt Schumer</td><td>언리얼 엔진 맨해튼 월드</td><td>일주일간 거리 단위로 제작, 장시간 구동 가능한 세팅 확보가 관건</td></tr><tr><td>Riley Brown</td><td>콜오브듀티 스타일 슈터 게임</td><td>약 2시간 플레이하며 매치 사이 GPT-6에 수정 요청</td></tr><tr><td>Flavio</td><td>마인크래프트 스타일 빌드</td><td>&quot;원샷&quot;으로 이동·인벤토리·크래프팅·블록 파괴 구현</td></tr><tr><td>Tom Kurcher</td><td>블렌더 기차 모델</td><td>오래된 도면 기반, 3,000개 이상 편집 가능한 오브젝트 생성</td></tr><tr><td>Yun Fan Ye</td><td>주택 워크스루</td><td>매물 사진 기반, 본인이 오류 직접 발견(검증 필요성 시사)</td></tr><tr><td>Daniel CH</td><td>모션 그래픽 영상</td><td>14분 생성 + 수정 2회</td></tr><tr><td>Nate Herk (이 영상)</td><td>유튜브 영상 전체</td><td>약 50분, API 환산 약 $60, HeyGen+ElevenLabs+HyperFrames 조합</td></tr></tbody></table></div></section><section class="card s6" id="s5"><h2><span class="seq">05</span>전략적 의미</h2><ul>
+<li>&quot;컴퓨터 사용 + 장시간 태스크&quot; 조합이 실현되면 에이전트가 도구를 오가며(파일 탐색, 외부 앱 조작, 렌더링) 완결된 산출물을 낼 수 있음을 실증</li>
+<li>콘텐츠 제작에서 &quot;사람이 감수한 결과물&quot;과 &quot;에이전트가 자기 정체를 공개하며 만든 결과물&quot;이라는 새로운 투명성 규범이 등장</li>
+<li>Yun Fan Ye 사례처럼 에이전트도 스스로 오류를 인지하되, 실물 대조 같은 최종 검증은 여전히 사람의 몫으로 남음</li>
+<li>비용($60 상당)과 시간(50분)이 사람이 직접 리서치·편집하는 것과 비교해 경쟁력 있는 수준에 도달했음을 시사</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>활용 시나리오</h2><ul>
+<li>유튜버·콘텐츠 제작자가 뉴스성 업데이트 영상(신제품 출시, 트렌드 정리)을 자신의 아바타·보이스로 자동 제작</li>
+<li>건축·게임 스튜디오가 언리얼 엔진/마인크래프트 스타일 프로토타입을 며칠 단위로 반복 수정하며 빌드</li>
+<li>부동산업계가 매물 사진만으로 워크스루 영상을 만들되, 반드시 현장 검증 단계를 추가해 오류 필터링</li>
+<li>3D 모델러가 오래된 도면·스케치를 편집 가능한 블렌더 오브젝트로 변환해 후속 작업 기반 마련</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>현황 및 전망</h2><ul>
+<li>GPT-6 Astra는 9월 3일 출시되었으며 접근 권한은 단계적으로 확대되는 중(rolling out in stages)</li>
+<li>Nate는 사용 한도(리셋 2회 소진, 3회차 50% 잔여)에 부딪히고 있어 아직 대중적 규모의 상시 활용에는 제약 존재</li>
+<li>Nate는 &quot;이런 실험을 훨씬 더 많이 진행할 계획&quot;이라 밝혀 후속 콘텐츠(에이전트 제작 시리즈) 예고</li>
+<li>커뮤니티 사례들이 빠르게 쌓이고 있어(언리얼 엔진, 게임, 3D 모델링, 부동산, 모션그래픽) 컴퓨터 사용형 에이전트의 실전 검증이 본격화되는 국면</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><ul>
+<li><strong>GPT-6 Astra</strong>: OpenAI가 2026년 9월 3일 출시한 모델/에이전트로, 컴퓨터 사용과 장시간 태스크 수행이 특징</li>
+<li><strong>컴퓨터 사용(computer use)</strong>: 에이전트가 화면을 캡처하고 앱·파일을 직접 조작해 작업을 수행하는 기능</li>
+<li><strong>HeyGen Avatar V5</strong>: 인물 아바타 영상을 생성하는 HeyGen의 최신 아바타 엔진, 이 영상에서 Nate의 얼굴을 재현</li>
+<li><strong>ElevenLabs 보이스 클론</strong>: Nate 본인의 음성을 복제한 음성 합성 모델</li>
+<li><strong>HyperFrames</strong>: 카메라 무빙·컷·전환 타이밍을 세밀하게 제어할 수 있는 영상 편집 툴</li>
+<li><strong>패스트 모드(fast mode)</strong>: 더 빠른 처리 속도를 제공하되 비용이 더 높은 실행 모드</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/dT5-x3u5nCg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk · 2026-09-06</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
