@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Nate Herk가 세무·브라우저·자동화 등 15개 실제 업무로 두 AI를 정면 비교, Astra 10승 5패 판정"><title>GPT-6 Astra가 15개 실전 테스트에서 Fable 5.1을 10대5로 앞섰다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk</span><span class="ey">MORNING DIGEST · 2026-09-07 · Nate Herk</span><span class="chip">🎬 영상</span></div><h1>GPT-6 Astra가 15개 실전 테스트에서 Fable 5.1을 10대5로 앞섰다</h1><p class="lead">Nate Herk가 세무·브라우저·자동화 등 15개 실제 업무로 두 AI를 정면 비교, Astra 10승 5패 판정</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Nate Herk가 Codex 구독 3개·Claude 구독 4개·수천 달러 크레딧을 소진하며 15개 실전 유스케이스 비교</li>
+<li>최종 스코어 Astra 10승, Fable 5.1 5승. 세무·이메일 감사·브라우저 자동화에서 Astra 압승</li>
+<li>합산 비용은 Fable 513.36달러(9시간35분) vs Astra 326.98달러(11시간19분), Astra가 186달러 저렴</li>
+<li>Canva 비전+브라우저 테스트에서 Fable 결과물은 &quot;laughable(웃길 정도)&quot;이라 평가될 만큼 참패</li>
+<li>세무 트랜잭션 원장 처리에서 Astra는 3,739행 데이터를 처리, Fable보다 훨씬 촘촘한 구조 제공</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>이제 두 모델 다 리서치 지능은 충분히 높아, 승부는 &quot;결과물을 얼마나 스토리 있게 포맷하느냐&quot;로 갈린다는 것이 진행자의 핵심 논지</li>
+<li>Astra(GPT-6 계열)는 작업 전 질문을 더 많이 던지는 습관이 있고, 이는 세무처럼 신뢰가 중요한 영역에서 신뢰도를 높인다</li>
+<li>Fable 5.1은 브랜딩·카피라이팅·구조화된 프레젠테이션에서 강점을 유지하지만, 코딩·브라우저 조작·대용량 데이터 처리에서는 명백히 밀린다</li>
+<li>비용 대비 성능에서 Astra가 우위인 경우가 많아(세션당 절반 가격 사례 다수), &quot;저렴하지만 느린 Astra vs 비싸지만 빠른 Fable&quot; 구도가 반복됨</li>
+<li>진행자는 &quot;어느 모델이 절대 우위&quot;가 아니라 유스케이스별로 각자의 실험을 통해 판단해야 한다고 강조</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>코딩/자동화/브라우저 관련 테스트</h2><ul>
+<li><strong>테스트 9 (미니 SaaS 평가 앱)</strong>: 자동화를 골든 데이터셋(12개 예시)에 대해 실행하고 점수를 매기는 평가 앱을 구축하는 과제. Astra 결과물이 UI가 더 프리미엄하고 덜 장황했으며, 비용은 Fable의 절반(2시간25분 소요, 그러나 Fable은 1시간20분에 훨씬 비쌈). Astra 승리, 스코어 7대2로 벌어짐</li>
+<li><strong>테스트 13 (School 플랫폼 코스 업로드, 브라우저 사용)</strong>: 두 모델에게 School 무료 커뮤니티에 신규 코스(설명·핵심 포인트·인용·자료·영상)를 초안으로 올리라고 지시. Astra는 첫 5개 코스를 영상까지 완벽히 업로드. Fable은 영상 다운로드/업로드 자체에 실패해 영상이 하나도 없는 결과물을 냄. 진행자는 &quot;GPT 계열이 codex와 함께 브라우저 사용에서 확실히 더 낫다&quot;고 평가하며 Astra 승리</li>
+<li><strong>테스트 12 (Canva 비전+브라우저, 그림 그리기)</strong>: 참고 이미지를 보고 Canva에서 툴을 조작해 그림을 그리는 과제. Astra는 그럴듯한 결과를 냈지만 Fable의 결과물은 &quot;이건 그냥 웃기다(this is just laughable)&quot;고 표현될 정도로 실패. Astra가 더 저렴하기까지 해서 압도적 승리</li>
+<li><strong>테스트 6 (150GB 이벤트 하이라이트 릴)</strong>: AIS Live 이벤트 150GB 분량 자료로 60초 에너지 넘치는 리캡 영상 제작. Astra는 실제 라이브 클립을 더 잘 살렸고 30분·16달러, Fable은 이벤트 예고 느낌은 좋았지만 50분·26달러로 더 오래·비쌌음. Astra 근소 승리</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>글쓰기/디자인/문서화 관련 테스트</h2><ul>
+<li><strong>테스트 1 (McKinsey 스타일 SMB 프레젠테이션, 35슬라이드)</strong>: Fable은 일관된 브랜딩·컬럼 구조·풋터로 &quot;매우 전문적&quot;이었으나 장황해서 프레젠테이션용으로는 부적합. Astra는 덜 장황했지만 구조가 약해 &quot;Google Slides나 Canva 느낌&quot;으로 평가절하됨. Fable 승리(37분·26달러 vs Astra 23분·12달러, Astra가 14분 빠르고 절반 이하 비용)</li>
+<li><strong>테스트 2 (세일즈 랜딩페이지 카피)</strong>: Fable은 2,800단어로 FAQ(&quot;취업이 되나요?&quot;, &quot;라이브 수업 놓치면?&quot;)·학비·강사소개·대상 섹션까지 상세히 작성. Astra는 1,300단어로 더 하이레벨. 진행자는 고액 프로그램일수록 상세한 정보가 신뢰를 준다며 Fable 승리 판정(Fable 4달러 vs Astra 1.43달러)</li>
+<li><strong>테스트 11 (유튜브 강의 HTML 설명 문서)</strong>: &quot;25 Grok bot concepts explained&quot; 영상을 스크린샷과 함께 시각적으로 설명하는 문서 제작. Fable이 스크린샷을 더 많이 찍고 주석도 더 정교해 초보자 학습용으로 우위. Astra는 디자인은 더 예뻤지만 학습 효과 면에서 Fable 승리(단, Astra가 훨씬 저렴)</li>
+<li><strong>테스트 10 (Herk Brain 지식그래프 시각화, 612개 노트·2,500개 연결)</strong>: Fable의 인터페이스가 더 단순하고 직관적이었던 반면 Astra는 노드가 작고 인터페이스가 과부하됨. 진행자가 Astra의 압승을 예상했으나 실제로는 Fable 승리(24분 vs Astra 40분, 비용은 비슷)</li>
+<li><strong>테스트 14 (Perk Farm 웹사이트 클론, 스크롤 다이내믹)</strong>: 원본 사이트의 3D 스크롤 다이내믹을 재현하는 원샷 프롬프트 테스트. Fable이 원본의 느낌을 더 유사하게 재현해 승리, 단 둘 다 스크롤 버그 존재</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>세무/데이터 분석 관련 테스트</h2><ul>
+<li><strong>테스트 3 (개인+법인 세무 예측, Q1~Q2)</strong>: Astra는 시작 전 질문 7개를 먼저 던지고, 월별 결과·세금 예측·소스 체크·3,739행 트랜잭션 원장까지 제공. Fable은 질문 없이 바로 실행해 결정 로직만 제시. 진행자는 &quot;세무에서는 확신을 주는 태도가 중요하다&quot;며 Astra 승리(40분·22달러 vs Fable 22분·13달러, 비싸지만 품질 우위)</li>
+<li><strong>테스트 4 (이메일 구독 감사, 2개 이메일 계정)</strong>: 두 모델 다 활성 구독·가격 인상·좌석 크립(seat creep) 등을 플래깅. 그러나 Fable은 &quot;all charges&quot; 시트가 완전히 빈 채로 반환되었고 비용은 50달러(Astra는 12.5달러). Astra 승리, 스코어 2대2 균형</li>
+<li><strong>테스트 5 (리더십 미팅 분석, 자동화 우선순위 도출)</strong>: Astra는 79개 회의를 분석(Fable은 58개)했고, 리더십·오너십 이슈에 대한 통찰이 더 날카로웠음. Fable은 활성 에이전트 시간 단 6분인데도 46달러 청구되어 진행자가 &quot;토큰이 어디로 갔는지 이해가 안 된다&quot;고 언급. Astra 승리, 스코어 3대2로 역전</li>
+<li><strong>테스트 15 (유튜브 12개월 리뷰 및 전략, 25페이지 vs 15페이지)</strong>: Astra는 &quot;뉴스는 조회수는 끌지만 구독자로 안 이어진다&quot;, &quot;에이전시 메커닉스 콘텐츠는 더 이상 안 통한다&quot; 등 날카로운 패키징 분석 제공. 더 시각적이고 읽기 쉬워 Astra 승리(42분·27달러 vs Fable 17분, 더 저렴)</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>전략적 의미</h2><ul>
+<li>리서치·추론 지능이 상향평준화된 지금, AI 모델 선택의 실질적 차별점은 &quot;결과물 포맷팅 능력&quot;과 &quot;브라우저/툴 조작 신뢰성&quot;으로 이동했다</li>
+<li>코딩·브라우저 자동화·대용량 데이터 처리가 핵심 업무라면 GPT-6 Astra(Codex 계열) 쪽이 비용 효율과 완성도 모두에서 우위</li>
+<li>브랜딩·카피·프레젠테이션처럼 &quot;사람에게 보여주는&quot; 결과물 품질이 중요하다면 Fable 5.1(Claude 계열)이 여전히 강점 보유</li>
+<li>절대적 승자는 없으며, 유스케이스별 A/B 테스트를 상시 운영하는 것이 실무자에게 요구되는 새 습관</li>
+</ul></section><section class="card s12" id="s7"><h2><span class="seq">07</span>핵심 워크플로우 또는 비교표</h2><div class="tbl-wrap"><table><thead><tr><th>유스케이스</th><th>승자</th><th>Astra 시간/비용</th><th>Fable 시간/비용</th></tr></thead><tbody><tr><td>McKinsey 프레젠테이션(35슬라이드)</td><td>Fable</td><td>23분 / 12달러</td><td>37분 / 26달러</td></tr><tr><td>세일즈 랜딩페이지 카피</td><td>Fable</td><td>3분 / 1.43달러</td><td>4분 / 4달러</td></tr><tr><td>세무 예측(Q1~Q2, 3,739행)</td><td>Astra</td><td>40분 / 22달러</td><td>22분 / 13달러</td></tr><tr><td>이메일 구독 감사</td><td>Astra</td><td>30분 / 12.5달러</td><td>17분 / 50달러</td></tr><tr><td>리더십 미팅 분석(79 vs 58개)</td><td>Astra</td><td>5분 / 12달러</td><td>6분 / 46달러</td></tr><tr><td>이벤트 하이라이트 릴(150GB)</td><td>Astra</td><td>30분 / 16달러</td><td>50분 / 26달러</td></tr><tr><td>시즐 릴(모션그래픽)</td><td>Astra</td><td>유사 시간 / 16달러</td><td>유사 시간 / 26달러</td></tr><tr><td>주방 탈출 게임 제작</td><td>Astra</td><td>약간 더 김 / 더 저렴</td><td>- / -</td></tr><tr><td>미니 SaaS 평가 앱</td><td>Astra</td><td>2시간25분 / 저비용</td><td>1시간20분 / 고비용</td></tr><tr><td>Herk Brain 시각화</td><td>Fable</td><td>40분</td><td>24분(더 저렴)</td></tr><tr><td>유튜브 강의 HTML 문서</td><td>Fable</td><td>더 저렴</td><td>더 비쌈</td></tr><tr><td>Canva 비전+브라우저 그림</td><td>Astra</td><td>더 저렴</td><td>훨씬 비쌈(품질 참패)</td></tr><tr><td>School 코스 업로드(브라우저)</td><td>Astra</td><td>비슷</td><td>비슷(영상 업로드 실패)</td></tr><tr><td>웹사이트 클론(스크롤 다이내믹)</td><td>Fable</td><td>-</td><td>-</td></tr><tr><td>유튜브 12개월 리뷰(25p vs 15p)</td><td>Astra</td><td>42분 / 27달러</td><td>17분 / 더 저렴</td></tr><tr><td><strong>합산 15개</strong></td><td><strong>Astra 10승 Fable 5승</strong></td><td><strong>11시간19분 / 326.98달러</strong></td><td><strong>9시간35분 / 513.36달러</strong></td></tr></tbody></table></div></section><section class="card s6" id="s8"><h2><span class="seq">08</span>활용 시나리오</h2><ul>
+<li>세무·재무 데이터처럼 정확성과 신뢰가 중요한 업무: Astra에게 먼저 질문을 받고 진행하는 방식 활용</li>
+<li>대량 이메일/문서 감사 자동화: Astra로 우선 처리 후 결과 빈 시트 여부를 반드시 검증</li>
+<li>브랜딩이 중요한 대외용 프레젠테이션·세일즈 카피: Fable로 초안 작성 후 슬라이드 수 조절</li>
+<li>브라우저 기반 반복 작업(코스 업로드, 폼 자동화): Astra/Codex 계열로 전환 권장</li>
+<li>지식 그래프·대시보드 등 사람이 직접 조작하는 UI: 두 모델 모두 프로토타입 후 사용성 테스트 필수</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>현황 및 전망</h2><ul>
+<li>진행자는 향후 &quot;Codex 구독을 더 적극적으로 활용하겠다&quot;고 밝히면서도 Fable/Claude 구독을 계속 유지하며 병행 테스트할 계획</li>
+<li>GPT-5.6 Sol만으로도 대부분의 지식노동에는 충분하다고 언급, Astra급 고비용 모델은 특정 고난도 작업에만 선별 투입 권장</li>
+<li>Astra는 Codex 구독 특유의 &quot;5시간 사용 제한 창&quot;이 없어 주간 내내 유연하게 쓸 수 있다는 점이 실질적 장점으로 부각</li>
+<li>모델 성능 지형이 매우 빠르게 바뀌므로 특정 모델에 고착하지 말고 지속적 재평가가 필요하다는 것이 최종 결론</li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>용어 사전</h2><ul>
+<li><strong>GPT-6 Astra</strong>: OpenAI Codex 계열의 최신 에이전틱 코딩/자동화 모델, 영상에서 브라우저 사용·세무 분석·대용량 데이터 처리에서 강점 확인</li>
+<li><strong>Fable 5.1</strong>: Anthropic Claude 계열 모델, 브랜딩·카피라이팅·프레젠테이션 포맷팅에서 강점</li>
+<li><strong>seat creep(좌석 크립)</strong>: 구독 서비스에서 사용하지 않는 좌석(seat)에 대해 비용이 누적되는 현상</li>
+<li><strong>골든 데이터셋(golden dataset)</strong>: 자동화·에이전트 평가 시 정답 기준으로 사용하는 검증된 테스트 케이스 집합</li>
+<li><strong>원샷 프롬프트(one-shot prompt)</strong>: 추가 수정 없이 단 한 번의 프롬프트로 결과물을 완성하도록 요구하는 테스트 방식</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/WfJPBVXPt8k" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk · 2026-09-07</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

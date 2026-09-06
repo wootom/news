@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="메이커 에반이 매일 쓰는 두 도구 체감 비교 — 코덱스 신모델 아스트라가 판을 바꿨다는 결론"><title>아스트라 모델 이후, 코딩은 코덱스로 자동화는 클로드 코드로 갈렸다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Daybreak · 데이라이트 뉴트럴 */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반</span><span class="ey">MORNING DIGEST · 2026-09-07 · 메이커 에반</span><span class="chip">🎬 영상</span></div><h1>아스트라 모델 이후, 코딩은 코덱스로 자동화는 클로드 코드로 갈렸다</h1><p class="lead">메이커 에반이 매일 쓰는 두 도구 체감 비교 — 코덱스 신모델 아스트라가 판을 바꿨다는 결론</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>코딩 작업은 전부 코덱스, 자동화는 클로드 코드로 용도를 완전히 분리해 사용 중</li>
+<li>코덱스 아스트라는 파일 10개 연속 수정에도 처음 규칙을 끝까지 유지</li>
+<li>클로드 코드 페이블은 토큰 소진이 빨라 점심 전에 한도 도달, 하위 모델로 강등</li>
+<li>백엔드 작업에서 코드 10곳 동시 수정 + 자체 검증까지 완료, 하루 2~3시간 절약 체감</li>
+<li>커스텀 규칙 파일·스킬(하니스)을 전부 걷어내고 순정 상태로 전환</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>벤치마크 점수가 아니라 매일 붙잡고 쓰는 사람의 체감을 근거로 판단했다고 전제</li>
+<li>판단 기준은 성능 자체가 아니라 &quot;손이 덜 가는가&quot;, 즉 개입 빈도의 <span class="dn">감소</span></li>
+<li>아스트라 하나의 등장으로 코딩 도구 선택이 짧은 기간에 완전히 뒤집혔다고 평가</li>
+<li>다만 이 판단은 반년 전이라면 반대였을 수 있고 다음 달 다시 뒤집힐 수 있다는 유동성을 인정</li>
+</ul></section><section class="card s12" id="s3"><h2><span class="seq">03</span>핵심 비교 — 코덱스 vs 클로드 코드</h2><div class="tbl-wrap"><table><thead><tr><th>항목</th><th>코덱스(아스트라)</th><th>클로드 코드(페이블)</th></tr></thead><tbody><tr><td>긴 작업 규칙 유지</td><td>10번째 파일까지 첫 규칙 유지</td><td>8~9번째 파일부터 규칙 이탈</td></tr><tr><td>자체 검증</td><td>수정 후 스스로 실행·재수정</td><td>사용자가 받아서 직접 검증 필요</td></tr><tr><td>토큰/한도</td><td>동일 비용 대비 훨씬 넉넉, 막히는 일 거의 없음</td><td>오전 작업만으로 점심 전 한도 도달</td></tr><tr><td>브라우저 자동화 완주율</td><td>10번 중 8~9번 끝까지 완주</td><td>화면 전환 대기 없이 다음 단계로 넘어가 어긋남 발생</td></tr><tr><td>어려운 단일 문제 해결력</td><td>상대적으로 약함 (반론 챕터 참고)</td><td>붙잡고 늘어지는 힘은 더 큼</td></tr><tr><td>확장성(스킬·훅)</td><td>순정 위주, 얹을 것 적음</td><td>스킬·훅 등 커스터마이징 재미 큼</td></tr></tbody></table></div></section><section class="card s6" id="s4"><h2><span class="seq">04</span>체감 차이의 근거 — 아스트라가 바꾼 것</h2><ul>
+<li>파일 10개를 고치는 테스트에서 기존 도구는 8, 9번째 파일에서 처음 정한 규칙을 놓쳐 재지시가 필요했으나, 아스트라는 열 번째 파일까지 첫 규칙을 그대로 유지</li>
+<li>예전에는 작업을 시켜놓고 계속 지켜보며 딴짓하면 바로 잡아야 했지만, 지금은 시켜놓고 다른 일을 하다가 돌아와 결과만 확인</li>
+<li>코드를 고친 뒤 스스로 돌려보고 깨지면 재수정하는 자체 검증 단계가 있어, 사용자가 받은 결과물이 이미 한 번 걸러진 상태로 도착</li>
+<li>예전에는 결과물을 받아 직접 돌려보고 깨진 부분을 찾아 다시 돌려보내는 왕복이 있었는데, 이 왕복 과정 자체가 사라졌다고 강조</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>백엔드 작업에서의 체감 사례</h2><ul>
+<li>백엔드는 데이터 흐름이 여러 파일에 흩어져 있어 한 곳을 고치면 다른 곳이 깨지는 특성상, 전체 그림을 끝까지 들고 가는 능력이 특히 중요하다고 설명</li>
+<li>데이터 구조 변경 사례: 저장하는 쪽, 읽는 쪽, 검사하는 쪽 등 손이 열 군데쯤 가는 작업을 예전에는 나눠서 시켰으나, 아스트라에게는 한 번에 통째로 지시</li>
+<li>열 군데를 모두 찾아 함께 수정하고 실행 확인까지 끝낸 뒤 결과만 보고 받았으며, &quot;커피 한 잔 마시고 돌아오니 확인까지 끝나 있었다&quot;고 표현</li>
+<li>이런 작업이 하루에 몇 차례 있으며, 한 번에 20분씩만 절약해도 하루 총 2~3시간이 남는다고 계산</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>페이블(클로드 코드)의 한계 — 토큰과 한도</h2><ul>
+<li>페이블은 어려운 문제를 붙잡고 늘어지는 힘이 있는 좋은 모델이라고 분명히 인정</li>
+<li>다만 토큰이 매우 빨리 소진되어, 오전에 사용을 시작하면 점심 전에 한도에 도달</li>
+<li>한도 도달 시 하위 모델로 내려가야 하는데, 애초에 좋은 모델을 쓰려던 목적 자체가 사라짐</li>
+<li>&quot;엔진은 좋은데 연료통이 작은 차&quot;에 비유 — 성능표로는 이기지만 목적지까지 가지 못함</li>
+<li>하루 8시간 이상 붙잡고 쓰는 사용 패턴에서는 이 조건이 치명적이며, 가끔 어려운 문제 하나를 푸는 용도라면 오히려 페이블이 낫다고 단서</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>브라우저 자동화와 사용 한도</h2><ul>
+<li>유튜브 스튜디오 영상 업로드, 광고 화면 숫자 확인 등 화면 조작 작업에서 코덱스가 눈에 띄게 매끄럽다고 평가</li>
+<li>코덱스는 화면이 바뀌는 것을 기다릴 줄 알아 어긋남이 적고, 열 번 시도하면 여덟아홉 번은 끝까지 완주</li>
+<li>반면 예전 도구는 화면 전환을 기다리지 않고 다음 동작으로 넘어가 한 번 어긋나면 이후 전부 헛수고가 되는 문제가 있었음</li>
+<li>사용 한도 면에서도 코덱스는 동일 비용 대비 훨씬 넉넉해 막히는 일이 거의 없으며, 한도가 넉넉해야 같은 작업을 여러 번 다시 던져보는 실험적 사용이 가능하다고 주장 — &quot;한도를 성능의 일부로 본다&quot;</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>전략적 의미</h2><ul>
+<li>도구 선택 기준이 벤치마크 점수에서 &quot;하루 동안 실제로 얼마나 아껴 쓰지 않고 쓸 수 있는가&quot;로 이동</li>
+<li>규칙 파일·스킬 등 커스텀 하니스를 걷어내고 순정으로 전환한 것은, 모델 자체의 지시 이행력이 좋아지면 과거에 필요했던 우회 장치가 오히려 발목을 잡는다는 신호로 해석 가능</li>
+<li>코딩과 자동화라는 두 축으로 도구를 나눠 쓰는 방식은 &quot;하나의 최강 도구&quot;가 아니라 &quot;용도별 최적 도구&quot; 전략으로의 이동을 시사</li>
+</ul></section><section class="card s6" id="s9"><h2><span class="seq">09</span>한계와 반론</h2><ul>
+<li>기존에 쌓아둔 자동화 절차(자동으로 도는 스킬·훅 등)를 코덱스로 옮기려면 하루 이틀 이상의 이관 비용이 발생하므로, 이미 잘 돌아가는 환경이라면 버리는 것 자체가 손해일 수 있음</li>
+<li>스킬·훅을 만들어 붙이는 확장성과 그 과정의 재미는 클로드 코드 쪽이 더 크며, 커스터마이징을 즐기는 사용자에게는 코덱스가 심심하게 느껴질 수 있음</li>
+<li>코덱스도 오래 생각한 끝에 엉뚱한 답을 내는 경우가 있고, 오래 기다린 만큼 결과를 버릴 때의 허무함이 크다는 단점을 인정</li>
+<li>이 판단은 완벽한 도구에 대한 결론이 아니라 &quot;지금 시점에 더 나은 쪽&quot;에 대한 결론이며, 반년 전에는 반대였을 수 있고 다음 달 다시 뒤집힐 수 있다고 전제</li>
+</ul></section><section class="card s6" id="s10"><h2><span class="seq">10</span>활용 시나리오</h2><ul>
+<li>매일 코드를 짜는 개발자라면 코덱스를 며칠 시험 사용해볼 것을 권장 — 제작자 본인은 반나절 만에 체감 차이를 확인</li>
+<li>이미 클로드 코드로 잘 굴러가고 있다면 급하게 갈아탈 필요는 없으나, &quot;좋은 모델을 아껴 쓰고 있는지&quot; 자가 점검을 권고</li>
+<li>화면 자동화(업로드, 대시보드 확인 등) 비중이 큰 워크플로우에서는 완주율이 높은 도구 선택이 특히 중요</li>
+<li>도구 종류와 무관하게, 얹어둔 규칙 파일·스킬 등 커스텀 하니스를 한 번 걷어내고 순정 상태로 테스트해볼 것을 제안</li>
+</ul></section><section class="card s6" id="s11"><h2><span class="seq">11</span>현황 및 전망</h2><ul>
+<li>코덱스 아스트라 모델의 등장이 단기간에 도구 선택 판도를 뒤집은 사례로, AI 코딩 도구 경쟁이 모델 단위로 급변하고 있음을 보여줌</li>
+<li>제작자는 이러한 판단이 유동적이며 다음 달 다시 뒤집힐 수 있다고 명시해, 코딩 에이전트 시장의 우위가 특정 시점에 고정되지 않는 상황임을 시사</li>
+<li>사용량 한도(토큰/요금제)가 실질적인 도구 선택 기준으로 부상하고 있으며, 향후 모델 비교에서 &quot;얼마나 오래, 얼마나 자주 아낌없이 쓸 수 있는가&quot;가 핵심 평가축이 될 가능성</li>
+</ul></section><section class="card s6" id="s12"><h2><span class="seq">12</span>용어 사전</h2><ul>
+<li>코덱스(Codex): OpenAI 계열 코딩 에이전트 도구, 영상에서 아스트라 모델 탑재 버전을 지칭</li>
+<li>클로드 코드(Claude Code): Anthropic의 코딩 에이전트 도구, 영상에서 페이블 모델 탑재 버전을 지칭</li>
+<li>아스트라(Astra): 코덱스에 탑재된 신규 모델, 긴 작업에서 규칙 유지력과 자체 검증 능력이 특징</li>
+<li>페이블(Fable): 클로드 코드에 탑재된 모델, 어려운 문제 해결력은 강하나 토큰 소진이 빠름</li>
+<li>하니스(harness): 도구 위에 얹는 규칙 파일·스킬·훅 등 커스텀 껍데기를 지칭하는 표현</li>
+</ul></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ajp9S5y_KVI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 · 2026-09-07</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
