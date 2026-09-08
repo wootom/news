@@ -8,7 +8,8 @@ body{background:#EFEDE8;font-family:"Pretendard Variable", Pretendard, -apple-sy
 a{color:inherit;text-decoration:none}
 input::placeholder{color:#9298A3;font-weight:400}
 .shell{max-width:#FBF9F4px;margin:0 auto}
-mark{background:transparent;color:inherit}</style>
+mark{background:#FFF2A8;color:inherit;border-radius:3px;padding:0 .08em;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone}</style>
 <div class="shell" style="background:#FBF9F4;min-height:100vh;box-shadow:0 0 0 1px rgba(28,25,18,.05)">
 
   <header style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 30px 15px;border-bottom:1px solid #1A1813;flex-wrap:wrap">
@@ -74,8 +75,8 @@ mark{background:transparent;color:inherit}</style>
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#57524A">코스피</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">7,097.67</span>
-          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#C0392B;min-width:44px;text-align:right">+1.46%</span>
+          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">7,132.90</span>
+          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#C0392B;min-width:44px;text-align:right">+1.97%</span>
         </span>
       </div>
       <div data-mkt-asof style="display:none"></div>
@@ -84,8 +85,8 @@ mark{background:transparent;color:inherit}</style>
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#57524A">코스닥</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">827.07</span>
-          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#C0392B;min-width:44px;text-align:right">+0.59%</span>
+          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">826.52</span>
+          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#C0392B;min-width:44px;text-align:right">+0.53%</span>
         </span>
       </div>
       <div data-mkt-asof style="display:none"></div>
@@ -114,8 +115,8 @@ mark{background:transparent;color:inherit}</style>
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#57524A">원/달러</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">1,335.98</span>
-          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-0.68%</span>
+          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">1,336.93</span>
+          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-0.60%</span>
         </span>
       </div>
       <div data-mkt-asof style="display:none"></div>
@@ -297,6 +298,7 @@ var TK = { card:"#F4F1EA", line:"rgba(28,25,18,.10)", ink:"#1A1813", dim:"#57524
   acc:"#96650A", aAm:"#B4560A", aYt:"#9B4FD1", mono:"ui-monospace, SFMono-Regular, Menlo, monospace" };
 var SRC_COLOR = { "시황":"#96650A", "오늘 유튜브":"#9B4FD1" };
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;'); }
+function hi(s){ return esc(s).replace(/(“[^”\n]+”|‘[^’\n]+’|&quot;[^&\n]+&quot;|\b(?:AI|AGI|LLM|GPT(?:-[\w.]+)?|ChatGPT|Claude|Gemini|Astra|Codex|OpenAI|Anthropic|DeepSeek|NVIDIA|GPU|RAG)\b|(?:오픈AI|챗GPT|클로드|제미나이|아스트라|코덱스|앤스로픽|딥시크|엔비디아|인공지능|생성형\s*AI|AI\s*에이전트|에이전트|로봇|반도체)|\d[\d,.]*(?:%|배|억|조|만|명|건|개|년|개월|월|일|시간|분|달러|원|GB|TB|B|M))/gi,'<mark>$1</mark>'); }
 function dotd(iso){ return iso.replace(/-/g,'.'); }
 var DOW=['일','월','화','수','목','금','토'];
 function dowLabel(iso){ var a=iso.split('-'); var d=new Date(a[0],a[1]-1,a[2]); return DOW[d.getDay()]; }
@@ -312,7 +314,7 @@ function briefHtml(rows){
     return '<a id=\"item-'+esc(r.id)+'\" href=\"'+esc(r.url||'#')+'\" target=\"_blank\" rel=\"noopener\" style=\"display:flex;flex-direction:column;padding:17px 18px;border-radius:14px;background:'+TK.card+';border:1px solid rgba(180,86,10,.22)\">'
       +'<div style=\"display:flex;align-items:center;gap:9px;margin-bottom:9px;flex-wrap:wrap\"><span style=\"font-size:11.5px;font-weight:800;letter-spacing:.04em;padding:4px 10px;border-radius:7px;color:'+TK.aAm+';background:rgba(180,86,10,.11)\">시황 브리프 · 종합</span>'+shareIcon(TK.aAm,shareUrl(r))+'</div>'
       +'<div style=\"font-size:16.5px;font-weight:800;letter-spacing:-.018em;line-height:1.35\">'+esc(r.title)+'</div>'
-      +'<div style=\"margin-top:7px;padding:10px 12px;border-radius:9px;background:rgba(28,25,18,.045);font-size:12.5px;color:'+TK.dim+';line-height:1.6\">'+esc(r.summary||'')+'</div></a>';
+      +'<div style=\"margin-top:7px;padding:10px 12px;border-radius:9px;background:rgba(28,25,18,.045);font-size:12.5px;color:'+TK.dim+';line-height:1.6\">'+hi(r.summary||'')+'</div></a>';
   }
   // 발행분 없음 — 최신 시황 발행일 note.
   var shDates=STORE.filter(function(x){return x.source==='시황';}).map(function(x){return x.date;}).sort();
@@ -325,7 +327,7 @@ function ytHtml(rows){
   if(!items.length) return '';
   var cards=items.map(function(r){
     var ch=esc(r.channel||'');
-    var summ=r.summary?'<span style=\"display:block;margin-top:6px;font-size:12.5px;color:'+TK.dim+';line-height:1.62\">'+esc(r.summary)+'</span>':'';
+    var summ=r.summary?'<span style=\"display:block;margin-top:6px;font-size:12.5px;color:'+TK.dim+';line-height:1.62\">'+hi(r.summary)+'</span>':'';
     return '<a href=\"'+esc(r.url||'#')+'\" target=\"_blank\" rel=\"noopener\" style=\"display:flex;flex-direction:column;gap:11px\">'
       +'<span><span style=\"display:block;font-size:15.5px;font-weight:700;letter-spacing:-.014em;line-height:1.4\">'+esc(r.title)+'</span>'
       +'<span style=\"display:flex;align-items:center;gap:8px;margin-top:5px\"><span style=\"font-size:11px;color:'+TK.aYt+';font-weight:700;letter-spacing:.03em\">'+ch+'</span>'+shareIcon(TK.aYt,shareUrl(r))+'</span></span>'
@@ -365,7 +367,7 @@ function onSearch(){
     var col=SRC_COLOR[r.source]||'#57524A';
     var agg=(r.source==='시황');
     var bg=agg?'background:rgba(28,25,18,.045);border-radius:10px;padding:14px 12px;':'padding:14px 2px;';
-    var summ=r.summary?'<div style=\"margin-top:5px;font-size:12.5px;color:#57524A;line-height:1.6\">'+esc(r.summary)+'</div>':'';
+    var summ=r.summary?'<div style=\"margin-top:5px;font-size:12.5px;color:#57524A;line-height:1.6\">'+hi(r.summary)+'</div>':'';
     var ch=r.channel?'<span style=\"font-size:11px;color:#9B958A\">'+esc(r.channel)+'</span>':'';
     return '<div style=\"border-bottom:1px solid rgba(28,25,18,.10);'+bg+'\">'
       +'<div style=\"display:flex;align-items:center;gap:9px;margin-bottom:5px;flex-wrap:wrap\">'

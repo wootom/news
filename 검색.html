@@ -8,7 +8,8 @@ body{background:#EEEFEF;font-family:"Pretendard Variable", Pretendard, -apple-sy
 a{color:inherit;text-decoration:none}
 input::placeholder{color:#9298A3;font-weight:400}
 .shell{max-width:#FAFAF8px;margin:0 auto}
-mark{background:transparent;color:inherit}</style>
+mark{background:#FFF2A8;color:inherit;border-radius:3px;padding:0 .08em;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone}</style>
 <div class="shell" style="max-width:680px;background:#FAFAF8;min-height:100vh;box-shadow:0 0 0 1px rgba(21,23,28,.05)">
 
   <header style="display:flex;align-items:baseline;justify-content:space-between;padding:22px 28px 18px;border-bottom:1px solid #15171C">
@@ -67,6 +68,7 @@ var KIND_CHIPS = [
 ];
 var state = { cat:'all', kind:'', q:'', date:null };
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;'); }
+function hi(s){ return esc(s).replace(/(“[^”\n]+”|‘[^’\n]+’|&quot;[^&\n]+&quot;|\b(?:AI|AGI|LLM|GPT(?:-[\w.]+)?|ChatGPT|Claude|Gemini|Astra|Codex|OpenAI|Anthropic|DeepSeek|NVIDIA|GPU|RAG)\b|(?:오픈AI|챗GPT|클로드|제미나이|아스트라|코덱스|앤스로픽|딥시크|엔비디아|인공지능|생성형\s*AI|AI\s*에이전트|에이전트|로봇|반도체)|\d[\d,.]*(?:%|배|억|조|만|명|건|개|년|개월|월|일|시간|분|달러|원|GB|TB|B|M))/gi,'<mark>$1</mark>'); }
 function scoped(){
   return STORE.filter(function(r){
     if(state.cat!=='all' && r.cat!==state.cat) return false;
@@ -128,7 +130,7 @@ function render(){
     var col=SRC_COLOR[r.source]||'#565C68';
     var agg=(r.pub==='브리프' || r.source==='고객사용기' || r.source==='시황');
     var bg=agg?'background:rgba(21,23,28,.045);border-radius:12px;padding:16px 14px;margin:6px 0;':'padding:18px 2px;border-bottom:1px solid rgba(21,23,28,.10);';
-    var summ=r.summary?'<div style=\"margin-top:5px;font-size:13px;color:#565C68;line-height:1.6\">'+esc(r.summary)+'</div>':'';
+    var summ=r.summary?'<div style=\"margin-top:5px;font-size:13px;color:#565C68;line-height:1.6\">'+hi(r.summary)+'</div>':'';
     var ch=r.channel?'<span style=\"font-size:11px;color:#9298A3\">'+esc(r.channel)+'</span>':'';
     var share='<span role=\"button\" tabindex=\"0\" title=\"링크 복사(공유)\" aria-label=\"링크 복사(공유)\" data-share=\"검색.html?date='+r.date+'\" onclick=\"event.preventDefault();shareItem(this)\" style=\"display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;font-size:11.5px;line-height:1;cursor:pointer;border-radius:6px;color:'+col+';background:rgba(21,23,28,.05)\">\u29c9</span>';
     return '<a href=\"'+esc(r.url||'#')+'\" target=\"_blank\" rel=\"noopener\" style=\"display:block;'+bg+'\">'
