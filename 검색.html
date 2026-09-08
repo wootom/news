@@ -68,7 +68,15 @@ var KIND_CHIPS = [
 ];
 var state = { cat:'all', kind:'', q:'', date:null };
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;'); }
-function hi(s){ return esc(s).replace(/(“[^”\n]+”|‘[^’\n]+’|&quot;[^&\n]+&quot;|\b(?:AI|AGI|LLM|GPT(?:-[\w.]+)?|ChatGPT|Claude|Gemini|Astra|Codex|OpenAI|Anthropic|DeepSeek|NVIDIA|GPU|RAG)\b|(?:오픈AI|챗GPT|클로드|제미나이|아스트라|코덱스|앤스로픽|딥시크|엔비디아|인공지능|생성형\s*AI|AI\s*에이전트|에이전트|로봇|반도체)|\d[\d,.]*(?:%|배|억|조|만|명|건|개|년|개월|월|일|시간|분|달러|원|GB|TB|B|M))/gi,'<mark>$1</mark>'); }
+function hi(s){
+  var text=String(s==null?'':s).trim(); if(!text) return ''; if((text.match(/ · /g)||[]).length>=2) return esc(text);
+  var parts=text.split(/(?<=[.!?])\s+(?=[가-힣A-Z0-9"“‘])/).filter(function(x){return x.trim();});
+  var limit=parts.length<=2?1:2;
+  var signal=/(?:\b(?:AI|AGI|LLM|GPT(?:-[\w.]+)?|ChatGPT|Claude|Gemini|Astra|Codex|OpenAI|Anthropic|DeepSeek|NVIDIA|GPU|RAG)\b|오픈AI|챗GPT|클로드|제미나이|아스트라|코덱스|앤스로픽|딥시크|엔비디아|인공지능|생성형\s*AI|AI\s*에이전트|에이전트|로봇|반도체|발표|공개|출시|지원|투자|경고|핵심|목표|\d[\d,.]*(?:%|배|억|조|만|명|건|개|년|개월|월|일|시간|분|달러|원|GB|TB|B|M))/gi;
+  var ranked=parts.map(function(p,i){return [(p.match(signal)||[]).length*100+(i===0?10:0),i];}).sort(function(a,b){return b[0]-a[0];});
+  var selected=ranked.slice(0,limit).map(function(x){return x[1];});
+  return parts.map(function(p,i){return selected.indexOf(i)>=0?'<mark>'+esc(p)+'</mark>':esc(p);}).join(' ');
+}
 function scoped(){
   return STORE.filter(function(r){
     if(state.cat!=='all' && r.cat!==state.cat) return false;
