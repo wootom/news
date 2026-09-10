@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ChatGPT 이미지 2.5의 원본 보존·정밀 편집·스케치·API 비용을 실습과 함께 정리했다."><title>OpenAI ChatGPT 이미지 2.5의 정밀 편집·스케치·API 기능을 실습으로 정리했다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-11 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>OpenAI ChatGPT 이미지 2.5의 정밀 편집·스케치·API 기능을 실습으로 정리했다.</h1><p class="lead">ChatGPT 이미지 2.5의 원본 보존·정밀 편집·스케치·API 비용을 실습과 함께 정리했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>OpenAI는 ChatGPT 이미지 2.5를 공개했으며, 영상은 공식 영상과 공식 블로그를 바탕으로 기능을 소개했다.</li>
+<li>이미지 2.5는 참고 사진의 얼굴·조명·질감을 유지하고, 머리나 의상 등 지정한 부분을 바꾸는 사례를 제시했다.</li>
+<li>여러 차례 수정해도 기존 결과의 일관성을 유지하는 멀티턴 편집과 여러 원본 사진을 합성하는 예시가 소개됐다.</li>
+<li>스케치 기능은 간단한 낙서와 텍스트 지시를 바탕으로 이미지를 만들며, ChatGPT에서 골뱅이 스케치로 사용할 수 있다고 설명했다.</li>
+<li>API에는 빠른 GPT 이미지 2.5 플레어와 정밀 작업용 썬버스트가 소개됐고, API 토큰 단가도 안내됐다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>영상은 ChatGPT 이미지 2.5가 이미지 생성·편집의 선명도와 안정성을 <span class="up">개선</span>한 업데이트라고 설명했다.</li>
+<li>핵심 논점은 원본 특징 보존, 원하는 부분만 수정하는 정밀 편집, 반복 편집의 일관성 유지다.</li>
+<li>공식 문서 소개 뒤 텍스트 기반 한국어 인포그래픽 생성과 AI 로봇 스케치 변환을 직접 테스트했다.</li>
+<li>개발자용 API에서는 속도 중심 플레어와 정밀도 중심 썬버스트의 활용 차이를 함께 다뤘다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>원본 특징 보존과 참고 이미지 활용</h2><ul>
+<li>공식 영상에서는 셀카를 참고 이미지로 넣고 얼굴과 인물은 유지한 채 헤어스타일만 바꾸는 장면을 보여줬다.</li>
+<li>꽃 장면은 꽃잎과 손의 질감 같은 디테일을 실제 사진처럼 표현한 이미지 2.5 결과물의 예시로 설명됐다.</li>
+<li>공식 블로그의 사례로 아이 사진을 턱시도 차림으로 바꾸되 자세와 파란 배경은 유지하는 예시가 언급됐다.</li>
+<li>영상은 참고 사진이 있을 때 얼굴 특징, 조명, 질감을 더 자연스럽게 살린다고 소개했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>정밀 편집과 다중 이미지 조합</h2><ul>
+<li>프리시전 에디팅은 이미지 전체를 다시 만들기보다 사용자가 지정한 부분만 바꾸는 정밀 편집 기능으로 설명됐다.</li>
+<li>강아지 사진에 스턴트맨 의상과 헬멧만 입히고 얼굴, 털색, 자세, 배경을 유지한 사례가 제시됐다.</li>
+<li>서로 다른 장소에서 찍은 남성 3명의 사진을 같은 파티에서 함께 찍은 사진처럼 합친 예시도 소개됐다.</li>
+<li>영상은 여러 원본 이미지를 함께 이해해 조합하는 기능과 무엇을 바꿀지 정확히 파악하는 점을 구분해 설명했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>반복 편집 일관성과 스타일 표현</h2><ul>
+<li>멀티턴 에디팅 컨시스턴시는 여러 번 이어서 수정해도 앞서 만든 내용과 품질이 흔들리지 않게 유지하는 기능이다.</li>
+<li>영상은 파란 튜브 이미지 사례를 멀티턴 편집 일관성을 보여주는 예시로 언급했다.</li>
+<li>Intelligence and Style Improvements 섹션은 길고 복잡한 설명 이해와 스타일 표현의 <span class="up">개선</span>을 다룬다고 설명됐다.</li>
+<li>1950년대 느낌의 우주 일러스트 사례를 통해 원하는 화풍과 분<span class="dn">위기</span>를 맞추는 예시가 소개됐다.</li>
+<li>실제 정보가 포함된 이미지, 투명 배경, 복잡한 레이아웃 처리도 <span class="up">개선</span> 항목으로 언급됐다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>프롬프트 구조화와 스케치 기능</h2><ul>
+<li>Structure your prompt for better results는 초보자가 프롬프트를 더 쉽게 구성하도록 돕는 기능으로 설명됐다.</li>
+<li>영상에서는 구성 요소, 정보, 색상, 스타일 등을 정리해 처음부터 프롬프트를 작성하는 부담을 줄이는 방식으로 소개했다.</li>
+<li>스케치는 방 구조나 옷 윤곽처럼 말로 설명하기 어려운 아이디어를 간단히 그려 이미지 생성에 활용하는 기능이다.</li>
+<li>사용자는 스케치에 스타일과 색감 지시를 덧붙일 수 있으며, 그림을 잘 그릴 필요는 없다고 설명됐다.</li>
+<li>실습에서는 AI 로봇을 간단히 그린 뒤 변환했고, 네모난 머리와 안테나, 팔 등 스케치 특징이 살아난 결과를 확인했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>생성 속도 실습과 프롬프트 공유</h2><ul>
+<li>영상은 공식 문서상 이미지 2.5의 지연 시간이 이미지 2.0 대비 최대 50% 줄었다고 설명했다.</li>
+<li>텍스트만으로 한국어 카드형 인포그래픽을 만드는 첫 테스트를 진행했고, 결과가 빠르게 생성됐다고 평가했다.</li>
+<li>진행 중 한국어 글자와 여러 요소를 한 번에 요청하면 생성 시간이 더 걸릴 수 있다고 언급했다.</li>
+<li>프롬프트 공유 기능은 다른 사람이 프롬프트를 복사해 자신의 사진이나 정보에 적용할 수 있도록 하는 기능으로 소개됐다.</li>
+<li>템플릿 섹션은 영상에서 별도 설명 없이 건너뛰었다.</li>
+<li>API 모델 구분과 토큰 기반 비용: 이미지 2.5 API는 개발자가 자신의 서비스나 앱에 이미지 기능을 직접 붙이는 방식으로 소개됐다.</li>
+<li>API 모델 구분과 토큰 기반 비용: GPT 이미지 2.5 플레어는 빠르게 결과를 내는 기본 모델로, 소셜 콘텐츠나 제품 이미지처럼 속도가 중요한 작업에 적합하다고 설명됐다.</li>
+<li>API 모델 구분과 토큰 기반 비용: GPT 이미지 2.5 썬버스트는 생성 시간이 더 걸리지만 복잡한 편집과 세밀한 결과에 강해 광고 캠페인에 적합하다고 소개됐다.</li>
+<li>API 모델 구분과 토큰 기반 비용: 두 모델의 API 비용은 텍스트 입력 100만 토큰당 5달러, 이미지 입력 8달러, 이미지 출력 30달러로 안내됐다.</li>
+<li>API 모델 구분과 토큰 기반 비용: 해당 가격은 ChatGPT 앱 요금이 아니라 개발자가 API를 이용할 때 적용되며, 이미지 한 장당 고정 가격 방식은 아니라고 설명됐다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>프리시전 에디팅</td><td>옷이나 배경처럼 지정한 부분만 수정하고 나머지 이미지 특징을 유지하는 정밀 편집 기능이다.</td></tr><tr><td>멀티턴 에디팅 컨시스턴시</td><td>여러 차례 수정 요청을 이어가도 이전에 만든 내용과 결과 품질의 일관성을 유지하는 기능이다.</td></tr><tr><td>스케치</td><td>간단한 낙서와 텍스트 지시를 바탕으로 방 구조·의상 윤곽 등 아이디어를 이미지로 완성하는 기능이다.</td></tr><tr><td>GPT 이미지 2.5 플레어</td><td>이미지 2.5 API에서 빠른 결과 생성에 초점을 둔 모델로 소개된 기본 모델이다.</td></tr><tr><td>GPT 이미지 2.5 썬버스트</td><td>생성 시간은 더 걸리지만 복잡한 편집과 세밀한 결과에 강한 API 모델로 소개됐다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ntxjQnDpmcM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-09-11</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
