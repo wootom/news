@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="GPT-6 Astra로 영상 분할·검수까지 자동화하는 스타일 변환 제작법."><title>GPT-6 Astra로 영상 스타일 변환 제작 공정을 자동화하는 방법을 제시한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nick Saraev</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-12 · Nick Saraev</span><span class="chip">🎬 영상</span></div><h1>GPT-6 Astra로 영상 스타일 변환 제작 공정을 자동화하는 방법을 제시한다.</h1><p class="lead">GPT-6 Astra로 영상 분할·검수까지 자동화하는 스타일 변환 제작법.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>일반 촬영 영상의 움직임과 스타일 이미지를 결합해 애니메이션풍 결과물을 만드는 영상 변환 흐름을 설명한다.</li>
+<li>GPT Image 2.5로 인물의 정체성을 유지한 스타일 이미지를 만든 뒤 Higsfield Genjutsu에 영상과 함께 입력한다.</li>
+<li>GPT-6 Astra는 영상 분할, 생성 실행, 결과 검사, 실패 생성 재시도, 연결과 내보내기까지 제작 관리자로 사용된다.</li>
+<li>Genjutsu는 5초 생성에 32.5크레딧이 들며, Juan 3.0은 720p 16:9에서 같은 길이를 9크레딧으로 제시한다.</li>
+<li>로컬 실행 선택지로 Hugging Face의 Wan 2.2 Animate 14B를 언급하며, 자체 하드웨어 실행은 시간이 걸릴 수 있다고 말한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>발표자는 미디어 자체의 스타일을 바꾸는 일이 옷이나 장신구처럼 미래의 표현 방식이 될 수 있다고 본다.</li>
+<li>일반 촬영본에 스타일 이미지를 결합하면 복잡한 모션 캡처 장비 없이도 영상 스타일 변환을 할 수 있다고 설명한다.</li>
+<li>소비자용 API 방식과 GPT-6 Astra 등 에이전트를 활용한 비용 최적화 파이프라인을 함께 공개하겠다고 말한다.</li>
+<li>창작자별 시각 스타일 구축과 광고 스타일별 성과 비교가 이 기술의 활용처가 될 수 있다고 제시한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>영상 스타일 변환의 입력과 처리 원리</h2><ul>
+<li>원본 영상은 움직임을 제공하고, 원본 프레임을 바탕으로 만든 스타일 이미지는 캐릭터 디자인과 렌더링 스타일을 제공한다.</li>
+<li>GPT Image 2.5 또는 다른 모델로 원본 인물과 같은 캐릭터이되 스타일 요소가 더해진 참조 이미지를 생성한다.</li>
+<li>영상과 스타일 이미지를 Genjutsu에 넣어 스타일화된 클립을 만들며, 원본 영상은 머리·시선·눈깜빡임·입 움직임의 기준이 된다.</li>
+<li>배경 잡음이 적고 흰 벽처럼 단순한 배경의 촬영본이 이상적이라고 설명한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>짧은 구간 분할과 후처리 구성</h2><ul>
+<li>현 모델은 전체 영상을 한 번에 처리하기 어렵기 때문에, 예시로 5분 영상을 20초 단위 청크로 나누는 방식을 든다.</li>
+<li>각 생성 구간의 스타일이 달라질 수 있어 GPT-6 Astra가 연결 지점을 검사하고 큰 불일치를 확인한다.</li>
+<li>출력 클립은 연결한 뒤 Solero voice activity detection과 ffmpeg로 후처리하고, 특정 프레임레이트로 애니메이션 느낌을 조정한다.</li>
+<li>원본 오디오는 유지하며, 최종 단계에서 검토 후 내보내기를 수행하는 흐름이다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Higsfield와 Genjutsu의 수동 제작 예시</h2><ul>
+<li>Higsfield는 여러 이미지·비디오 모델을 한곳에 모은 서비스로 소개되며, 발표자는 사용 편의상 이를 사용한다.</li>
+<li>단일 얼굴 프레임을 GPT Image 2.5 Sunburst에 넣고 인물의 특징이 알아볼 수 있게 유지하는 3D 스타일 프롬프트를 입력한다.</li>
+<li>생성된 스타일 이미지와 50초 데모 영상을 Higsfield Genjutsu에 넣고, 시연에서는 영상을 30초로 잘라 처리한다.</li>
+<li>프롬프트에는 얼굴형, 곱슬머리, 수염, 회색 스웨트셔츠, 검은 마이크 등 인식 가능한 특징을 보존하도록 적는다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>비용 비교와 광고 활용 가능성</h2><ul>
+<li>발표자는 Genjutsu의 5초 실행 비용을 32.5크레딧으로 언급하고, 20초라면 약 130크레딧이 될 것이라고 계산한다.</li>
+<li>Juan 3.0 테스트에서는 동일 길이 기준 720p 16:9 출력이 9크레딧이며, 품질은 같지 않지만 괜찮다고 평가한다.</li>
+<li>Genjutsu 생성 실패 시 크레딧이 환불되고 재시도할 수 있으며, 저작권 캐릭터 사용은 검열될 수 있다고 언급한다.</li>
+<li>하나의 광고 영상을 20~30개 스타일로 바꿔 분할 테스트하고, 전환 가능성이 높은 스타일에 예산을 집중하는 구상을 제시한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>GPT-6 Astra 자동화와 로컬 실행 선택지</h2><ul>
+<li>Codex 앱에서 GPT-6 Astra High를 선택하고, Maker Zero에 있는 Genjutsu 워크플로 프롬프트를 붙여넣는 과정을 보여준다.</li>
+<li>Astra는 Higsfield의 사용 가능 모델·계정 상태·가격을 확인하고, 사용자에게 예상 크레딧 지출을 확인받은 뒤 진행한다.</li>
+<li>60초 전체 처리, 720p 해상도, 0.5초보다 긴 정적 구간 제거 등 처리 범위와 편집 조건을 지정할 수 있다.</li>
+<li>Higsfield 플러그인이 없으면 플러그인 메뉴에서 설치하며, Wan 2.2 Animate 14B는 Hugging Face에서 내려받아 로컬 실행할 수 있다고 설명한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>GPT-6 Astra</td><td>영상 제작 운영자로서 계획, 생성 실행, 결과 검사, 실패한 생성의 재시도와 구간 연결을 맡는 모델로 소개된다.</td></tr><tr><td>Genjutsu</td><td>원본 영상의 움직임과 스타일 참조 이미지를 결합해 스타일 변환 영상을 생성하는 Higsfield의 모델로 설명된다.</td></tr><tr><td>GPT Image 2.5</td><td>원본 인물 프레임을 바탕으로 인물 정체성을 유지한 스타일 참조 이미지를 만드는 데 사용하는 모델이다.</td></tr><tr><td>Solero voice activity detection</td><td>스타일 변환 클립을 연결한 후 음성 구간을 바탕으로 후처리하는 도구로 언급된다.</td></tr><tr><td>Juan 3.0</td><td>Genjutsu와 유사한 대안 모델로 소개되며, 시연에서는 720p 16:9의 같은 길이 생성에 9크레딧이 제시된다.</td></tr><tr><td>Wan 2.2 Animate 14B</td><td>Hugging Face에서 내려받아 자체 컴퓨터나 다른 하드웨어에서 실행할 수 있는 로컬 모델 선택지다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/MujaqZS9wtM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nick Saraev · 2026-09-12</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
