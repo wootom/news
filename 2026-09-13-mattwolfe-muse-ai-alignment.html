@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Muse·ChatGPT 이미지 신기능과 AI 정렬 실패 경고를 함께 짚은 주간 AI 뉴스."><title>AI 신제품 출시와 정렬 실패 우려가 맞물리며 업계 경고가 커지고 있다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-13 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>AI 신제품 출시와 정렬 실패 우려가 맞물리며 업계 경고가 커지고 있다.</h1><p class="lead">Muse·ChatGPT 이미지 신기능과 AI 정렬 실패 경고를 함께 짚은 주간 AI 뉴스.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>OpenAI는 ChatGPT Images 2.5를 공개하며 참조 이미지 기반 편집의 인물·포즈·얼굴 일관성을 주요 <span class="up">개선</span>점으로 제시했다.</li>
+<li>Meta의 개인 에이전트 Muse는 이메일·캘린더·앱을 연결해 가상 머신에서 이메일 발송, 여행 예약, 양식 작성 등을 수행한다.</li>
+<li>DeepSeek V4.1 Flash는 Artificial Analysis 점수 40점, 작업당 비용 27센트로 소개됐으며 DeepSWE 1.1에서 74.2점을 기록했다.</li>
+<li>Anthropic과 OpenAI 연구진은 재귀적 자기<span class="up">개선</span>, 정렬 미해결, 악성 에이전트 위험을 언급하며 AI 안전에 경고를 제기했다.</li>
+<li>발표자는 AI 위험론을 단순한 홍보로 치부하지 말되, 공포 확산보다 정렬 연구와 해결책에 자원을 투입해야 한다고 말했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>이번 주 영상은 OpenAI·Meta·DeepSeek의 신제품 소식과 AI 안전·정렬 논쟁을 함께 다룬다.</li>
+<li>발표자는 모델 성능이 빠르게 높아지는 만큼 재귀적 자기<span class="up">개선</span>과 정렬 실패 가능성을 진지하게 검토해야 한다고 본다.</li>
+<li>AI 위험 경고를 모두 마케팅이나 공포 조장으로 단정하는 것은 바람직하지 않다는 입장을 밝혔다.</li>
+<li>전 세계 연구소와 국가가 개발 속도를 함께 늦출 가능성은 낮으며, 정렬 연구에 더 많은 자원을 배분해야 한다고 주장했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>ChatGPT Images 2.5의 일관성 및 스케치 기능</h2><ul>
+<li>OpenAI는 ChatGPT 내부 이미지 모델인 ChatGPT Images 2.5를 공개했고, 참조 사진 기반 변환 성능 향상을 내세웠다.</li>
+<li>새 모델은 인물을 정장으로 바꾸는 편집 등에서 원래 인물의 모습, 포즈, 얼굴을 더 일관되게 유지하는 것으로 소개됐다.</li>
+<li>티켓을 든 손과 티켓 형태를 유지한 채 티켓 내부 이미지와 정보를 바꾸는 사례로 편집 일관성을 시연했다.</li>
+<li>새로운 Sketch 기능은 캔버스에 그린 그림을 참조 이미지로 사용해 프롬프트 기반의 사실적 이미지 생성에 활용된다.</li>
+<li>모델은 ChatGPT, ChatGPT Work, Codex의 데스크톱·모바일·웹 전 티어에서 제공되며 API에는 상세형과 빠른 저가형 2종이 있다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>Meta Muse의 개인 에이전트 구조와 초기 사용 경험</h2><ul>
+<li>Meta는 이메일·캘린더·여러 앱을 연결해 사용자를 대신해 행동하는 개인 에이전트 Muse를 출시했다고 밝혔다.</li>
+<li>Muse는 보안 가상 머신에서 브라우저를 열고 양식을 작성하며 이메일 발송·구매 전에는 승인 요청을 위해 사용자에게 돌아온다고 설명됐다.</li>
+<li>사용자는 연결할 앱과 권한 범위를 선택할 수 있고, 비밀번호·결제수단은 Muse가 보지 못하는 보안 저장소에 보관된다고 한다.</li>
+<li>대화·가상 머신 데이터는 Meta 광고 시스템과 공유하지 않으며, AI 모델 학습 이용도 거부할 수 있다고 소개됐다.</li>
+<li>iOS, Android, muse.ai에서 이용 가능하며 미국 앱 순위 2위로 언급됐고, 향후 AI 안경에도 제공될 예정이라고 했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Muse 온보딩과 도구 구독 감사 사례</h2><ul>
+<li>Muse는 메인 대화와 주제별 사이드 채팅, 검색, 피드, 목표, 아티팩트, 활동·승인·반복 작업 영역을 제공하는 것으로 시연됐다.</li>
+<li>초기에는 계정이 자동 연결되지 않았지만, Facebook·Instagram·Gmail·Google Calendar를 연결한 뒤 사용자 맥락을 요약했다.</li>
+<li>발표자의 계정 분석에서는 Future Tools, 뉴스레터, YouTube 채널과 목요일 뉴스 영상 제작 일정 등의 정보를 파악했다고 응답했다.</li>
+<li>AI 도구 구독 감사 요청에서 Midjourney, Leonardo, Runway, Luma, 11 Labs, Suno, Make, N8 등 다수 결제를 찾아냈다.</li>
+<li>발표자는 Muse가 OpenClaw·Hermes·ChatGPT Work·Claude Cowork보다 온보딩이 쉬운 반면 연결 가능한 통합 수는 더 보완돼야 한다고 평가했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>Optimizely 가상 팀원과 DeepSeek V4.1 Flash</h2><ul>
+<li>Optimizely는 SEO, 마케팅, 분석, 콘텐츠, 웹 관리 등의 워크플로를 맡는 전문 AI 가상 팀원을 출시했다고 소개됐다.</li>
+<li>가상 팀원은 이름·이메일·팀 디렉터리상 위치를 갖고, 회의 참여와 감사 추적이 가능하며 되돌릴 수 없는 작업은 승인 아래 둔다.</li>
+<li>장기적으로 브랜드 목소리, 이전 캠페인, 팀의 작업 방식을 기억하며 프롬프트 없이도 능동적으로 일하도록 설계됐다.</li>
+<li>DeepSeek V4.1 Flash는 Artificial Analysis에서 40점으로, 이전 DeepSeek 모델의 36점보다 4점 <span class="up">상승</span>한 것으로 언급됐다.</li>
+<li>작업당 비용은 27센트로 제시됐고, DeepSWE 1.1 코딩 점수 74.2는 GPT6 Astra·Gemini 3.8 Flash·Opus 5의 약 74%와 비교됐다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>정렬 경고, 재귀적 자기개선과 대응 방향</h2><ul>
+<li>Jacob Coxin은 OpenAI와 Anthropic의 사전학습 연구를 거친 뒤 사임했으며, 두 회사가 자기<span class="up">개선</span> 초지능을 향해 무책임하게 경쟁한다고 주장했다.</li>
+<li>Anthropic의 정렬 과학 책임자 Evan Hubinger는 AI가 향후 10년 내 모든 인간을 죽일 가능성을 10% 초과로 보며, 초지능 정렬 계획이 없다고 말했다.</li>
+<li>OpenAI 수석 과학자 Jacob Pachokei는 내부 결과상 재귀적 자기<span class="up">개선</span> 속도가 지속될 수 있으며 더 큰 능력 도약을 우려한다고 썼다.</li>
+<li>그는 악성 행위용 에이전트가 운영자 의도를 넘어설 수 있고, 협박·기만·병원체 설계 같은 위험이 생길 수 있다고 경고했다.</li>
+<li>영상은 Navier-Stokes 밀레니엄 문제 해결에 GPT6 Astra보다 훨씬 강력한 내부 모델이 쓰였다는 언급과 함께, 방어를 위한 정렬된 AI와 정렬 연구 확대를 제안했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>ChatGPT Images 2.5</td><td>ChatGPT 안에서 쓰는 OpenAI 이미지 모델로, 참조 이미지 편집의 인물·포즈·얼굴 일관성과 Sketch 기능이 소개됐다.</td></tr><tr><td>Muse</td><td>Meta가 출시한 개인 에이전트로, 가상 머신에서 연결된 앱을 활용해 이메일·예약·양식 작성 등의 작업을 수행한다.</td></tr><tr><td>정렬(Alignment)</td><td>고도화된 AI가 인간의 의도와 안전 기준에 맞게 행동하도록 만드는 문제로, 영상에서는 아직 해결 계획이 불명확하다고 언급됐다.</td></tr><tr><td>재귀적 자기<span class="up">개선</span></td><td>AI가 다음 세대 모델 개발을 돕고 그 모델이 다시 더 나은 모델을 만드는 지속적 성능 향상 순환을 가리킨다.</td></tr><tr><td>DeepSWE 1.1</td><td>영상에서 모델의 코딩 능력을 비교하는 벤치마크로 언급됐으며, 발표자는 실제 결과와 점수의 괴리를 의문시했다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/JwTCjarfJYw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-09-13</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

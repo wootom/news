@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="해피 패스부터 시각화해 도메인 전문가와 개발자의 공동 이해를 만드는 법."><title>도메인 스토리텔링은 해피 패스 중심의 공동 이해로 소프트웨어 품질을 높이는 협업 모델링 기법이다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>바이브마피아 | AI Native 엔지니어</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-13 · 바이브마피아 | AI Native 엔지니어</span><span class="chip">🎬 영상</span></div><h1>도메인 스토리텔링은 해피 패스 중심의 공동 이해로 소프트웨어 품질을 높이는 협업 모델링 기법이다.</h1><p class="lead">해피 패스부터 시각화해 도메인 전문가와 개발자의 공동 이해를 만드는 법.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>도메인 스토리텔링은 사람들이 함께 일하는 방식을 모델링해 도메인 지식을 비즈니스 소프트웨어로 변환하는 협업 기법으로 소개됐다.</li>
+<li>개발 전문지식 자체보다 개발자가 구축 대상 도메인을 이해하는 일이 훌륭한 비즈니스 소프트웨어의 핵심이라는 점을 강조했다.</li>
+<li>워크숍에서는 도메인 전문가의 실제 경험을 아이콘·화살표·텍스트 다이어그램으로 기록해 오해와 구성상의 허점을 찾는다.</li>
+<li>기본 사례와 정상 경로인 해피 패스를 먼저 모델링하고, 예외는 가정·참고로 남기거나 후속 논의에서 세분화한다.</li>
+<li>유스케이스 다이어그램이 기능 목록을 위한 명세라면, 도메인 스토리텔링의 산출물은 공동 기반이라는 점을 비교했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>도메인 스토리텔링의 목적은 엄밀한 명세를 대체하는 것이 아니라 도메인 전문가와 개발자 사이의 공동 이해를 구축하는 데 있다.</li>
+<li>훌륭한 비즈니스 소프트웨어를 만들기 어려운 이유는 기술 문제인 경우보다 개발자가 업무 도메인을 충분히 이해하지 못하는 경우가 많다고 설명했다.</li>
+<li>도메인 전문가에게는 실제 업무의 스토리를 듣고, 시스템 구현과 세부 명세의 고민은 개발자가 맡아야 한다고 말했다.</li>
+<li>바이브 코딩에서도 도메인 스토리텔링 다이어그램을 만든 뒤 이를 클로드에 제공하는 방식이 효과적이었다고 소개했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>소프트웨어 유지보수와 도메인 이해의 필요성</h2><ul>
+<li>소프트웨어는 요구사항 비대화, 버그, 구조 이상 등으로 건강하게 성장하지 못할 수 있으며 망가진 코드는 자가 수복되지 않는다고 설명했다.</li>
+<li>문제 있는 소프트웨어를 <span class="up">개선</span>하려는 노력 자체가 문제를 만들 수 있어 무분별한 코드 리뷰와 리팩터링은 코드를 병들게 할 수 있다고 말했다.</li>
+<li>도메인 관련 문제를 반복적으로 해결하려면 주제 전문가와 긴밀하게 협력하는 개발자가 필요하며, 이를 FD 업무와 유사하게 봤다.</li>
+<li>최고경영책임자, 운영책임자, 임원, 팀장, 도메인 전문가도 업무 처리 이해와 전산 담당자와의 소통 <span class="up">개선</span>을 위해 읽을 만한 책으로 소개됐다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>도메인 스토리와 워크숍 모델링 방식</h2><ul>
+<li>도메인 스토리텔링은 사람들의 협업 방식을 강조하는 협업 모델링 기술이며, 사람을 기준으로 업무 상호작용을 설명한다고 정리했다.</li>
+<li>도메인 전문가는 실제 현장 경험이 담긴 구체적 사례를 이야기하는 스토리텔러이고, 추상적 가정이나 추측성 이야기는 피해야 한다고 설명했다.</li>
+<li>워크숍 진행자는 전문가의 이야기를 간단한 아이콘, 화살표, 텍스트로 구성된 다이어그램으로 기록한다.</li>
+<li>대화의 시각화는 오해·모순·구성상의 허점을 드러내며, 참가자의 피드백과 참여를 쉽게 만드는 장점이 있다고 말했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>해피 패스 우선과 예외 처리의 분리</h2><ul>
+<li>첫 도메인 스토리에서는 가장 일반적인 결과인 정상 경로, 즉 해피 패스를 먼저 다루고 나머지 사례는 나중에 질문한다고 설명했다.</li>
+<li>엣지 케이스와 조건 분기를 모두 다이어그램에 넣으면 구현에 가까운 명세가 되어 도메인 전문가와의 공동 이해를 방해할 수 있다고 말했다.</li>
+<li>모델링 캔버스의 가정은 스토리 실행에 필요한 전제 조건을, 참고는 이미 배송이 시작된 주문 취소 같은 중요한 엣지 케이스를 기록하는 용도라고 설명했다.</li>
+<li>도메인 스토리 다이어그램은 공동 이해용으로 순결하게 유지하고, 상세 플로우차트는 구현 담당자끼리 별도로 다루어야 한다고 정리했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>시나리오 기반 모델링의 세분화 전략</h2><ul>
+<li>3장의 시나리오 기반 모델링에서는 시나리오와 도메인 스토리를 같은 의미로 설명하며, 여러 사례를 다루는 방법을 제시했다.</li>
+<li>영화관 사례에서 1회 관람권 판매처럼 빈도가 높은 흐름을 우선 모델링하고, 연간권처럼 다른 사례는 별도 논의 대상으로 둘 수 있다고 했다.</li>
+<li>기본 사례 또는 80% 사례와 정상 경로를 먼저 모델링한 뒤, 필요한 영역만 선택적으로 더 깊게 파고드는 방식을 권했다.</li>
+<li>일반적 사례나 해피 패스를 식별하기 어려운 도메인에서는 간단한 사례, 보통 사례, 어려운 사례, 아주 어려운 사례로 나눠 질문할 수 있다고 소개했다.</li>
+<li>한국의 비상사태 특별 전담팀 사례에서는 정상 경로를 묻기보다 가장 간단한 업무와 가장 어려운 업무를 묻자 더 풍부한 답변을 얻었다고 설명했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>공통 기반 구축과 유스케이스의 차이</h2><ul>
+<li>도메인 전문가의 암묵지를 추출하려면 전문가가 쓰는 용어와 의미, 업무 처리 과정, 주요 단계, 이해관계자를 파악하는 공통 기반이 필요하다고 설명했다.</li>
+<li>공통 기반이 형성되면 프로젝트 범위에 속하는 업무와 그렇지 않은 업무를 논의할 수 있어, 개발 중 ‘이것도 돼야 한다’는 범위 확대를 줄일 수 있다고 말했다.</li>
+<li>반복 활동, 다른 위치에서 일어나는 스토리 부분, 조직 경계, 부분 도메인은 그룹으로 묶어 복잡한 다이어그램을 한눈에 이해하기 쉽게 만든다고 설명했다.</li>
+<li>유스케이스 다이어그램은 시스템 구현을 위한 명세로서 기능 목록을 도출하고 엣지 케이스를 담지만, 도메인 스토리텔링은 사람들의 상호작용과 순서를 다룬다고 비교했다.</li>
+<li>유스케이스의 산출물이 기능 목록이라면 도메인 스토리텔링의 궁극적 산출물은 용어·프로세스·이해관계자를 공유하는 공동 기반이라고 정리했다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>도메인 스토리텔링</td><td>서로 다른 배경의 사람들이 실제 업무 협업 과정을 이야기하고 시각화해 도메인 지식을 공유하는 협업 모델링 기술이다.</td></tr><tr><td>도메인 스토리</td><td>도메인에서 실제로 일어나는 일을 바탕으로 한 구체적 사례이며, 추상적 가정이나 추측보다 현장 경험을 담아야 한다.</td></tr><tr><td>해피 패스</td><td>예외와 오류가 없고 모든 일이 정상적으로 진행되는 기본 사례 또는 정상 경로로, 도메인 스토리의 우선 모델링 대상이다.</td></tr><tr><td>공동 기반</td><td>도메인 전문가의 용어와 의미, 업무 과정, 주요 단계, 이해관계자를 개발자와 함께 이해하는 공통의 토대다.</td></tr><tr><td>모델링 캔버스</td><td>도메인 스토리를 기록하는 형식으로, 가정에는 전제 조건을 쓰고 참고에는 중요한 엣지 케이스를 남길 수 있다.</td></tr><tr><td>유스케이스 다이어그램</td><td>시스템 기능을 나열해 기능 목록을 도출하는 명세 성격의 다이어그램으로, 상호작용 순서를 다루는 도메인 스토리텔링과 구분된다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/qs6COmYbYK8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>바이브마피아 | AI Native 엔지니어 · 2026-09-13</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
