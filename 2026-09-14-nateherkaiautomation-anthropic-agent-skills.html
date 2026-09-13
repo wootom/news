@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="범용 에이전트를 재구축하지 말고 재사용·검색·학습·검증 스킬을 설계하라는 제안."><title>앤트로픽은 범용 에이전트에 재사용·검색·학습·검증 스킬을 더하라고 제안한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-14 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>앤트로픽은 범용 에이전트에 재사용·검색·학습·검증 스킬을 더하라고 제안한다.</h1><p class="lead">범용 에이전트를 재구축하지 말고 재사용·검색·학습·검증 스킬을 설계하라는 제안.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>배리 지엔과 마헤시 마로그는 기본 에이전트가 예상보다 범용적으로 작동해 직무별 에이전트 재구축을 중단했다고 밝혔다.</li>
+<li>영상은 모델을 프로세서, 에이전트 런타임을 운영체제, 스킬을 앱에 비유하며 AI 스택을 설명한다.</li>
+<li>검증된 스크립트를 스킬 폴더에 저장해 재사용하면 토큰 소비와 실행 결과의 불일치를 줄일 수 있다.</li>
+<li>YAML 프런트매터의 명확한 이름·설명으로 필요한 스킬만 불러오는 점진적 공개 방식을 제시한다.</li>
+<li>스킬에 수정 사항과 검증 단계를 축적해, 결과물을 반환하기 전 반복 검사하도록 설계하라고 말한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>앤트로픽은 에이전트가 사라졌다고 말하는 것이 아니라, 모든 직무마다 별도 에이전트를 다시 만드는 일을 줄였다고 설명된다.</li>
+<li>범용 에이전트에 작업별 프로세스, 맥락, 스크립트, 예시를 담은 스킬을 부여하는 방식이 영상의 중심 주장이다.</li>
+<li>영상은 스킬 설계의 네 요소로 검증 코드 저장, 정확한 검색, 지속적 <span class="up">개선</span>, 사전 검증을 제시한다.</li>
+<li>스킬의 목표는 약한 모델을 강한 모델처럼 만들기보다, 원하는 절차적 지식을 이식 가능하게 만드는 데 있다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>AI 스택과 스킬의 역할</h2><ul>
+<li>휴대전화 비유에서 모델은 프로세서, 에이전트 런타임은 운영체제, 스킬은 특정 기능을 수행하는 앱에 해당한다.</li>
+<li>Claude Code는 파일 읽기, 코드 작성, 도구 호출, 작업 처리를 할 수 있으므로 작업마다 처음부터 새로 만들 필요가 없다고 설명한다.</li>
+<li>프레젠테이션 제작, 회사 조사, LinkedIn 게시물 작성 같은 작업에 필요한 내용을 스킬로 제공하는 방식이다.</li>
+<li>스킬은 모든 대화를 기억하는 장치가 아니라 특정 작업에 필요한 절차적 지식을 저장하는 것으로 설명된다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>검증된 코드 저장과 DRY 재사용</h2><ul>
+<li>팀은 Claude가 슬라이드 스타일 적용 때마다 유사한 Python 스크립트를 새로 작성하는 문제를 관찰했다.</li>
+<li>처음부터 코드를 만들면 토큰이 많이 들고 실행 결과가 매번 달라질 수 있어 일관성이 낮아진다고 말한다.</li>
+<li>작동이 확인된 스크립트를 스킬 안에 저장하고 이후에는 해당 파일을 실행하도록 해 재사용한다.</li>
+<li>영상은 이를 DRY, 즉 Don&#x27;t Repeat Yourself 원칙에 연결하며 채팅창 속 코드를 보관하라고 권한다.</li>
+<li>저장 뒤에는 같은 유형 작업을 두 번 실행해 결과와 저장 파일 호출 여부를 비교·테스트해야 한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>점진적 공개와 스킬 검색 설계</h2><ul>
+<li>Claude는 시작 시 모든 스킬의 전체 지침과 스크립트를 읽지 않고, 각 스킬의 이름과 설명부터 읽는다.</li>
+<li>이름과 설명은 YAML 프런트매터에 두며, 프롬프트가 설명과 맞을 때 전체 MD 파일을 불러온다.</li>
+<li>큰 참조 파일과 스크립트는 실제 작업에 필요할 때까지 폴더에 유지해 불필요한 맥락 증가와 혼란을 줄인다.</li>
+<li>‘콘텐츠 제작 지원’처럼 겹치는 설명 대신 LinkedIn 캐러셀의 용도와 발동 조건을 구체적으로 적으라고 제안한다.</li>
+<li>명확한 요청, 다른 표현의 같은 요청, 전혀 무관한 요청 3가지로 스킬 발동 여부를 시험하라고 말한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>수정 사항의 영구 학습과 호환성 테스트</h2><ul>
+<li>출력의 어조, 검증 단계, 형식이 잘못됐을 때 단순히 ‘수정해’라고 하는 대신 프로세스 원인을 점검해야 한다.</li>
+<li>파일을 찾지 못한 경우에는 검색 과정과 실패 이유를 확인하고, 다음 실행을 위해 경로 또는 스킬을 업데이트하는 사례를 든다.</li>
+<li>오류 원인이 프로세스, 누락된 맥락, 약한 규칙, 신뢰할 수 없는 코드 중 무엇인지 판단해 가장 작은 영구 위치를 수정한다.</li>
+<li>같은 실수가 반복되면 이를 명시적으로 막는 규칙을 추가하고 동일 작업을 재실행해 수정 사항을 확인한다.</li>
+<li>에이전트 스킬은 개방형 형식이며 스킬 폴더와 핵심 파일은 CodeX, Hermes 에이전트 등 호환 하네스에서 사용할 수 있다고 설명한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>반환 전 검증 루프와 다중 관점 검토</h2><ul>
+<li>영상은 AI가 작업의 70~80%만 마쳐 사용자가 나머지 20~30%를 수동 처리하는 상황을 주요 문제로 든다.</li>
+<li>슬라이드 스킬은 슬라이드를 이미지로 렌더링하고, 잘림·가독성·범위 문제를 검사한 뒤 수정 및 재렌더링할 수 있다.</li>
+<li>연구 보고서는 1차 자료를 열어 주장과 증거를 대조하고 검증할 수 없는 내용은 제거하는 방식으로 검토한다.</li>
+<li>스크립트나 광고는 초보 에이전트, 회의적 바이어, 실제 고객 등 여러 페르소나 관점으로 피드백을 받을 수 있다.</li>
+<li>최종 결과 전 승인 기준을 정의하고 검사·수정·재검사를 거쳐 기준 충족 여부와 미검증 항목을 함께 보고하도록 제안한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>스킬</td><td>범용 에이전트가 특정 작업을 수행하도록 프로세스, 맥락, 스크립트, 예시를 담아 제공하는 작업 단위다.</td></tr><tr><td>DRY</td><td>Don&#x27;t Repeat Yourself의 약자로, 이미 해결한 코드나 절차를 저장해 매번 새로 작성하지 않는 원칙이다.</td></tr><tr><td>점진적 공개</td><td>Claude가 처음에는 스킬의 이름과 설명만 읽고, 필요할 때 전체 지침·참조 파일·스크립트를 불러오는 방식이다.</td></tr><tr><td>YAML 프런트매터</td><td>스킬의 이름과 설명을 두어 Claude가 어떤 요청에서 해당 스킬을 발동할지 판단하게 하는 정보다.</td></tr><tr><td>skill.mmd</td><td>오류 수정, 규칙, 절차적 지식을 업데이트해 이후 실행에 반영하는 스킬 지침 파일로 언급된다.</td></tr><tr><td>에이전트 하네스</td><td>스킬 폴더와 핵심 파일을 사용할 수 있는 CodeX, Hermes 에이전트 같은 호환 실행 환경을 가리킨다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/HIRDzMtuWFk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-09-14</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

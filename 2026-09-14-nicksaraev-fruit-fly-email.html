@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="초파리 뇌 코넥톰으로 이메일을 6개 범주로 분류하고 템플릿 답장을 연결한 실험."><title>초파리 뇌 코넥톰을 시뮬레이션해 이메일 분류와 템플릿 답장을 연결했다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nick Saraev</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-14 · Nick Saraev</span><span class="chip">🎬 영상</span></div><h1>초파리 뇌 코넥톰을 시뮬레이션해 이메일 분류와 템플릿 답장을 연결했다.</h1><p class="lead">초파리 뇌 코넥톰으로 이메일을 6개 범주로 분류하고 템플릿 답장을 연결한 실험.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>발표자는 구글 연구원들이 공개한 초파리 뇌 코넥톰을 활용해 이메일 처리 시뮬레이션을 만들었다고 설명한다.</li>
+<li>사용한 구조는 16만 6,000개 뉴런과 1억 2,500만 개 이상의 뉴런 간 연결을 포함한다고 소개된다.</li>
+<li>GPT6 Astra 고성능 모드에 링크를 제공하고, 6개 범주의 라벨 이메일 864개로 분류 작업을 학습시켰다.</li>
+<li>후원·컨설팅·학생 지원·일정·뉴스레터·영수증으로 분류한 뒤 미리 준비한 답변 템플릿을 연결했다.</li>
+<li>발표자는 전체 이메일 데이터셋에서 약 80% 정확도를 주장하며, 답장 생성이 아닌 템플릿 선택 방식이라고 밝혔다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>발표자는 실제 초파리 뇌의 연결 구조인 코넥톰을 시뮬레이션에 넣고 이메일 업무에 연결했다고 말한다.</li>
+<li>핵심 기능은 이메일 본문 패턴을 분류하고, 분류 결과에 맞는 사전 작성 답변을 선택하는 것이다.</li>
+<li>이를 효율적인 자동화 제품이 아니라 생물학적 신경 구조로도 경제적 작업을 수행할 수 있음을 보이는 실험으로 규정한다.</li>
+<li>발표자는 생물학적 뇌를 컴퓨터에 구현하는 일이 감정·감각을 수반하는지 알 수 없다는 윤리적 질문도 제기한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>공개 초파리 코넥톰과 시뮬레이션 환경</h2><ul>
+<li>발표자는 구글 연구원들이 최근 지도화해 공개한 초파리 뇌 데이터를 다운로드해 사용했다고 설명한다.</li>
+<li>소개된 코넥톰은 초파리 뇌와 신경삭의 16만 6,000개 뉴런을 지도화한 구조다.</li>
+<li>이 구조에는 뉴런 사이 연결이 1억 2,500만 개 이상 포함돼 있다고 영상에서 제시된다.</li>
+<li>이메일 작업을 하지 않을 때는 가상 공간을 돌아다니고, 가상 음식과 NPC 친구가 있는 환경을 구성했다고 말한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>864개 라벨 이메일로 진행한 분류 학습</h2><ul>
+<li>발표자는 6개 범주를 포괄하는 라벨 이메일 예시 864개를 모델에 넣었다고 밝힌다.</li>
+<li>6개 분류 항목은 후원, 컨설팅, 학생 지원, 일정 관리, 뉴스레터, 영수증이다.</li>
+<li>이메일의 문자 조합을 입력 패턴으로 사용하고, 정답 라벨을 이용한 학습과 보상 기반 훈련을 거쳤다고 설명한다.</li>
+<li>활성화된 뇌 영역을 시각적 fMRI처럼 확인하고, 해당 활성 패턴을 각 이메일 라벨과 연결했다고 말한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>운동 회로와 이메일 회로의 분리</h2><ul>
+<li>발표자는 앱 실행 중에 이메일 기능을 실시간으로 훈련하는 방식은 아니라고 구분한다.</li>
+<li>시뮬레이션에서 움직임을 제어하는 운동 피질은 이메일 학습에 사용된 모델과 다르다고 설명한다.</li>
+<li>운동 신경세포를 이메일 관련 내용으로 훈련하면 움직임 제어에 문제가 생길 수 있다며 회로 보존의 필요성을 언급한다.</li>
+<li>화면 오른쪽 상단에서 특정 순간의 초파리 뇌 활동을 볼 수 있으며, 특정 행동으로 신경 활동을 유도할 수 있다고 말한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>분류 결과와 Gmail API 답장 연결</h2><ul>
+<li>답장이 필요 없는 이메일은 ‘답글 필요 없음’ 태그를 붙여 답장 대기열에서 제외하는 방식으로 소개된다.</li>
+<li>통화 요청 이메일에는 가능한 시간 두 가지와 시간대를 보내 달라는 템플릿 답변이 제시된다.</li>
+<li>Paper Kite의 월 12달러 구독 결제 확인 메일과 영수증 데모 1043을 예시 이메일로 사용했다.</li>
+<li>발표자는 Gmail API에 원하는 답장 본문을 보내 자동 처리 흐름을 연결할 수 있다고 설명한다.</li>
+<li>자동화 도구는 분류 결과에 따라 템플릿을 고르고, 사용자는 검토·편집·전송을 수행한다고 말한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>성능 한계와 인간 뇌 업로드 전망</h2><ul>
+<li>발표자는 이 시스템이 전체 이메일 데이터셋에서 약 80% 정확도에 도달할 수 있다고 주장한다.</li>
+<li>초파리 뇌는 작은 인공 신경망 수준의 약 80% 성능이며, 일반 인공 신경망보다 처리 효율이 낮다고 평가한다.</li>
+<li>약 20개 범주를 시험했지만 5~10개 범위부터 분류가 어려워졌으며, 이것이 현재 상한선처럼 보인다고 말한다.</li>
+<li>이 시스템은 새 이메일 문장을 작성하지 않고 사전 제작된 답변 목록에서 가장 적합한 템플릿을 선택한다.</li>
+<li>발표자는 인간 뇌 시뮬레이션이 실제 시간보다 수천~수만 배 빠르게 실행될 가능성과 그 철학적 문제를 언급한다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>코넥톰</td><td>초파리 뇌의 뉴런과 뉴런 사이 연결을 지도화한 구조로, 영상에서는 시뮬레이션의 입력 데이터로 사용된다.</td></tr><tr><td>GPT6 Astra</td><td>발표자가 고성능 모드로 데이터 수집·집계·학습을 맡겼다고 언급한 지도 학습 모델이다.</td></tr><tr><td>보상 기반 훈련</td><td>라벨 이메일의 정답을 활용해 분류 패턴을 학습한 뒤 진행했다고 설명한 훈련 단계다.</td></tr><tr><td>Gmail API</td><td>분류 후 선택된 이메일 답장 본문을 Gmail로 보내 자동화 흐름에 연결하는 데 사용한 도구다.</td></tr><tr><td>템플릿 답변</td><td>시스템이 직접 문장을 생성하는 대신 이메일 범주에 맞춰 선택하도록 미리 작성한 답변 목록이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/GmCbzlb091A" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nick Saraev · 2026-09-14</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
