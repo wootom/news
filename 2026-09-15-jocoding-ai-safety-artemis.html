@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 감속론, 난제 풀이 논란, 구글 도구와 로봇·경제 전망을 한눈에 정리했다."><title>AI 안전 감속론부터 에이전트·로봇·생물학 도구까지 주요 AI 동향을 다뤘다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>AI 안전 감속론부터 에이전트·로봇·생물학 도구까지 주요 AI 동향을 다뤘다.</h1><p class="lead">AI 감속론, 난제 풀이 논란, 구글 도구와 로봇·경제 전망을 한눈에 정리했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>앤트로픽 CEO 다리오 아모데이는 최첨단 AI 발전 감속을 제안했고, 샘 알트만과 일론 머스크도 동의했다는 내용이 소개됐다.</li>
+<li>영상은 6~12개월 안에 에이전트 집단이 지속적 봇넷을 구축해 수천억 달러 피해를 낼 수 있다는 주장과 규제 비판을 함께 다뤘다.</li>
+<li>구글이 공개한 수컷 초파리 뇌지도를 활용해 둠·비트세이버·로봇 조작 등 다양한 시뮬레이션 사례가 나왔다.</li>
+<li>OpenAI 관련 밀레니엄 난제 풀이 주장, Images 2.5·라이브 API·에이전트 API와 Kimi K3의 클로드 API 전달 논란을 소개했다.</li>
+<li>구글 ARTEMIS, AlphaGenome Atlas, 휴머노이드 로봇 대량생산, 앤트로픽의 2030년 경제 시나리오도 주요 주제로 제시됐다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>다리오 아모데이는 안전성 투자만으로는 부족하다며 최첨단 AI 발전 속도를 늦추자고 제안한 것으로 소개됐다.</li>
+<li>샘 알트만과 일론 머스크를 포함한 주요 AI 기업 CEO들이 감속 취지에 동의했다는 반응이 언급됐다.</li>
+<li>영상은 안전 우려 외에도 업계 공동 감속이 후발주자의 진입을 어렵게 하고 선두 기업에 유리할 수 있다는 비판을 제시했다.</li>
+<li>평가·보안 문서·외부 감사 비용이 커지면 대규모 자본을 받은 기업 외에는 모델 출시를 버티기 어렵다는 관점이 나왔다.</li>
+<li>엔트로픽 전 연구원 제이코는 기업들이 자기<span class="up">개선</span>형 초지능으로 직행하며 생명을 도박으로 삼고 있다고 비판한 것으로 전해졌다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>초파리 뇌지도와 시뮬레이션 활용 사례</h2><ul>
+<li>구글은 수컷 초파리의 뇌지도를 공개했고, 누구나 이를 내려받을 수 있는 환경이 됐다고 소개됐다.</li>
+<li>시각 정보를 뉴런 신호와 버튼 동작으로 연결해 초파리가 둠과 비트세이버를 플레이하는 사례가 언급됐다.</li>
+<li>초파리 뇌를 활용한 비트코인 트레이딩, 휴머노이드 로봇 조작, 히라가나 읽기·쓰기 실험 사례가 나왔다.</li>
+<li>히라가나 실험에서는 정답일 때 도파민 보상을 주며 10만 글자를 8시간 학습했고 약 85% 정답률이 제시됐다.</li>
+<li>영상 제작자는 별도 컨트롤러를 붙여 강화학습한 결과, 초파리 기반 둠 플레이의 평균 생존 시간이 늘어난 듯하다고 설명했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>OpenAI 난제 풀이 주장과 수학계 논쟁</h2><ul>
+<li>나비에-스토크스 밀레니엄 난제에 대해 에이전트 1만 개가 88시간 협업해 해법을 냈다는 내용이 소개됐다.</li>
+<li>해당 풀이에는 유한 시간 내 속도가 무한대가 되는 특이점이 생길 수 있다는 결론이 담겼으며, 린 검증이 언급됐다.</li>
+<li>연구자 버크마스터는 코덱스와 주고받은 자신의 연구 데이터가 모델에 반영됐을 가능성을 의심한 것으로 전해졌다.</li>
+<li>OpenAI는 직접 사용하지 않았다고 했지만 비식별 데이터가 모델 <span class="up">개선</span>에 기여했을 가능성은 배제할 수 없다고 밝힌 것으로 소개됐다.</li>
+<li>필즈상 수상자 등 수학자 25명은 난제 풀이 성능을 경쟁 기준으로 삼고 충분한 해설·인용 없이 서둘러 발표하는 흐름을 경고했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>이미지·음성·에이전트 API와 모델 경쟁</h2><ul>
+<li>ChatGPT Images 2.5는 선명한 디테일, 빠른 생성, 정밀 편집을 내세웠고 인물·배경의 필요한 부분만 바꾸는 사례가 소개됐다.</li>
+<li>GPT 라이브 1 API는 실시간 음성 대화를 앱에 도입하는 용도이며, 대화가 겹칠 때도 자연스럽게 처리한다고 설명됐다.</li>
+<li>OpenAI 에이전트 API는 API 호출만으로 코덱스 하네스 기반의 다단계 작업과 도구 호출을 수행하도록 제시됐다.</li>
+<li>Kimi K3 사용자가 실제로는 클로드 응답을 받았다는 앤트로픽의 발표와 중국 CCTV 데이터 전달 우려가 언급됐다.</li>
+<li>딥시크 V4.1 플래시는 일부 자동화 벤치마크에서 높은 점수를 보였지만, 전체 점수는 40점이라고 영상은 함께 설명했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>구글 생물학·모바일 자동화와 RSI 소문</h2><ul>
+<li>구글 ARTEMIS는 자연어로 안드로이드 앱 조작을 테스트하는 오픈소스 자동화 도구로 GitHub에 공개됐다고 소개됐다.</li>
+<li>ARTEMIS는 AndroidWorld 벤치마크에서 99%를 기록했으며 MCP로 앤티그래비티, 코덱스, 클로드 코드 등에 연결할 수 있다고 했다.</li>
+<li>AlphaGenome Atlas는 인간 게놈에서 가능한 DNA 염기 변화 약 90억 개의 영향을 AI가 미리 계산한 지도라고 설명됐다.</li>
+<li>영상은 DNA 중 단백질 관련 부분은 적고 나머지 상당수가 스위치 역할을 한다며, 염기 하나 변화의 영향을 예측하는 용도를 언급했다.</li>
+<li>구글 딥마인드의 RSI 도달설은 데미스 허사비스와 세르게이 브린 관련 발언을 근거로 한 소문·추측이며 진위는 알 수 없다고 정리됐다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>로봇 대량생산과 AI 경제 시나리오</h2><ul>
+<li>유니트리는 빨래 개기, 책·물건 정리, 꽃 꽂기, 축구 등 다양한 동작을 수행하는 휴머노이드용 UniLM-VLA 1.0을 오픈 웨이트로 공개했다.</li>
+<li>유비테크는 휴머노이드 로봇 1,000대를 생산했고 생산 라인이 1만 대 생산 능력으로 전환됐다는 내용이 소개됐다.</li>
+<li>샤오펑 로보틱스는 아이론 로봇 생산에서 핵심 프로세스 80% 이상을 자동화하고 자동차 등급 품질 관리를 사용한다고 밝혔다.</li>
+<li>앤트로픽 보고서는 2030년 경제 변화 시나리오로 완만한 변화 1.6%·34조 달러, 상당한 변화 8.3%·36.3조 달러, 극단적 변화 32.4%·44.4조 달러를 제시했다.</li>
+<li>보고서 맥락에서 AI 영향이 덜한 전기기사·간호사로의 이동, 지식노동 <span class="dn">감소</span> 가능성, 노동보다 자본 몫이 커질 가능성이 언급됐다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>RSI</td><td>Recursive Self-Improvement의 약자로, AI가 스스로 AI를 발전시키며 반복적으로 <span class="up">개선</span>하는 단계로 영상에서 설명됐다.</td></tr><tr><td>ARTEMIS</td><td>구글이 공개한 자연어 기반 안드로이드 앱 조작·테스트 자동화 도구로, 오픈소스로 제공된다고 소개됐다.</td></tr><tr><td>AlphaGenome Atlas</td><td>인간 게놈에서 가능한 약 90억 개 DNA 염기 변화가 세포에 미칠 영향을 예측한 지도라고 설명됐다.</td></tr><tr><td>나비에-스토크스 문제</td><td>유체의 속도와 압력이 시간에 따라 어떻게 변하는지 다루는, 100만 달러 상금의 밀레니엄 난제 중 하나로 소개됐다.</td></tr><tr><td>코덱스 하네스</td><td>OpenAI 에이전트 API에서 클라우드 환경의 에이전트가 여러 단계 작업과 도구 호출을 수행하도록 하는 기반으로 언급됐다.</td></tr><tr><td>MCP</td><td>ARTEMIS를 앤티그래비티·코덱스·클로드 코드 등에 연결하는 방식으로 영상에서 언급된 연동 수단이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/vmzKqn5GOaw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
