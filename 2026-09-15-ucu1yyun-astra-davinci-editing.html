@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Astra·Codex로 러프컷부터 B롤·자막까지 말로 지시하고 반복 수정하는 다빈치 편집 시연."><title>Astra와 Codex로 다빈치 리졸브 편집을 말로 지시하고 반복 수정하는 흐름을 시연한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>Astra와 Codex로 다빈치 리졸브 편집을 말로 지시하고 반복 수정하는 흐름을 시연한다.</h1><p class="lead">Astra·Codex로 러프컷부터 B롤·자막까지 말로 지시하고 반복 수정하는 다빈치 편집 시연.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>영상 편집을 처음 하는 사람도 Astra가 DaVinci Resolve 안에서 러프컷부터 후속 편집까지 수행하는 흐름을 소개한다.</li>
+<li>필요 도구로 295달러인 DaVinci Resolve Studio와 월 200달러 Codex 플랜, Codex와 편집기를 잇는 MCP를 제시한다.</li>
+<li>첫 러프컷은 멈춤·공백·잘못 말한 부분을 제거하는 단계이며, 요청 후 결과까지 약 15~40분이 걸린다고 설명한다.</li>
+<li>수정은 시간·문제·원하는 변화 순으로 구체화하고, 컷·B롤·자막·효과를 한꺼번에 요청하지 말라고 권한다.</li>
+<li>AI는 편집을 실행하고 사용자는 결과를 검토하며 방향을 정하며, 작은 저화질 파일로 먼저 확인하는 방식을 사용한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Astra가 DaVinci Resolve 내부에서 편집을 수행하고, 사용자는 Codex를 통해 원하는 결과와 수정 방향을 말로 전달한다.</li>
+<li>바이브 편집은 ‘전체를 편집해 줘’ 한 번으로 끝나지 않으며, 결과를 보고 오류와 방향을 반복적으로 수정하는 과정이다.</li>
+<li>편집 순서는 말의 흐름을 정리한 러프컷, 참고 화면인 B롤, 자막·강조·효과 순으로 나누는 방식이 제시된다.</li>
+<li>AI가 실행을 맡고 사용자는 이야기 구조, 화면과 말의 일치, 자막 가독성 등을 검토하며 디렉션을 맡는다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>DaVinci Resolve·Codex·Astra·MCP의 역할</h2><ul>
+<li>DaVinci Resolve는 실제로 영상을 자르는 작업 공간이며, Astra는 Codex 안에서 작업을 판단하는 모델로 설명된다.</li>
+<li>Codex는 사용자가 요청을 입력하는 곳이고, MCP는 Codex와 DaVinci Resolve를 연결하는 통로로 소개된다.</li>
+<li>컴퓨터 사용 기능은 최후의 수단으로 언급되며, 가능하면 Codex가 컴퓨터를 점유하지 않고 프로그램 내부에서 직접 작업하는 편이 좋다고 말한다.</li>
+<li>완전 초보자는 Codex에 DaVinci Resolve 최신 버전 설치를 요청할 수 있으며, 영상에서는 MCP 설치를 권한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>비용과 작업 준비 방식</h2><ul>
+<li>영상은 DaVinci Resolve Studio 가격을 295달러, Astra를 충분히 쓰기 위한 Codex 플랜을 월 200달러로 제시한다.</li>
+<li>Astra 에이전트를 온종일 사용하면 하루 반에서 이틀 만에 한도를 모두 쓸 때가 있다고 말하며, 발표자는 Light 설정을 사용한다.</li>
+<li>시연 환경에서는 Codex가 영상 보관 위치와 정리 방식을 이미 알고 있어 짧은 요청만으로 파일을 가져올 수 있다.</li>
+<li>처음 사용하는 사람은 파일 위치, 원하는 결과물, 첫 작업을 함께 알려야 하며, 예시로 인터뷰 폴더에서 1분 쇼츠 러프컷을 요청한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>러프컷 생성과 첫 검토 기준</h2><ul>
+<li>첫 프롬프트의 목표는 멈춤, 공백, 잘못 말한 부분을 제거해 말의 흐름을 정리한 러프컷을 만드는 것이다.</li>
+<li>러프컷 검토에서는 단어가 잘리지 않았는지, 쉼이 어색하지 않은지, 이야기가 이어지는지를 먼저 확인하라고 제안한다.</li>
+<li>시연에서는 Anthropic 관련 쇼츠의 첫 러프컷 생성에 23분이 걸렸고, 단어 사이 공백과 멈춤을 다듬고 컷마다 짧은 전환을 넣었다.</li>
+<li>확인용으로 작은 저화질 버전을 렌더한 뒤 받아쓰기를 켜고 영상을 보면서 수정 사항을 실시간으로 말한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>시간 기반 피드백과 B롤 수정 사례</h2><ul>
+<li>수정은 ‘어색하다’처럼 모호하게 말하기보다 시간, 문제, 원하는 변화를 순서대로 전달해야 한다고 설명한다.</li>
+<li>예시로 ‘3초에서 단어 앞부분이 잘렸어, 첫 클립을 조금 더 앞에서 시작해 줘’처럼 구체적인 요청을 제시한다.</li>
+<li>B롤은 말하는 사람 대신 보여주는 참고 화면으로, 기사를 읽을 때 기사 화면을 보이고 직접 설명할 때는 얼굴을 보이는 방식이다.</li>
+<li>시연에서는 4초 점프 컷, 22초 잘린 ‘cancer’, 56초 기사 화면 유지 등 시간대를 지정해 수정하며, B롤 작업은 약 20분이 걸렸다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>스토리 구조·자막·효과를 단계적으로 다듬기</h2><ul>
+<li>처음부터 컷, 자막, B롤, 효과를 모두 요청하면 오류 원인을 찾기 어려우므로 작업 범위를 나눠 요청하라고 권한다.</li>
+<li>Anthropic 쇼츠에서는 ‘군 관련 Claude 요청’을 ‘AI 생물무기’로 바꾸고, 도입부를 ‘Anthropic이 보고서를 냈습니다’로 시작하도록 요청한다.</li>
+<li>말이 이어져도 이야기의 요점이 없을 수 있으므로, 시작의 궁금증·가운데 설명·끝의 요점이라는 구조를 확인한다.</li>
+<li>‘능력을 더 강화’에서 얼굴을 확대하고, 과학자·생물무기·바이러스 B롤과 약한 휙 소리, 배경음악을 추가하는 요청 사례가 나온다.</li>
+<li>최종 확인에서는 처음과 끝의 말이 들리는지, 자막이 읽히는지, 화면이 설명과 맞는지를 점검해야 한다고 말한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Astra</td><td>Codex 안에서 편집 작업을 판단하며 DaVinci Resolve 타임라인 작업을 수행하는 모델로 소개된다.</td></tr><tr><td>Codex</td><td>사용자가 편집 요청을 입력하고 결과물 확인 및 렌더 요청을 하는 작업 창구다.</td></tr><tr><td>MCP</td><td>Codex가 DaVinci Resolve를 제어할 수 있도록 두 프로그램을 연결하는 통로로 설명된다.</td></tr><tr><td>러프컷</td><td>자막과 효과 전에 남길 말과 연결 지점을 정리해 말의 흐름을 만드는 첫 편집 초안이다.</td></tr><tr><td>B롤</td><td>말하는 사람 대신 기사 화면이나 관련 화면을 보여줘 발화 내용과 화면을 맞추는 참고 영상이다.</td></tr><tr><td>바이브 편집</td><td>사용자가 원하는 결과를 말로 지시하고 AI 결과물을 보며 시간대별로 반복 수정하는 편집 방식이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Hbo_xpWfbLM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
