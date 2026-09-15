@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="High-NA EUV 도입 경쟁의 핵심은 속도가 아니라 칩 크기·공정 비용·생산성 계산이다."><title>삼성·TSMC·인텔은 High-NA EUV를 칩 구조와 경제성에 맞춰 서로 다르게 도입한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학 - IT 테크 신기술</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-16 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>삼성·TSMC·인텔은 High-NA EUV를 칩 구조와 경제성에 맞춰 서로 다르게 도입한다.</h1><p class="lead">High-NA EUV 도입 경쟁의 핵심은 속도가 아니라 칩 크기·공정 비용·생산성 계산이다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>삼성전자는 2028년 첨단 D램 양산에 메모리 업계 최초 High-NA EUV 적용을 목표로 제시했고, 12인치급 대형 마스크 컨소시엄에도 참여했다.</li>
+<li>High-NA EUV는 NA를 기존 0.33에서 0.55로 높여 한 번의 노광으로 기존 EUV보다 1.7배 작은 패턴을 구현하도록 설계됐다.</li>
+<li>현행 6인치 마스크에서는 High-NA 노광 면적이 858㎟에서 429㎟로 절반이 돼, 대형 칩은 스티칭 부담과 처리량 저하가 발생한다.</li>
+<li>TSMC는 A14를 2028년 양산하고 High-NA는 2030년 첨단 공정 양산에 도입하며, 대형 마스크 시스템은 2033년까지 준비한다.</li>
+<li>인텔은 18A 기반 팬서 레이크 일부 레이어에 High-NA를 양산 적용했고, 2026년 9월 기준 처리 웨이퍼 100만 장 이상을 제시했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>삼성의 2028년 High-NA D램 목표와 TSMC의 2030년 로직 도입 계획을 단순히 공정 기술의 선후로 비교하는 것은 적절하지 않다.</li>
+<li>삼성은 작은 반복 구조의 D램에서 멀티 패터닝 축소 효과를 우선 노리는 반면, TSMC는 대형 고객 로직 칩의 면적·생산성을 함께 계산한다.</li>
+<li>High-NA의 핵심 제약은 현행 6인치 마스크에서 노광 필드가 절반으로 줄어드는 하프필드 문제이며, 대형 마스크는 이를 완화하려는 전환이다.</li>
+<li>실제 경쟁력은 장비 구매나 도입 선언의 순서보다 칩의 어떤 레이어에 적용해 제조 단계를 얼마나 줄이는지에 달려 있다고 설명한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>High-NA EUV의 해상도와 아나모픽 광학</h2><ul>
+<li>EUV의 NA는 빛을 얼마나 넓은 각도로 받아 모으는지를 나타내며, 기존 장비는 0.33, High-NA는 0.55다.</li>
+<li>ASML은 High-NA가 한 번의 노광으로 기존 EUV보다 1.7배 작은 패턴을 찍을 수 있다고 설명한다.</li>
+<li>넓어진 입사각으로 마스크 반사 문제가 생기자, ASML은 방향별 축소 배율이 다른 아나모픽 광학 구조를 적용했다.</li>
+<li>기존 EUV는 마스크 회로를 가로·세로 동일하게 줄이지만, High-NA는 한 방향을 더 크게 축소해 웨이퍼상 길이가 절반이 되는 방향이 생긴다.</li>
+<li>High-NA 장비 가격은 대당 약 3억5천만~4억 달러로 추정된다고 소개됐다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>하프필드와 대형 GPU의 스티칭 부담</h2><ul>
+<li>기존 EUV의 1회 노광 영역은 26mm×33mm, 858㎟이지만 High-NA에서는 한 방향이 16.5mm가 돼 429㎟로 절반으로 <span class="dn">감소</span>한다.</li>
+<li>NVIDIA A100의 실리콘 칩 면적은 826㎟, H100은 814㎟로 기존 레티클 한계에 가까운 사례로 제시됐다.</li>
+<li>블랙웰 데이터센터 GPU는 거대한 단일 실리콘 대신 레티클 한계에 가까운 칩들을 고속 연결하는 구조를 택했다.</li>
+<li>큰 칩을 High-NA로 제작하려면 회로를 두 구역으로 나눠 노광하고 경계에서 연결하는 스티칭이 필요할 수 있다.</li>
+<li>스티칭은 나노미터 단위 위치 정렬과 노광량 제어가 필요하며, 경계 주변 배선 간격을 넓히거나 복잡한 회로를 피해서 배치할 수도 있다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>6×12인치 마스크 전환과 생산성 일정</h2><ul>
+<li>삼성과 ASML 등이 참여하는 논의 대상은 현행 마스크를 한쪽 방향으로 늘린 6×12인치 형태의 대형 마스크다.</li>
+<li>High-NA에서 더 크게 축소되는 방향으로 마스크 원본 영역을 늘리면, 기존 EUV와 비슷한 넓이의 영역을 다시 한 번에 노광할 수 있다.</li>
+<li>대형 마스크는 기록 장비, 결함 검사 장비, 노광 장비 내부의 정밀 이송 장치까지 새 규격에 맞춰야 한다.</li>
+<li>ASML은 대형 마스크 시험 생산 라인을 2031년 목표로 공개했고, 새 규격의 전체 노광 시스템은 2033년까지 준비할 계획이다.</li>
+<li>ASML은 전환 성공 시 High-NA 시스템 생산성을 최대 40% 높일 수 있다고 로이터에 설명했으며, 이는 실제 양산에서 확인된 수치는 아니다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>D램 적용의 멀티 패터닝 절감 효과</h2><ul>
+<li>D램은 개별 칩이 대형 GPU보다 작아 High-NA의 줄어든 노광 영역 안에 들어갈 경우 스티칭 없이 양산을 시작할 수 있다.</li>
+<li>D램 미세화에서는 원하는 패턴을 만들기 위해 패턴 분할과 가공을 반복하는 멀티 패터닝이 필요해질 수 있다.</li>
+<li>IME C는 차세대 D램의 특정 연결 패턴 연구에서 기존 0.33 NA EUV로 최소 3장의 마스크가 필요했던 작업을 High-NA에서는 1장으로 처리했다고 발표했다.</li>
+<li>이는 전체 D램 공정이 3단계에서 1단계로 <span class="dn">감소</span>한다는 뜻이 아니라, 특정 패턴에서 멀티 패터닝을 없앤 결과다.</li>
+<li>노광 면적이 절반이므로 작은 칩도 웨이퍼를 채우려면 노광 횟수가 늘 수 있으나, ASML은 마스크·웨이퍼 이송 속도 향상으로 부담을 줄였다고 설명한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>삼성·SK하이닉스의 2028년 D램 목표</h2><ul>
+<li>삼성전자는 2028년 첨단 D램 양산에 High-NA를 적용하겠다는 목표를 밝혔으며, 발표 일정상 초기에는 현행 6인치 마스크를 사용할 전망이다.</li>
+<li>SK하이닉스는 2025년 9월 이천 M16 공장에 ASML 양산용 High-NA 장비 EXE 5200B를 설치했다고 발표했다.</li>
+<li>SK하이닉스는 당시 메모리 업계 최초의 양산용 High-NA 장비 설치를 강조했고, 이후 2028년 D램 양산 적용을 목표로 제시했다.</li>
+<li>삼성이 언급한 메모리 업계 최초는 제품 양산 적용 목표이고, SK하이닉스의 최초는 장비 설치 기준이어서 기준이 다르다.</li>
+<li>양사가 모두 2028년을 목표로 잡았으므로 실제 High-NA D램 양산의 선후는 아직 정해지지 않았다고 설명한다.</li>
+<li>TSMC·인텔의 로직 양산 전략 비교: TSMC는 2024년 A16 공정에 High-NA가 필수는 아니라고 밝혔고, 당시 공식적으로 제시한 이유는 장비 가격과 경제성이었다.</li>
+<li>TSMC·인텔의 로직 양산 전략 비교: TSMC는 A14를 High-NA 양산 도입보다 빠른 2028년에 양산할 예정이며, 개발은 계획대로 진행되고 수율도 일정보다 앞선다고 밝혔다.</li>
+<li>TSMC·인텔의 로직 양산 전략 비교: TSMC는 2030년부터 High-NA를 첨단 공정 대량 생산에 사용하겠다고 발표했고, ASML과 12인치 대형 마스크 전환도 추진한다.</li>
+<li>TSMC·인텔의 로직 양산 전략 비교: EXE 5200은 스티칭 미사용 조건에서 시간당 175장, 스티칭 사용 조건에서 135장의 웨이퍼 처리 성능이 제시돼 대형 칩의 부담을 보여준다.</li>
+<li>TSMC·인텔의 로직 양산 전략 비교: 인텔은 18A 기반 팬서 레이크 일부 제품의 특정 레이어에 High-NA를 양산 적용했으며, 2026년 9월 기준 누적 처리 웨이퍼 100만 장 이상과 기존 EUV 레이어와 유사한 수율을 밝혔다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>High-NA EUV</td><td>NA를 0.55로 높인 EUV 노광 기술로, 기존 0.33 NA 장비보다 더 작은 패턴을 구현하지만 노광 면적이 줄어든다.</td></tr><tr><td>NA</td><td>빛을 넓은 각도로 받아 모으는 정도를 나타내는 수치로, 영상에서는 기존 EUV 0.33과 High-NA 0.55를 비교했다.</td></tr><tr><td>아나모픽 광학</td><td>High-NA에서 방향별 마스크 축소 배율을 다르게 적용해 반사 문제를 해결하고 기존 마스크 활용을 가능하게 한 구조다.</td></tr><tr><td>레티클 리밋</td><td>노광 장비가 한 번에 찍을 수 있는 최대 영역으로, 기존 EUV에서는 858㎟가 대형 칩 설계의 기준으로 언급됐다.</td></tr><tr><td>스티칭</td><td>노광 면적을 넘어서는 칩의 회로를 여러 구역으로 나눠 찍은 뒤 경계에서 정밀하게 이어주는 방식이다.</td></tr><tr><td>멀티 패터닝</td><td>미세 패턴을 만들기 위해 노광과 가공을 여러 차례 반복하는 제조 방식으로, High-NA는 특정 D램 패턴에서 이를 줄일 수 있다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/SDGs1odCWtI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 - IT 테크 신기술 · 2026-09-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
