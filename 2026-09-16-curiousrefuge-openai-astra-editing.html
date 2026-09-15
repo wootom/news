@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다."><title>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</title><style>
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Astra는 64개 클립 정리엔 유용했지만, 60달러 초벌 편집은 아직 사람의 수정이 필요했다."><title>OpenAI Astra가 영상 정리와 초벌 편집을 자동화하며 편집 역할 변화를 예고한다.</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   /* AI Daily · daylight neutral */
@@ -176,41 +176,42 @@ tr:nth-child(even) td{background:var(--surface)}
   .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
   .hdr{break-after:avoid}
 }
-</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</h1><p class="lead">코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
-<li>클로드 코드를 몇 주간 거의 쓰지 않고 코덱스를 주로 사용하며, 한도·리셋권이 작업 흐름을 덜 끊는다고 설명한다.</li>
-<li>프론트엔드에서는 페이블보다 아스트라가 요구를 더 정확히 따르고, 반응형·상태 처리·접근성 디테일이 좋았다고 평가한다.</li>
-<li>백엔드에서는 아스트라가 마이그레이션·모델·라우터 작업을 이어가고, 기존 구조와 테스트를 더 잘 다룬다고 말한다.</li>
-<li>플러그인 대신 에포트로 작업 강도를 조절하고, 작은 단위로 검토하는 티키타카 방식을 사용한다.</li>
-<li>ADR·에이전츠 파일과 약 28개의 스킬 문서로 결정과 반복 작업 규칙을 모델에 다시 읽히는 방식을 소개한다.</li>
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Curious Refuge</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-16 · Curious Refuge</span><span class="chip">🎬 영상</span></div><h1>OpenAI Astra가 영상 정리와 초벌 편집을 자동화하며 편집 역할 변화를 예고한다.</h1><p class="lead">Astra는 64개 클립 정리엔 유용했지만, 60달러 초벌 편집은 아직 사람의 수정이 필요했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Curious Refuge는 OpenAI Astra가 컴퓨터를 조작해 영상 편집 업무를 수행하는지 2가지 실험으로 점검했다.</li>
+<li>Astra는 Promise Studios에서 촬영한 64개 1080p·24fps 클립을 17분, 5달러에 정리했다.</li>
+<li>클립명 변경, 오디오·영상 매칭, 콘택트 시트, 파일 탐색 웹사이트, 원복용 명령 파일까지 자동 생성했다.</li>
+<li>Loom으로 전달한 편집 지시와 영상 자산을 바탕으로 1시간 20분, 60달러에 7분짜리 튜토리얼 초벌본을 만들었다.</li>
+<li>영상은 로깅에는 유용하지만 창의적 편집 결과는 아직 거칠며, 향후 12개월 내 실용 편집 자동화를 전망했다.</li>
 </ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
-<li>발표자는 과거의 ‘코딩은 코덱스, 자동화는 클로드 코드’ 구분을 정정하고 현재는 거의 코덱스를 쓴다고 말한다.</li>
-<li>전환 이유로 한도와 리셋권, 프론트엔드, 백엔드, 플러그인 대신 에포트를 쓰는 단순함을 제시한다.</li>
-<li>평가는 벤치마크 점수가 아니라 매일 사용하는 사람의 체감이며, 작업 환경에 따라 다를 수 있다고 전제한다.</li>
-<li>클로드 코드가 나쁜 도구라는 뜻은 아니며, 다음 모델이 나오면 판단이 다시 바뀔 수 있다고 덧붙인다.</li>
-</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>한도와 리셋권이 만든 작업 흐름</h2><ul>
-<li>클로드 코드에서 한도에 걸리면 몇 시간 뒤 맥락을 다시 잡아야 했고, 한 번에 약 30분이 들었다고 말한다.</li>
-<li>하루에 두 번 한도에 걸리면 약 1시간이 사라지는 셈이라, 비용보다 작업 흐름의 단절이 더 큰 문제였다고 설명한다.</li>
-<li>코덱스는 한도에 걸렸을 때 리셋권을 써서 그 자리에서 이어갈 수 있으며, 본인 사용량에서는 리셋권 바닥을 본 적이 없다고 한다.</li>
-<li>하루에 대화 창을 10개 넘게 열어도 코덱스가 저녁까지 가며, 끊기지 않는 도구를 선택했다고 밝힌다.</li>
-</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>아스트라와 페이블의 프론트엔드 비교</h2><ul>
-<li>발표자는 기존 약 4개월간 백엔드는 코덱스, 화면 작업은 클로드에 맡기는 방식으로 배치했다고 말한다.</li>
-<li>랜딩 페이지와 설정 화면을 양쪽에 넣어 본 결과, 페이블은 예쁘지만 지시한 내용을 자체적으로 바꾸는 일이 잦았다고 평가한다.</li>
-<li>페이블이 간격을 바꾸거나 요청하지 않은 요소를 넣으면 수정 왕복이 2~3회 쌓여 처음부터 다시 시키는 편이 빨랐다고 한다.</li>
-<li>아스트라는 지시를 따르면서 버튼의 로딩·실패·비활성 상태, 반응형·접근성 같은 디테일까지 더 잘 처리했다고 말한다.</li>
-</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>백엔드 작업에서 커진 격차</h2><ul>
-<li>발표자는 백엔드는 원래 코덱스가 더 낫다고 봤으며, 아스트라 이후 격차가 더 벌어졌다고 말한다.</li>
-<li>아스트라는 마이그레이션 작성, 모델 수정, 라우터 작업을 중간에 대충 끝내지 않고 한 번에 이어가는 경우가 늘었다고 설명한다.</li>
-<li>기존 저장소의 구조를 갈아엎기보다 그 안에서 수정하는 특성이 큰 저장소일수록 중요하다고 평가한다.</li>
-<li>테스트 실패 시 원인을 찾아 다시 돌리고 고쳐서, 로그를 직접 붙여 넣는 일이 거의 없어졌다고 말한다.</li>
-</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에포트 조절과 작은 단위 티키타카</h2><ul>
-<li>슈퍼파워즈 같은 플러그인은 계획·검토·테스트 우선 절차로 모델을 틀에 넣는 방식이었으나 현재는 거의 쓰지 않는다고 한다.</li>
-<li>현재 설정은 모델과 에포트 한 줄씩이며, 오타·이름 변경은 낮게, 새 기능 설계·구조 변경은 높게 설정한다고 말한다.</li>
-<li>작업은 한 번에 크게 시키지 않고 방향 후보를 받은 뒤 하나를 고르고, 결과를 읽은 뒤 다음 작업을 주는 방식으로 진행한다.</li>
-<li>한 턴에 파일이 3~4개를 넘게 바뀌면 멈추며, 결과를 읽지 않으면 티키타카가 아니라 방치라고 강조한다.</li>
-</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>ADR·에이전츠 파일·스킬로 규칙 유지</h2><ul>
-<li>ADR은 결정, 이유, 버린 대안을 세 줄로 적고, 결정 하나당 파일 하나를 두는 아키텍처 결정 기록이라고 설명한다.</li>
-<li>새 작업 전에 ADR을 읽히면 모델이 이전 결정을 뒤집지 않으며, 예로 외래키를 쓰지 않기로 한 결정을 든다.</li>
-<li>컨텍스트 파일은 코덱스에서 에이전츠 파일이라 부르며, 백엔드·프론트 폴더별 도구와 먼저 읽을 규칙 파일을 적는다.</li>
-<li>스킬은 작업 순서와 금지 사항을 담은 마크다운 문서 폴더이며, 영상·자막 등 반복 업무용으로 약 28개를 만들었다고 한다.</li>
-<li>렌더 옵션 오류는 스킬 문서에 한 줄을 추가한 뒤 재발하지 않았으며, 스킬은 직접 고칠 수 있다는 점을 장점으로 든다.</li>
-</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>리셋권</td><td>코덱스에서 한도에 걸렸을 때 사용해 현재 작업 흐름을 이어가는 수단으로 설명된다.</td></tr><tr><td>아스트라</td><td>발표자가 프론트엔드와 백엔드 작업에서 페이블 및 기존 방식과 비교해 평가한 코덱스 측 모델이다.</td></tr><tr><td>에포트</td><td>코덱스에서 가벼운 수정부터 설계·구조 변경까지 작업의 생각 강도를 조절하는 칸이다.</td></tr><tr><td>ADR</td><td>결정·이유·버린 대안을 짧게 기록해 새 대화에서도 이전 아키텍처 결정을 유지하게 하는 문서다.</td></tr><tr><td>에이전츠 파일</td><td>저장소와 폴더별 작업 규칙, 사용할 도구, 먼저 읽을 파일을 적는 컨텍스트 파일이다.</td></tr><tr><td>스킬</td><td>반복 작업의 순서와 금지 사항을 마크다운으로 기록해 이름을 불러 모델에 읽히는 문서 단위다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/YbZglhAQ5S8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
+<li>Astra는 영상 로깅과 폴더 정리 같은 반복 업무에서 시간과 비용을 줄일 수 있는 수준으로 평가됐다.</li>
+<li>60달러로 만든 튜토리얼 초벌 편집본은 페이싱, 색보정, 오디오에 문제가 있어 사람 편집자보다 낫지 않았다고 봤다.</li>
+<li>발표자는 로깅·러프컷·소셜미디어용 컷다운 같은 실용 중심 편집이 12개월 안에 AI로 자동화될 것이라고 말했다.</li>
+<li>창작자는 도구를 직접 조작하는 역할보다 프로젝트의 감독·프로듀서 관점으로 이동해야 한다고 주장했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>Astra 데스크톱 사용 방식</h2><ul>
+<li>데스크톱 버전 ChatGPT에 로그인한 뒤 상단의 work 아이콘을 눌러 작업을 시작하는 방식으로 소개됐다.</li>
+<li>사용자는 프롬프트에 수행할 행동을 적고 모델 선택 메뉴에서 Astra를 고를 수 있다.</li>
+<li>작업 범위를 크게 설정할 수 있지만 비용이 누적될 수 있으므로 이를 고려해야 한다고 설명했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>64개 촬영 클립 인제스트 실험</h2><ul>
+<li>Curious Refuge는 최근 테스트 촬영본 64개 클립을 Astra에 넣고, 정리 방식은 모델에 맡겼다.</li>
+<li>작업은 17분이 걸렸고 비용은 5달러였으며, 사용자는 원하는 워크플로에 따라 폴더 규칙을 지시할 수도 있다.</li>
+<li>생성된 시작 문서에는 64개 영상 클립과 1080p·초당 24프레임 촬영 정보 등이 정리됐다.</li>
+<li>01 폴더에는 카메라에서 온 원래 폴더 구조가, 02 폴더에는 오디오 클립이 보관됐다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>자동 생성된 메타데이터와 파일 구조</h2><ul>
+<li>Astra는 기존 파일명과 AI가 새로 부여한 파일명을 비교하는 매니페스트를 만들었다.</li>
+<li>현장에서 녹음한 오디오 클립과 영상 클립을 연결한 문서도 자동으로 생성했다.</li>
+<li>각 영상의 썸네일을 정리한 콘택트 시트를 만들었고, 이는 별도로 요청하지 않은 결과였다.</li>
+<li>파일의 길이, 내용, 원본 파일 링크를 담은 맞춤형 웹사이트도 제작했으며, 명령 파일로 정리 전 폴더 구조를 복원할 수 있게 했다.</li>
+<li>03 폴더에서는 영상의 개념적 내용에 따라 클립을 분류하고, 오버더숄더 샷을 ‘intense conversation reverse OTS’처럼 이름 붙였다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>Loom 지시 기반 유튜브 편집 실험</h2><ul>
+<li>채널의 화면 녹화, 보조 에셋, 녹화 영상 등을 폴더에 넣고 Loom 영상으로 원하는 편집을 설명했다.</li>
+<li>텍스트나 음성 받아쓰기 대신 편집자에게 회의하듯 파일 구조와 요구사항을 영상으로 전달한 방식이었다.</li>
+<li>Astra는 약 1시간 20분과 60달러를 들여 약 7분 길이의 유튜브 튜토리얼 영상을 만들었다.</li>
+<li>영상은 요청한 참고 자료를 포함했고, 채널을 보고 학습한 것으로 설명된 초록색 테두리 디자인도 적용했다.</li>
+<li>Adobe Premiere Pro 프로젝트 파일, 썸네일, 영상 설명문, 챕터 마커, 제목도 함께 생성했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>결과의 한계와 편집 자동화 전망</h2><ul>
+<li>생성된 튜토리얼은 페이싱 문제가 있었고 색보정과 오디오도 보완이 필요해 완성본이 아닌 러프한 결과로 평가됐다.</li>
+<li>발표자는 현재 Astra가 푸티지 로깅에는 도움이 되지만, 창의적 편집에는 오히려 수고가 더 들 수 있다고 말했다.</li>
+<li>3~6개월 안에는 현업 전문가 수준에 견줄 만한 러프 편집본이 가능해질 것이라고 전망했다.</li>
+<li>향후 2~3년에는 사진·영상 편집에 쓰는 현재의 소프트웨어가 과거의 것이 될 수 있다고 봤다.</li>
+<li>다만 내러티브 작업을 위한 도구 수준에는 아직 이르지 않았다고 선을 그었다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>OpenAI Astra</td><td>ChatGPT가 컴퓨터에서 사용자를 대신해 행동을 수행하며, 영상 정리와 편집 실험에 사용된 모델이다.</td></tr><tr><td>인제스트</td><td>촬영 후 편집에 들어가기 전 영상 파일을 받아들이고 정리하는 워크플로를 가리킨다.</td></tr><tr><td>콘택트 시트</td><td>영상 클립별 썸네일을 한데 모아 확인할 수 있도록 Astra가 자동 생성한 문서다.</td></tr><tr><td>Loom</td><td>발표자가 편집 요구사항과 파일 구조를 설명한 영상을 제작하는 데 사용한 도구다.</td></tr><tr><td>러프컷</td><td>완성 전 단계의 초벌 편집으로, 발표자는 Astra가 이 영역에서 발전할 것으로 전망했다.</td></tr><tr><td>Adobe Premiere Pro</td><td>Astra가 생성한 편집 프로젝트 파일을 열어 세부 문제를 수정할 수 있다고 언급된 편집 프로그램이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/_fSIhcZqm2g" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Curious Refuge · 2026-09-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다."><title>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</title><style>
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 추적·보안·앱 배포·문체 개선·아키텍처 도구 7가지를 시연한다."><title>ChatGPT Astra와 함께 쓸 추적·보안·앱 배포·시각화 도구 7가지를 소개한다.</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   /* AI Daily · daylight neutral */
@@ -176,41 +176,45 @@ tr:nth-child(even) td{background:var(--surface)}
   .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
   .hdr{break-after:avoid}
 }
-</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</h1><p class="lead">코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
-<li>클로드 코드를 몇 주간 거의 쓰지 않고 코덱스를 주로 사용하며, 한도·리셋권이 작업 흐름을 덜 끊는다고 설명한다.</li>
-<li>프론트엔드에서는 페이블보다 아스트라가 요구를 더 정확히 따르고, 반응형·상태 처리·접근성 디테일이 좋았다고 평가한다.</li>
-<li>백엔드에서는 아스트라가 마이그레이션·모델·라우터 작업을 이어가고, 기존 구조와 테스트를 더 잘 다룬다고 말한다.</li>
-<li>플러그인 대신 에포트로 작업 강도를 조절하고, 작은 단위로 검토하는 티키타카 방식을 사용한다.</li>
-<li>ADR·에이전츠 파일과 약 28개의 스킬 문서로 결정과 반복 작업 규칙을 모델에 다시 읽히는 방식을 소개한다.</li>
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-16 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>ChatGPT Astra와 함께 쓸 추적·보안·앱 배포·시각화 도구 7가지를 소개한다.</h1><p class="lead">AI 추적·보안·앱 배포·문체 <span class="up">개선</span>·아키텍처 도구 7가지를 시연한다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>God&#x27;s Eye View는 항공기·선박·위성·지진·카메라 등 공개 데이터를 한 화면에 모아 탐색하는 대화형 시스템이다.</li>
+<li>Nvidia의 Skill Spectre는 에이전트 스킬의 숨은 지시문, 권한 요청, 데이터 유출 가능성을 검사해 위험도를 제시한다.</li>
+<li>Flute는 ChatGPT 또는 Claude에서 만든 디자인을 인증·폼·데이터베이스가 연결된 앱으로 한 번에 게시하도록 지원한다.</li>
+<li>Slop Monster는 어휘, AI식 문장 구성, 문장부호, 리듬과 판매·마케팅 요소를 기준으로 텍스트를 재작성한다.</li>
+<li>Claude X Loop, DeepSeek Harness, Archify는 모델 교차 검증, 맞춤형 코딩 환경, 영어 기반 아키텍처 도식을 각각 다룬다.</li>
 </ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
-<li>발표자는 과거의 ‘코딩은 코덱스, 자동화는 클로드 코드’ 구분을 정정하고 현재는 거의 코덱스를 쓴다고 말한다.</li>
-<li>전환 이유로 한도와 리셋권, 프론트엔드, 백엔드, 플러그인 대신 에포트를 쓰는 단순함을 제시한다.</li>
-<li>평가는 벤치마크 점수가 아니라 매일 사용하는 사람의 체감이며, 작업 환경에 따라 다를 수 있다고 전제한다.</li>
-<li>클로드 코드가 나쁜 도구라는 뜻은 아니며, 다음 모델이 나오면 판단이 다시 바뀔 수 있다고 덧붙인다.</li>
-</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>한도와 리셋권이 만든 작업 흐름</h2><ul>
-<li>클로드 코드에서 한도에 걸리면 몇 시간 뒤 맥락을 다시 잡아야 했고, 한 번에 약 30분이 들었다고 말한다.</li>
-<li>하루에 두 번 한도에 걸리면 약 1시간이 사라지는 셈이라, 비용보다 작업 흐름의 단절이 더 큰 문제였다고 설명한다.</li>
-<li>코덱스는 한도에 걸렸을 때 리셋권을 써서 그 자리에서 이어갈 수 있으며, 본인 사용량에서는 리셋권 바닥을 본 적이 없다고 한다.</li>
-<li>하루에 대화 창을 10개 넘게 열어도 코덱스가 저녁까지 가며, 끊기지 않는 도구를 선택했다고 밝힌다.</li>
-</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>아스트라와 페이블의 프론트엔드 비교</h2><ul>
-<li>발표자는 기존 약 4개월간 백엔드는 코덱스, 화면 작업은 클로드에 맡기는 방식으로 배치했다고 말한다.</li>
-<li>랜딩 페이지와 설정 화면을 양쪽에 넣어 본 결과, 페이블은 예쁘지만 지시한 내용을 자체적으로 바꾸는 일이 잦았다고 평가한다.</li>
-<li>페이블이 간격을 바꾸거나 요청하지 않은 요소를 넣으면 수정 왕복이 2~3회 쌓여 처음부터 다시 시키는 편이 빨랐다고 한다.</li>
-<li>아스트라는 지시를 따르면서 버튼의 로딩·실패·비활성 상태, 반응형·접근성 같은 디테일까지 더 잘 처리했다고 말한다.</li>
-</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>백엔드 작업에서 커진 격차</h2><ul>
-<li>발표자는 백엔드는 원래 코덱스가 더 낫다고 봤으며, 아스트라 이후 격차가 더 벌어졌다고 말한다.</li>
-<li>아스트라는 마이그레이션 작성, 모델 수정, 라우터 작업을 중간에 대충 끝내지 않고 한 번에 이어가는 경우가 늘었다고 설명한다.</li>
-<li>기존 저장소의 구조를 갈아엎기보다 그 안에서 수정하는 특성이 큰 저장소일수록 중요하다고 평가한다.</li>
-<li>테스트 실패 시 원인을 찾아 다시 돌리고 고쳐서, 로그를 직접 붙여 넣는 일이 거의 없어졌다고 말한다.</li>
-</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에포트 조절과 작은 단위 티키타카</h2><ul>
-<li>슈퍼파워즈 같은 플러그인은 계획·검토·테스트 우선 절차로 모델을 틀에 넣는 방식이었으나 현재는 거의 쓰지 않는다고 한다.</li>
-<li>현재 설정은 모델과 에포트 한 줄씩이며, 오타·이름 변경은 낮게, 새 기능 설계·구조 변경은 높게 설정한다고 말한다.</li>
-<li>작업은 한 번에 크게 시키지 않고 방향 후보를 받은 뒤 하나를 고르고, 결과를 읽은 뒤 다음 작업을 주는 방식으로 진행한다.</li>
-<li>한 턴에 파일이 3~4개를 넘게 바뀌면 멈추며, 결과를 읽지 않으면 티키타카가 아니라 방치라고 강조한다.</li>
-</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>ADR·에이전츠 파일·스킬로 규칙 유지</h2><ul>
-<li>ADR은 결정, 이유, 버린 대안을 세 줄로 적고, 결정 하나당 파일 하나를 두는 아키텍처 결정 기록이라고 설명한다.</li>
-<li>새 작업 전에 ADR을 읽히면 모델이 이전 결정을 뒤집지 않으며, 예로 외래키를 쓰지 않기로 한 결정을 든다.</li>
-<li>컨텍스트 파일은 코덱스에서 에이전츠 파일이라 부르며, 백엔드·프론트 폴더별 도구와 먼저 읽을 규칙 파일을 적는다.</li>
-<li>스킬은 작업 순서와 금지 사항을 담은 마크다운 문서 폴더이며, 영상·자막 등 반복 업무용으로 약 28개를 만들었다고 한다.</li>
-<li>렌더 옵션 오류는 스킬 문서에 한 줄을 추가한 뒤 재발하지 않았으며, 스킬은 직접 고칠 수 있다는 점을 장점으로 든다.</li>
-</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>리셋권</td><td>코덱스에서 한도에 걸렸을 때 사용해 현재 작업 흐름을 이어가는 수단으로 설명된다.</td></tr><tr><td>아스트라</td><td>발표자가 프론트엔드와 백엔드 작업에서 페이블 및 기존 방식과 비교해 평가한 코덱스 측 모델이다.</td></tr><tr><td>에포트</td><td>코덱스에서 가벼운 수정부터 설계·구조 변경까지 작업의 생각 강도를 조절하는 칸이다.</td></tr><tr><td>ADR</td><td>결정·이유·버린 대안을 짧게 기록해 새 대화에서도 이전 아키텍처 결정을 유지하게 하는 문서다.</td></tr><tr><td>에이전츠 파일</td><td>저장소와 폴더별 작업 규칙, 사용할 도구, 먼저 읽을 파일을 적는 컨텍스트 파일이다.</td></tr><tr><td>스킬</td><td>반복 작업의 순서와 금지 사항을 마크다운으로 기록해 이름을 불러 모델에 읽히는 문서 단위다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/YbZglhAQ5S8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
+<li>영상은 최근 GitHub에서 주목받는 7개 도구를 ChatGPT Astra와 함께 활용하는 방식으로 소개한다.</li>
+<li>도구의 범위는 세계 데이터 추적, 에이전트 스킬 보안, 앱 배포, AI 문체 수정, 모델 검증, 코딩 환경, 프로세스 도식화다.</li>
+<li>발표자는 복잡하거나 중요한 작업에는 한 모델만 쓰기보다 Claude와 ChatGPT를 교차 검증하는 방식을 권한다.</li>
+<li>각 도구는 GitHub 링크나 URL을 ChatGPT Astra에 전달해 설치·실행하는 흐름으로 시연된다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>God&#x27;s Eye View의 통합 세계 추적 화면</h2><ul>
+<li>God&#x27;s Eye View는 모든 항공편, 위성, 선박과 장소 정보를 탐색할 수 있는 대화형 시스템으로 소개된다.</li>
+<li>좌측 정보 목록에는 라이브 항공편, 군용 항공편, 지진, LPL 카메라 등이 표시된다고 설명한다.</li>
+<li>시연에서는 Pentagon으로 이동한 뒤 가장 가까운 상공 항공편을 선택하고 조종석 모드로 전환한다.</li>
+<li>항공기·선박·위성의 독립 공개 데이터를 하나의 세계 화면으로 집계하며, 실시간 탐색과 시각적 스토리텔링 용도를 제시한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>Nvidia Skill Spectre의 스킬 안전성 검사</h2><ul>
+<li>Nvidia의 Skill Spectre는 영상 시점 기준 GitHub 스타 1만7,000개를 기록한 안전 점검 도구로 소개된다.</li>
+<li>에이전트 스킬 안의 숨은 지시문, 안전하지 않은 접근 권한, 데이터 유출을 스캔하고 위험 요인을 제시한다.</li>
+<li>의심스러운 지시문과 데이터 흐름을 찾아내며, 스킬이 요청하는 접근 권한도 확인한다고 설명한다.</li>
+<li>발표자는 설치된 스킬 목록을 Skill Spectre로 검사해 손상 또는 침해 여부를 확인하는 과정을 보인다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Flute로 대화형 디자인을 앱으로 게시하는 과정</h2><ul>
+<li>Flute는 GitHub 리포지터리는 아니지만, ChatGPT나 Claude에서 만든 결과물을 앱으로 전환하는 서비스로 포함됐다.</li>
+<li>한 번의 게시 과정에서 인증, 폼, 데이터베이스, 플러그인, 이메일 및 알림 관리를 지원한다고 설명한다.</li>
+<li>시연에서는 회사명·자동화 희망 사항·투자 관련 질문이 담긴 폼을 만든 뒤 Flute 연결과 인증 승인을 진행한다.</li>
+<li>연결 후 디자인이 Flute 프로젝트로 옮겨지고, 폼과 백엔드가 연결된 앱을 게시·공유할 수 있다고 제시한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>Slop Monster의 AI 문체와 마케팅 문구 재작성</h2><ul>
+<li>발표자가 직접 만들었다고 밝힌 Slop Monster는 AI가 쓴 듯한 텍스트를 덜 일반적인 문장으로 바꾸는 도구다.</li>
+<li>어휘, AI식 구성, 문장부호, 리듬, &#x27;rule of three&#x27;와 판매·마케팅 요소를 기준으로 문장을 평가한다.</li>
+<li>&#x27;trusted, reliable, and built to last&#x27; 같은 표현을 &#x27;six nails per shingle, every shingle&#x27;처럼 구체화하는 예시를 든다.</li>
+<li>Steve Krug의 &#x27;Don&#x27;t Make Me Think&#x27;, Daniel Priestley, Alex Hormozi의 오퍼 관련 작업을 반영했다고 설명하며 무료 사용을 언급한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>Claude X Loop와 DeepSeek Harness의 모델 운용</h2><ul>
+<li>Claude X Loop는 한 모델이 계획을 작성하면 다른 모델이 약점을 검토하는 교차 검증 방식의 스킬로 소개된다.</li>
+<li>발표자는 Claude Opus 5.1과 ChatGPT Astra를 현 시점의 두 최고 모델로 언급하고, 서로 놓친 오류를 잡을 수 있다고 말한다.</li>
+<li>이 방식은 복잡한 빌드나 결정의 중요도가 큰 작업에서 쓰며, 발표자는 AI 사용의 약 10%에 적용한다고 설명한다.</li>
+<li>DeepSeek Harness는 파일, 터미널 도구, 브라우저에 접근하고 맞춤 설정할 수 있는 DeepSeek의 환경으로 소개된다.</li>
+<li>발표자는 DeepSeek V4.1의 저렴한 비용과 음성-텍스트 도구 Glider를 통한 명령 실행 방식을 언급한다.</li>
+<li>Archify로 영어 지시를 아키텍처로 시각화: Archify는 일반 영어로 작성한 내용을 몇 초 안에 아키텍처 또는 복잡한 프로세스 지도로 바꾸는 도구로 소개된다.</li>
+<li>Archify로 영어 지시를 아키텍처로 시각화: 시연에서는 Alex Hormozi에 따른 최적의 세일즈 시스템을 도식화해 마켓 오퍼, 수요 생성, 관심 획득 흐름을 보여준다.</li>
+<li>Archify로 영어 지시를 아키텍처로 시각화: 클래식 모드와 신호 흐름 등 테마를 바꾸고, 구성 요소와 연결 관계를 살피거나 시스템 내 요청 흐름을 추적할 수 있다.</li>
+<li>Archify로 영어 지시를 아키텍처로 시각화: 새 코드베이스의 온보딩, 인수인계, 리뷰와 긴 프로세스 설명을 위한 공유 가능한 프로세스 맵 활용 사례를 제시한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>God&#x27;s Eye View</td><td>항공기·선박·위성·지진·카메라 등 독립적인 공개 데이터를 통합해 세계를 탐색하는 시스템이다.</td></tr><tr><td>Skill Spectre</td><td>Nvidia가 만든 에이전트 스킬 검사 도구로, 숨은 지시문·권한·데이터 흐름을 점검해 위험 요인을 찾는다.</td></tr><tr><td>Flute</td><td>ChatGPT 또는 Claude에서 만든 디자인을 인증, 폼, 데이터베이스가 포함된 게시 가능한 앱으로 연결하는 서비스다.</td></tr><tr><td>Slop Monster</td><td>AI식 문장 구성과 마케팅 문구를 평가하고 더 명확하고 구체적인 표현으로 재작성하는 도구다.</td></tr><tr><td>DeepSeek Harness</td><td>모델과 별도로 파일·터미널·브라우저 도구를 활용하고 워크플로를 맞춤 설정할 수 있는 DeepSeek 환경이다.</td></tr><tr><td>Archify</td><td>일반 영어로 입력한 아이디어나 업무 흐름을 상호작용 가능한 아키텍처·프로세스 다이어그램으로 만드는 도구다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/9a6oCFbs0O8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-09-16</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
