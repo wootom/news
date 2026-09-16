@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="GrokBot 팀이 시장 조사부터 봇 조직·개발·출시까지 72시간 창업에 도전한다."><title>SpaceXAI 팀이 GrokBot으로 72시간 내 운영 회사 구축에 도전한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-17 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>SpaceXAI 팀이 GrokBot으로 72시간 내 운영 회사 구축에 도전한다.</h1><p class="lead">GrokBot 팀이 시장 조사부터 봇 조직·개발·출시까지 72시간 창업에 도전한다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>맷 파머·로샨·로런은 샌프란시스코 모스코니 센터 인근 스튜디오에서 72시간 창업 과정을 생중계한다.</li>
+<li>팀은 첫날 시장 조사를 통해 아이디어를 정하고, 사람들이 원하면서도 직접 사용할 수 있는 제품을 목표로 삼는다.</li>
+<li>코드는 Cursor로 작성하고 수작업은 GrokBot으로 자동화하며, Slack·Notion·GitHub 조직을 협업 기반으로 준비한다.</li>
+<li>새 GitHub 조직 ‘Ship by Thursday’와 빈 GrokBot 계정에서 출발해 봇 팀, 사용자 조사 봇, 창업 엔지니어 봇을 구성한다.</li>
+<li>GrokBot Galaxy 챌린지는 9월 29일까지 진행되며, Starbase Starship 발사 여행과 호손 공장 견학을 경품으로 내건다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>도전의 목표는 아무것도 없는 상태에서 72시간 안에 실제로 운영되는 회사를 만드는 것이다.</li>
+<li>팀은 사업을 사람들이 원하고 직접 써볼 수 있으며, 수익도 낼 수 있는 유용한 제품으로 정의했다.</li>
+<li>AI의 가치는 엑셀·메시지 탐색·수작업 자동화 같은 반복 업무를 줄여 중요한 일에 집중하게 하는 데 있다고 설명했다.</li>
+<li>제품은 사람에게 가치를 제공해야 하며, 구매자는 사람뿐 아니라 신용카드를 연결한 에이전트가 될 가능성도 언급됐다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>참가 팀과 각자의 GrokBot 활용</h2><ul>
+<li>맷 파머는 개발자 경험·개발자 관계를 맡으며 사용자에게 GrokBot과 새 기술의 사용법을 알리고 코드와 문서 작업도 한다.</li>
+<li>로샨은 SpaceXAI 제품 담당자로 고객 피드백과 AI 도구 수요를 제품에 반영하고 GrokBot 커넥터 및 마켓플레이스를 고민한다.</li>
+<li>로런(poteto)은 GrokBot 엔지니어링과 성능 <span class="up">개선</span>을 맡고, X 멘션이 너무 많아 답변 작업을 GrokBot으로 자동화했다.</li>
+<li>로런은 PM과 디자이너도 좋은 코드를 기여할 수 있게 GrokBot 코드베이스를 정비했다고 밝혔다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>아이디어 탐색과 시장 조사 계획</h2><ul>
+<li>시청자와 SpaceX 직원에게 무엇을 만들면 좋을지 물었고, 수천 개의 답변을 GrokBot으로 먼저 살펴볼 계획이다.</li>
+<li>팀은 시장 조사 뒤 첫날 오전쯤 만들 제품을 발표하는 방안을 제시했으며, 사흘뿐이라 첫날 아이디어 결정이 목표라고 말했다.</li>
+<li>사용자 조사와 인터뷰 일정 잡기, 세상의 반응 확인을 포함한 제품 개발 전 과정을 0에서 1로 진행하려 한다.</li>
+<li>Dreamforce로 샌프란시스코에 평소보다 5만 명이 더 온 상황을 언급하며, 디지털 결과물을 현실에서 경험하게 하는 가능성도 검토했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>개발 도구와 자동화 사례</h2><ul>
+<li>맷은 X 북마크의 npm 패키지 등을 찾아 Cursor 클라우드 에이전트로 직접 구현하고, 미리보기 배포까지 설정하는 GrokBot 데모를 만들었다.</li>
+<li>해당 데모는 매일 아침 북마크한 기술과 직접 만들어 배포한 버전을 알려주는 방식으로 설명됐다.</li>
+<li>팀은 코드는 Cursor로 쓰고 번거로운 수작업은 GrokBot으로 해결하며, 필요에 따라 Slack·Notion·Linear를 사용할 계획이다.</li>
+<li>배포는 PR 대신 main 브랜치에 바로 합치는 방식도 언급됐으며, 데이터베이스와 Stripe·Link 결제 인프라도 필요 요소로 거론됐다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>PStack과 빠른 개발 방식</h2><ul>
+<li>로런은 PStack을 자신이 수행하던 꼼꼼한 엔지니어링 작업용 스킬과 작업 방식을 모아 공개한 무료 오픈소스 플러그인이라고 소개했다.</li>
+<li>PStack은 GrokBot 마켓플레이스에서 검색할 수 있으며, 로런은 지난달 이를 통해 PR 2,500개를 프로덕션에 반영했다고 말했다.</li>
+<li>월간 PR 2,500개는 하루 약 83개라는 계산이 나왔고, 팀은 3일 동안 250개 이상의 PR 또는 커밋을 목표처럼 언급했다.</li>
+<li>방송에서는 SpaceX 직원들이 이런 도구로 빠르게 제품을 <span class="up">개선</span>하는 과정을 아이디어 단계부터 출시까지 보여주겠다고 밝혔다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>Ship by Thursday와 봇 조직 설계</h2><ul>
+<li>팀은 이번 사흘 동안만 사용할 새 GrokBot 팀과 빈 GitHub 조직을 만들었고, 조직 이름은 ‘Ship by Thursday’다.</li>
+<li>시작 시점에는 저장소와 봇이 없는 상태이며, 개발 준비는 PStack 설치부터 보여주겠다고 했다.</li>
+<li>사용자 조사 봇과 마켓플레이스의 봇 템플릿을 활용하고, 창업 엔지니어 봇을 한두 명 고용하는 구상을 제시했다.</li>
+<li>회사 문서를 읽어 업무 방식과 원칙을 전달하는 온보딩 봇, 직원 봇을 만드는 GrokBot 공장, 공유 지식 저장소 구상도 나왔다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>GrokBot</td><td>팀이 코드 작성 보조, 수작업 자동화, 시장 조사, 봇 구성 등에 활용하겠다고 밝힌 AI 도구다.</td></tr><tr><td>PStack</td><td>로런이 엔지니어링 작업용 스킬과 작업 방식을 모아 공개한 무료 오픈소스 플러그인이다.</td></tr><tr><td>Ship by Thursday</td><td>‘목요일까지 출시’라는 뜻으로 만든, 이번 72시간 도전용 빈 GitHub 조직 이름이다.</td></tr><tr><td>Cursor 클라우드 에이전트</td><td>맷의 데모에서 X 북마크로 찾은 기술을 실제로 구현하는 데 사용된 도구다.</td></tr><tr><td>Stripe Link</td><td>GrokBot에 신용카드를 연결해 사람이나 봇이 구매하는 실험 가능성을 말하며 언급된 결제 수단이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/VYDJH4_4GTc" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-09-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

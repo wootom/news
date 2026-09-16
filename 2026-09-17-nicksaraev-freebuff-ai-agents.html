@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Freebuff는 광고 노출을 대가로 AI 코딩 에이전트 세션을 무료 제공한다고 소개됐다."><title>Freebuff는 광고 시청을 대가로 AI 코딩 에이전트 세션을 무료 제공한다고 소개됐다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nick Saraev</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-17 · Nick Saraev</span><span class="chip">🎬 영상</span></div><h1>Freebuff는 광고 시청을 대가로 AI 코딩 에이전트 세션을 무료 제공한다고 소개됐다.</h1><p class="lead">Freebuff는 광고 노출을 대가로 AI 코딩 에이전트 세션을 무료 제공한다고 소개됐다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Nick Saraev는 Freebuff가 신용카드 결제 대신 광고를 통해 AI 에이전트 토큰 비용을 충당하는 플랫폼이라고 설명했다.</li>
+<li>영상은 OpenCode 연 120달러, Codex 연 240달러와 비교하며 Freebuff가 연 0달러 사용을 표방한다고 전했다.</li>
+<li>무료 모델 목록으로 GPT 5.6 Luna 5시간, DeepSeek V4.1 Flash 6시간, GLM 5.3 Flash 최대 20시간이 언급됐다.</li>
+<li>Freebuff는 매일 자정(태평양 시간)에 Free Bucks가 충전되며, 모델별 시간당 가격으로 세션 시작 시 차감된다고 안내했다.</li>
+<li>실습에서 한 페이지 웹사이트와 막대인간 걷기 게임을 생성했으며, 광고가 화면에 표시되는 IDE 흐름을 확인했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>영상의 핵심은 유료 AI 코딩 에이전트 접근 비용을 광고 기반 Freebuff가 낮출 수 있다는 주장이다.</li>
+<li>진행자는 Freebuff와 제휴 또는 스폰서 관계가 없으며, 비용이 없는 이용 방식이 흥미롭다고 밝혔다.</li>
+<li>그는 고성능 모델 접근성이 이용자가 만들 수 있는 결과물의 차이를 만든다고 설명했다.</li>
+<li>Freebuff가 모델 접근성 격차를 일부 완화할 수 있기를 바란다고 말하면서도 사업 경제성은 앞으로 지켜봐야 한다고 했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>광고 기반 무료 이용과 모델 시간</h2><ul>
+<li>Freebuff는 AI 에이전트 토큰을 신용카드가 아니라 광고를 통해 이용하는 구조로 소개됐다.</li>
+<li>웹사이트에는 GPT 5.6 Luna 무료 5시간, DeepSeek V4.1 Flash 6시간, Muse Spark 1.2 등이 표시됐다고 전했다.</li>
+<li>GLM 5.3 Flash는 최대 20시간으로 언급됐으며, 진행자는 코딩 용도로도 상당히 좋은 모델이라고 평가했다.</li>
+<li>진행자는 GLM 5.3의 intelligence 점수 45, Claude Fable 5.1의 53과 DeepSeek V4.1 Flash의 40, GPT 6 Astra의 53을 비교했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>설치와 일일 Free Bucks 운영 방식</h2><ul>
+<li>진행자는 macOS용 Freebuff 파일을 내려받아 Applications에 설치하고 Google 계정으로 로그인했다.</li>
+<li>앱에 표시된 ‘start for $5’는 하단에 노출될 광고 형태를 보여주려는 것으로 진행자는 이해했다.</li>
+<li>세션은 Free Bucks로 구매하며, 매일 쓸 수 있는 일일 할당량과 매일 새로 제공되는 풀이 있다고 안내됐다.</li>
+<li>Free Bucks는 태평양 시간 자정에 충전되고, 주간·월간 세션 한도 대신 사용량만 중요하다고 설명됐다.</li>
+<li>모든 모델은 세션 시작 시 시간당 동일한 방식으로 한 번 청구되며, 저렴한 모델을 계속 쓰거나 비싼 모델용으로 아낄 수 있다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>IDE 화면과 에이전트 작업 기능</h2><ul>
+<li>웹사이트 생성 요청 뒤 우측 패널에는 대기열, 변경 사항의 diff, 파일 목록, 미리보기, 터미널이 표시됐다.</li>
+<li>진행자는 이 화면이 상당히 완성된 IDE처럼 보인다고 했고, build mode와 plan mode 전환 기능도 확인했다.</li>
+<li>‘mission’에는 요청을 완료·검증·커밋하고 pull request를 열어 검사 통과 후 병합하는 설명이 표시됐다.</li>
+<li>agents.md를 입력하고 프로젝트 설정을 구성할 수 있으며, Freebuff iOS를 통해 휴대폰에 미러링하는 기능도 언급됐다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>두 프로젝트와 모델별 생성 과정</h2><ul>
+<li>진행자는 첫 프로젝트에 Nick Saraev 소개용 한 페이지 사이트를 만들도록 요청했다.</li>
+<li>동시에 다른 프로젝트를 열어 GLM 5.3 Flash에 간단한 막대인간 걷기 게임 제작을 요청했다.</li>
+<li>진행자는 두 스레드가 서로 대화할 수 있는 것으로 보인다고 말했고, 두 프로젝트를 동시에 실행해 보려 했다.</li>
+<li>그는 GLM 5.3 Flash의 추론 속도는 Luna보다 빠를 것으로 예상했지만, Luna의 성능은 더 좋을 것이라고 말했다.</li>
+<li>사이트 작업에서는 index.html 작성이, 게임 작업에서는 막대인간 구현을 위한 계산이 진행되는 모습이 나타났다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>광고 노출 경험과 실습 결과</h2><ul>
+<li>광고는 작업 화면 하단과 주변에 표시됐으며, The Farmer’s Dog와 Runnable 광고 등이 보였다고 전했다.</li>
+<li>진행자는 약 1분 10초 뒤에도 첫 작업 결과가 나오지 않았고, 컴퓨터가 뜨거워지고 소음이 커졌다고 말했다.</li>
+<li>그는 광고가 지나치게 방해적이지는 않다고 평가했으며, 당시 화면에는 광고 3개가 표시된다고 언급했다.</li>
+<li>생성된 소개 사이트는 디자인과 문구 면에서 뛰어나지 않다고 평가했지만, 신용카드나 ChatGPT 구독 없이 사용한 점을 강조했다.</li>
+<li>막대인간 게임은 실행됐고 캐릭터가 걷는 내용이었으며, 진행자는 재미는 크지 않지만 코딩과 게임 제작이 가능함을 보여준다고 정리했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Freebuff</td><td>광고 노출을 기반으로 AI 에이전트 세션을 무료로 제공한다고 소개된 플랫폼이다.</td></tr><tr><td>Free Bucks</td><td>Freebuff에서 모델 세션을 구매하는 일일 할당량으로, 태평양 시간 자정에 충전된다고 안내됐다.</td></tr><tr><td>GLM 5.3 Flash</td><td>영상에서 최대 20시간 이용 가능하며 빠른 추론 속도가 언급된 모델이다.</td></tr><tr><td>GPT 5.6 Luna</td><td>Freebuff에서 무료 5시간으로 소개됐고, 진행자가 GLM 5.3 Flash보다 성능이 좋을 것이라고 말한 모델이다.</td></tr><tr><td>mission</td><td>작업 완료·검증·커밋 후 pull request를 열고 검사 통과 및 병합까지 수행하는 옵션으로 표시됐다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/IJS08TVGut0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nick Saraev · 2026-09-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
