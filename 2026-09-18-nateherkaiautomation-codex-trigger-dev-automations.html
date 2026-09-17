@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다."><title>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</title><style>
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Codex로 만들고 Trigger.dev에서 실행해 예약 자동화의 사용 한도 소모를 줄이는 방법."><title>Codex로 만든 결정형 자동화를 Trigger.dev에 배포해 사용 한도를 아끼는 방법을 제시한다.</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   /* AI Daily · daylight neutral */
@@ -176,41 +176,45 @@ tr:nth-child(even) td{background:var(--surface)}
   .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
   .hdr{break-after:avoid}
 }
-</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</h1><p class="lead">코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
-<li>클로드 코드를 몇 주간 거의 쓰지 않고 코덱스를 주로 사용하며, 한도·리셋권이 작업 흐름을 덜 끊는다고 설명한다.</li>
-<li>프론트엔드에서는 페이블보다 아스트라가 요구를 더 정확히 따르고, 반응형·상태 처리·접근성 디테일이 좋았다고 평가한다.</li>
-<li>백엔드에서는 아스트라가 마이그레이션·모델·라우터 작업을 이어가고, 기존 구조와 테스트를 더 잘 다룬다고 말한다.</li>
-<li>플러그인 대신 에포트로 작업 강도를 조절하고, 작은 단위로 검토하는 티키타카 방식을 사용한다.</li>
-<li>ADR·에이전츠 파일과 약 28개의 스킬 문서로 결정과 반복 작업 규칙을 모델에 다시 읽히는 방식을 소개한다.</li>
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-18 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>Codex로 만든 결정형 자동화를 Trigger.dev에 배포해 사용 한도를 아끼는 방법을 제시한다.</h1><p class="lead">Codex로 만들고 Trigger.dev에서 실행해 예약 자동화의 사용 한도 소모를 줄이는 방법.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Codex의 예약 작업은 실제 채팅 스레드에 메시지를 보내므로 주간 사용 한도를 소모하며, 영상은 이를 외부 실행 방식으로 바꾼다.</li>
+<li>자동화 코드는 Codex에서 작성한 뒤 GitHub에 저장하고 Trigger.dev가 시간 또는 이벤트 조건에 따라 실행하도록 구성한다.</li>
+<li>예시 아침 브리핑은 평일 오전 6시 Google Calendar를 읽고, 필요 시 공개 웹 조사와 AI 요약을 거쳐 ClickUp DM으로 보낸다.</li>
+<li>제작자는 흐름이 고정된 결정형 자동화는 Codex의 전체 에이전트 루프로 호스팅할 필요가 적다고 설명한다.</li>
+<li>배포 후에는 Trigger.dev의 테스트 실행, 환경 변수 확인, 중복 전송 방지 로직 검증을 통해 운영 동작을 점검한다.</li>
 </ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
-<li>발표자는 과거의 ‘코딩은 코덱스, 자동화는 클로드 코드’ 구분을 정정하고 현재는 거의 코덱스를 쓴다고 말한다.</li>
-<li>전환 이유로 한도와 리셋권, 프론트엔드, 백엔드, 플러그인 대신 에포트를 쓰는 단순함을 제시한다.</li>
-<li>평가는 벤치마크 점수가 아니라 매일 사용하는 사람의 체감이며, 작업 환경에 따라 다를 수 있다고 전제한다.</li>
-<li>클로드 코드가 나쁜 도구라는 뜻은 아니며, 다음 모델이 나오면 판단이 다시 바뀔 수 있다고 덧붙인다.</li>
-</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>한도와 리셋권이 만든 작업 흐름</h2><ul>
-<li>클로드 코드에서 한도에 걸리면 몇 시간 뒤 맥락을 다시 잡아야 했고, 한 번에 약 30분이 들었다고 말한다.</li>
-<li>하루에 두 번 한도에 걸리면 약 1시간이 사라지는 셈이라, 비용보다 작업 흐름의 단절이 더 큰 문제였다고 설명한다.</li>
-<li>코덱스는 한도에 걸렸을 때 리셋권을 써서 그 자리에서 이어갈 수 있으며, 본인 사용량에서는 리셋권 바닥을 본 적이 없다고 한다.</li>
-<li>하루에 대화 창을 10개 넘게 열어도 코덱스가 저녁까지 가며, 끊기지 않는 도구를 선택했다고 밝힌다.</li>
-</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>아스트라와 페이블의 프론트엔드 비교</h2><ul>
-<li>발표자는 기존 약 4개월간 백엔드는 코덱스, 화면 작업은 클로드에 맡기는 방식으로 배치했다고 말한다.</li>
-<li>랜딩 페이지와 설정 화면을 양쪽에 넣어 본 결과, 페이블은 예쁘지만 지시한 내용을 자체적으로 바꾸는 일이 잦았다고 평가한다.</li>
-<li>페이블이 간격을 바꾸거나 요청하지 않은 요소를 넣으면 수정 왕복이 2~3회 쌓여 처음부터 다시 시키는 편이 빨랐다고 한다.</li>
-<li>아스트라는 지시를 따르면서 버튼의 로딩·실패·비활성 상태, 반응형·접근성 같은 디테일까지 더 잘 처리했다고 말한다.</li>
-</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>백엔드 작업에서 커진 격차</h2><ul>
-<li>발표자는 백엔드는 원래 코덱스가 더 낫다고 봤으며, 아스트라 이후 격차가 더 벌어졌다고 말한다.</li>
-<li>아스트라는 마이그레이션 작성, 모델 수정, 라우터 작업을 중간에 대충 끝내지 않고 한 번에 이어가는 경우가 늘었다고 설명한다.</li>
-<li>기존 저장소의 구조를 갈아엎기보다 그 안에서 수정하는 특성이 큰 저장소일수록 중요하다고 평가한다.</li>
-<li>테스트 실패 시 원인을 찾아 다시 돌리고 고쳐서, 로그를 직접 붙여 넣는 일이 거의 없어졌다고 말한다.</li>
-</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에포트 조절과 작은 단위 티키타카</h2><ul>
-<li>슈퍼파워즈 같은 플러그인은 계획·검토·테스트 우선 절차로 모델을 틀에 넣는 방식이었으나 현재는 거의 쓰지 않는다고 한다.</li>
-<li>현재 설정은 모델과 에포트 한 줄씩이며, 오타·이름 변경은 낮게, 새 기능 설계·구조 변경은 높게 설정한다고 말한다.</li>
-<li>작업은 한 번에 크게 시키지 않고 방향 후보를 받은 뒤 하나를 고르고, 결과를 읽은 뒤 다음 작업을 주는 방식으로 진행한다.</li>
-<li>한 턴에 파일이 3~4개를 넘게 바뀌면 멈추며, 결과를 읽지 않으면 티키타카가 아니라 방치라고 강조한다.</li>
-</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>ADR·에이전츠 파일·스킬로 규칙 유지</h2><ul>
-<li>ADR은 결정, 이유, 버린 대안을 세 줄로 적고, 결정 하나당 파일 하나를 두는 아키텍처 결정 기록이라고 설명한다.</li>
-<li>새 작업 전에 ADR을 읽히면 모델이 이전 결정을 뒤집지 않으며, 예로 외래키를 쓰지 않기로 한 결정을 든다.</li>
-<li>컨텍스트 파일은 코덱스에서 에이전츠 파일이라 부르며, 백엔드·프론트 폴더별 도구와 먼저 읽을 규칙 파일을 적는다.</li>
-<li>스킬은 작업 순서와 금지 사항을 담은 마크다운 문서 폴더이며, 영상·자막 등 반복 업무용으로 약 28개를 만들었다고 한다.</li>
-<li>렌더 옵션 오류는 스킬 문서에 한 줄을 추가한 뒤 재발하지 않았으며, 스킬은 직접 고칠 수 있다는 점을 장점으로 든다.</li>
-</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>리셋권</td><td>코덱스에서 한도에 걸렸을 때 사용해 현재 작업 흐름을 이어가는 수단으로 설명된다.</td></tr><tr><td>아스트라</td><td>발표자가 프론트엔드와 백엔드 작업에서 페이블 및 기존 방식과 비교해 평가한 코덱스 측 모델이다.</td></tr><tr><td>에포트</td><td>코덱스에서 가벼운 수정부터 설계·구조 변경까지 작업의 생각 강도를 조절하는 칸이다.</td></tr><tr><td>ADR</td><td>결정·이유·버린 대안을 짧게 기록해 새 대화에서도 이전 아키텍처 결정을 유지하게 하는 문서다.</td></tr><tr><td>에이전츠 파일</td><td>저장소와 폴더별 작업 규칙, 사용할 도구, 먼저 읽을 파일을 적는 컨텍스트 파일이다.</td></tr><tr><td>스킬</td><td>반복 작업의 순서와 금지 사항을 마크다운으로 기록해 이름을 불러 모델에 읽히는 문서 단위다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/YbZglhAQ5S8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
+<li>Codex 내부 예약 작업은 채팅 스레드로 메시지를 전송하는 방식이어서 실제 주간 사용 한도를 소모한다고 설명한다.</li>
+<li>Codex는 자동화 설계·코드 작성·검증에 활용하고, 실행 호스팅은 Trigger.dev로 분리하는 구성을 제안한다.</li>
+<li>영상은 예약형, 웹훅형, Codex SDK 자동화의 세 유형을 소개하며 앞의 두 유형을 시연한다.</li>
+<li>흐름 대부분이 정해진 결정형 업무라면 Codex의 Astra 에이전트 루프를 계속 실행하는 것은 비효율적일 수 있다고 본다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>결정형과 비결정형 단계 구분</h2><ul>
+<li>결정형 자동화는 정해진 순서대로 같은 절차가 진행되는 예측 가능한 프로세스로 정의한다.</li>
+<li>아침 브리핑 예시는 오전 6시 실행, 캘린더 읽기, 조사 판단, 메시지 작성, ClickUp 전송의 5단계로 구성된다.</li>
+<li>조사 내용 판단과 브리핑 문안 작성은 입력에 따라 달라지므로 비결정형인 AI 단계로 분류한다.</li>
+<li>제작자는 개인 생산성·비즈니스 활용 사례의 90%가 이처럼 결정형 자동화에 가깝다고 말한다.</li>
+<li>과거 단순 Codex 루틴이 한 달 뒤 다른 DM과 팀 채널로 전송되기 시작한 사례를 들어 고정 스크립트의 필요성을 설명한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>평일 오전 아침 브리핑 설계</h2><ul>
+<li>자동화는 America Chicago 시간대 기준 평일 오전 6시에 메인 업무용 Google Calendar를 확인하도록 계획된다.</li>
+<li>당일 일정의 설명, 시간, 참석자, 장소를 읽고 새 사람과의 미팅이나 팟캐스트 등에 필요한 준비를 판단한다.</li>
+<li>추가는 공개 웹 조사로 제한하고, 조사 비용은 실행당 25센트를 넘기지 않도록 우선 설정한다.</li>
+<li>AI가 짧은 브리핑을 작성한 뒤 Upit AI 계정을 통해 Nate Herk에게 ClickUp DM으로 보낸다.</li>
+<li>로컬 검증 결과 ClickUp DM에는 일정 링크와 준비 정보가 포함됐고, 실행 비용은 약 1.33센트로 표시됐다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>API 키와 로컬 검증 절차</h2><ul>
+<li>영상에서 필요한 계정은 Codex 구독, Trigger.dev 계정, GitHub 계정으로 제시된다.</li>
+<li>Codex에 연결한 플러그인의 계정 연결은 Trigger.dev로 자동 이전되지 않으므로 별도 API 키 관리가 필요하다.</li>
+<li>제작자는 API 키를 .env 파일에 모아 두면 Claude Code나 Trigger.dev로 옮길 때 복사하기 쉽다고 설명한다.</li>
+<li>Google Calendar와 ClickUp API 키가 없으면 Codex에게 설정 위치와 절차를 물어볼 수 있다고 안내한다.</li>
+<li>배포 전 Codex가 가능한 한 테스트하고 자체 검증하도록 요청해 첫 시도 상태로 옮기지 않는 방식을 권한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>GitHub와 Trigger.dev 배포 연결</h2><ul>
+<li>Codex는 CLI를 통해 GitHub와 Trigger.dev에 인증하고, 코드를 GitHub 비공개 저장소로 푸시하는 흐름을 사용한다.</li>
+<li>GitHub 저장소는 자동화 코드와 실행 규칙을 보관하며, 버전 관리와 다른 구성원의 변경 참여를 지원한다.</li>
+<li>API 키, 캘린더 스냅샷 등 민감 정보는 비공개 저장소여도 Git에서 제외되며 Trigger.dev 환경 변수로 따로 옮긴다.</li>
+<li>Trigger.dev는 GitHub 저장소를 연결해 코드를 동기화하고, 제작자는 프로젝트·조직이 올바른 위치인지 확인한다.</li>
+<li>Trigger.dev 무료 플랜은 오전 6시 예약 실행을 최대 1시간 지연시킬 수 있어 정시 실행이 필요하면 업그레이드가 필요할 수 있다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>운영 테스트와 웹훅 자동화 예시</h2><ul>
+<li>Trigger.dev에서는 평일 오전 6시 예약 작업이 실제 처리 작업을 호출하는 두 단계 구조로 표시되며, 각 실행 상태와 세부 데이터를 볼 수 있다.</li>
+<li>첫 테스트가 disabled로 나온 이유는 MORNING_BRIEF_ENABLED 환경 변수가 false였기 때문이며, true로 바꾼 뒤 다시 실행한다.</li>
+<li>두 번째 테스트에서 새 DM이 없었던 것은 오류가 아니라 당일 12시 1분에 보낸 기존 메시지를 찾아 중복 전송을 건너뛴 설계였다.</li>
+<li>웹훅 예시는 이름, 이메일, 팀 규모, 문의 내용을 받는 폼 제출을 트리거로 삼아 ClickUp DM에 후속 연락 권고 문안을 보낸다.</li>
+<li>폼 제출 내용을 그대로 전달하면 AI 없이 완전 결정형으로 만들 수 있으며, 제작자는 50개 서브에이전트로 스트레스 테스트하는 방안도 언급한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Codex</td><td>자동화의 계획 수립, 코드 작성, 테스트, GitHub·Trigger.dev 연결을 자연어 지시로 돕는 도구로 사용된다.</td></tr><tr><td>Trigger.dev</td><td>GitHub의 자동화 코드를 예약 시간이나 웹훅 이벤트에 따라 외부에서 실행·호스팅하는 서비스다.</td></tr><tr><td>결정형 자동화</td><td>오전 6시 실행 후 캘린더 읽기와 전송처럼 정해진 순서로 반복되는 예측 가능한 흐름을 뜻한다.</td></tr><tr><td>웹훅</td><td>폼 제출 같은 특정 이벤트가 발생했을 때 백엔드 자동화를 시작시키는 트리거다.</td></tr><tr><td>.env 파일</td><td>API 키를 한곳에 보관해 Codex에서 다른 실행 환경으로 이전하기 쉽게 하는 환경 변수 파일이다.</td></tr><tr><td>중복 전송 방지</td><td>같은 날 이미 브리핑이 전송됐으면 새 실행에서 동일한 ClickUp DM을 보내지 않도록 하는 로직이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/FqnNL8fnUWo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-09-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

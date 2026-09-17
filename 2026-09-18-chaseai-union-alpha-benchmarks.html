@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다."><title>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</title><style>
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Union Alpha는 무료 접근, 26만2,000토큰 문맥, 200K 테스트 99.6%를 제시했다."><title>Union Alpha는 무료 접근과 장문맥 정확도로 경쟁 모델과 유사한 결과를 보였다.</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   /* AI Daily · daylight neutral */
@@ -176,41 +176,40 @@ tr:nth-child(even) td{background:var(--surface)}
   .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
   .hdr{break-after:avoid}
 }
-</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</h1><p class="lead">코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
-<li>클로드 코드를 몇 주간 거의 쓰지 않고 코덱스를 주로 사용하며, 한도·리셋권이 작업 흐름을 덜 끊는다고 설명한다.</li>
-<li>프론트엔드에서는 페이블보다 아스트라가 요구를 더 정확히 따르고, 반응형·상태 처리·접근성 디테일이 좋았다고 평가한다.</li>
-<li>백엔드에서는 아스트라가 마이그레이션·모델·라우터 작업을 이어가고, 기존 구조와 테스트를 더 잘 다룬다고 말한다.</li>
-<li>플러그인 대신 에포트로 작업 강도를 조절하고, 작은 단위로 검토하는 티키타카 방식을 사용한다.</li>
-<li>ADR·에이전츠 파일과 약 28개의 스킬 문서로 결정과 반복 작업 규칙을 모델에 다시 읽히는 방식을 소개한다.</li>
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-18 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>Union Alpha는 무료 접근과 장문맥 정확도로 경쟁 모델과 유사한 결과를 보였다.</h1><p class="lead">Union Alpha는 무료 접근, 26만2,000토큰 문맥, 200K 테스트 99.6%를 제시했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Union Alpha는 개발 주체가 공개되지 않은 스텔스 모델이며, OpenRouter에서 현재 무료로 사용할 수 있다고 소개됐다.</li>
+<li>모델의 컨텍스트 윈도우는 26만2,000토큰으로 제시됐고, 비공식 벤치마크 성과에는 주의가 필요하다고 언급됐다.</li>
+<li>호텔 랜딩페이지 테스트에서 단순 프롬프트 결과는 Opus 5보다 약간 낮았으나, 상세 지시에서는 Astra와 차이가 크지 않았다.</li>
+<li>3D 레이싱 게임과 모션 그래픽 생성에서 Union Alpha는 Astra와 비슷한 수준의 작동 결과를 보였다.</li>
+<li>8-needle 테스트에서 128K는 100%, 수정 200K는 99.6%를 기록하며 장문맥 정보 회수 정확도를 보였다.</li>
 </ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
-<li>발표자는 과거의 ‘코딩은 코덱스, 자동화는 클로드 코드’ 구분을 정정하고 현재는 거의 코덱스를 쓴다고 말한다.</li>
-<li>전환 이유로 한도와 리셋권, 프론트엔드, 백엔드, 플러그인 대신 에포트를 쓰는 단순함을 제시한다.</li>
-<li>평가는 벤치마크 점수가 아니라 매일 사용하는 사람의 체감이며, 작업 환경에 따라 다를 수 있다고 전제한다.</li>
-<li>클로드 코드가 나쁜 도구라는 뜻은 아니며, 다음 모델이 나오면 판단이 다시 바뀔 수 있다고 덧붙인다.</li>
-</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>한도와 리셋권이 만든 작업 흐름</h2><ul>
-<li>클로드 코드에서 한도에 걸리면 몇 시간 뒤 맥락을 다시 잡아야 했고, 한 번에 약 30분이 들었다고 말한다.</li>
-<li>하루에 두 번 한도에 걸리면 약 1시간이 사라지는 셈이라, 비용보다 작업 흐름의 단절이 더 큰 문제였다고 설명한다.</li>
-<li>코덱스는 한도에 걸렸을 때 리셋권을 써서 그 자리에서 이어갈 수 있으며, 본인 사용량에서는 리셋권 바닥을 본 적이 없다고 한다.</li>
-<li>하루에 대화 창을 10개 넘게 열어도 코덱스가 저녁까지 가며, 끊기지 않는 도구를 선택했다고 밝힌다.</li>
-</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>아스트라와 페이블의 프론트엔드 비교</h2><ul>
-<li>발표자는 기존 약 4개월간 백엔드는 코덱스, 화면 작업은 클로드에 맡기는 방식으로 배치했다고 말한다.</li>
-<li>랜딩 페이지와 설정 화면을 양쪽에 넣어 본 결과, 페이블은 예쁘지만 지시한 내용을 자체적으로 바꾸는 일이 잦았다고 평가한다.</li>
-<li>페이블이 간격을 바꾸거나 요청하지 않은 요소를 넣으면 수정 왕복이 2~3회 쌓여 처음부터 다시 시키는 편이 빨랐다고 한다.</li>
-<li>아스트라는 지시를 따르면서 버튼의 로딩·실패·비활성 상태, 반응형·접근성 같은 디테일까지 더 잘 처리했다고 말한다.</li>
-</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>백엔드 작업에서 커진 격차</h2><ul>
-<li>발표자는 백엔드는 원래 코덱스가 더 낫다고 봤으며, 아스트라 이후 격차가 더 벌어졌다고 말한다.</li>
-<li>아스트라는 마이그레이션 작성, 모델 수정, 라우터 작업을 중간에 대충 끝내지 않고 한 번에 이어가는 경우가 늘었다고 설명한다.</li>
-<li>기존 저장소의 구조를 갈아엎기보다 그 안에서 수정하는 특성이 큰 저장소일수록 중요하다고 평가한다.</li>
-<li>테스트 실패 시 원인을 찾아 다시 돌리고 고쳐서, 로그를 직접 붙여 넣는 일이 거의 없어졌다고 말한다.</li>
-</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에포트 조절과 작은 단위 티키타카</h2><ul>
-<li>슈퍼파워즈 같은 플러그인은 계획·검토·테스트 우선 절차로 모델을 틀에 넣는 방식이었으나 현재는 거의 쓰지 않는다고 한다.</li>
-<li>현재 설정은 모델과 에포트 한 줄씩이며, 오타·이름 변경은 낮게, 새 기능 설계·구조 변경은 높게 설정한다고 말한다.</li>
-<li>작업은 한 번에 크게 시키지 않고 방향 후보를 받은 뒤 하나를 고르고, 결과를 읽은 뒤 다음 작업을 주는 방식으로 진행한다.</li>
-<li>한 턴에 파일이 3~4개를 넘게 바뀌면 멈추며, 결과를 읽지 않으면 티키타카가 아니라 방치라고 강조한다.</li>
-</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>ADR·에이전츠 파일·스킬로 규칙 유지</h2><ul>
-<li>ADR은 결정, 이유, 버린 대안을 세 줄로 적고, 결정 하나당 파일 하나를 두는 아키텍처 결정 기록이라고 설명한다.</li>
-<li>새 작업 전에 ADR을 읽히면 모델이 이전 결정을 뒤집지 않으며, 예로 외래키를 쓰지 않기로 한 결정을 든다.</li>
-<li>컨텍스트 파일은 코덱스에서 에이전츠 파일이라 부르며, 백엔드·프론트 폴더별 도구와 먼저 읽을 규칙 파일을 적는다.</li>
-<li>스킬은 작업 순서와 금지 사항을 담은 마크다운 문서 폴더이며, 영상·자막 등 반복 업무용으로 약 28개를 만들었다고 한다.</li>
-<li>렌더 옵션 오류는 스킬 문서에 한 줄을 추가한 뒤 재발하지 않았으며, 스킬은 직접 고칠 수 있다는 점을 장점으로 든다.</li>
-</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>리셋권</td><td>코덱스에서 한도에 걸렸을 때 사용해 현재 작업 흐름을 이어가는 수단으로 설명된다.</td></tr><tr><td>아스트라</td><td>발표자가 프론트엔드와 백엔드 작업에서 페이블 및 기존 방식과 비교해 평가한 코덱스 측 모델이다.</td></tr><tr><td>에포트</td><td>코덱스에서 가벼운 수정부터 설계·구조 변경까지 작업의 생각 강도를 조절하는 칸이다.</td></tr><tr><td>ADR</td><td>결정·이유·버린 대안을 짧게 기록해 새 대화에서도 이전 아키텍처 결정을 유지하게 하는 문서다.</td></tr><tr><td>에이전츠 파일</td><td>저장소와 폴더별 작업 규칙, 사용할 도구, 먼저 읽을 파일을 적는 컨텍스트 파일이다.</td></tr><tr><td>스킬</td><td>반복 작업의 순서와 금지 사항을 마크다운으로 기록해 이름을 불러 모델에 읽히는 문서 단위다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/YbZglhAQ5S8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
+<li>Union Alpha는 제작 AI 연구소가 알려지지 않은 상태지만, OpenRouter를 통해 무료로 시험 가능한 모델로 소개됐다.</li>
+<li>OpenRouter CEO·공동창업자가 공개한 성능 수치는 비공식 자료이므로 이해관계와 벤치마크 한계를 함께 고려해야 한다고 설명했다.</li>
+<li>영상의 평가는 프런트엔드, 게임, 모션 디자인, 장문맥 회수 테스트를 Astra·Opus 5와 비교하는 방식으로 진행됐다.</li>
+<li>비용이 아직 확정되지 않았으므로 Opus 5보다 결과가 낮더라도 모델의 절대적 우열을 단정하기 어렵다고 밝혔다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>공개 성능 수치와 무료 접근 방식</h2><ul>
+<li>DeepSuite 그래프에서는 Union Alpha가 Astra, Fable, Opus 5와 비슷한 성능을 보이는 것으로 제시됐다.</li>
+<li>Alex는 Union Alpha가 Terminal Bench 2.1과 bench verified에서 5.6 Soul을 앞섰다고 게시한 것으로 소개됐다.</li>
+<li>같은 게시물 기준으로 Union Alpha는 Terminal Bench 2.1에서 Opus 5도 앞섰다고 언급됐다.</li>
+<li>접근은 openrouter.ai에서 계정을 만든 뒤, OpenCode 같은 하니스에서 모델 목록의 Union Alpha를 선택하는 방식으로 설명됐다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>단순 호텔 랜딩페이지와 Opus 5 비교</h2><ul>
+<li>&#x27;런던의 가짜 부티크 호텔 랜딩페이지&#x27;를 만들라는 단순 프롬프트와 외부 스킬 미사용 조건을 적용했다.</li>
+<li>Union Alpha는 3분 37초 만에 히어로 섹션과 롤링 배너를 포함한 단순한 페이지를 생성했다.</li>
+<li>생성물은 둥근 모서리와 표준화된 카드 중심의 전형적 AI 디자인처럼 보이지 않는 점이 긍정적으로 평가됐다.</li>
+<li>같은 프롬프트의 고노력 설정 Opus 5는 예약 가능 여부 확인 영역과 스크롤 모션을 제공해 약간 우세하다고 평가됐다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Dune House 상세 프롬프트의 Astra 비교</h2><ul>
+<li>두 번째 테스트는 캘리포니아 조슈아트리의 가상 사막 호텔 &#x27;Dune House&#x27;용 반응형 홈페이지 제작이었다.</li>
+<li>Union Alpha 결과는 첫 테스트보다 크게 <span class="up">개선</span>됐으며, 히어로 이미지와 이미지 활용으로 더 정교한 페이지를 만들었다고 평가됐다.</li>
+<li>Astra도 배경 이미지 히어로 섹션과 명확한 예약 가능 여부 확인 영역을 포함한 결과를 생성했다.</li>
+<li>평가자는 Astra에 근소한 우위를 줬지만, Astra와 Union Alpha 사이의 차이는 크지 않다고 판단했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>브라우저 3D 레이싱 게임 생성 결과</h2><ul>
+<li>기존 Fortnite 클론 프롬프트와 동일한 참조 이미지를 Union Alpha에 제공했지만, 매번 오류가 발생해 실행되지 않았다고 밝혔다.</li>
+<li>대신 스타일화된 해안 고속도로를 배경으로 하는 브라우저용 3D 아케이드 레이싱 게임 제작을 요청했다.</li>
+<li>Union Alpha는 3JS 기반의 단일 원형 트랙 게임을 만들었고, 조작·물리 효과·그래픽은 무난하게 작동했다.</li>
+<li>Astra 결과도 같은 오디오와 유사한 로딩 화면, 부드러운 조작과 가드레일 충돌 물리를 보여 두 모델을 같은 수준으로 평가했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>모션 그래픽과 8-needle 장문맥 검증</h2><ul>
+<li>Higsfield 모션 스킬을 사용해 인터넷에서 메시지가 이동하는 과정을 설명하는 2D 모션 영상을 생성하도록 요청했다.</li>
+<li>이 테스트는 MCP 서버가 Seed Dance를 호출하는 구조에 기반했으며, Union Alpha도 프런티어 모델과 같은 방식으로 작동했다고 설명했다.</li>
+<li>공식 128K 8-needle 테스트에서는 100%를 기록했고, 20만 토큰을 채운 수정 버전에서는 99.6%를 기록했다.</li>
+<li>수정 200K 테스트의 오차는 아포스트로피 5개였으며, 8개의 유사 문장 중 두 번째 항목을 정확히 회수하는 과제였다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Union Alpha</td><td>개발 주체가 알려지지 않았으며 OpenRouter에서 무료 접근이 가능하다고 소개된 AI 모델이다.</td></tr><tr><td>OpenRouter</td><td>Union Alpha를 무료로 사용하기 위해 계정을 만들고 모델에 접근하는 제공자로 영상에서 제시됐다.</td></tr><tr><td>OpenCode</td><td>영상 시연에서 OpenRouter를 연결한 뒤 Union Alpha를 선택해 실행하는 하니스로 사용됐다.</td></tr><tr><td>8-needle 테스트</td><td>긴 컨텍스트 안의 8개 유사 항목 가운데 지정된 항목을 정확히 찾아내는 장문맥 정보 회수 시험이다.</td></tr><tr><td>Higsfield 모션 스킬</td><td>MCP 서버를 통해 Seed Dance를 호출하여 2D 모션 설명 영상을 만드는 데 사용된 스킬이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/2Gu21Y4hgd8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-09-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

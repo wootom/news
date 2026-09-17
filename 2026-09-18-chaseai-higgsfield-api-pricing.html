@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다."><title>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</title><style>
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Higgsfield API는 구독 없이 종량제로 AI 영상·이미지 모델을 호출하게 한다."><title>Higgsfield API는 구독과 분리된 종량제로 AI 영상·이미지 생성을 제공한다.</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   /* AI Daily · daylight neutral */
@@ -176,41 +176,43 @@ tr:nth-child(even) td{background:var(--surface)}
   .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
   .hdr{break-after:avoid}
 }
-</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</h1><p class="lead">코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
-<li>클로드 코드를 몇 주간 거의 쓰지 않고 코덱스를 주로 사용하며, 한도·리셋권이 작업 흐름을 덜 끊는다고 설명한다.</li>
-<li>프론트엔드에서는 페이블보다 아스트라가 요구를 더 정확히 따르고, 반응형·상태 처리·접근성 디테일이 좋았다고 평가한다.</li>
-<li>백엔드에서는 아스트라가 마이그레이션·모델·라우터 작업을 이어가고, 기존 구조와 테스트를 더 잘 다룬다고 말한다.</li>
-<li>플러그인 대신 에포트로 작업 강도를 조절하고, 작은 단위로 검토하는 티키타카 방식을 사용한다.</li>
-<li>ADR·에이전츠 파일과 약 28개의 스킬 문서로 결정과 반복 작업 규칙을 모델에 다시 읽히는 방식을 소개한다.</li>
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-18 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>Higgsfield API는 구독과 분리된 종량제로 AI 영상·이미지 생성을 제공한다.</h1><p class="lead">Higgsfield API는 구독 없이 종량제로 AI 영상·이미지 모델을 호출하게 한다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Higgsfield API는 월간 구독과 완전히 별개이며, 구독 크레딧은 API 사용료에 적용되지 않는다.</li>
+<li>비즈니스 이메일로 가입하면 첫 생성용 15달러를 제공하며, API는 충전한 지갑 잔액에서 생성마다 비용을 차감한다.</li>
+<li>7일 한정 혜택에서 영상 모델 2개와 이미지 생성 모델 1개를 골라 추가 할인을 받을 수 있다고 설명한다.</li>
+<li>영상 제작자는 Cedance 2.5 가격을 초당 약 18센트로 제시하고, 15초 예시는 5달러 미만이었다.</li>
+<li>제작자가 만든 API 스킬은 Claude Code·Codex에서 문서를 확인하고 모델 선택과 예산 제어를 돕는다.</li>
 </ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
-<li>발표자는 과거의 ‘코딩은 코덱스, 자동화는 클로드 코드’ 구분을 정정하고 현재는 거의 코덱스를 쓴다고 말한다.</li>
-<li>전환 이유로 한도와 리셋권, 프론트엔드, 백엔드, 플러그인 대신 에포트를 쓰는 단순함을 제시한다.</li>
-<li>평가는 벤치마크 점수가 아니라 매일 사용하는 사람의 체감이며, 작업 환경에 따라 다를 수 있다고 전제한다.</li>
-<li>클로드 코드가 나쁜 도구라는 뜻은 아니며, 다음 모델이 나오면 판단이 다시 바뀔 수 있다고 덧붙인다.</li>
-</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>한도와 리셋권이 만든 작업 흐름</h2><ul>
-<li>클로드 코드에서 한도에 걸리면 몇 시간 뒤 맥락을 다시 잡아야 했고, 한 번에 약 30분이 들었다고 말한다.</li>
-<li>하루에 두 번 한도에 걸리면 약 1시간이 사라지는 셈이라, 비용보다 작업 흐름의 단절이 더 큰 문제였다고 설명한다.</li>
-<li>코덱스는 한도에 걸렸을 때 리셋권을 써서 그 자리에서 이어갈 수 있으며, 본인 사용량에서는 리셋권 바닥을 본 적이 없다고 한다.</li>
-<li>하루에 대화 창을 10개 넘게 열어도 코덱스가 저녁까지 가며, 끊기지 않는 도구를 선택했다고 밝힌다.</li>
-</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>아스트라와 페이블의 프론트엔드 비교</h2><ul>
-<li>발표자는 기존 약 4개월간 백엔드는 코덱스, 화면 작업은 클로드에 맡기는 방식으로 배치했다고 말한다.</li>
-<li>랜딩 페이지와 설정 화면을 양쪽에 넣어 본 결과, 페이블은 예쁘지만 지시한 내용을 자체적으로 바꾸는 일이 잦았다고 평가한다.</li>
-<li>페이블이 간격을 바꾸거나 요청하지 않은 요소를 넣으면 수정 왕복이 2~3회 쌓여 처음부터 다시 시키는 편이 빨랐다고 한다.</li>
-<li>아스트라는 지시를 따르면서 버튼의 로딩·실패·비활성 상태, 반응형·접근성 같은 디테일까지 더 잘 처리했다고 말한다.</li>
-</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>백엔드 작업에서 커진 격차</h2><ul>
-<li>발표자는 백엔드는 원래 코덱스가 더 낫다고 봤으며, 아스트라 이후 격차가 더 벌어졌다고 말한다.</li>
-<li>아스트라는 마이그레이션 작성, 모델 수정, 라우터 작업을 중간에 대충 끝내지 않고 한 번에 이어가는 경우가 늘었다고 설명한다.</li>
-<li>기존 저장소의 구조를 갈아엎기보다 그 안에서 수정하는 특성이 큰 저장소일수록 중요하다고 평가한다.</li>
-<li>테스트 실패 시 원인을 찾아 다시 돌리고 고쳐서, 로그를 직접 붙여 넣는 일이 거의 없어졌다고 말한다.</li>
-</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에포트 조절과 작은 단위 티키타카</h2><ul>
-<li>슈퍼파워즈 같은 플러그인은 계획·검토·테스트 우선 절차로 모델을 틀에 넣는 방식이었으나 현재는 거의 쓰지 않는다고 한다.</li>
-<li>현재 설정은 모델과 에포트 한 줄씩이며, 오타·이름 변경은 낮게, 새 기능 설계·구조 변경은 높게 설정한다고 말한다.</li>
-<li>작업은 한 번에 크게 시키지 않고 방향 후보를 받은 뒤 하나를 고르고, 결과를 읽은 뒤 다음 작업을 주는 방식으로 진행한다.</li>
-<li>한 턴에 파일이 3~4개를 넘게 바뀌면 멈추며, 결과를 읽지 않으면 티키타카가 아니라 방치라고 강조한다.</li>
-</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>ADR·에이전츠 파일·스킬로 규칙 유지</h2><ul>
-<li>ADR은 결정, 이유, 버린 대안을 세 줄로 적고, 결정 하나당 파일 하나를 두는 아키텍처 결정 기록이라고 설명한다.</li>
-<li>새 작업 전에 ADR을 읽히면 모델이 이전 결정을 뒤집지 않으며, 예로 외래키를 쓰지 않기로 한 결정을 든다.</li>
-<li>컨텍스트 파일은 코덱스에서 에이전츠 파일이라 부르며, 백엔드·프론트 폴더별 도구와 먼저 읽을 규칙 파일을 적는다.</li>
-<li>스킬은 작업 순서와 금지 사항을 담은 마크다운 문서 폴더이며, 영상·자막 등 반복 업무용으로 약 28개를 만들었다고 한다.</li>
-<li>렌더 옵션 오류는 스킬 문서에 한 줄을 추가한 뒤 재발하지 않았으며, 스킬은 직접 고칠 수 있다는 점을 장점으로 든다.</li>
-</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>리셋권</td><td>코덱스에서 한도에 걸렸을 때 사용해 현재 작업 흐름을 이어가는 수단으로 설명된다.</td></tr><tr><td>아스트라</td><td>발표자가 프론트엔드와 백엔드 작업에서 페이블 및 기존 방식과 비교해 평가한 코덱스 측 모델이다.</td></tr><tr><td>에포트</td><td>코덱스에서 가벼운 수정부터 설계·구조 변경까지 작업의 생각 강도를 조절하는 칸이다.</td></tr><tr><td>ADR</td><td>결정·이유·버린 대안을 짧게 기록해 새 대화에서도 이전 아키텍처 결정을 유지하게 하는 문서다.</td></tr><tr><td>에이전츠 파일</td><td>저장소와 폴더별 작업 규칙, 사용할 도구, 먼저 읽을 파일을 적는 컨텍스트 파일이다.</td></tr><tr><td>스킬</td><td>반복 작업의 순서와 금지 사항을 마크다운으로 기록해 이름을 불러 모델에 읽히는 문서 단위다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/YbZglhAQ5S8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
+<li>Higgsfield API 출시로 고가 월간 구독 없이 AI 이미지·영상 생성 모델을 필요할 때마다 사용할 수 있다고 주장한다.</li>
+<li>API 사용료와 월간 구독은 서로 분리돼 있으며, 어느 한쪽의 결제가 다른 쪽에 적용되지 않는다.</li>
+<li>대규모로 운영하지 않는 사용자라면 종량제가 매달 남는 구독 크레딧을 줄여 장기적으로 비용을 아낄 수 있다는 관점이다.</li>
+<li>FA와 비교해 일부 모델은 더 저렴하거나 FA에서 제공하지 않는 모델에도 접근할 수 있다고 설명한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>가입·크레딧 충전과 초기 혜택</h2><ul>
+<li>higsfield.ai 메인 페이지의 Higgsfield API 링크에서 API 페이지로 이동할 수 있다.</li>
+<li>비즈니스 이메일로 가입하면 첫 몇 차례 생성에 쓸 15달러를 제공한다고 안내한다.</li>
+<li>15달러를 받으려면 신용카드 등록을 요구하는 카드가 화면 상단에 나타난다고 설명한다.</li>
+<li>API는 지갑에 금액을 충전해 두고 이미지나 영상 생성을 요청할 때마다 잔액을 차감하는 방식이다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>종량제 가격과 모델 할인 선택</h2><ul>
+<li>기존에는 최대 월 200달러 수준의 구독 플랜이 사실상 선택지였으며, 사용하지 못한 생성 크레딧이 월말에 남는 경우가 있었다고 말한다.</li>
+<li>API는 사용한 만큼만 지불하므로 남은 월간 크레딧 문제를 피할 수 있다고 설명한다.</li>
+<li>7일 한정 행사로 영상 모델 2개와 이미지 생성 모델 1개를 선택해 추가 할인을 받을 수 있다.</li>
+<li>제작자는 Cedance 2.5를 할인 대상 중 하나로 권하며, Cedance 2.0은 최대 4K 해상도를 사용할 수 있다고 말한다.</li>
+<li>Kling 모델은 FA 대비 전반적으로 약 15% 저렴하며, Cedance 2.5 같은 고가 모델은 초당 약 18센트이라고 제시한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>API 키와 모델 문서 전달 방식</h2><ul>
+<li>Claude Code나 Codex 등 에이전트에서 사용하려면 먼저 Higgsfield API 키를 생성해 저장해야 한다.</li>
+<li>각 모델 페이지의 프롬프트를 복사하면 모델 개요와 스키마를 포함한 정보가 에이전트에 전달된다.</li>
+<li>제작자는 이 정보가 AI 시스템이 모델을 사용하는 데 충분하지만, 모델마다 웹페이지에서 프롬프트를 복사하는 흐름은 번거롭다고 평가한다.</li>
+<li>사용자는 Cedance나 Kling 등 원하는 모델을 지정해 에이전트에 영상 생성을 요청하는 사용 방식을 예로 든다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>Higgsfield API 스킬의 작동 방식</h2><ul>
+<li>제작자는 Higgsfield API 스킬을 만들었고, 고정 댓글에 링크하겠다고 안내한다.</li>
+<li>Claude Code 또는 Codex에서 저장소 URL을 붙여 넣고 clone and run을 요청하면 저장소 복제와 스킬 실행을 수행한다고 설명한다.</li>
+<li>스킬은 에이전트에 Higgsfield API를 설정하고, 이후에는 API를 사용해 원하는 작업을 요청할 수 있게 한다.</li>
+<li>에이전트는 Higgsfield 문서를 직접 확인해 모델별 요구 사항을 파악하며, 제작자는 이를 원시적인 MCP와 비슷하다고 표현한다.</li>
+<li>모델 추천을 요청하거나 설명용 클립 제작 시 예산 상한을 지정해 한도를 과도하게 쓰지 않도록 할 수 있다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>15초 크레아틴 설명 영상 테스트</h2><ul>
+<li>제작자는 Astra에 모션 디자인 스킬로 크레아틴이 근육에 에너지를 공급하는 과정을 보여 주는 15초 설명 영상을 요청했다.</li>
+<li>요청 끝에는 Higgsfield API를 통해 Cedance 2.5를 사용한다고 명시했다.</li>
+<li>모션 디자인 스킬은 제작자가 만든 모션 그래픽 생성용 스킬이며, 관련 영상과 링크를 고정 댓글에 제공하겠다고 말한다.</li>
+<li>결과 영상은 Codex 내부와 Higgsfield 대시보드에서 모두 확인할 수 있었다.</li>
+<li>이 15초 예시는 5달러 미만이 들었으며, 제작자는 Cedance 2.5를 가장 비싼 영상 생성 도구라고 소개한다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Higgsfield API</td><td>월간 구독과 별도로 지갑 잔액에서 생성 비용을 차감하며 이미지·영상 모델을 이용하는 API다.</td></tr><tr><td>Cedance 2.5</td><td>제작자가 최고 수준의 모델로 언급했으며, 영상 생성 비용은 초당 약 18센트로 제시됐다.</td></tr><tr><td>Kling</td><td>제작자는 Higgsfield API에서 FA보다 전반적으로 약 15% 저렴하다고 비교한 영상 모델이다.</td></tr><tr><td>Claude Code</td><td>API 키와 스킬을 설정한 뒤 Higgsfield API로 모델 호출을 요청하는 데 사용한 AI 에이전트 환경이다.</td></tr><tr><td>MCP</td><td>제작자는 스킬이 문서를 확인해 모델 요구 사항을 파악하는 방식을 원시적인 MCP와 비슷하다고 표현했다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/VqlRRn3cZx8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-09-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다."><title>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</title><style>
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="GrokBot 시연으로 본 클라우드 AI 직원의 협업, 기억 학습, 승인 통제 방식."><title>GrokBot은 클라우드 컴퓨터와 기억·승인 체계로 AI 팀원 협업을 구현한다.</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   /* AI Daily · daylight neutral */
@@ -176,41 +176,45 @@ tr:nth-child(even) td{background:var(--surface)}
   .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
   .hdr{break-after:avoid}
 }
-</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</h1><p class="lead">코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
-<li>클로드 코드를 몇 주간 거의 쓰지 않고 코덱스를 주로 사용하며, 한도·리셋권이 작업 흐름을 덜 끊는다고 설명한다.</li>
-<li>프론트엔드에서는 페이블보다 아스트라가 요구를 더 정확히 따르고, 반응형·상태 처리·접근성 디테일이 좋았다고 평가한다.</li>
-<li>백엔드에서는 아스트라가 마이그레이션·모델·라우터 작업을 이어가고, 기존 구조와 테스트를 더 잘 다룬다고 말한다.</li>
-<li>플러그인 대신 에포트로 작업 강도를 조절하고, 작은 단위로 검토하는 티키타카 방식을 사용한다.</li>
-<li>ADR·에이전츠 파일과 약 28개의 스킬 문서로 결정과 반복 작업 규칙을 모델에 다시 읽히는 방식을 소개한다.</li>
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-18 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>GrokBot은 클라우드 컴퓨터와 기억·승인 체계로 AI 팀원 협업을 구현한다.</h1><p class="lead">GrokBot 시연으로 본 클라우드 AI 직원의 협업, 기억 학습, 승인 통제 방식.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>GrokBot은 개별 과제용 채팅이 아니라 영업 아웃바운드·받은편지함 관리처럼 역할과 책임을 가진 봇을 지속적으로 운영하는 제품이다.</li>
+<li>각 봇은 전용 리눅스 가상 머신에서 구글 폼·슬라이드·문서 등을 직접 조작하며, MCP나 API가 없는 도구도 활용할 수 있다.</li>
+<li>시연에서는 Data Dan, Slide Sonya, Email Ethan이 설문 생성·슬라이드 제작·외부 이메일 초안을 분담하고 서로 메시지를 주고받았다.</li>
+<li>사용자는 이메일 발송, Slack 메시지, 폴더 생성 등 행동별 승인 규칙을 설정하며, 내부 자동 검토 도구도 위험도와 안전성을 판단한다.</li>
+<li>Teach a task로 시범 작업을 녹화하면 봇이 이를 스킬로 저장하고, 메모리는 S3에 저장돼 이후 업무의 맥락으로 활용된다.</li>
 </ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
-<li>발표자는 과거의 ‘코딩은 코덱스, 자동화는 클로드 코드’ 구분을 정정하고 현재는 거의 코덱스를 쓴다고 말한다.</li>
-<li>전환 이유로 한도와 리셋권, 프론트엔드, 백엔드, 플러그인 대신 에포트를 쓰는 단순함을 제시한다.</li>
-<li>평가는 벤치마크 점수가 아니라 매일 사용하는 사람의 체감이며, 작업 환경에 따라 다를 수 있다고 전제한다.</li>
-<li>클로드 코드가 나쁜 도구라는 뜻은 아니며, 다음 모델이 나오면 판단이 다시 바뀔 수 있다고 덧붙인다.</li>
-</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>한도와 리셋권이 만든 작업 흐름</h2><ul>
-<li>클로드 코드에서 한도에 걸리면 몇 시간 뒤 맥락을 다시 잡아야 했고, 한 번에 약 30분이 들었다고 말한다.</li>
-<li>하루에 두 번 한도에 걸리면 약 1시간이 사라지는 셈이라, 비용보다 작업 흐름의 단절이 더 큰 문제였다고 설명한다.</li>
-<li>코덱스는 한도에 걸렸을 때 리셋권을 써서 그 자리에서 이어갈 수 있으며, 본인 사용량에서는 리셋권 바닥을 본 적이 없다고 한다.</li>
-<li>하루에 대화 창을 10개 넘게 열어도 코덱스가 저녁까지 가며, 끊기지 않는 도구를 선택했다고 밝힌다.</li>
-</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>아스트라와 페이블의 프론트엔드 비교</h2><ul>
-<li>발표자는 기존 약 4개월간 백엔드는 코덱스, 화면 작업은 클로드에 맡기는 방식으로 배치했다고 말한다.</li>
-<li>랜딩 페이지와 설정 화면을 양쪽에 넣어 본 결과, 페이블은 예쁘지만 지시한 내용을 자체적으로 바꾸는 일이 잦았다고 평가한다.</li>
-<li>페이블이 간격을 바꾸거나 요청하지 않은 요소를 넣으면 수정 왕복이 2~3회 쌓여 처음부터 다시 시키는 편이 빨랐다고 한다.</li>
-<li>아스트라는 지시를 따르면서 버튼의 로딩·실패·비활성 상태, 반응형·접근성 같은 디테일까지 더 잘 처리했다고 말한다.</li>
-</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>백엔드 작업에서 커진 격차</h2><ul>
-<li>발표자는 백엔드는 원래 코덱스가 더 낫다고 봤으며, 아스트라 이후 격차가 더 벌어졌다고 말한다.</li>
-<li>아스트라는 마이그레이션 작성, 모델 수정, 라우터 작업을 중간에 대충 끝내지 않고 한 번에 이어가는 경우가 늘었다고 설명한다.</li>
-<li>기존 저장소의 구조를 갈아엎기보다 그 안에서 수정하는 특성이 큰 저장소일수록 중요하다고 평가한다.</li>
-<li>테스트 실패 시 원인을 찾아 다시 돌리고 고쳐서, 로그를 직접 붙여 넣는 일이 거의 없어졌다고 말한다.</li>
-</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에포트 조절과 작은 단위 티키타카</h2><ul>
-<li>슈퍼파워즈 같은 플러그인은 계획·검토·테스트 우선 절차로 모델을 틀에 넣는 방식이었으나 현재는 거의 쓰지 않는다고 한다.</li>
-<li>현재 설정은 모델과 에포트 한 줄씩이며, 오타·이름 변경은 낮게, 새 기능 설계·구조 변경은 높게 설정한다고 말한다.</li>
-<li>작업은 한 번에 크게 시키지 않고 방향 후보를 받은 뒤 하나를 고르고, 결과를 읽은 뒤 다음 작업을 주는 방식으로 진행한다.</li>
-<li>한 턴에 파일이 3~4개를 넘게 바뀌면 멈추며, 결과를 읽지 않으면 티키타카가 아니라 방치라고 강조한다.</li>
-</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>ADR·에이전츠 파일·스킬로 규칙 유지</h2><ul>
-<li>ADR은 결정, 이유, 버린 대안을 세 줄로 적고, 결정 하나당 파일 하나를 두는 아키텍처 결정 기록이라고 설명한다.</li>
-<li>새 작업 전에 ADR을 읽히면 모델이 이전 결정을 뒤집지 않으며, 예로 외래키를 쓰지 않기로 한 결정을 든다.</li>
-<li>컨텍스트 파일은 코덱스에서 에이전츠 파일이라 부르며, 백엔드·프론트 폴더별 도구와 먼저 읽을 규칙 파일을 적는다.</li>
-<li>스킬은 작업 순서와 금지 사항을 담은 마크다운 문서 폴더이며, 영상·자막 등 반복 업무용으로 약 28개를 만들었다고 한다.</li>
-<li>렌더 옵션 오류는 스킬 문서에 한 줄을 추가한 뒤 재발하지 않았으며, 스킬은 직접 고칠 수 있다는 점을 장점으로 든다.</li>
-</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>리셋권</td><td>코덱스에서 한도에 걸렸을 때 사용해 현재 작업 흐름을 이어가는 수단으로 설명된다.</td></tr><tr><td>아스트라</td><td>발표자가 프론트엔드와 백엔드 작업에서 페이블 및 기존 방식과 비교해 평가한 코덱스 측 모델이다.</td></tr><tr><td>에포트</td><td>코덱스에서 가벼운 수정부터 설계·구조 변경까지 작업의 생각 강도를 조절하는 칸이다.</td></tr><tr><td>ADR</td><td>결정·이유·버린 대안을 짧게 기록해 새 대화에서도 이전 아키텍처 결정을 유지하게 하는 문서다.</td></tr><tr><td>에이전츠 파일</td><td>저장소와 폴더별 작업 규칙, 사용할 도구, 먼저 읽을 파일을 적는 컨텍스트 파일이다.</td></tr><tr><td>스킬</td><td>반복 작업의 순서와 금지 사항을 마크다운으로 기록해 이름을 불러 모델에 읽히는 문서 단위다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/YbZglhAQ5S8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
+<li>GrokBot은 질문 응답형 채팅과 보조형 코파일럿을 넘어, 결과와 책임을 맡는 기업의 AI 팀원을 지향한다.</li>
+<li>업무가 생길 때마다 새 채팅을 만드는 대신, 역할이 정해진 봇을 계속 사용하며 해당 봇이 사용자 선호와 맥락을 학습한다.</li>
+<li>제품 설계의 세 축은 팀원과 대화하는 인터페이스, 직접 조작 가능한 봇 컴퓨터, 클라우드 실행 환경이다.</li>
+<li>발표자는 AI에게 일을 90%만 처리하게 하는 것과 처음부터 끝까지 완수하도록 맡기는 것은 다르다고 설명했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>클라우드 컴퓨터와 비연동 도구 활용</h2><ul>
+<li>각 봇은 전용 리눅스 가상 머신을 가지며, 사용자는 오른쪽 위에서 봇의 컴퓨터 작업 과정을 확인할 수 있다.</li>
+<li>봇은 구글 폼·구글 슬라이드·구글 문서에 로그인해 작업하며, 영상 시청·팟캐스트 청취·낡은 정부 소프트웨어 클릭도 가능하다고 소개됐다.</li>
+<li>구글 폼과 Qualtrics처럼 MCP나 API가 없는 도구도 컴퓨터 조작 방식으로 처리할 수 있다고 설명했다.</li>
+<li>봇은 클라우드에서 실행되므로 사용자가 노트북을 닫거나 휴대폰에서 시작해도 작업이 멈추지 않는다고 밝혔다.</li>
+<li>각 봇의 컴퓨터는 서로 격리돼 다른 봇의 컴퓨터에 접근할 수 없으며, 자격 증명과 VPN 설정에 따라 내부 시스템 접근 범위를 정할 수 있다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>Data Dan 설문 생성 실시간 시연</h2><ul>
+<li>암리타는 Data Dan을 새로 만들고 음성으로 커피 섭취량과 샌프란시스코 선호 커피숍을 묻는 2개 질문의 구글 폼을 요청했다.</li>
+<li>커피숍 선택지는 Ritual, Philz, Sightglass, Blue Bottle로 지정했으며, 봇은 음성 요청을 텍스트로 받아 작업을 시작했다.</li>
+<li>Data Dan은 구글 폼을 만든 뒤 QR 코드 생성을 요청받았고, 응답 정보는 구글 시트에 넣어 이후 작업에 활용하도록 계획됐다.</li>
+<li>현장에서는 QR 코드 접속 권한 문제가 발생했고, 봇에게 링크 공개 여부와 공유 설정을 확인하도록 지시했다.</li>
+<li>발표자는 오류 상황에서 원하는 결과와 상세 정보를 함께 제시할수록 봇이 테스트와 디버깅을 더 잘한다고 설명했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Teach a task와 장기 메모리</h2><ul>
+<li>Slide Sonya에는 Teach a task 기능으로 슬라이드 개체를 선택하고 날아들어오는 애니메이션을 추가하는 과정을 직접 시범 보였다.</li>
+<li>시범 기록을 멈추면 봇이 녹화 내용을 스킬로 바꾸며, 이후 글자나 이미지에 같은 효과를 적용하도록 요청할 수 있다.</li>
+<li>봇은 몇 주 전 대화도 기억하며, 슬라이드 형식 선호나 사용자를 부르는 방식 같은 지침을 이후에도 참고한다고 소개됐다.</li>
+<li>메모리는 GrokBot의 S3 버킷에 저장돼 오래 유지되고, 사용자는 특정 정보를 잊도록 요청하거나 내용을 업데이트할 수 있다.</li>
+<li>봇을 복제하면 역할과 업무 방식은 유지되지만 이전 봇의 기억은 가져오지 않고 새 기억으로 시작한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에이전트 분업·위임과 관리자 봇</h2><ul>
+<li>시연의 Data Dan, Slide Sonya, Email Ethan은 각각 데이터 수집, 슬라이드 편집, 데이터 취합 및 외부 이메일 초안 작성을 맡았다.</li>
+<li>Email Ethan은 Data Dan과 Slide Sonya에게 메시지를 보내 필요한 커피 데이터와 GrokBot Galaxy 101 자료의 맥락을 요청했다.</li>
+<li>사용자는 봇 설명에 하위 에이전트 위임 방식을 적거나, 대화 중 특정 에이전트를 직접 지정해 정보를 가져오게 할 수 있다.</li>
+<li>그룹 채팅은 여러 봇의 위임과 응답을 한곳에서 확인하는 방식이며, 봇끼리 직접 메시지하는 방식과 구분된다.</li>
+<li>Manager 봇에는 Email Ethan·Slide Sonya·Data Dan의 진행 상황을 받고 2시간마다 막힌 일을 확인하도록 루틴을 설정할 수 있다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>승인 규칙·템플릿 공유와 기업 운영</h2><ul>
+<li>사용자는 ‘이메일 답장 전에는 반드시 허락을 받아’ 또는 ‘슬라이드는 허락 없이 자동으로 만들어’처럼 행동별 승인 규칙을 설정할 수 있다.</li>
+<li>기본 자동 검토 도구는 행동의 위험도와 안전성을 분류해 승인 필요 여부를 판단하며, 시연에서는 보호 대상 건강정보와 개인 식별정보 관련 여부를 확인하려고 여러 차례 승인을 요청했다.</li>
+<li>사용자는 터미널의 폴더 생성처럼 안전한 명령에도 승인을 요구하도록 세부 규칙을 정할 수 있다.</li>
+<li>1Password 연동에서는 API 키나 환경 비밀정보를 입력 창으로 받아 안전하게 보관하며, 발표자는 SpaceX 직원에게 노출되지 않는다고 설명했다.</li>
+<li>봇은 Share as template로 팀에 공유할 수 있고, 마켓플레이스에는 Claire, Lauren, Eric, Lenny 등이 공개한 봇이 표시된다고 소개됐다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>GrokBot</td><td>역할별 봇이 클라우드 컴퓨터에서 지속적으로 업무를 수행하고, 기억·협업·승인 설정을 활용하는 제품이다.</td></tr><tr><td>MCP</td><td>GrokBot에서 기존 API와 함께 연결·관리할 수 있는 기능으로 소개됐으며, MCP가 없는 도구는 컴퓨터 조작으로 다룰 수 있다.</td></tr><tr><td>Teach a task</td><td>사용자가 봇의 컴퓨터를 직접 조작해 작업 방식을 시범 보이면, 녹화 내용을 봇이 재사용 가능한 스킬로 바꾸는 기능이다.</td></tr><tr><td>자동 검토 도구</td><td>봇 행동의 위험도와 안전성을 내부 분류기로 판단해 사용자 승인이 필요한지 결정하는 체계다.</td></tr><tr><td>S3 메모리</td><td>사용자가 알려준 호칭, 지침, 업무 맥락 등을 저장하고 이후 봇의 판단에 참고하도록 하는 GrokBot의 장기 메모리다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Zq65PElvblQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-09-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
