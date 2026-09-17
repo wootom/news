@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Codex로 만들고 Trigger.dev에서 실행해 예약 자동화의 사용 한도 소모를 줄이는 방법."><title>Codex로 만든 결정형 자동화를 Trigger.dev에 배포해 사용 한도를 아끼는 방법을 제시한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-18 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>Codex로 만든 결정형 자동화를 Trigger.dev에 배포해 사용 한도를 아끼는 방법을 제시한다.</h1><p class="lead">Codex로 만들고 Trigger.dev에서 실행해 예약 자동화의 사용 한도 소모를 줄이는 방법.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Codex의 예약 작업은 실제 채팅 스레드에 메시지를 보내므로 주간 사용 한도를 소모하며, 영상은 이를 외부 실행 방식으로 바꾼다.</li>
+<li>자동화 코드는 Codex에서 작성한 뒤 GitHub에 저장하고 Trigger.dev가 시간 또는 이벤트 조건에 따라 실행하도록 구성한다.</li>
+<li>예시 아침 브리핑은 평일 오전 6시 Google Calendar를 읽고, 필요 시 공개 웹 조사와 AI 요약을 거쳐 ClickUp DM으로 보낸다.</li>
+<li>제작자는 흐름이 고정된 결정형 자동화는 Codex의 전체 에이전트 루프로 호스팅할 필요가 적다고 설명한다.</li>
+<li>배포 후에는 Trigger.dev의 테스트 실행, 환경 변수 확인, 중복 전송 방지 로직 검증을 통해 운영 동작을 점검한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Codex 내부 예약 작업은 채팅 스레드로 메시지를 전송하는 방식이어서 실제 주간 사용 한도를 소모한다고 설명한다.</li>
+<li>Codex는 자동화 설계·코드 작성·검증에 활용하고, 실행 호스팅은 Trigger.dev로 분리하는 구성을 제안한다.</li>
+<li>영상은 예약형, 웹훅형, Codex SDK 자동화의 세 유형을 소개하며 앞의 두 유형을 시연한다.</li>
+<li>흐름 대부분이 정해진 결정형 업무라면 Codex의 Astra 에이전트 루프를 계속 실행하는 것은 비효율적일 수 있다고 본다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>결정형과 비결정형 단계 구분</h2><ul>
+<li>결정형 자동화는 정해진 순서대로 같은 절차가 진행되는 예측 가능한 프로세스로 정의한다.</li>
+<li>아침 브리핑 예시는 오전 6시 실행, 캘린더 읽기, 조사 판단, 메시지 작성, ClickUp 전송의 5단계로 구성된다.</li>
+<li>조사 내용 판단과 브리핑 문안 작성은 입력에 따라 달라지므로 비결정형인 AI 단계로 분류한다.</li>
+<li>제작자는 개인 생산성·비즈니스 활용 사례의 90%가 이처럼 결정형 자동화에 가깝다고 말한다.</li>
+<li>과거 단순 Codex 루틴이 한 달 뒤 다른 DM과 팀 채널로 전송되기 시작한 사례를 들어 고정 스크립트의 필요성을 설명한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>평일 오전 아침 브리핑 설계</h2><ul>
+<li>자동화는 America Chicago 시간대 기준 평일 오전 6시에 메인 업무용 Google Calendar를 확인하도록 계획된다.</li>
+<li>당일 일정의 설명, 시간, 참석자, 장소를 읽고 새 사람과의 미팅이나 팟캐스트 등에 필요한 준비를 판단한다.</li>
+<li>추가는 공개 웹 조사로 제한하고, 조사 비용은 실행당 25센트를 넘기지 않도록 우선 설정한다.</li>
+<li>AI가 짧은 브리핑을 작성한 뒤 Upit AI 계정을 통해 Nate Herk에게 ClickUp DM으로 보낸다.</li>
+<li>로컬 검증 결과 ClickUp DM에는 일정 링크와 준비 정보가 포함됐고, 실행 비용은 약 1.33센트로 표시됐다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>API 키와 로컬 검증 절차</h2><ul>
+<li>영상에서 필요한 계정은 Codex 구독, Trigger.dev 계정, GitHub 계정으로 제시된다.</li>
+<li>Codex에 연결한 플러그인의 계정 연결은 Trigger.dev로 자동 이전되지 않으므로 별도 API 키 관리가 필요하다.</li>
+<li>제작자는 API 키를 .env 파일에 모아 두면 Claude Code나 Trigger.dev로 옮길 때 복사하기 쉽다고 설명한다.</li>
+<li>Google Calendar와 ClickUp API 키가 없으면 Codex에게 설정 위치와 절차를 물어볼 수 있다고 안내한다.</li>
+<li>배포 전 Codex가 가능한 한 테스트하고 자체 검증하도록 요청해 첫 시도 상태로 옮기지 않는 방식을 권한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>GitHub와 Trigger.dev 배포 연결</h2><ul>
+<li>Codex는 CLI를 통해 GitHub와 Trigger.dev에 인증하고, 코드를 GitHub 비공개 저장소로 푸시하는 흐름을 사용한다.</li>
+<li>GitHub 저장소는 자동화 코드와 실행 규칙을 보관하며, 버전 관리와 다른 구성원의 변경 참여를 지원한다.</li>
+<li>API 키, 캘린더 스냅샷 등 민감 정보는 비공개 저장소여도 Git에서 제외되며 Trigger.dev 환경 변수로 따로 옮긴다.</li>
+<li>Trigger.dev는 GitHub 저장소를 연결해 코드를 동기화하고, 제작자는 프로젝트·조직이 올바른 위치인지 확인한다.</li>
+<li>Trigger.dev 무료 플랜은 오전 6시 예약 실행을 최대 1시간 지연시킬 수 있어 정시 실행이 필요하면 업그레이드가 필요할 수 있다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>운영 테스트와 웹훅 자동화 예시</h2><ul>
+<li>Trigger.dev에서는 평일 오전 6시 예약 작업이 실제 처리 작업을 호출하는 두 단계 구조로 표시되며, 각 실행 상태와 세부 데이터를 볼 수 있다.</li>
+<li>첫 테스트가 disabled로 나온 이유는 MORNING_BRIEF_ENABLED 환경 변수가 false였기 때문이며, true로 바꾼 뒤 다시 실행한다.</li>
+<li>두 번째 테스트에서 새 DM이 없었던 것은 오류가 아니라 당일 12시 1분에 보낸 기존 메시지를 찾아 중복 전송을 건너뛴 설계였다.</li>
+<li>웹훅 예시는 이름, 이메일, 팀 규모, 문의 내용을 받는 폼 제출을 트리거로 삼아 ClickUp DM에 후속 연락 권고 문안을 보낸다.</li>
+<li>폼 제출 내용을 그대로 전달하면 AI 없이 완전 결정형으로 만들 수 있으며, 제작자는 50개 서브에이전트로 스트레스 테스트하는 방안도 언급한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Codex</td><td>자동화의 계획 수립, 코드 작성, 테스트, GitHub·Trigger.dev 연결을 자연어 지시로 돕는 도구로 사용된다.</td></tr><tr><td>Trigger.dev</td><td>GitHub의 자동화 코드를 예약 시간이나 웹훅 이벤트에 따라 외부에서 실행·호스팅하는 서비스다.</td></tr><tr><td>결정형 자동화</td><td>오전 6시 실행 후 캘린더 읽기와 전송처럼 정해진 순서로 반복되는 예측 가능한 흐름을 뜻한다.</td></tr><tr><td>웹훅</td><td>폼 제출 같은 특정 이벤트가 발생했을 때 백엔드 자동화를 시작시키는 트리거다.</td></tr><tr><td>.env 파일</td><td>API 키를 한곳에 보관해 Codex에서 다른 실행 환경으로 이전하기 쉽게 하는 환경 변수 파일이다.</td></tr><tr><td>중복 전송 방지</td><td>같은 날 이미 브리핑이 전송됐으면 새 실행에서 동일한 ClickUp DM을 보내지 않도록 하는 로직이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/FqnNL8fnUWo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-09-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

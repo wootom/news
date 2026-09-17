@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="GrokBot 시연으로 본 클라우드 AI 직원의 협업, 기억 학습, 승인 통제 방식."><title>GrokBot은 클라우드 컴퓨터와 기억·승인 체계로 AI 팀원 협업을 구현한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-18 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>GrokBot은 클라우드 컴퓨터와 기억·승인 체계로 AI 팀원 협업을 구현한다.</h1><p class="lead">GrokBot 시연으로 본 클라우드 AI 직원의 협업, 기억 학습, 승인 통제 방식.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>GrokBot은 개별 과제용 채팅이 아니라 영업 아웃바운드·받은편지함 관리처럼 역할과 책임을 가진 봇을 지속적으로 운영하는 제품이다.</li>
+<li>각 봇은 전용 리눅스 가상 머신에서 구글 폼·슬라이드·문서 등을 직접 조작하며, MCP나 API가 없는 도구도 활용할 수 있다.</li>
+<li>시연에서는 Data Dan, Slide Sonya, Email Ethan이 설문 생성·슬라이드 제작·외부 이메일 초안을 분담하고 서로 메시지를 주고받았다.</li>
+<li>사용자는 이메일 발송, Slack 메시지, 폴더 생성 등 행동별 승인 규칙을 설정하며, 내부 자동 검토 도구도 위험도와 안전성을 판단한다.</li>
+<li>Teach a task로 시범 작업을 녹화하면 봇이 이를 스킬로 저장하고, 메모리는 S3에 저장돼 이후 업무의 맥락으로 활용된다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>GrokBot은 질문 응답형 채팅과 보조형 코파일럿을 넘어, 결과와 책임을 맡는 기업의 AI 팀원을 지향한다.</li>
+<li>업무가 생길 때마다 새 채팅을 만드는 대신, 역할이 정해진 봇을 계속 사용하며 해당 봇이 사용자 선호와 맥락을 학습한다.</li>
+<li>제품 설계의 세 축은 팀원과 대화하는 인터페이스, 직접 조작 가능한 봇 컴퓨터, 클라우드 실행 환경이다.</li>
+<li>발표자는 AI에게 일을 90%만 처리하게 하는 것과 처음부터 끝까지 완수하도록 맡기는 것은 다르다고 설명했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>클라우드 컴퓨터와 비연동 도구 활용</h2><ul>
+<li>각 봇은 전용 리눅스 가상 머신을 가지며, 사용자는 오른쪽 위에서 봇의 컴퓨터 작업 과정을 확인할 수 있다.</li>
+<li>봇은 구글 폼·구글 슬라이드·구글 문서에 로그인해 작업하며, 영상 시청·팟캐스트 청취·낡은 정부 소프트웨어 클릭도 가능하다고 소개됐다.</li>
+<li>구글 폼과 Qualtrics처럼 MCP나 API가 없는 도구도 컴퓨터 조작 방식으로 처리할 수 있다고 설명했다.</li>
+<li>봇은 클라우드에서 실행되므로 사용자가 노트북을 닫거나 휴대폰에서 시작해도 작업이 멈추지 않는다고 밝혔다.</li>
+<li>각 봇의 컴퓨터는 서로 격리돼 다른 봇의 컴퓨터에 접근할 수 없으며, 자격 증명과 VPN 설정에 따라 내부 시스템 접근 범위를 정할 수 있다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>Data Dan 설문 생성 실시간 시연</h2><ul>
+<li>암리타는 Data Dan을 새로 만들고 음성으로 커피 섭취량과 샌프란시스코 선호 커피숍을 묻는 2개 질문의 구글 폼을 요청했다.</li>
+<li>커피숍 선택지는 Ritual, Philz, Sightglass, Blue Bottle로 지정했으며, 봇은 음성 요청을 텍스트로 받아 작업을 시작했다.</li>
+<li>Data Dan은 구글 폼을 만든 뒤 QR 코드 생성을 요청받았고, 응답 정보는 구글 시트에 넣어 이후 작업에 활용하도록 계획됐다.</li>
+<li>현장에서는 QR 코드 접속 권한 문제가 발생했고, 봇에게 링크 공개 여부와 공유 설정을 확인하도록 지시했다.</li>
+<li>발표자는 오류 상황에서 원하는 결과와 상세 정보를 함께 제시할수록 봇이 테스트와 디버깅을 더 잘한다고 설명했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Teach a task와 장기 메모리</h2><ul>
+<li>Slide Sonya에는 Teach a task 기능으로 슬라이드 개체를 선택하고 날아들어오는 애니메이션을 추가하는 과정을 직접 시범 보였다.</li>
+<li>시범 기록을 멈추면 봇이 녹화 내용을 스킬로 바꾸며, 이후 글자나 이미지에 같은 효과를 적용하도록 요청할 수 있다.</li>
+<li>봇은 몇 주 전 대화도 기억하며, 슬라이드 형식 선호나 사용자를 부르는 방식 같은 지침을 이후에도 참고한다고 소개됐다.</li>
+<li>메모리는 GrokBot의 S3 버킷에 저장돼 오래 유지되고, 사용자는 특정 정보를 잊도록 요청하거나 내용을 업데이트할 수 있다.</li>
+<li>봇을 복제하면 역할과 업무 방식은 유지되지만 이전 봇의 기억은 가져오지 않고 새 기억으로 시작한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에이전트 분업·위임과 관리자 봇</h2><ul>
+<li>시연의 Data Dan, Slide Sonya, Email Ethan은 각각 데이터 수집, 슬라이드 편집, 데이터 취합 및 외부 이메일 초안 작성을 맡았다.</li>
+<li>Email Ethan은 Data Dan과 Slide Sonya에게 메시지를 보내 필요한 커피 데이터와 GrokBot Galaxy 101 자료의 맥락을 요청했다.</li>
+<li>사용자는 봇 설명에 하위 에이전트 위임 방식을 적거나, 대화 중 특정 에이전트를 직접 지정해 정보를 가져오게 할 수 있다.</li>
+<li>그룹 채팅은 여러 봇의 위임과 응답을 한곳에서 확인하는 방식이며, 봇끼리 직접 메시지하는 방식과 구분된다.</li>
+<li>Manager 봇에는 Email Ethan·Slide Sonya·Data Dan의 진행 상황을 받고 2시간마다 막힌 일을 확인하도록 루틴을 설정할 수 있다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>승인 규칙·템플릿 공유와 기업 운영</h2><ul>
+<li>사용자는 ‘이메일 답장 전에는 반드시 허락을 받아’ 또는 ‘슬라이드는 허락 없이 자동으로 만들어’처럼 행동별 승인 규칙을 설정할 수 있다.</li>
+<li>기본 자동 검토 도구는 행동의 위험도와 안전성을 분류해 승인 필요 여부를 판단하며, 시연에서는 보호 대상 건강정보와 개인 식별정보 관련 여부를 확인하려고 여러 차례 승인을 요청했다.</li>
+<li>사용자는 터미널의 폴더 생성처럼 안전한 명령에도 승인을 요구하도록 세부 규칙을 정할 수 있다.</li>
+<li>1Password 연동에서는 API 키나 환경 비밀정보를 입력 창으로 받아 안전하게 보관하며, 발표자는 SpaceX 직원에게 노출되지 않는다고 설명했다.</li>
+<li>봇은 Share as template로 팀에 공유할 수 있고, 마켓플레이스에는 Claire, Lauren, Eric, Lenny 등이 공개한 봇이 표시된다고 소개됐다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>GrokBot</td><td>역할별 봇이 클라우드 컴퓨터에서 지속적으로 업무를 수행하고, 기억·협업·승인 설정을 활용하는 제품이다.</td></tr><tr><td>MCP</td><td>GrokBot에서 기존 API와 함께 연결·관리할 수 있는 기능으로 소개됐으며, MCP가 없는 도구는 컴퓨터 조작으로 다룰 수 있다.</td></tr><tr><td>Teach a task</td><td>사용자가 봇의 컴퓨터를 직접 조작해 작업 방식을 시범 보이면, 녹화 내용을 봇이 재사용 가능한 스킬로 바꾸는 기능이다.</td></tr><tr><td>자동 검토 도구</td><td>봇 행동의 위험도와 안전성을 내부 분류기로 판단해 사용자 승인이 필요한지 결정하는 체계다.</td></tr><tr><td>S3 메모리</td><td>사용자가 알려준 호칭, 지침, 업무 맥락 등을 저장하고 이후 봇의 판단에 참고하도록 하는 GrokBot의 장기 메모리다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Zq65PElvblQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-09-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
