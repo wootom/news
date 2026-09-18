@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다."><title>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</title><style>
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Codex에 Higgsfield API를 연결해 구독 대신 사용량별 영상 생성 비용을 비교한다."><title>Codex와 Higgsfield API 연동으로 영상 생성 비용을 사용량 기준으로 전환하는 방법을 설명한다.</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   /* AI Daily · daylight neutral */
@@ -176,41 +176,42 @@ tr:nth-child(even) td{background:var(--surface)}
   .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
   .hdr{break-after:avoid}
 }
-</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</h1><p class="lead">코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
-<li>클로드 코드를 몇 주간 거의 쓰지 않고 코덱스를 주로 사용하며, 한도·리셋권이 작업 흐름을 덜 끊는다고 설명한다.</li>
-<li>프론트엔드에서는 페이블보다 아스트라가 요구를 더 정확히 따르고, 반응형·상태 처리·접근성 디테일이 좋았다고 평가한다.</li>
-<li>백엔드에서는 아스트라가 마이그레이션·모델·라우터 작업을 이어가고, 기존 구조와 테스트를 더 잘 다룬다고 말한다.</li>
-<li>플러그인 대신 에포트로 작업 강도를 조절하고, 작은 단위로 검토하는 티키타카 방식을 사용한다.</li>
-<li>ADR·에이전츠 파일과 약 28개의 스킬 문서로 결정과 반복 작업 규칙을 모델에 다시 읽히는 방식을 소개한다.</li>
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-19 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>Codex와 Higgsfield API 연동으로 영상 생성 비용을 사용량 기준으로 전환하는 방법을 설명한다.</h1><p class="lead">Codex에 Higgsfield API를 연결해 구독 대신 사용량별 영상 생성 비용을 비교한다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Higgsfield는 API를 출시해 Codex와 연결하면 월 구독 대신 이미지·영상 생성 요청별로 비용을 지불할 수 있다고 소개한다.</li>
+<li>API 키를 생성해 .env 파일에 저장한 뒤 Codex에 사용 가능한 모델을 조회하고 자연어로 생성 작업을 지시하는 흐름을 보인다.</li>
+<li>Higgsfield API의 라이브 카탈로그는 76개 엔드포인트이며, 텍스트-투-비디오 18개·이미지-투-비디오 44개·텍스트-투-이미지 11개를 반환했다.</li>
+<li>동일 프롬프트를 SeaDance 2.5, Kling 3.0, MiniMax 등에 보내 품질·비용을 비교하고 용도별 모델 선택을 권한다.</li>
+<li>API는 Plus 기준 월 19클립 미만, Ultra 기준 월 50클립 미만일 때 구독보다 유리할 수 있다고 손익분기점을 제시한다.</li>
 </ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
-<li>발표자는 과거의 ‘코딩은 코덱스, 자동화는 클로드 코드’ 구분을 정정하고 현재는 거의 코덱스를 쓴다고 말한다.</li>
-<li>전환 이유로 한도와 리셋권, 프론트엔드, 백엔드, 플러그인 대신 에포트를 쓰는 단순함을 제시한다.</li>
-<li>평가는 벤치마크 점수가 아니라 매일 사용하는 사람의 체감이며, 작업 환경에 따라 다를 수 있다고 전제한다.</li>
-<li>클로드 코드가 나쁜 도구라는 뜻은 아니며, 다음 모델이 나오면 판단이 다시 바뀔 수 있다고 덧붙인다.</li>
-</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>한도와 리셋권이 만든 작업 흐름</h2><ul>
-<li>클로드 코드에서 한도에 걸리면 몇 시간 뒤 맥락을 다시 잡아야 했고, 한 번에 약 30분이 들었다고 말한다.</li>
-<li>하루에 두 번 한도에 걸리면 약 1시간이 사라지는 셈이라, 비용보다 작업 흐름의 단절이 더 큰 문제였다고 설명한다.</li>
-<li>코덱스는 한도에 걸렸을 때 리셋권을 써서 그 자리에서 이어갈 수 있으며, 본인 사용량에서는 리셋권 바닥을 본 적이 없다고 한다.</li>
-<li>하루에 대화 창을 10개 넘게 열어도 코덱스가 저녁까지 가며, 끊기지 않는 도구를 선택했다고 밝힌다.</li>
-</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>아스트라와 페이블의 프론트엔드 비교</h2><ul>
-<li>발표자는 기존 약 4개월간 백엔드는 코덱스, 화면 작업은 클로드에 맡기는 방식으로 배치했다고 말한다.</li>
-<li>랜딩 페이지와 설정 화면을 양쪽에 넣어 본 결과, 페이블은 예쁘지만 지시한 내용을 자체적으로 바꾸는 일이 잦았다고 평가한다.</li>
-<li>페이블이 간격을 바꾸거나 요청하지 않은 요소를 넣으면 수정 왕복이 2~3회 쌓여 처음부터 다시 시키는 편이 빨랐다고 한다.</li>
-<li>아스트라는 지시를 따르면서 버튼의 로딩·실패·비활성 상태, 반응형·접근성 같은 디테일까지 더 잘 처리했다고 말한다.</li>
-</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>백엔드 작업에서 커진 격차</h2><ul>
-<li>발표자는 백엔드는 원래 코덱스가 더 낫다고 봤으며, 아스트라 이후 격차가 더 벌어졌다고 말한다.</li>
-<li>아스트라는 마이그레이션 작성, 모델 수정, 라우터 작업을 중간에 대충 끝내지 않고 한 번에 이어가는 경우가 늘었다고 설명한다.</li>
-<li>기존 저장소의 구조를 갈아엎기보다 그 안에서 수정하는 특성이 큰 저장소일수록 중요하다고 평가한다.</li>
-<li>테스트 실패 시 원인을 찾아 다시 돌리고 고쳐서, 로그를 직접 붙여 넣는 일이 거의 없어졌다고 말한다.</li>
-</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에포트 조절과 작은 단위 티키타카</h2><ul>
-<li>슈퍼파워즈 같은 플러그인은 계획·검토·테스트 우선 절차로 모델을 틀에 넣는 방식이었으나 현재는 거의 쓰지 않는다고 한다.</li>
-<li>현재 설정은 모델과 에포트 한 줄씩이며, 오타·이름 변경은 낮게, 새 기능 설계·구조 변경은 높게 설정한다고 말한다.</li>
-<li>작업은 한 번에 크게 시키지 않고 방향 후보를 받은 뒤 하나를 고르고, 결과를 읽은 뒤 다음 작업을 주는 방식으로 진행한다.</li>
-<li>한 턴에 파일이 3~4개를 넘게 바뀌면 멈추며, 결과를 읽지 않으면 티키타카가 아니라 방치라고 강조한다.</li>
-</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>ADR·에이전츠 파일·스킬로 규칙 유지</h2><ul>
-<li>ADR은 결정, 이유, 버린 대안을 세 줄로 적고, 결정 하나당 파일 하나를 두는 아키텍처 결정 기록이라고 설명한다.</li>
-<li>새 작업 전에 ADR을 읽히면 모델이 이전 결정을 뒤집지 않으며, 예로 외래키를 쓰지 않기로 한 결정을 든다.</li>
-<li>컨텍스트 파일은 코덱스에서 에이전츠 파일이라 부르며, 백엔드·프론트 폴더별 도구와 먼저 읽을 규칙 파일을 적는다.</li>
-<li>스킬은 작업 순서와 금지 사항을 담은 마크다운 문서 폴더이며, 영상·자막 등 반복 업무용으로 약 28개를 만들었다고 한다.</li>
-<li>렌더 옵션 오류는 스킬 문서에 한 줄을 추가한 뒤 재발하지 않았으며, 스킬은 직접 고칠 수 있다는 점을 장점으로 든다.</li>
-</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>리셋권</td><td>코덱스에서 한도에 걸렸을 때 사용해 현재 작업 흐름을 이어가는 수단으로 설명된다.</td></tr><tr><td>아스트라</td><td>발표자가 프론트엔드와 백엔드 작업에서 페이블 및 기존 방식과 비교해 평가한 코덱스 측 모델이다.</td></tr><tr><td>에포트</td><td>코덱스에서 가벼운 수정부터 설계·구조 변경까지 작업의 생각 강도를 조절하는 칸이다.</td></tr><tr><td>ADR</td><td>결정·이유·버린 대안을 짧게 기록해 새 대화에서도 이전 아키텍처 결정을 유지하게 하는 문서다.</td></tr><tr><td>에이전츠 파일</td><td>저장소와 폴더별 작업 규칙, 사용할 도구, 먼저 읽을 파일을 적는 컨텍스트 파일이다.</td></tr><tr><td>스킬</td><td>반복 작업의 순서와 금지 사항을 마크다운으로 기록해 이름을 불러 모델에 읽히는 문서 단위다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/YbZglhAQ5S8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
+<li>Higgsfield API를 Codex에 연결하면 Higgsfield의 영상·이미지 모델을 월 구독 없이 사용량 기준으로 호출할 수 있다.</li>
+<li>월마다 생성량이 일정하고 구독 한도를 계속 채우는 이용자는 구독을 유지하는 편이 나을 수 있다고 설명한다.</li>
+<li>월별 생성량이 불규칙하거나 적은 이용자, 자체 웹사이트·SaaS·내부 도구에 기능을 넣을 이용자에게 API가 적합하다고 본다.</li>
+<li>비용과 품질은 모델·생성 빈도·활용 방식에 따라 달라지므로 API가 항상 더 저렴하거나 더 좋지는 않다고 강조한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>Higgsfield API 계정과 출시 혜택 설정</h2><ul>
+<li>Google에서 ‘Higgsfield API’를 검색해 API 대시보드로 이동하고 계정을 만든 뒤 API 키를 생성하는 절차를 안내한다.</li>
+<li>출시 후 7일 한정 혜택으로 세일 모델 15% 할인, 선택 모델 최대 50% 할인, 계정 내 15달러 크레딧을 언급한다.</li>
+<li>최대 50% 할인은 가격 섹션에서 비디오 모델 2개와 이미지 모델 1개를 선택해 적용받는 방식이라고 설명한다.</li>
+<li>15달러 무료 사용액은 신용카드 연결과 적격 비즈니스 도메인 이메일 사용 후 받을 수 있으며, 설정 후 동시 30개 생성을 실행할 수 있다고 말한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>Codex의 .env 파일로 API 키 연결하기</h2><ul>
+<li>Codex 새 채팅에서 .env 파일에 Higgsfield API 키용 플레이스홀더를 만들어 달라고 요청하는 방법을 보인다.</li>
+<li>API 키는 채팅 스레드에 붙여넣지 말고 Codex가 지정한 .env 파일 경로를 열어 저장해야 한다고 안내한다.</li>
+<li>키 저장 뒤 Codex에 이용 가능한 Higgsfield API 모델을 조회해 달라고 요청하고, 테스트 영상 생성을 실행할 수 있다.</li>
+<li>무료 ‘Higgsfield API generations’ 스킬은 기본 설정과 기능 옵션을 포함해 API 조사 과정을 줄인다고 소개한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>엔드포인트 조회와 영상 생성 처리 과정</h2><ul>
+<li>Codex는 Higgsfield API 문서를 참조해 엔드포인트를 조사하며, API 키 인증 성공 후 라이브 카탈로그를 가져온다.</li>
+<li>영상에서 확인한 카탈로그는 총 76개 엔드포인트로, 텍스트-투-비디오 18개와 이미지-투-비디오 44개, 텍스트-투-이미지 11개를 포함한다.</li>
+<li>첫 실행에는 SeaDance 2.0을 사용하며, 요청이 수락된 뒤 Codex가 완료될 때까지 반복 확인하는 폴링을 수행한다.</li>
+<li>생성이 끝나면 Codex가 MP4 파일을 로컬에 내려받으며, SeaDance 2.0 결과에서는 노트북 방향이 어색한 사례도 제시된다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>SeaDance·Kling·MiniMax 출력과 비용 비교</h2><ul>
+<li>생성한 여러 영상의 총지출은 7.40달러였으며, SeaDance 2.5는 기존에 월 60달러 플랜에서 이용 가능했다고 설명한다.</li>
+<li>동일 프롬프트의 예시에서 SeaDance 2.5는 1.60달러, Kling 3.0은 약 0.20달러, 다른 출력은 약 0.50달러로 제시된다.</li>
+<li>‘Nova protein coffee’ UGC 예시에서 SeaDance 2.5 비용은 3.23달러, Kling 3.0은 0.60달러, MiniMax는 1.10달러였다.</li>
+<li>발표자는 해당 세 UGC 결과 중 Kling 3.0의 셀피형 인물 사실감을 높게 평가했고, MiniMax 결과는 가장 약하다고 평가했다.</li>
+<li>같은 프롬프트를 여러 모델에 보내 비용·품질·강점을 비교해야 하며, SeaDance 2.5는 사람과 제품 촬영에 강할 수 있다고 말한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>손익분기점과 대량 생성 활용 기준</h2><ul>
+<li>Plus 월간 플랜은 약 19클립 미만, Plus 연간 플랜은 약 16클립 미만일 때 API가 더 적합하다는 계산을 제시한다.</li>
+<li>Ultra 월간 플랜의 손익분기점은 50클립, Ultra 연간 플랜은 39클립으로 제시하며 그 이하라면 API가 유리하다고 설명한다.</li>
+<li>API 생성 스킬은 각 생성 비용을 채팅 스레드에 표시해 Higgsfield 분석 대시보드를 반복 확인하지 않아도 된다고 소개한다.</li>
+<li>Codex나 Claude로 이벤트·광고용 브리프와 각도를 구상한 뒤 여러 워커에 자산 생성을 맡겨 대량 작업을 처리한 사례를 언급한다.</li>
+<li>브랜드 가이드라인이나 일관된 캐릭터 관련 스킬을 추가하면 Codex 안에서 영상·이미지 자산 생성 역량을 축적할 수 있다고 말한다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Higgsfield API</td><td>Higgsfield의 영상·이미지 모델을 요청당 과금 방식으로 Codex 등 외부 도구에서 호출할 수 있게 하는 API이다.</td></tr><tr><td>Codex</td><td>영상에서는 .env 파일 설정, API 문서 조사, 모델 조회, 생성 요청과 완료 확인을 수행하는 도구로 사용된다.</td></tr><tr><td>SeaDance 2.5</td><td>Higgsfield에서 이용 가능한 영상 생성 모델로, 발표자는 사람과 제품 장면에서 강점이 있을 수 있다고 평가한다.</td></tr><tr><td>Kling 3.0</td><td>동일 UGC 프롬프트 비교에서 0.60달러 비용과 셀피형 인물의 높은 사실감이 언급된 영상 모델이다.</td></tr><tr><td>폴링</td><td>영상 생성 요청이 완료될 때까지 Codex가 상태를 반복적으로 확인하고, 완료 후 MP4를 내려받는 과정이다.</td></tr><tr><td>손익분기점</td><td>API 사용량 과금과 Higgsfield 월·연간 구독 비용 중 어느 쪽이 유리한지 가르는 월별 클립 수 기준이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/oWCcN6hSFjA" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-09-19</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

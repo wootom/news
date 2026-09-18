@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다."><title>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</title><style>
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="GPT-6 Astra 기반 에이전틱 OS의 메모리 통합, 업무 실행, 생성 API 연결 시연."><title>GPT-6 Astra 기반 에이전틱 OS로 개인 데이터와 업무 도구를 통합하는 과정을 소개한다.</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   /* AI Daily · daylight neutral */
@@ -176,41 +176,43 @@ tr:nth-child(even) td{background:var(--surface)}
   .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
   .hdr{break-after:avoid}
 }
-</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-15 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>메이커 에반은 작업 흐름·프론트·백엔드·단순성을 이유로 코덱스 중심으로 전환했다.</h1><p class="lead">코덱스 전환 이유 4가지와 ADR·스킬 기반의 실제 작업 방식을 공개했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
-<li>클로드 코드를 몇 주간 거의 쓰지 않고 코덱스를 주로 사용하며, 한도·리셋권이 작업 흐름을 덜 끊는다고 설명한다.</li>
-<li>프론트엔드에서는 페이블보다 아스트라가 요구를 더 정확히 따르고, 반응형·상태 처리·접근성 디테일이 좋았다고 평가한다.</li>
-<li>백엔드에서는 아스트라가 마이그레이션·모델·라우터 작업을 이어가고, 기존 구조와 테스트를 더 잘 다룬다고 말한다.</li>
-<li>플러그인 대신 에포트로 작업 강도를 조절하고, 작은 단위로 검토하는 티키타카 방식을 사용한다.</li>
-<li>ADR·에이전츠 파일과 약 28개의 스킬 문서로 결정과 반복 작업 규칙을 모델에 다시 읽히는 방식을 소개한다.</li>
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Jack Roberts</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-19 · Jack Roberts</span><span class="chip">🎬 영상</span></div><h1>GPT-6 Astra 기반 에이전틱 OS로 개인 데이터와 업무 도구를 통합하는 과정을 소개한다.</h1><p class="lead">GPT-6 Astra 기반 에이전틱 OS의 메모리 통합, 업무 실행, 생성 API 연결 시연.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>영상은 GPT-6 Astra가 구축했다는 에이전틱 OS를 통해 메모리·대시보드·캘린더·생성 도구를 한 화면에 통합하는 모습을 시연한다.</li>
+<li>시스템은 Claude, Codex, ChatGPT, Gmail, Outlook, Slack, Notion, Obsidian, 사진 및 금융 정보를 연결 대상으로 제시한다.</li>
+<li>사용자와 사업체 정보를 담는 라이프 프로필·비즈니스 프로필을 먼저 만들고, 목표·전략·일일 브리프에 활용하는 구성을 설명한다.</li>
+<li>Higgsfield API 키를 연결해 이미지와 영상을 생성하고, 컴퓨터 사진을 키워드로 색인하는 ‘매직 서치’ 기능을 소개한다.</li>
+<li>Zapier를 연결 계층으로 활용하면 School, YouTube, Microsoft 등 여러 앱을 에이전틱 OS와 연결할 수 있다고 안내한다.</li>
 </ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
-<li>발표자는 과거의 ‘코딩은 코덱스, 자동화는 클로드 코드’ 구분을 정정하고 현재는 거의 코덱스를 쓴다고 말한다.</li>
-<li>전환 이유로 한도와 리셋권, 프론트엔드, 백엔드, 플러그인 대신 에포트를 쓰는 단순함을 제시한다.</li>
-<li>평가는 벤치마크 점수가 아니라 매일 사용하는 사람의 체감이며, 작업 환경에 따라 다를 수 있다고 전제한다.</li>
-<li>클로드 코드가 나쁜 도구라는 뜻은 아니며, 다음 모델이 나오면 판단이 다시 바뀔 수 있다고 덧붙인다.</li>
-</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>한도와 리셋권이 만든 작업 흐름</h2><ul>
-<li>클로드 코드에서 한도에 걸리면 몇 시간 뒤 맥락을 다시 잡아야 했고, 한 번에 약 30분이 들었다고 말한다.</li>
-<li>하루에 두 번 한도에 걸리면 약 1시간이 사라지는 셈이라, 비용보다 작업 흐름의 단절이 더 큰 문제였다고 설명한다.</li>
-<li>코덱스는 한도에 걸렸을 때 리셋권을 써서 그 자리에서 이어갈 수 있으며, 본인 사용량에서는 리셋권 바닥을 본 적이 없다고 한다.</li>
-<li>하루에 대화 창을 10개 넘게 열어도 코덱스가 저녁까지 가며, 끊기지 않는 도구를 선택했다고 밝힌다.</li>
-</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>아스트라와 페이블의 프론트엔드 비교</h2><ul>
-<li>발표자는 기존 약 4개월간 백엔드는 코덱스, 화면 작업은 클로드에 맡기는 방식으로 배치했다고 말한다.</li>
-<li>랜딩 페이지와 설정 화면을 양쪽에 넣어 본 결과, 페이블은 예쁘지만 지시한 내용을 자체적으로 바꾸는 일이 잦았다고 평가한다.</li>
-<li>페이블이 간격을 바꾸거나 요청하지 않은 요소를 넣으면 수정 왕복이 2~3회 쌓여 처음부터 다시 시키는 편이 빨랐다고 한다.</li>
-<li>아스트라는 지시를 따르면서 버튼의 로딩·실패·비활성 상태, 반응형·접근성 같은 디테일까지 더 잘 처리했다고 말한다.</li>
-</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>백엔드 작업에서 커진 격차</h2><ul>
-<li>발표자는 백엔드는 원래 코덱스가 더 낫다고 봤으며, 아스트라 이후 격차가 더 벌어졌다고 말한다.</li>
-<li>아스트라는 마이그레이션 작성, 모델 수정, 라우터 작업을 중간에 대충 끝내지 않고 한 번에 이어가는 경우가 늘었다고 설명한다.</li>
-<li>기존 저장소의 구조를 갈아엎기보다 그 안에서 수정하는 특성이 큰 저장소일수록 중요하다고 평가한다.</li>
-<li>테스트 실패 시 원인을 찾아 다시 돌리고 고쳐서, 로그를 직접 붙여 넣는 일이 거의 없어졌다고 말한다.</li>
-</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>에포트 조절과 작은 단위 티키타카</h2><ul>
-<li>슈퍼파워즈 같은 플러그인은 계획·검토·테스트 우선 절차로 모델을 틀에 넣는 방식이었으나 현재는 거의 쓰지 않는다고 한다.</li>
-<li>현재 설정은 모델과 에포트 한 줄씩이며, 오타·이름 변경은 낮게, 새 기능 설계·구조 변경은 높게 설정한다고 말한다.</li>
-<li>작업은 한 번에 크게 시키지 않고 방향 후보를 받은 뒤 하나를 고르고, 결과를 읽은 뒤 다음 작업을 주는 방식으로 진행한다.</li>
-<li>한 턴에 파일이 3~4개를 넘게 바뀌면 멈추며, 결과를 읽지 않으면 티키타카가 아니라 방치라고 강조한다.</li>
-</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>ADR·에이전츠 파일·스킬로 규칙 유지</h2><ul>
-<li>ADR은 결정, 이유, 버린 대안을 세 줄로 적고, 결정 하나당 파일 하나를 두는 아키텍처 결정 기록이라고 설명한다.</li>
-<li>새 작업 전에 ADR을 읽히면 모델이 이전 결정을 뒤집지 않으며, 예로 외래키를 쓰지 않기로 한 결정을 든다.</li>
-<li>컨텍스트 파일은 코덱스에서 에이전츠 파일이라 부르며, 백엔드·프론트 폴더별 도구와 먼저 읽을 규칙 파일을 적는다.</li>
-<li>스킬은 작업 순서와 금지 사항을 담은 마크다운 문서 폴더이며, 영상·자막 등 반복 업무용으로 약 28개를 만들었다고 한다.</li>
-<li>렌더 옵션 오류는 스킬 문서에 한 줄을 추가한 뒤 재발하지 않았으며, 스킬은 직접 고칠 수 있다는 점을 장점으로 든다.</li>
-</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>리셋권</td><td>코덱스에서 한도에 걸렸을 때 사용해 현재 작업 흐름을 이어가는 수단으로 설명된다.</td></tr><tr><td>아스트라</td><td>발표자가 프론트엔드와 백엔드 작업에서 페이블 및 기존 방식과 비교해 평가한 코덱스 측 모델이다.</td></tr><tr><td>에포트</td><td>코덱스에서 가벼운 수정부터 설계·구조 변경까지 작업의 생각 강도를 조절하는 칸이다.</td></tr><tr><td>ADR</td><td>결정·이유·버린 대안을 짧게 기록해 새 대화에서도 이전 아키텍처 결정을 유지하게 하는 문서다.</td></tr><tr><td>에이전츠 파일</td><td>저장소와 폴더별 작업 규칙, 사용할 도구, 먼저 읽을 파일을 적는 컨텍스트 파일이다.</td></tr><tr><td>스킬</td><td>반복 작업의 순서와 금지 사항을 마크다운으로 기록해 이름을 불러 모델에 읽히는 문서 단위다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/YbZglhAQ5S8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
+<li>영상의 핵심은 단순 채팅형 AI가 아니라 개인·사업 데이터의 맥락을 바탕으로 실제 작업을 수행하는 에이전틱 OS라는 주장이다.</li>
+<li>제작자는 이 OS가 사용자의 정보와 사업 정보를 연결하고, 이를 정리·추론해 목표 달성에 필요한 행동을 돕는다고 설명한다.</li>
+<li>구성은 메모리 코어, 목표와 전략, 일일 브리프, 대시보드, 캘린더 작업, 이미지·영상 생성 기능으로 제시된다.</li>
+<li>기존 Claude, Codex, ChatGPT의 연결을 활용해 별도의 복잡한 재연결 없이 통합하는 방식을 강조한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>프로필과 목표 중심의 운영체제 설정</h2><ul>
+<li>운영체제에 이름을 부여하고 사용자 자신을 설명하는 라이프 프로필과 사업체 정보를 담는 비즈니스 프로필을 설정한다.</li>
+<li>비즈니스 프로필에는 고객과 사업의 형태 등이 포함되며, GPT-6 Astra가 인터뷰를 통해 필요한 맥락을 제공한다고 설명한다.</li>
+<li>목표와 전략을 설정하면 시스템이 이번 주 업무, 이번 달 목표, 분기별 도달 지점을 반영한 일일 브리프를 제공하는 구조다.</li>
+<li>제작자는 에이전틱 OS가 개인 및 사업 성과 달성에 도움을 주지 못하면 가치가 없다고 말한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>메모리 코어의 데이터 통합과 질의</h2><ul>
+<li>메모리 코어는 ChatGPT와 Claude 등의 정보를 포함하는 시스템 전체 메모리로 소개되며, 백그라운드에서 새 메모리가 추가되는 화면이 나온다.</li>
+<li>Codex, Claude, OpenClaw 등의 코딩 도구를 선택하고 Granola, Notion, Obsidian, 사진을 메모리 소스로 가져올 수 있다고 제시한다.</li>
+<li>Claude 또는 Codex의 채팅과 이메일이 발생할 때 로컬 컴퓨터에서 실행 중인 OS에 자동 반영될 수 있다고 설명한다.</li>
+<li>회의 참석자나 최근 회의 제목을 묻는 질의를 예시로 들며, 저장한 ‘좋아하는 색은 green, 동물은 English Springer Spaniel’ 정보를 다시 검색해 답한다.</li>
+<li>유튜브 영상, 파일, 사진 등을 메모리에 넣고 이후 채팅에서 활용할 수 있다고 시연한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>대시보드와 음성 캘린더 작업</h2><ul>
+<li>대시보드는 연결된 시스템의 주요 지표, 일일 브리프, 목표 진행도, 재무 현황, 오디언스 성장 정보를 한눈에 보는 공간으로 제시된다.</li>
+<li>화면의 수치는 데모 수치라고 밝히며, 캘린더 접근 권한을 바탕으로 우선순위를 확인할 수 있다고 설명한다.</li>
+<li>재무 영역에서는 월별 수입, 사업 상태, 재무 구성과 관련한 정보를 볼 수 있다고 소개한다.</li>
+<li>음성으로 ‘내일 11시부터 12시까지 Budapest 시간, Jack Brunch Lockin’ 일정을 요청하자 이벤트가 추가되는 시연이 나온다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>Higgsfield API 기반 이미지·영상 생성</h2><ul>
+<li>디자인 시스템은 Higgsfield API를 연결해 이미지와 비디오 생성을 사용할 수 있는 기능으로 소개된다.</li>
+<li>Higgsfield에서 API keys 메뉴로 이동해 키를 입력하면 OS 안에서 생성 기능을 쓸 수 있다고 안내한다.</li>
+<li>예시로 Soul 2 모델, 16:9 비율, 이미지 4장을 선택하고 English Springer Spaniel이 체육관에서 단백질 셰이크를 마시는 이미지를 생성한다.</li>
+<li>생성 화면에서는 모델별 선택지와 이미지당 비용이 표시되며, 제작자는 이미지뿐 아니라 영상도 생성할 수 있다고 말한다.</li>
+<li>라이브러리의 모든 컴퓨터 사진을 AI가 설명 키워드로 색인해 ‘burger’ 같은 검색어로 찾는 ‘매직 서치’를 소개한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>웹사이트 편집과 외부 앱 연결</h2><ul>
+<li>웹사이트 디자인 시스템에서는 localhost 주소를 입력해 웹사이트를 열고 태블릿·모바일 화면 형태로 미리 볼 수 있다고 시연한다.</li>
+<li>제작자는 Astra에 지시해 웹사이트를 만들었다고 말하며, 디자인·그래픽·카피를 확인하고 일부 요소를 편집하는 화면을 보여준다.</li>
+<li>카피는 ‘slop monster’를 거쳐 수정할 수 있고, 그래픽 생성 기능도 사용할 수 있다고 언급한다.</li>
+<li>Zapier는 여러 앱 연결을 위한 연결 계층으로 소개되며, School, YouTube, Microsoft 등이 예시로 언급된다.</li>
+<li>OS 안에서 Claude와 Codex에 명령을 내릴 수 있으며, Zapier 연결은 skills를 선택해 설정하는 방식으로 설명된다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>에이전틱 OS</td><td>개인·사업 데이터와 여러 AI 및 앱 연결을 통합해 질의와 작업 실행을 지원하도록 영상에서 소개한 운영체제다.</td></tr><tr><td>메모리 코어</td><td>ChatGPT, Claude, 이메일, 회의, 파일, 사진 등에서 가져온 정보를 저장하고 검색하는 시스템의 메모리 영역이다.</td></tr><tr><td>라이프 프로필</td><td>사용자가 집중하는 일과 개인 정보를 담아 운영체제에 맥락을 제공하는 프로필이다.</td></tr><tr><td>Higgsfield API</td><td>API 키를 OS에 넣어 이미지와 영상 생성 기능을 연결하는 데 사용된다고 소개된 API다.</td></tr><tr><td>매직 서치</td><td>컴퓨터 속 사진을 AI가 설명 키워드로 색인해 파일명과 무관하게 검색하는 기능의 명칭이다.</td></tr><tr><td>Zapier</td><td>여러 외부 앱을 에이전틱 OS에 연결하는 연결 계층으로 영상에서 추천된 소프트웨어다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/bjDDsdSfun8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Jack Roberts · 2026-09-19</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
