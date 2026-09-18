@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="시가 5억원 주택 보유 65세 사례자의 주택연금 월 125만원 예시를 짚는다."><title>주택연금은 독신·고령 가구의 주택을 평생 현금흐름으로 바꾸는 제도라고 설명한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>전인구경제연구소</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-19 · 전인구경제연구소</span><span class="chip">🎬 영상</span></div><h1>주택연금은 독신·고령 가구의 주택을 평생 현금흐름으로 바꾸는 제도라고 설명한다.</h1><p class="lead">시가 5억원 주택 보유 65세 사례자의 주택연금 월 125만원 예시를 짚는다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>사례자는 60대 중반 독신 여성으로 국민연금 70만원, 기초연금 30만원과 시가 5억원 경기도 아파트, 현금 1억원을 보유했다.</li>
+<li>영상은 독신 고령자에게 현금 1억원을 투자·보험에 묶기보다 예금으로 유지해 비상자금으로 활용하라고 조언했다.</li>
+<li>주택연금은 공시가격 12억원 이하 실거주 주택을 대상으로 하며, 부부 중 1명이 55세 이상이면 가입할 수 있다고 설명했다.</li>
+<li>65세에 시세 5억원 주택으로 가입하면 월 125만원, 70세 가입 시 월 150만원을 평생 받는 예시를 제시했다.</li>
+<li>부부 공동명의도 가입 가능하며 마지막 생존자까지 같은 금액을 지급하지만, 자녀 등 제3자 공동명의는 가입할 수 없다고 밝혔다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>영상은 노후 자산이 주택에 집중된 독신 고령자에게 주택을 담보로 평생 현금흐름을 만드는 주택연금을 핵심 수단으로 제시했다.</li>
+<li>사례자의 국민연금·기초연금 월 100만원에 주택연금을 더해 생활비 흐름을 보완하는 방식을 설명했다.</li>
+<li>현금 자산은 투자나 보험 가입보다 질병·간병 등 비상 상황에 즉시 쓸 수 있도록 남겨야 한다고 말했다.</li>
+<li>국민연금, 기초연금, 주택연금 등 국가 운영 제도를 먼저 점검하고 여유 자산이 있을 때 개인연금을 검토하라고 제안했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>사례자의 자산 배분과 비상자금</h2><ul>
+<li>사례자는 젊을 때 장사로 노후 준비를 충분히 하지 못했고, 국민연금 추후납부를 통해 월 70만원을 받고 있다고 소개됐다.</li>
+<li>기초연금 30만원까지 합친 기존 월 현금흐름은 100만원이며, 보유 현금은 약 1억원이라고 설명했다.</li>
+<li>영상은 혼자 사는 사람은 배우자·자녀의 지원 수단이 없을 수 있어 수천만원 이상의 비상자금이 필요하다고 봤다.</li>
+<li>현금 1억원은 은행 예금에 두고 필요할 때 인출할 수 있는 자금으로 쓰라는 의견을 제시했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>주택연금 가입 기준과 월 지급 예시</h2><ul>
+<li>주택연금은 거주 중인 집을 담보로 연금을 받는 제도이며, 영상은 한국·미국·홍콩 3개국에 유사한 평생 지급 시스템이 있다고 설명했다.</li>
+<li>가입 기준으로 공시가격 12억원 이하 주택, 부부 중 한 명이 55세 이상, 실거주 조건을 제시했다.</li>
+<li>영상은 70세 가입 시 시세 1억원당 월 30만원, 65세 가입 시 시세 1억원당 월 25만원을 받는다고 예시를 들었다.</li>
+<li>시세 5억원 주택의 사례자는 65세에 월 125만원, 70세에 가입하면 월 150만원을 평생 받는다고 계산했다.</li>
+<li>70세 가입 예시에서는 국민연금 70만원·기초연금 30만원·주택연금 150만원을 합쳐 월 250만원이라고 설명했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>담보대출이 있는 주택의 가입 판단</h2><ul>
+<li>담보대출이 있는 주택도 주택연금 가입은 가능하다고 설명했다.</li>
+<li>다만 기존 대출을 국가가 상환하는 구조여서 상환 이자가 주택연금에서 차감되며, 연금액이 대출 비율보다 크게 줄 수 있다고 말했다.</li>
+<li>5억원 주택에 5천만원 대출이 있을 경우 연금액이 10%가 아니라 20~30% 이상 줄어들 수 있다는 예시를 들었다.</li>
+<li>사례자처럼 현금 1억원이 있다면 그중 5천만원으로 대출을 갚은 뒤 주택연금에 가입하는 방식을 제안했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>공동명의, 이사와 재건축의 처리</h2><ul>
+<li>부부 공동명의 주택은 가입할 수 있으며, 남편·부인·공동명의 여부와 관계없이 마지막 생존자까지 동일 금액을 평생 지급한다고 설명했다.</li>
+<li>엄마와 딸처럼 부부 이외의 사람이 공동명의자인 경우에는 주택연금에 가입할 수 없다고 밝혔다.</li>
+<li>이사할 때는 담보 주택을 새 주택으로 바꿔 연금을 승계할 수 있으나, 주택 가격 차이로 월 연금액은 달라질 수 있다.</li>
+<li>재건축 때는 기존 주택에 저당권이 설정돼 시공사의 이주비 대출을 받기 어려울 수 있다고 설명했다.</li>
+<li>이사·재건축 등 변수가 정리되고 장기간 거주할 주택이 확정된 뒤 가입하는 것이 바람직하다는 의견을 냈다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>세금·상속·복리 비용에 대한 설명</h2><ul>
+<li>영상은 주택연금을 소득이 아니라 주택을 담보로 받는 대출로 설명하며, 월 지급액에 대한 세금은 걱정할 필요가 없다고 말했다.</li>
+<li>가입 뒤에도 주택 명의는 바뀌지 않으며, 사망 후 정산에서 남는 금액은 자녀나 법정 상속인에게 돌아간다고 설명했다.</li>
+<li>집값은 가입 시점 기준으로 월 연금액이 정해지고, 이후 집값이 올라도 더 지급하지 않으며 내려가도 덜 지급하지 않는다고 밝혔다.</li>
+<li>주택연금 대출에는 월복리 이자와 보증료가 붙지만, 사망 후 정산하며 부족분을 상속인에게 청구하지 않는다고 설명했다.</li>
+<li>현재 재산세는 그대로 내고 있으며 약 25%를 깎아주는 한시 정책이 있다고 언급했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>주택연금</td><td>실거주 주택을 담보로 맡기고 평생 월 지급금을 받는 국가 운영 제도로 설명됐다.</td></tr><tr><td>주택금융공사</td><td>영상에서 주택연금 가입과 월 지급 예시를 확인할 기관으로 언급된 기관이다.</td></tr><tr><td>공시가격</td><td>주택연금 가입 여부를 가르는 기준으로, 영상에서는 12억원 이하 주택이 대상이라고 설명했다.</td></tr><tr><td>마지막 생존자</td><td>부부 공동명의 등을 포함해 한 배우자가 사망한 뒤에도 동일한 주택연금을 받는 사람을 뜻한다.</td></tr><tr><td>보증료</td><td>주택연금의 평생 지급을 보증하는 데 붙는 비용으로, 대출 이자와 함께 사망 후 정산된다고 설명됐다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/rCORISyA4cc" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>전인구경제연구소 · 2026-09-19</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

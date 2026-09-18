@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="제브는 구조화된 판단을 초당 약 10번 수행하는 자동화용 AI로 소개됐다."><title>제브는 대화 생성 대신 구조화된 판단을 빠르게 반복하도록 설계된 자동화용 AI다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-19 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>제브는 대화 생성 대신 구조화된 판단을 빠르게 반복하도록 설계된 자동화용 AI다.</h1><p class="lead">제브는 구조화된 판단을 초당 약 10번 수행하는 자동화용 AI로 소개됐다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>타입세이프 AI의 디오고 알메이다는 제브를 채팅 모델이 아니라 프로그램 안에서 판단을 수행하는 자동화용 부품으로 소개했다.</li>
+<li>발표 기준 제브 가격은 입력 100만 토큰당 0.042달러이며, 출력은 무료라고 설명됐다.</li>
+<li>제브는 구조화된 질문 묶음에 약 100밀리초로 응답해 초당 약 10번 판단하며 둠 플레이를 시연했다.</li>
+<li>위키 레이스 시연에서 제브는 0.4초와 0.047센트로 도착했지만, 비교 대상은 대부분 추론을 끈 모델이었다.</li>
+<li>영상은 ‘환각 0%’가 실측 오류율이 아니라 정해진 출력 형식을 보장한다는 뜻이라며 검증 필요성을 강조했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>제브의 핵심은 문장을 생성하는 대화형 AI보다 코드 안에서 빠른 판단을 반복하는 데 있다는 주장이다.</li>
+<li>문의 내용을 결제팀 또는 기술팀으로 보내는 것처럼 정해진 선택지 가운데 결정을 내리는 활용 사례를 제시했다.</li>
+<li>발표는 빠르고 저렴한 판단의 자동화 가능성을 강조했지만, 영상은 만능 AI나 오류 없는 판단기는 아니라고 정리했다.</li>
+<li>작은 분류 업무부터 정확도와 비용을 함께 측정한 뒤 제브의 가치를 판단해야 한다고 권고했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>시스템 원과 RLHF 비판</h2><ul>
+<li>디오고 알메이다는 오픈AI에서 챗GPT와 RLHF를 공동 개발했다고 자신을 소개했다.</li>
+<li>그는 RLHF가 AI를 인간 선호에 맞추지만 다양한 답을 놓치고 과신해 신뢰하기 어려울 수 있다고 설명했다.</li>
+<li>타입세이프 AI는 2년 전부터 자동화에 최적화한 새 파운데이션 모델 ‘시스템 원’을 비공개로 개발해 왔다고 밝혔다.</li>
+<li>발표에서는 새로운 구조와 샘플러, 보정된 의사결정을 위한 강화학습을 시스템 원의 요소로 들었다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>병렬 판단 구조와 가격 정책</h2><ul>
+<li>발표는 언어 모델이 자연스러운 대화를 위해 순차적으로 작동하는 반면, 시스템 원은 작업을 병렬로 수행한다고 비교했다.</li>
+<li>제브는 문장을 한 글자씩 생성하는 대신 정해진 선택지와 확률, 신뢰도를 출력하는 방식으로 설명됐다.</li>
+<li>공개 발표에서는 제브가 100배 빠르고 100배 저렴하며 입력 10억 토큰당 42달러라고 제시했다.</li>
+<li>영상은 수백 배 성능 차이가 회사 업무 평가와 공식 글의 높은 쪽 수치에 기반하므로 실제 업무에서는 별도 측정이 필요하다고 말했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>둠 시연의 구조화된 게임 판단</h2><ul>
+<li>제브는 체력, 적 위치, 날아오는 투사체, 획득 아이템 등 구조화된 게임 상태를 받아 둠 플레이 판단을 수행했다.</li>
+<li>방아쇠를 당길지, 최우선 목표가 무엇인지, 회피할지 같은 작고 형식이 정해진 질문을 반복해서 받는다.</li>
+<li>질문 묶음마다 약 100밀리초, 초당 약 10번 판단하며 적을 추적·사격하거나 공격을 피하는 모습을 보였다.</li>
+<li>‘쏘지 말고 피하기만 하라’는 텍스트 지시를 주자 같은 판단 구조에서 사격하지 않고 회피하는 행동으로 바뀌었다.</li>
+<li>영상은 제브가 게임 화면을 직접 본 것이 아니라 정리된 데이터를 받았다는 점을 분명히 했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>위키 레이스 비교 결과와 조건</h2><ul>
+<li>위키 레이스는 한 위키피디아 문서에서 목표 문서까지 빠르게 또는 적은 이동으로 도착하는 경기로 소개됐다.</li>
+<li>야구에서 태양으로 가는 시연에서 제브는 0.4초 만에 도착했고, 두 번째로 빠른 모델보다 약 9배 빨랐다고 제시됐다.</li>
+<li>해당 실행의 모든 추론 포함 비용은 0.047센트였으며, 다른 모델들은 최소 1센트이 들었다고 설명됐다.</li>
+<li>테라는 현재 페이지에 없는 링크를 만들어 내 재시도가 필요했고, 이 때문에 실행 시간이 길어졌다고 언급됐다.</li>
+<li>다만 공식 설명상 비교 대상 대부분은 추론을 끈 모델이었고, 추론을 켜면 상대 모델 결과도 좋아진다고 영상은 덧붙였다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>환각 0% 표현의 한계와 검증</h2><ul>
+<li>발표는 제브가 정해진 선택지와 확률을 반환하므로 환각을 일으킬 수 없다고 설명했다.</li>
+<li>그러나 영상은 공식 원문에서 ‘환각 0%’가 실측 오류율이 아니라 정해진 출력 형식 보장을 뜻한다고 명시했다고 전했다.</li>
+<li>주어진 선택지 밖의 항목을 만들지 않는 것과, 존재하는 선택지 중 정답을 고르는 것은 다른 문제라고 구분했다.</li>
+<li>따라서 제브가 모든 작업에서 더 똑똑하다고 위키 레이스 장면만으로 결론 내릴 수는 없다고 설명했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>제브</td><td>대화문 생성보다 구조화된 선택지에서 빠른 판단을 반복하는 자동화용 AI로 공개된 모델이다.</td></tr><tr><td>시스템 원</td><td>타입세이프 AI가 자동화에 최적화한 새 파운데이션 모델로 개발 중이라고 밝힌 체계다.</td></tr><tr><td>RLHF</td><td>AI를 인간의 선호에 맞추는 사후 학습 알고리즘으로, 발표자는 다양한 답을 놓치고 과신할 수 있는 문제를 언급했다.</td></tr><tr><td>자기회귀</td><td>언어 모델이 문장을 순차적으로 생성하는 방식으로, 발표에서는 병렬 판단 구조와 대비됐다.</td></tr><tr><td>위키 레이스</td><td>한 위키피디아 문서에서 목표 문서까지 빠르게 또는 적은 이동으로 도달하는 비교 시연 경기다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/0y245p0kSQQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-09-19</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
