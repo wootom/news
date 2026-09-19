@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Jev를 대규모 분류 자동화에 적용한 12개 사례와 속도·비용 비교."><title>Jev는 대규모 분류·의사결정 자동화에서 속도와 비용 절감을 겨냥한 모델로 제시됐다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-20 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>Jev는 대규모 분류·의사결정 자동화에서 속도와 비용 절감을 겨냥한 모델로 제시됐다.</h1><p class="lead">Jev를 대규모 분류 자동화에 적용한 12개 사례와 속도·비용 비교.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Jev는 대화나 글쓰기를 위한 모델이 아니라, 입력을 바탕으로 분류·점수·예/아니오 결정을 출력하는 모델로 소개됐다.</li>
+<li>Dogo가 공동 개발한 RLCD는 ‘reinforcement learning for calibrated decisions’의 약자로, 보정된 의사결정 학습 방식으로 설명됐다.</li>
+<li>1,000개 이메일 7개 규칙 분류에서 Jev는 병렬화 후 6초·9센트였고, Luna는 5분·62센트로 비교됐다.</li>
+<li>Jev는 유튜브 댓글 1,000개를 5초·5센트에 분류했으며, 콘솔상 약 2만 건 요청에 85센트를 사용했다고 밝혔다.</li>
+<li>작성·요약·주제 발견·심층 분석은 할 수 없으며, 정확도·비용·속도 비교를 위한 골든 데이터셋 평가가 필요하다고 조언했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Jev는 토큰을 생성하거나 대화하지 않고, 정해진 기준에 따라 빠르게 결정을 내리는 AI로 설명됐다.</li>
+<li>출력 형태는 예/아니오와 신뢰도, 여러 선택지 중 하나를 고르는 분류, 척도 기반 점수의 세 종류다.</li>
+<li>대량 데이터의 사전 분류에는 Jev를 쓰고, 응답 작성이나 심층 분석은 ChatGPT 같은 모델에 넘기는 구성이 제안됐다.</li>
+<li>실제 운영 전에는 100개 사례와 100개 정답으로 된 골든 데이터셋에서 Jev·Opus·Soul 등을 평가해야 한다고 했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>RLCD와 Jev의 결정 출력 방식</h2><ul>
+<li>Jev의 학습 방식 RLCD는 ‘reinforcement learning for calibrated decisions’로 소개됐다.</li>
+<li>지원 티켓 예시에서 긴급 여부는 99% 신뢰도의 예/아니오, 담당 팀은 기술·청구·지원 등의 선택지, 불만도는 점수로 처리됐다.</li>
+<li>사용자가 판단 기준과 분류 조건을 직접 설정하며, 예/아니오 결정은 ‘뉴’, 단일 선택은 ‘초이스’, 척도 평가는 점수로 구분했다.</li>
+<li>일반 채팅 모델처럼 추론 결과를 긴 문장으로 출력하지 않고 JSON 형태의 결정값을 반환하는 방식으로 설명됐다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>속도·비용 비교와 입력 한계</h2><ul>
+<li>영상은 Jev가 다른 모델보다 20~200배 빠르고 40~400배 저렴하며 출력 토큰 비용이 없다는 Dogo의 설명을 인용했다.</li>
+<li>1,000개 이메일과 7개 규칙 처리에서 Jev는 처음 70초·9센트였고, 병렬화 뒤에는 6초·9센트로 제시됐다.</li>
+<li>같은 이메일 작업의 Luna 결과는 5분·62센트였으며, 발표자는 이를 Jev 대비 비용 12배·시간 46배라고 비교했다.</li>
+<li>Jev의 입력 컨텍스트 창은 64,000토큰으로, Claude·GPT 계열의 약 100만 토큰보다 작다고 설명했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>이메일·댓글·커뮤니티 게시물 분류</h2><ul>
+<li>이메일 분류 항목에는 영수증·인보이스, 브랜드 딜, 사기·피싱, 이메일 유형, 긴급도, 스폰서 적합도가 포함됐다.</li>
+<li>영수증·인보이스 기준은 청구·결제·지급·실패한 지급을 포함하며, Jev 신뢰도 50% 이상을 예로 들었다.</li>
+<li>영수증·인보이스 단일 판별에서는 1,000개 이메일 중 237개를 예, 763개를 아니오로 분류했고 4초·5센트가 들었다.</li>
+<li>유튜브 댓글은 댓글 유형, 답변 가치, 영상 아이디어 여부, 감정, 질문 난도로 분류했고 1,000개 처리에 5초·5센트를 제시했다.</li>
+<li>학교 커뮤니티 게시물에는 도움 필요 여부, 팀 답변 필요 여부, 이탈 위험, 회원 경험 수준, 추천사 강도 등의 기준을 적용했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>실시간 피드·회의·영상 클립 활용</h2><ul>
+<li>X 피드용 Chrome 확장 프로그램은 화면에 들어온 게시물을 Jev로 분류해 breaking, golden nuggets, AI slop 라벨을 표시했다.</li>
+<li>확장 프로그램은 게시물이 화면에 나타날 때 즉시 반응하는 방식으로 시연됐으며, Jev가 백엔드에서 분류를 담당했다.</li>
+<li>Fireflies·Granola 등의 회의 전사본을 통화 유형, 의사결정 여부, 실행 단계로 분류하는 활용안이 제시됐다.</li>
+<li>회의 데이터에서 담당자·기한이 있는 다음 단계의 부재 등을 기준으로 잡으면, 운영 방식 <span class="up">개선</span>에 활용할 수 있다고 설명했다.</li>
+<li>Astra가 유튜브 영상을 클립으로 나눈 뒤 Jev가 독립 게시 가능성, 훅 강도, 화면 필요 여부, 인용 문구 여부를 판별하는 흐름을 보였다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>고객 지원·계약·거래 자동화의 적용 범위</h2><ul>
+<li>계약 검토에서는 위험 유형과 조항 유형, 채용·리드에서는 위험 신호·리드 품질·다음 단계를 분류하는 방안이 언급됐다.</li>
+<li>음성으로 기록한 브레인 덤프를 아이디어·작업·저널로 나누고, 마감일·우선순위·생활 영역을 판단하는 사례도 제시됐다.</li>
+<li>고객 지원은 이메일 라우팅, 감정, 긴급도, 필요한 조치 등 다수의 결정을 다뤄 Jev의 주요 활용처로 제안됐다.</li>
+<li>비트코인 페이퍼 트레이딩에서는 매초 <span class="up">상승</span>·<span class="dn">하락</span>·불확실성을 예측하고, 신뢰도에 따라 매수·매도 결정을 내리도록 구성했다.</li>
+<li>해당 거래 예시는 검증되지 않았고 문제점이 많다고 밝혔으며, 수수료가 Jev의 의사결정 비용보다 높다는 한계도 언급했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Jev</td><td>글을 생성하거나 대화하지 않고 예/아니오, 선택지, 점수 형태의 결정을 빠르게 출력하는 모델로 소개됐다.</td></tr><tr><td>RLCD</td><td>‘reinforcement learning for calibrated decisions’의 약자로, Dogo가 지난 2년간 개발했다고 소개한 Jev의 학습 방식이다.</td></tr><tr><td>골든 데이터셋</td><td>100개 사용 사례와 100개 정답을 두고 모델별 정확도·비용·속도를 비교하기 위해 제안된 평가용 데이터다.</td></tr><tr><td>모델 라우팅</td><td>대량 분류는 Jev로 처리하고, 작성이나 분석이 필요한 항목은 ChatGPT 같은 다른 모델로 넘기는 구성이다.</td></tr><tr><td>페이퍼 트레이딩</td><td>실거래가 아닌 시뮬레이션 거래로, 영상에서는 Jev가 비트코인 방향을 매초 판단하는 예시에 사용됐다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ymgH8jS6Wb8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-09-20</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

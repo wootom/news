@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="RLHF는 사람 선호를 최적화해 보조에는 강하지만 자동화에는 한계가 있다는 주장."><title>Diogo Almeida는 RLHF 기반 AI가 보조에는 강하지만 자동화에는 한계가 있다고 주장한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-20 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>Diogo Almeida는 RLHF 기반 AI가 보조에는 강하지만 자동화에는 한계가 있다고 주장한다.</h1><p class="lead">RLHF는 사람 선호를 최적화해 보조에는 강하지만 자동화에는 한계가 있다는 주장.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>OpenAI의 GPT-4·ChatGPT·RLHF·InstructGPT 공동 저자였던 Diogo Almeida가 AI 보조 시대 이후를 발표했다.</li>
+<li>그는 오늘날 LLM이 사람의 선호를 최적화하는 RLHF 기반이어서 사람 참여 작업에 강하다고 설명했다.</li>
+<li>고객 서비스 의사결정처럼 사람 개입을 없애야 하는 자동화 업무에서는 AI의 한계가 두드러진다고 주장했다.</li>
+<li>Claude Code 역시 RLHF를 거치는 보조 도구이므로, 다음 시대의 답은 아니라고 구분했다.</li>
+<li>TypeSafe는 확신 수준에 맞는 의사결정을 최적화하는 새 사후 학습 방식을 비공개로 준비 중이라고 밝혔다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>발표자는 AI가 벤치마크에서 인간을 앞선다는 평가와, 거품이며 가치가 부족하다는 평가가 공존한다고 정리했다.</li>
+<li>그는 AI가 어려운 문제를 풀면서도 고객 서비스 의사결정 같은 단순해 보이는 업무에는 약한 이유를 설명하려 했다.</li>
+<li>핵심 구분은 사람을 만족시키는 보조와 사람 개입을 없애는 자동화이며, 현 LLM은 전자에 맞춰졌다는 주장이다.</li>
+<li>보조 시대 다음에는 Claude Code가 아니라 실제 일을 수행하는 진정한 자동화가 와야 한다고 결론지었다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>RLHF가 만든 사람 선호 최적화 구조</h2><ul>
+<li>발표자는 RLHF를 사람의 선호를 수집하고, 그 선호에 맞춰 모델을 최적화하는 방식으로 요약했다.</li>
+<li>그는 ChatGPT뿐 아니라 사용량 기준으로 거의 모든 LLM이 RLHF로 학습된다고 말했다.</li>
+<li>RLHF의 목적은 소프트웨어를 자율 실행하는 일이 아니라 사람의 선호를 최적화하는 것이라고 설명했다.</li>
+<li>사람을 학습 과정에 넣었기 때문에 RLHF 기반 AI에 사람이 개입해야 하는 구조가 생긴다는 논리다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>보조와 자동화의 목적 차이</h2><ul>
+<li>Claude Code의 목적은 코드가 작동하는 것만이 아니라 사용자를 만족시키는 것이며, 이 점에서 보조 도구라고 설명했다.</li>
+<li>자동화 업무의 이상은 사람이 들여다보지 않아도 서버에서 백그라운드로 실행되는 기존 소프트웨어와 같은 형태다.</li>
+<li>발표자는 정형화돼 다른 사람에게 설명할 수 있고 거의 무료로 반복할 수 있는 일도 아직 충분히 자동화되지 않았다고 봤다.</li>
+<li>기업은 사업상 손실이 걸린 결정을 AI에 맡기지 않는다는 교훈을 배웠다고 언급했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>환각과 과도한 확신의 문제</h2><ul>
+<li>발표자는 RLHF 모델이 모를 때에도 사람의 선호에 좋을 것 같은 방향으로 답한다고 설명했다.</li>
+<li>방귀 효과음 파일을 음악으로 보낸 사례에서 ChatGPT가 으스스한 분<span class="dn">위기</span>의 작품이라고 답한 게시물을 예로 들었다.</li>
+<li>그는 자동화에는 사람의 비위를 맞추는 답보다 확신 수준을 조절하며 정확히 처리하는 능력이 필요하다고 말했다.</li>
+<li>환각은 사전 학습 자체의 문제가 아니라 사람 선호 최적화 과정에 내재한다고 보며, 보상 모델의 비대칭성을 언급했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>SaaS와 더 똑똑한 소프트웨어의 필요성</h2><ul>
+<li>발표자는 SaaS가 사실상 2019년 이후 크게 달라지지 않았고, LLM 시대에도 챗봇을 붙이는 수준이라고 평가했다.</li>
+<li>AI가 처음부터 사람을 보조하도록 만들어졌다면 SaaS에 비서를 추가하는 형태가 된 것은 예상 가능한 결과라고 설명했다.</li>
+<li>Garry Tan의 ‘적시 소프트웨어의 황금기’라는 표현을 인용하면서도, 필요할 때 만드는 소프트웨어만으로는 부족하다고 말했다.</li>
+<li>그가 원하는 방향은 소프트웨어 제작 비용 절감만이 아니라 표현력과 기본 구성 요소까지 달라지는 더 똑똑한 소프트웨어다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>TypeSafe의 세 번째 사후 학습 방향</h2><ul>
+<li>TypeSafe는 신뢰성과 자동화를 위해 AI 기술 구조를 처음부터 다시 설계한다는 질문에서 출발한다고 밝혔다.</li>
+<li>발표자는 RLVR이 아니라 새로운 방식이며, API 형태부터 RLHF·RLVR과 다르다고 말했다.</li>
+<li>RLHF는 사람 선호를, RLVR은 순수한 정답 여부의 로그 오류율을 최적화한다고 대비했다.</li>
+<li>TypeSafe의 세 번째 방식은 확신 수준에 맞는 의사결정을 최적화해 사전 학습 모델의 지능을 소프트웨어에 활용하는 방향이라고 설명했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>RLHF</td><td>사람의 선호를 수집해 모델을 그 선호에 맞춰 최적화하는 사후 학습 방식으로 설명됐다.</td></tr><tr><td>RLVR</td><td>발표자의 비교에 따르면 순수한 정답 여부의 로그 오류율을 최적화하는 사후 학습 갈래다.</td></tr><tr><td>사후 학습</td><td>사전 학습된 모델의 지능을 어떤 목표에 맞춰 끌어낼지 결정하는 학습 단계로 언급됐다.</td></tr><tr><td>TypeSafe</td><td>발표자가 비공개로 준비 중이라고 밝힌 조직으로, 신뢰성과 자동화를 위한 새 AI 구조를 연구한다.</td></tr><tr><td>Claude Code</td><td>RLHF를 거치는 보조 시대의 도구로 분류됐으며, 발표자는 이를 진정한 자동화와 구분했다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Sz4QYVV1gvY" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-09-20</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
