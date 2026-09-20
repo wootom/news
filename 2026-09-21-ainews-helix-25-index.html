@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Figure Helix 2.5는 30개 신규 가정에서 세 가지 작업의 제로샷 일반화를 시험했다."><title>Figure Helix 2.5는 30개 신규 가정에서 제로샷 전신 작업 일반화를 시연했다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>AI News</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-21 · AI News</span><span class="chip">🎬 영상</span></div><h1>Figure Helix 2.5는 30개 신규 가정에서 제로샷 전신 작업 일반화를 시연했다.</h1><p class="lead">Figure Helix 2.5는 30개 신규 가정에서 세 가지 작업의 제로샷 일반화를 시험했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Figure는 Index 데이터셋으로 사전 훈련한 Helix 2.5를 이용해 30개 실제 가정에서 침대 정리·수건 접기·장난감 수거를 시험했다.</li>
+<li>로봇 도착 전 데이터 수집, 도착 후 미세 조정·적응 없이 이전에 보지 못한 집과 물체에서 작업을 수행했다고 설명했다.</li>
+<li>동일 작업 데이터 비교에서 무작위 시작 정책의 제로샷 성공률은 9%, Index 사전 훈련 정책은 56%였다.</li>
+<li>Figure는 Helix 2.5가 Helix 02와 같은 성공률에 작업별 학습 데이터는 절반만 쓰고 30개 가정으로 일반화했다고 밝혔다.</li>
+<li>AGIBOT A3 Ultra는 호텔·자동차 대리점·슈퍼마켓·지하철 점검 현장에 배치돼 교대 근무를 시작했다고 소개됐다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Figure는 Helix 2.5를 지금까지 개발한 신경망 중 가장 진보된 신경망이라고 소개했다.</li>
+<li>핵심 질문은 사전 정보 없이 처음 방문한 집에서 휴머노이드가 즉시 작업할 수 있는지다.</li>
+<li>Figure는 30개 실제 가정에서의 제로샷 전신 일반화 데모가 이 규모에서는 최초라고 주장했다.</li>
+<li>영상은 Helix 2.5의 가정 작업 일반화와 AGIBOT A3 Ultra의 현장 배치를 함께 비교했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>30개 신규 가정에서 시험한 세 가지 작업</h2><ul>
+<li>가장 어려운 침대 정리는 이불을 펴고 두 베개를 침대 위에 놓는 작업으로 제시됐다.</li>
+<li>수건 접기는 처음 보는 수건과 접는 표면, 방에서 정밀 조작을 요구하는 작업으로 설명됐다.</li>
+<li>거실 정리는 집마다 흩어진 장난감 13~15개를 찾아 바구니에 담는 작업이다.</li>
+<li>로봇이 도착하기 전 데이터를 수집하지 않았고, 도착 후 미세 조정이나 적응도 하지 않았다고 밝혔다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>Index 사전 훈련과 제로샷 성능 비교</h2><ul>
+<li>Figure는 지구상에서 가장 큰 로봇 훈련 데이터세트라고 주장한 Index로 Helix 2.5를 사전 훈련했다.</li>
+<li>동일한 작업 데이터로 두 정책을 학습했으며, 평가용 데이터는 어느 쪽에도 사용하지 않았다고 설명했다.</li>
+<li>무작위 가중치 정책의 제로샷 성공률은 9%였고, Index 사전 훈련 기반 정책은 56%였다.</li>
+<li>사전 훈련만 변경한 비교를 통해 인간 행동에 대한 광범위한 사전 훈련 효과를 보였다고 Figure는 설명했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>학습 효율과 장시간 작업의 자체 수정</h2><ul>
+<li>Figure는 Helix 2.5가 Helix 02와 동일한 성공률을 내면서 작업별 학습 데이터를 절반만 사용했다고 밝혔다.</li>
+<li>한 환경에서 학습한 동작이 이전에 보지 못한 30개 가정 환경으로 일반화됐다고 설명했다.</li>
+<li>Figure는 이를 동작 명세화 비용은 절반, 활용 범위는 30배로 확장된 사례라고 표현했다.</li>
+<li>Helix 2.5는 잘못 접힌 부분을 고치기 위해 뒤로 물러나거나 자세를 바꾸고 침대 주위를 이동할 수 있다고 했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>사전 훈련 데이터 확장과 컴퓨팅 규모</h2><ul>
+<li>Figure는 Index의 더 큰 부분으로 네 가지 모델 버전을 학습해 확장 법칙을 시험했다고 밝혔다.</li>
+<li>모델 크기와 후속 학습은 유지한 채 사전 훈련 데이터를 8배 늘렸다고 설명했다.</li>
+<li>데이터가 두 배씩 증가할 때마다 성능이 예측 가능한 방식으로 향상됐으며, 최대 테스트의 손실을 소수점 넷째 자리까지 예측했다고 밝혔다.</li>
+<li>전체 범위의 예측 오차는 0.54%였고, Index는 매초 약 35분 분량의 인간 경험 데이터를 생성한다고 소개됐다.</li>
+<li>Figure는 Helix 학습에 35억 달러의 컴퓨팅 자원을 투자했다고 밝혔다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>AGIBOT A3 Ultra의 현장 배치와 사양</h2><ul>
+<li>AGIBOT A3 Ultra는 대량 생산 후 호텔, 자동차 대리점, 슈퍼마켓, 지하철 점검 현장에서 교대 근무를 시작했다고 소개됐다.</li>
+<li>A3는 높이 174cm, 무게 60kg이며 1,152W 배터리를 자율 도킹으로 10초 만에 충전하거나 교체할 수 있다고 했다.</li>
+<li>일반적인 2시간 충전 방식과 달리 8시간에서 최대 24시간 작동 가능하며, 온보드 엔진은 초당 700회 연산을 수행한다고 설명됐다.</li>
+<li>LAR와 360도 서라운드 뷰 카메라로 물체 인식·경로 계획을 수행하며, 20자유도 촉각 팔은 종이 한 장부터 5kg 물체까지 들 수 있다고 했다.</li>
+<li>링크봇 시스템은 최대 100대의 로봇을 동시에 제어하며, A3는 4중 안전 시스템을 갖췄다고 소개됐다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Helix 2.5</td><td>Figure가 Index 사전 훈련을 기반으로 30개 신규 가정의 전신 작업 일반화를 시험한 신경망이다.</td></tr><tr><td>Index</td><td>Figure가 인간 경험 데이터를 바탕으로 구축했다고 소개한 로봇 훈련 데이터셋이다.</td></tr><tr><td>제로샷 일반화</td><td>사전 방문, 현장 데이터 수집, 미세 조정 없이 처음 보는 가정과 물체에서 작업을 수행하는 성능을 뜻한다.</td></tr><tr><td>Helix 02</td><td>영상에서 Helix 2.5의 작업별 학습 데이터 효율을 비교하는 이전 정책으로 언급됐다.</td></tr><tr><td>AGIBOT A3 Ultra</td><td>호텔·슈퍼마켓·지하철 점검 등에 배치됐다고 소개된 AGIBOT의 휴머노이드 로봇이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/kP2XkazauBQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>AI News · 2026-09-21</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
