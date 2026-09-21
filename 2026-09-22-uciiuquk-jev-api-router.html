@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Jev API를 연결해 이메일 우선순위, 투자 판단, 수능 예측용 모델 라우팅을 실험했다."><title>Jev API를 에이전트 선택 도구로 연결해 이메일·투자·수능 예측에 활용했다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>배움의 달인 (AI·자동화)</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-22 · 배움의 달인 (AI·자동화)</span><span class="chip">🎬 영상</span></div><h1>Jev API를 에이전트 선택 도구로 연결해 이메일·투자·수능 예측에 활용했다.</h1><p class="lead">Jev API를 연결해 이메일 우선순위, 투자 판단, 수능 예측용 모델 라우팅을 실험했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Jev는 답변을 생성하는 일반 LLM과 달리 선택과 판단을 수행하는 도구로 소개됐으며, 일반 LRM보다 약 200배 빠르고 400배 저렴하다고 홍보된다.</li>
+<li>API는 즉시 발급 방식이 아니라 웨이리스트에 등록한 뒤 순차 발급되는 것으로 설명됐고, 디스코드 요청을 통해 약 10시간 내 발급받은 사례가 제시됐다.</li>
+<li>어사이드에 Jev 스킬과 API를 연결한 뒤 Gmail 이메일을 응답 긴급성 기준으로 5개 분류해, 잊고 있던 긴급 회신 건을 찾았다고 밝혔다.</li>
+<li>투자 봇에서는 삼성전자·하이닉스 추가 매수 여부를 Jev에 판단시켰으며, 삼성은 조정 때 재검토, 하이닉스는 추가하지 말라는 결과가 나왔다.</li>
+<li>수능 기출을 분석해 2027학년도 수학 예상 문제를 만들고, Jev 라우터가 작업 난도별로 GPT 5.6·클로드 등 모델을 선택하도록 테스트했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Jev는 대화를 통해 답을 내는 모델이 아니라 여러 선택지 가운데 판단과 결정을 지원하는 도구라고 설명했다.</li>
+<li>복잡한 업무 맥락에서 우선순위를 정하거나 에이전트 간 혼란스러운 상황을 정리하는 역할을 Jev의 활용처로 제시했다.</li>
+<li>Jev의 판단에는 사전 데이터가 필요하며, 해당 데이터는 LLM이 수집하고 Jev는 그 뒤 선택 여부를 결정하는 구조라고 말했다.</li>
+<li>에이전트 간 선택을 수학적으로 처리함으로써 결과값 품질을 보장하는 도구가 될 수 있다는 개인적 견해를 밝혔다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>웨이리스트 등록과 API 발급 과정</h2><ul>
+<li>Jev 개발사 사이트에는 &#x27;Join Waitlist&#x27;가 있으며, API는 바로 발급되지 않고 웨이리스트 순서대로 발급될 수 있다고 설명했다.</li>
+<li>발표자는 어사이드에 Jev 사용 신청을 요청했고, 기본 웨이리스트 외에 디스코드에서도 빠른 발급 요청을 진행했다.</li>
+<li>금요일 밤 9시 반에 요청한 뒤 다음 날 오전 8시 반에 계정 생성 메일을 받았다고 밝혔다.</li>
+<li>계정 생성 뒤 API 발급과 설정도 어사이드가 수행했으며, 발표자는 약 4개의 API를 사용 중이라고 말했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>어사이드 스킬 설치와 Gmail 긴급도 분류</h2><ul>
+<li>발표자는 Jev 문서를 직접 익히기보다 어사이드에게 문서 학습과 사용 방법 파악을 요청했다고 설명했다.</li>
+<li>어사이드에서는 Jev를 채팅 모델 목록이 아닌 스킬과 API 연결 방식으로 설치했다고 제시했다.</li>
+<li>Gmail에서 회신해야 할 이메일을 Jev로 응답 긴급성 순서 5개로 분류해 달라고 요청했다.</li>
+<li>다수의 이메일 중 잊고 있던 긴급 건과 콜라보·계약 관련 사항을 긴급도 순으로 찾아 회신에 활용했다고 말했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>투자 봇의 삼성전자·하이닉스 추가 매수 판단</h2><ul>
+<li>그록봇에 Jev API를 붙인 뒤, 당일 주식시장 정리와 삼성전자·하이닉스 추가 매수 결정을 요청했다고 설명했다.</li>
+<li>삼성전자는 당일 5.4% <span class="up">상승</span>과 고가 마감을 근거로, 현금 유입 후 의미 있는 조정 때 재검토하라는 결과가 제시됐다.</li>
+<li>하이닉스는 비중 과다 등을 근거로 추가하지 말라는 &#x27;No Add&#x27; 결과가 나왔으며, 확률은 0.99%가 아니라 0.99로 제시됐다.</li>
+<li>발표자는 해당 결과가 투자 참고용이며 투자 조언이 아니라는 응답도 함께 표시됐다고 밝혔다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>Jev 라우터로 작업별 모델 선택 실험</h2><ul>
+<li>발표자는 Jev를 활용해 프롬프트와 작업 난도를 판단하고 적합한 모델에 요청을 보내는 모델 라우터를 개발 중이라고 밝혔다.</li>
+<li>수능 예측 작업에서 기본 역할은 GPT 5.6 솔렉, 깊은 작업은 GPT 5.6 테라, 작성은 클로드 쏘네로 배정됐다고 설명했다.</li>
+<li>루나 모델로 입력했더라도 라우터가 GPT 5.6 솔을 선택해 예측 보고서를 생성하는 사례를 화면으로 제시했다.</li>
+<li>오픈 코덱스를 통해 약 70개 모델을 쓸 수 있으나, 모든 프롬프트마다 Jev가 모델을 선택하게 하는 구현은 현실적으로 어려웠다고 말했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>2027학년도 수능 수학 예측 보고서</h2><ul>
+<li>수능 기출 문제를 내려받아 단원별 난이도와 출제 패턴을 추출하고 2027학년도 수학 예상 문제를 생성하도록 요청했다.</li>
+<li>보고서는 Jev 타입세이프 분류·선택과 모델 초안을 바탕으로 문제와 정답을 로컬에서 재검사한 내용이라고 설명됐다.</li>
+<li>공통과목 1번 예상으로 거듭제곱근·지수 계산이 제시됐으며, 3년 연속 같은 기본 계산군 문제가 나왔다는 분석과 높은 확신도가 언급됐다.</li>
+<li>2번은 미분계수의 정의, 선택과목 확률과 통계 23번은 순열·조합 기본 계산 등이 예측됐고 자작 예상 문제 10개도 생성됐다.</li>
+<li>보고서에는 실제 출제를 보장하지 않는다는 문구가 포함됐으며, 발표자는 수능 뒤 예측 결과를 분석하겠다고 약속했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Jev</td><td>일반 LLM처럼 답변을 생성하기보다, 주어진 데이터와 맥락을 바탕으로 선택·판단을 수행한다고 소개된 도구다.</td></tr><tr><td>API</td><td>어사이드·그록봇 등 외부 에이전트나 봇에서 Jev를 연결해 사용하기 위해 발급받는 접근 수단이다.</td></tr><tr><td>웨이리스트</td><td>Jev API를 즉시 발급받지 못할 때 등록하며, 순차적 발급을 기다리는 대기열로 설명됐다.</td></tr><tr><td>Jev 스킬</td><td>어사이드 안에서 Jev를 채팅 모델이 아닌 스킬과 API 연결 방식으로 활용하도록 설치한 기능이다.</td></tr><tr><td>모델 라우터</td><td>Jev가 작업의 난도와 성격을 판단해 GPT 5.6 솔렉·테라나 클로드 쏘네 등에 작업을 배정하도록 개발 중인 구조다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/hRW-Gh5Y4MM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>배움의 달인 (AI·자동화) · 2026-09-22</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

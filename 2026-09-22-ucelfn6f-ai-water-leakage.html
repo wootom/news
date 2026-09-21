@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI·IoT 센서로 수도관 누수를 감지하고 관망 정비 우선순위를 정하는 K-수도 기술."><title>한국수자원공사는 AI·IoT 기반 SWM으로 누수 감지와 관망 관리를 고도화한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-22 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>한국수자원공사는 AI·IoT 기반 SWM으로 누수 감지와 관망 관리를 고도화한다.</h1><p class="lead">AI·IoT 센서로 수도관 누수를 감지하고 관망 정비 우선순위를 정하는 K-수도 기술.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>한국수자원공사는 정수장에서 수도꼭지까지의 공급 과정에 SWM 스마트 관망 관리 기술을 적용하고 있다.</li>
+<li>전국 지자체 상수관망의 약 40%는 21년 이상 된 노후관이며, 전국 누수량은 연간 약 6.7억~7억 톤으로 언급됐다.</li>
+<li>블록별 유량·수압·수도요금 데이터를 결합해 유수율을 산정하고, 관망 정비와 교체의 우선순위를 정한다.</li>
+<li>AI 누수음 센서는 무선 통신으로 음향 데이터를 서버에 보내며, AI가 누수음과 특정 주파수대를 분석한다.</li>
+<li>SWM 기술은 3월 MWC 글로모 어워즈를 받았고, 탄자니아·가나·캄보디아와 태국 사업도 추진 중이다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>노후 상수관에서 발생하는 누수는 물 공급 안정성과 수질, 가뭄 대응에 영향을 주는 문제로 제시됐다.</li>
+<li>한국수자원공사는 노후관 교체뿐 아니라 센서, IoT, AI 분석을 결합한 SWM으로 누수 저감을 추진한다.</li>
+<li>관망을 블록으로 나누고 유량·수압·요금 정보를 분석해 누수 지역과 정비 대상을 좁히는 구조다.</li>
+<li>누수 탐지부터 관 교체, 공사 안전관리, 자산관리까지 데이터 기반 시스템으로 연결하는 것이 영상의 핵심이다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>노후관과 누수 규모</h2><ul>
+<li>영상에서는 전국 지자체 상수관망의 약 40%가 노후관이며, 노후관은 21년 이상 된 관으로 설명됐다.</li>
+<li>1980년대 관으로 추정되는 관 시편은 내부가 좁아진 상태로 소개됐으며, 관리가 부족한 관을 혈관에 비유했다.</li>
+<li>전국 기준 연간 약 6.7억~7억 톤의 누수가 발생한다고 설명했으며, 누수 저감은 물 부족 지역 공급과 연결된다.</li>
+<li>지자체가 누수를 잡는 것만으로도 댐 2~3개를 지을 수 있는 용량의 누수를 줄이는 효과가 있다고 언급했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>블록 시스템과 수압 제어</h2><ul>
+<li>SWM 적용의 첫 단계는 관망을 대·중·소 블록으로 나누고 각 유입 지점에 유량계와 수압계를 설치하는 것이다.</li>
+<li>블록별 유량값과 수용가 수도요금 정보를 결합해 일별·월별 유수율을 파악하고 정비 계획을 세운다.</li>
+<li>현장 유량계 화면에는 시간당 523톤의 유량과 1.8바의 압력이 표시됐으며, 데이터는 통신 장치로 시스템에 전송된다.</li>
+<li>모든 수용가에 1.5kg 이상 압력을 유지하면서도, 수압이 높을수록 누수량이 늘어나는 점을 고려해 감압을 조절한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>청음 탐사에서 AI 누수음 센서로</h2><ul>
+<li>기존에는 청음봉을 밸브나 계량기 등에 대고 누수음을 들었으며, 숙련 인력이 필요하고 탐사 시간이 오래 걸렸다.</li>
+<li>노면 누수 탐사기는 이어폰으로 소리를 들으며 이동해 위치를 찾는 방식으로, 영상에서는 SWM 레벨 1 기술로 소개됐다.</li>
+<li>AI 누수음 센서는 누수음을 실시간 수집해 무선 통신으로 서버에 전송하고, AI 서버가 누수음 여부를 학습·판단한다.</li>
+<li>누수음에서 특정 주파수대가 나타나고 음이 크게 분석되면 현장을 확인해 누수를 복구하며, 센서는 누수음을 7시간 수집할 수 있다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>관 교체 공법과 AI 공사 안전</h2><ul>
+<li>현장에서는 30~40년 된 상수도관을 새 관으로 교체해 관 내부 이물질과 누수 문제를 함께 해결하고 있다.</li>
+<li>굴착이 어려운 구간은 두 곳만 파고 기존 관을 파쇄하면서 새 관을 넣는 비굴착 교체 공법을 사용한다.</li>
+<li>이동 CCTV에 탑재된 AI는 보행자 넘어짐, 굴착기와 근로자의 근접, 시민 접근 등을 분석해 알람을 띄운다.</li>
+<li>한국수자원공사는 해당 AI 안전 기술을 올해 개발했으며, 내년부터 모든 공사 현장에 확대 적용할 예정이라고 밝혔다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>자산관리·관망해석과 해외 확산</h2><ul>
+<li>자산관리 시스템은 관의 내구성과 누수 결과 등을 입력해 위험도 등급을 계산하고, 관 교체 우선순위 결정을 지원한다.</li>
+<li>관망해석 프로그램은 사고 시 잠글 밸브와 밸브 개방 뒤 급수 가능 시점을 시각적으로 보여주도록 개발 중이다.</li>
+<li>SWM은 IoT·AI 기반 탄소 저감 분야인 테크 포 굿에서 인정받아 3월 MWC 글로모 어워즈를 받았다고 소개됐다.</li>
+<li>탄자니아·가나·캄보디아에는 모니터링 시스템을 구축 중이며, 태국에서는 내년 시범사업과 이후 지자체 사업을 협의 중이다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>SWM</td><td>한국수자원공사가 센서·IoT·AI와 블록 시스템을 결합해 상수관망의 누수와 수압을 관리하는 기술로 소개한 명칭이다.</td></tr><tr><td>유수율</td><td>정수장에서 보낸 물과 수도요금으로 확인되는 사용량을 비교해 산정하며, 낮을수록 누수 또는 관리 문제를 점검하는 지표다.</td></tr><tr><td>블록 시스템</td><td>관망을 대·중·소 블록으로 나누고 유량계·수압계·감압시설을 설치해 지역별 물 사용량과 누수량을 파악하는 방식이다.</td></tr><tr><td>AI 누수음 센서</td><td>누수음을 수집해 무선으로 서버에 전송하고, AI가 음향과 특정 주파수대를 분석해 누수 가능성을 판단하는 장치다.</td></tr><tr><td>자산관리 시스템</td><td>수도관의 내구성, 누수 결과 등 데이터를 바탕으로 위험도 등급과 교체 우선순위를 계산하는 시스템이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/R523yMcIeUw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-09-22</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
