@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Jev는 글 대신 판단만 수행해 에이전트 라우팅·도구 게이팅에 쓰는 모델이다."><title>타입세이프의 Jev는 대화 대신 구조화된 판단으로 비용과 지연을 낮춘다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-23 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>타입세이프의 Jev는 대화 대신 구조화된 판단으로 비용과 지연을 낮춘다.</h1><p class="lead">Jev는 글 대신 판단만 수행해 에이전트 라우팅·도구 게이팅에 쓰는 모델이다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>타입세이프는 2024년 설립된 샌프란시스코 스타트업으로, 9월 15일 판단 전용 모델 Jev를 공개했다.</li>
+<li>Jev는 선택·점수화·참거짓 판단만 수행하며, 문장·코드·판단 이유를 생성하지 않고 확률과 신뢰도를 반환한다.</li>
+<li>회사 벤치마크에서 Jev는 정확도 67.8%, 응답 0.4초로 GPT-5.6 테라와 유사한 정확도를 제시했다.</li>
+<li>타입세이프는 입력 100만 토큰당 4센트, 오퍼스 5 대비 440배 낮은 비용을 내세우지만 검증은 아직이다.</li>
+<li>에이전트에서는 모델 라우팅과 도구 호출 게이팅에 쓰며, 낮은 신뢰도의 판단은 느린 모델이나 사람에게 넘긴다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Jev는 챗봇이나 코드 생성 모델을 대체하는 제품이 아니라, 소프트웨어 내부의 반복적 판단을 위한 모델로 소개된다.</li>
+<li>타입세이프는 프론티어 모델 대비 200배 빠르고 400배 싸다고 내세우며, 오퍼스 5 대비 비용은 440배 낮다고 밝혔다.</li>
+<li>영상은 Jev의 구조와 에이전트 활용처를 설명하는 동시에 자체 벤치마크·불투명성·가격 지속성의 한계를 함께 제시한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>타입세이프 설립 배경과 Jev의 이름</h2><ul>
+<li>타입세이프는 2024년에 설립됐고, 대표 디오고 알메이다는 오픈AI에서 약 4년간 인스트럭트GPT·ChatGPT·GPT-4 강화학습에 관여했다.</li>
+<li>회사는 사람과 대화하는 모델 대신 소프트웨어 안에서 결정하는 모델을 만들겠다는 반대 연구 방향을 회사 소개에 내세웠다.</li>
+<li>DCVC 주도로 4,000만 달러 시드 투자를 받았으며, 기업가치는 2억 달러로 언급됐다.</li>
+<li>Jev라는 이름은 19세기 경제학자 윌리엄 스탠리 제번스와 제번스의 역설에서 가져왔으며, AI가 싸지면 더 많은 곳에 쓰일 것이라는 기대를 담았다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>시스템 1 설계와 RLCD 보정 방식</h2><ul>
+<li>영상은 카너먼의 『생각에 관한 생각』을 바탕으로 빠르고 직관적인 시스템 1과 느리고 숙고하는 시스템 2를 대비한다.</li>
+<li>Jev의 기능은 보기 중 하나를 고르는 Choice, 기준에 따른 Score, 참거짓 확률을 내는 Know의 세 가지로 한정된다.</li>
+<li>각 답에는 확률과 별도의 confidence 값이 붙으며, 확률은 정답 가능성이고 confidence는 해당 판단에 대한 모델의 확신으로 설명된다.</li>
+<li>타입세이프는 보정된 결정을 위한 강화학습인 RLCD를 사용했고, 학습 데이터는 전부 합성 데이터라고 밝혔다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>고객 티켓 호출 예시와 구조화 출력</h2><ul>
+<li>공식 예제는 스트라이프 연동 장애와 매출 <span class="dn">하락</span>을 호소한 고객 메시지를 state에 넣고 담당 팀·감정·긴급성을 한 번에 묻는다.</li>
+<li>응답 JSON의 answers에는 담당 팀으로 기술팀 85%, 감정 단계로 짜증 1.0, 긴급 여부는 참과 90% 이상의 확률이 제시된다.</li>
+<li>Jev는 결제팀·기술팀·영업팀처럼 미리 정한 값에서만 고르므로, 지정되지 않은 마케팅팀을 답하는 식의 구조화 출력 오류를 막는다고 설명한다.</li>
+<li>응답 시간은 70~500밀리초로 제시되며, LLM의 JSON 프롬프트·파싱·재시도 과정을 줄이는 방식이다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>벤치마크 비용과 에이전트 적용처</h2><ul>
+<li>타입세이프의 4개 워크플로 벤치마크에서 Jev는 정확도 67.8%, 응답 0.4초였고 GPT-5.6 테라는 67.9%, 10.1초였다.</li>
+<li>오퍼스 5는 정확도 73.1%, 응답 37.8초로 제시됐으며, 영상은 Jev가 속도에서 25~90배 차이를 보인다고 설명한다.</li>
+<li>입력 가격은 100만 토큰당 4센트이고 출력은 무료이며, 건당 처리 비용은 약 0.04센트라고 소개된다.</li>
+<li>랭체인은 Jev를 단순 요청과 복잡 요청의 모델 라우팅, 파일 삭제·결제 전 위험 판단을 위한 도구 호출 게이팅에 활용하는 예시를 제시했다.</li>
+<li>문서상 사례에는 브라우저 조작 에이전트, 실시간 트레이딩 에이전트, 대량 이메일 분류가 있으며 모두 글 생성 없이 판단이 많은 작업이다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>검증 한계와 도입 시 점검 사항</h2><ul>
+<li>벤치마크는 타입세이프 팀이 만들었고, 회사는 기술 문서에서 편향 가능성과 실제 결과가 더 낮을 수 있음을 인정했다.</li>
+<li>정답 라벨도 사람이 아닌 다른 모델이 매겼으며, 청구서 처리에서는 Jev가 61.8%, 비교 모델이 79.1%로 17점 이상 차이가 났다.</li>
+<li>회사가 말한 환각 0%는 정해진 값 밖으로 답하지 않는다는 뜻이며, 선택한 값 자체가 틀리거나 높은 확률로 틀릴 수 있다.</li>
+<li>Jev는 판단 이유를 제공하지 않아 금융·의료처럼 이유 기록이 필요한 분야에 제약이 있으며, RLCD 논문·가중치·아키텍처도 공개되지 않았다.</li>
+<li>가격의 지속 가능성은 확답되지 않았고 초기 보조금 가능성이 언급됐으며, 서비스는 현재 얼리 액세스 상태다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Jev</td><td>타입세이프가 공개한 판단 전용 모델로, 선택·점수화·참거짓 판단과 확률·신뢰도를 반환한다.</td></tr><tr><td>시스템 1</td><td>영상에서 빠르고 직관적인 판단 방식으로 설명되며, Jev의 설계 방향을 가리킨다.</td></tr><tr><td>RLCD</td><td>타입세이프가 확률 보정을 위해 사용했다고 밝힌 &#x27;보정된 결정을 위한 강화학습&#x27; 알고리즘이다.</td></tr><tr><td>confidence</td><td>답의 정답 확률과 별개로 모델이 판단에 얼마나 확신하는지를 나타내며, 실행·사람 이관 기준으로 쓰인다.</td></tr><tr><td>신뢰도 게이트 라우팅</td><td>Jev의 판단과 신뢰도를 바탕으로 바로 실행하거나 느린 모델 또는 사람에게 넘기는 구조다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/rDAzCS5h138" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-23</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

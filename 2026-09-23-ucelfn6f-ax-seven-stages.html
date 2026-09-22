@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AX는 대표 의지·전담 조직·지식 연결을 거쳐 프라이빗 GPU 운영으로 확장된다는 제안이다."><title>박종천 CAIO는 AX 성공을 준비도부터 프라이빗 GPU까지 7단계로 제시했다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-23 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>박종천 CAIO는 AX 성공을 준비도부터 프라이빗 GPU까지 7단계로 제시했다.</h1><p class="lead">AX는 대표 의지·전담 조직·지식 연결을 거쳐 프라이빗 GPU 운영으로 확장된다는 제안이다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>지란지교소프트 박종천 CAIO는 약 200명 조직의 AX 전환과 고객사 AI 전환 사업을 함께 맡고 있다고 설명했다.</li>
+<li>개발 조직은 바이브 코딩 중심으로 전환해 코드보다 의도·스펙 문서를 관리하는 VDLC를 정립 중이라고 말했다.</li>
+<li>AX 0단계 준비도에는 대표 의지, AXTF 전담 조직, 문화 변화에 필요한 충분한 기간이 필요하다고 제시했다.</li>
+<li>AX는 킥오프·디스커버리·POC·어답션·스케일업을 거쳐 보안과 비용을 다루는 프라이빗 전환으로 이어진다고 설명했다.</li>
+<li>고객사 사례에서 직원 200명 규모에 H200 2대 구매비가 약 2억원, 클라우드 GPU 임대 견적은 연 5억원이었다고 말했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>박종천은 개인이 AI를 잘 쓰는 생산성과 조직 전체의 생산성은 다르며, 조직 지식과 시스템의 연결이 핵심이라고 봤다.</li>
+<li>AX 컨설팅은 0단계 준비도부터 6단계 프라이빗 트랜스포메이션까지 총 7단계로 추진한다고 설명했다.</li>
+<li>AI를 단순한 도구가 아니라 회사 지식과 지시를 바탕으로 일하는 ‘AI 직원’으로 전환해야 한다고 말했다.</li>
+<li>AI 생산성 확대는 보안 위험과 비용 증가를 동반하므로, AI 해킹 대응과 AI 보안을 함께 가져가야 한다고 강조했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>바이브 코딩과 VDLC로 바뀐 개발 방식</h2><ul>
+<li>개발자들은 의도와 설계 문서만 던지고 AI가 개발하도록 전환했으며, 사람은 더 이상 코드를 보지 않는 방향이라고 말했다.</li>
+<li>전통적 SDLC의 요구사항·디자인·개발·테스트·출시 흐름은 바이브 코딩 중심의 VDLC로 바뀌고 있다고 설명했다.</li>
+<li>VDLC에서는 코드가 결과물일 뿐이며, 관리 대상은 인텐트와 스펙 문서라고 밝혔다.</li>
+<li>AI와 일하는 시간이 늘면서 사람 간 대화가 줄어드는 ‘소통 부채’가 생길 수 있어 데일리 스탠드업과 워크숍을 운영한다고 말했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>AI 기반 채용 평가와 AI 풀스택 개발자</h2><ul>
+<li>신입 개발자 입사 테스트로 오피스 에이전트를 일주일 안에 혼자 바이브 코딩으로 구현하게 한다고 설명했다.</li>
+<li>지원자가 제출한 결과물은 평가 프로그램과 LLM이 항목별 약 10페이지 보고서로 평가하며, Codex와 Claude Code의 리뷰 보고서도 활용한다고 말했다.</li>
+<li>두 평가 중 하나라도 80점을 넘으면 통과시키고, 이후 이력서 검토와 문화 적합성 중심의 면담을 진행한다고 밝혔다.</li>
+<li>최근에는 프론트엔드·백엔드 구분보다 GPU·모델·에이전트 프레임워크·툴콜링을 다루는 AI 풀스택 개발자를 채용한다고 말했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>일반 직군의 문서 업무 전환</h2><ul>
+<li>일반 직군에는 Claude Code 등을 제공하고 교육·컨설팅을 통해 실무 적용을 지원한다고 설명했다.</li>
+<li>기존 제안서, 고객 웹사이트, 개인 지식을 입력한 뒤 새 제안서를 만들게 하면 사람의 1시간 작업을 5분에 처리할 수 있다고 말했다.</li>
+<li>직접 파워포인트나 워드 문서를 만드는 방식에서 벗어나 의도와 스펙 문서로 결과물을 생성해야 한다고 주장했다.</li>
+<li>박종천은 자신은 약 6개월 동안 슬라이드를 직접 만든 적이 없다고 경험을 소개했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>AX 7단계와 조직 확산 과정</h2><ul>
+<li>0단계 AX 레디니스는 대표 의지, AXTF 전담 조직, 충분한 기간의 세 요소로 구성된다고 설명했다.</li>
+<li>1단계 킥오프 뒤 2단계 디스커버리에서 실제 업무를 분석하고 AI 전환 대상 업무를 선정한다고 말했다.</li>
+<li>3단계 POC로 작동 여부를 확인하고 4단계 어답션에서 실무에 적용하며, 여기까지 가면 성공으로 본다고 밝혔다.</li>
+<li>어답션 이후 유용성이 확인되면 5단계 스케일업으로 확산되며, 한 사례에서는 2개 부서 2개 아이템에서 9개 부서 9개 아이디어로 늘었다고 말했다.</li>
+<li>6단계 프라이빗 트랜스포메이션에서는 보안과 비용 문제에 대응하기 위해 구축형 환경을 준비한다고 설명했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>조직 지식 라이브러리와 프라이빗 GPU</h2><ul>
+<li>회사 AI 전환은 개인용 AI, 개인 지식 기반 업무용 AI, 조직 공용 지식 라이브러리로 확장된다고 구분했다.</li>
+<li>조직 지식 라이브러리가 구축되면 직원이 정보를 찾는 시간과 잘못된 정보로 재작업하는 시간을 줄일 수 있다고 설명했다.</li>
+<li>GPU 위에 모델, LangGraph 같은 에이전트 프레임워크, 툴콜링, 문서·이메일·결제·웹브라우징 등의 서비스를 연결하는 구조를 제시했다.</li>
+<li>고객사에서 H200 2대 구매비는 약 2억원이었고, 직원 200명 사용을 위한 클라우드 GPU 임대 견적은 연 5억원이었다고 말했다.</li>
+<li>GPU를 구매하면 밤에도 활용해 24시간 일하는 AI 직원처럼 운영하려는 동기가 생긴다고 설명했다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>AX 레디니스</td><td>AX 시작 전 대표 의지, AXTF 전담 조직, 충분한 기간을 갖췄는지 보는 0단계 준비도다.</td></tr><tr><td>VDLC</td><td>바이브 코딩 환경에서 코드 대신 인텐트와 스펙 문서를 중심으로 관리하는 개발 라이프사이클이다.</td></tr><tr><td>소통 부채</td><td>AI와 일하는 데 집중하면서 사람들 사이의 대화와 협업이 줄어들 수 있는 문제를 뜻한다.</td></tr><tr><td>조직 지식 라이브러리</td><td>개인 문서가 아닌 조직 공용 문서와 지식을 모아 AI가 업무에 활용하도록 하는 기반이다.</td></tr><tr><td>툴콜링</td><td>에이전트 프레임워크가 이메일, 문서, 결제, 웹브라우징 등 연결된 도구와 서비스를 호출하는 방식이다.</td></tr><tr><td>프라이빗 트랜스포메이션</td><td>AX 확산 뒤 보안과 비용 문제에 대응하기 위해 GPU 등 구축형 AI 환경을 준비하는 6단계다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/LLIxpEHR89M" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-09-23</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
