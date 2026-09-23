@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Codex로 트렌드·메일·재무·멀티 업로드를 엔조이커플 업무에 연결했다."><title>엔조이커플에 맥미니 기반 AI 자동화로 콘텐츠 업무 흐름을 세팅했다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-24 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>엔조이커플에 맥미니 기반 AI 자동화로 콘텐츠 업무 흐름을 세팅했다.</h1><p class="lead">Codex로 트렌드·메일·재무·멀티 업로드를 엔조이커플 업무에 연결했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>조코딩은 엔조이커플의 트렌드 조사, 콘텐츠 멀티 업로드, 메일 처리, 재무 관리 고민을 Codex 중심으로 자동화했다.</li>
+<li>트렌드 사이트 탐색 결과와 vidIQ의 VPH 데이터를 결합해 채널에 맞는 콘텐츠 후보와 반복 포맷을 검토했다.</li>
+<li>Slack 아이디어 수집 채널에 링크를 올리면 ChatGPT가 제목·카테고리·내용·포인트를 Google Sheets에 정리하도록 구성했다.</li>
+<li>광고 문의 메일은 첨부파일까지 분석해 소개서 공유와 필요 정보 요청을 포함한 답장을 Gmail 임시저장으로 작성했다.</li>
+<li>YouTube 쇼츠 1개를 Instagram 릴스, TikTok, 네이버 클립에 올리는 멀티 업로더를 설치하고 실제 업로드를 시연했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>엔조이커플은 쌍둥이 육아 이후 줄어든 업무 시간을 보완하기 위해 AI 자동화 세팅을 요청했다.</li>
+<li>요청 범위는 트렌드 리서치, 플랫폼별 콘텐츠 업로드, 메일 답장, 반복적인 재무·회계 업무였다.</li>
+<li>조코딩은 ChatGPT 데스크톱 앱의 Codex와 플러그인, 컴퓨터 제어 기능을 중심으로 작업을 구성했다.</li>
+<li>자동화는 사람의 최종 확인이 필요한 메일 발송 등에는 임시저장 방식을 적용하는 방향으로 설명됐다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>트렌드 탐색과 매일 아침 리포트</h2><ul>
+<li>커플·먹방·챌린지·코미디와 육아를 엔조이커플의 콘텐츠 장르로 두고 트렌드 탐색 프롬프트를 구성했다.</li>
+<li>AI가 브라우저를 조작해 키워드와 변화 신호를 탐색하고, 후보 10개를 채널 적합도와 함께 정리하도록 했다.</li>
+<li>탐색 예시 결과로 비 오는 날 실내 데이트와 엉덩이 하트 챌린지가 언급됐다.</li>
+<li>예약 작업을 통해 매일 오전 7시 30분까지 트렌드 사이트를 탐색한 한글 리포트를 받도록 등록했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>vidIQ로 유사 채널의 상승 데이터 검증</h2><ul>
+<li>vidIQ는 유튜브 데이터를 모아 시간당 조회수 등의 통계를 제공하는 서비스로 소개됐다.</li>
+<li>ChatGPT 플러그인에서 vidIQ를 연결해 조사한 트렌드가 유튜브에서 실제 <span class="up">상승</span> 중인지 검증하도록 했다.</li>
+<li>VPH는 View Per Hour, 즉 시간당 조회수 증가 속도를 뜻하는 지표로 설명됐다.</li>
+<li>유사 채널에서 VPH가 높은 영상의 제목 구조와 반복 포맷을 참고해 아이디어를 만들 수 있다고 설명했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Slack 링크를 Google Sheets 아이디어 DB로 정리</h2><ul>
+<li>Slack의 아이디어 수집 채널 메시지를 받으면 자동화가 실행되도록 이벤트 기반 작업을 설정했다.</li>
+<li>ChatGPT를 Slack 채널에 초대하고, 링크가 올라오면 모니터링하는 상태로 구성했다.</li>
+<li>수집된 링크는 Google Sheets에 제목, 카테고리, 내용, 엔조이커플에 맞는 포인트로 정리됐다.</li>
+<li>카테고리 분류 후 육아 관련 아이디어만 따로 찾아보는 활용 사례가 언급됐다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>Gmail 초안과 금융 데이터 연동 활용</h2><ul>
+<li>광고 문의 메일에 대해 채널 소개서 첨부와 필요한 정보 요청을 포함한 답장을 Gmail 임시저장으로 만들도록 설정했다.</li>
+<li>엔조이커플은 AI가 승인 없이 메일을 발송하지 않고 팀장이 확인 후 보내기를 원한다고 밝혔다.</li>
+<li>조코딩은 정부 지원 사업에서 첨부 문서 검토·작성과 다수 기관 소통에 AI를 활용했다고 말했다.</li>
+<li>무료라고 소개된 클로브 AI를 MCP로 연결해 계좌·카드·이메일·일정 데이터를 분석하는 방식을 시연했다.</li>
+<li>지난달 큰 지출, 미수금, 사용하지 않는 AI 구독료 등을 금융 데이터와 관련 자료로 확인하는 활용이 언급됐다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>쇼츠 멀티 업로더 설치와 원격 제어</h2><ul>
+<li>조코딩은 GitHub에 올린 쇼츠 멀티 업로더 예시를 내려받아 엔조이커플 채널용으로 변형했다.</li>
+<li>업로드 대상은 YouTube, TikTok, Instagram 릴스, 네이버 클립으로 정했고 광고성 영상은 제외하도록 설정했다.</li>
+<li>가장 최근 YouTube 쇼츠인 아기새 블루베리 먹방을 멀티 업로드하자 다른 플랫폼에 게시되는 장면이 시연됐다.</li>
+<li>ChatGPT 데스크톱 앱의 연결 기능에서 맥미니 원격 제어를 허용해 외부에서도 작업을 실행하는 방법을 소개했다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Codex</td><td>영상에서는 ChatGPT 데스크톱 앱에서 선택해 자동화와 컴퓨터 조작에 활용한 개발자용 버전으로 소개됐다.</td></tr><tr><td>컴퓨터 유즈</td><td>AI가 계산기나 브라우저처럼 컴퓨터의 도구를 직접 조작하도록 하는 플러그인 기능으로 설명됐다.</td></tr><tr><td>vidIQ</td><td>유튜브 영상 데이터와 VPH 등을 통해 트렌드와 유사 채널의 <span class="up">상승</span> 영상을 검증하는 서비스로 사용됐다.</td></tr><tr><td>VPH</td><td>View Per Hour의 약자로, 영상의 시간당 조회수 증가 속도를 나타내는 지표로 설명됐다.</td></tr><tr><td>MCP</td><td>AI 에이전트에 클로브 같은 외부 서비스를 연결하는 방식이며 영상에서는 USB-C 연결에 비유됐다.</td></tr><tr><td>클로브 AI</td><td>계좌와 카드 등 금융 정보를 모아 AI 에이전트와 연동할 수 있는 무료 도구로 소개됐다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/F9ppxTBO_mM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-09-24</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
