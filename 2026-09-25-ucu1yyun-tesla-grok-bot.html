@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="테슬라 Grok Bot은 메일·일정·노션 연동을 보였고, 에이전트 작업 완료는 제한적으로 확인됐다."><title>테슬라 Grok Bot은 커넥터 기반 차내 업무를 보였지만 에이전트 실행은 제한적으로 확인됐다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-25 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>테슬라 Grok Bot은 커넥터 기반 차내 업무를 보였지만 에이전트 실행은 제한적으로 확인됐다.</h1><p class="lead">테슬라 Grok Bot은 메일·일정·노션 연동을 보였고, 에이전트 작업 완료는 제한적으로 확인됐다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>테슬라 공식 64초 영상은 Grok이 메일·캘린더·노션을 연결해 타호 여행 일정을 기록하는 흐름을 제시했다.</li>
+<li>일론 머스크는 테슬라 원글 약 34분 뒤 Grok Bot 관련 게시물을 인용했고, 캡처 기준 조회수는 257만이었다.</li>
+<li>알렉스 핀 영상에서 차 안 Grok은 개인 봇 17개를 확인하고 업무 요청을 전달했으나 결과물은 일부 초안만 공개됐다.</li>
+<li>복잡한 작업은 SuperGrok Heavy 구독자 전용이며, 보도 기준 월 300달러라고 영상은 설명했다.</li>
+<li>영상은 한국에서 이번 봇·커넥터 기능의 즉시 지원 여부는 공식 발표에 확정 문구가 없다고 짚었다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>영상은 차 안 Grok을 단순 음성 비서 다음 단계인, 연결된 계정과 개인 봇을 다루는 도구로 제시했다.</li>
+<li>테슬라 공식 영상은 메일 조회·일정 확인·노션 기록을, 알렉스 핀 영상은 개인 봇에 대한 업무 전달을 보여줬다.</li>
+<li>검증된 범위는 커넥터 기반 핸즈프리 조회와 문서 기록이며, 집 컴퓨터에서 게임·소프트웨어를 만드는 장면은 결과가 확인되지 않았다.</li>
+<li>결론으로 영상은 테슬라가 스마트폰을 대체했다기보다 Grok Bot 계정을 운전석에 앉힌 것이라고 정리했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>테슬라 공식 영상의 메일·캘린더·노션 연동</h2><ul>
+<li>사이버트럭 화면에서 Grok은 래리 징의 타호 비스타 숙박 예약 메일과 토요일 오후 4시 체크인 정보를 읽었다.</li>
+<li>Grok은 토요일 오후 3시부터 6시까지 캘린더가 비어 있어 일정이 겹치지 않는다고 답했다.</li>
+<li>사용자 요청 뒤 Grok은 노션 여행 일정 페이지에 주소, 확인 번호, 체크인 시간을 추가했다고 응답했다.</li>
+<li>영상은 이 흐름을 메일·캘린더·문서라는 서로 다른 서비스를 한 번의 대화로 잇는 사례로 설명했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>커넥터 설정과 Heavy 구독 조건</h2><ul>
+<li>커넥터는 계정 연결을 뜻하며, Grok 앱에서 플러스·새 커넥터·서비스 로그인 순서로 미리 설정해야 한다.</li>
+<li>테슬라 게시물에 따르면 커피 주문, 예약, 약속 잡기 같은 복잡한 작업은 현재 SuperGrok Heavy 구독자 전용이다.</li>
+<li>영상은 SuperGrok Heavy 가격을 보도 기준 월 300달러라고 소개했다.</li>
+<li>공식 64초 영상에서 확인된 작업은 메일·캘린더 조회와 문서 기록이며, 결제 단계는 포함되지 않았다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>알렉스 핀의 개인 봇 17개와 업무 전달</h2><ul>
+<li>헨리 인텔리전트 머신스 창업자 알렉스 핀은 차 안 Grok이 자신의 Grok Bot 17개를 모두 읽어줬다고 설명했다.</li>
+<li>영상에서 언급된 봇에는 비서실장 슬레이트, CTO 빌드, 콘텐츠 배리, 커뮤니티 더스티, HIM 담당 켈리가 포함됐다.</li>
+<li>대체 랜딩페이지 제작 요청에 Grok은 켈리·행크·빌드에게 요청을 보냈다고 답했지만, 영상은 이를 작업 완료가 아닌 전달로 구분했다.</li>
+<li>이 17개 봇은 테슬라가 제공한 봇이 아니라 알렉스가 기존에 만들어 둔 개인 봇이며 당시 모두 대기 상태였다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>초안 낭독·캘린더 재연결·게임 제작의 확인 범위</h2><ul>
+<li>알렉스 핀은 FSD 주행 중 콘텐츠 초안, 아카데미 답글, 리서치를 맡겼다고 말했고, 요청한 초안 5개 중 2개가 낭독됐다.</li>
+<li>낭독된 결과는 게시물이 아닌 초안이었고, 나머지 3개 초안은 영상에서 공개되지 않았다.</li>
+<li>10월 1일 로드스터 공개 일정 등록 과정에서는 슬레이트 측 구글 캘린더를 다시 연결해야 한다는 로그인 카드 안내가 나왔다.</li>
+<li>맥 스튜디오에 3D 1인칭 슈팅 게임을 만들어 달라는 요청에는 Grok Build 설치 안내가 돌아왔고, 게임 화면과 실행 링크는 나오지 않았다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>커피 주문 사례와 차량 사용 조건</h2><ul>
+<li>데빈 올슨의 97초 영상에서는 바리스타라는 본인 봇을 통해 필즈 커피를 주문하고 저장된 카드로 7.30달러를 결제했다.</li>
+<li>해당 주문은 5~8분 뒤 준비된다고 안내됐으며, 영상에는 매장에서 실제 음료를 받는 장면도 포함됐다.</li>
+<li>영상은 차량 기능 조건으로 AMD 인포테인먼트, 최근 소프트웨어, 프리미엄 커넥티비티 또는 와이파이를 언급했다.</li>
+<li>메일 내용은 차량에서 소리 내어 읽히므로 옆자리 사람도 들을 수 있다는 점을 한계로 제시했다.</li>
+<li>FSD 감독형 표기와 한국 지원 불확실성: 알렉스 핀은 영상에서 핸들을 한 번도 잡지 않았다고 강조했지만, 테슬라 FSD의 공식 이름은 감독형인 Supervised다.</li>
+<li>FSD 감독형 표기와 한국 지원 불확실성: 영상은 필즈 커피 길 안내가 새 봇 기능이라기보다 기존 차량 Grok에 있던 내비게이션 명령일 가능성을 언급했다.</li>
+<li>FSD 감독형 표기와 한국 지원 불확실성: 한국에서는 기본 차량 Grok이 올해 7월부터 베타로 들어왔지만, 이번 봇과 커넥터의 당일 지원 여부는 확정 문구가 없다고 설명했다.</li>
+<li>FSD 감독형 표기와 한국 지원 불확실성: 영상은 감독형 FSD를 완전 자율주행으로 해석해서는 안 된다고 강조했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Grok Bot</td><td>차 안 Grok이 연결된 계정과 사용자가 만들어 둔 개인 봇에 접근해 조회·기록·업무 전달을 수행하는 맥락의 기능이다.</td></tr><tr><td>커넥터</td><td>메일, 캘린더, 노션 등 외부 서비스 계정을 Grok 앱에서 미리 로그인해 연결하는 설정을 뜻한다.</td></tr><tr><td>SuperGrok Heavy</td><td>커피 주문·예약·약속 잡기 같은 복잡한 작업에 필요한 구독으로, 영상은 보도 기준 월 300달러라고 소개했다.</td></tr><tr><td>Grok Build</td><td>알렉스 핀 영상에서 맥 스튜디오에 설치됐다고 안내된 기능이며, 3D 게임 결과 화면은 영상에 나오지 않았다.</td></tr><tr><td>FSD Supervised</td><td>테슬라 FSD의 공식 명칭으로, 영상은 이를 완전 자율주행이 아닌 감독형 기능으로 구분했다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/o1RL9sgz8SI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-09-25</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
