@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="승률보다 크게 벌고 작게 잃는 실행력과 자본 이동이 투자 성과를 좌우한다."><title>투자 성과는 종목 적중률보다 실행과 자본 배분이 좌우된다는 주장이다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>미국주식으로 은퇴하기 - 미주은</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-26 · 미국주식으로 은퇴하기 - 미주은</span><span class="chip">🎬 영상</span></div><h1>투자 성과는 종목 적중률보다 실행과 자본 배분이 좌우된다는 주장이다.</h1><p class="lead">승률보다 크게 벌고 작게 잃는 실행력과 자본 이동이 투자 성과를 좌우한다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>리 프리먼 쇼의 한국어판 『주식 살 때와 팔 때』는 뛰어난 투자자 분석을 통해 종목 선정 이후의 실행 능력을 핵심으로 제시한다.</li>
+<li>책에서 분석한 투자 거장들의 중앙값 승률은 49%였지만, 중앙값 페이오프 레이시오는 182%로 소개됐다.</li>
+<li>매수 시점·초기 매수 규모·수익 종목 추가 투자·오판 시 포기 시점의 네 실행 항목이 중요하다고 설명한다.</li>
+<li>실적 서프라이즈, 가이던스 상향, EPS 전망치 <span class="up">상승</span>, 거래량과 상대 강도 <span class="up">개선</span>을 모멘텀의 근거로 든다.</li>
+<li>영상은 약한 기업·산업에서 강한 기업·산업으로 자본을 옮기는 일을 모멘텀 투자의 본질로 정의한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>영상은 장기 투자 성과가 좋은 종목을 고르는 능력만이 아니라, 선정 뒤 실행하는 방식에 의해 좌우된다고 주장한다.</li>
+<li>실행은 언제 매수할지, 처음 얼마를 살지, 맞았을 때 얼마나 늘릴지, 틀렸을 때 언제 포기할지의 네 항목으로 제시됐다.</li>
+<li>성공 투자자는 높은 승률보다 수익 거래에서는 크게 벌고 손실 거래에서는 작게 잃는 구조를 만들었다는 논점이다.</li>
+<li>좋은 기업을 찾는 일은 투자의 출발점이며, 실적과 시장 평가의 변화를 계속 확인해야 한다고 설명한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>49% 승률과 182% 페이오프 레이시오</h2><ul>
+<li>책에서 선정한 투자 거장들의 중앙값 승률은 49%로, 최고의 투자자도 투자 판단의 절반가량은 틀릴 수 있다고 소개했다.</li>
+<li>영상은 임의로 10종목을 선정했을 때의 확률을 53%로 언급하며, 높은 적중률 자체가 성공을 보장하지 않는다고 말한다.</li>
+<li>페이오프 레이시오는 수익 난 투자에서 번 돈과 손실 난 투자에서 잃은 돈의 비율로 정의됐다.</li>
+<li>거장들의 중앙값 페이오프 레이시오 182%는 100만원을 잃었다면 182만원을 버는 구조로 영상에서 풀이됐다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>실적 확인 뒤 대응하는 매수 과정</h2><ul>
+<li>골드버그는 실적 <span class="up">개선</span>을 미리 예상해 선매수하기보다 첫 번째 어닝 서프라이즈가 나타난 뒤 움직이는 방식을 선호한다고 소개됐다.</li>
+<li>한 번의 실적 서프라이즈 뒤에도 애널리스트 EPS 추정치, 기관 관심, 거래량, 상대 강도, 다음 분기 기대치가 이어질 수 있다고 설명한다.</li>
+<li>영상은 예측보다 실제 변화의 증거를 확인한 뒤 대응하는 것이 중요하다며 &#x27;prediction&#x27;보다 &#x27;reaction&#x27;을 강조한다.</li>
+<li>실적 서프라이즈와 전망 상향, 거래량 증가, 월가 예상치 <span class="up">상승</span>이 동반된 갭 <span class="up">상승</span>은 새 추세의 시작일 수 있다고 말한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>펀더멘탈과 가격 모멘텀의 결합</h2><ul>
+<li>모멘텀 투자는 단순히 오르는 주식을 따라 사는 방식이 아니라, 펀더멘탈과 시장 평가가 좋아지는 기업에 자본을 집중하는 전략으로 정의됐다.</li>
+<li>실적 서프라이즈와 가이던스 상향은 EPS 전망치 <span class="up">상승</span>으로 이어지고, 기관 자금·거래량·상대 강도에 영향을 줄 수 있다고 설명한다.</li>
+<li>존 린은 저평가로 보이는 기업이라도 가격 모멘텀이 계속 나쁘면 즉시 매수하지 않는 가치 투자자로 소개됐다.</li>
+<li>영상은 펀더멘탈 분석으로 무엇을 살지 정하고, 모멘텀으로 언제 살지 정한다고 정리한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>증거 기반 비중 확대와 승자 보유</h2><ul>
+<li>골드버그는 처음부터 한 종목에 큰 비중을 두지 않고, 작은 포지션으로 시작한 뒤 증거가 늘면 비중을 확대한다고 소개됐다.</li>
+<li>두 번째 실적 서프라이즈, 전망치 <span class="up">상승</span>, 가격 움직임 <span class="up">개선</span>으로 투자 논리가 강해질 때 분할 매수하는 방식이 제시됐다.</li>
+<li>영상은 수익률이 높다는 이유만으로 매도하지 말고, 앞으로도 <span class="up">상승</span> 근거가 살아 있는지를 확인해야 한다고 말한다.</li>
+<li>초기 3% 비중 종목이 5~7%가 된 사례에서, 비중 자체가 과도하지 않다면 승자가 달리도록 둘 필요가 있다고 설명한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>손실 인정과 약한 곳에서 강한 곳으로의 이동</h2><ul>
+<li>실적 <span class="dn">악화</span>, 가이던스 하향, EPS 전망치 <span class="dn">하락</span>, 상대 강도 약화, 거래량을 동반한 주가 <span class="dn">하락</span>은 투자 논리를 재점검할 신호로 제시됐다.</li>
+<li>영상은 주가 <span class="dn">하락</span>만을 이유로 추가 매수하는 물타기가 위험할 수 있으며, 자본에는 기회비용이 있다고 말한다.</li>
+<li>모멘텀 투자는 실적·EPS 전망치·상대 강도가 약한 기업에서 강한 기업으로 자본을 옮기는 전략으로 설명된다.</li>
+<li>최근 2주간 반도체 AI 수혜주의 흐름이 좋았고, 유가와 채권 금리 <span class="up">상승</span> 및 인플레이션 강화가 언급되며 시장 폭이 얇아졌다고 진단했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>페이오프 레이시오</td><td>수익 난 투자에서 번 돈과 손실 난 투자에서 잃은 돈의 비율이며, 영상은 거장들의 중앙값을 182%로 소개한다.</td></tr><tr><td>모멘텀 투자</td><td>기업 펀더멘탈과 시장 평가가 함께 좋아지는 기업에 자본을 집중하고, 약한 곳에서 강한 곳으로 자금을 이동시키는 전략이다.</td></tr><tr><td>어닝 서프라이즈</td><td>기업 실적이 기대를 웃도는 현상으로, 이후 EPS 추정치와 기관 관심이 이어질 수 있는 확인 신호로 설명된다.</td></tr><tr><td>EPS 전망치</td><td>주당순이익에 대한 애널리스트 전망으로, 지속적인 상향 여부가 실적 모멘텀 판단 기준으로 제시된다.</td></tr><tr><td>상대 강도</td><td>시장 대비 주가 흐름의 강도를 뜻하며, 영상에서는 RSI 지수와 함께 모멘텀 판단에 활용된다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/vWiwJ1pgV3g" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>미국주식으로 은퇴하기 - 미주은 · 2026-09-26</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
