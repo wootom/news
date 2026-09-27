@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 병목은 GPU·HBM 다음 전력, 냉각, 광 네트워크, 데이터로 이동한다."><title>AI 병목은 GPU·HBM을 넘어 전력·냉각·광네트워크·데이터로 이동한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-27 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>AI 병목은 GPU·HBM을 넘어 전력·냉각·광네트워크·데이터로 이동한다.</h1><p class="lead">AI 병목은 GPU·HBM 다음 전력, 냉각, 광 네트워크, 데이터로 이동한다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>김지현 SK쇼팩스 AI 위원회 부사장은 장기 투자에서 기술과 실적 가능성을 함께 보고, 짧아도 1년 반 이상을 내다본다고 말했다.</li>
+<li>AI 모델 경쟁의 첫 병목은 GPU였고, GPU당 HBM 탑재량 증가와 수요 확대에 따라 병목이 메모리로 옮겨갔다고 설명했다.</li>
+<li>HBM 생산 확대가 D램 공급과 가격에 영향을 주며, 온디바이스 AI 확산도 LPDDR 계열을 포함한 D램 수요를 높일 수 있다고 봤다.</li>
+<li>데이터센터가 1GW·10GW·20GW 규모로 커질 경우 전력, 수냉·액침냉각, 광 네트워크가 후속 병목이 될 수 있다고 제시했다.</li>
+<li>공개 인터넷 데이터가 부족해지면서 바이오·제조·조선소 등의 비공개 물리 데이터를 수집·아카이빙하는 기업과 솔루션을 주목해야 한다고 말했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>기술 하나만 보지 말고 원천기술, 상품화 기업, 솔루션 공급 기업, 서비스 기업으로 레이어를 나눠 봐야 한다고 말했다.</li>
+<li>기반 인프라를 제공하는 기업이 먼저 수익을 내고, 이후 서비스 기업과 이를 돕는 솔루션 기업으로 기회가 분산되는 흐름을 제시했다.</li>
+<li>AI 투자에서는 현재의 병목을 해결하는 기업을 찾고, 다음 병목을 긴 호흡으로 예상해 기다리는 방식이 중요하다고 설명했다.</li>
+<li>같은 병목 관련 기업이라도 기술 투자, 실제 실적, CEO 리더십, 조직, 제휴와 공급 관계를 별도로 조사해야 한다고 말했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>GPU에서 HBM·D램으로 이어진 메모리 병목</h2><ul>
+<li>오픈AI와 앤트로픽 같은 모델 기업이 성능 경쟁을 위해 컴퓨팅 자원을 필요로 하므로 첫 번째 병목은 GPU였다고 설명했다.</li>
+<li>GPU만으로는 충분하지 않고 빠른 HBM이 필요하며, GPU 하나당 HBM이 예전 4개에서 현재 8개로 늘었다고 언급했다.</li>
+<li>HBM은 D램을 적층하는 기술이 필요하며, 삼성전자·SK하이닉스와 뒤따르는 마이크론을 주요 생산 기업으로 거론했다.</li>
+<li>HBM 생산 비중 확대는 일반 D램 공급을 줄일 수 있고, 스마트폰·컴퓨터 수요와 맞물려 D램 가격에도 영향을 준다고 설명했다.</li>
+<li>메모리 3사의 수익성은 예전 10% 수준에서 현재 70%를 넘는다고 언급하며 HBM과 D램의 동시 가격 <span class="up">상승</span>을 설명했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>온디바이스 AI와 NAND 플래시·SSD 수요</h2><ul>
+<li>아이폰 18 Pro의 핵심 기능으로 AI를 언급하며, 기기 내부에서 AI를 구동하는 온디바이스 AI에는 더 빠르고 많은 메모리가 필요하다고 말했다.</li>
+<li>온디바이스 AI 확산은 일반 D램보다 빠른 LPDDR 계열 메모리 수요를 늘릴 수 있다고 설명했다.</li>
+<li>램은 전원이 꺼지면 데이터가 사라지는 휘발성 메모리이며, 장기 저장 데이터는 NAND 플래시 기반 SSD에 저장한다고 비유했다.</li>
+<li>AI 활용에서 컨텍스트와 데이터 용량이 커지면 램만으로 저장하기 어려워 NAND 플래시와 SSD 수요가 늘 수 있다고 봤다.</li>
+<li>삼성전자와 SK하이닉스가 메모리뿐 아니라 비휘발성 NAND 플래시도 생산하며, 저장장치 가격도 오르고 있다고 언급했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>대형 데이터센터의 전력과 냉각 과제</h2><ul>
+<li>GPU·메모리·NAND 플래시 병목 이후에는 데이터센터 전력이 다음 병목이 될 수 있다고 전망했다.</li>
+<li>1GW, 10GW, 20GW 데이터센터가 필요해질 수 있으며, 한국이 20GW까지 지향한다고 언급했다.</li>
+<li>현재 한국 데이터센터 규모를 약 1.5GW로 추정하며, 10년 뒤에는 10배 이상 늘어날 수 있다고 말했다.</li>
+<li>전력 공급원으로 그린에너지, SMR, 별도 화력발전소, 연료전지 등이 거론된다고 설명했다.</li>
+<li>GPU와 HBM의 고속화로 열 발생이 커지므로 공냉식에서 수냉식·액침냉각으로 전환하는 흐름을 제시했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>광 네트워크와 냉각 소재의 후속 기회</h2><ul>
+<li>공냉식은 선풍기 구동에 전력을 많이 쓰므로 수냉식 냉각으로 전환하려는 작업이 진행되고 있다고 말했다.</li>
+<li>수냉식 확대 시 파이프, 냉매 등 열을 빠르게 식히는 부품·소재·설비 기업의 매출이 늘 수 있다고 설명했다.</li>
+<li>CPU·GPU·HBM·LPDDR 사이에서 구리선으로 전기 신호가 오가면 열과 손실이 발생한다고 말했다.</li>
+<li>대륙 간에는 해저 광케이블이 쓰이지만, 데이터센터 내부의 랙·서버·칩 사이는 아직 구리선이 대부분이라고 설명했다.</li>
+<li>광케이블, CPO, 광 소재와 네트워크 설비 기업이 기회를 얻을 수 있으며 루멘텀 홀딩스를 사례로 들었다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>학습 데이터 부족과 기업 조사 방법</h2><ul>
+<li>최첨단 AI 모델이 인터넷 공개 데이터로 학습했지만 더 좋은 학습 데이터가 부족해지고 있다고 말했다.</li>
+<li>저작권을 둘러싼 분쟁과 합의가 데이터 희소성을 보여주는 징후이며, 기업 내부의 산업별 비공개 데이터가 중요해질 수 있다고 설명했다.</li>
+<li>바이오, 제조 공장, 조선소 등의 물리 데이터는 아직 디지털화되지 않은 경우가 있어 측정·아카이빙·학습용 공급 역량이 중요하다고 봤다.</li>
+<li>전통 기업의 데이터 수집 역량을 보완하는 데이터베이스 구축 및 데이터 솔루션 기업도 다음 수혜 후보가 될 수 있다고 말했다.</li>
+<li>AI에는 투자 여부를 직접 묻기보다 최근 1~3년 사업, 매출 비중, 특허, 기술 혁신, 상품·솔루션과 실적을 조사하도록 활용해야 한다고 조언했다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>병목</td><td>기술 확산과 산업 성장 과정에서 공급이나 성능을 제한하며, 이를 해결하는 기업에 기대가 집중되는 지점이다.</td></tr><tr><td>HBM</td><td>GPU에 필요한 고속 메모리로, D램을 위로 적층해 만들며 AI 연산 수요 확대의 핵심 요소로 언급됐다.</td></tr><tr><td>온디바이스 AI</td><td>클라우드가 아니라 스마트폰 등 기기 내부에서 AI를 구동하는 방식으로, 더 빠르고 많은 메모리 수요와 연결된다.</td></tr><tr><td>NAND 플래시</td><td>전원이 꺼져도 데이터가 남는 비휘발성 메모리로, SSD 등 장기 저장장치에 사용된다고 설명됐다.</td></tr><tr><td>CPO</td><td>데이터센터 내부 네트워크에서 광과 관련된 소재·설비 기회로 언급된 기술 항목이다.</td></tr><tr><td>물리 데이터</td><td>공장·조선소 등 현장에서 발생하지만 아직 충분히 디지털화되지 않아 수집과 아카이빙이 필요한 데이터다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/-X0pmBy6gHg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-09-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

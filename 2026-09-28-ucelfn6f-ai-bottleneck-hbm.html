@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 병목은 GPU에서 메모리, 전력·냉각·네트워크, 데이터로 이동할 수 있다."><title>AI 투자에서는 병목의 이동 순서와 기업 실행력을 함께 살펴야 한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-28 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>AI 투자에서는 병목의 이동 순서와 기업 실행력을 함께 살펴야 한다.</h1><p class="lead">AI 병목은 GPU에서 메모리, 전력·냉각·네트워크, 데이터로 이동할 수 있다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>김지현 SK쇼팩스 AI 위원회 부사장은 기술과 실적 가능성을 보고 최소 1년 반~3년의 호흡으로 투자한다고 말했다.</li>
+<li>AI 인프라 병목은 GPU에서 HBM·D램·낸드플래시로, 이후 전력·냉각·네트워크·데이터로 옮겨갈 수 있다고 봤다.</li>
+<li>HBM 수요 확대가 D램 생산 여력과 가격에도 영향을 주며, 메모리 3사의 수익성이 과거와 달라졌다고 설명했다.</li>
+<li>데이터센터 전력 수요는 1GW·10GW·20GW 단위로 커질 수 있으며, 한국은 20GW까지 지향한다고 언급했다.</li>
+<li>섹터를 찾은 뒤에는 특허·실적·매출 비중·파트너십·CEO 리더십을 조사해 개별 기업을 골라야 한다고 제안했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>투자는 단기 주가 움직임보다 기술에 대한 믿음과 해당 기술이 실적으로 이어질 가능성을 보고 판단해야 한다고 말했다.</li>
+<li>원천기술, 상품화 기업, 솔루션 공급 기업을 레이어로 구분해야 기술 확산에 따른 수혜 순서를 볼 수 있다고 설명했다.</li>
+<li>AI 투자에서는 병목을 해결하는 기업을 찾되, 같은 병목 안에서도 기술 투자와 실제 실적을 비교해야 한다고 강조했다.</li>
+<li>과거 기술 전환의 전개를 현재에 대입하고, 영화·소설 등을 통한 상상으로 다음 단계를 가설화할 수 있다고 말했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>인터넷 시대로 본 수혜 레이어의 이동</h2><ul>
+<li>웹 초기에는 컴퓨터 완제품 제조사, CPU 공급사, 윈도우와 브라우저 등 기반 인프라 기업이 먼저 돈을 벌었다고 설명했다.</li>
+<li>이후 구글·네이버 같은 인터넷 서비스 기업이 성장하고, 웹 사용 확산 뒤에는 페이스북·틱톡과 광고 솔루션·에이전시가 수혜를 봤다고 말했다.</li>
+<li>기술 하나만 보지 말고 그 기술이 들어가는 곳, 만들어내는 가치, 비즈니스 모델, 이를 돕는 솔루션 기업까지 봐야 한다고 제시했다.</li>
+<li>램·냉각·전력 등의 주제를 단기적으로 추격하기보다 최소 1~2년 이상 긴 호흡으로 병목을 봐야 한다고 말했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>GPU 이후 HBM·D램·낸드플래시 병목</h2><ul>
+<li>오픈AI와 앤트로픽 같은 모델 기업이 성능 경쟁을 하려면 컴퓨팅 자원이 필요하므로 첫 병목은 GPU였다고 설명했다.</li>
+<li>GPU에는 HBM이 필요하고, GPU 하나당 HBM 수가 예전 4개에서 현재 8개라고 언급하며 HBM 적층 기술의 중요성을 짚었다.</li>
+<li>HBM 생산 확대는 삼성전자와 SK하이닉스의 D램 생산 여력에 영향을 주고, 스마트폰·컴퓨터 수요가 있는 D램 가격 <span class="up">상승</span>으로 이어질 수 있다고 봤다.</li>
+<li>컨텍스트와 데이터 용량이 커지면 휘발성 램만으로 저장하기 어려워져 비휘발성 낸드플래시와 SSD 수요도 늘 수 있다고 설명했다.</li>
+<li>아이폰 18 Pro의 온디바이스 AI가 더 빠르고 많은 메모리를 요구할 수 있다며 LPDDR 계열 수요 가능성을 언급했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>전력과 냉각, 광 네트워크의 다음 과제</h2><ul>
+<li>GPU·메모리 문제가 완화된 뒤에는 1GW, 10GW, 20GW급 데이터센터에 필요한 전력이 다음 병목이 될 수 있다고 말했다.</li>
+<li>현재 한국 데이터센터 전력 규모를 약 1.5GW로 언급하며, 10년 뒤 20GW 수준이면 크게 증가하는 것이라고 설명했다.</li>
+<li>전력원으로 그린에너지, SMR, 별도 화력발전소, 연료전지 등이 거론될 수 있다고 말했다.</li>
+<li>냉각은 공냉식에서 수냉식·액침냉각으로 이동할 수 있으며, 냉매와 관련 부품·소재·설비 기업의 매출 기회가 생길 수 있다고 봤다.</li>
+<li>데이터센터 내부의 구리선 연결을 광케이블과 CPO 등으로 전환하면 속도·전력소모·발열을 함께 <span class="up">개선</span>할 수 있으며, 루멘텀 홀딩스를 사례로 들었다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>공개 데이터 소진 이후의 산업 데이터</h2><ul>
+<li>최첨단 AI 모델은 인터넷 공개 데이터로 학습했지만, 좋은 모델을 훈련할 데이터가 부족해지고 있다고 진단했다.</li>
+<li>저작권 관련 분쟁과 합의가 늘어나는 현상을 데이터 희소성이 커지는 징조로 언급했다.</li>
+<li>바이오·제조 공장·조선소 등이 보유한 비공개 산업 데이터와 아직 디지털화되지 않은 물리 데이터의 가치를 주목해야 한다고 말했다.</li>
+<li>전통 기업의 데이터를 측정·수집·아카이빙하고 모델 학습용으로 공급하는 데이터베이스 구축 솔루션 기업도 수혜 후보가 될 수 있다고 설명했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>개별 기업 조사와 AI 활용 방식</h2><ul>
+<li>병목을 발견한 뒤에도 해당 분야 기업이 여러 곳이면 기술 투자 수준과 실제 실적을 기준으로 다시 비교해야 한다고 말했다.</li>
+<li>산업이 주목받더라도 기술 혁신·투자·기업 문화가 부족한 기업은 후보가 되기 어렵다고 지적했다.</li>
+<li>개별 기업 조사에서는 실적, 사업별 매출 비중, 특허, CEO 리더십, 조직 체계, 파트너십, 공급처를 살펴야 한다고 제안했다.</li>
+<li>AI에는 투자 여부를 직접 묻기보다 최근 1~3년 사업·실적·매출 비중과 병목 대응 기술·상품·솔루션을 조사하도록 질문해야 한다고 말했다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>병목</td><td>기술과 산업 확산 과정에서 공급·성능·운영을 제한하며, 이를 해결하는 기업에 투자 기대가 생기는 지점이다.</td></tr><tr><td>HBM</td><td>GPU와 함께 쓰이는 고대역폭 메모리로, D램을 위로 적층하는 기술과 공급 확대가 영상의 핵심 논점으로 제시됐다.</td></tr><tr><td>온디바이스 AI</td><td>스마트폰 등 기기 내부에서 AI를 구동하는 방식으로, 더 빠르고 많은 메모리 수요와 연결해 설명됐다.</td></tr><tr><td>CPO</td><td>데이터센터 내부 네트워크의 구리선 연결을 광 기반으로 전환하는 흐름에서 언급된 광 관련 기술이다.</td></tr><tr><td>SMR</td><td>대규모 데이터센터의 전력 수요에 대응할 수 있는 전력원 후보로 언급된 소형 원전이다.</td></tr><tr><td>MCP</td><td>클라우드 위 AI 모델을 운영하는 라우터·오케스트레이션 등과 함께 언급된 AI 솔루션 요소다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/-X0pmBy6gHg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-09-28</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

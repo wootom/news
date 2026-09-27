@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="오퍼스 5.5·GPT-6·메타 뮤즈가 성능, 비용, 에이전트 사용성 경쟁을 이끌었다."><title>클로드 오퍼스 5.5와 메타 뮤즈를 중심으로 AI 모델·에이전트 경쟁이 확대됐다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>조코딩 JoCoding</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-28 · 조코딩 JoCoding</span><span class="chip">🎬 영상</span></div><h1>클로드 오퍼스 5.5와 메타 뮤즈를 중심으로 AI 모델·에이전트 경쟁이 확대됐다.</h1><p class="lead">오퍼스 5.5·GPT-6·메타 뮤즈가 성능, 비용, 에이전트 사용성 경쟁을 이끌었다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>앤트로픽은 오퍼스 5.5가 오퍼스 5보다 실행 비용을 40% 낮추면서 일부 벤치마크에서 페이블 5.1을 앞섰다고 소개했다.</li>
+<li>오퍼스 5.5는 Three.js·블렌더 기반 3D 제작, 게임 구현, TTS 결합 영상 편집 사례에서 활용 가능성을 보였다.</li>
+<li>오픈AI는 GPT-6 솔·루나를 가성비 모델로 공개했고, DevDay를 앞두고 상시 실행 에이전트 ‘5’ 출시설이 나왔다.</li>
+<li>메타 뮤즈는 출시 13일간 미국·캐나다 다운로드 180만 건을 기록하며 ChatGPT 초기 기록 130만 건을 넘었다고 전했다.</li>
+<li>AI 고객센터 검색 결과를 악용한 피싱과 수만 건 규모의 AI 활용 해킹 사례가 제기돼 교차 검증 필요성이 언급됐다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>AI 모델 경쟁은 최고 성능뿐 아니라 실행 비용, 응답 속도, 에이전트 사용성 경쟁으로 확장되고 있다.</li>
+<li>클로드 오퍼스 5.5는 고성능·비용 절감, GPT-6 솔·루나는 가성비, 메타 뮤즈는 소비자 접근성을 각각 강조했다.</li>
+<li>컴퓨터 한 대를 제공해 작업을 지속 수행하는 에이전트가 개발자 도구에서 일반 소비자 서비스로 확대되는 흐름이 제시됐다.</li>
+<li>에이전트 확산과 함께 해킹 자동화, 검색 기반 피싱, 기존 플랫폼의 접근 차단 등 보안·플랫폼 갈등도 부각됐다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>클로드 오퍼스 5.5 성능과 제작 사례</h2><ul>
+<li>앤트로픽은 오퍼스 5.5가 이전 오퍼스 5보다 실행 비용을 40% 줄였고, 페이블 5.1 수준 또는 일부 항목 상회 성능을 보인다고 밝혔다.</li>
+<li>영상에서는 아티피셜 아날리시스 종합 점수 기준으로 오퍼스 5.5가 페이블을 5점 차로 앞선 1위라고 소개됐다.</li>
+<li>공식 사례에는 Three.js·블렌더를 활용한 오사카성, 인테리어, 웹 기반 3D 모델링과 애니메이션 제작이 포함됐다.</li>
+<li>제작자는 ‘Make a Three.js version of Zelda Breath of the Wild’ 한 줄 프롬프트로 3D 게임을 생성해 실행 사례를 보였다.</li>
+<li>생성된 게임에는 칼·활 조작, 사당, 체력 게이지, 등산, 전투, 보물상자, 루피 등의 요소가 구현됐다고 설명했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>클로드 코드 운영 방식과 연구 활용</h2><ul>
+<li>앤트로픽의 활용 팁은 완료 기준과 중단 조건을 명확히 쓰고, 긴 작업에서는 진행 상황과 검증을 확인하라고 안내한다.</li>
+<li>‘깊이 생각해’ 같은 지시는 모델이 추론 깊이를 자체 결정하므로 생략할 수 있으며, 간단한 답이 필요하면 직접 요청할 수 있다고 전했다.</li>
+<li>터미널 벤치 3.0 실험에서는 에포트 설정별 소요 시간이 로우 1.5분, 미디엄 4분, 하이 11분, 맥스 67분으로 소개됐다.</li>
+<li>권장 흐름은 클로드와 스펙을 정리한 뒤 로우로 구현·수정을 반복하고, 마지막 검증 테스트에 하이를 쓰는 방식이다.</li>
+<li>클로드 코드는 5시간 제한에 도달해도 주간 한도 일부를 활용해 작업 중단 지점까지 마무리하도록 업데이트됐다고 설명했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>GPT-6 솔·루나와 OpenAI DevDay 전망</h2><ul>
+<li>오픈AI는 GPT-6 아스트라보다 저렴한 모델로 GPT-6 솔과 GPT-6 루나를 출시했다고 소개됐다.</li>
+<li>영상에서 제시된 가격은 솔이 입력 2달러·출력 10달러, 루나가 입력 0.1달러·출력 0.5달러였다.</li>
+<li>아티피셜 아날리시스 기준 GPT-6 솔의 종합 점수는 48점으로 언급됐으며, 루나는 코스트 인텔리전스 0.07달러 수준으로 소개됐다.</li>
+<li>샌프란시스코 DevDay를 앞두고 컴퓨터 한 대에서 지속 실행되는 에이전트 ‘5’와 월 500달러 프로맥스 티어 출시설이 전해졌다.</li>
+<li>GPT-6 프롬프트 캐싱은 캐시된 입력 토큰을 최대 90% 할인하고, 캐시 적중률과 캐시 미스를 진단하는 기능을 제공한다고 설명했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>AI 보안 위협과 검색 결과 피싱</h2><ul>
+<li>Axios 관련 자료를 인용해 오픈AI·앤트로픽 및 보안 연구원들이 수만 건의 AI 활용 해킹 사건을 확인했다는 내용이 소개됐다.</li>
+<li>영상은 공개된 사례보다 해킹 문제가 훨씬 복잡할 수 있으며, 모델 성능 향상에 맞춰 방어 체계도 강화돼야 한다고 언급했다.</li>
+<li>가짜 고객센터 번호와 지원 페이지를 대량 게시한 뒤 GEO를 최적화해 AI가 피싱 번호를 안내하게 만드는 수법이 소개됐다.</li>
+<li>ChatGPT나 Gemini가 안내한 고객센터 번호라도 공식 사이트에서 교차 검증하지 않으면 피싱 피해가 발생할 수 있다고 경고했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>메타 뮤즈의 소비자 에이전트 확산과 기기 발표</h2><ul>
+<li>메타 뮤즈는 컴퓨터 환경에서 브라우저·파일·코드 실행 등을 수행하는 에이전트로 소개됐고, 무료 제공과 간편한 로그인 사용성이 강점으로 제시됐다.</li>
+<li>앱토피아 기준 뮤즈는 출시 뒤 13일간 미국·캐나다 다운로드 180만 건을 기록해 ChatGPT 초기 130만 건을 넘었다고 전했다.</li>
+<li>활용 사례로 자동차 보험을 비교·구매·기존 계약 취소해 연간 3,500달러를 절약하거나, 케이블·전화 요금에서 연 800달러 이상을 절감한 사례가 언급됐다.</li>
+<li>뮤즈는 인스타그램 저장 게시물 정리와 쇼피파이·페이팔·익스피디아·인스타카트 커넥터를 추가했으며, 아마존은 무단 에이전트 접근을 차단했다.</li>
+<li>영상에서는 뮤즈 VM이 2코어, 메모리 8GB, 디스크 100GB를 제공한다고 소개했고, 메타는 뮤즈 참과 100g VR 헤드셋도 공개했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>오퍼스 5.5</td><td>앤트로픽이 공개한 클로드 모델로, 오퍼스 5 대비 실행 비용 40% 절감과 높은 종합 성능이 소개됐다.</td></tr><tr><td>에포트</td><td>클로드 작업의 추론 노력 수준 설정으로, 로우·미디엄·하이·맥스에 따라 작업 시간과 토큰 사용량이 달라진다.</td></tr><tr><td>프롬프트 캐싱</td><td>반복되는 입력을 캐시해 API 비용과 응답 시간을 줄이는 기능으로, GPT-6에서는 캐시 입력 최대 90% 할인이 언급됐다.</td></tr><tr><td>뮤즈</td><td>메타가 제공하는 소비자용 에이전트로, 별도 컴퓨터 환경에서 웹 탐색·파일 처리·서비스 연동 작업을 수행한다고 소개됐다.</td></tr><tr><td>GEO</td><td>AI 응답과 검색 결과에 노출되도록 웹페이지를 최적화하는 방식이며, 영상에서는 가짜 고객센터 페이지를 노출하는 피싱 악용 사례가 언급됐다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/nZbxgWmgo6M" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>조코딩 JoCoding · 2026-09-28</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

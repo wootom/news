@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 병목별 기업 관찰법과 하이브리드 AI, 장기 투자 원칙을 정리했다."><title>김지현은 AI 인프라 병목과 하이브리드 전환을 짚고 장기 투자 원칙을 제시한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-28 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>김지현은 AI 인프라 병목과 하이브리드 전환을 짚고 장기 투자 원칙을 제시한다.</h1><p class="lead">AI 병목별 기업 관찰법과 하이브리드 AI, 장기 투자 원칙을 정리했다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>AI 인프라의 병목은 반도체에서 전력·냉각·네트워크·데이터로 이어지며, 각 단계의 기업 움직임을 살펴볼 필요가 있다고 설명했다.</li>
+<li>반도체에서는 메모리 3사, 엔비디아, 브로드컴, 오라클, AMD, 인텔 등을 주요 관찰 대상으로 언급했다.</li>
+<li>퍼블릭 클라우드·온프레미스·하이브리드 AI는 기업의 보안, 비용, 성능과 산업 특성에 따라 선택해야 한다고 말했다.</li>
+<li>기업 내부에서는 여러 모델 중 업무별 가성비와 성능에 맞는 모델을 고르는 라우터 솔루션의 중요성이 커진다고 봤다.</li>
+<li>투자에서는 기술 이해와 기업 검증 뒤 최소 1~3년의 긴 호흡을 유지하고, 단기 주가 변동에 흔들리지 말아야 한다고 강조했다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>AI 인프라 병목은 반도체, 전력, 냉각, 네트워크, 데이터 순으로 확장될 수 있으며 각 영역의 수혜 기업을 관찰할 수 있다고 봤다.</li>
+<li>병목의 순서만 보고 단기 매매를 반복하기보다, 기술과 기업을 조사해 확신이 드는 대상을 긴 호흡으로 봐야 한다고 말했다.</li>
+<li>AI 활용 방식도 퍼블릭 클라우드, 온프레미스, 하이브리드로 분화하며 기업별 조건에 맞춘 선택이 필요하다고 설명했다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>반도체 병목과 온디바이스 AI 기회</h2><ul>
+<li>AI 인프라의 최대 병목으로 반도체를 지목하며 메모리 3사와 GPU를 만드는 엔비디아를 언급했다.</li>
+<li>GPU의 높은 가격 때문에 대안 수요가 커지고 있으며 브로드컴, 오라클, AMD, 인텔도 관찰 대상으로 제시했다.</li>
+<li>클라우드 중심 AI의 반작용으로 온디바이스 AI가 부상할 수 있으며 애플, 삼성전자, 퀄컴과 디바이스용 MPU를 언급했다.</li>
+<li>중국에서는 화웨이·샤오미의 스마트폰과 양지 메모리·창신을 포함한 현지 반도체 공급망도 주목할 필요가 있다고 말했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>전력·냉각·광 네트워크로 넓어지는 인프라</h2><ul>
+<li>반도체 다음 병목은 전력이며 SMR, 풍력, 화력, 태양광, 한전과 전력 설비 기업을 관련 영역으로 언급했다.</li>
+<li>미국의 전력 솔루션 기업 사례로 버티브와 슈나이더를 제시하며 데이터센터 전력 수요를 짚었다.</li>
+<li>냉각은 공조 설비에서 액침 냉각·순행식 방식으로 변화할 수 있고, 냉매를 공급하는 부품·소재 기업도 살필 수 있다고 했다.</li>
+<li>네트워크가 구리선에서 실리콘 광케이블로 전환되면 광소자와 CPO 솔루션이 주목받을 수 있으며 루멘텀 홀딩스를 사례로 들었다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>데이터·버티컬 모델·에이전트 솔루션</h2><ul>
+<li>데이터를 정제·아카이빙하고 AI 해석용 기준 데이터와 벡터 데이터베이스를 만드는 기업도 관련 수혜 영역으로 언급했다.</li>
+<li>비싼 파운데이션 모델만 쓰지 않고 기업 주권을 위해 독자적 버티컬 AI와 작은 파생 모델을 쓰는 흐름을 설명했다.</li>
+<li>삼성SDS와 솔트룩스는 기업용 모델 구축·중계·컨설팅과 관련해 언급됐으며, 에이전트 솔루션 기업도 수혜 가능성이 있다고 말했다.</li>
+<li>마스터 에이전트는 서드파티 API나 서브 에이전트와 연결돼야 하며 SK C&amp;C, 삼성SDS, LG CNS를 관련 기업으로 거론했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>플러그인과 라우터 중심의 하이브리드 AI</h2><ul>
+<li>아스트라는 컴퓨터 유즈 기능과 다양한 플러그인 연결이 특징이며, 외부 서드파티 서비스를 호출해 작업 완성도를 높인다고 설명했다.</li>
+<li>기업 AI는 퍼블릭 파운데이션 모델, 온프레미스·프라이빗 클라우드 모델, 내부 모델과 외부 모델을 결합한 하이브리드로 구분했다.</li>
+<li>하이브리드 방식에서는 내부 문서·이메일은 보안벽 안에서 처리하고, 필요한 정의 정보만 퍼블릭 모델에 보내는 사례를 들었다.</li>
+<li>국방·안보는 하이브리드 활용이 부적절할 수 있고, 금융은 온프레미스가 필요하며 삼성은 경쟁 속도 때문에 세 번째 방식으로 간다고 언급했다.</li>
+<li>여러 모델 중 업무별로 성능과 가성비를 판단해 선택하는 라우터 솔루션 기업의 중요성이 커진다고 봤다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>장기 투자 원칙과 개인 투자 방식</h2><ul>
+<li>급등 시 매도하고 더 오르면 재매수한 뒤 <span class="dn">하락</span> 시 다시 매도하는 식의 반복 매매가 개인 투자자의 실수라고 지적했다.</li>
+<li>엔비디아와 테슬라도 10~15년 동안 직선으로 오른 것이 아니라 등락을 반복했으며, 긴 호흡으로 봐야 한다고 말했다.</li>
+<li>투자 전에는 IT·AI 시장을 지속적으로 추적하고, 한 종목을 정하기 전 약 1개월간 실적·인수 기업·병목 대응을 조사한다고 밝혔다.</li>
+<li>본인은 비트코인·이더리움·기술주에 몰빵하는 성향이며 분할 매수도 하지 않는 점을 자신의 단점으로 평가했다.</li>
+<li>관심 기업은 우선 한 주를 사고, 매도 뒤에도 한 주를 남겨 투자 판단을 되돌아보며 증권 앱의 기록을 챗GPT로 분석한다고 말했다.</li>
+<li>20년 투자 경험과 최종 메시지: 투자 경력은 약 20년이며, 초반 10년에는 비트코인과 이더리움으로 수익을 냈지만 알트코인에서 일부 손실을 봤다고 밝혔다.</li>
+<li>20년 투자 경험과 최종 메시지: 이후 5년간 테슬라·엔비디아 등 기술주와 국내 기업에 투자했으나 코로나 시기의 이사·자금 문제로 약 2% 손실을 기록했다고 말했다.</li>
+<li>20년 투자 경험과 최종 메시지: 최근 2년에는 상당한 자금으로 150% 수익을 냈고, 일부 보유분은 약 30% 손실 상태라고 설명했다.</li>
+<li>20년 투자 경험과 최종 메시지: 전체 20년 기준 수익률은 최소 80~90% 정도로 추정했으며, 열 배·스무 배보다 견실한 수익이 중요하다고 말했다.</li>
+<li>20년 투자 경험과 최종 메시지: 기술 이해, 기술을 활용하는 기업의 실적·의지 확인, 자금 상황 점검, 긴 호흡이 핵심이라고 정리했다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>병목</td><td>AI 인프라 확산 과정에서 반도체·전력·냉각·네트워크·데이터처럼 공급이나 처리 역량이 제약되는 영역을 뜻한다.</td></tr><tr><td>온디바이스 AI</td><td>클라우드 대신 사용자의 스마트폰 등 디바이스 안에서 AI를 구동하는 방식으로, 개인정보·보안과 비용 문제의 대안으로 언급됐다.</td></tr><tr><td>하이브리드 AI</td><td>보안벽 내부의 모델·데이터베이스와 퍼블릭 AI를 함께 쓰며, 필요한 정보만 외부 모델로 보내는 활용 방식이다.</td></tr><tr><td>버티컬 AI</td><td>기업이 자체 주권과 업무 목적을 위해 특정 산업·업무에 맞춰 구축하는 독자적 AI 모델을 가리킨다.</td></tr><tr><td>라우터</td><td>여러 AI 모델 가운데 업무별 성능과 가성비에 맞는 모델을 선택하도록 판단하는 솔루션으로 설명됐다.</td></tr><tr><td>CPO</td><td>광을 더 효율적으로 운영하는 솔루션으로, 광케이블과 광소자 전환 흐름에서 주목받는다고 언급됐다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/dsrACPT8sOE" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-09-28</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

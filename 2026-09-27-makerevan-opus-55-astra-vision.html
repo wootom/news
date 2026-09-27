@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="오퍼스 5.5는 비전 3위로 급상승했지만 물체 찾기·추론 1위는 아스트라였다."><title>오퍼스 5.5는 비전 평가 16위에서 3위로 상승했지만 아스트라와 우열이 갈렸다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-27 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>오퍼스 5.5는 비전 평가 16위에서 3위로 상승했지만 아스트라와 우열이 갈렸다.</h1><p class="lead">오퍼스 5.5는 비전 3위로 급<span class="up">상승</span>했지만 물체 찾기·추론 1위는 아스트라였다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>로버플로우 비전 평가에서 오퍼스 5.5는 85.5점으로 3위, GPT-6 아스트라는 86.6점으로 1위를 기록했다.</li>
+<li>전작 오퍼스 5는 78.3점으로 16위였으나, 오퍼스 5.5는 한 세대 만에 7점 이상 올라 13계단 <span class="up">상승</span>했다.</li>
+<li>물체 찾기는 오퍼스 5의 54점에서 오퍼스 5.5의 74점으로 20점 <span class="up">상승</span>했지만, 아스트라는 82점대였다.</li>
+<li>오퍼스 5.5는 개수 세기에서 비교한 5개 모델 중 1위였고, 정보 추출도 아스트라보다 앞선다고 영상은 정리했다.</li>
+<li>아스트라는 문제당 약 6초로 오퍼스 5.5의 약 12초보다 빨랐고, 비용은 각각 3센트와 1.4센트였다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>영상은 오퍼스 5.5가 클로드 계열 비전 성능을 크게 끌어올려 최상위권에 진입했다고 평가한다.</li>
+<li>로버플로우 평가 기준 종합 순위는 아스트라 1위, Gemini 3.5 Flash 2위, 오퍼스 5.5 3위다.</li>
+<li>오퍼스 5.5는 개수 세기와 정보 추출에서 강점을 보였지만, 물체 찾기와 추론의 1위는 아스트라였다.</li>
+<li>영상의 결론은 스크린샷 기반 업무에는 오퍼스 5.5가 충분하며, 정밀 위치 탐지는 아스트라도 함께 돌려보라는 것이다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>로버플로우 비전 평가와 종합 순위</h2><ul>
+<li>로버플로우는 사진 속 대상을 찾는 비전 AI를 오래 해 온 회사로, 실제 사진을 동일하게 제공하는 공개 비전 평가를 운영한다.</li>
+<li>평가 문제는 물체 찾기, 개수 세기, 알아보기, 글자 읽기, 정보 추출, 추론의 6종류로 구성된다.</li>
+<li>9월 22일 새 모델을 넣어 재평가한 결과, GPT-6 아스트라는 86.6점, 오퍼스 5.5는 85.5점이었다.</li>
+<li>오퍼스 5는 78.3점으로 16위였고, 오퍼스 5.5는 3위로 올라 13계단 <span class="up">상승</span>했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>물체 찾기 성능의 큰 상승</h2><ul>
+<li>물체 찾기는 사진 속 대상의 위치를 네모로 짚는 항목이며, 오퍼스 5.5는 74점으로 전작의 54점보다 20점 올랐다.</li>
+<li>위에서 촬영한 바나나밭의 나무 찾기에서 오퍼스 5.5는 98.6점, GPT-6 솔은 55.7점을 기록했다.</li>
+<li>체스판 말 위치 찾기와 타이어 옆면 글자 위치 찾기에서 오퍼스 5.5는 각각 100점, 솔은 62점과 33점이었다.</li>
+<li>다만 이 항목 1위는 82점대의 아스트라였고, 오퍼스 5.5는 약 8점 낮은 74점이었다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>개수 세기와 글자·정보 추출 사례</h2><ul>
+<li>개수 세기에서 오퍼스 5.5는 비교한 5개 모델 중 1위였으며, 아스트라를 포함한 비교 대상보다 앞섰다고 설명했다.</li>
+<li>분량 사탕 정답 4개와 파란 통 속 금속 브레 정답 12개를 오퍼스 5.5는 각각 정확히 답했다.</li>
+<li>약 포장 안의 멀쩡한 캡슐 22개 문제에서도 오퍼스 5.5는 정답을 맞혔고, 페이블 5.1보다 9점 올랐다.</li>
+<li>약 포장 코드 G230, 타이어 제조국 폴란드, 수정 메모의 레브원을 읽는 사례에서 오퍼스 5.5가 정답을 냈다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>사진 기반 추론과 남은 한계</h2><ul>
+<li>송장 사진의 결제 기한 계산에서 솔은 6월 10일, 오퍼스 5.5는 정답인 7월 10일을 답했다.</li>
+<li>기차 전광판의 도착까지 남은 시간 문제에서 솔은 15분, 오퍼스 5.5는 정답인 168분을 답했다.</li>
+<li>추론 항목은 페이블 5.1보다 12.8점 올랐지만, 아스트라는 87점대, 오퍼스 5.5는 83점대로 아스트라가 앞섰다.</li>
+<li>글자를 통째로 옮겨 적는 항목은 오퍼스 5의 93점에서 오퍼스 5.5의 87점으로 낮아졌으며, 영상은 이 용도에는 페이블이 낫다고 말했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>속도·비용 비교와 활용 제안</h2><ul>
+<li>문제 한 개 처리 시간은 아스트라가 약 6초, 오퍼스 5.5가 약 12초대로 아스트라가 거의 두 배 빨랐다.</li>
+<li>한 장의 문제를 푸는 비용은 아스트라 3센트, 오퍼스 5.5 1.4센트로 오퍼스 5.5가 절반 이하였다.</li>
+<li>오퍼스 5.5는 전 모델 페이블 5.1과 비교해 비용이 60% 낮아졌다고 영상은 설명했다.</li>
+<li>영상은 사진을 수천 장씩 처리할 때 비용 차이가 중요하며, 스크린샷 업무에는 오퍼스 5.5를 권했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>로버플로우 비전 평가</td><td>동일한 실제 사진을 모델에 제공하고 정답과 비교해 물체 찾기·개수 세기·추론 등을 채점하는 공개 평가다.</td></tr><tr><td>물체 찾기</td><td>사진 속 특정 대상이 어디에 있는지 네모로 위치를 짚어 찾는 비전 평가 항목이다.</td></tr><tr><td>정보 추출</td><td>사진에서 필요한 정보 하나를 정확히 읽어 뽑아내는 평가로, 약 포장 코드와 제조국 사례가 제시됐다.</td></tr><tr><td>추론</td><td>사진 속 날짜·조건·시간 정보를 읽은 뒤 결제 기한이나 남은 시간을 계산하는 평가 항목이다.</td></tr><tr><td>GPT-6 아스트라</td><td>로버플로우 종합 평가에서 86.6점으로 1위를 기록했고 물체 찾기와 추론, 속도에서 앞선 모델로 소개됐다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/iojwiu_MWmg" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-09-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
