@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="장기 에이전트 작업은 기록·역할 분리·실행 검증으로 다듬는다."><title>앤트로픽 실험은 에이전트의 긴 작업을 기록·분업·검증으로 안정화하는 원리를 보여준다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-09-29 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>앤트로픽 실험은 에이전트의 긴 작업을 기록·분업·검증으로 안정화하는 원리를 보여준다</h1><p class="lead">장기 에이전트 작업은 기록·역할 분리·실행 검증으로 다듬는다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>장기 작업 실패 원인은 세션 간 기억 단절, 컨텍스트가 쌓일 때의 급한 마무리, 계획 부족과 자기평가 편향이다.</li>
+<li>초기화 에이전트는 feature_list.json과 진행 기록, 실행 스크립트, Git 커밋으로 다음 세션이 이어갈 상태를 남긴다.</li>
+<li>제작자와 평가자를 분리하고, Playwright 등으로 화면을 직접 조작해 합의한 완료 조건을 검사한다.</li>
+<li>평가 기준은 디자인·독창성·완성도·기능성이며, 명세와 합격 조건을 코딩 전에 파일로 조율한다.</li>
+<li>게임 실험은 단독 약 20분·9달러와 구조화된 약 6시간·200달러를 비교해 비용보다 검증 차이를 보여준다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>긴 작업에서 에이전트는 세션이 바뀌면 맥락을 잃고, 컨텍스트가 쌓이면 서둘러 마무리하거나 계획을 놓칠 수 있다.</li>
+<li>기능을 일부만 만들고도 완료라고 판단하는 자기평가 문제 때문에, 보고 문구만으로 결과를 믿기 어렵다.</li>
+<li>해결 원리는 상태를 기록하고, 제작과 평가를 나누며, 실제 행동으로 확인할 완료 조건을 미리 정하는 것이다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>파일로 이어가는 작업 상태와 반복 절차</h2><ul>
+<li>초기화 에이전트는 요청을 기능 목록으로 나누고 feature_list.json, 진행 기록, 초기화 스크립트와 Git 저장소를 준비한다.</li>
+<li>새 컨텍스트는 작업 위치와 진행 기록을 확인하고 초기화 스크립트를 실행한 뒤, 미검증 기능 하나를 골라 구현한다.</li>
+<li>기능을 실제로 검사해 통과하면 Git 커밋과 상태를 갱신하고, 남은 기능이 있으면 새 컨텍스트에서 반복한다.</li>
+<li>예약 페이지라면 달력이 보이는지와 예약이 실제 저장되는지를 별개의 기능으로 기록하고 각각 확인한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>제작자·평가자 분리와 합격 조건 조율</h2><ul>
+<li>제작자는 구현에 집중하고 평가자는 Playwright로 실제 페이지를 열어 클릭하는 등 사용 흐름을 검사한다.</li>
+<li>검사 방법이 추상적이면 같은 모델의 평가자도 관대해질 수 있어, 버튼을 눌렀을 때 목록에 예약이 생기는 식의 관찰 가능한 조건이 필요하다.</li>
+<li>두 에이전트는 코딩 전에 파일로 완료 조건을 조율하며, 평가자는 범위가 크거나 검사가 약한 제안을 수정하도록 요구할 수 있다.</li>
+<li>루브릭은 디자인·독창성·완성도·기능성 기준을 구체화하며, 당시 Opus 4.6 실험에서는 디자인과 독창성에 더 높은 비중을 뒀다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>게임 제작 실험에서 확인한 작동 차이</h2><ul>
+<li>같은 요청과 모델을 쓴 단독 실행은 약 20분·9달러가 들었지만, 게임 화면의 방향키와 스페이스 키가 작동하지 않았다.</li>
+<li>역할을 나눈 실행은 약 6시간·200달러가 들었으며, Retroforge 편집기에 54색 팔레트와 프로젝트 창 등을 구현했다.</li>
+<li>평가자는 게임을 직접 실행해 플레이어 이동과 성벽 충돌, 실시간 디버그 정보 등을 확인했다.</li>
+<li>이 비교는 구조화된 실행이 더 싸거나 빠르다는 뜻이 아니며, 한 실험에서 기능과 검증을 강화한 결과다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>실행 기록으로 평가를 고치고 구조를 조정</h2><ul>
+<li>기본 상태의 Claude는 버그를 발견하고도 미루는 등 관대한 평가를 보였고, 제작자는 실행 기록을 읽으며 지시문을 조정했다.</li>
+<li>최종 답변만 보는 대신 도구 호출 실패, 검사 기준 오류, 실제 기능 문제 등 에이전트가 어디서 막혔는지 확인했다.</li>
+<li>Opus 4.5에서는 컨텍스트 초기화와 단계별 분리가 중요했지만, 발표자는 Opus 4.6에서 긴 작업의 일관성이 나아져 일부 절차를 단순화했다고 설명했다.</li>
+<li>공식 글의 27개 평가 항목은 전체 개발 과정이 아니라 세 번째 개발 단계에 관한 수치로 제시됐다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>적용 범위와 사람이 가져갈 실천 원칙</h2><ul>
+<li>발표자들은 이 방식이 주로 새 프로젝트를 대상으로 한 실험이며, 기존 프로젝트에는 더 세밀한 평가 기준과 영향 확인이 필요하다고 선을 그었다.</li>
+<li>기존 서비스에서는 자동 모니터링으로 변경 요청을 만들고 에이전트가 변경안을 작성·검토한 뒤 사람이 확인하고 병합하는 활용 가능성을 언급했다.</li>
+<li>모든 일을 세 역할로 나누기보다 모델과 과제에 맞춰 필요한 절차를 남기고, 기능을 빼거나 바꿔 다시 확인해야 한다.</li>
+<li>실천 원칙은 일을 작게 나누고, 시작 전에 완료 조건을 정해 실행하며, 확인한 결과와 남은 일을 기록하는 것이다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>컨텍스트</td><td>에이전트가 현재 작업에서 참고하는 자료와 맥락으로, 길어지거나 세션이 바뀌면 활용에 한계가 생길 수 있다.</td></tr><tr><td>컨텍스트 불안</td><td>감정을 뜻하는 말이 아니라, 컨텍스트 한도에 가까워질 때 작업을 급히 끝내려는 행동을 가리킨다.</td></tr><tr><td>feature_list.json</td><td>기능 목록과 검사 통과 여부를 기록해 다음 작업 세션이 남은 일을 파악하도록 쓰인 파일이다.</td></tr><tr><td>루브릭</td><td>디자인·독창성·완성도·기능성처럼 평가 기준을 구체적인 항목으로 정리한 기준표다.</td></tr><tr><td>실행 기록</td><td>에이전트가 무엇을 시도했고 어디서 막혔는지 남겨, 실패 원인과 지시문을 <span class="up">개선</span>하는 데 쓰는 기록이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/xu34PnwZJkI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-09-29</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
