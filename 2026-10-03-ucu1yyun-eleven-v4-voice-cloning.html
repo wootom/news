@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Eleven v4의 표현력과 화자 유사성을 시연하고, 교체 전 비교·점검 기준을 제시한다."><title>Eleven v4는 감정 표현과 화자 유사성을 함께 강화했다고 내세우지만, 교체 전 비교가 필요하다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-03 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>Eleven v4는 감정 표현과 화자 유사성을 함께 강화했다고 내세우지만, 교체 전 비교가 필요하다.</h1><p class="lead">Eleven v4의 표현력과 화자 유사성을 시연하고, 교체 전 비교·점검 기준을 제시한다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>ElevenLabs는 Eleven v4를 감정·말투 표현과 복제 음성의 특징 유지력을 함께 높인 모델로 소개한다.</li>
+<li>영상은 Multilingual v2와 v4를 같은 목소리·문장으로 비교하며 말투, 숫자 발음, 화자 유사성을 살핀다.</li>
+<li>비교 샘플은 프롬프트로 생성하고 편집하지 않았다고 설명하지만, 두 클론의 학습 상태가 같다고 확인되진 않았다.</li>
+<li>뉴스레터 제작 사례에서는 음성 선택, 결과물 비교, 일부 문장 재생성으로 녹음·수정 부담을 줄이는 흐름을 보여준다.</li>
+<li>제작자는 감정 연기가 중요하면 v4를 시험하고, 안정된 설명 영상은 v2를 보존해 작은 구간부터 비교하라고 권한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>영상의 핵심 비교 기준은 말투의 자연스러움, 숫자 발음, 복제한 목소리의 특징이 유지되는지 여부다.</li>
+<li>ElevenLabs는 v4가 풍부한 표현력과 화자 유사성을 결합하고 문장 중간에도 감정을 바꿀 수 있다고 설명한다.</li>
+<li>제작자는 회사의 ‘완벽한’ 구현이라는 표현을 사실로 단정하지 않고, 짧은 시연만으로 긴 한국어 영상까지 보장할 수 없다고 짚는다.</li>
+<li>최종 판단 기준으로 자연스러움, 원래 목소리의 유지, 수정 부담 <span class="dn">감소</span>를 제시한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>Multilingual v2·v3·v4의 차이</h2><ul>
+<li>제작자의 설명에 따르면 v2는 실제 목소리의 유사성을 안정적이고 일관되게 담아냈다.</li>
+<li>v3는 이전 모델보다 표현력을 더하고 오디오 태그와 고급 프롬프트를 사용할 수 있었지만, 제작자는 자신의 목소리와 다소 차이를 느꼈다고 말한다.</li>
+<li>ElevenLabs는 v4가 v2의 유사성과 v3의 표현력을 결합했다고 주장하며, 10초 음성으로도 화자 유사성을 구현한다고 소개한다.</li>
+<li>영상은 같은 목소리와 문장을 넣어 모델별 결과를 듣도록 구성하지만, 클론 학습 상태까지 같았는지는 확인되지 않았다고 밝힌다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>감정 연기와 오디오 태그 시연</h2><ul>
+<li>시연에는 촬영장 지시, 울음을 참는 독백, 멜버른 소식, 공포 분<span class="dn">위기</span>의 대사, 스포츠 중계 등이 포함된다.</li>
+<li>같은 문장을 조용하게, 확신 있게, 차분하게 전달하는 예시로 문장 내 감정·말투 변화 기능을 보여준다.</li>
+<li>별도 시연에서는 v4에만 오디오 태그를 적용하며, 대괄호 안의 지시로 웃음 같은 표현을 더할 수 있다고 설명한다.</li>
+<li>이 마지막 태그 적용 사례는 v4의 별도 기능 시연으로 제시되며, 앞선 두 모델의 태그 없는 비교와 구분된다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>뉴스레터 제작과 부분 수정 흐름</h2><ul>
+<li>제작 사례는 원고를 음성 생성 창에 붙이고 자신의 전문 음성 클론과 Eleven v4를 선택하는 순서로 진행된다.</li>
+<li>여러 생성 결과를 비교해 속도와 호흡이 맞는 것을 고르며, 시연에서는 첫 결과보다 두 번째 결과가 더 적합하다고 판단한다.</li>
+<li>문장 중간에 틀렸을 때 전체를 다시 녹음하지 않고 해당 단어나 문장 일부를 고쳐 음성을 재생성할 수 있다고 설명한다.</li>
+<li>부분 수정은 제작자에게 편리하지만, 앞뒤 음성의 음색과 음량이 자연스럽게 이어지는지 확인해야 한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>90개 이상 언어와 v4 Turbo의 용도</h2><ul>
+<li>회사 측 인터뷰에서는 v4가 문맥 이해와 감정 범위를 넓히고 다중 화자 대화를 지원한다고 설명한다.</li>
+<li>ElevenLabs는 v4가 전 세계 55억 명 이상이 쓰는 90개 이상의 언어를 지원한다고 소개한다.</li>
+<li>일반 v4와 달리 v4 Turbo는 빠른 대화를 위한 모델로 설명되며, 지연 시간과 풍부한 음성 표현을 함께 고려한다.</li>
+<li>ElevenAgents의 v4 Turbo 사례에서는 검사 일정과 보험 적용 여부를 묻는 대화로 개인화된 공감 경험을 시연한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>업그레이드 전 점검과 선택 기준</h2><ul>
+<li>영상은 기존 음성 클론의 학습 상태와 호환성을 확인하라고 권하며, 공식 문서가 예전 클론의 v4 재학습 필요성을 안내한다고 전한다.</li>
+<li>속도 조절과 쉼 표시가 이전 설정에서 그대로 이어진다고 가정하지 말고, 무료 행사와 API 비용도 별도로 확인하라고 말한다.</li>
+<li>감정과 연기가 중요한 영상은 v4를 시험하고, 안정적인 설명 영상은 v2를 보존한 채 작은 구간부터 비교하라는 것이 제작자의 판단이다.</li>
+<li>실제 원고에서 표현력·목소리 유지·수정 부담이 <span class="up">개선</span>되는지 확인한 뒤 모델을 바꾸도록 권한다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>화자 유사성</td><td>생성된 음성이 복제 대상 목소리의 특징을 얼마나 비슷하고 일관되게 구현하는지를 가리킨다.</td></tr><tr><td>전문 음성 클론</td><td>제작 사례에서 자신의 목소리를 복제해 뉴스레터 음성 생성에 선택한 음성 클론이다.</td></tr><tr><td>오디오 태그</td><td>대괄호 안에 웃음 같은 지시를 넣어 음성의 표현을 조절하는 기능으로 소개된다.</td></tr><tr><td>v4 Turbo</td><td>일반 v4와 구분되는 빠른 대화용 모델로, ElevenAgents의 음성 대화 사례에도 쓰인다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/dvfbj-Tnevw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-10-03</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
