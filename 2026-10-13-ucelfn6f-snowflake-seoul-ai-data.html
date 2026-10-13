@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="스노우플레이크 월드투어에서 제시한 AI 레디 데이터와 신뢰 기반 에이전트 운영 전략 총정리"><title>스노우플레이크 월드투어에서 제시한 AI 레디 데이터 구축과 신뢰 기반 에이전트 운영 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-13 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>스노우플레이크 월드투어에서 제시한 AI 레디 데이터 구축과 신뢰 기반 에이전트 운영 전략</h1><p class="lead">스노우플레이크 월드투어에서 제시한 AI 레디 데이터와 신뢰 기반 에이전트 운영 전략 총정리</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>화자의 발언: “스노우플레이크 월드투어는 한국뿐만이 아니라 아시아 퍼시픽 아니면 유럽 그리고 미주 전역에 글로벌하게 진행되는 스노플레이크에서는 가장 큰 연례 행사입니다.이 행사는 이제 한국에서는 벌써 5년 차를”</li>
+<li>KB 국민은행은 모델보다 데이터가 중요하다고 강조하며, AI 레디 데이터가 경쟁력의 핵심이라고 지적했습니다.</li>
+<li>아모레퍼시픽은 흩어진 브랜드 데이터를 통합하고 의미를 입혀 AI 레디 환경을 구축했습니다.</li>
+<li>KT는 개방형 표준 기반 단일 지표 정의 체계를 마련해 도구 간 시멘틱 사일로 문제를 해결했습니다.</li>
+<li>신뢰할 수 있는 AI 에이전트 도입을 위해 데이터, AI, 신뢰가 함께 있는 아키텍처 구성이 필수적이라고 강조했습니다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>기업용 AI를 활용하기 위해서는 보안과 통제된 거버넌스 안에서 작동해야 하며, 신뢰할 수 있는 데이터 기반이 필요합니다.</li>
+<li>데이터, AI, 신뢰가 각각 분리되어 있으면 안 되고 함께 있는 아키텍처를 구성해야 합니다.</li>
+<li>AI가 할 수 있는 일과 기업이 맡길 수 있는 일은 다르며, 어디까지 맡길지 기준을 세우는 것이 중요합니다.</li>
+<li>시멘틱 뷰는 회사가 사용하는 단어를 이해하는 데 도움을 주며, 온톨로지는 데이터 내 객체 간 관계를 표현하는 기술입니다.</li>
+<li>단일 플랫폼에서 다양한 엔진과 표준을 통합하여 포맷 분리와 정합성 문제를 해결해야 합니다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>스노우플레이크 월드투어 서울 개요</h2><ul>
+<li>스노우플레이크 월드투어는 아시아, 유럽, 미주 전역에서 진행되는 글로벌 연례 행사입니다.</li>
+<li>한국에서는 5년 차를 맞이했으며, &#x27;AI for 비즈니스&#x27;를 핵심 주제로 삼았습니다.</li>
+<li>행사는 AI 기술과 기업 데이터 접목을 통한 생산성 향상 및 비즈니스 기회 창출에 초점을 맞췄습니다.</li>
+<li>보안과 통제된 거버넌스 안에서 AI가 작동해야 한다는 세 가지 핵심 메시지를 전달했습니다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>AI 레디 데이터 구축 사례: KB 국민은행과 아모레퍼시픽</h2><ul>
+<li>KB 국민은행은 검색하는 데이터에서 행동하는 AI로 전환하기 위해 AI 레디 데이터를 강조했습니다.</li>
+<li>아모레퍼시픽은 화장품 리테일 업종 특성상 흩어져 있던 브랜드별 채널 데이터를 하나로 모았습니다.</li>
+<li>아모레퍼시픽은 데이터에 의미를 입혀 AI가 &#x27;북미 신제품 매출&#x27; 같은 질문을 이해하도록 했습니다.</li>
+<li>모든 데이터 처리의 중심은 스노우플레이크에 두고 외부 시스템은 연동만 하는 구조를 채택했습니다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>시멘틱 뷰와 온톨로지 기술의 역할</h2><ul>
+<li>시멘틱 뷰는 회사 데이터의 비즈니스 문맥을 정의하는 새로운 레이어로 기능합니다.</li>
+<li>온톨로지는 데이터 내 객체(엔티) 간의 관계를 표현하여 AI의 이해도를 높이는 기술입니다.</li>
+<li>화자의 발언: “수도 있는 거고 시메틱 레이어 시메틱 뷰를 사용하실 수도 있는 거고 아모레처럼 아모레 퍼시픽처럼 두 가지를 동시에 사용하셔서 어 좀 더 정확 높이실 수가 있는데 스노우 플레이크는 이런 기술들을 다 단일 플랫폼으로 제공한다라는게 가장 큰 어 차이점이라고 말씀드릴 수 있을 것 같습니다.”</li>
+<li>데이터 전문가가 아닌 사용자도 자연어로 데이터를 핸들링할 수 있도록 코코(Cortex)를 제공합니다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>신뢰 기반 에이전트 운영과 거버넌스</h2><ul>
+<li>화자의 발언: “피냅시는 AI가 내리는 판단과 행을 실시간으로 검증하는 서비스를 만드셨는데 이걸 스노우플레이크가 제공하는”</li>
+<li>AI가 내린 결과를 확인하고 승인만 하면 되는 방식으로 업무를 자동화했습니다.</li>
+<li>과거 2주 이상 소요되던 AI 레디 데이터 생성 작업을 하루 이틀로 단축시키는 성과를 거뒀습니다.</li>
+<li>호라이전 카탈로그를 통해 민감 데이터 자동 필터링과 권한 기반 접근 제어를 수행합니다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>차세대 데이터 아키텍처와 표준화 전략</h2><ul>
+<li>KT는 도구마다 다른 지표 정의로 인한 논쟁을 해결하기 위해 단일 지표 정의 체계를 구축했습니다.</li>
+<li>화자의 발언: “될 것입니다.데 [한숨] 스노우플레이크를 포함해서 AWS나 뭐 구글 클라우드와 같은 밴더사들이 아파시라고 하는 개방용 표준을 만들었거든요.”</li>
+<li>아이스버그(Iceberg)를 모든 엔진의 공통 포맷으로 사용하여 복제 파이프라인을 제거했습니다.</li>
+<li>화자의 발언: “게임이 추가되어도 늘어나는 것은 수집 경로 하나이고 실행 방식과 용량 그리고 운영은 그대로입니다.”</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>AI 레디 데이터</td><td>AI나 에이전트가 신뢰하고 행동할 수 있도록 잘 모아지고 의미가 부여된 데이터 기반을 의미합니다.</td></tr><tr><td>시멘틱 뷰</td><td>기업 데이터의 비즈니스 문맥을 정의하여 AI가 회사 용어를 쉽게 이해할 수 있게 하는 레이어입니다.</td></tr><tr><td>온톨로지</td><td>데이터 내 객체(엔티) 간의 관계를 명확히 표현하여 AI의 분석 정확도를 높이는 기술입니다.</td></tr><tr><td>코코(Cortex)</td><td>스노우플레이크가 내장 제공하는 네이티브 코딩 어시스턴트로, 전문 지식 없이 자연어로 데이터를 처리할 수 있게 합니다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/ar5KU9S6838" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-10-13</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
