@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Rhea는 앱별 도구와 근거 기반 분석으로 소프트웨어를 맞춤형 구현의 설계도로 바꾼다."><title>Rhea는 앱별 분석 도구와 증거 기반 질의로 기존 소프트웨어를 맞춤형 구현의 설계도로 바꾼다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-15 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>Rhea는 앱별 분석 도구와 증거 기반 질의로 기존 소프트웨어를 맞춤형 구현의 설계도로 바꾼다</h1><p class="lead">Rhea는 앱별 도구와 근거 기반 분석으로 소프트웨어를 맞춤형 구현의 설계도로 바꾼다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Rhea는 데스크톱 앱·웹사이트 등 20종이 넘는 소프트웨어를 분석해 맞춤형 구현을 위한 구조와 작동 원리를 정리한다.</li>
+<li>영상은 저장소가 20만 개가 넘는 별을 받았고, 녹화 시점에는 206,000개라고 설명한다.</li>
+<li>시연 대상 Whisperflow는 Electron 앱과 Windows·Mac 기능을 다루는 네이티브 헬퍼로 나뉘어 분석된다.</li>
+<li>네이티브 헬퍼 분석에는 Ghidra를 써 27분 동안 56,000개가 넘는 함수를 식별했고, JavaScript 분석은 7분간 진행됐다.</li>
+<li>Claude와 Rhea는 근거를 확인하며 질문과 답변을 주고받고, 최종적으로 새 맞춤형 앱을 만들기 위한 플레이북을 만든다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Rhea의 목적은 이미 존재하는 소프트웨어를 그대로 복제하는 데 그치지 않고, 구조를 파악해 사용자의 생활·업무에 맞는 새 버전을 만드는 것이다.</li>
+<li>Rhea는 애플리케이션 유형에 따라 적절한 도구와 스킬을 선택하는 MCP 도구로 소개된다.</li>
+<li>영상은 분석 요청, 앱 구조 매핑, Claude와 Rhea의 질의응답, 새 구현을 위한 플레이북 작성의 네 단계로 작동 방식을 설명한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>분석 요청과 근거가 표시되는 주장</h2><ul>
+<li>사용자는 Claude Code에 Rhea 설치를 요청한 뒤, Whisperflow를 구성 요소별로 분석해 달라는 식의 프롬프트를 보낼 수 있다.</li>
+<li>Rhea는 플레이북을 불러오고 대상에 맞는 도구를 고른 다음, 앱의 작동 방식에 관한 질문과 요약을 만든다.</li>
+<li>각 분석 주장은 확인됨(seen), 추론됨(inferred), 알 수 없음(unknown)으로 표시되며 확인 가능한 경우 코드 근거가 함께 제시된다.</li>
+<li>Whisperflow에서는 마이크 작동, 단축키, 녹음 정리, 텍스트 입력과 전달 과정 등이 조사 항목으로 다뤄진다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>Whisperflow 구조와 분석 도구 선택</h2><ul>
+<li>분석 과정에서 Whisperflow는 Electron 앱과 Windows·Mac에서 키 입력 등을 처리하는 네이티브 헬퍼, 두 부분으로 구분됐다.</li>
+<li>Claude가 직접 파악하기 어려운 헬퍼에는 기계어 분석 도구인 Ghidra가 사용됐다.</li>
+<li>영상은 Ghidra가 기계어를 어셈블리로 바꾸고, 이를 바탕으로 의사 코드 형태의 설명을 만드는 도구라고 소개한다.</li>
+<li>Electron 앱 쪽에는 JavaScript 분석기가 사용됐으며, Claude도 저장소의 스킬 없이 코드를 직접 읽을 수 있었다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Ghidra와 JavaScript 분석의 수치</h2><ul>
+<li>Ghidra 분석에는 27분이 걸렸고, Whisperflow 헬퍼에서 56,000개가 넘는 함수를 식별했다.</li>
+<li>Electron 앱의 JavaScript 분석은 7분이 걸렸으며, 1,500개보다 조금 적은 항목을 찾았다.</li>
+<li>영상은 Ghidra가 NSA에서 만들어졌으며 오픈소스라고 설명한다.</li>
+<li>분석 결과는 구성 요소, 문자열, 웹 주소, 호출 관계 등을 담은 맵으로 정리돼 이후 질문에 활용된다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>Claude와 Rhea의 질의응답 및 사례 결과</h2><ul>
+<li>매핑 뒤 Claude는 작고 구체적인 질문을 던지고, Rhea는 사실과 근거를 붙여 답하는 조사 루프가 진행된다.</li>
+<li>헬퍼에 관한 기계어 수준 질문에는 Rhea 호출 13회로 필요한 정보를 얻었다고 영상은 설명한다.</li>
+<li>Electron 앱에 관한 질문에서는 Rhea 호출 5회와 자체 검색 40회가 이뤄졌고, Claude가 직접 코드를 살펴보기도 했다.</li>
+<li>조사가 끝나면 작동 방식과 정보의 근거를 정리해 사용자가 새 코드를 작성할 수 있는 플레이북으로 이어진다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>도구별 스킬의 의미와 활용 방향</h2><ul>
+<li>영상은 Claude Code만으로 역공학을 시도하는 것보다, 유형별 절차와 도구가 정리된 저장소를 이용하는 편이 수월하다고 주장한다.</li>
+<li>Go 바이너리, Rust 바이너리, SQLite 데이터베이스 등 서로 다른 대상에 맞춰 분석 방법을 선택하도록 설계됐다고 설명한다.</li>
+<li>따라서 영상이 제안하는 핵심 질문은 무엇을 복제할지가 아니라, 분석을 바탕으로 무엇을 맞춤화해 새로 만들지다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Rhea</td><td>영상에서 소프트웨어 유형별 도구와 스킬을 골라 분석하고, Claude의 역공학 작업을 돕는 오픈소스 저장소로 소개된다.</td></tr><tr><td>Ghidra</td><td>기계어를 어셈블리와 의사 코드 형태로 분석하는 도구로, Whisperflow의 네이티브 헬퍼 조사에 사용됐다.</td></tr><tr><td>Electron</td><td>Whisperflow의 두 구성 요소 중 하나로 언급되며, JavaScript 분석기와 Claude의 코드 분석으로 조사됐다.</td></tr><tr><td>MCP</td><td>Rhea가 대상 애플리케이션에 맞는 도구와 스킬을 선택해 작업하는 방식의 맥락에서 언급된 도구 연결 체계다.</td></tr><tr><td>플레이북</td><td>분석 결과와 근거를 정리해 새 맞춤형 애플리케이션 구현에 활용하도록 만드는 작업 지침이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/o8LjTSvza0E" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-10-15</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
