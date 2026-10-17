@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="KREA 3 이미지 편집 우위와 Gemini 4, Muse Wonder 등 6개 신모델의 성능 및 비용 비교 분석"><title>KREA 3와 Gemini 4 등 6개 신모델과 AI 에이전트 도구의 성능 및 비용 비교 분석</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Matt Wolfe</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-18 · Matt Wolfe</span><span class="chip">🎬 영상</span></div><h1>KREA 3와 Gemini 4 등 6개 신모델과 AI 에이전트 도구의 성능 및 비용 비교 분석</h1><p class="lead">KREA 3 이미지 편집 우위와 Gemini 4, Muse Wonder 등 6개 신모델의 성능 및 비용 비교 분석</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">분석 범위: 원문 전체 31,606자 · 6개 구간. 원문 대조한 핵심 인용 34개를 바탕으로 요약했습니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>KREA 3 베타 공개로 이미지 편집 품질이 ChatGPT와 Nano Banana를 능가하며, DGX Spark에서 16.2초 처리 가능</li>
+<li>Gemini 4 API는 11월 말까지 입력 토큰당 2달러, 출력 10달러의 제한적 요금으로 제공되며 Opus 5.5보다 저렴</li>
+<li>Meta Muse Wonder는 DeepSuite 벤치마크 79%로 S급 코딩 모델로 평가되며, 816B 파라미터 모델은 M5 Ultra 구동</li>
+<li>Microsoft MAI Base 2(80B)와 NVIDIA Nemo Tron 3.5 Super VL(120B) 등 오픈 웨이트 모델이 속도와 지능 균형 추구</li>
+<li>Xbox Labs와 Epic Games의 AI 전환, Eleven Labs 인스턴트 사운드트랙 등 게임 및 멀티미디어 분야 AI 도입 가속</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>이미지 생성 및 편집 모델에서 KREA 3가 주간 최대 승자로 부상하며 기존 리더들을 추월</li>
+<li>LLM 시장에서는 Gemini 4, Muse Wonder, MAI Base 2 등 6개 신모델이 성능과 비용 측면에서 경쟁</li>
+<li>오픈 웨이트 모델의 확산으로 로컬 하드웨어(DGX Spark, M5 Ultra)에서의 실행 가능성이 확대</li>
+<li>게임 및 멀티미디어 산업에서 AI 기반 콘텐츠 생성 및 에이전트 오케스트레이션 도구가 주류화</li>
+<li>모델 간 벤치마크 점수와 API 단가 비교를 통해 사용자의 비용 대비 성능 최적화 전략 제시</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>이미지 모델 경쟁: KREA 3와 오픈 웨이트 대안</h2><ul>
+<li>KREA 3 베타 버전은 빨간 눈 등 세부 이미지 편집에서 ChatGPT와 Nano Banana보다 깨끗한 결과물 제공</li>
+<li>Klein 모델은 오픈 웨이트로 출시되어 로컬 환경에서의 활용이 가능하며, KREA도 향후 오픈 예정</li>
+<li>Alibaba의 Quinn Image 2.1 Turbo 모델은 빠른 처리 속도를 위해 설계된 또 다른 오픈 웨이트 대안</li>
+<li>DGX Spark(4,000달러)에서는 텍스트-이미지 7.3초, 이미지 편집 16.2초 처리 성능 기록</li>
+<li>RTX 4070 등 소비자용 그래픽 카드로도 실행 가능한 비용 효율적인 로컬 이미지 생성 환경 구축</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>LLM 성능 벤치마크: Gemini 4와 Muse Wonder</h2><ul>
+<li>Gemini 4는 API 비용이 11월 말까지 입력 2달러, 출력 10달러(백만 토큰당)로 제한적 할인 적용</li>
+<li>객관적 지능 벤치마크에서 Gemini 4는 53점으로 Opus 5.5보다 5점 낮지만, 작업당 비용은 더 저렴</li>
+<li>Meta Muse Wonder는 DeepSuite 코딩 벤치마크에서 79%를 기록하며 S급 모델로 분류됨</li>
+<li>Muse Wonder는 입력 4달러, 출력 12달러(백만 토큰당)로 Anthropic 모델보다 저렴한 가격 정책</li>
+<li>816B 파라미터, 100만 컨텍스트 모델이 Apple M5 Ultra Mac Studio에서 구동되는 사례 확인</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>오픈 웨이트 LLM 동향: Microsoft와 NVIDIA</h2><ul>
+<li>Microsoft는 80B 활성 파라미터를 가진 최신 오픈 웨이트 모델 MAI Base 2의 사전 학습 완료 발표</li>
+<li>NVIDIA의 Nemo Tron 3.5 Super VL은 120B 파라미터 모델로 Artificial Analysis에서 상위권 기록</li>
+<li>Nemo Tron은 DeepSeek, GLM 5.3, Quinn 3.8보다 높은 속도로 지능과 처리 효율의 균형 추구</li>
+<li>GPT-6 Luna Max와 유사한 비용 수준(입력 50센트, 출력 50센트)으로 제공되며 약간 더 높은 지능</li>
+<li>GPT 6.1 Sole의 Codex 및 Work 사용 시 기본 컨텍스트 길이가 272K에서 500K로 증가</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>AI 에이전트 및 멀티미디어 도구 확장</h2><ul>
+<li>GenSpark Design은 모든 생성물이 레이어화되고 편집 가능한 AI 디자인 도구로 출시</li>
+<li>Microsoft Decision 1과 JEV 등 결정 모델이 텍스트 기반 의사결정 보조 기능 제공</li>
+<li>Nimble V4 및 V4 Max 모델은 JEV보다 우수한 벤치마크 성능을 보이며 결정 모델 최전선 주도</li>
+<li>Eleven Labs는 업로드된 비디오에 맞춰 사운드트랙과 효과음을 자동 동기화하는 기능 도입</li>
+<li>Kylon이라는 새로운 AI 에이전트 오케스트레이션 도구가 출시되어 멀티 에이전트 작업 관리 지원</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>게임 산업 AI 전환 및 하드웨어 생태계</h2><ul>
+<li>Microsoft는 게임 마시업 트렌드에 대응해 실험적 부서 Xbox Labs를 신설</li>
+<li>Epic Games의 Tim Sweeney는 개발자를 재배치하여 AI 최대화를 위한 대규모 피벗 진행</li>
+<li>Android의 Circle to Search 기능으로 메시지 주변을 그리면 AI가 위험 신호를 분석</li>
+<li>Apple은 Apple Watch보다 큰 카운터용 홈 뷰 디바이스를 출시하여 스마트홈 인터페이스 확장</li>
+<li>게임 개발 및 멀티미디어 제작 과정에서 AI가 콘텐츠 생성 및 최적화의 핵심 도구로 자리매김</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>KREA 3</td><td>이번 주 베타가 공개된 이미지 편집 모델로, ChatGPT와 Nano Banana보다 정교한 편집 품질을 제공하며 향후 오픈 웨이트로 전환될 예정인 모델.</td></tr><tr><td>Muse Wonder</td><td>Meta에서 출시한 LLM으로, DeepSuite 코딩 벤치마크 79%를 기록하며 S급 모델로 평가되는 고성능 모델.</td></tr><tr><td>MAI Base 2</td><td>Microsoft가 사전 학습을 완료하고 발표한 80B 활성 파라미터를 가진 최신 오픈 웨이트 LLM 모델.</td></tr><tr><td>Nemo Tron 3.5 Super VL</td><td>NVIDIA의 120B 파라미터 오픈 웨이트 모델로, DeepSeek 등 경쟁 모델보다 높은 처리 속도를 특징으로 하는 모델.</td></tr><tr><td>DGX Spark</td><td>약 4,000달러 가격대의 AI 전용 하드웨어로, 텍스트-이미지 생성 7.3초, 이미지 편집 16.2초의 처리 성능을 기록하는 장치.</td></tr><tr><td>Decision Models</td><td>Jev, Microsoft Decision 1, Nimble V4 등 텍스트를 분석하여 의사결정을 보조하는 AI 모델군으로, 정확도 차이가 미미한 상태.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/KGcuuhqmPhI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Matt Wolfe · 2026-10-18</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
