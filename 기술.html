@@ -355,8 +355,8 @@ mark{background:#FFF2A8;color:inherit;border-radius:3px;padding:0 .08em;
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#565C68">코스피</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">5,596.88</span>
-          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-1.26%</span>
+          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">5,610.55</span>
+          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-1.01%</span>
         </span>
       </div>
       <div data-mkt-asof style="display:none"></div>
@@ -365,8 +365,8 @@ mark{background:#FFF2A8;color:inherit;border-radius:3px;padding:0 .08em;
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#565C68">코스닥</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">786.40</span>
-          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-1.05%</span>
+          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">788.53</span>
+          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-0.79%</span>
         </span>
       </div>
       <div data-mkt-asof style="display:none"></div>
@@ -395,8 +395,8 @@ mark{background:#FFF2A8;color:inherit;border-radius:3px;padding:0 .08em;
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#565C68">원/달러</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">1,335.08</span>
-          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-0.44%</span>
+          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#565C68">1,335.98</span>
+          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-0.37%</span>
         </span>
       </div>
       <div data-mkt-asof style="display:none"></div>
@@ -655,18 +655,12 @@ function sectionBlock(label,items,tone,note){
     +'<span style=\"font-size:11.5px;color:'+TK.muted+';margin-left:auto\">'+esc(note)+'</span></div>'
     +'<div style=\"display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0 26px\">'+rows+'</div></div>';
 }
-var CUSTOMER_ROOM_NAMES={
-  '18478937851255981':'AI무료 강의 & 정보 공유',
-  '18472466542857243':'김효율의 AI개발단',
-  '18446637407407327':'코난쌤 오픈채팅방',
-  '18310729609691586':'AI+스마트글래스',
-  '18475047644735325':'ai the astra'
-};
 function customerSourceName(r){
   var raw=String(r.channel||r.source||'기타 커뮤니티').trim();
   raw=raw.split(' · 오픈채팅 · ')[0].trim();
   raw=raw.replace(/^오픈채팅\s*[·•-]?\s*/,'').replace(/\s*\(비공개 대화\)\s*$/,'').trim();
-  return CUSTOMER_ROOM_NAMES[raw]||raw||'기타 커뮤니티';
+  if(/^\d{6,}$/.test(raw)) return '오픈채팅 · 커뮤니티';
+  return raw||'기타 커뮤니티';
 }
 function customerGroupBlock(items,tone){
   if(!items.length) return '';
