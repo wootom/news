@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="옵시디언 노트를 음성으로 만들고 Drive 링크로 공유하는 보이스 브리핑 설정법"><title>Obsidian 보이스 브리핑은 노트를 음성화해 구글 드라이브 링크로 공유하는 플러그인이다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>배움의 달인 (AI·자동화)</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-21 · 배움의 달인 (AI·자동화)</span><span class="chip">🎬 영상</span></div><h1>Obsidian 보이스 브리핑은 노트를 음성화해 구글 드라이브 링크로 공유하는 플러그인이다.</h1><p class="lead">옵시디언 노트를 음성으로 만들고 Drive 링크로 공유하는 보이스 브리핑 설정법</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>보이스 브리핑은 옵시디언 문서 내용을 대본과 음성으로 바꾸고, 구글 드라이브 플레이어 링크를 노트에 넣는다.</li>
+<li>제작자는 초기 버전 이후 TTS 품질이 <span class="up">개선</span>됐다고 설명하며, 특히 ElevenLabs V4의 감정·억양 표현을 소개한다.</li>
+<li>플러그인에는 원고 생성용 API와 TTS API가 필요하며, Gemini만 쓰거나 생성과 음성에 서로 다른 API를 쓸 수 있다.</li>
+<li>구글 드라이브 공유를 위해 Drive API와 데스크톱 OAuth 클라이언트의 ID·시크릿을 설정하고 사용자 계정을 등록한다.</li>
+<li>단축키 실행 후 브리핑 대본을 만들고 오디오를 Drive에 저장하면, 재생 링크가 옵시디언 노트에 임베드된다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>제작자가 개발한 보이스 브리핑은 옵시디언 노트의 내용을 음성 브리핑으로 만들고 공유까지 연결한다.</li>
+<li>기존에는 음성 품질이 만족스럽지 않았지만 TTS 발전, 특히 ElevenLabs V4의 <span class="up">개선</span>을 계기로 플러그인을 다시 소개한다.</li>
+<li>제작자는 AI 시대에도 개인화되고 독점적인 데이터의 가치가 중요하다고 말하며 옵시디언 활용을 권한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>플러그인 설치와 사용 준비</h2><ul>
+<li>보이스 브리핑은 옵시디언 커뮤니티 플러그인에 등록돼 있어 플러그인 탐색에서 검색해 설치하고 활성화할 수 있다.</li>
+<li>옵션에서 원고를 작성할 API와 원고를 음성으로 바꿀 TTS API를 설정한다.</li>
+<li>제작자는 Gemini API 하나로도 활용할 수 있고, 더 높은 음성 품질을 원하면 원고 생성과 TTS에 별도 API를 쓸 수 있다고 설명한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>원고 생성과 ElevenLabs 음성 설정</h2><ul>
+<li>제작자는 원고 생성에 Gemini 3.8 Flash를 사용했고, 음성 변환에는 ElevenLabs API를 선택했다고 소개한다.</li>
+<li>ElevenLabs에서 API 키와 음성 ID를 확인해 플러그인 설정에 입력하며, 시연에서는 복제한 자신의 목소리를 사용한다.</li>
+<li>브리핑 길이와 출력 언어를 조정할 수 있고, 커스텀 프롬프트 외에도 뉴스 앵커·파인만 방식 등을 선택할 수 있다.</li>
+<li>제작자는 ElevenLabs V4가 목소리의 감정과 억양, 연기 표현까지 가능할 정도로 좋아졌다고 평가한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>Google Drive API와 OAuth 연결</h2><ul>
+<li>Google Cloud Console에서 프로젝트를 선택하고 API 라이브러리에서 Google Drive API를 사용 설정한다.</li>
+<li>사용자 인증 정보에서 OAuth 클라이언트 ID를 만들고 애플리케이션 유형을 데스크톱 앱으로 지정한다.</li>
+<li>생성된 클라이언트 ID와 시크릿을 플러그인 설정에 입력하고, 테스트 대상에 사용할 구글 계정을 등록한다.</li>
+<li>로그인 후 계정을 선택하고 안내에 따라 연결하면 성공 메시지와 연결 테스트로 상태를 확인할 수 있다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>단축키 실행과 음성 노트 생성</h2><ul>
+<li>제작자는 핫키 설정에서 보이스 브리핑 명령에 커맨드 시프트 V 단축키를 지정해 사용한다.</li>
+<li>노트에서 명령을 실행하면 설정한 프롬프트에 따라 대본을 작성하고 이를 오디오로 변환한다.</li>
+<li>생성된 오디오는 구글 드라이브에 저장되며, 저장된 파일의 플레이어 링크가 옵시디언 노트에 삽입된다.</li>
+<li>시연 대본은 소프트웨어의 비용 구조와 생성형 AI의 토큰·전력·GPU 비용을 다루는 브리핑으로 구성됐다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>뉴스레터 활용과 제작자의 관점</h2><ul>
+<li>제작자는 자신의 뉴스레터에서 인사이트 메모와 그 내용을 요약한 보이스 브리핑을 함께 제공해 왔다고 설명한다.</li>
+<li>초기 플러그인 개발은 약 10개월 전이었으며, 당시에는 음성 브리핑 품질이 만족스럽지 않았다고 회고한다.</li>
+<li>보이스 브리핑을 Share Note로 공유할 때 음성 파일도 전달되도록, 로컬 파일 대신 Drive 링크를 노트에 넣는 방식을 사용한다.</li>
+<li>제작자는 옵시디언을 개인 데이터의 전초 기지로 활용하며, 기술 발전과 함께 자신만의 데이터 가치가 커질 것이라고 말한다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>보이스 브리핑</td><td>옵시디언 문서 내용을 대본과 음성으로 만들고, 재생 링크를 노트에 넣어 공유하는 플러그인 기능이다.</td></tr><tr><td>TTS</td><td>플러그인에서 작성된 텍스트 원고를 음성 파일로 변환하는 기능으로, 제작자는 ElevenLabs를 사용한다.</td></tr><tr><td>ElevenLabs V4</td><td>제작자가 시연에서 사용한 음성 모델로, 감정과 억양 표현이 <span class="up">개선</span>됐다고 소개한다.</td></tr><tr><td>Google Drive API</td><td>생성한 음성 파일을 구글 드라이브에 저장하고 그 파일의 플레이어 링크를 노트에 연결하는 데 쓰인다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/zrcEhMPJd_U" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>배움의 달인 (AI·자동화) · 2026-10-21</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

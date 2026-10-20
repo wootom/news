@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="OpenClaw는 공유 세션으로 협업 과정을 드러내고, OCE는 조직 에이전트의 통제 기반을 제시한다."><title>OpenClaw 멀티플레이어는 에이전트 세션을 공유해 협업 과정을 드러내지만 통제와 검증은 남는다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>평범한 사업가</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-21 · 평범한 사업가</span><span class="chip">🎬 영상</span></div><h1>OpenClaw 멀티플레이어는 에이전트 세션을 공유해 협업 과정을 드러내지만 통제와 검증은 남는다</h1><p class="lead">OpenClaw는 공유 세션으로 협업 과정을 드러내고, OCE는 조직 에이전트의 통제 기반을 제시한다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>발표자는 터미널·Codex Desktop·여러 컴퓨터로 작업 환경을 넓혔지만, 팀원 참여가 자신을 거치는 병목은 남았다고 말한다.</li>
+<li>OpenClaw 멀티플레이어 서버에서는 같은 권한의 팀원이 세션을 보고 프롬프트를 넣으며, 발표자는 초대 대상을 신뢰하는 사람으로 제한하라고 경고한다.</li>
+<li>세션 공개는 코드 변경의 이유와 동료의 작업 과정을 공유해 충돌을 줄이고 배움을 돕는다는 팀의 체감으로 소개되지만, 정량 성과는 제시되지 않는다.</li>
+<li>자동화 루프는 Discord·Twitter·GitHub를 살피고 재현·수정·검증·별도 에이전트 리뷰 뒤 반영하는 흐름이며, 취향은 사람의 몫으로 남긴다.</li>
+<li>OCE는 샌드박싱·서비스 계정·리뷰 등으로 조직 내 에이전트를 관리하는 오픈소스 컨트롤 플레인으로 발표됐고, 시연의 일부 응답은 기대와 달랐다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>모델이 빠르게 좋아지는 동안 일하는 방식과 하네스가 따라가지 못해, 이전 워크플로가 답답하고 낡게 느껴진다는 것이 발표의 출발점이다.</li>
+<li>팀원 모두 에이전트를 쓰더라도 서로의 작업을 모르면 협업은 느려지고, 한 사람이 메시지를 전달하는 ‘Meat Proxy’가 병목이 된다고 설명한다.</li>
+<li>OpenClaw 멀티플레이어는 세션을 함께 보고 지시하는 방식으로 이 문제를 다루며, 발표 후반에는 조직 단위 에이전트 관리용 OCE를 소개한다.</li>
+<li>발표에서 제시된 속도·행복감·협업 <span class="up">개선</span>은 팀의 경험과 주장으로 제시되며, 정량 지표나 독립 검증 자료는 나오지 않는다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>터미널에서 팀 서버까지 넓어진 작업 환경</h2><ul>
+<li>발표자는 작년에는 터미널에서 여러 세션을 띄워 작업했고, 모델이 좋아지면서 에이전트 진행을 위해 Esc 키로 자주 개입할 필요가 줄었다고 말한다.</li>
+<li>이후 Codex Desktop으로 옮겼지만 실험과 세션이 늘어 컴퓨터의 디스크 공간과 성능 부담이 커졌다고 설명한다.</li>
+<li>부하를 나누기 위해 여러 컴퓨터를 쓰고 Codex를 dev box에 연결했으며, 에이전트가 클라우드에서 테스트하도록 grab box도 만들었다.</li>
+<li>작업 환경을 늘려도 팀원이 참여하려면 여전히 발표자를 거쳐야 했고, 그래서 팀이 서로의 세션에 참여하는 방식을 탐색하기 시작했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>공유 세션의 작동 방식과 초대 조건</h2><ul>
+<li>시연에서 에이전트는 새 게임을 즉석에서 만든 것이 아니라 팀이 이미 만들어 둔 Lily Lane을 찾아왔다고 발표자가 설명한다.</li>
+<li>예전에는 에이전트가 풀 리퀘스트를 돌려주면 혼자 열어 이어서 작업했지만, 공유 화면에서는 여러 사람이 같은 세션에 프롬프트를 넣는다.</li>
+<li>서버에서는 누구나 서로의 세션을 보고 프롬프트를 넣을 수 있으며, 발표자는 세션을 건드려도 괜찮은 사람만 초대하라고 경고한다.</li>
+<li>랍스터 요청 뒤 게임에는 상어도 등장했고 접속자가 몰려 입장을 막는 장면이 나왔다. 상위 기여자 초대는 향후 계획으로 언급됐다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>세션 기록이 드러낸 리뷰 과정과 팀 도구</h2><ul>
+<li>대화 기록은 무엇이 바뀌었는지뿐 아니라 왜 바뀌었는지를 보여줄 수 있지만, PR에 기록을 첨부해 달라는 요청에는 응한 사람이 적었고 발표자도 꺼린 적이 있다고 한다.</li>
+<li>동료가 테이블을 작게 바꾼 사례에서 발표자는 세션을 열어 작업 맥락을 확인하고, 처음의 부정적 판단을 바꿨다. 이 장면은 상상해 보라는 사례로 제시됐다.</li>
+<li>서버는 앱보다 프로젝트가 모이는 장소로 묘사된다. 여러 서버와 저장소에 흩어졌던 대시보드·플러그인을 한곳에서 다루려는 방향이다.</li>
+<li>daily claw는 병합 내용을 신문처럼 정리하지만 자주 틀릴 수 있고, 회의 요약은 Luna를 이용한 프롬프트로 만들며 에이전트 음성 응답은 시연하지 않았다.</li>
+<li>동료의 사이드바 디자인 세션에서는 여러 시안과 편집기, 다른 팀원의 합류가 보였지만 발표자도 최종 반영 버전을 알지 못했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>반복 루프와 완료 목표의 차이</h2><ul>
+<li>발표자는 Discord·Twitter·GitHub를 살피는 모니터와 작은 CLI를 활용해 데이터를 가져오고, 특정 이슈를 분류해 조사와 오류 재현을 시도한다고 설명한다.</li>
+<li>오류가 분명히 재현되면 수정안을 만들고 해결 여부를 확인한 뒤, 다른 에이전트가 리뷰하고 나서 자동 반영할 수 있는 흐름을 제시한다.</li>
+<li>루프는 계속 확인하는 작업이고 /goal은 정해진 최종 상태를 향한다. 발표자는 성능 확인 루프와 SQLite 접근 방식의 점진적 마이그레이션 목표를 예로 들었다.</li>
+<li>SQLite 마이그레이션은 발표자 말로 18일째 진행 중이며 100개가 넘는 PR이 반영됐지만, 아직 끝나지 않았다고 설명한다.</li>
+<li>여러 머신에서 돌던 루프는 멈추거나 위치를 파악하기 어려울 때가 있었다고 한다. 좋은 결과를 가르는 취향과 최종 판단은 사람에게 남긴다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>OCE의 보안 설계와 시연에서 확인된 한계</h2><ul>
+<li>OpenClaw Enterprise(OCE)는 여러 에이전트를 배포·설정·통제하는 오픈소스 컨트롤 플레인으로 소개됐으며, 멀티테넌시와 거버넌스, 보안 경계를 내세운다.</li>
+<li>발표자가 설명한 원칙은 에이전트와 결정론적 코드의 실행 공간 분리, 네트워크·파일·저장소 접근 제한, 다른 모델의 auto-review, 전용 서비스 계정이다.</li>
+<li>프리셋 시연에서 Fred는 코드베이스 읽기 전용 권한을 받고 Linear 쓰기는 팀 승인을 거치도록 설정됐으며, Slack 접근도 부여됐다.</li>
+<li>Fred는 질문에 기대한 답 대신 릴리스 노트를 가져왔고 발표자는 플러그인 문제일 수 있다고 말했다. Cooper에게 요청한 대시보드 기능의 완성 여부도 확인되지 않는다.</li>
+<li>발표자는 OCE를 공개하고 Kubernetes처럼 에이전트 배포의 표준이 되겠다는 구상을 제시했으며, Red Hat·NVIDIA와의 협력과 Trail of Bits 등이 참여한 Patch the Planet도 언급했다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>세션</td><td>에이전트와 나눈 작업 대화 한 묶음으로, OpenClaw 멀티플레이어에서는 팀원이 이를 보고 프롬프트를 넣을 수 있다.</td></tr><tr><td>하네스</td><td>에이전트에게 일을 맡기고 결과를 받는 작업 환경을 가리키며, 발표자의 환경은 터미널에서 Codex Desktop과 여러 컴퓨터로 확장됐다.</td></tr><tr><td>루프와 /goal</td><td>루프는 정해 둔 일을 반복해 확인하는 자동 작업이고, /goal은 SQLite 마이그레이션처럼 정해진 완료 상태를 향하는 작업이다.</td></tr><tr><td>컨트롤 플레인</td><td>여러 에이전트를 한곳에서 배포·설정·통제하는 관리 층으로, OCE는 조직 단위 에이전트 운영을 위한 오픈소스 플랫폼으로 소개됐다.</td></tr><tr><td>프리셋</td><td>조직이 에이전트의 하네스와 서비스 계정, 도구 접근 권한 등을 미리 묶어 설정하는 에이전트 번들이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/SoqY-_qSgJs" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>평범한 사업가 · 2026-10-21</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
