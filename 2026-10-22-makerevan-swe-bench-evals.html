@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="공개 벤치마크의 한계를 짚고, 실제 과제로 모델 조합을 비교하는 Evals를 소개한다."><title>SWE-bench의 공개·오채점·업무 편향을 짚고 실제 과제로 비교하는 Evals를 제안한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-22 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>SWE-bench의 공개·오채점·업무 편향을 짚고 실제 과제로 비교하는 Evals를 제안한다.</h1><p class="lead">공개 벤치마크의 한계를 짚고, 실제 과제로 모델 조합을 비교하는 Evals를 소개한다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>OpenAI는 올해 2월 SWE-bench Verified 점수 발표를 중단했고, 7월에는 대안으로 권했던 SWE-bench Pro 권고도 철회했다.</li>
+<li>Verified 500문제는 공개 이슈와 정답 커밋이 학습에 노출됐고, Pro 공개 문제 731개 중 249개(34.1%)도 고장 난 것으로 감사됐다.</li>
+<li>METR가 통과 패치 296개를 메인테이너 4명에게 보인 결과, 약 절반이 머지 거절됐고 자동 점수는 평균 24%p 높았다.</li>
+<li>Evals는 이용자 과제를 같은 입력·첨부 파일로 모델 조합에 맡기고, 블라인드 결과물 비교와 모델·도구·프롬프트·시간·토큰 기록을 제공한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>영상은 SWE-bench 점수가 코딩 능력과 실제 업무 성과를 제대로 대변하는지 문제를 제기한다.</li>
+<li>문제 공개에 따른 학습 오염, 테스트의 오채점·허점, 테스트 통과와 실제 활용성의 차이가 주요 한계로 제시된다.</li>
+<li>발표자는 고정된 시험 점수 대신 이용자의 실제 과제와 결과물을 비교하는 Evals를 만들었다고 설명한다.</li>
+<li>모델 단독보다 도구·스킬을 포함한 조합을 평가해야 한다는 것이 발표자의 전망이다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>SWE-bench Verified의 공개 문제와 채점 오류</h2><ul>
+<li>Verified는 GitHub 이슈를 모델에 주고, 코드 패치가 미리 준비된 테스트를 통과하면 해결로 보는 500문제 묶음이다.</li>
+<li>문제와 수정 커밋이 공개돼 있으며, OpenAI가 시험한 GPT-5.2·Claude Opus 4.5·Gemini 3 Flash 모두 학습 중 문제나 정답 일부를 접한 흔적이 있었다고 한다.</li>
+<li>2024년 SWE-bench+ 분석에서는 당시 1위 에이전트의 성공 답안 중 32.67%에 정답 코드가 이슈 본문·댓글에 있었고, 31.08%는 테스트가 약했다.</li>
+<li>두 문제 유형을 제외하자 해결률은 12.47%에서 3.97%로 낮아졌으며, OpenAI의 재검토에서는 자주 틀리는 문제의 59.4%가 테스트 오채점으로 확인됐다.</li>
+<li>Epoch AI는 전체 문제 중 최소 16.4%가 고장 나 있다고 추산했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>SWE-bench Pro와 실제 머지 가능성</h2><ul>
+<li>OpenAI는 7월 SWE-bench Pro의 공개 문제 731개를 감사했고, 사람 검토에서 249개(34.1%)가 고장 난 것으로 나타났다.</li>
+<li>고장 유형에는 프롬프트에 없는 조건을 숨은 테스트가 요구하거나, 덜 고친 답도 통과시키는 약한 테스트가 포함됐다.</li>
+<li>METR는 SWE-bench 통과 패치 296개를 scikit-learn·Sphinx·pytest 메인테이너 4명에게 보여주고 메인 브랜치 머지 여부를 물었다.</li>
+<li>테스트 통과 패치의 대략 절반이 머지 거절됐고, 자동 채점 점수는 메인테이너 판단보다 평균 24%p 높았다.</li>
+<li>거절 사유는 코드 품질, 다른 코드의 손상, 이슈 미해결 등이었으며, METR는 에이전트가 리뷰 후 수정할 기회가 없었다는 단서를 달았다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>벤치마크와 실제 개발 업무의 간극</h2><ul>
+<li>Verified 500문제 중 231개(46%)가 Django 저장소에서 나왔고, 언어는 모두 Python이며 TypeScript·Swift·프론트엔드 화면 과제는 없다고 설명한다.</li>
+<li>455문제(91%)는 사람이 1시간 안에 고칠 수 있는 버그로 분류돼 있었다.</li>
+<li>발표자는 랜딩 페이지 제작, 제품 광고 영상 생성, 브라우저 게임 제작처럼 자신이 AI에 맡기는 일은 테스트 통과만으로 평가하기 어렵다고 말한다.</li>
+<li>직접 결과물을 비교하면 벤치마크 1위 모델보다 다른 모델이 더 쓸 만한 경우가 있어 점수표와 실제 작업 결과가 어긋났다고 설명한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>사람 투표 리더보드와 Evals의 평가 방식</h2><ul>
+<li>2025년 4월 Meta의 Llama 4 Maverick은 LMArena에서 2위였지만, 발표에 따르면 투표용으로 조정된 실험 버전이었고 공개 버전은 32위였다.</li>
+<li>발표자는 답변 길이와 서식이 투표에 유리할 수 있고, 모델 실행 조건이 보이지 않으며 채팅 답변 한 번으로 순위를 매기는 점을 문제로 든다.</li>
+<li>Evals는 이용자가 실제 과제를 넣고, 여러 모델 조합에 같은 입력과 첨부 파일을 주며 각각 분리된 작업 공간에서 실행한다.</li>
+<li>평가자는 모델을 가린 결과물 A와 B 중 더 쓸 만한 쪽을 고르고, 선택 뒤에 모델 조합을 확인한다. 각 결과물에는 모델·도구·스킬·프롬프트·수정 횟수·시간·토큰이 기록된다.</li>
+<li>다람쥐 게임 과제에서 Opus 5.5는 7분 36초와 출력 토큰 4만 1천 개, GPT-6 Astra는 6분 28초와 출력 토큰 2만 개를 사용했다. 공개 결과물은 288개, 해당 월 비교 조합은 64개라고 밝혔다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>평가의 전망과 Evals의 한계</h2><ul>
+<li>발표자는 이용자가 매일 새 과제를 넣으면 고정 시험처럼 문제를 미리 외우기 어렵고, 사람이 결과물을 직접 평가하면 테스트 코드의 오채점 문제도 피할 수 있다고 전망한다.</li>
+<li>에이전트 모델에 영상 생성 도구와 스킬을 붙이는 식으로 작업하므로, 모델 단독 점수보다 조합 단위의 성과가 중요해질 것이라고 본다.</li>
+<li>새 모델을 평가할 때 SWE-bench 점수보다 실제 과제에서 몇 번 이겼는지를 먼저 보게 될 것이라는 것이 발표자의 예측이다.</li>
+<li>Evals는 아직 투표가 충분하지 않아 이번 달 승률이 비어 있고, 비교가 기준만큼 쌓이기 전에는 순위를 매기지 않는다고 설명한다.</li>
+<li>투표는 취향의 영향을 받고, 같은 레시피도 매번 같은 결과를 보장하지 않는다. 발표자는 리더보드보다 자신의 과제로 직접 시험해 보라고 권한다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>SWE-bench Verified</td><td>공개 GitHub 이슈의 패치가 준비된 테스트를 통과하는지 평가하는 500문제 묶음이다.</td></tr><tr><td>SWE-bench Pro</td><td>영상에서 SWE-bench Verified의 대안으로 언급되며, 공개 문제 731개 중 249개가 감사에서 고장 난 것으로 보고됐다.</td></tr><tr><td>학습 오염</td><td>시험 문제나 정답이 공개돼 모델 학습 데이터에 들어가면서, 점수가 실제 능력보다 시험 노출을 반영할 수 있는 문제다.</td></tr><tr><td>Evals</td><td>이용자 실제 과제를 모델 조합에 맡기고 블라인드 결과물 비교와 실행 레시피를 기록하는 사이트다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/JRHWxGAbo_E" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-10-22</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
