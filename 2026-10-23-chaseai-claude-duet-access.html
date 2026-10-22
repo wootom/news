@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Anthropic의 Claude Duet는 클라우드 가상 컴퓨터와 능동적 브리핑을 갖춘 24시간 개인 AI 비서다."><title>Anthropic이 24시간 구동되는 가상 컴퓨터와 능동적 브리핑 기능을 갖춘 Claude Duet를 출시했다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="Anthropic Just Dropped Claude Duet (Here&#x27;s How To Get Access)"><meta name="youtube-source-channel" content="Chase AI"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-23 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>Anthropic이 24시간 구동되는 가상 컴퓨터와 능동적 브리핑 기능을 갖춘 Claude Duet를 출시했다</h1><p class="lead">Anthropic의 Claude Duet는 클라우드 가상 컴퓨터와 능동적 브리핑을 갖춘 24시간 개인 AI 비서다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Claude Duet는 Opus 5.5 기반의 상시 개인 AI 에이전트로, 자체 가상 컴퓨터와 브라우저를 클라우드에서 24시간 운영한다.</li>
+<li>Pro 또는 Max 플랜 가입자는 이름, 회사명, 사용 목적을 입력하여 리서치 프리뷰 웨이트리스트에 등록할 수 있다.</li>
+<li>매일 아침 모바일로 브리핑을 전송하고 몇 시간 간격으로 연결된 앱을 점검하여 필요한 작업을 능동적으로 알린다.</li>
+<li>Claude Managed Agents와 동일한 자격 증명 처리 방식과 새로운 전용 분류기를 통해 민감 정보 유출을 방지한다.</li>
+<li>OpenAI의 Dots와 달리 사용량이 기존 플랜에서 차감되는 구조이며, 초보 사용자를 위한 직관적 인터페이스를 제공한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Claude Duet는 Muse, GrokBot, Dots와 유사한 상시 개인 비서 AI 에이전트로서 Anthropic의 최신 전략이다.</li>
+<li>기존 Claude Code 사용자와 초보 사용자 모두를 대상으로 하지만, 핵심 타겟은 코딩 도구를 잘 모르는 일반인이다.</li>
+<li>가상 컴퓨터 기반의 24시간 구동과 능동적 알림 기능이 기존 채팅형 AI와의 가장 큰 차별점이다.</li>
+<li>사용량 관리와 보안 측면에서 OpenAI의 Dots보다 더 투명하고 명확한 정책을 제시하고 있다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>접근 방법 및 리서치 프리뷰</h2><ul>
+<li>현재 Claude Duet는 리서치 프리뷰 단계로, Pro 또는 Max 플랜 가입자만 웨이트리스트에 등록 가능하다.</li>
+<li>웨이트리스트 가입 시 이름, 회사명, 그리고 구체적인 사용 목적을 입력해야 한다.</li>
+<li>채널은 영상 설명란에 웨이트리스트 링크를 제공하여 시청자의 직접적인 접근을 유도한다.</li>
+<li>프리뷰 기간 동안의 기능과 안정성은 정식 출시 전 단계로 제한적일 수 있다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>가상 컴퓨터 아키텍처 및 구동 원리</h2><ul>
+<li>Claude Duet는 자체 브라우저와 가상 머신을 클라우드에 상시 구동하여 물리적 하드웨어 비용 없이 운영된다.</li>
+<li>사용자의 Claude 계정 내 메모리, 스킬, 연결된 앱이 가상 컴퓨터에 그대로 이관되어 컨텍스트를 유지한다.</li>
+<li>Opus 5.5 모델이 이 가상 컴퓨터를 구동하며, Mac Mini를 구매하지 않고도 유사한 환경을 누릴 수 있다.</li>
+<li>모든 작업은 자동 모드 분류기(auto mode classifier)를 통해 처리되어 권한 우회 없이 안전하게 실행된다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>능동적 알림 및 보안 시스템</h2><ul>
+<li>매일 아침 사용자의 스마트폰으로 브리핑을 자동 전송하며, 이는 사용자가 요청하지 않아도 발생한다.</li>
+<li>몇 시간 간격으로 연결된 앱을 점검하여 이메일 확인, Gusto 급여 처리 등 필요한 작업을 능동적으로 알림한다.</li>
+<li>Claude Managed Agents와 동일한 자격 증명 및 비밀번호 처리 방식을 적용하여 보안성을 강화했다.</li>
+<li>새로운 전용 분류기와 안전 시스템 프롬프트가 각 메시지를 검사하여 민감 정보 유출을 차단한다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>사용량 정책 및 경쟁 제품 비교</h2><ul>
+<li>Claude Duet 사용량은 기존 Pro 또는 Max 플랜의 크레딧에서 차감되며, Opus 5.5는 중간 노력(medium effort) 설정으로 토큰 효율적이다.</li>
+<li>OpenAI의 Dots가 &#x27;무제한&#x27;을 표방하지만 실제로는 CodeX 스레드를 생성해 사용량을 소모하는 것과 달리, Anthropic은 차감 방식을 명확히 고지했다.</li>
+<li>Max 플랜 사용자는 20배 한도에 근접하지 않는 한, 앱 폴링으로 인한 추가 비용 부담을 크게 걱정할 필요가 없다.</li>
+<li>Dots와 비교했을 때 Claude Duet는 설정 없이 바로 사용할 수 있는 직관성과 독립 앱 제공에서 우위를 점한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>타겟 사용자 및 실질적 가치</h2><ul>
+<li>Claude Code에 능숙한 개발자에게는 상시 구동되는 가상 컴퓨터가 핵심 가치로, 원격 환경에서 VPS를 대체할 수 있다.</li>
+<li>코딩 도구를 잘 모르는 일반 사용자에게는 Muse나 GrokBot과 같은 직관적 개인 비서로서 높은 실용성을 제공한다.</li>
+<li>사용자가 복잡한 설정 없이도 AI가 배경에서 작업을 수행하고 결과를 보고하는 경험을 제공한다.</li>
+<li>초보 사용자는 Claude Duet를 통해 AI 에이전트의 가치를 더 쉽게 체감할 수 있을 것으로 예상된다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Claude Duet</td><td>Anthropic이 출시한 Opus 5.5 기반 상시 개인 AI 에이전트로, 자체 가상 컴퓨터와 브라우저를 갖추고 능동적으로 작업을 수행한다.</td></tr><tr><td>Opus 5.5</td><td>Claude Duet의 구동 엔진으로 사용되는 Anthropic의 최신 AI 모델로, 중간 노력 설정에서 토큰 효율적으로 작동한다.</td></tr><tr><td>Virtual Computer</td><td>클라우드에서 24시간 상시 구동되는 가상 머신으로, 사용자의 브라우저와 앱 연결 상태를 유지하며 AI가 작업을 수행하는 공간이다.</td></tr><tr><td>Auto Mode Classifier</td><td>Claude Duet의 모든 작업을 자동 권한으로 처리하는 분류기로, 민감 정보 유출을 방지하는 안전 시스템과 연동된다.</td></tr><tr><td>Research Preview</td><td>Claude Duet의 현재 출시 단계로, Pro 또는 Max 플랜 가입자가 웨이트리스트를 통해 제한적으로 접근할 수 있는 상태이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/pJ5tXmHAwR4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-10-23</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
