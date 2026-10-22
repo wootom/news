@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 시대 인재 평가는 정답 지식에서 문제 정의와 실패 학습 역량으로 전환된다"><title>AI 시대 인재 평가 기준이 정답 지식에서 문제 정의 및 실패 학습 역량으로 전환된다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="“인재를 구별하는 신호 체계가 바뀌고 있다” (SK아카데미 임창현 박사)"><meta name="youtube-source-channel" content="티타임즈TV"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-23 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>AI 시대 인재 평가 기준이 정답 지식에서 문제 정의 및 실패 학습 역량으로 전환된다</h1><p class="lead">AI 시대 인재 평가는 정답 지식에서 문제 정의와 실패 학습 역량으로 전환된다</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">분석 범위: 원문 전체 20,904자 · 4개 구간. 원문 대조한 핵심 인용 21개를 바탕으로 요약했습니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>과거 정답 지식 중심 인재 평가가 무력화되며 문제 센싱 및 가치 증명 능력이 새로운 핵심 역량으로 부상했다.</li>
+<li>한국형 패스 팔로워 전략의 한계로 주어진 문제 해결 능력만으로는 새로운 문제 발견이 불가능하다는 지적이 나왔다.</li>
+<li>학습 인접성은 실패의 단가를 낮추고 빠르게 피드백을 반영하는 시스템적 구조 문제로 재정의되었다.</li>
+<li>실패를 방법과 가설로 논의하는 문화가 필요하며 이는 개인의 태도 문제가 아닌 조직 구조의 문제이다.</li>
+<li>자기 정체성이라는 흔들리지 않는 중심을 명확히 할 때 AI 시대의 유연한 변화와 혁신이 가능해진다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>AI 에이전트 확산으로 기존 정답 기반 인재 평가 신호 체계가 더 이상 작동하지 않는 시대가 도래했다.</li>
+<li>새로운 인재 기준은 문제를 발견하고 센싱하며, 이를 가치 있는 문제로 정의해 증명하는 능력이다.</li>
+<li>AI는 주어진 문제를 잘 풀지만 문제를 걸지 않으므로, 사람은 도전을 통해 실패를 감당해야 한다.</li>
+<li>인재 구별의 핵심은 AI와 함께 일하는 맥락에서 인간 고유의 문제 정의 및 실패 학습 역량에 있다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>AI 시대의 인재 역량 재정의</h2><ul>
+<li>과거에는 정답을 잘 아는 사람이 인정을 받았으나, 이제는 문제 센싱 능력이 더 중요해졌다.</li>
+<li>문제를 고객이나 이해관계자에게 가치 있는 문제로 정의할 수 있는 힘이 핵심 역량으로 꼽힌다.</li>
+<li>AI가 정답 제시와 문제 해결에서 우위를 점하면서, 인간은 문제 발견에 집중해야 한다.</li>
+<li>UCLA 타워 교수 사례를 통해 결과만 좋은 AI 개발보다 과정 이해와 문제 정의가 중요함을 강조했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>한국형 패스 팔로워 전략의 한계</h2><ul>
+<li>한국은 주어진 질문을 잘 풀어내는 실행 능력으로 빠르게 패스 팔로워 전략을 수행해 왔다.</li>
+<li>지금은 주어진 문제가 모두 해결되어 새로운 문제를 풀어야 하지만, 새로운 문제가 주어지지 않는다.</li>
+<li>기존 질서나 정답을 아는 능력만으로는 새로운 시대의 인재 확보가 불가능하다는 진단이 나왔다.</li>
+<li>HRD 역할도 정답이 있는 문제 교육에서 벗어나 고객과 부딪히는 실제 문제 해결로 전환되어야 한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>학습 인접성과 실패의 단가</h2><ul>
+<li>학습 인접성은 경험으로부터 빠르게 배워 생각과 행동을 바꿀 수 있는 능력으로 정의된다.</li>
+<li>새로운 시도와 실패를 전제하는 학습은 필연적으로 실패를 포함하며, 이는 시스템적 문제이다.</li>
+<li>실패를 통해 배우라는 말은 태도 문제가 아니라 실패의 단가를 낮추는 구조적 장치의 문제이다.</li>
+<li>작고 빠르게 여러 번 시도해 실패가 치명적이지 않도록 만드는 것이 학습 인접성을 높이는 방법이다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>실패를 방법과 가설로 전환하기</h2><ul>
+<li>연구에 따르면 사람들은 자신의 실패보다 타인의 실패에서 더 많이 배운다.</li>
+<li>실패 논의의 대상은 사람이 아니라 방법과 가설이어야 실패의 심리적 비용을 낮출 수 있다.</li>
+<li>고객 피드백과 팩트를 기반으로 방법을 논의하는 문화가 실패를 학습으로 전환시킨다.</li>
+<li>조직은 도전적인 목표를 제시하되, 방법론은 구성원이 스스로 탐색하도록 해야 한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>심리적 안전감과 자기 정체성</h2><ul>
+<li>학습 불안과 생존 불안 중 생존 불안을 키우지 않고 학습 불안을 낮추는 것이 변화의 열쇠이다.</li>
+<li>실패해도 치명적이지 않다는 심리적 안전감 문화가 혁신을 위한 필수 조건이다.</li>
+<li>자기 정체성이라는 흔들리지 않는 중심이 명확할수록 나머지 부분은 유연하게 바꿀 수 있다.</li>
+<li>AI 시대에 인간은 AI가 못하는 &#x27;걸기&#x27;와 도전을 통해 가치를 증명해야 한다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>문제 센싱</td><td>AI가 정답을 제시하는 시대에, 풀어야 할 문제를 스스로 발견하고 인식하는 능력</td></tr><tr><td>학습 인접성</td><td>경험을 통해 빠르게 배워 행동과 생각을 변화시키는 능력으로, 실패의 단가를 낮추는 시스템</td></tr><tr><td>패스 팔로워</td><td>선도자가 만든 주어진 문제를 잘 풀어내는 실행 능력에 의존하는 전략</td></tr><tr><td>심리적 안전감</td><td>실패해도 치명적이지 않다고 느끼며, 학습 불안을 낮추는 조직 문화</td></tr><tr><td>자기 명료성</td><td>자기 자신에 대해 명확한 정체성을 가지고 있어 유연한 변화가 가능한 상태</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/9ElhZBfJKPY" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-10-23</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

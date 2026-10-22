@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Claude 기반 Roast Room으로 유명인 페르소나를 활용해 비즈니스 의사결정 품질을 높이는 방법"><title>Claude 기반 Roast Room으로 유명인 사고방식을 활용해 비즈니스 의사결정 품질을 높이는 방법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="/roast-room: How I Use Claude to Think Like the Top 1%"><meta name="youtube-source-channel" content="Nate Herk | AI Automation"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-23 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>Claude 기반 Roast Room으로 유명인 사고방식을 활용해 비즈니스 의사결정 품질을 높이는 방법</h1><p class="lead">Claude 기반 Roast Room으로 유명인 페르소나를 활용해 비즈니스 의사결정 품질을 높이는 방법</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">분석 범위: 원문 전체 18,839자 · 4개 구간. 원문 대조한 핵심 인용 23개를 바탕으로 요약했습니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Jeff Bezos, Paul Graham, Warren Buffett 등 7명의 유명인 페르소나를 Claude Code에 구현해 비즈니스 질문을 심층 분석하는 구조를 소개한다.</li>
+<li>각 페르소나는 48개 출처, 약 50만 단어, 14개 인터뷰, 34개 영상 등 방대한 데이터로 구축되며, 8개의 고유 규칙과 프레임워크를 기반으로 작동한다.</li>
+<li>Claude Code는 토론 진행자 역할을 수행하며, 의견이 일치하지 않을 때 특정 페르소나에게 반대편 논거를 제시하도록 지시해 더 깊은 통찰을 유도한다.</li>
+<li>2027년 여름 컨퍼런스 개최지 선정 사례에서 Salt Lake City가 7.9점의 최종 점수를 획득하며, 다중 에이전트 토론이 실제 의사결정에 미치는 영향을 보여준다.</li>
+<li>Phish Audio API의 Drama 3 모델을 활용해 각 페르소나에게 고유한 목소리를 부여하고, MCP 서버 및 n8n 노드를 통해 워크플로우를 자동화할 수 있다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Claude를 활용해 상위 1%의 사고방식을 시뮬레이션하여 비즈니스 아이디어를 검증하고 <span class="up">개선</span>하는 &#x27;Roast Room&#x27; 워크플로우를 제시한다.</li>
+<li>단일 AI 응답의 한계를 극복하기 위해, 서로 다른 전문성을 가진 다수의 페르소나를 동시에 참여시켜 다각도의 비판과 조언을 얻는 방식을 취한다.</li>
+<li>Claude Code를 토론 진행자(Chair)로 설정하여, 페르소나들 간의 논쟁을 조율하고 최종적인 투표 및 점수를 산출하는 구조를 설계한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>페르소나 구축 원리 및 데이터 소스</h2><ul>
+<li>각 페르소나는 Markdown 파일로 구현되며, 해당 인물의 사고 방식, 출처, 원칙, 스토리, 그리고 voice.md를 포함한다.</li>
+<li>예시로 든 Layla 페르소나는 2021년부터 2026년까지의 48개 출처, 약 50만 단어, 14개 주요 인터뷰, 34개 영상으로 구축되었다.</li>
+<li>모든 페르소나는 일관된 방식으로 생성되며, 각자는 8개의 고유한 규칙과 결정 프레임워크를 기반으로 논리를 전개한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>Claude Code 기반 토론 메커니즘</h2><ul>
+<li>기본적으로 7개의 시트를 가진 이사회로 구성되며, 필요에 따라 총 11개 시트까지 확장하여 다양한 관점을 추가할 수 있다.</li>
+<li>사용자가 질문과 2~3개의 옵션, 그리고 배경 컨텍스트를 제공하면, 각 페르소나는 자신의 고유한 질문 프레임워크로 아이디어를 분석한다.</li>
+<li>Warren Buffett은 현금·리스크·장기적 가치, Alex Hormozi는 지불 의향·가격·클로징, Gino Wickman은 실행력을 각각 중점적으로 질문한다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>실제 적용 사례: 2027년 컨퍼런스 개최지 선정</h2><ul>
+<li>2027년 여름 개인 이벤트 개최지를 San Francisco, Salt Lake City, Austin, Chicago 중 선택하기 위해 Roast Room을 활용했다.</li>
+<li>스폰서 유치, 지역 인센티브, 공항 접근성, 대중교통 등 비즈니스 및 물류 컨텍스트를 제공하여 페르소나들이 합리적으로 추론하도록 했다.</li>
+<li>최종 투표 결과 Salt Lake City가 7.9/10의 점수를 획득하며 1위로 선정되었고, Gary Vee와 Gino Wickman은 옵션 A에 8점을 부여했다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>보이스 합성 및 자동화 통합</h2><ul>
+<li>Phish Audio API의 Drama 3 모델을 사용해 각 페르소나에게 고유한 목소리를 부여하며, 평문으로 연기 지시를 입력할 수 있다.</li>
+<li>MCP 서버를 통해 Claude Code나 Codex에 연결하고, 공식 n8n 노드를 활용해 워크플로우를 자동화할 수 있다.</li>
+<li>에이전트 팀(Agent Teams)보다 서브 에이전트(Sub Agents)를 사용하는 것이 비용 대비 더 높은 가치를 제공한다는 테스트 결과를 바탕으로 설계했다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>전문성 레버리지 및 확장 전략</h2><ul>
+<li>본인의 전문 분야가 아닌 영역(예: 카피라이팅)에서 세계 최고 수준의 전문가 페르소나를 구축하여 그들의 통찰력을 빌려온다.</li>
+<li>특정 주제에 맞춰 페르소나 구성을 유연하게 변경할 수 있으며, Dan Martell을 제외하고 Naval을 추가하는 등 맥락에 맞는 이사회를 구성한다.</li>
+<li>토론 중 의견이 일치하지 않을 때 진행자가 특정 페르소나에게 반대편 논거를 제시하도록 지시하여, 더 깊은 수준의 비판적 사고를 유도한다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Roast Room</td><td>Claude를 활용해 유명인 페르소나들이 사용자의 비즈니스 아이디어를 비판하고 조언하는 다중 에이전트 토론 워크플로우.</td></tr><tr><td>Claude Code</td><td>페르소나들 간의 토론을 진행하고, 최종 투표 및 점수를 산출하며, 필요 시 반대 논거를 제시하도록 지시하는 AI 진행자 역할.</td></tr><tr><td>Sub Agents</td><td>Agent Teams보다 비용 효율적이며, 각 페르소나를 독립적인 서브 에이전트로 구성하여 특정 관점의 분석을 수행하는 구조.</td></tr><tr><td>Drama 3</td><td>Phish Audio API에서 제공하는 모델로, 평문 지시를 통해 각 페르소나에게 고유한 목소리와 연기 스타일을 부여하는 보이스 합성 기능.</td></tr><tr><td>voice.md</td><td>각 페르소나의 고유한 목소리, 톤, 그리고 언어적 특징을 정의하는 Markdown 파일로, 보이스 합성 및 텍스트 스타일 일관성을 유지.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/DSS1Yqb6-qE" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-10-23</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
