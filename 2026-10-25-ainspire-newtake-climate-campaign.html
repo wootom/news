@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="뉴테이크 캔버스로 기후 위기 원테이크 영상 제작: 이음, 수리, 소리 3단계 튜토리얼"><title>뉴테이크 캔버스 활용으로 기후 위기 캠페인 원테이크 영상 제작 과정 공유</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="재난 현장을 거꾸로 날아간 끝에 보인 충격적인??? | Newtake 기후 위기 캠페인 영상 제작 과정"><meta name="youtube-source-channel" content="AInspire"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>AInspire</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-25 · AInspire</span><span class="chip">🎬 영상</span></div><h1>뉴테이크 캔버스 활용으로 기후 위기 캠페인 원테이크 영상 제작 과정 공유</h1><p class="lead">뉴테이크 캔버스로 기후 <span class="dn">위기</span> 원테이크 영상 제작: 이음, 수리, 소리 3단계 튜토리얼</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>재난에서 일상으로 거꾸로 진행하는 원테이크 구조로 몰입도 높은 기후 캠페인 영상 기획</li>
+<li>클립 간 이음새 문제를 해결하기 위해 첫/끝 프레임 이미지를 노드로 연결하는 기법 사용</li>
+<li>드래프트 480p 생성 후 확정 테이크만 FHD로 재생성하는 효율적인 워크플로우 적용</li>
+<li>첫 프레임의 미세한 오류가 확대되는 현상을 발견해 해당 구간만 짧게 재제작하는 수리법</li>
+<li>디렉터 스튜디오에서 FPV 드론 시뮬레이션 및 시네마틱 룩 설정으로 최종 필름 완성</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>기존 AI 영상의 획일적 화려함 대신 의미 있는 메시지 전달에 초점을 맞춘 기획 전환</li>
+<li>재난 결과에서 원인인 일상으로 역순 진행하는 구조로 시청자 공감과 비각심 유발</li>
+<li>이음, 수리, 소리 세 단계로 뉴테이크 캔버스 기반 제작 과정을 체계적으로 분석</li>
+<li>강요하지 않는 톤으로 사소한 일상 행동과 재난의 인과관계를 자연스럽게 연결</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>기획 의도와 영상 구조 설계</h2><ul>
+<li>수몰된 도시에서 출발해 해일, 빙벽, 페어해안, 굴뚝, 화냉각탑, 교량, 베란다 순으로 진행</li>
+<li>결말인 재난이 맨 앞에, 원인인 거실이 맨 끝에 배치되는 역순 내러티브 구성</li>
+<li>초기 단순한 열과 빙하 붕괴 기획에서 임팩트 있는 원테이크 역순 기획으로 변경</li>
+<li>사소한 일상 행동이 재난으로 이어지는 연결성을 강조하는 캠페인 목적 설정</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>이음 단계: 프레임 기반 클립 연결 기법</h2><ul>
+<li>30초 클립 간 굴뚝 개수나 하늘색 차이로 인한 이음새 불일치 문제 발생</li>
+<li>영상 노드에 앞 클립의 마지막 프레임을 다음 클립의 첫 프레임으로 연결해 해결</li>
+<li>16대 9 FHD 해상도로 키프레임 이미지를 추출하여 노드 간 정합성 확보</li>
+<li>디테일한 위치 차이는 편집 단계에서 미세 조정하여 자연스러운 전환 구현</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>수리 단계: 오류 원인 추적과 부분 재제작</h2><ul>
+<li>1분 2초 지점 원플 덤미가 두 줄로 반복되는 오류를 전체 재제작으로 해결 불가</li>
+<li>첫 프레임 이미지 내 0.7% 크기의 미세 오브제 오류가 고속 이동 시 확대되는 원인 규명</li>
+<li>오류 부분만 지우고 같은 프롬프트로 7초 클립만 재제작하여 문제 해결</li>
+<li>30초, 60초 지점의 속도차 4~7%를 프레임 건너뛰기 및 정렬로 보정</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>소리 단계: 오디오 노드와 사운드 디자인</h2><ul>
+<li>프롬프트에 음악 및 BGM 금지, 효과음만 삽입하도록 명시하여 원음 확보</li>
+<li>이음 구간 원음을 가공하고 앰비언스 룸톤을 추가하여 소리 차이를 줄임</li>
+<li>텍스트투 스피치로 내레이션 후보 10~13개 생성 후 길이와 톤 비교하여 선정</li>
+<li>핵심 단어 모션 타이포그래피는 후반 편집에서 블렌드 모드로 오버레이 처리</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>디렉터 스튜디오 활용과 최종 마무리</h2><ul>
+<li>디렉터 스튜디오에서 아포칼립스 몽타주 컨셉과 티렌 엠버 램블런트 라이팅 설정</li>
+<li>FPV 드론 카메라 무빙, 14mm 초광각, F1 조리개로 심도 있는 시네마틱 룩 구현</li>
+<li>30초 제한을 넘어 무한 확장 가능한 원테이크 영상 제작 환경 구축</li>
+<li>뉴테이크 캔버스에서 이미지, 영상, 오디오를 5륜원으로 통합 관리하는 효율성</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>뉴테이크 캔버스</td><td>이미지, 영상, 오디오 노드를 하나의 화면에서 연결하여 워크플로우를 관리하는 AI 영상 제작 플랫폼</td></tr><tr><td>원테이크</td><td>편집 없이 한 번에 촬영된 것처럼 보이는 연속된 영상으로, 이 영상에서는 역순 진행 구조로 구현</td></tr><tr><td>프레임 연결</td><td>앞 클립의 마지막 프레임을 다음 클립의 첫 프레임으로 설정하여 이음새를 매끄럽게 만드는 기법</td></tr><tr><td>디렉터 스튜디오</td><td>장면별 컨셉, 비주얼 스타일, 카메라 설정을 칩 형태로 입력하여 필름 룩을 설계하는 도구</td></tr><tr><td>드래프트 모드</td><td>480p 저해상도로 빠르게 생성하여 후보를 선별한 후 최종 FHD로 재제작하는 효율적 생성 방식</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/8n5gZb_nI1k" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>AInspire · 2026-10-25</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
