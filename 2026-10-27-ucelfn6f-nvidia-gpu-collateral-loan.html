@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="엔비디아 GPU 담보대출과 금융권의 신중한 리스크 평가 및 유동화 전망"><title>엔비디아의 GPU 담보대출 구상과 금융권의 신중한 리스크 평가</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="GPU 담보대출, 대출 유동화 증권, 보험… GPU 기반 증권 쏟아진다"><meta name="youtube-source-channel" content="티타임즈TV"></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-27 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>엔비디아의 GPU 담보대출 구상과 금융권의 신중한 리스크 평가</h1><p class="lead">엔비디아 GPU 담보대출과 금융권의 신중한 리스크 평가 및 유동화 전망</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>엔비디아가 블랙록·골드만삭스 등 6곳과 제휴해 500억 달러(약 675조원) 규모 AI 인프라 금융 플랫폼 추진</li>
+<li>코어위브는 2023년 8월 엔비디아 H100을 담보로 블랙스톤·마그네타캐피탈 등 23억 달러(약 3조원) 대출 약정 체결</li>
+<li>금융권은 GPU의 장기 잔존 가치 예측 데이터 부족으로 통상 3~4년 감가상각 기준 적용해 대출 한도 축소</li>
+<li>코어위브는 메타와의 고정 대금 계약으로 15개월 빌린 자금을 5년에 걸쳐 상환하는 구조로 대출 안정성 확보</li>
+<li>부도 시 손실 보전을 위한 보험 구조와 골드만삭스의 사모펀드·채권 시장 배분 등 유동화 상품 논의 진행 중</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>엔비디아는 GPU 구매 자금 조달을 위해 금융사와 협력해 &#x27;컴퓨트 파이낸싱&#x27; 모델을 구축하고 있다</li>
+<li>금융권은 GPU의 담보 가치보다 사업 수익성과 미래 잔존 가치에 초점을 맞춰 대출 조건을 심사한다</li>
+<li>GPU는 비싼 반도체를 넘어 장기적으로 금융이 붙는 투자 자산으로 자리 잡을 수 있을지가 관건이다</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>엔비디아의 금융 플랫폼 구상</h2><ul>
+<li>엔비디아는 블랙록, 골드만삭스 등 6개 금융회사와 MOU를 맺고 AI 인프라 금융 플랫폼을 추진한다</li>
+<li>장기적으로 500억 달러(한화 675조원) 이상의 금융권 자금을 끌어들이는 것이 목표다</li>
+<li>엔비디아는 직접 대출하는 것이 아니라 금융사가 개별 사업의 금융 조건을 심사하는 구조를 취한다</li>
+<li>블랙록의 레이 리 핑크 CEO는 이 구상을 1970년대 MBS 시장 초창기처럼 금융공학의 다음 미래로 평가했다</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>코어위브의 GPU 담보 대출 사례</h2><ul>
+<li>코어위브는 2023년 8월 엔비디아 H100을 담보로 블랙스톤, 마그네타캐피탈 등 23억 달러(약 3조원) 대출 약정을 체결했다</li>
+<li>코어위브는 3월 31일 최대 85억 달러까지 빌릴 수 있는 대출 약정을 체결하며 메타와의 계약을 상환 근거로 삼았다</li>
+<li>메타는 약정한 AI 연산 용량 사용 여부와 무관하게 정해진 대금을 지급하는 계약으로 수입 예측 가능성을 높였다</li>
+<li>대출은 15개월간 GPU 구매·설치에 사용되고, 이후 메타 계약 수입으로 5년에 걸쳐 원금을 상환하도록 설계됐다</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>GPU 수익성 및 상환 능력 평가</h2><ul>
+<li>최신 GPU는 학습에, 구형 GPU는 추론 및 파인튜닝에 활용 가능해 경제적 수명이 길다고 엔비디아는 주장한다</li>
+<li>GPU 가치 평가 업체 바커는 GB300 NVL72의 경제적 수명을 9~10년으로 추정하며 장기 수익 가능성을 제시했다</li>
+<li>금융권은 GPU 사용료 수입에서 전기료 등 운영비를 뺀 순이익으로 대출 상환이 가능한지 구체적으로 계산한다</li>
+<li>신용도가 높은 테크 기업과의 계약이나 엔비디아의 보증이 대출 상환 능력을 뒷받침하는 근거로 요구된다</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>담보 가치 평가 및 리스크 관리</h2><ul>
+<li>GPU의 장기 잔존 가치 평가에 필요한 역사적 거래 데이터가 부족해 금융권은 신중하게 접근한다</li>
+<li>은행들은 통상 3~4년의 감가상각 기간을 기준으로 GPU 대출을 심사해 담보 가치를 빠르게 낮춰 잡는다</li>
+<li>신용평가사 S&amp;P 글로벌 레이팅스의 앤드류 창은 GPU가 5년 이상 사용된다는 점은 입증됐지만 칩은 보수적으로 평가한다고 밝혔다</li>
+<li>담보 가치가 빠르게 낮아지는 것을 반영해 금융사는 대출 금액을 줄이거나 상환 기간을 단축하고 별도 보증을 요구한다</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>보험 및 유동화 등 금융 상품화 전망</h2><ul>
+<li>파이낸셜 타임스는 GPU 담보 대출 부도 시 대출 기관을 보호하는 보험 구조가 논의되고 있다고 보도했다</li>
+<li>보험은 GPU를 처분해도 회수하지 못하는 손실의 일부를 보전해 금융사의 위험을 줄이는 역할을 한다</li>
+<li>골드만삭스는 AI 인프라 금융 부채를 사모펀드나 채권 시장 투자자에게 배분하는 유동화 방안을 논의 중이다</li>
+<li>구체적인 GPU 담보 대출 유동화 상품은 아직 확정되지 않았으나 AI 데이터 센터 금융은 새로운 대규모 시장으로 발전할 전망이다</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>컴퓨트 파이낸싱</td><td>AI 인프라 구축에 필요한 자금을 금융권과 연결해 조달하는 금융 방식을 의미한다.</td></tr><tr><td>네오클라우드</td><td>GPU 연산과 AI 작업에 특화된 새로운 유형의 클라우드 업체로, 기존 클라우드와 달리 AI 연산에 집중한다.</td></tr><tr><td>잔존 가치</td><td>장비가 시간이 지난 뒤에도 남아 있는 가치를 말하며, GPU 대출 심사 시 미래 매각 가격 예측에 중요하다.</td></tr><tr><td>감가상각</td><td>시간이 지나면서 장비의 가치를 낮춰 계산하는 회계 처리로, GPU 대출 심사 시 3~4년 기준으로 적용된다.</td></tr><tr><td>MBS</td><td>주택 저당증권으로, 블랙록 CEO가 엔비디아의 AI 인프라 금융 구상을 비교하며 언급한 금융 상품이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/tra5T1OGGEs" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-10-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

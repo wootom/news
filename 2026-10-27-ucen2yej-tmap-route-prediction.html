@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="경로 계산 속도만으로는 부족하다. 관측·예측 오차와 우회 차량 집중이 티맵의 도착시간 신뢰를 좌우한다."><title>티맵의 경로 계산은 빨라졌지만, 예측·관측 오차와 우회 차량 집중이 도착시간 불신을 키운다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="티맵은 왜 멍청해졌을까? 65분 예상이 100분으로 바뀐 사례… 내비게이션이 길을 고르는 원리와 운전자가 확인할 네 가지"><meta name="youtube-source-channel" content="안될공학 - IT 테크 신기술"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학 - IT 테크 신기술</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-27 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>티맵의 경로 계산은 빨라졌지만, 예측·관측 오차와 우회 차량 집중이 도착시간 불신을 키운다</h1><p class="lead">경로 계산 속도만으로는 부족하다. 관측·예측 오차와 우회 차량 집중이 티맵의 도착시간 신뢰를 좌우한다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>모트라인의 2026년 9월 비교에서 복귀 주행은 카카오 내비 66분, 네이버지도 69분, 티맵 100분이 걸렸다.</li>
+<li>티맵은 시간뿐 아니라 거리·통행료·도로 특성에 가중치를 두며, 추천 기준이 운전자 기대와 다를 수 있다.</li>
+<li>GPS 기록으로 도로별 속도를 추정하지만 차로별 대기나 관측이 적은 구간의 최신 상황은 놓칠 수 있다.</li>
+<li>먼 도로의 미래 교통까지 예측하는 과정에서 오차가 누적되고, 우회 차량이 몰리면 안내 이후 도로 상황도 바뀐다.</li>
+<li>토르 엔진은 장거리 경로 탐색 성능을 높였지만, 입력되는 교통 정보와 예측이 틀리면 실제 도착시간도 어긋날 수 있다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>내비게이션은 도로를 연결된 그래프로 보고, 도로별 예상 비용을 더해 조건에 맞는 경로를 찾는다.</li>
+<li>추천 경로가 운전자에게 납득되지 않는 이유는 경로 평가 기준, 교통 관측, 도착 시점 예측이 서로 어긋날 수 있기 때문이다.</li>
+<li>경로 탐색 엔진의 계산 속도와 실제 도로에서의 도착시간 정확도는 별개의 성능이다.</li>
+<li>추천을 따라 이동하는 차량이 많아지면 교통 상황 자체가 달라질 수 있어, 경로 안내의 영향도 고려해야 한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>경로 점수에 반영되는 시간·거리·통행료</h2><ul>
+<li>티맵은 교차로나 도로 연결 지점을 점, 도로를 선으로 나타내고 각 도로의 통과 시간 등을 더해 경로를 비교한다.</li>
+<li>티맵의 2020년 공식 설명은 5.6km·22분 50초 경로와 14.7km·21분 45초 경로를 비교하며 거리 가중치를 설명했다.</li>
+<li>2025년 1월 보도 사례에서 추천 경로는 44분·38km·통행료 2,400원, 최소 시간 경로는 41분·35km·2,200원이었다.</li>
+<li>티맵은 차로 수와 연료 소모량 등도 고려한다고 설명했지만, 해당 사례에서 각 요소가 얼마나 유리했는지는 공개되지 않았다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>GPS 교통 관측과 차로별 대기 오차</h2><ul>
+<li>차량 GPS 좌표를 도로에 맞추고 구간 이동 시간과 거리를 계산해 도로별·시간대별 교통 정보를 만든다.</li>
+<li>같은 도로라도 직진 차로는 원활하고 좌회전 차로는 길게 대기할 수 있어 도로 전체 평균이 실제 대기를 가릴 수 있다.</li>
+<li>티맵은 2022년 기술 설명에서 GPS만으로 차로를 구분하기 어렵다고 설명했다.</li>
+<li>차량이 어느 방향에서 들어와 어디로 나가는지, 신호 주기와 앞 차량 수를 반영해야 회전 대기 시간을 더 잘 추정할 수 있다.</li>
+<li>티맵은 2026년 차세대 3D 차로 인식 내비게이션 시온을 공개했으며, 차로 인식과 대기 시간 예측은 구분되는 과제로 제시됐다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>미래 교통 예측과 토르 경로 탐색 엔진</h2><ul>
+<li>출발 시점의 교통만으로는 몇 시간 뒤 도착할 도로 상황을 알 수 없어, 티맵은 가까운 도로에 실시간 정보, 먼 도로에 미래 예측 정보를 더 활용한다고 설명했다.</li>
+<li>각 구간에 진입할 예상 시각에 맞춰 통행 시간을 적용하며, 앞 구간의 지연은 뒤 구간 진입 시각과 통행 시간에도 영향을 줄 수 있다.</li>
+<li>티맵은 2021년 A* 기반 엔진 <span class="up">개선</span>과 CCH 기반 토르를 소개했고, 숏컷 보조 연결로 중간 도로를 반복 탐색하는 계산을 줄였다.</li>
+<li>티맵 설명에 따르면 도로망 전처리는 보통 2주에 한 번, 실시간 교통 정보 등에 따른 비용 갱신은 보통 5분에 한 번 이뤄졌다.</li>
+<li>내부 실험에서 400km 이상 장거리 구간 탐색 성능이 약 100배 이상 <span class="up">개선</span>됐다고 밝혔지만, 이는 계산 성능 <span class="up">개선</span>이지 교통 예측 정확도 자체를 뜻하지 않는다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>재탐색이 만드는 우회와 경로 집중</h2><ul>
+<li>우회 안내의 몇 분 절감도 앞으로 걸릴 시간을 비교한 예측값이며, 우회로 관측이나 합류 대기 추정이 부족하면 이득이 사라질 수 있다.</li>
+<li>티맵은 2023년 실시간 경로 탐색을 끄는 방법을 안내했으며, 설정을 꺼도 경로를 이탈하면 안내한다고 설명했다.</li>
+<li>2024년 추석 충남 아산 농로에는 차량 천여 대가 몰렸다. 티맵 CTO는 주요 국도 주행 시간이 예측보다 다섯 배 늘어 이면도로 안내가 발생했다고 설명했다.</li>
+<li>2026년 네이처 커뮤니케이션스 연구는 피렌체·밀라노·로마의 GPS 기록과 지도 서비스 추천 경로를 활용해 시뮬레이션했다.</li>
+<li>모든 차량이 추천을 따르는 조건에서는 기준 조건보다 경로 다양성이 최대 약 14% 줄었고, 낮은 이용률에서 나타난 탄소 배출 <span class="dn">감소</span> 효과도 높은 이용률에서는 줄거나 사라지고 역전될 수 있었다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>운전자가 확인할 네 가지</h2><ul>
+<li>출발 전 도착 시간·통행료·큰 길 선호 등 우선 기준을 정하고, 추천 경로와 대안 경로의 시간·거리·요금을 함께 비교한다.</li>
+<li>초행길이나 명절에는 큰 길에서 빠져나오는 지점과 다시 합류하는 위치, 좁은 이면도로를 길게 지나는지 확인한다.</li>
+<li>갑작스러운 경로 변경이 부담스럽다면 실시간 재탐색 설정을 미리 확인하고, 주행 중에는 몇 분 절감보다 안전한 진입 가능성을 먼저 판단한다.</li>
+<li>카카오 내비는 2026년 9월 사고나 정체를 반영한 경로의 추천 이유와 정체 구간 CCTV 확인 기능을 안내했다고 밝혔다.</li>
+<li>중요한 이동에서는 다른 앱의 경로도 비교하고, 화면의 예상 시간뿐 아니라 실제로 어떤 도로를 안내하는지 살펴본다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>가중치</td><td>시간·거리·통행료·도로 특성 등 경로 조건마다 중요도를 달리해 추천 경로를 평가하는 값이다.</td></tr><tr><td>그래프</td><td>내비게이션이 교차로나 도로 연결 지점을 점, 그 사이 도로를 선으로 표현한 구조다.</td></tr><tr><td>CCH</td><td>도로 연결 구조를 미리 정리하고 교통 정보에 따른 통행 시간 갱신을 분리해 처리하는 토르의 기반 알고리즘이다.</td></tr><tr><td>숏컷</td><td>여러 도로를 거치는 이동을 탐색 중 하나의 보조 연결로 다루고, 실제 안내 때 원래 도로들로 풀어내는 연결이다.</td></tr><tr><td>시간 의존형 경로 탐색</td><td>각 도로에 진입할 것으로 예상되는 시각에 따라 달라지는 통행 시간을 적용해 경로를 계산하는 방식이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Otucjt3JLXE" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 - IT 테크 신기술 · 2026-10-27</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
