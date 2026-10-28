@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Kimi K3.1 Pro는 Opus 5.5 대비 절반의 비용으로 벤치마크 우위와 안정적인 개발 성능을 입증했다."><title>Kimi K3.1 Pro가 Claude Opus 5.5와 비교 시 벤치마크 우위와 비용 효율성을 입증했다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="I Tested China&#x27;s New Model vs Claude Opus 5.5 (Kimi K3.1)"><meta name="youtube-source-channel" content="Nick Saraev"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nick Saraev</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-29 · Nick Saraev</span><span class="chip">🎬 영상</span></div><h1>Kimi K3.1 Pro가 Claude Opus 5.5와 비교 시 벤치마크 우위와 비용 효율성을 입증했다</h1><p class="lead">Kimi K3.1 Pro는 Opus 5.5 대비 절반의 비용으로 벤치마크 우위와 안정적인 개발 성능을 입증했다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>Kimi K3.1 Pro는 Terminal Bench 4.0에서 65.7점으로 GPT-6(58.2)를 앞섰으며 SWE Marathon에서도 51.7점으로 Opus 5.5(46.7)를 상회했다.</li>
+<li>기계식 키보드 3D 시뮬레이션 테스트에서 Kimi는 조립 시간 29분 41초로 Opus 5.5(47분 2초)보다 빠르며 시각적 품질은 Opus가 우세했다.</li>
+<li>은하 충돌 시뮬레이션과 심해 잠수부 랜딩 페이지에서 Kimi는 순수 SVG/HTML 구현으로 Opus의 3D 효과 대비 성능 저하를 보였다.</li>
+<li>Kimi의 자체 플랫폼은 에이전트 군집(Swarm) 기능과 더 간결한 추론 과정을 제공하며, 토큰 비용은 Opus 5.5의 절반 수준인 입출력 2/10달러다.</li>
+<li>게임 개발 테스트에서 Kimi의 마인크래프트는 조작 오류가 있었으나 Opus 5.5의 &#x27;Beyond the Veil&#x27;은 캐릭터 이동 불가 결함으로 평가받았다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>Kimi K3.1 Pro는 서구 최상위 모델 대비 매우 경쟁력 있는 가격과 성능을 갖춘 중국산 AI 모델이다.</li>
+<li>벤치마크 수치만으로는 모델의 실제 실력을 판단할 수 없으므로 실제 시연 테스트가 필수적이다.</li>
+<li>Kimi는 장기적인 프로그래밍 작업과 에이전트 태스크에서 Claude Opus 5.5와 동등하거나 우월한 결과를 보인다.</li>
+<li>시각적 디자인과 3D 구현 품질에서는 여전히 Claude Opus 5.5가 더 현실적이고 세련된 결과를 제공한다.</li>
+<li>Kimi는 더 낮은 비용과 일관된 품질로 실질적인 비즈니스 및 개발 업무에 적합한 대안으로 평가된다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>벤치마크 성능 비교 분석</h2><ul>
+<li>Terminal Bench 4.0에서 Kimi K3.1 Pro는 65.7점을 기록해 GPT-6(58.2점)보다 높은 점수를 획득했다.</li>
+<li>SWE Marathon 벤치마크에서 Kimi는 51.7점으로 Opus 5.5(46.7점)를 약 5포인트 앞서 장기 프로젝트 처리 능력을 입증했다.</li>
+<li>Humanity&#x27;s Last Exam에서 Kimi는 67.7점으로 70개 모델 중 최고 기록을 세웠다.</li>
+<li>Kimi Bench 3.0 롱 테스트에서 Kimi는 61.2점으로 Opus 5.5(58.5점)를 능가하며 장기 에이전트 작업에서 우위를 점했다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>3D 디자인 및 시뮬레이션 구현</h2><ul>
+<li>기계식 키보드 3D 시뮬레이션에서 Kimi는 29분 41초, Opus 5.5는 47분 2초의 조립 시간을 기록했다.</li>
+<li>Kimi의 키보드 모델은 색상 변경 및 분해 기능이 정상 작동했으나 Opus는 초기 조립 오류가 발생했다.</li>
+<li>은하 충돌 시뮬레이션에서 Kimi는 20만 개 이상의 별을 처리했으나 시각적 정확도가 Opus보다 낮게 평가되었다.</li>
+<li>Opus 5.5의 키보드 모델은 더 높은 시각적 정의와 정교한 기하학적 키 디자인을 보여주어 품질 면에서 우세했다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>웹 개발 및 인터랙티브 UX 테스트</h2><ul>
+<li>심해 잠수부 랜딩 페이지에서 Kimi는 이미지 생성기 없이 100% SVG와 HTML만으로 사이트를 구축했다.</li>
+<li>Opus 5.5는 3D 효과를 활용해 실제 수영하는 상어와 사람을 구현했으나 페이지 로딩 속도가 더 느렸다.</li>
+<li>Kestrel Tower 붕괴 시뮬레이션에서 Kimi는 유리 파편 물리 효과를 구현했으나 도시 배경이 비어 있어 현실감이 떨어졌다.</li>
+<li>Opus 5.5의 타워 시뮬레이션은 건물이 실제 도시 환경에 위치해 있어 공간적 맥락과 시각적 완성도가 높았다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>게임 개발 및 플랫폼 기능 비교</h2><ul>
+<li>Kimi가 생성한 마인크래프트 게임은 높은 그래픽 품질을 보였으나 위아래 방향 조작이 불가능한 결함이 있었다.</li>
+<li>Opus 5.5의 &#x27;Beyond the Veil&#x27; 게임은 시각적으로 매력적이었으나 캐릭터가 앞으로 이동하지 못하는 치명적 오류가 있었다.</li>
+<li>Kimi.ai 플랫폼은 귀여운 캐릭터 인터페이스와 함께 에이전트 군집(Swarm) 기능을 기본으로 제공한다.</li>
+<li>Kimi의 추론 과정은 서구 모델보다 훨씬 간결하고 알고리즘적으로 효율적이며 토큰 소모를 최소화한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>비용 효율성 및 최종 평가</h2><ul>
+<li>Kimi K3.1 Pro의 API 비용은 입력 토큰당 2달러, 출력 토큰당 10달러로 Opus 5.5의 절반 수준이다.</li>
+<li>Kimi는 Opus보다 품질이 약간 낮을 수 있으나 일관성 있는 결과와 관대한 요금제 제한을 제공한다.</li>
+<li>Opus 5.5는 두 배의 비용을 지불할 만큼 최종 결과물에 결정적인 품질 향상을 제공하는지 의문이 제기된다.</li>
+<li>Kimi K3.1 Pro는 심각한 경쟁자로 자리매김했으며 실제 비즈니스 및 개발 업무에 활용 가치가 있다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Kimi K3.1 Pro</td><td>중국 Moonshot AI가 개발한 최신 프론트라인 AI 모델로, 경쟁력 있는 가격과 높은 벤치마크 점수를 특징으로 한다.</td></tr><tr><td>Claude Opus 5.5</td><td>Anthropic의 최상위 AI 모델로, 시각적 구현 품질과 3D 디자인에서 Kimi보다 우월한 성능을 보였으나 비용이 더 비싸다.</td></tr><tr><td>SWE Marathon</td><td>장기적인 소프트웨어 엔지니어링 작업을 수행하는 AI 모델의 능력을 평가하는 벤치마크로, 인터넷 접근 없이 수 시간 작업한다.</td></tr><tr><td>Terminal Bench 4.0</td><td>컴퓨터 프로그래밍 및 터미널 기반 작업 수행 능력을 측정하는 현대적인 AI 성능 평가 기준이다.</td></tr><tr><td>Agent Swarm</td><td>Kimi 플랫폼의 내장 기능으로, 여러 자율 에이전트를 동시에 배치해 복잡한 작업을 병렬 처리하는 방식이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/OBzWl3Bw1JY" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nick Saraev · 2026-10-29</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
