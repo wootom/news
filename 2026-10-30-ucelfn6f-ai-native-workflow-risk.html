@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 고숙련자 업무 집중 리스크와 AI 네이티브 전환 전략을 토큰 ROI 관점에서 분석"><title>AI 고숙련자에게 업무가 집중되는 구조적 리스크와 AI 네이티브 전환 전략</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="AI 잘 쓰는 직원에게 일 몰아주면 생기는 일  (김지현 테크라이터)"><meta name="youtube-source-channel" content="티타임즈TV"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-30 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>AI 고숙련자에게 업무가 집중되는 구조적 리스크와 AI 네이티브 전환 전략</h1><p class="lead">AI 고숙련자 업무 집중 리스크와 AI 네이티브 전환 전략을 토큰 ROI 관점에서 분석</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">분석 범위: 원문 전체 21,281자 · 4개 구간. 원문 대조한 핵심 인용 22개를 바탕으로 요약했습니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>중국 게임 개발사 사례로 퇴사자 PC에 설치형 에이전트를 활용해 업무를 유지하는 방식이 실제로 존재함을 확인</li>
+<li>AI 도입 시 토큰 비용과 ROI 관점에서 중요 업무에 자원을 배분하는 전략적 접근이 필요함을 강조</li>
+<li>AX(업무 자동화)를 넘어 회의 중 실시간 팩트 교정 등 업무 프로세스 자체를 재설계하는 AI 네이티브 단계 제시</li>
+<li>AI 고숙련자에게 업무가 몰리면서 발생하는 번아웃과 조직 내 지식 단절 리스크를 지적하고 멘토링 필요성 언급</li>
+<li>AI 의존도를 주니어 30%, 시니어 70~80%로 조절하여 비판적 사고력과 창발성을 유지해야 한다고 조언</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>AI 활용 능력 격차가 조직 내 업무 분배와 성과에 불균형을 초래하는 현상을 분석</li>
+<li>단순 자동화(AI)를 넘어 업무 본질을 바꾸는 AI 네이티브 전환의 필요성 강조</li>
+<li>개인 및 기업 모두 AI 도입 시 토큰 경제성과 ROI를 고려한 전략 수립이 필수</li>
+<li>AI 고숙련자 집중 현상 방지를 위한 조직적 개입과 교육 체계 구축 제안</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>중국 게임사 사례와 설치형 에이전트</h2><ul>
+<li>중국 게임 개발사들이 퇴사한 직원의 컴퓨터에 오픈콜로나 헤르메스 등 설치형 에이전트를 설치해 업무를 유지</li>
+<li>인력 <span class="dn">감소</span>에도 불구하고 AI 에이전트를 통해 기존 업무 흐름을 지속하는 실제 사례로 제시</li>
+<li>이러한 방식이 환상이 아닌 현재 진행형인 기술적 현실임을 강조</li>
+<li>설치형 에이전트 활용 시 지적 재산권과 데이터 보안에 대한 새로운 문제의식 발생</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>토큰 이코노미와 ROI 관점의 AI 전략</h2><ul>
+<li>AI 인프라 생산자와 소비자 관점의 차이로 토큰 생산 효율과 비용 절감이 핵심 과제</li>
+<li>월 200만~500만 원대 AI 비용 발생 시 중요 업무에 토큰을 집중해야 ROI가 확보됨</li>
+<li>4년 차 AI 시대에는 이름표(태깅)를 통한 측정과 관리가 가능한 토크노믹스 체계 필요</li>
+<li>무분별한 토큰 사용은 ROI를 떨어뜨리므로 업무 중요도에 따른 자원 배분 전략 수립</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>AX와 AI 네이티브의 본질적 차이</h2><ul>
+<li>AX는 기존 업무 생산성 향상을 위한 도구 도입으로 문서 작성 보조 등 수준에 머묾</li>
+<li>AI 네이티브는 회의 중 실시간으로 잘못된 팩트와 숫자를 교정하는 등 업무 뼈대 자체를 재설계</li>
+<li>기기 내 AI 구동 여부에 따라 200만 원 일반 노트북과 700~800만 원 전용 AI PC 선택 고민 필요</li>
+<li>에이전트 이코노미 확산 시 화면 기반 광고 모델이 사라지고 새로운 수익 구조가 등장</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>AI 고숙련자 집중 리스크와 조직 관리</h2><ul>
+<li>AI를 잘 쓰는 직원에게 업무가 10배 이상 몰리며 연봉 대비 과부하와 번아웃 발생</li>
+<li>고숙련자 이탈 시 대체 인력이 없어 조직 지속가능성이 위협받는 구조적 취약점 노출</li>
+<li>중견·신입 등 AI 고숙련자에게 후배를 배치해 지식을 전수하고 팀워크를 형성해야 함</li>
+<li>승자독식 구조에서 엔트로픽, 메타 등 주요 플레이어들이 데이터 센터 투자로 생존 경쟁</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>적정 의존도와 인간 창발성 보존</h2><ul>
+<li>AI에 검색·분석·작성을 맡기다 보면 생각까지 외주화하는 위험성을 경계해야 함</li>
+<li>주니어는 30%, 시니어는 70~80% 수준으로 AI 의존도를 제한하여 비판적 사고 유지</li>
+<li>오프라인 대면 회의에서 얻는 인사이트와 창발성은 AI로 대체 불가능하므로 존중</li>
+<li>AI 없이도 일할 수 있는 역량을 병행 훈련하여 기술 변화에 대한 회복탄력성 확보</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>설치형 에이전트</td><td>클라우드가 아닌 사용자 기기에 직접 설치되어 로컬 데이터와 자원을 활용해 업무를 수행하는 AI 프로그램</td></tr><tr><td>토큰 이코노미</td><td>AI 모델 사용에 발생하는 토큰 비용과 생산 효율을 경제적으로 관리하고 측정하는 체계</td></tr><tr><td>AI 네이티브</td><td>단순 자동화(AI)를 넘어 업무 프로세스와 조직 구조 자체를 AI 중심으로 재설계하는 단계</td></tr><tr><td>창발성</td><td>사람들이 오프라인에서 직접 만나 대화하며 예상치 못한 새로운 인사이트를 얻는 능력</td></tr><tr><td>에이전트 이코노미</td><td>AI 에이전트가 대신 검색하고 실행하면서 기존 광고 기반 수익 모델이 변형되는 경제 구조</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/hEDTrwiTCx0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-10-30</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
