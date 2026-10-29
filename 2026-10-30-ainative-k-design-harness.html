@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="K-디자인 하네스, PRD 기반 30분 내 UI 생성과 모델별 최적화로 K-스타일 앱 완성"><title>K-디자인 하네스, PRD 기반 UI 생성과 모델별 최적화로 30분 내 앱 디자인 완성</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="K-디자인 하네스를 소개합니다"><meta name="youtube-source-channel" content="바이브마피아 | AI Native 엔지니어"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>바이브마피아 | AI Native 엔지니어</span><span class="ey">YOUTUBE SUMMARIES · 2026-10-30 · 바이브마피아 | AI Native 엔지니어</span><span class="chip">🎬 영상</span></div><h1>K-디자인 하네스, PRD 기반 UI 생성과 모델별 최적화로 30분 내 앱 디자인 완성</h1><p class="lead">K-디자인 하네스, PRD 기반 30분 내 UI 생성과 모델별 최적화로 K-스타일 앱 완성</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">분석 범위: 원문 전체 69,655자 · 12개 구간. 원문 대조한 핵심 인용 16개를 바탕으로 요약했습니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>K-디자인 하네스는 오픈소스 디자인 내핵으로, PRD 명세 기반의 K-스타일 UI/UX를 자동 생성하는 도구다.</li>
+<li>하네스 실행 시간은 약 30분 미만이며, &#x27;Go&#x27;와 &#x27;Max&#x27; 두 단계로 서비스 디자인을 빠르게 마무리한다.</li>
+<li>색상 토큰은 설렘 중심의 웜톤과 믿음 중심의 쿨톤으로 분류되며, 도메인 스토리텔링은 PRD 작성 전 단계로 운영된다.</li>
+<li>AI 디자인은 HTML 기반 에이전트로 Figma MCP보다 수정이 빠르고, 사진 탐색은 하이쿠, 최종 선택은 쏘넷으로 모델별 최적화된다.</li>
+<li>K-스타일 앱은 실리콘밸리 미니멀리즘과 달리 핵심 기능 직관성과 한눈에 보이는 레이아웃에 집중한다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>K-디자인 하네스는 오픈소스 디자인 생태계 내 K-스타일 UI/UX를 구현하는 핵심 도구로 소개된다.</li>
+<li>PRD 원문의 디테일한 명세를 기반으로 JSON 스펙과 사용자 흐름을 자동 생성하는 워크플로우를 제시한다.</li>
+<li>하네스 실행 시간은 30분 미만으로, 서비스 디자인의 빠른 완성을 목표로 하는 &#x27;Go&#x27; 단계와 심화 단계인 &#x27;Max&#x27;로 구성된다.</li>
+<li>AI 디자인은 HTML 기반 에이전트 방식이 Figma MCP보다 수정이 빠르고 효율적이라고 평가된다.</li>
+<li>K-스타일 앱은 실리콘밸리 미니멀리즘과 달리 핵심 기능의 직관적 도달과 시각적 명확성을 우선시한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>K-스타일 UI/UX 원칙과 색상 체계</h2><ul>
+<li>K-스타일 UI/UX는 &#x27;Go&#x27;와 &#x27;Max&#x27; 두 가지 키워드로, 서비스 디자인의 빠른 마무리와 심화 작업을 구분한다.</li>
+<li>색상 토큰은 제품 핵심 가치에 따라 설렘 중심의 웜톤과 믿음 중심의 쿨톤으로 명확히 분류된다.</li>
+<li>금융·의료 등 신뢰가 중요한 도메인은 쿨톤, 축하·결혼 선물 등 설렘이 핵심인 도메인은 웜톤을 적용한다.</li>
+<li>도메인 스토리텔링은 하네스 실행 전 단계로, PRD 작성 이전에 수행되는 과정으로 정의된다.</li>
+<li>K-스타일 앱은 실리콘밸리 미니멀리즘(Clubhouse 등)과 달리 기능 중심의 직관적 레이아웃을 지향한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>PRD 기반 자동화 워크플로우와 실행 시간</h2><ul>
+<li>하네스는 PRD 원문의 디테일한 명세를 입력받아 JSON 스펙과 사용자 흐름을 자동 생성한다.</li>
+<li>실제 실행 시간은 약 30분 미만으로, 10.7.1 버전 기준 빠른 디자인 생성이 가능하다.</li>
+<li>PRD 명세가 디테일할수록 하네스가 생성하는 스펙의 정확도와 완성도가 높아진다.</li>
+<li>워크플로우는 서비스 디자인의 빠른 마무리(Go)와 심화(Max) 단계로 나뉘어 운영된다.</li>
+<li>AI 디자인 에이전트는 HTML 기반이라 Figma MCP보다 수정이 빠르고 오류 해결이 용이하다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>모델별 최적화와 사진 처리 전략</h2><ul>
+<li>사진 탐색 작업은 빠른 모델인 하이쿠(Haiku)가 담당하고, 최종 선택은 쏘넷(Sonnet)이 수행한다.</li>
+<li>모델별 역할 분담을 통해 사진 처리 테스트는 10분 만에 완료되며, 스크립트 실행은 1초 내 끝난다.</li>
+<li>파이썬 스크립트를 다수 구축해 이미지 처리와 디자인 생성 과정을 자동화한다.</li>
+<li>AI 디자인은 HTML 기반 에이전트로, Figma MCP보다 수정이 빠르고 효율적이라는 평가다.</li>
+<li>모델별 최적화는 디자인 생성 속도와 품질을 동시에 확보하는 핵심 전략으로 제시된다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>K-스타일 vs 실리콘밸리 미니멀리즘 비교</h2><ul>
+<li>실리콘밸리 스타일(Clubhouse 등)은 미니멀 디자인을 매우 아름답게 표현하는 특징이 있다.</li>
+<li>K-스타일 앱은 미니멀리즘과 달리 핵심 기능에 직관적으로 도달할 수 있는 레이아웃을 우선시한다.</li>
+<li>K-스타일은 헷갈리는 포인트를 최소화하고, 한눈에 보이도록 만드는 데 집중한다.</li>
+<li>K-스타일 앱은 실리콘밸리 미니멀리즘이 제공하지 않는 기능 중심의 직관성을 강조한다.</li>
+<li>두 스타일은 디자인 철학이 달라, 제품 성격과 사용자 경험 목표에 따라 선택이 달라진다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>로컬 LLM과 오프라인 운영 전망</h2><ul>
+<li>하네스 시대가 지나가고 로컬 LLM이 중요한 관심사로 부상하고 있다.</li>
+<li>오프라인 이벤트로 로컬 LLM 기반 디자인 생성을 수행할 수 있을 것으로 기대된다.</li>
+<li>로컬 LLM을 위해 Mac Studio와 GPU를 구매하는 계획이 언급된다.</li>
+<li>그래픽 카드는 100만 원대 수준으로, 로컬 LLM 구동에 적합한 하드웨어로 평가된다.</li>
+<li>로컬 LLM은 데이터 프라이버시와 오프라인 운영 측면에서 하네스의 미래 방향성으로 제시된다.</li>
+</ul></section><section class="card s12" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>K-디자인 하네스</td><td>오픈소스 디자인 내핵으로, PRD 명세 기반의 K-스타일 UI/UX를 자동 생성하는 도구</td></tr><tr><td>Go / Max</td><td>K-스타일 UI/UX의 두 단계로, Go는 서비스 디자인의 빠른 마무리, Max는 심화 작업을 의미</td></tr><tr><td>PRD</td><td>Product Requirements Document의 약자로, 하네스가 입력받아 JSON 스펙과 사용자 흐름을 생성하는 원문 명세</td></tr><tr><td>도메인 스토리텔링</td><td>하네스 실행 전 단계로, PRD 작성 이전에 수행되는 제품 도메인 이해 과정</td></tr><tr><td>하이쿠 / 쏘넷</td><td>사진 탐색은 빠른 모델인 하이쿠, 최종 선택은 쏘넷이 담당하는 모델별 최적화 전략</td></tr><tr><td>로컬 LLM</td><td>하네스 시대가 지나고 부상하는 관심사로, 오프라인 이벤트와 Mac Studio 기반 구동이 전망</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/KVwDNVzpcwQ" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>바이브마피아 | AI Native 엔지니어 · 2026-10-30</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
