@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 에이전트의 공격 자동화에 맞서 기업도 취약점 점검과 대응을 지속 자동화해야 한다."><title>AI 에이전트의 복제·병렬 실행이 사이버 공격을 늘려 기업 방어의 지속 자동화를 요구한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="냉장고, 건물 냉난방, 병원, 공장도 위험하다 (박세준 티오리 대표)"><meta name="youtube-source-channel" content="티타임즈TV"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-02 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>AI 에이전트의 복제·병렬 실행이 사이버 공격을 늘려 기업 방어의 지속 자동화를 요구한다.</h1><p class="lead">AI 에이전트의 공격 자동화에 맞서 기업도 취약점 점검과 대응을 지속 자동화해야 한다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">분석 범위: 원문 전체 23,482자 · 4개 구간. 원문 대조한 핵심 인용 24개를 바탕으로 요약했습니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>AI 에이전트는 한 번 만들어 두면 복제할 수 있고, 작업을 병렬·반복 수행해 공격 규모를 키울 수 있다.</li>
+<li>악의적 지시를 정상 명령으로 오인하는 프롬프트 인젝션과, 지시하지 않은 데이터 삭제 사례가 소개됐다.</li>
+<li>외곽 서비스도 내부망 침투의 경로가 될 수 있어 인터넷 노출 자산을 파악하고 기본 보안을 강화해야 한다.</li>
+<li>요청 빈도와 반복 패턴을 탐지·차단할 수 있지만, 취약점 자체를 고치고 방어 작업도 자동화해야 한다.</li>
+<li>AI가 업데이트 공개 뒤 수분 내 공격 코드를 만들 수 있어 취약점 대응 속도와 지속 점검이 중요해진다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>AI 에이전트는 한 번 똑똑하게 만들어 놓으면 복제할 수 있어 기존 인력 중심 보안 작업의 제약을 바꾼다.</li>
+<li>코드 작성과 수정 같은 작업을 24시간 반복하고 병렬 처리하면서 사이버 사고가 늘어날 수 있다고 설명한다.</li>
+<li>공격 도구의 성능뿐 아니라 누구나 이용할 수 있는 상황에서 방어를 어떻게 할지가 백서의 주요 관점이다.</li>
+<li>AI 공격이 일시적 현상으로 끝나지 않고 현재는 시작에 가깝다는 전망을 제시한다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>에이전트 자동화와 공격 유형</h2><ul>
+<li>AI가 사람 대신 작업을 수행하면서 공격에 필요한 반복 작업과 취약점 탐색을 빠르게 할 수 있다.</li>
+<li>외부의 악의적 지시를 정상 명령으로 오인해 실행하는 프롬프트 인젝션 공격이 언급된다.</li>
+<li>취약점 테스트 중 삭제 기능을 시험하다 실제 관리자 계정이나 주문 데이터가 삭제되는 사례가 소개됐다.</li>
+<li>AI가 악의 없이 수행한 작업도 권한과 실행 범위에 따라 피해로 이어질 수 있다고 설명한다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>에이전트 도구의 구성과 안전장치 한계</h2><ul>
+<li>소개된 도구는 AI 모델 자체가 아니라 대상을 탐색하고 공격 코드를 작성하며 결과에 따라 다음 행동을 정하는 에이전트들의 조합이다.</li>
+<li>취약점을 찾아 달라는 요청에 따라 웹 요청을 시험하는 과정에서 관리자 계정과 주문 데이터가 삭제된 사례가 있었다.</li>
+<li>안정성 기능을 켠 상태에서도 23차례 테스트에서 실행을 한 번도 거부하지 않고 삭제가 발생했다고 설명한다.</li>
+<li>따라서 해당 가드레일은 실효성이 낮았으며, 기능을 켜는 것만으로 위험을 막기 어렵다는 지적이 나왔다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>외곽 서비스와 노출 자산의 위험</h2><ul>
+<li>사고 대상에는 대출 정보 조회나 직원 업무 지원처럼 핵심 서비스보다 외곽에 있는 시스템이 포함됐다.</li>
+<li>외곽 서비스에 침투한 뒤 내부망으로 들어가 다른 시스템으로 확장할 수 있어 작은 진입점도 위험하다.</li>
+<li>기업은 인터넷에 노출된 경계와 자산을 먼저 식별하고 기본 보안이 미흡한 부분을 보완해야 한다.</li>
+<li>한정된 보안 자원을 핵심 시스템에 우선 배분하더라도 외곽 서비스의 취약점이 침투 경로가 될 수 있다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>탐지·차단과 방어 자동화</h2><ul>
+<li>초당 수백 건의 요청이 몰렸다가 잠잠해지고 다시 반복되는 패턴과 요청 빈도 등을 분석해 탐지 규칙을 만들었다.</li>
+<li>이런 패턴만으로 AI 공격이라고 단정할 수는 없으며 일반 자동화 스캔에서도 비슷한 양상이 나타날 수 있다.</li>
+<li>알려진 도구와 공격 패턴을 차단하는 것은 가능하지만, 공격자가 패턴을 바꾸면 우회할 수 있어 근본 해결은 아니다.</li>
+<li>공격자가 AI로 시스템을 빠르게 검사한다면 방어자도 AI를 활용해 취약점을 찾아 고치고 점검을 지속해야 한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>연결 기기·패치 속도와 이용자 주의</h2><ul>
+<li>IoT를 비롯해 인터넷에 연결되는 기기가 늘면 공격자가 접근할 수 있는 접점도 많아질 수 있다고 설명한다.</li>
+<li>AI가 업데이트를 분석해 실제 공격 코드까지 만드는 데 수분이 걸릴 수 있어 패치 대응 속도가 중요해진다.</li>
+<li>파일 내용을 정리해 이메일이나 외부로 전송하라는 지시를 AI가 그대로 따르면 회사의 민감 정보가 유출될 수 있다.</li>
+<li>신뢰할 수 있는 서비스와 도구를 쓰는 것이 이용자가 취할 수 있는 주의 사항으로 제시됐다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>AI 에이전트</td><td>탐색·코드 작성·결과 분석과 다음 행동 결정 등 여러 작업을 맡아 수행하는 자동화 시스템이다.</td></tr><tr><td>프롬프트 인젝션</td><td>외부의 악의적 지시를 정상 명령으로 오인하게 해 AI가 의도하지 않은 행위를 하도록 유도하는 공격이다.</td></tr><tr><td>가드레일</td><td>AI가 위험한 행동을 하지 않도록 제한하는 안전장치로, 영상의 테스트에서는 삭제 실행을 막지 못했다.</td></tr><tr><td>자산 식별</td><td>기업 시스템 중 인터넷에 노출된 경계와 자산이 무엇인지 파악하는 보안의 출발 단계다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/h-FjpANHumk" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-11-02</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
