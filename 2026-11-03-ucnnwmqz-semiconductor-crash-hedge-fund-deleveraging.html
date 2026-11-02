@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="인텔 쇼크와 해지펀드 디레버리징이 겹친 반도체 폭락, 펀더멘탈은 견조하다"><title>인텔 실적 쇼크와 해지펀드 디레버리징이 촉발한 반도체 폭락의 구조적 원인 분석</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="반도체 수혜주 전면 재점검! 우리가 놓친 위험은? / 금요일 반도체 폭락의 진짜 원인과 반도체 주식 향후 전망 / 시킹알파 알파픽 탑픽 5종목 공개"><meta name="youtube-source-channel" content="미국주식으로 은퇴하기 - 미주은"></head><body class="cat-econ"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>미국주식으로 은퇴하기 - 미주은</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-03 · 미국주식으로 은퇴하기 - 미주은</span><span class="chip">🎬 영상</span></div><h1>인텔 실적 쇼크와 해지펀드 디레버리징이 촉발한 반도체 폭락의 구조적 원인 분석</h1><p class="lead">인텔 쇼크와 해지펀드 디레버리징이 겹친 반도체 폭락, 펀더멘탈은 견조하다</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">분석 범위: 원문 전체 19,488자 · 4개 구간. 원문 대조한 핵심 인용 23개를 바탕으로 요약했습니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2><span class="seq">01</span>핵심 개요</h2><ul>
+<li>10월 30일 필라델피아 반도체 지수는 7% 폭락하며 6월 5일 이후 최대 낙폭을 기록했고, 나스닥 100 시가총액 1조 달러가 증발했다.</li>
+<li>인텔의 부진한 가이던스가 매도 트리거가 되었으나, 낙폭의 주된 원인은 해지펀드의 기계적 디레버리징으로 분석된다.</li>
+<li>모건 스탠디 데이터에 따르면 글로벌 해지펀드는 고점 대비 투자 규모를 약 7.8% 축소하며 2016년 이후 최대 축소 폭을 보였다.</li>
+<li>알파픽스 포트폴리오 종목 22개 중 19개가 시장 예상치를 상회하는 86% 서프라이즈 비율을 기록하며 펀더멘탈은 견조하다.</li>
+<li>선행 주가수익비율(PER)이 18.5로 2022년 10월 약세장 바닥 수준까지 <span class="dn">하락</span>하며 밸류에이션 매력이 부각되고 있다.</li>
+</ul></section><section class="card s6" id="s2"><h2><span class="seq">02</span>핵심 주장 / 논점 구조</h2><ul>
+<li>이번 반도체 폭락은 AI 투자 논리의 붕괴가 아니라, 과도하게 집중된 해지펀드 포지션의 기계적 해소 과정이다.</li>
+<li>실적 실망은 매도 촉매제였으나, 낙폭의 규모를 결정짓는 핵심 변수는 레버리지 축소(디레버리징)였다.</li>
+<li>역사적 데이터상 해지펀드 디레버리징이 6%를 넘을 경우 S&amp;P 500은 단기 바닥을 형성한 뒤 <span class="up">상승</span> 전환했다.</li>
+<li>현재 시장은 사이클의 종료가 아닌, 강제 매도 주체가 소진된 후 바닥을 형성하는 단계로 해석된다.</li>
+</ul></section><section class="card s6" id="s3"><h2><span class="seq">03</span>10월 30일 시장 급락의 구체적 양상</h2><ul>
+<li>필라델피아 반도체 지수는 7% 이상 <span class="dn">하락</span>하며 2024년 6월 5일 이후 가장 큰 하루 낙폭을 기록했다.</li>
+<li>나스닥 100 지수에서 하루 만에 약 1조 달러 규모의 시가총액이 사라지는 현상이 발생했다.</li>
+<li>인텔은 다음 분기 전망이 기대에 미치지 못하며 하루 만에 약 30% 폭락하는 충격적인 <span class="dn">하락</span>세를 보였다.</li>
+<li>AMD는 10.9%, 엔비디아는 4.2% <span class="dn">하락</span>했으며, 샌디스크는 13.47% 급락하며 반도체 전반으로 매도가 확산됐다.</li>
+</ul></section><section class="card s6" id="s4"><h2><span class="seq">04</span>해지펀드 디레버리징과 기계적 매도 메커니즘</h2><ul>
+<li>모건 스탠디에 따르면 글로벌 해지펀드는 최근 고점 대비 총투자 규모를 약 7.8% 줄였다.</li>
+<li>이 축소 폭은 2016년 이후 가장 큰 수준으로, 빌린 돈(레버리지)을 줄여야 하는 상황이 발생했다.</li>
+<li>AI 인프라에 확신이 있는 펀드라도 다른 곳에서 손실이 나면 AI 주식까지 기계적으로 매도해야 했다.</li>
+<li>강제로 팔아야 하는 투자자들이 매도를 완료하면 더 이상 가격을 끌어내릴 주체가 사라지는 구조다.</li>
+</ul></section><section class="card s6" id="s5"><h2><span class="seq">05</span>알파픽스 포트폴리오 펀더멘탈 점검</h2><ul>
+<li>알파픽스 포트폴리오를 운영하는 스티븐 크래스는 35년 경력의 퀀트 알고리즘 전문가이다.</li>
+<li>10월 1일 이후 실적을 발표한 22개 종목 중 19개가 시장 예상치를 상회해 86%의 서프라이즈 비율을 기록했다.</li>
+<li>중간 선거가 있던 해 이후 1년간 S&amp;P 500은 76년간 단 한 번도 마이너스 수익을 기록한 적이 없다.</li>
+<li>중간 선거 해의 S&amp;P 500 평균 <span class="up">상승</span>률은 15%를 넘어 펀더멘탈 기반의 <span class="up">상승</span>세가 유지될 것으로 전망된다.</li>
+</ul></section><section class="card s6" id="s6"><h2><span class="seq">06</span>주요 반도체 종목 밸류에이션 분석</h2><ul>
+<li>샌디스크의 포워드 PER은 5.07배까지 <span class="dn">하락</span>했으나, 매출 272% 성장과 EPS 357% 성장 기대치가 뒷받침된다.</li>
+<li>AMD의 PER은 66배로 5년 평균 40배보다 높지만, PG(주가성장비율) 1.01은 5년 평균 1.09보다 낮다.</li>
+<li>엔비디아의 PG는 0.44로 성장률을 대입했을 때 밸류에이션이 과거 대비 크게 낮아진 상태이다.</li>
+<li>선행 주가수익비율(PER) 18.5는 2022년 10월 약세장 바닥 당시의 밸류에이션 수준과 일치한다.</li>
+</ul></section><section class="card s6" id="s7"><h2><span class="seq">07</span>향후 전망 및 투자 시사점</h2><ul>
+<li>2016년 이후 해지펀드 디레버리징이 6%를 넘었던 6번의 사례에서 S&amp;P 500은 모두 1~2주 내 바닥을 찍었다.</li>
+<li>바닥 형성 후 1개월, 3개월, 6개월 뒤 모두 더 높은 가격대에서 거래되는 패턴이 반복되었다.</li>
+<li>실적 서프라이즈 비율이 높고 밸류에이션이 역사적 저점에 근접한 만큼 펀더멘탈은 여전히 견조하다.</li>
+<li>단기적 변동성에도 불구하고 펀더멘탈에 기초한 주가 <span class="up">상승</span>세가 재개될 가능성이 높다고 분석된다.</li>
+</ul></section><section class="card s6" id="s8"><h2><span class="seq">08</span>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>디레버리징 (Deleveraging)</td><td>해지펀드 등 레버리지 투자자가 빌린 돈을 줄이고 투자 규모를 축소하는 과정으로, 기계적 매도 물량을 유발한다.</td></tr><tr><td>알파픽스 (Alpha Picks)</td><td>시킹알파에서 퀀트 알고리즘을 기반으로 선별된 펀더멘탈이 특출한 종목으로 구성된 포트폴리오이다.</td></tr><tr><td>PG (Price/Growth)</td><td>주가를 성장률로 나눈 비율로, PER보다 성장성을 반영하여 밸류에이션을 평가하는 지표이다.</td></tr><tr><td>선행 주가수익비율 (Forward PER)</td><td>향후 1년 동안 기대되는 순이익 대비 시가총액 배수로, 낮을수록 이익 대비 주가가 싸다는 것을 의미한다.</td></tr><tr><td>마켓 캐피테이션 (Market Capitulation)</td><td>투자자들이 공포에 질려 주식을 대량 매도(패닉셀)하여 주가가 급락하는 현상을 의미한다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/T2LGIfG5aIo" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>미국주식으로 은퇴하기 - 미주은 · 2026-11-03</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
