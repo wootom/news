@@ -128,28 +128,28 @@ mark{background:#FFF2A8;color:inherit;border-radius:3px;padding:0 .08em;
       <div id="marketSnap" data-mkt-up="#C0392B" data-mkt-down="#1D5FA8" data-mkt-muted="#9B958A" style="background:#F4F1EA;border:1px solid rgba(28,25,18,.10);border-radius:13px;padding:12px 13px 4px">
   <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(28,25,18,.10)">
     <span style="font-size:10px;font-weight:800;letter-spacing:.12em;color:#96650A">MARKET SNAPSHOT</span>
-    <span data-mkt-stamp style="font-size:9.5px;color:#9B958A;font-weight:600;letter-spacing:.02em">장중</span>
+    <span data-mkt-stamp style="font-size:9.5px;color:#9B958A;font-weight:600;letter-spacing:.02em">지표별 시세 시각</span>
   </div>
   <div style="padding-top:3px">
     <div data-mkt-row data-mkt-label="코스피" style="padding:7px 0;border-bottom:1px solid rgba(28,25,18,.10)">
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#57524A">코스피</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">5,715.68</span>
-          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-2.45%</span>
+          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">5,556.41</span>
+          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-1.64%</span>
         </span>
       </div>
-      <div data-mkt-asof style="display:none"></div>
+      <div data-mkt-asof style="font-size:9px;color:#9B958A;font-weight:600;letter-spacing:.01em;margin-top:1px">11.04 11:01 장중</div>
     </div>
     <div data-mkt-row data-mkt-label="코스닥" style="padding:7px 0;border-bottom:1px solid rgba(28,25,18,.10)">
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#57524A">코스닥</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">704.04</span>
-          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-4.13%</span>
+          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">693.40</span>
+          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-1.56%</span>
         </span>
       </div>
-      <div data-mkt-asof style="display:none"></div>
+      <div data-mkt-asof style="font-size:9px;color:#9B958A;font-weight:600;letter-spacing:.01em;margin-top:1px">11.04 11:01 장중</div>
     </div>
     <div data-mkt-row data-mkt-label="나스닥" style="padding:7px 0;border-bottom:1px solid rgba(28,25,18,.10)">
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
@@ -175,11 +175,11 @@ mark{background:#FFF2A8;color:inherit;border-radius:3px;padding:0 .08em;
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
         <span style="font-size:11.5px;font-weight:700;color:#57524A">원/달러</span>
         <span style="display:flex;align-items:baseline;gap:6px">
-          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">1,344.38</span>
-          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-0.03%</span>
+          <span data-mkt-value style="font-size:12px;font-weight:800;letter-spacing:-.01em;color:#57524A">1,337.90</span>
+          <span data-mkt-pct style="font-size:11px;font-weight:800;color:#1D5FA8;min-width:44px;text-align:right">-0.60%</span>
         </span>
       </div>
-      <div data-mkt-asof style="display:none"></div>
+      <div data-mkt-asof style="font-size:9px;color:#9B958A;font-weight:600;letter-spacing:.01em;margin-top:1px">11.04 환율 · 시각 미제공</div>
     </div>
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid rgba(28,25,18,.10)">
       <span style="font-size:10px;font-weight:800;letter-spacing:.06em;color:#9B958A">날씨</span>
@@ -347,9 +347,9 @@ function refreshMarket(){
       if(pEl && rw2.change_pct!=null && rw2.change_pct!==''){ pEl.textContent=rw2.change_pct; pEl.style.color=_mktUpToCol(snap,rw2.up); }
       if(aEl && rw2.asof){ aEl.textContent=rw2.asof; aEl.style.display='block'; }
     }
-    // 갱신 시각 스탬프(HH:MM 기준) — 기존 헤더 우측에 표시.
+    // 각 행의 공급 시세 시각을 표시하며 브라우저 시각으로 대체하지 않는다.
     var stamp=snap.querySelector('[data-mkt-stamp]');
-    if(stamp){ var d=new Date(); var hh=('0'+d.getHours()).slice(-2), mm=('0'+d.getMinutes()).slice(-2); stamp.textContent=hh+':'+mm+' 기준'; }
+    if(stamp){ stamp.textContent=data.stale ? '갱신 지연 · 시각 확인' : '지표별 시세 시각'; }
   }).catch(function(){ /* fetch/parse 실패 → 마지막 표시값 유지 */ });
 }
 try{ refreshMarket(); setInterval(refreshMarket,60000); }catch(e){}
