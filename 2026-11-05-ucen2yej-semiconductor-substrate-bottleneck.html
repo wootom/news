@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 칩 기판 공급 부족이 반도체 생산 병목으로 부상하며, 유리기판 개발과 기존 증설이 병행되는 시대가 열렸다."><title>AI 칩 수요 폭증으로 반도체 기판 공급이 새로운 병목이 되며, 유리기판 전환에도 기존 증설이 필수적이다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="AI 칩은 만들어도 기판이 없다? 반도체 공급을 막는 새로운 병목 | 유리기판이 나온다는데 왜 기존 기판은 더 부족해질까? 브로드컴 기판 공장"><meta name="youtube-source-channel" content="안될공학 - IT 테크 신기술"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;인텔은 10월 29일 실적 발표에서 첨단 6기 기판의 업계 전반 공급 부족이 생산 확대를 제약한다고 밝혔다.&quot;, &quot;브로드컴과 일본 토판의 합작사인 AS는 9월 29일 싱가포르에서 연 면적 약 95,000제곱미터의 기판 공장을 개소했다.&quot;, &quot;칩의 좁은 연결점을 서버 보드의 넓은 간격으로 변환하기 위해 기판 내부에 가느다란 구리 배선과 넓은 전원 영역을 설계해야 한다.&quot;, &quot;기판 면적이 커지면 동일한 패널에서 생산 가능한 개수가 감소하여, 같은 출력을 위해 더 넓은 면적과 더 많은 장비가 필요하다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학 - IT 테크 신기술</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-05 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>AI 칩 수요 폭증으로 반도체 기판 공급이 새로운 병목이 되며, 유리기판 전환에도 기존 증설이 필수적이다</h1><p class="lead">AI 칩 기판 공급 부족이 반도체 생산 병목으로 부상하며, 유리기판 개발과 기존 증설이 병행되는 시대가 열렸다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>인텔 실적 발표와 기판 공급 부족 현황</h2><ul>
+<li>인텔은 10월 29일 실적 발표에서 첨단 6기 기판의 업계 전반 공급 부족이 생산 확대를 제약한다고 밝혔다.</li>
+<li>인텔은 미래 기판 공급 확보를 위해 53억에서 61억 달러 규모의 계약을 체결했으며, 이는 칩 웨이퍼 공정과 별개로 기판 조립 단계의 병목을 의미한다.</li>
+</ul></section><section class="card s6" id="s2"><h2>브로드컴과 토판의 싱가포르 합작 공장</h2><ul>
+<li>브로드컴과 일본 토판의 합작사인 AS는 9월 29일 싱가포르에서 연 면적 약 95,000제곱미터의 기판 공장을 개소했다.</li>
+<li>해당 공장은 FCBGA 기판을 생산하며, 칩 설계 고객과 기판 공급업체가 함께 생산 기지에 참여하는 형태로 올해 말 제조 시작을 목표로 한다.</li>
+</ul></section><section class="card s6" id="s3"><h2>패키지 기판의 구조적 복잡성과 제조 난이도</h2><ul>
+<li>칩의 좁은 연결점을 서버 보드의 넓은 간격으로 변환하기 위해 기판 내부에 가느다란 구리 배선과 넓은 전원 영역을 설계해야 한다.</li>
+<li>신호선과 전원 영역의 공간 충돌을 해결하기 위해 다층 구조를 구축하며, 각 층마다 전열제와 비아를 가공하는 빌드업 공정이 필수적이다.</li>
+</ul></section><section class="card s6" id="s4"><h2>기판 대형화와 층 수 증가가 초래하는 생산 부담</h2><ul>
+<li>기판 면적이 커지면 동일한 패널에서 생산 가능한 개수가 <span class="dn">감소</span>하여, 같은 출력을 위해 더 넓은 면적과 더 많은 장비가 필요하다.</li>
+<li>층 수가 늘면 레이저 드릴링과 구리 형성 등 공정 단계가 증가하여 장비 처리량 한계와 수율 안정화 문제가 심화된다.</li>
+</ul></section><section class="card s6" id="s5"><h2>열팽창 차이로 인한 기판 변형과 수율 저하</h2><ul>
+<li>구리, 절연재, 실리콘 칩의 열팽창 계수가 달라 열 가열 시 기판이 휘어지는 월페이지 현상이 발생하여 칩 부착 시 연결 불량 위험이 있다.</li>
+<li>생산된 기판 중 열 변형이나 내부 단락 문제가 있는 물량을 걸러내는 수율 관리가 어려워지며, 이는 실제 납품 물량을 크게 줄이는 요인이 된다.</li>
+</ul></section><section class="card s6" id="s6"><h2>유리기판의 잠재력과 현재 개발 단계의 한계</h2><ul>
+<li>유리 코어 기판은 치수 안정성과 열팽창 조절이 가능하지만, 유리 가공 시 균열과 금속 접착, TGV 구멍 형성 등 제조 과제가 남아 있다.</li>
+<li>램 리서치와 SKC는 유리기판의 신뢰성 평가와 수율 안정화를 진행 중이며, 기존 유기 기판과 달리 양산 초기 단계에 머물러 있다.</li>
+</ul></section><section class="card s6" id="s7"><h2>칩 제조사들의 선제적 공급 확보 전략</h2><ul>
+<li>엔비디아는 삼성전기, 유니마이크론 등과 수십억 달러 규모의 선지급금 계약을 통해 기판 생산 능력을 예약하고 전용 시설 확대를 추진했다.</li>
+<li>칩 회사들은 기판 공급업체와 생산 일정을 수년 앞서 맞춰야 하며, 브로드컴은 토판의 FCBGA 생산 능력을 2027년까지 2022년 대비 2.5배 이상으로 키우기로 했다.</li>
+</ul></section><section class="card s12" id="s8"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>패키지 기판</td><td>실리콘 칩과 서버 보드 사이에서 전기적 연결을 매개하는 회로 기판으로, 칩의 작은 연결점을 보드 간격으로 변환하는 역할을 한다.</td></tr><tr><td>FCBGA</td><td>칩의 연결면을 아래로 향하게 배치하고 기판 밑에 납땀 공을 배열하여 서버 보드와 연결하는 플립 칩 볼 그리드 어레이 패키지 기판이다.</td></tr><tr><td>빌드업</td><td>기판의 배선층 위에 전열제를 적층하고 비아를 형성하여 다층 구조를 만드는 반도체 기판 제조 공정 방식이다.</td></tr><tr><td>월페이지</td><td>기판 내 서로 다른 재료의 열팽창 계수 차이로 인해 열 가열 시 기판이 휘어지는 현상으로, 칩 부착 시 연결 불량을 유발한다.</td></tr><tr><td>유리 코어 기판</td><td>기판의 중심부인 코어에 유리를 사용하여 치수 안정성을 높이는 차세대 기판 기술로, 기존 유기 기판의 열 변형 문제를 해결하기 위해 개발 중이다.</td></tr><tr><td>TGV</td><td>유리 기판을 관통하는 구멍을 형성하고 그 안에 구리를 채워 전기 통로로 사용하는 Through Glass Via 기술이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/gbUdfXFkNZc" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 - IT 테크 신기술 · 2026-11-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

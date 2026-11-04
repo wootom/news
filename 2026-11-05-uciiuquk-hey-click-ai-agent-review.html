@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="화면을 공유하며 음성으로 상호작용하는 AI 에이전트 헤이클릭의 수학, 영어, 코드, 주식 분석 활용 리뷰"><title>화면을 공유하며 음성으로 상호작용하는 AI 에이전트 헤이클릭의 학습 및 업무 활용 리뷰</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="수능 풀이 AI에게 맡기면 생기는 일!  헤이클리키 심층 리뷰"><meta name="youtube-source-channel" content="배움의 달인 (AI·자동화)"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;헤이클릭은 사용자의 컴퓨터 화면을 함께 보며 음성으로 질문과 답변을 주고받는 AI 에이전트 서비스입니다.&quot;, &quot;2026학년도 수능 수학 3번 문제(시그마 기호 활용)를 입력하자, AI는 미지의 합을 두 배로 묶어 계산하는 과정을 단계별로 음성으로 설명했습니다.&quot;, &quot;영문 기사 화면을 보여주자 AI는 &#x27;AI가 유권자를 오도할 수 있다&#x27;는 핵심 내용을 요약하고, 현재 진행형, 분사구문, 관계대명사절 등 시험 빈출 문법을 설명했습니다.&quot;, &quot;SK하이닉스 주봉 차트를 분석한 결과, 주가는 20주선 아래에서 60주선 근처에서 반등을 시도 중이며, 124만~130만 원 구간이 지지 확인 후 분할 매수 후보로 제시되었습니다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>배움의 달인 (AI·자동화)</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-05 · 배움의 달인 (AI·자동화)</span><span class="chip">🎬 영상</span></div><h1>화면을 공유하며 음성으로 상호작용하는 AI 에이전트 헤이클릭의 학습 및 업무 활용 리뷰</h1><p class="lead">화면을 공유하며 음성으로 상호작용하는 AI 에이전트 헤이클릭의 수학, 영어, 코드, 주식 분석 활용 리뷰</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>헤이클릭의 인터페이스와 기본 기능</h2><ul>
+<li>헤이클릭은 사용자의 컴퓨터 화면을 함께 보며 음성으로 질문과 답변을 주고받는 AI 에이전트 서비스입니다.</li>
+<li>사용자가 화면의 특정 부분을 가리키거나 설명을 요청하면, AI는 해당 영역에 초록색 커서를 표시하며 텍스트, 그림, 3D 그래픽을 활용해 설명합니다.</li>
+<li>이 도구는 기존 채팅창 기반 텍스트 상호작용을 넘어, 개인 튜터처럼 실시간으로 화면 내용을 분석하고 시각 자료로 풀어내는 UI/UX를 제공합니다.</li>
+<li>맥과 윈도우에서 사용 가능하며, 초기 베타 버전 이후 정식 출시되어 유료 서비스가 시작되었습니다.</li>
+</ul></section><section class="card s6" id="s2"><h2>수능 수학 문제 풀이 시연</h2><ul>
+<li>2026학년도 수능 수학 3번 문제(시그마 기호 활용)를 입력하자, AI는 미지의 합을 두 배로 묶어 계산하는 과정을 단계별로 음성으로 설명했습니다.</li>
+<li>사용자가 이해가 안 된다며 재요청하자, AI는 &#x27;돈 지갑&#x27; 비유를 들어 각 항의 값을 미지 금액으로 설정하고 전체 합이 10임을 유도하는 방식으로 재설명했습니다.</li>
+<li>2번 문제(미분 개념)에 대해선 파인만 기법을 활용해 3D 그래픽으로 곡선 위 지점의 경사를 시각화하고, h가 0에 가까워지는 과정을 설명했습니다.</li>
+<li>AI는 사용자가 경사 개념을 이해했는지 확인하기 위해 &#x27;가로 2, 세로 6 이동 시 경사&#x27;라는 간단한 퀴즈를 출제하고 정답 3을 확인했습니다.</li>
+</ul></section><section class="card s6" id="s3"><h2>영어 문법 분석 및 코드 해석</h2><ul>
+<li>영문 기사 화면을 보여주자 AI는 &#x27;AI가 유권자를 오도할 수 있다&#x27;는 핵심 내용을 요약하고, 현재 진행형, 분사구문, 관계대명사절 등 시험 빈출 문법을 설명했습니다.</li>
+<li>AI는 능동형 분사 &#x27;causing&#x27;과 수동형 &#x27;caused&#x27;의 차이를 퀴즈로 확인하며, &#x27;get&#x27; 뒤 목적어 구조와 &#x27;for&#x27;가 남는 부정사 표현을 학습 포인트로 제시했습니다.</li>
+<li>옵시디언용 AI 플러그인 자바스크립트 코드에 대해선 빌드 결과물과 원본 소스의 차이를 설명하고, 화살표 함수, 디폴트 파라미터, 삼항 연산자 사용법을 해석했습니다.</li>
+<li>코드 <span class="up">개선</span> 사항으로 API 키의 안전한 저장 방식 점검과, 모델 호출 실패 시 오류 처리 로직의 적절성을 확인해야 한다고 조언했습니다.</li>
+</ul></section><section class="card s6" id="s4"><h2>SK하이닉스 주식 차트 분석</h2><ul>
+<li>SK하이닉스 주봉 차트를 분석한 결과, 주가는 20주선 아래에서 60주선 근처에서 반등을 시도 중이며, 124만~130만 원 구간이 지지 확인 후 분할 매수 후보로 제시되었습니다.</li>
+<li>120만 원 아래로 주봉이 마감할 경우 매수 계획을 재검토해야 하며, 160만~180만 원 구간은 이전 거래량과 20주선이 겹치는 저항선으로 분석되었습니다.</li>
+<li>거래량 분석에서 가격 <span class="dn">하락</span> 구간에서 거래량이 크게 늘어난 것은 매도 압력이 강했음을 의미하지만, 이후 거래량 <span class="dn">감소</span>만으로 바닥을 단정할 수 없다고 설명했습니다.</li>
+<li>추가 매수 시 지지 구간에서 <span class="dn">하락</span> 거래량이 줄고 반등 거래량이 늘어나는 조합을 확인하는 것이 유리하며, 급등락에 따른 손실 위험을 경고했습니다.</li>
+</ul></section><section class="card s6" id="s5"><h2>요금제 및 교육적 활용 가치</h2><ul>
+<li>헤이클릭은 월 25회 무료 사용이 가능하며, 프로 요금제 가입 시 레퍼럴 코드를 통해 할인 혜택을 받을 수 있습니다.</li>
+<li>학생 대상 할인 정책이 존재하며, 별도의 교재 없이 PDF 자료와 AI 에이전트만으로 3D 그래픽을 활용한 맞춤형 학습이 가능하다고 평가했습니다.</li>
+<li>부끄러움을 타는 학생이 혼자 이어폰을 꽂고 AI와 대화하며 공부할 수 있어, 사교육과 공교육 모두에서 학습 효율성을 높이는 도구로 활용 가치가 있다고 언급했습니다.</li>
+</ul></section><section class="card s6" id="s6"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>헤이클릭 (HeyClick)</td><td>사용자의 화면을 실시간으로 공유하며 음성으로 상호작용하고, 그림 및 3D 그래픽으로 설명하는 AI 에이전트 서비스.</td></tr><tr><td>파인만 기법</td><td>복잡한 개념을 단순한 비유나 쉬운 언어로 설명하여 이해도를 높이는 학습 방법으로, 영상에서 미분 개념 설명에 활용됨.</td></tr><tr><td>시그마 기호 (Σ)</td><td>수학에서 여러 항을 합산할 때 사용하는 기호로, 영상에서 1부터 4까지의 합을 계산하는 문제에 등장함.</td></tr><tr><td>20주선/60주선</td><td>주식 차트에서 20주 또는 60주 평균 가격을 나타내는 이동평균선으로, 지지선과 저항선 분석의 기준이 됨.</td></tr><tr><td>분사구문</td><td>영어 문법에서 동사의 분사 형태로 시작되는 절로, 주절과 부가 설명을 연결하는 구조로 시험 빈출 문법.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/c61CEAs4s0M" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>배움의 달인 (AI·자동화) · 2026-11-05</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
