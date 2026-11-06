@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="그록봇에 콘텐츠 제작·업로드를 맡기고 승인과 검수로 운영하는 방법"><title>그록봇을 유튜브·인스타그램·쓰레드 운영에 연결하고 사람의 승인과 검수로 관리한다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="이제 제 인스타, 유튜브는 그록봇이 관리합니다"><meta name="youtube-source-channel" content="투쏠ㅣAI 에이전트"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;영상에서는 그록봇을 각자 클라우드 컴퓨터를 가진 AI 직원으로 설명한다. 사용 중인 앱에 로그인해 작업하고, 노트북을 꺼도 계속 일한다고 소개한다.&quot;, &quot;플러스 버튼으로 봇을 만들거나 그룹 채팅을 구성해 협업시킬 수 있다. 유튜브 총괄은 기획과 스토리보드, 인스타그램 총괄은 게시물 구성 등을 맡긴다고 설명한다.&quot;, &quot;그록봇에 기본 제공되는 앱 연결만으로 부족하다고 보고, Composio를 통해 여러 앱을 연결하는 MCP를 그록봇에 제공했다고 설명한다.&quot;, &quot;업로드에는 Zernio를 사용한다고 설명한다. 인스타그램·쓰레드·유튜브를 연결하고, Composio의 MCP를 그록봇에 전달해 게시와 예약 업로드를 설정했다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>투쏠ㅣAI 에이전트</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-07 · 투쏠ㅣAI 에이전트</span><span class="chip">🎬 영상</span></div><h1>그록봇을 유튜브·인스타그램·쓰레드 운영에 연결하고 사람의 승인과 검수로 관리한다</h1><p class="lead">그록봇에 콘텐츠 제작·업로드를 맡기고 승인과 검수로 운영하는 방법</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>클라우드에서 일하는 AI 직원으로 소개한 그록봇</h2><ul>
+<li>영상에서는 그록봇을 각자 클라우드 컴퓨터를 가진 AI 직원으로 설명한다. 사용 중인 앱에 로그인해 작업하고, 노트북을 꺼도 계속 일한다고 소개한다.</li>
+<li>메시지로 업무를 맡기고 대화하며, 직원들이 작업을 기억하고 서로 협업하는 방식으로 사용할 수 있다고 말한다.</li>
+</ul></section><section class="card s6" id="s2"><h2>플랫폼별 담당 봇과 그룹 채팅으로 업무를 나누다</h2><ul>
+<li>플러스 버튼으로 봇을 만들거나 그룹 채팅을 구성해 협업시킬 수 있다. 유튜브 총괄은 기획과 스토리보드, 인스타그램 총괄은 게시물 구성 등을 맡긴다고 설명한다.</li>
+<li>쓰레드 총괄은 유튜브나 인스타그램 콘텐츠를 쓰레드용으로 변환하고 업로드하도록 구성했다. 별도로 카드뉴스 제작 봇도 콘텐츠 작업에 활용한다.</li>
+<li>운영 계정은 유튜브 약 1만 1천 명, 인스타그램 약 2만 명, 쓰레드 약 7천 명이라고 밝힌다. 콘텐츠 업무를 맡기되 승인과 검수를 거치는 방식으로 운영한다.</li>
+</ul></section><section class="card s6" id="s3"><h2>Composio MCP와 Canva로 카드뉴스 초안을 만들다</h2><ul>
+<li>그록봇에 기본 제공되는 앱 연결만으로 부족하다고 보고, Composio를 통해 여러 앱을 연결하는 MCP를 그록봇에 제공했다고 설명한다.</li>
+<li>연결한 앱 가운데 Canva를 이용해 인스타그램 카드뉴스 초안을 만든다. 제작된 초안을 직접 검수한 뒤 인스타그램에 올리는 흐름을 보여준다.</li>
+</ul></section><section class="card s6" id="s4"><h2>Zernio API로 인스타그램·쓰레드·유튜브 게시물을 예약하다</h2><ul>
+<li>업로드에는 Zernio를 사용한다고 설명한다. 인스타그램·쓰레드·유튜브를 연결하고, Composio의 MCP를 그록봇에 전달해 게시와 예약 업로드를 설정했다.</li>
+<li>영상에서는 브라우저를 통한 자동 업로드 중 계정 정지가 발생할 수 있다고 우려하며, API를 활용하는 도구를 선택했다고 말한다. Zernio는 기본적으로 두 건까지 무료라고 소개한다.</li>
+</ul></section><section class="card s6" id="s5"><h2>Claude와 Codex를 쓰는 작업자 봇과 CMO를 구성하다</h2><ul>
+<li>그록 모델만으로 영상 편집이나 아티팩트·카드뉴스 제작을 처리하는 방식이 불안정할 수 있다고 보고, Claude와 Codex 구독을 연결한 작업자 봇도 만들었다고 설명한다.</li>
+<li>Claude와 Codex를 활용하는 팀원들을 만든 뒤, 이들을 총괄하는 CMO 봇을 구성했다. 그룹 채팅에 메시지를 보내거나 팀장에게 업무를 맡기고 보고받는 방식으로 활용한다.</li>
+</ul></section><section class="card s6" id="s6"><h2>세컨드 브레인의 MCP로 개인 작업 기준을 연결하다</h2><ul>
+<li>개인 작업 프레임워크를 반영하기 위해 세컨드 브레인과 그록봇을 연결했다고 말한다. 보관 공간의 설정에서 MCP를 가져와 그록봇에 제공하는 방식이다.</li>
+<li>그록봇이 해당 MCP를 참고해 작업별 기준을 파악하도록 구성하고, Composio로 앱 간 연결을 더해 유튜브와 인스타그램 등의 업무에 활용한다고 설명한다.</li>
+</ul></section><section class="card s6" id="s7"><h2>월 30달러 플랜을 사용 중이며 더 높은 요금제로 옮길 계획</h2><ul>
+<li>무료 체험 기간은 있지만 이용에는 유료 플랜이 필요하고, 프리미엄 플랜은 월 30달러라고 소개한다. 해당 플랜에 Cursor도 포함돼 있다고 설명한다.</li>
+<li>본인은 현재 30달러 플랜을 사용 중이며 200달러 플랜으로 옮길 생각이라고 말한다. 앞으로 세일즈와 영업 업무, Claude와 Codex가 협업하는 개발팀 등으로 활용을 넓힐 계획도 언급한다.</li>
+</ul></section><section class="card s6" id="s8"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>그록봇</td><td>영상에서 각자 클라우드 컴퓨터를 가진 AI 직원으로 소개하며, 메시지로 업무를 맡기고 협업시키는 도구다.</td></tr><tr><td>MCP</td><td>그록봇이 외부 앱이나 세컨드 브레인에 연결해 작업할 수 있도록 제공하는 연결 수단으로 설명된다.</td></tr><tr><td>Composio</td><td>여러 앱을 연결하고 MCP를 구성해 그록봇이 Canva 등과 함께 작업하도록 하는 도구다.</td></tr><tr><td>휴먼 인 더 루프</td><td>콘텐츠 운영을 봇에 맡기더라도 사용자가 승인과 검수를 하는 운영 방식이다.</td></tr><tr><td>Zernio</td><td>영상에서 인스타그램·쓰레드·유튜브 업로드에 사용하며, API 기반 게시와 예약을 설정한 도구다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/7mBTXLpqTQI" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>투쏠ㅣAI 에이전트 · 2026-11-07</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

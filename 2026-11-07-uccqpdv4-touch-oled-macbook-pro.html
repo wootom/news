@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="터치 OLED의 쓰임은 일상 작업보다 4DGS 같은 공간 영상 제작에서 두드러진다."><title>터치 OLED 맥북 프로는 4DGS 편집에 새 조작 가능성을 제시하지만 용도와 가격은 제약으로 남는다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="이젠 백라이트도 없어졌는데 로고 불빛은 왜 다시 넣어준걸까...? / 오목교 전자상가"><meta name="youtube-source-channel" content="오목교 전자상가"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;영상은 직전 모델보다 무게가 300g 넘게 줄었다고 소개한다. 기존 14인치 미니 LED 모델은 1.6kg, 신형은 1.38kg이라고 설명한다.&quot;, &quot;영상은 2015년형 맥북 프로 이후 사라졌던 사과 로고 조명이 신형에서 다시 적용됐다고 소개한다.&quot;, &quot;신형에는 백라이트 없이 스스로 빛을 내는 OLED가 적용됐다. 영상은 발광층을 두 겹으로 쌓는 텐덤 OLED 방식이 밝기와 전력 효율, 수명 개선을 겨냥한다고 설명한다.&quot;, &quot;터치 센서는 별도 필름을 덧대는 방식이 아니라 디스플레이 패널 안에 통합됐다고 설명한다. 화면을 누를 때 흔들림이 아예 없는 것은 아니지만, 힌지를 단단하게 설계했다고 애플이 밝혔다고 전한다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>오목교 전자상가</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-07 · 오목교 전자상가</span><span class="chip">🎬 영상</span></div><h1>터치 OLED 맥북 프로는 4DGS 편집에 새 조작 가능성을 제시하지만 용도와 가격은 제약으로 남는다.</h1><p class="lead">터치 OLED의 쓰임은 일상 작업보다 4DGS 같은 공간 영상 제작에서 두드러진다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>가벼워지고 작아진 본체에서도 저음은 묵직하다</h2><ul>
+<li>영상은 직전 모델보다 무게가 300g 넘게 줄었다고 소개한다. 기존 14인치 미니 LED 모델은 1.6kg, 신형은 1.38kg이라고 설명한다.</li>
+<li>상판과 하판이 얇아지고 본체 크기도 작아졌으며, 이전 세대 케이스와 호환되지 않는다고 한다. 녹음 파형을 비교한 결과 신형의 저음 영역이 더 높고 두껍게 나타났다고 전한다.</li>
+</ul></section><section class="card s6" id="s2"><h2>10년 넘게 사라졌던 사과 로고 조명이 돌아왔다</h2><ul>
+<li>영상은 2015년형 맥북 프로 이후 사라졌던 사과 로고 조명이 신형에서 다시 적용됐다고 소개한다.</li>
+<li>로고 밝기는 디스플레이 밝기에 맞춰 조절된다. 화면을 끄면 금속 로고처럼 보이고, 화면을 밝히면 로고 조명도 서서히 밝아진다고 설명한다.</li>
+</ul></section><section class="card s6" id="s3"><h2>텐덤 OLED로 밝기와 화면 표현을 개선했다</h2><ul>
+<li>신형에는 백라이트 없이 스스로 빛을 내는 OLED가 적용됐다. 영상은 발광층을 두 겹으로 쌓는 텐덤 OLED 방식이 밝기와 전력 효율, 수명 <span class="up">개선</span>을 겨냥한다고 설명한다.</li>
+<li>지속 전체 화면 밝기는 1,000니트로 유지되고, 부분 최대 밝기는 기존 1,600니트에서 2,000니트로 높아졌다고 소개한다. 일반 영상에서도 최대 2,000니트에 도달한다고 말한다.</li>
+<li>기존 미니 LED 화면은 정면에서는 큰 차이가 없지만, 측면에서는 블루밍과 색·블랙 표현의 차이가 보인다고 비교한다. 색 보정과 그래픽 작업에 필요한 색역 지원도 언급한다.</li>
+</ul></section><section class="card s6" id="s4"><h2>터치 센서와 다이내믹 아일랜드를 더했다</h2><ul>
+<li>터치 센서는 별도 필름을 덧대는 방식이 아니라 디스플레이 패널 안에 통합됐다고 설명한다. 화면을 누를 때 흔들림이 아예 없는 것은 아니지만, 힌지를 단단하게 설계했다고 애플이 밝혔다고 전한다.</li>
+<li>화면 상단의 노치가 빠지고 다이내믹 아일랜드가 들어갔다. 음악 재생 제어, 에어드롭 수락, 스포트라이트와 시리 호출 기능을 할 수 있으며, 화면 크기 덕분에 기존 노치보다 덜 거슬린다는 평가다.</li>
+</ul></section><section class="card s6" id="s5"><h2>웹·문서·일반 영상 편집에는 터치의 이점이 작다</h2><ul>
+<li>진행자는 웹 서핑과 문서 작업, 일반적인 2D 영상 편집에서는 키보드와 큰 트랙패드만으로 충분해 터치가 불필요한 기능에 가깝다고 평가한다.</li>
+<li>깨끗한 OLED 화면에 지문이 묻는 점도 신경 쓰인다고 말한다. 따라서 기존 작업 방식의 사용자라면 터치 기능만을 이유로 비싼 맥북 프로로 바꿀 필요는 없다고 조언한다.</li>
+</ul></section><section class="card s6" id="s6"><h2>4DGS 편집에서는 화면을 직접 조작하는 장점이 있다</h2><ul>
+<li>4DGS는 여러 카메라로 촬영한 3차원 공간과 시간에 따른 움직임을 함께 재구성하는 기술로 소개된다. 촬영 뒤에도 가상 카메라의 위치와 구도, 움직임을 바꿔 장면을 편집할 수 있다.</li>
+<li>영상에 나온 전문가 인터뷰는 3D 소프트웨어에 익숙하지 않은 사용자도 터치와 손동작으로 시점과 거리를 직접 조절할 수 있다고 설명한다. 진행자는 트랙패드의 단일 포인터보다 손가락 여러 개로 공간을 밀고 당기는 조작이 입체적인 카메라 워킹에 적합하다고 본다.</li>
+<li>인터뷰에서는 OLED의 블랙 표현과 적은 잔상 등이 인물 윤곽과 배경 경계, 화면의 문제를 살피는 데 도움이 된다고 설명한다. 통합 메모리 구조는 3D 데이터 재생과 시연에서 맥북 프로의 장점으로 언급된다.</li>
+</ul></section><section class="card s6" id="s7"><h2>높은 가격과 소프트웨어 보급은 남은 과제다</h2><ul>
+<li>영상은 터치 OLED 모델에 M5 Pro와 M5 Max가 들어갔다고 말하며, 칩 세대가 뒤처진 듯한 점을 아쉬움으로 든다. 제시된 가격은 14인치 M5 Pro 479만 원, 16인치 M5 Max 809만 원이며, 풀 옵션은 2,464만 원까지 올라간다.</li>
+<li>진행자는 공간 영상과 공간 생성 AI가 보편화되면 터치와 OLED 조합이 강점이 될 수 있다고 전망한다. 다만 하드웨어를 제대로 활용할 창작 소프트웨어가 얼마나 빨리 나오는지가 중요하며, 아직은 기다릴 시점이라고 덧붙인다.</li>
+</ul></section><section class="card s6" id="s8"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>4DGS</td><td>여러 카메라로 촬영한 3차원 공간에 시간 축을 더해 움직이는 장면을 재구성하는 기술이다.</td></tr><tr><td>텐덤 OLED</td><td>발광층을 두 겹으로 쌓아 밝기와 전력 효율, 패널 수명 <span class="up">개선</span>을 겨냥하는 OLED 방식이다.</td></tr><tr><td>다이내믹 아일랜드</td><td>맥북 화면 상단 노치를 대신해 음악 제어와 에어드롭 수락 등을 제공하는 영역이다.</td></tr><tr><td>통합 메모리</td><td>영상 속 인터뷰에서 맥북 프로의 3D 데이터 재생과 시연에 유리한 구조로 언급된다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/vlDNgmJXsAM" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>오목교 전자상가 · 2026-11-07</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
