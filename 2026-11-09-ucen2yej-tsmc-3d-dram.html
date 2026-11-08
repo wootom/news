@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="TSMC 로직 기술은 3D D램에 일부 활용될 수 있지만, 양산성은 별도 검증이 필요하다."><title>TSMC의 3D D램 검토 보도는 로직 기술과 메모리 제조 경험의 접점을 드러낸다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="엔비디아가 TSMC에 D램까지? 3D D램 생산 검토 보도, 로직 공정은 어디까지 통하고, 삼성·하이닉스가 쌓아온 경험은 어디에서 중요해질까"><meta name="youtube-source-channel" content="안될공학 - IT 테크 신기술"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;더 인포메이션의 11월 6일 보도를 로이터가 전했지만, TSMC의 양산 발표나 계약 체결 소식은 아니었다.&quot;, &quot;AI 연산칩이 빨라도 필요한 데이터를 제때 가져오지 못하면 기다려야 한다. 연산칩을 시스템으로 판매하려면 메모리 용량과 대역폭뿐 아니라 충분한 제품 공급도 필요하다.&quot;, &quot;일반적인 D램 셀은 전하를 저장하는 캐패시터와 읽고 쓸 때 통로를 여닫는 트랜지스터로 이뤄진다. 전하가 시간이 지나며 새기 때문에 주기적으로 데이터를 다시 읽고 채우는 리프레시가 필요하다.&quot;, &quot;하이케이 메탈 게이트(HKMG)는 게이트 절연막에 고유전율 재료와 금속 전극을 조합해 전류를 제어하는 기술이다. 인텔은 2007년 45나노 로직 제품에 도입했다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>안될공학 - IT 테크 신기술</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-09 · 안될공학 - IT 테크 신기술</span><span class="chip">🎬 영상</span></div><h1>TSMC의 3D D램 검토 보도는 로직 기술과 메모리 제조 경험의 접점을 드러낸다</h1><p class="lead">TSMC 로직 기술은 3D D램에 일부 활용될 수 있지만, 양산성은 별도 검증이 필요하다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>TSMC의 3D D램 생산은 보도된 구상이며 공식 양산 계획은 확인되지 않았다</h2><ul>
+<li>더 인포메이션의 11월 6일 보도를 로이터가 전했지만, TSMC의 양산 발표나 계약 체결 소식은 아니었다.</li>
+<li>블룸버그와 톰스 하드웨어가 인용한 TSMC 답변은 핵심 파운드리 사업과 로직 반도체 고객에 집중한다는 원칙이었다. 보도에 나온 엔비디아 요청이나 내부 검토를 직접 인정하거나 부인한 내용은 아니었다.</li>
+</ul></section><section class="card s6" id="s2"><h2>엔비디아의 메모리 관심은 용량·대역폭·공급 문제와 맞닿아 있다</h2><ul>
+<li>AI 연산칩이 빨라도 필요한 데이터를 제때 가져오지 못하면 기다려야 한다. 연산칩을 시스템으로 판매하려면 메모리 용량과 대역폭뿐 아니라 충분한 제품 공급도 필요하다.</li>
+<li>HBM은 여러 장의 D램 칩을 쌓고 연결하며, 아래쪽 베이스 다이가 D램과 연산칩 사이의 신호 전달을 맡는다. SK하이닉스와 TSMC는 2024년 HBM4 베이스 다이에 TSMC의 로직 공정을 활용하는 협력을 발표했다.</li>
+<li>HBM은 완성된 D램 칩을 쌓는 방식이고, 셀 적층 3D D램은 칩 안의 저장 셀 자체를 여러 층으로 배치하는 구상이다. 두 방식은 구별되며 조합 가능성도 있어 3D D램이 HBM을 곧 대체한다고 볼 수는 없다.</li>
+</ul></section><section class="card s6" id="s3"><h2>D램 저장 셀은 누설과 신호 판독까지 고려해야 한다</h2><ul>
+<li>일반적인 D램 셀은 전하를 저장하는 캐패시터와 읽고 쓸 때 통로를 여닫는 트랜지스터로 이뤄진다. 전하가 시간이 지나며 새기 때문에 주기적으로 데이터를 다시 읽고 채우는 리프레시가 필요하다.</li>
+<li>셀 트랜지스터는 켜졌을 때 전류를 흘리고 꺼졌을 때 전하 유출을 막아야 한다. 누설은 로직에서도 중요하지만 D램에서는 데이터 유지 시간과 직접 연결된다.</li>
+<li>주변 회로에는 셀 선택, 신호 증폭, 데이터 전달 회로가 포함된다. 센스 앰프가 작은 전압 차이를 판별하고 읽은 데이터를 복원해야 하므로 셀뿐 아니라 배선과 회로 특성도 함께 맞춰야 한다.</li>
+<li>셀의 바닥 면적을 줄이면 저장 전하와 판독 신호도 작아질 수 있다. 캐패시터를 높게 만들고 고유전율 재료와 얇은 절연막을 활용하지만, 식각과 증착의 정밀도 및 구조 안정성도 필요하다.</li>
+</ul></section><section class="card s6" id="s4"><h2>로직의 HKMG 기술은 D램 저장 셀보다 주변 회로에 적용돼 왔다</h2><ul>
+<li>하이케이 메탈 게이트(HKMG)는 게이트 절연막에 고유전율 재료와 금속 전극을 조합해 전류를 제어하는 기술이다. 인텔은 2007년 45나노 로직 제품에 도입했다.</li>
+<li>삼성 공식 자료에 따르면 HKMG는 2018년 GDDR6에 적용됐고, 2021년에는 이 기술을 활용한 DDR5가 발표됐다. 이는 로직의 게이트 기술을 D램 주변 회로에 적용한 사례이지 저장 셀 전체를 로직과 같은 방식으로 만든다는 뜻은 아니다.</li>
+<li>캐패시터의 고유전율 재료와 트랜지스터 게이트 절연막은 적용 위치와 역할이 다르다. 키옥시아도 2024년 공정 자료에서 3D 낸드 주변 회로에 HKMG를 도입하는 방향을 설명했다.</li>
+</ul></section><section class="card s6" id="s5"><h2>주변 회로 분리와 웨이퍼 접합은 후속 열처리 부담을 낮추는 방법이다</h2><ul>
+<li>기존 D램 흐름에서는 주변 회로를 먼저 만든 뒤 저장 셀을 형성하는 과정의 열을 견뎌야 할 수 있다. imec은 주변 트랜지스터가 섭씨 550~600도 수준의 열처리를 수시간 견뎌야 하는 조건을 설명했다.</li>
+<li>저장 셀과 주변 회로를 서로 다른 웨이퍼에서 만든 뒤 접합하면 주변 회로가 저장 셀 제조의 열처리를 모두 따라갈 필요가 줄어든다. 다만 접합 공정과 비용이 추가되고 연결의 정밀도와 안정성도 확보해야 한다.</li>
+<li>키옥시아의 3D 낸드는 저장 셀과 주변 회로를 따로 만든 뒤 구리 연결부를 맞대어 접합하는 사례다. 이는 셀 자체를 여러 층으로 쌓는 것과는 구별되며, D램에서도 분리·접합을 연구하는 이유와 맞닿아 있다.</li>
+</ul></section><section class="card s6" id="s6"><h2>셀 적층 3D D램은 캐패시터 높이·트랜지스터 방향과 다른 구조 변화다</h2><ul>
+<li>기존 D램의 높은 캐패시터는 셀 하나의 저장 능력을 확보하는 구조이고, 수직 트랜지스터는 스위치 배치를 바꿔 셀의 바닥 면적을 줄이는 접근이다. 셀 자체를 여러 층으로 놓는 것은 별도의 적층 방식이다.</li>
+<li>SK하이닉스가 공개한 4F²는 셀 하나의 바닥 면적이 2F×2F라는 뜻이며, 셀을 몇 층 쌓는지를 나타내지 않는다. 셀 층수가 늘면 각 층을 선택해 읽고 쓸 배선도 함께 설계해야 한다.</li>
+<li>TSMC의 2022년 등록 특허에는 전하가 적게 새는 산화물 반도체 채널과 여러 층의 캐패시터를 통합하는 구조가 담겼다. 2025년 공개된 다른 특허 출원에는 수직 트랜지스터 위에 캐패시터를 놓고 셀을 추가 층으로 쌓는 구상이 나온다.</li>
+<li>imec이 연구하는 IGZO 산화물 반도체 기반 후보에는 읽기용·쓰기용 트랜지스터를 따로 두고 별도 저장 캐패시터를 없애는 구조도 있다. 원래 존재하는 정전 용량을 저장에 활용하는 방식으로, 장기 안정성과 반복 동작 검증이 필요하다.</li>
+</ul></section><section class="card s6" id="s7"><h2>TSMC와 메모리 업체는 적층·접합·패키징 기술을 각각 연구하고 있다</h2><ul>
+<li>TSMC의 N2 공정은 게이트가 판 모양 채널을 둘러싸는 나노시트 트랜지스터를 사용하며, 2025년 4분기 양산을 시작한다고 영상은 설명한다. 다층 재료를 만들고 필요한 부분만 선택적으로 제거하는 기술은 3D 구조 가공과 맞닿아 있다.</li>
+<li>SK하이닉스는 2024년 학회에서 실리콘·실리콘게르마늄 다층 구조와 웨이퍼 접합을 활용한 연구를 발표했고, 2024년에는 주변 회로와 통합한 5층 저장 셀 칩의 동작도 보고했다. 2025년에는 수직 게이트 구조와 3D D램을 장기 로드맵으로 제시했다.</li>
+<li>삼성은 2024년 학회에서 셀과 주변 회로를 위아래로 배치하고 웨이퍼 본딩을 활용하는 연구를 발표했다. 이 연구는 저장 셀 자체를 여러 층 쌓는 접근과는 구별된다.</li>
+<li>TSMC의 CoWoS는 연산칩과 HBM을 하나의 패키지에서 연결하는 기술이며, 회사는 칩을 위아래로 촘촘히 잇는 3차원 적층 기술도 보유하고 있다.</li>
+</ul></section><section class="card s6" id="s8"><h2>제품화에는 셀 균일도와 원가, 장기 수요 및 공급망 구성이 관건이다</h2><ul>
+<li>좁고 깊은 구조에서는 위아래 모양이나 막 두께가 달라져 셀 특성이 흔들릴 수 있다. 온도별 데이터 유지 검사와 불량 셀을 여분 셀로 대체하는 방법, 오류 관리 회로까지 제품에 맞게 검증해야 한다.</li>
+<li>층수가 늘어도 검사 시간이나 사용할 수 없는 영역이 커지면 제조 비용이 오를 수 있다. 따라서 고객이 실제로 쓸 수 있는 용량을 얼마의 비용으로 공급하는지가 중요하다고 영상은 짚는다.</li>
+<li>보도된 구상이 실제 개발로 이어져도 새로운 공정과 제품을 만들고 고객 검증을 거쳐야 하므로, 현재 메모리 부족을 바로 해소할 공급책이라고 단정할 수 없다. TSMC는 양산 시점을 공식 발표하지 않았다.</li>
+<li>사업화 여부에는 설비 투자와 장기 수요, 엔비디아의 구매 약속과 성능·비용 이익, 고객 설계를 받아 생산할지 공동 개발할지가 영향을 준다. 메모리 공급자 이름이 늘어나는 것과 제조 단계마다 실질적인 대안이 생기는 것은 구분해야 한다.</li>
+</ul></section><section class="card s6" id="s9"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>HBM</td><td>여러 장의 D램 칩을 쌓아 연결하고, 베이스 다이를 통해 연산칩과 신호를 주고받는 고대역폭 메모리다.</td></tr><tr><td>셀 적층 3D D램</td><td>완성된 D램 칩을 쌓는 HBM과 달리, 칩 안의 저장 셀을 여러 층으로 배치하려는 방식이다.</td></tr><tr><td>주변 회로</td><td>D램에서 셀을 선택하고 작은 신호를 증폭하며 데이터를 외부로 보내는 회로를 가리킨다.</td></tr><tr><td>HKMG</td><td>고유전율 게이트 절연막과 금속 전극을 조합해 트랜지스터의 전류를 제어하는 기술이다.</td></tr><tr><td>웨이퍼 본딩</td><td>별도로 만든 저장 셀과 주변 회로 등의 웨이퍼를 연결해 하나의 구조로 만드는 접합 방식이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/z0Iiy44eaIw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>안될공학 - IT 테크 신기술 · 2026-11-09</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="피지컬 AI 시대에는 로봇 기술뿐 아니라 사람과 현장을 이해하는 능력이 중요하다."><title>피지컬 AI 시대에는 로봇 기술과 함께 사람을 이해하고 현장 문제를 찾는 역량이 중요해진다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="“공부만 잘하는 친구는 앞으로 좀 힘들 겁니다” (공경철 카이스트 기계공학과 교수)"><meta name="youtube-source-channel" content="티타임즈TV"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;공경철 교수는 엔지니어가 감화된 작품에 따라 로봇에 대한 기대가 달라진다고 설명한다. 터미네이터는 인간을 위협하는 로봇, 아톰은 친구, 마징가제트와 철인 28호는 세상을 구하는 로봇의 이미지와 연결된다.&quot;, &quot;후쿠시마 원전 사고 때 투입된 로봇들이 방사능에 손상되는 모습을 전 세계가 지켜봤고, 이후 미국은 재난 현장 임무를 수행하는 로봇 경연인 DARPA Robotics Challenge를 기획했다. 교수는 이 시기에 로봇 주도권이 일본에서 미국으로 넘어갔다고 말했다.&quot;, &quot;공 교수는 엔젤로보틱스가 사업화하는 기술로 액추에이터와 제어 아키텍처를 들었다. 제어 아키텍처는 물리적 노이즈와 비선형성을 아래 단계에서 처리해 AI가 정제된 데이터를 얻도록 돕는다고 설명했다.&quot;, &quot;교수는 미래 로봇이 복잡하고 다양한 형태가 될 것이라고 전망했다. 액추에이터도 여러 로봇에 폭넓게 쓰일 수 있어야 하며, 기술은 사람이 인지하지 못할 정도로 자연스럽게 일상에 녹아들어야 한다고 말했다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>티타임즈TV</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-09 · 티타임즈TV</span><span class="chip">🎬 영상</span></div><h1>피지컬 AI 시대에는 로봇 기술과 함께 사람을 이해하고 현장 문제를 찾는 역량이 중요해진다</h1><p class="lead">피지컬 AI 시대에는 로봇 기술뿐 아니라 사람과 현장을 이해하는 능력이 중요하다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>로봇을 바라보는 문화가 엔지니어의 지향을 빚는다</h2><ul>
+<li>공경철 교수는 엔지니어가 감화된 작품에 따라 로봇에 대한 기대가 달라진다고 설명한다. 터미네이터는 인간을 위협하는 로봇, 아톰은 친구, 마징가제트와 철인 28호는 세상을 구하는 로봇의 이미지와 연결된다.</li>
+<li>2000년대 이후 베어맥스처럼 따뜻하고 포근한 로봇을 떠올리는 사람들은 돌봄 로봇이나 환자 이송 로봇을 만들기도 한다고 말했다.</li>
+<li>로봇이라는 말은 체코어 ‘로보타’에서 나왔으며, 당시에는 기계 노예를 뜻했다. 교수는 초기 로봇 개발과 산업용 로봇의 방향이 기계 노예라는 발상과 이어졌다고 설명했다.</li>
+</ul></section><section class="card s6" id="s2"><h2>후쿠시마 사고 뒤 로봇 주도권이 미국으로 이동했다</h2><ul>
+<li>후쿠시마 원전 사고 때 투입된 로봇들이 방사능에 손상되는 모습을 전 세계가 지켜봤고, 이후 미국은 재난 현장 임무를 수행하는 로봇 경연인 DARPA Robotics Challenge를 기획했다. 교수는 이 시기에 로봇 주도권이 일본에서 미국으로 넘어갔다고 말했다.</li>
+<li>일본은 정밀한 동작을 반복하는 액추에이터와 제어 기술, 산업용 로봇 시장에서 강점을 유지하고 있다. 다만 AI 시대에는 힘을 조절하며 부드럽게 움직이는 제어가 중요해져 기술 리더십은 상대적으로 밀렸다고 설명했다.</li>
+<li>2019년 일본의 공급망 제한 이후 한국은 소재·부품·장비 독립에 자금을 투입했고, 엔젤로보틱스도 액추에이터 내재화를 시작했다고 말했다. 회사는 구하기 어려운 일부 소재를 제외하고 내재화했으며 코일도 직접 감는다고 밝혔다.</li>
+</ul></section><section class="card s6" id="s3"><h2>엔젤로보틱스는 액추에이터와 제어 아키텍처를 개발한다</h2><ul>
+<li>공 교수는 엔젤로보틱스가 사업화하는 기술로 액추에이터와 제어 아키텍처를 들었다. 제어 아키텍처는 물리적 노이즈와 비선형성을 아래 단계에서 처리해 AI가 정제된 데이터를 얻도록 돕는다고 설명했다.</li>
+<li>AI가 판단을 잘못할 수도 있기 때문에 제어에서 안전이 중요하다고 강조했다. 액추에이터는 로봇에 반드시 필요한 부품이며, 회사 기술이 완제품뿐 아니라 다른 산업에도 영향을 줄 수 있다고 말했다.</li>
+</ul></section><section class="card s6" id="s4"><h2>피지컬 AI에는 다양한 로봇을 뒷받침할 플랫폼이 필요하다</h2><ul>
+<li>교수는 미래 로봇이 복잡하고 다양한 형태가 될 것이라고 전망했다. 액추에이터도 여러 로봇에 폭넓게 쓰일 수 있어야 하며, 기술은 사람이 인지하지 못할 정도로 자연스럽게 일상에 녹아들어야 한다고 말했다.</li>
+<li>스마트폰 앱 생태계에 안드로이드와 iOS 같은 플랫폼이 필요했던 것처럼, 피지컬 AI에도 액추에이터와 제어, 데이터 수집·관리 등을 뒷받침하는 플랫폼이 필요하다고 설명했다.</li>
+<li>피지컬 AI에서도 다양한 아이디어와 서비스가 나오는 창업 생태계가 중요하며, 이를 대기업만의 과제로 보기는 어렵다고 말했다.</li>
+</ul></section><section class="card s6" id="s5"><h2>AI·로봇 시대에는 공감과 소통으로 현장 수요를 찾아야 한다</h2><ul>
+<li>제조나 농업처럼 지역과 현장에 특화된 데이터와 인재가 필요하다고 말했다. 사람은 현장에서 문제와 수요를 발견하고, 이를 해결할 로봇이나 AI와 필요한 데이터를 찾아야 한다는 설명이다.</li>
+<li>로봇과 AI가 잘하는 일은 대체될 수 있으므로 사람은 질문을 던지고, 사람을 이해하며, 현장의 요구를 찾아내는 역할을 해야 한다고 강조했다. 공감과 소통 능력이 중요하다는 뜻이다.</li>
+<li>AI 에이전트들이 각자 다른 방향으로 일하면 빛이 흩어지듯 결과가 분산될 수 있다고 비유했다. 원하는 방향으로 에이전트들을 이끄는 프롬프팅에도 사람과의 소통에 가까운 공감 능력이 필요하다고 말했다.</li>
+</ul></section><section class="card s6" id="s6"><h2>피지컬 AI 투자 열기와 버블을 장기 관점에서 봐야 한다</h2><ul>
+<li>교수는 피지컬 AI와 로보틱스의 현재 열기를 버블이라고 보면서도, 국가가 투자를 선택한 만큼 버블이 생기는 것은 이상하지 않다고 말했다. 1998~1999년 IT 투자와 2008년 경제 <span class="dn">위기</span> 뒤의 의료기기·바이오 투자가 이후 산업의 근간이 됐다고 설명했다.</li>
+<li>현재 국가의 주요 과제로 반도체 초격차, AI 데이터센터, 피지컬 AI 글로벌 1강을 들었다. 피지컬 AI 시대가 한국에 산업적 기반을 남길 것이라는 견해를 밝혔다.</li>
+<li>투자자에게는 눈앞의 과열된 대상에 현혹되기보다 실제 기술과 중장기 비전을 갖춘 곳을 살펴보라고 당부했다. 버블이 꺼지는 과정에서 많은 사람이 상처 입지 않기를 바란다고 덧붙였다.</li>
+</ul></section><section class="card s6" id="s7"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>피지컬 AI</td><td>로봇처럼 물리적 환경에서 움직이고 작동하는 AI를 가리키는 맥락으로 사용됐다.</td></tr><tr><td>액추에이터</td><td>로봇의 움직임을 구현하는 부품으로, 교수는 다양한 로봇에 쓰일 수 있는 방향을 강조했다.</td></tr><tr><td>제어 아키텍처</td><td>물리적 노이즈와 비선형성을 먼저 처리해 AI가 정제된 데이터를 바탕으로 판단하도록 하는 구조다.</td></tr><tr><td>DARPA Robotics Challenge</td><td>후쿠시마 사고 뒤 미국이 재난 현장을 극복할 로봇을 만들기 위해 기획했다고 설명한 경연이다.</td></tr><tr><td>로보타</td><td>교수가 로봇이라는 말의 어원으로 소개한 체코어로, 기계 노예를 뜻한다고 설명했다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/pzP0O0n5uzU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>티타임즈TV · 2026-11-09</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
