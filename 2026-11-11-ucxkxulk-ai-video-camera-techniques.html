@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 영상 생성 시 카메라 움직임과 연출 기법 24가지를 한국어로 요청하는 방법과 모델별 크레딧 비교"><title>AI 영상 생성 시 카메라 및 연출 기법 24가지를 한국어로 요청하는 방법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="AI 영상, 원하는 장면은 이렇게 요청하세요｜카메라 움직임부터 연출 기법 24가지"><meta name="youtube-source-channel" content="단테랩스"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;1080p, 5초, 소리 켜기 조건에서 클링은 10크레딧, Seedance는 80크레딧으로 표시되어 짧은 실험은 클링, 최종 드라마는 Seedance로 제작했다.&quot;, &quot;줌인은 카메라 위치를 유지하며 화각을 좁혀 상반신에서 얼굴 클로즈업으로 전환하고, 표정의 작은 변화를 강조할 때 사용한다.&quot;, &quot;오버숄더 숏은 한 사람의 어깨 너머로 상대를 보여 두 사람의 거리와 관계를 읽게 하고, 리액션 숏은 사건을 본 인물의 반응을 보여 대사와 무관하게 관계를 짐작하게 한다.&quot;, &quot;실루엣은 밝은 배경 앞에서 인물을 어둡게 보여 얼굴을 숨기고 자세와 형태부터 드러내며, 더치 앵글은 화면을 비스듬히 기울여 불안한 느낌을 더한다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>단테랩스</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-11 · 단테랩스</span><span class="chip">🎬 영상</span></div><h1>AI 영상 생성 시 카메라 및 연출 기법 24가지를 한국어로 요청하는 방법</h1><p class="lead">AI 영상 생성 시 카메라 움직임과 연출 기법 24가지를 한국어로 요청하는 방법과 모델별 크레딧 비교</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>모델별 크레딧 비용 및 영상 생성 워크플로우</h2><ul>
+<li>1080p, 5초, 소리 켜기 조건에서 클링은 10크레딧, Seedance는 80크레딧으로 표시되어 짧은 실험은 클링, 최종 드라마는 Seedance로 제작했다.</li>
+<li>힌크스필드에서 비디오 만들기로 진입해 모델, 길이, 해상도를 선택하고 GPT Image 2로 생성한 스틸을 시작 및 종료 프레임으로 지정한다.</li>
+<li>프롬프트에는 인물의 행동과 카메라 움직임을 분리해 기술하며, 실제 생성은 영어로 하고 화면의 한국어 요청문은 지시를 풀어 쓴 예시로 제시했다.</li>
+<li>Seedance의 레퍼런스 탭에 기준 이미지를 넣어 연속된 이야기를 생성하고, 15초나 20초 영상에서 필요한 기법 구간을 잘라 사용하는 방식을 적용했다.</li>
+</ul></section><section class="card s6" id="s2"><h2>카페 장면: 줌인, 슬로 모션, 스피드 램프, 매치 컷</h2><ul>
+<li>줌인은 카메라 위치를 유지하며 화각을 좁혀 상반신에서 얼굴 클로즈업으로 전환하고, 표정의 작은 변화를 강조할 때 사용한다.</li>
+<li>슬로 모션은 물이 날아오는 동작을 전체적으로 느리게 보고, 스피드 램프는 결정적인 순간만 느리게 하고 앞뒤를 빠르게 이어 한 클립 내 속도를 변화시킨다.</li>
+<li>매치 컷은 닮은 모양이나 움직임으로 두 컷을 잇는 편집으로, 젖은 얼굴에서 워터파크의 얼굴로 연결해 장면을 전환했다.</li>
+</ul></section><section class="card s6" id="s3"><h2>결혼식 장면: 오버숄더 숏, 리액션 숏, 돌리 인, 줌아웃</h2><ul>
+<li>오버숄더 숏은 한 사람의 어깨 너머로 상대를 보여 두 사람의 거리와 관계를 읽게 하고, 리액션 숏은 사건을 본 인물의 반응을 보여 대사와 무관하게 관계를 짐작하게 한다.</li>
+<li>돌리 인은 카메라가 실제로 인물에게 다가감으로 배경의 원근이 변하고 공간 속으로 들어가며 감정을 압박하는 효과를 낸다.</li>
+<li>줌아웃은 카메라 위치를 유지하며 화각을 넓혀 인물에서 주변 공간까지 상황을 조금씩 공개할 때 사용한다.</li>
+</ul></section><section class="card s6" id="s4"><h2>회의실 장면: 실루엣, 더치 앵글, 오빗, 팬</h2><ul>
+<li>실루엣은 밝은 배경 앞에서 인물을 어둡게 보여 얼굴을 숨기고 자세와 형태부터 드러내며, 더치 앵글은 화면을 비스듬히 기울여 불안한 느낌을 더한다.</li>
+<li>오빗은 대상을 중심으로 카메라가 주변을 도는 움직임으로 각도 변화로 긴장감을 더하고, 팬은 한자리에서 좌우로 돌리며 남자의 말에서 여자의 반응으로 시선을 넘긴다.</li>
+</ul></section><section class="card s6" id="s5"><h2>추격 장면: 틸트 업, 트래킹, 휩 팬, 크레인 업</h2><ul>
+<li>틸트 업은 한자리에서 카메라를 위로 돌려 발에서 상체와 얼굴로 시선을 올리며 추격자 정체를 드러내고, 트래킹은 움직이는 인물을 따라가며 배경 흐름과 표정을 함께 보여준다.</li>
+<li>휩 팬은 카메라를 빠르게 돌려 화면을 흐리게 하며 시선을 급하게 넘기고, 크레인 업은 카메라 자체가 위로 올라가 높은 시점으로 골목 전체와 도주 경로를 드러낸다.</li>
+</ul></section><section class="card s6" id="s6"><h2>병실 장면: 골든 아워, 블루 아워, 디졸브, 타임랩스</h2><ul>
+<li>골든 아워는 해가 낮게 떠 있을 때의 따뜻한 빛으로 부부 얼굴에 노란빛을 더해 온기를 표현하고, 블루 아워는 푸른빛으로 장면을 차분하고 쓸쓸하게 만든다.</li>
+<li>디졸브는 앞 화면이 사라지는 동안 다음 화면이 겹쳐 시간 흐름을 연결하고, 타임랩스는 고정된 창문과 그림자 변화를 압축해 긴 시간 경과를 보여준다.</li>
+</ul></section><section class="card s6" id="s7"><h2>유언장 장면: 로우 앵글, 하이 앵글, 익스트림 클로즈업, 탑 숏</h2><ul>
+<li>로우 앵글은 낮은 위치에서 인물을 올려다보며 권위와 위압감을 강조하고, 하이 앵글은 높은 곳에서 내려다보며 인물을 작게 보여 위축된 마음을 표현한다.</li>
+<li>익스트림 클로즈업은 유언장 서명 같은 작은 부분으로 화면을 채워 단서에 시선을 모으고, 탑 숏은 사물을 수직으로 내려다보며 문서와 손을 한눈에 담는다.</li>
+</ul></section><section class="card s6" id="s8"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>오빗 (Orbit)</td><td>대상을 중심으로 카메라가 주변을 도는 움직임으로, 각도 변화로 긴장감을 더하는 기법.</td></tr><tr><td>스피드 램프 (Speed Ramp)</td><td>한 클립 안에서 속도를 점차 바꾸어 결정적인 순간만 느리게 하고 앞뒤를 빠르게 이어 편집하는 기법.</td></tr><tr><td>매치 컷 (Match Cut)</td><td>닮은 모양이나 움직임으로 두 컷을 자연스럽게 잇는 편집 기법.</td></tr><tr><td>골든 아워 (Golden Hour)</td><td>해가 낮게 떠 있을 때의 따뜻한 빛으로, 장면의 온기를 표현하는 조명 기법.</td></tr><tr><td>힌크스필드 (Higgsfield)</td><td>영상 생성 모델을 제공하고, 레퍼런스 탭과 프레임 지정 기능을 지원하는 AI 영상 플랫폼.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/Wd9OL-8Zrdc" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>단테랩스 · 2026-11-11</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>

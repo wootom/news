@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Fable 5.2를 효율적으로 쓰려면 High effort, 작업 검증, 기존 규칙 정리, 코드 소유권 부여가 필수입니다."><title>Anthropic Fable 5.2 프롬프팅 10가지 규칙: 고효율 사용법과 주의사항</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="Anthropic&#x27;s Ten NEW Rules for Prompting Fable 5.2 (Full Guide)"><meta name="youtube-source-channel" content="Chase AI"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;Fable 5.2는 API에서 High가 기본값이지만 Claude Code에서는 Medium이 기본으로 설정되어 있어 High로 수동 변경을 권장한다.&quot;, &quot;Fable 5.2는 이전 모델보다 추론을 사실로 서술하거나 존재하지 않는 파일을 지어내는 환각률이 높아 출력 전 테스트 실행을 지시해야 한다.&quot;, &quot;Fable 5.2는 주어진 규칙을 매우 엄격하게 따르기 때문에, 이전 모델용으로 작성된 과도하게 엄격한 스타일 가이드나 규칙은 오히려 성능을 저해한다.&quot;, &quot;Fable 5.2는 &#x27;생각하지 마라&#x27;는 지시를 무시하고 항상 토큰을 소모하며 사고하므로, 비용 절감을 위해 Low나 Medium effort level을 사용해야 한다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-11 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>Anthropic Fable 5.2 프롬프팅 10가지 규칙: 고효율 사용법과 주의사항</h1><p class="lead">Fable 5.2를 효율적으로 쓰려면 High effort, 작업 검증, 기존 규칙 정리, 코드 소유권 부여가 필수입니다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>Effort Level 설정과 비용 효율성</h2><ul>
+<li>Fable 5.2는 API에서 High가 기본값이지만 Claude Code에서는 Medium이 기본으로 설정되어 있어 High로 수동 변경을 권장한다.</li>
+<li>Frontier Code 2.0 벤치마크에서 High 설정은 45.3% 점수를 기록하며 Opus 5.5 Max와 유사한 성능을 절반의 비용으로 제공한다.</li>
+<li>Medium 설정은 37.6%로 성능이 현저히 낮아지므로, 기술적으로 도전적인 장기 에이전틱 작업에는 High 또는 Extra High를 사용해야 한다.</li>
+</ul></section><section class="card s6" id="s2"><h2>환각 방지와 작업 완결성 확보</h2><ul>
+<li>Fable 5.2는 이전 모델보다 추론을 사실로 서술하거나 존재하지 않는 파일을 지어내는 환각률이 높아 출력 전 테스트 실행을 지시해야 한다.</li>
+<li>시스템 카드에 따르면 파일 누락 시 2% 확률로 가짜 파일을 생성하며, 이러한 단축 경로를 방지하기 위해 검증 프롬프트를 사용해야 한다.</li>
+<li>장기 에이전틱 작업 중 중간에 작업을 중단하는 빈도가 높아 &#x27;작업을 끝까지 마무리하라&#x27;는 명시적 지시를 통해 중단 확률을 절반으로 줄일 수 있다.</li>
+</ul></section><section class="card s6" id="s3"><h2>기존 규칙 파일(Claude.md) 재점검</h2><ul>
+<li>Fable 5.2는 주어진 규칙을 매우 엄격하게 따르기 때문에, 이전 모델용으로 작성된 과도하게 엄격한 스타일 가이드나 규칙은 오히려 성능을 저해한다.</li>
+<li>불필요한 엄격한 지침을 제거하여 모델이 설계된 대로 자유롭게 작동할 수 있는 공간을 확보하는 것이 새로운 프롬프팅 전략의 핵심이다.</li>
+</ul></section><section class="card s6" id="s4"><h2>사고 과정 제어와 디스틸레이션 차단</h2><ul>
+<li>Fable 5.2는 &#x27;생각하지 마라&#x27;는 지시를 무시하고 항상 토큰을 소모하며 사고하므로, 비용 절감을 위해 Low나 Medium effort level을 사용해야 한다.</li>
+<li>단계별 추론 과정을 설명해 달라는 요청은 내부 분류기에 의해 디스틸레이션 공격으로 오인되어 차단될 수 있어 주의가 필요하다.</li>
+</ul></section><section class="card s6" id="s5"><h2>코드 소유권과 서브에이전트 위임</h2><ul>
+<li>모델에게 코드베이스 소유권을 명시적으로 부여하면 코드 중복을 줄이고 최적화된 결과를 얻지만, 최소한의 변경만 원한다면 소유권을 주지 말고 구체적으로 지시해야 한다.</li>
+<li>서브에이전트 사용에 대한 기존 규칙을 삭제해야 하며, Fable 5.2는 필요 시 스스로 서브에이전트를 생성하여 작업을 검증하므로 강제 지시는 토큰 소모만 증가시킨다.</li>
+</ul></section><section class="card s6" id="s6"><h2>긴 작업 업데이트와 응답 톤 제어</h2><ul>
+<li>긴 도구 호출 작업 중 침묵하는 것을 방지하려면 업데이트를 요청해야 하지만, 매 도구 호출마다 응답을 지시하면 토큰 사용량이 20% 증가할 수 있다.</li>
+<li>응답의 톤과 길이는 effort level에 영향을 받지 않으며, 원하는 형식을 얻으려면 프롬프트나 Claude.md 파일에 명시적으로 기록해야 한다.</li>
+</ul></section><section class="card s6" id="s7"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Fable 5.2</td><td>Anthropic의 최신 모델로, 이전 모델보다 강력한 성능을 지니지만 규칙을 엄격히 따르고 환각률이 높아 특정 프롬프팅 규칙이 필요한 AI 모델.</td></tr><tr><td>Effort Level</td><td>모델의 사고 깊이와 토큰 소모량을 조절하는 설정으로, Fable 5.2에서는 High가 비용 대비 성능 효율이 가장 높은 것으로 평가된다.</td></tr><tr><td>Claude.md</td><td>Claude Code에서 모델의 행동과 스타일을 제어하기 위해 사용하는 규칙 파일로, Fable 5.2 사용 시 과도한 제약은 제거해야 한다.</td></tr><tr><td>Sub-agents</td><td>주요 에이전트가 작업을 분산 처리하기 위해 생성하는 하위 에이전트로, Fable 5.2는 필요 시 이를 자동으로 생성하여 작업을 검증한다.</td></tr><tr><td>Distillation</td><td>모델의 추론 과정을 추출하여 다른 모델에 학습시키는 행위로, Fable 5.2는 이를 방지하기 위해 단계별 추론 설명 요청을 차단한다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/c_McosB62a4" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-11-11</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
