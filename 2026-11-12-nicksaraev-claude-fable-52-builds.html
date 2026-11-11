@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Claude Fable 5.2로 만든 게임, 3D 포트폴리오, 과학 시뮬레이션 등 13가지 인터랙티브 경험"><title>Claude Fable 5.2로 구현 가능한 13가지 고품질 인터랙티브 3D 경험과 게임 사례</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="13 INSANE Things You Can Build w/ Claude Fable 5.2"><meta name="youtube-source-channel" content="Nick Saraev"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;Fable 5.2가 생성한 레이싱 게임 &#x27;Wind Up Derby&#x27;는 3D 렌더링과 조명 효과가 고품질이며, 스페이스바로 작동하는 인터랙티브 요소가 포함된다.&quot;, &quot;Nick Saraev의 스튜디오를 복제한 3D 환경에서는 내부 컴퓨터에 접속해 터미널 명령어 입력, 파일 탐색, 브레이크아웃 게임 플레이가 가능하다.&quot;, &quot;크랭크 메커니즘의 작동 원리를 보여주는 3D 모델은 내부 기계를 투명하게 보이게 하거나 개별 부품 클릭으로 상세 정보를 제공하여 교육에 활용된다.&quot;, &quot;울창한 털까지 디테일하게 표현된 울창한 mammoth(매머드) 3D 모델은 키 입력으로 카메라 각도를 변경하고 줌인 시에도 고해상도를 유지한다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nick Saraev</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-12 · Nick Saraev</span><span class="chip">🎬 영상</span></div><h1>Claude Fable 5.2로 구현 가능한 13가지 고품질 인터랙티브 3D 경험과 게임 사례</h1><p class="lead">Claude Fable 5.2로 만든 게임, 3D 포트폴리오, 과학 시뮬레이션 등 13가지 인터랙티브 경험</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>게임 및 애니메이션 시뮬레이션</h2><ul>
+<li>Fable 5.2가 생성한 레이싱 게임 &#x27;Wind Up Derby&#x27;는 3D 렌더링과 조명 효과가 고품질이며, 스페이스바로 작동하는 인터랙티브 요소가 포함된다.</li>
+<li>고래가 로켓으로 변형되는 정지 모션 클레이 애니메이션과, 3D 공간에서 조작 가능한 동적 시스템인 &#x27;킨츠기&#x27; 예술 작품이 코드로 구현되었다.</li>
+<li>젤다의 전설 스타일의 &#x27;Fox Night&#x27; 게임은 풀, 나무, 거울 등 환경 객체와 상호작용하며, 미니게임과 스프라이트 요소를 포함한다.</li>
+</ul></section><section class="card s6" id="s2"><h2>인터랙티브 3D 포트폴리오 및 제품 디자인</h2><ul>
+<li>Nick Saraev의 스튜디오를 복제한 3D 환경에서는 내부 컴퓨터에 접속해 터미널 명령어 입력, 파일 탐색, 브레이크아웃 게임 플레이가 가능하다.</li>
+<li>물병 &#x27;Pale&#x27;의 랜딩 페이지는 유리 효과, 등방형(isomorphism) 시각화, 브라우저 내 버블 시뮬레이션을 포함하여 제품의 3D 경험을 제공한다.</li>
+<li>유리 전구 렌더링은 레이 트레이싱 모드를 지원하며, 마우스 조작 시 실시간으로 빛의 반사와 질감을 계산하여 현실적인 이미지를 생성한다.</li>
+</ul></section><section class="card s6" id="s3"><h2>교육용 시뮬레이션 및 과학 시각화</h2><ul>
+<li>크랭크 메커니즘의 작동 원리를 보여주는 3D 모델은 내부 기계를 투명하게 보이게 하거나 개별 부품 클릭으로 상세 정보를 제공하여 교육에 활용된다.</li>
+<li>477줄의 파이썬 코드로 구현된 고래 점프 시뮬레이션은 브라우저 내에서 실시간으로 재생 및 되감기 가능하며, 물리 법칙을 반영한다.</li>
+<li>바이러스가 박테리아에 부착되는 과정을 분자 수준에서 시뮬레이션하며, 컷어웨이 버튼으로 내부 구조를 실시간으로 관찰할 수 있다.</li>
+</ul></section><section class="card s6" id="s4"><h2>생물학적 및 계절적 프로세스 시각화</h2><ul>
+<li>울창한 털까지 디테일하게 표현된 울창한 mammoth(매머드) 3D 모델은 키 입력으로 카메라 각도를 변경하고 줌인 시에도 고해상도를 유지한다.</li>
+<li>나무의 생장 주기를 시뮬레이션하여 봄의 개화, 여름의 성숙, 가을의 낙엽, 겨울의 휴면 단계를 소리 효과와 함께 시각화한다.</li>
+<li>자수(embroidery) 애니메이션은 사용자가 클릭한 위치에 꽃을 놓을 수 있으며, 풀이 풀리는 과정을 동적으로 코드로 처리한다.</li>
+</ul></section><section class="card s6" id="s5"><h2>물리 기반 인터랙티브 플립북</h2><ul>
+<li>물리 시뮬레이션 기반의 플립북은 실제 책과 유사하게 페이지가 열리고 닫히며, 바퀴를 돌리는 등 물리적 상호작용이 가능하다.</li>
+<li>페이지를 넘기면 폭풍, 파도, 달이 뜨는 등 서사적 장면이 전환되며, 아이들을 위한 인터랙티브 스토리텔링 도구로 활용될 수 있다.</li>
+</ul></section><section class="card s6" id="s6"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Fable 5.2</td><td>Nick Saraev가 소개하는 AI 모델로, 고품질 3D 렌더링, 게임, 인터랙티브 시뮬레이션을 코드로 생성할 수 있다.</td></tr><tr><td>Kintsugi</td><td>깨진 도자기 등을 수리하여 더 강하고 아름답게 만드는 일본 예술 기법으로, Fable 5.2가 3D 동적 시스템으로 구현했다.</td></tr><tr><td>Ray Tracing</td><td>빛의 경로와 반사를 실시간으로 계산하여 현실적인 3D 이미지를 생성하는 그래픽 기술로, 유리 전구 렌더링에 적용되었다.</td></tr><tr><td>Maker Zero</td><td>영상 설명란에 링크된 사이트로, 영상에서 시연된 Fable 5.2 프롬프트를 복사하여 사용할 수 있는 곳이다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/5mA9Hab09Do" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nick Saraev · 2026-11-12</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
