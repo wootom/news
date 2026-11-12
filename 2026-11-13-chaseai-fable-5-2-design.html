@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="참고 자료와 101개 조정 항목으로 Fable 5.2의 디자인을 다듬는 법"><title>Fable 5.2의 디자인 결과를 취향·방향·설정으로 통제하는 네 단계 워크플로를 소개한다.</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="The NEW Fable 5.2 Design Workflow Everyone Is Stealing"><meta name="youtube-source-channel" content="Chase AI"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;영상은 세리프체 헤더, 기울임체, 헤드라인 위의 작은 문구, 크림색 배경과 둥근 버튼을 AI 디자인에서 흔히 보이는 특징으로 든다. Fable 5.2 결과는 일부 특징을 피했지만, 단순히 글꼴과 요소를 바꾼다고 제품이 더 좋아지는 것은 아니라고 설명한다.&quot;, &quot;첫 단계는 자신이 좋아하는 디자인을 찾아 Claude Code에 무드보드처럼 보여주는 것이다. 취향을 말로 설명하기 어렵다면 웹사이트와 디자인 사례를 모아 방향을 전달할 수 있다고 제안한다.&quot;, &quot;도구 단계에서는 Impeccable과 Taste 같은 일반 디자인 기술을 언급한다. 인터페이스 디자인과 Claude Code를 처음 접하는 사람에게는 작업의 프레임워크를 제공할 수 있지만, 경험이 쌓이면 필요성이 줄어들 수 있다고 말한다.&quot;, &quot;방향을 정하는 예제로 ‘14’라는 캠핑 앱의 랜딩 페이지를 만든다. 이 앱은 공공 토지에서 무료로 합법적으로 텐트를 칠 수 있는 외딴 캠핑 장소를 찾도록 돕는다는 설정이다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Chase AI</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-13 · Chase AI</span><span class="chip">🎬 영상</span></div><h1>Fable 5.2의 디자인 결과를 취향·방향·설정으로 통제하는 네 단계 워크플로를 소개한다.</h1><p class="lead">참고 자료와 101개 조정 항목으로 Fable 5.2의 디자인을 다듬는 법</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>AI 디자인의 상투적 흔적과 통제 가능한 작업 방식</h2><ul>
+<li>영상은 세리프체 헤더, 기울임체, 헤드라인 위의 작은 문구, 크림색 배경과 둥근 버튼을 AI 디자인에서 흔히 보이는 특징으로 든다. Fable 5.2 결과는 일부 특징을 피했지만, 단순히 글꼴과 요소를 바꾼다고 제품이 더 좋아지는 것은 아니라고 설명한다.</li>
+<li>프롬프트에 막연히 창의성을 요구하면 결과가 슬롯머신처럼 무작위로 나올 수 있다고 지적한다. 이를 취향·도구·방향·설정의 네 단계로 나눠 반복 가능한 디자인 과정으로 만든다는 것이 영상의 접근이다.</li>
+</ul></section><section class="card s6" id="s2"><h2>취향을 설명하는 대신 참고 자료를 모으기</h2><ul>
+<li>첫 단계는 자신이 좋아하는 디자인을 찾아 Claude Code에 무드보드처럼 보여주는 것이다. 취향을 말로 설명하기 어렵다면 웹사이트와 디자인 사례를 모아 방향을 전달할 수 있다고 제안한다.</li>
+<li>Pinterest와 Dribbble에서 SaaS 및 랜딩 페이지 사례를 찾고, Twitter에서 디자이너의 작업을 살펴볼 수 있다고 소개한다. 마음에 드는 화면은 스크린샷으로 저장해 참고 자료로 활용한다.</li>
+<li>저장한 스크린샷을 ‘취향의 보고’라는 컬렉션으로 정리해 두면 Claude Code에 검토를 맡길 수 있다고 설명한다. 영상에서는 여러 참고 이미지를 모아 랜딩 페이지의 방향을 잡는 데 사용한다.</li>
+</ul></section><section class="card s6" id="s3"><h2>디자인 기술과 Higgsfield MCP 활용</h2><ul>
+<li>도구 단계에서는 Impeccable과 Taste 같은 일반 디자인 기술을 언급한다. 인터페이스 디자인과 Claude Code를 처음 접하는 사람에게는 작업의 프레임워크를 제공할 수 있지만, 경험이 쌓이면 필요성이 줄어들 수 있다고 말한다.</li>
+<li>이미지와 영상 생성 기능을 Claude Code에 연결하는 방법으로 Higgsfield MCP를 소개한다. Higgsfield.ai에서 MCP를 선택하고 데스크톱 앱의 사용자 지정 커넥터에 링크를 추가한 뒤 인증하면 된다고 설명한다.</li>
+<li>기술이나 MCP를 많이 추가하는 것만으로 좋은 결과가 보장되지는 않는다고 강조한다. 어떤 도구를 쓸지는 구체적인 작업에 따라 판단하고, 기술을 적용한 경우와 적용하지 않은 경우를 Claude에 비교해 달라고 요청할 수 있다고 말한다.</li>
+</ul></section><section class="card s6" id="s4"><h2>캠핑 앱 랜딩 페이지에서 세 가지 방향 비교</h2><ul>
+<li>방향을 정하는 예제로 ‘14’라는 캠핑 앱의 랜딩 페이지를 만든다. 이 앱은 공공 토지에서 무료로 합법적으로 텐트를 칠 수 있는 외딴 캠핑 장소를 찾도록 돕는다는 설정이다.</li>
+<li>참고 이미지와 앱 설명을 Claude Code에 제공하고 랜딩 페이지 세 가지 안을 요청한다. 결과는 ‘Survey’, ‘Diorama’, ‘Almanac’으로 제시되며, 각 안은 서로 다른 시각적 방향을 보여준다.</li>
+<li>영상 진행자는 인터랙티브한 요소와 개성이 있는 ‘Diorama’를 선택한다. 선택한 방향을 유지하며 추가 버전을 요청하거나, 곧바로 세부 조정 단계로 넘어갈 수 있다고 설명한다.</li>
+</ul></section><section class="card s6" id="s5"><h2>101개 조정 항목이 있는 설정 패널</h2><ul>
+<li>마지막 단계에서는 반복해서 수정 프롬프트를 쓰는 대신, 슬라이더와 스위치로 요소를 바꿀 수 있는 설정 패널을 요청한다. 영상의 패널에는 총 101개의 조정 항목이 표시된다.</li>
+<li>패널에서 ‘sage’, ‘desert’, ‘lake’, ‘wildflower’, ‘dusk’ 팔레트를 선택하고 배경 텍스처, 주요 요소의 크기·위치·기울기 등을 조정할 수 있다. 계절과 색조, 그림자, 점토 그래픽의 색도 바꿀 수 있다.</li>
+<li>라벨 모양은 고리·점·물방울 형태로 바꾸고, 스크롤할 때 요소가 나타나는 애니메이션도 조정한다. 진행자는 이 패널로 여러 선택지를 빠르게 살펴보며 결과를 반복해서 다듬을 수 있다고 보여준다.</li>
+</ul></section><section class="card s6" id="s6"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Fable 5.2</td><td>영상에서 디자인 결과를 만들고 평가하는 데 언급되는 모델 이름이다.</td></tr><tr><td>Claude Code</td><td>참고 이미지와 요청을 전달하고 랜딩 페이지 및 설정 패널을 만드는 작업 흐름에 사용된다.</td></tr><tr><td>Higgsfield MCP</td><td>Claude Code가 이미지·영상 생성기에 접근하도록 연결하는 MCP로 소개된다.</td></tr><tr><td>무드보드</td><td>좋아하는 웹 디자인 사례를 모아 원하는 시각적 방향을 전달하는 참고 자료다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/lAE78Iorby0" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Chase AI · 2026-11-13</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
