@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="유저별 셀 격리, 비밀 금고, 전용 브라우저와 승인 관문으로 에이전트 서비스를 설계한다."><title>행동형 AI 에이전트는 유저별 격리와 비밀 관리, 외부 행동 승인 관문으로 운영해야 한다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="AI 에이전트, 데모는 되는데 서비스로는 못 띄우신 분"><meta name="youtube-source-channel" content="메이커 에반 | Maker Evan"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;영상은 한 행동형 AI 비서가 유저에게 묻지 않고 식당에 전화하고, 이틀 뒤 같은 호텔에 두 번 더 전화한 사례로 시작한다. AI라고 밝히지 않은 일로 대표가 공개 사과했다고 설명한다.&quot;, &quot;큰 데이터베이스에 모든 유저의 행을 넣는 테넌트 방식은 조회 조건이 빠지면 데이터가 섞이고, 데이터베이스 장애나 무거운 유저의 부하가 전체에 영향을 줄 수 있다고 설명한다.&quot;, &quot;에이전트는 SNS 토큰과 비밀번호, 이중 인증 시드 등을 다루므로 모델이 비밀을 볼 경우 게시물이나 DM의 지시문, 로그와 에러 트레이스를 통해 노출될 수 있다고 짚는다.&quot;, &quot;공식 API로 처리할 수 없는 브라우저 작업과 로그인 세션 유지를 위해 유저마다 Chrome이 들어 있는 컨테이너를 둔다. 컨테이너의 실행과 종료는 Durable Object가 맡는다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-17 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>행동형 AI 에이전트는 유저별 격리와 비밀 관리, 외부 행동 승인 관문으로 운영해야 한다</h1><p class="lead">유저별 셀 격리, 비밀 금고, 전용 브라우저와 승인 관문으로 에이전트 서비스를 설계한다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>외부 행동이 남기는 흔적과 에이전트의 7개 설계 영역</h2><ul>
+<li>영상은 한 행동형 AI 비서가 유저에게 묻지 않고 식당에 전화하고, 이틀 뒤 같은 호텔에 두 번 더 전화한 사례로 시작한다. AI라고 밝히지 않은 일로 대표가 공개 사과했다고 설명한다.</li>
+<li>발표자가 운영하는 플랫폼은 문자 요청을 받아 글과 이미지를 만들고, 미리보기를 보낸 뒤 승인되면 Instagram, Threads, X에 게시한다.</li>
+<li>에이전트 설계 영역을 입력, 격리 단위, 생각, 실행, 바깥 행동 통제, 기억, 먼저 움직이기의 7칸으로 나눈다. 데모에서는 생각과 실행이 보이지만 서비스 사고는 나머지 영역에서 생긴다고 말한다.</li>
+</ul></section><section class="card s6" id="s2"><h2>테넌트 대신 유저별 Durable Object 셀로 격리</h2><ul>
+<li>큰 데이터베이스에 모든 유저의 행을 넣는 테넌트 방식은 조회 조건이 빠지면 데이터가 섞이고, 데이터베이스 장애나 무거운 유저의 부하가 전체에 영향을 줄 수 있다고 설명한다.</li>
+<li>발표자는 유저마다 Cloudflare Durable Object 셀을 하나씩 두고, 유저 아이디로 해당 셀을 부른다. 셀마다 SQLite 저장소가 있으며 요청은 한 번에 하나씩 처리된다.</li>
+<li>문자가 오면 공용 색인에서 행을 찾고, 나머지 작업은 해당 셀 안에서 처리한다. 일이 없는 셀은 잠들어 비용이 들지 않으며, 가상 머신의 격리 성질 중 필요한 부분만 취한 구조라고 설명한다.</li>
+</ul></section><section class="card s6" id="s3"><h2>모델에 진짜 비밀을 노출하지 않는 금고 구조</h2><ul>
+<li>에이전트는 SNS 토큰과 비밀번호, 이중 인증 시드 등을 다루므로 모델이 비밀을 볼 경우 게시물이나 DM의 지시문, 로그와 에러 트레이스를 통해 노출될 수 있다고 짚는다.</li>
+<li>에이전트에는 대리 토큰만 주고, 진짜 비밀은 공개 주소가 없는 별도 워커 안에서만 푼다. 요청이 외부로 나가는 경계에서 대리 토큰을 진짜 토큰으로 바꿔 붙인다.</li>
+<li>비밀은 봉투 암호화로 저장하며 유저별 데이터 키를 마스터 키로 감싼다. 금고를 부를 수 있는 워커는 두 개로 제한하고, CI가 설정을 검사한다.</li>
+</ul></section><section class="card s6" id="s4"><h2>유저별 Chrome 컨테이너와 사람의 로그인 개입</h2><ul>
+<li>공식 API로 처리할 수 없는 브라우저 작업과 로그인 세션 유지를 위해 유저마다 Chrome이 들어 있는 컨테이너를 둔다. 컨테이너의 실행과 종료는 Durable Object가 맡는다.</li>
+<li>10분 동안 작업이 없으면 스냅샷과 암호화 백업을 남기고 컨테이너를 끈다. 다시 작업이 생기면 백업에서 복원해 로그인 상태를 이어 가지만, 복원 지연 때문에 필요할 때만 켜는 옵션으로 둔다.</li>
+<li>첫 로그인이나 이중 인증처럼 에이전트가 처리할 수 없는 화면은 사람이 맡는다. 15분 동안 유효한 1회용 링크로 화면을 유저에게 넘기고, 모델에는 상태와 이유 코드만 전달한다.</li>
+</ul></section><section class="card s6" id="s5"><h2>외부에 닿는 쓰기를 검사하는 행동 관문</h2><ul>
+<li>조회와 초안 작성은 유저와 에이전트 사이에서 끝나지만, 게시·댓글·DM은 다른 사람에게 닿고 되돌릴 수 없다. 그래서 외부에 닿는 모든 쓰기를 하나의 관문으로 모은다.</li>
+<li>관문은 연락처나 링크 포함 여부, 중복 게시 여부 같은 코드 규칙을 먼저 검사한 뒤, 글을 작성한 모델과 분리된 심사 모델이 통과·보류·차단 중 하나로 판정한다.</li>
+<li>판정 결과는 게시물의 바이트에 묶인 토큰으로 발급된다. 글이 한 글자라도 바뀌면 토큰이 일치하지 않아 금고가 진짜 토큰을 내주지 않는다.</li>
+<li>에이전트가 먼저 시작한 게시에는 미리보기를 보내고 최대 24시간 동안 답을 기다린다. 유저가 직접 게시를 승인해야 나가며, 관문은 먼저 그림자 모드로 판정과 오탐률을 기록한 뒤 차단을 켠다.</li>
+</ul></section><section class="card s6" id="s6"><h2>셀 구조의 운영상 대가와 Cloudflare 의존성</h2><ul>
+<li>데이터가 유저별 셀로 흩어져 전체 고객을 한 번에 조회하기 어렵고, 셀마다 스키마 버전이 다를 수 있어 깨어날 때 부족한 마이그레이션 단계만 적용한다.</li>
+<li>스키마는 추가만 하고 삭제하지 않는 규칙을 둔다. 발표자는 같은 기능을 다른 클라우드에서 찾기 어렵고 플랫폼 장애가 모든 셀에 영향을 주는 점을 구조의 대가로 받아들였다고 말한다.</li>
+</ul></section><section class="card s6" id="s7"><h2>인프런 강의의 구성과 수강 전 확인 사항</h2><ul>
+<li>인프런 강의 「행동형 AI 에이전트 설계와 구축」은 12개 섹션, 85강, 21시간 34분 분량이다. 데이터 설계와 비밀 금고, Chrome 컨테이너, 게시 워크플로, 행동 관문, 보안 점검과 운영 배포를 다룬다.</li>
+<li>강의는 화면 녹화형 라이브 코딩이 아니라 설계 그림·설정·코드 발췌를 활용한 슬라이드 강의이며, 저장소 전체 코드는 제공하지 않는다. 나레이션은 발표자의 목소리를 학습한 AI 음성으로 제작했다고 밝힌다.</li>
+<li>중급 이상을 대상으로 하며 TypeScript 서버 코드를 읽고 쓸 수 있어야 한다. 완성본 데모와 첫 동작 확인을 포함한 5강은 무료 미리보기로 열려 있고, 영상에서는 블랙프롬프트데이 기간 11월 20일까지 25% 할인이 적용된다고 안내한다.</li>
+</ul></section><section class="card s6" id="s8"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>행동형 에이전트</td><td>도구를 실행해 게시나 전화처럼 외부에 흔적을 남기는 에이전트로, 서비스 운영에는 실행 전 통제가 필요하다.</td></tr><tr><td>Durable Object</td><td>영상에서 유저별 셀을 만들고, 셀 안의 요청과 Chrome 컨테이너 실행을 맡기는 Cloudflare 구성 요소다.</td></tr><tr><td>테넌트 방식</td><td>하나의 데이터베이스에 여러 유저의 데이터를 두고 행마다 소유 유저를 표시하는 방식이다.</td></tr><tr><td>봉투 암호화</td><td>유저별 데이터 키로 비밀을 보호하고, 그 데이터 키를 다시 마스터 키로 감싸 저장하는 방식이다.</td></tr><tr><td>바깥 행동 관문</td><td>게시·댓글·DM 같은 외부 쓰기에 규칙 검사와 별도 모델 판정, 필요한 경우 유저 승인을 적용하는 경로다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/WNjRJMYcJ3s" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-11-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
