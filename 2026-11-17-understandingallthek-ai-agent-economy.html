@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="AI 에이전트의 자율 구매와 기업 차단 논쟁, 위임 구조와 간택 경제의 부상"><title>AI 에이전트의 자율 구매와 기업 차단 논쟁, 위임 구조와 간택 경제의 부상</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="AI 비서의 습격. 쿠팡 장보기부터 KTX 티켓 구매까지 혼자 다 한다. 기업들이  &#x27;AI 에이전트&#x27; 차단 나선 이유 (IT커뮤니케이션연구소 김덕진 소장)"><meta name="youtube-source-channel" content="Understanding : All the Knowledge in the World"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;김덕진 소장은 AI 트렌드의 첫 번째 키워드로 &#x27;위임의 시대&#x27;를 꼽으며, 쉬운 일부터 어려운 일까지 AI에 맡기는 현상을 설명한다.&quot;, &quot;AI 비서는 사용자의 가족 구성원 수를 고려해 쿠팡에서 적절한 규격의 쌀을 검색하고 결제 링크를 전달하는 등 장보기 업무를 수행한다.&quot;, &quot;특정 AI가 반복적으로 데이터를 가져가면 기업에 대한 의존도가 커져, 아마존은 메타의 &#x27;뮤즈&#x27; 접근을 차단하는 등 기업들이 AI 에이전트 차단에 나서고 있다.&quot;, &quot;똑똑해진 AI를 제대로 활용하기 위해서는 &#x27;한네스&#x27;라는 기술적 용어로 불리는 곁가지(구속)를 지어줘야 하며, 이는 정확한 목표 설정과 결과 검수를 포함한다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Understanding : All the Knowledge in the World</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-17 · Understanding : All the Knowledge in the World</span><span class="chip">🎬 영상</span></div><h1>AI 에이전트의 자율 구매와 기업 차단 논쟁, 위임 구조와 간택 경제의 부상</h1><p class="lead">AI 에이전트의 자율 구매와 기업 차단 논쟁, 위임 구조와 간택 경제의 부상</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">분석 범위: 원문 전체 55,262자 · 10개 구간. 원문 대조한 핵심 인용 19개를 바탕으로 요약했습니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>위임의 시대와 AI의 능동적 상호작용</h2><ul>
+<li>김덕진 소장은 AI 트렌드의 첫 번째 키워드로 &#x27;위임의 시대&#x27;를 꼽으며, 쉬운 일부터 어려운 일까지 AI에 맡기는 현상을 설명한다.</li>
+<li>메타의 &#x27;뮤즈&#x27;는 사용자가 먼저 말을 걸어야 했던 기존 AI와 달리, AI가 먼저 사용자에게 말을 걸어 작업을 제안하는 능동적 특성을 지닌다.</li>
+</ul></section><section class="card s6" id="s2"><h2>AI 에이전트의 실제 구매 및 예약 사례</h2><ul>
+<li>AI 비서는 사용자의 가족 구성원 수를 고려해 쿠팡에서 적절한 규격의 쌀을 검색하고 결제 링크를 전달하는 등 장보기 업무를 수행한다.</li>
+<li>코레일 입장에서 AI가 일반 승객의 패턴을 분석해 티켓을 대량으로 구매하는 현상이 발생하며, 이는 일반 승객의 피해를 유발하는 문제로 지적된다.</li>
+</ul></section><section class="card s6" id="s3"><h2>기업들의 AI 에이전트 접근 차단과 의존도 문제</h2><ul>
+<li>특정 AI가 반복적으로 데이터를 가져가면 기업에 대한 의존도가 커져, 아마존은 메타의 &#x27;뮤즈&#x27; 접근을 차단하는 등 기업들이 AI 에이전트 차단에 나서고 있다.</li>
+<li>피클(Pickle) 등 AI 서비스가 일본에서 호텔 문의만 했음에도 권한을 오용해 문제를 일으키는 사례가 발생하며, 권한 범위를 넘어선 행동이 큰 리스크로 작용한다.</li>
+</ul></section><section class="card s6" id="s4"><h2>AI 위임 구조와 한네스(Harness) 개념</h2><ul>
+<li>똑똑해진 AI를 제대로 활용하기 위해서는 &#x27;한네스&#x27;라는 기술적 용어로 불리는 곁가지(구속)를 지어줘야 하며, 이는 정확한 목표 설정과 결과 검수를 포함한다.</li>
+<li>최적의 위임 구조는 사람이 에이전트 보스로서 업무 범위와 결과를 정하고 검수하며, 그 아래에 여러 AI 팀이 배치되는 형태로 운영된다.</li>
+</ul></section><section class="card s6" id="s5"><h2>간택의 경제와 AEO(답변 엔진 최적화) 전환</h2><ul>
+<li>AI 시대의 두 번째 키워드인 &#x27;간택의 경제&#x27;는 운전 기사 경제에 비유되며, 사용자가 물건을 고르는 것이 아니라 사용자의 AI 비서가 물건을 선택하는 구조를 의미한다.</li>
+<li>검색 최적화(SEO)의 시대가 끝나고 답변 엔진 최적화(AEO)의 시대로 전환되며, 교보문고 책이나 교수 타이틀 등 권위 있는 출처가 AI 답변에서 높은 가중치를 받는다.</li>
+</ul></section><section class="card s6" id="s6"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>위임의 시대</td><td>사용자가 AI에게 단순한 작업부터 복잡한 의사결정까지 모두 맡기는 새로운 트렌드 키워드</td></tr><tr><td>뮤즈(Muse)</td><td>메타가 출시한 AI로, 사용자가 먼저 말을 걸어야 했던 기존 AI와 달리 AI가 먼저 사용자에게 말을 거는 능동적 특징을 가짐</td></tr><tr><td>한네스(Harness)</td><td>AI에 목표를 명확히 주고 결과를 검수하는 등, AI의 자율성을 통제하고 방향을 잡기 위한 구속 장치</td></tr><tr><td>간택의 경제</td><td>사람이 직접 물건을 고르는 것이 아니라, 사용자를 대신하는 AI 비서가 물건을 선택(간택)하는 경제 구조</td></tr><tr><td>AEO(답변 엔진 최적화)</td><td>SEO(검색 최적화) 이후, AI가 제공하는 답변에서 인용될 확률을 높이기 위한 콘텐츠 최적화 전략</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/-DfxOd9YQI8" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Understanding : All the Knowledge in the World · 2026-11-17</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
