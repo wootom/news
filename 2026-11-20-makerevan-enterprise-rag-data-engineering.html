@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="RAG 실서비스 실패는 모델이 아닌 버전, 동기화, 권한 등 데이터 엔지니어링 문제"><title>엔터프라이즈 RAG 실서비스 실패의 원인은 모델이 아닌 데이터 엔지니어링 부재</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="RAG 데모는 됐는데 실서비스에서 무너지신 분, 모델 문제가 아닙니다"><meta name="youtube-source-channel" content="메이커 에반 | Maker Evan"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;PDF를 청크로 자르고 임베딩 벡터를 생성해 벡터 DB에 저장하는 5단계 과정은 30분 내 데모 구현이 가능합니다.&quot;, &quot;문서 개정 시 이전 버전 청크가 벡터 DB에 잔존하면 폐기된 규정을 근거로 답변하는 오류가 발생하며, 이는 프롬프트 수정으로 해결할 수 없습니다.&quot;, &quot;수십만 개 문서 규모에서 전체 재임베딩은 비효율적이므로 수정 시각 기준 증분 적재를 사용하지만, 삭제된 행은 수정 시각으로 감지되지 않는 함정이 있습니다.&quot;, &quot;원본 데이터 소스의 필드 구조 변경 시 파이프라인이 멈추지 않고 빈 컬럼으로 적재되면 검색 품질이 조용히 저하되는 장애가 발생합니다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-20 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>엔터프라이즈 RAG 실서비스 실패의 원인은 모델이 아닌 데이터 엔지니어링 부재</h1><p class="lead">RAG 실서비스 실패는 모델이 아닌 버전, 동기화, 권한 등 데이터 엔지니어링 문제</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>데모와 실서비스의 구조적 차이</h2><ul>
+<li>PDF를 청크로 자르고 임베딩 벡터를 생성해 벡터 DB에 저장하는 5단계 과정은 30분 내 데모 구현이 가능합니다.</li>
+<li>데모 환경은 문서가 한 번만 입력되고 변경·삭제·권한 제한이 없는 정적 가정을 전제로 하지만, 실서비스에서는 이 가정이 모두 깨집니다.</li>
+</ul></section><section class="card s6" id="s2"><h2>문서 버전 관리와 최신성 보장</h2><ul>
+<li>문서 개정 시 이전 버전 청크가 벡터 DB에 잔존하면 폐기된 규정을 근거로 답변하는 오류가 발생하며, 이는 프롬프트 수정으로 해결할 수 없습니다.</li>
+<li>문서 고유 ID와 버전 번호, 유효 기간을 메타데이터로 저장하고 검색 시 최신 버전만 필터링하는 데이터 모델링 방식이 필요합니다.</li>
+</ul></section><section class="card s6" id="s3"><h2>증분 동기화와 삭제 처리 전략</h2><ul>
+<li>수십만 개 문서 규모에서 전체 재임베딩은 비효율적이므로 수정 시각 기준 증분 적재를 사용하지만, 삭제된 행은 수정 시각으로 감지되지 않는 함정이 있습니다.</li>
+<li>삭제된 문서가 검색에 잔존하는 문제를 해결하기 위해 소프트 삭제 표시나 CDC(Change Data Capture)를 활용해 추가·수정·삭제 이벤트를 동기화해야 합니다.</li>
+</ul></section><section class="card s6" id="s4"><h2>스키마 변경 대응과 데이터 계약</h2><ul>
+<li>원본 데이터 소스의 필드 구조 변경 시 파이프라인이 멈추지 않고 빈 컬럼으로 적재되면 검색 품질이 조용히 저하되는 장애가 발생합니다.</li>
+<li>적재 단계에서 필수 컬럼 비어있음이나 ID 중복을 검사하는 dbt 테스트를 적용하고, 원본 팀과 컬럼 형식을 미리 약속하는 데이터 계약을 통해 실패를 명시적으로 처리해야 합니다.</li>
+</ul></section><section class="card s6" id="s5"><h2>멱등성 기반 재실행 안전장치</h2><ul>
+<li>단순 INSERT 방식은 작업 중단 후 재실행 시 동일 청크가 중복 적재되어 검색 결과 상위를 채우고 다른 근거를 밀어내는 문제를 일으킵니다.</li>
+<li>문서 ID, 버전, 청크 순번을 결합한 해시 ID를 생성하고 Postgres의 ON CONFLICT 구문 등을 활용해 업서트(Upsert) 방식으로 덮어쓰기 처리해야 멱등성을 확보할 수 있습니다.</li>
+</ul></section><section class="card s6" id="s6"><h2>검색 단계의 권한 통제와 동기화</h2><ul>
+<li>모든 문서를 단일 컬렉션에 저장하면 신입사원도 민감한 인사·계약 문서에 접근할 수 있으며, 프롬프트 기반 제한은 이미 검색된 정보 노출을 막을 수 없습니다.</li>
+<li>청크 생성 시 원본 문서의 접근 권한을 메타데이터로 저장하고, 검색 시 질문자의 부서·직급으로 필터링하며 Postgres 행 수준 보안(RLS)으로 강제해야 합니다.</li>
+</ul></section><section class="card s6" id="s7"><h2>도구 도입 기준과 AI 시대의 데이터 역량</h2><ul>
+<li>Kafka, Spark, Kubernetes 등 복잡한 아키텍처는 실제 대용량·실시간 처리 문제가 있을 때만 도입해야 하며, 소규모 사내 RAG는 Postgres와 pgvector, Python 증분 적재로 충분합니다.</li>
+<li>AI가 코드를 생성하더라도 데이터 정의, 신뢰성, 권한 규칙 등 업무 맥락은 인간이 결정해야 하며, SQL, 테이블 설계, 증분 적재, 테스트, 재실행 관리 5가지 핵심 역량이 필수적입니다.</li>
+</ul></section><section class="card s6" id="s8"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>RAG (Retrieval-Augmented Generation)</td><td>사용자 질문에 대해 벡터 데이터베이스에서 관련 문서를 검색해 LLM에 전달하여 답변을 생성하는 기법</td></tr><tr><td>CDC (Change Data Capture)</td><td>데이터베이스에서 발생한 추가, 수정, 삭제 이벤트를 실시간으로 캡처하여 다른 시스템으로 전달하는 기술</td></tr><tr><td>멱등성 (Idempotency)</td><td>동일한 작업을 여러 번 실행하더라도 결과가 한 번 실행한 것과 동일하게 유지되는 특성</td></tr><tr><td>업서트 (Upsert)</td><td>레코드가 존재하면 업데이트하고, 없으면 삽입하는 데이터 적재 방식</td></tr><tr><td>pgvector</td><td>PostgreSQL에서 벡터 유사도 검색을 지원하도록 하는 확장 기능</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/lPDCs_VKP98" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-11-20</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
