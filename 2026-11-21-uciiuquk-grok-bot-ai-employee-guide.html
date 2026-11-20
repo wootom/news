@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="그록봇으로 AI 직원 채용부터 MCP 연동, 멀티 에이전트 팀 구성까지 자동화 실무 가이드"><title>xAI 그록봇으로 클라우드 기반 AI 직원 채용 및 자동화 루틴 설정법</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="내 노트북 꺼도 일하는 AI 직원 | 그록봇(Grok Bot) 사용법, 이 영상 하나로 끝"><meta name="youtube-source-channel" content="배움의 달인 (AI·자동화)"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;x.ai/bot에서 앱을 설치하고 로그인하면 클라우드 컴퓨터가 제공되어 노트북을 꺼도 AI가 계속 작업할 수 있다. 에이전트는 채팅만 하는 AI가 아니라 실제로 일을 처리하는 AI 직원으로 정의된다.&quot;, &quot;커뮤니티가 만든 그록봇 디렉토리에는 출시 하루 만에 봇 1,200개 이상이 올라오고 7,000번 넘게 추가되었다.&quot;, &quot;스킬은 반복되는 일을 한 번 가르쳐두면 이후 짧은 명령만으로 동일하게 처리하는 기능이다. MCP는 AI에게 새로운 도구를 연결하는 표준 방식으로, USB 포트처럼 슬랙·노션·구글 드라이브 등 다양한 앱을 연결해 준다.&quot;, &quot;아침 브리핑, 회의록 정리, 소식 모니터링은 정리는 AI가 하고 최종 발송은 사람이 하는 원칙을 따른다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>배움의 달인 (AI·자동화)</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-21 · 배움의 달인 (AI·자동화)</span><span class="chip">🎬 영상</span></div><h1>xAI 그록봇으로 클라우드 기반 AI 직원 채용 및 자동화 루틴 설정법</h1><p class="lead">그록봇으로 AI 직원 채용부터 MCP 연동, 멀티 에이전트 팀 구성까지 자동화 실무 가이드</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>그록봇 설치 및 기본 프롬프트 구조</h2><ul>
+<li>x.ai/bot에서 앱을 설치하고 로그인하면 클라우드 컴퓨터가 제공되어 노트북을 꺼도 AI가 계속 작업할 수 있다. 에이전트는 채팅만 하는 AI가 아니라 실제로 일을 처리하는 AI 직원으로 정의된다.</li>
+<li>첫 업무 입력 시 &#x27;역할(개인 업무 보조 인턴)&#x27;, &#x27;규칙(메일 발송 금지)&#x27;, &#x27;할 일(뉴스 3개 요약)&#x27;의 3줄 공식 프롬프트를 사용한다.</li>
+<li>작업 시작 전 &#x27;승인 카드&#x27;가 표시되며, 이는 AI가 작업해도 되는지 사람이 확인하는 휴먼인 더 루프 설계이다.</li>
+</ul></section><section class="card s6" id="s2"><h2>커뮤니티 봇 디렉토리 활용 및 채용</h2><ul>
+<li>커뮤니티가 만든 그록봇 디렉토리에는 출시 하루 만에 봇 1,200개 이상이 올라오고 7,000번 넘게 추가되었다.</li>
+<li>검색창에 &#x27;코치&#x27;를 입력하면 빈 화면에서 시작해 실제 일하는 봇을 갖추도록 도와주는 &#x27;퍼스트 봇 코치&#x27;를 찾을 수 있다.</li>
+<li>봇 추가 전 설명문과 제작자 정보(엑스 AI가 아닌 다른 사용자)를 확인하는 습관이 필요하다.</li>
+<li>채용된 봇에게 &#x27;나에 대해 세 가지만 물어보고 첫 업무 추천&#x27;을 요청해 적합성을 테스트할 수 있다.</li>
+</ul></section><section class="card s6" id="s3"><h2>MCP, 스킬 및 멀티 에이전트 개념</h2><ul>
+<li>스킬은 반복되는 일을 한 번 가르쳐두면 이후 짧은 명령만으로 동일하게 처리하는 기능이다. MCP는 AI에게 새로운 도구를 연결하는 표준 방식으로, USB 포트처럼 슬랙·노션·구글 드라이브 등 다양한 앱을 연결해 준다.</li>
+<li>연결 기능이 없는 사이트는 클라우드 컴퓨터를 통해 봇이 직접 브라우저를 열어 사이트를 사용한다.</li>
+<li>멀티 에이전트는 역할이 다른 여러 AI가 팀처럼 일을 나눠 처리하는 방식으로, 데이터 수집·문구 작성·사실 검토를 분담한다.</li>
+</ul></section><section class="card s6" id="s4"><h2>실무 적용 사례 및 주의사항</h2><ul>
+<li>아침 브리핑, 회의록 정리, 소식 모니터링은 정리는 AI가 하고 최종 발송은 사람이 하는 원칙을 따른다.</li>
+<li>매일 아침 8시에 예약된 루틴을 설정하면 사용자가 자는 동안에도 AI가 먼저 출근해 일을 해둔다.</li>
+<li>초기 실수 방지 위해 한 번에 너무 많이 맡기지 말고, 메일 발송 등 되돌리기 어려운 권한은 처음에 막아두어야 한다.</li>
+<li>AI 결과물의 숫자와 이름은 반드시 사람이 한 번 더 확인해야 하며, 첫 일주일은 승인 카드를 꼼꼼히 보는 습관이 중요하다.</li>
+</ul></section><section class="card s6" id="s5"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>그록봇(Grok Bot)</td><td>xAI가 내놓은, 클라우드 컴퓨터 위에서 실제 업무를 처리하는 AI 직원 플랫폼.</td></tr><tr><td>휴먼인 더 루프</td><td>AI가 일하는 흐름 중간에 사람이 확인하는 단계를 끼워 넣어 최종 결정을 내리는 설계 방식.</td></tr><tr><td>MCP</td><td>AI에게 슬랙, 노션 등 새로운 도구를 표준 방식으로 연결하는 인터페이스.</td></tr><tr><td>멀티 에이전트</td><td>역할이 다른 여러 AI가 팀처럼 일을 나눠 처리하는 방식.</td></tr><tr><td>클라우드 컴퓨터</td><td>사용자의 노트북과 독립적으로 AI가 작업을 수행할 수 있도록 제공되는 가상 컴퓨터 환경.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/pSQ31W4LIJs" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>배움의 달인 (AI·자동화) · 2026-11-21</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
