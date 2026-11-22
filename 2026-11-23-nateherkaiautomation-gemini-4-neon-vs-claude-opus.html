@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Gemini 4 Neon이 시각화 및 디버깅에서 Claude Opus를 능가하며 25% 저렴한 비용으로 출시됨"><title>Gemini 4 Neon이 Claude Opus를 능가하는 성능과 25% 낮은 비용으로 출시되어 주목받고 있다</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="Google Is BACK (Gemini 4 Neon Tested)"><meta name="youtube-source-channel" content="Nate Herk | AI Automation"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;사용자가 로봇 개 이미지를 제공하자 Neon은 물리 엔진과 역학 운동학을 적용해 240Hz 물리 시뮬레이션이 가능한 3D 모델을 생성했으며, 해당 게시물은 하루 만에 15만 뷰를 달성했다.&quot;, &quot;Powell은 실제 코드 저장소 2개에 105개의 버그를 심어 모델들이 수정하도록 테스트했으며, Neon은 최고 설정에서 63점을 기록해 62.7점인 Astra 6.2와 58점인 Fable 5.2를 앞섰다.&quot;, &quot;Google 자체 벤치마크에 따르면 Neon은 100만 토큰 컨텍스트 윈도우에서 긴 문서 내 정보 검색 정확도가 95%로, Opus의 67%보다 크게 앞선다.&quot;, &quot;3D 해안 도시 프롬프트 테스트에서 Neon은 3분 17초에 25,000토큰으로 $0.37를 소비했고, Opus는 2분 16초에 16,000토큰으로 $0.32를 소비해 토큰당 단가가 낮아도 총 비용은 Opus가 더 저렴했다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>Nate Herk | AI Automation</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-23 · Nate Herk | AI Automation</span><span class="chip">🎬 영상</span></div><h1>Gemini 4 Neon이 Claude Opus를 능가하는 성능과 25% 낮은 비용으로 출시되어 주목받고 있다</h1><p class="lead">Gemini 4 Neon이 시각화 및 디버깅에서 Claude Opus를 능가하며 25% 저렴한 비용으로 출시됨</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>Gemini 4 Neon의 시각적 빌드 및 3D 생성 능력</h2><ul>
+<li>사용자가 로봇 개 이미지를 제공하자 Neon은 물리 엔진과 역학 운동학을 적용해 240Hz 물리 시뮬레이션이 가능한 3D 모델을 생성했으며, 해당 게시물은 하루 만에 15만 뷰를 달성했다.</li>
+<li>Ashutosh는 정지 이미지 하나만 제공했고, Neon은 Hugging Face에서 깊이 모델을 내려받아 로컬에서 실행해 레이어를 분리한 뒤 3.js로 인터랙티브 애니메이션을 구축했다.</li>
+<li>Chubby는 Antigravity 환경에서 하루 동안 테스트하여 17개의 인터랙티브 데모를 생성했으며, 특히 &#x27;Terror Breaker&#x27;는 60fps로 유지되는 파괴 가능한 보겔 아레나를 만들었다.</li>
+<li>Google은 몽블랑 실제 지형을 기반으로 한 1인칭 스키 시뮬레이터 데모를 공개했으며, 이는 10,000줄 이상의 커스텀 셰이더와 산사태 효과를 포함하고 있다.</li>
+</ul></section><section class="card s6" id="s2"><h2>버그 수정 및 코드 디버깅 성능 검증</h2><ul>
+<li>Powell은 실제 코드 저장소 2개에 105개의 버그를 심어 모델들이 수정하도록 테스트했으며, Neon은 최고 설정에서 63점을 기록해 62.7점인 Astra 6.2와 58점인 Fable 5.2를 앞섰다.</li>
+<li>Chubby는 3개의 깨진 프로그램을 Neon에게 제공했고, 예약 확인기는 1/5에서 100%, 태스크 스케줄러는 8/14에서 100%, 비동기 로더는 10/16에서 100%로 <span class="up">개선</span>되었다.</li>
+<li>Hacker News의 한 개발자는 OpenAI 모델과 Fable 5.2로 2주 동안 해결하지 못한 저수준 그래픽 오류를 Neon이 약 20분 만에 해결했다고 밝혔다.</li>
+</ul></section><section class="card s6" id="s3"><h2>장문 문서 처리 및 비용 효율성 비교</h2><ul>
+<li>Google 자체 벤치마크에 따르면 Neon은 100만 토큰 컨텍스트 윈도우에서 긴 문서 내 정보 검색 정확도가 95%로, Opus의 67%보다 크게 앞선다.</li>
+<li>Artificial Analysis 리더보드에서 Neon은 61점을 기록해 Opus 5.5의 59점을 상회했으며, 테스트 스위트 실행 비용은 Neon이 $6.44, Opus 5.5가 $10, Fable 5.2가 $26로 나타났다.</li>
+<li>KC의 시계 구성기 빌드 테스트에서 Neon은 $1.86로 9부품 시계를 만들었으나 인터랙션이 깨졌고, Opus는 $2.74로 42부품 시계를 완성해 품질 차이가 드러났다.</li>
+<li>다른 테스트에서는 Neon이 $3.50, Opus가 $7.20으로 절반 수준의 비용을 들였지만, 사용자는 Opus의 출력 품질을 더 선호한다고 평가했다.</li>
+</ul></section><section class="card s6" id="s4"><h2>직접 비교 테스트 및 모델 선택 전략</h2><ul>
+<li>3D 해안 도시 프롬프트 테스트에서 Neon은 3분 17초에 25,000토큰으로 $0.37를 소비했고, Opus는 2분 16초에 16,000토큰으로 $0.32를 소비해 토큰당 단가가 낮아도 총 비용은 Opus가 더 저렴했다.</li>
+<li>대시보드 생성 테스트에서는 두 모델 모두 유사한 품질의 결과를 보여주었으며, 비용은 각각 $0.40과 $0.41로 거의 동일했다.</li>
+<li>존재하지 않는 pandas 메서드 사용 질문과 포맷팅 테스트에서 두 모델 모두 환각 없이 정확한 답변을 제공했다.</li>
+<li>Gemini 4 Carbon은 12월 1일부터 가격이 2배로 오르는 반면 Neon은 $3/$15로 유지되어, Carbon 수준의 성능을 가장 저렴하게 얻을 수 있는 옵션이 된다.</li>
+</ul></section><section class="card s6" id="s5"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>Gemini 4 Neon</td><td>Google이 출시한 최신 AI 모델로, 시각적 빌드와 디버깅에서 강점을 보이며 Claude Opus보다 저렴한 비용으로 제공된다.</td></tr><tr><td>Artificial Analysis</td><td>AI 모델의 성능을 독립적으로 평가하는 리더보드로, Neon과 Opus 등의 점수와 비용을 비교하는 데 사용된다.</td></tr><tr><td>Inverse Kinematics</td><td>3D 모델의 관절과 발이 자연스럽게 착지하도록 역학적으로 계산하는 기술로, Neon이 생성한 로봇 개 애니메이션에 적용되었다.</td></tr><tr><td>Token Context Window</td><td>모델이 한 번에 처리할 수 있는 최대 텍스트 양으로, Neon은 100만 토큰을 지원해 장문 문서 처리에 유리하다.</td></tr><tr><td>Batch Pricing</td><td>대량 처리 시 적용되는 할인 요금제로, Neon의 경우 입력 및 출력 토큰 비용을 절반으로 낮춘다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/NLNoZrzXrvU" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>Nate Herk | AI Automation · 2026-11-23</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
