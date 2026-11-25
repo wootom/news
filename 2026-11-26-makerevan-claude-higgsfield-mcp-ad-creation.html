@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Claude와 힉스필드 MCP 연동으로 6분 만에 광고 이미지·영상·카피 자동 생성"><title>Claude와 힉스필드 MCP 연동으로 6분 만에 광고 소재 세트 자동 생성</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* AI Daily · daylight neutral */
+  --canvas:#EEF2F6;--canvas-top:#EAF1F8;--bg:#FFFFFF;--surface:#F7F9FB;--box-bg:#F7F9FB;
+  --text:#16202B;--ink-700:#3F4A56;--muted:#76818E;--border:#E7ECF1;
+  /* 카테고리 식별색(기본=공학·테크). body.cat-*에서 재정의 */
+  --accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54;
+  /* 시맨틱(카테고리 무관 고정) */
+  --up:#12A150;--dn:#E5484D;--fill:#3F4A56;
+}
+body.cat-tech{--accent:#0E9E7E;--accent-d:#0B7A60;--accent-light:#E3F6F0;--accent-ink:#0B6B54}
+body.cat-econ{--accent:#2E6BF0;--accent-d:#1F50C4;--accent-light:#E7EFFE;--accent-ink:#1B47AE}
+body.cat-hub{--accent:#6A4BE0;--accent-d:#5236C2;--accent-light:#EEEAFD;--accent-ink:#4A30B0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;
+  color:var(--text);background:linear-gradient(180deg,var(--canvas-top),var(--canvas) 280px);
+  background-color:var(--canvas);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+.page{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
+@media (max-width:768px){.page{padding:14px 10px 40px}}
+
+/* ─ Header (카테고리 accent 그라데이션 = 그 글의 주제색) ─ */
+.hdr{
+  background:linear-gradient(135deg,var(--accent-d),var(--accent));color:#fff;
+  border-radius:16px;padding:32px 36px 26px;margin-bottom:16px;
+}
+.hdr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.06em;font-weight:700}
+.hdr-meta .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);padding:5px 11px;border-radius:999px;color:#fff}
+.hdr-meta .chip.brand{background:#fff;color:var(--accent-ink);border-color:#fff}
+.hdr-meta .chip.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hdr-meta .ey{color:rgba(255,255,255,.85);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.hdr h1{font-size:32px;font-weight:900;line-height:1.22;letter-spacing:-.02em;margin:16px 0 12px;color:#fff;word-break:keep-all}
+.hdr .lead{font-size:16px;line-height:1.6;color:rgba(255,255,255,.94);max-width:920px;word-break:keep-all}
+@media (max-width:640px){
+  .hdr{padding:22px 20px 18px}
+  .hdr h1{font-size:24px;margin:12px 0 8px}
+  .hdr .lead{font-size:14.5px}
+}
+
+/* ─ Video (영상 재생) ─ */
+.video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-cta{margin-bottom:16px}
+.play-btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;padding:11px 20px;border-radius:999px;text-decoration:none}
+.play-btn:hover{background:var(--accent-d)}
+
+/* ─ Grid ─ */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;
+  padding:18px 22px;display:flex;flex-direction:column;min-width:0;
+  box-shadow:0 1px 4px rgba(16,32,43,.05);
+}
+.card.s4{grid-column:span 4}
+.card.s6{grid-column:span 6}
+.card.s12{grid-column:span 12}
+@media (max-width:900px){
+  .card.s4,.card.s6{grid-column:span 12}
+}
+
+/* ─ Card header ─ */
+.card>h2{
+  font-size:16px;font-weight:800;color:var(--accent-ink);
+  display:flex;align-items:center;gap:9px;
+  padding-bottom:9px;margin-bottom:12px;border-bottom:2px solid var(--border);
+  word-break:keep-all
+}
+.card>h2::before{
+  content:"";width:5px;height:18px;background:var(--accent);border-radius:2px;flex:none
+}
+.card>h2 .seq{
+  font-size:11px;font-weight:800;color:#fff;background:var(--accent);
+  padding:3px 8px;border-radius:6px;letter-spacing:.04em
+}
+
+/* ─ Typography in card ─ */
+.card h3{font-size:14px;font-weight:800;color:var(--accent-ink);margin:10px 0 4px}
+.card p{font-size:14px;line-height:1.65;margin:5px 0;word-break:keep-all}
+.card ul,.card ol{margin:4px 0 4px 19px}
+.card li{font-size:14px;line-height:1.6;margin:5px 0;word-break:keep-all}
+.card blockquote{
+  border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--box-bg);
+  border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.6;
+  color:var(--text);margin:7px 0
+}
+.card code{background:var(--surface);padding:1px 5px;border-radius:4px;font-size:.92em;overflow-wrap:anywhere}
+.card a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all;overflow-wrap:anywhere}
+.card a:hover{color:var(--accent-d)}
+.card strong{color:var(--text)}
+
+/* ─ Tables (Deep 헤더 + 제브라) ─ */
+.tbl-wrap{
+  overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin:6px 0
+}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+th{
+  background:var(--accent-d);color:#fff;padding:8px 11px;text-align:left;
+  font-weight:700;font-size:12.5px;letter-spacing:.02em;word-break:keep-all
+}
+td{
+  padding:7px 11px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.55;word-break:keep-all
+}
+td:first-child{font-weight:700;color:var(--text);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--surface)}
+
+/* ─ Step flow (infographic) ─ */
+.steps{display:flex;flex-direction:column;gap:8px;margin:6px 0}
+.step{
+  display:flex;align-items:flex-start;gap:11px;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px
+}
+.step .snum{
+  flex:none;width:32px;height:32px;border-radius:8px;
+  background:var(--accent);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center
+}
+.step .sbody{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.step .sbody b{font-size:14px;color:var(--text);line-height:1.4;word-break:keep-all}
+.step .sbody span{font-size:13px;color:var(--text);line-height:1.55;word-break:keep-all}
+
+/* ─ Colors / states ─ */
+.up{color:var(--up);font-weight:700}
+.dn{color:var(--dn);font-weight:700}
+.hl{color:var(--accent);font-weight:700}
+
+/* ─ Infographic blocks (bars/kpi/donut/timeline) ─ */
+.ig-bars{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.ig-bar{display:grid;grid-template-columns:minmax(80px,30%) 1fr auto;align-items:center;gap:10px;font-size:13.5px}
+.igb-l{font-weight:700;color:var(--text);word-break:keep-all}
+.igb-track{height:15px;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.igb-fill{display:block;height:100%;background:var(--accent)}
+.igb-v{font-weight:700;color:var(--text);white-space:nowrap}
+.ig-kpis{display:flex;flex-wrap:wrap;gap:11px;margin:8px 0}
+.ig-kpi{flex:1;min-width:124px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 16px;display:flex;flex-direction:column;gap:3px}
+.igk-v{font-size:27px;font-weight:900;color:var(--accent-ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.igk-l{font-size:12.5px;color:var(--muted);font-weight:600}
+.ig-donuts{display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.ig-donut{display:flex;flex-direction:column;align-items:center;gap:6px}
+.igd-ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative}
+.igd-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:var(--bg)}
+.igd-num{position:relative;z-index:1;font-size:16px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.igd-l{font-size:13px;color:var(--text);font-weight:600;text-align:center;max-width:108px;word-break:keep-all}
+.ig-timeline{display:flex;flex-direction:column;margin:8px 0 8px 5px;border-left:2px solid var(--border);padding-left:15px}
+.ig-tl{position:relative;padding:6px 0}
+.igt-dot{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.igt-t{font-weight:800;color:var(--text);font-size:13.5px;margin-right:8px}
+.igt-x{font-size:13.5px;color:var(--text);line-height:1.55}
+.ig-raw{font-size:13.5px;color:var(--text);white-space:pre-wrap;line-height:1.6}
+
+/* ─ Footer ─ */
+.foot{
+  margin-top:22px;padding:14px 18px;text-align:center;
+  font-size:12.5px;color:var(--muted);
+  border:1px solid var(--border);border-radius:12px;background:#fff
+}
+.foot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-right:7px;vertical-align:middle}
+
+@media (max-width:640px){
+  .grid{gap:11px}
+  .card{padding:14px 15px;border-radius:12px}
+  .card>h2{font-size:15px}
+  .card p,.card li,.card h3{font-size:14.5px}
+  table{font-size:13px}
+  th{padding:7px 9px;font-size:12px}
+  td{padding:6px 9px}
+  td:first-child{white-space:normal}
+  .hdr-meta{font-size:11.5px;gap:7px}
+}
+@media print{
+  body{background:#fff}.page{padding:14px}
+  .card,.foot,.tbl-wrap,.video-wrap{break-inside:avoid}
+  .hdr{break-after:avoid}
+}
+</style><meta name="youtube-source-title" content="광고 대행사 없이 메시지 1번에 광고 세트 끝, Claude + Higgsfield MCP"><meta name="youtube-source-channel" content="메이커 에반 | Maker Evan"><meta name="youtube-report-schema" content="story_topics_v2"><meta name="youtube-heading-numbering" content="none"><meta name="youtube-summary-bullets" content="[&quot;Claude 설정 화면에서 커스텀 커넥터를 추가하고 이름에 힉스필드, 주소에 mcp.힉스필드.ai/mcp를 입력하여 30초 만에 연결을 완료합니다.&quot;, &quot;가상 브랜드 &#x27;스틸&#x27; 텀블러를 대상으로 인스타 피드 이미지 3장, 세로 영상 1개, 소재별 카피를 요청하는 브리프를 Claude에게 전달했습니다.&quot;, &quot;제품 사진 생성 시 첫 시도는 실패했으나 크레딧 환불 후 재시도로 성공했으며, 이 사진을 기준 이미지로 활용해 3개 장면에서 동일한 제품 일관성을 유지했습니다.&quot;, &quot;Claude는 결과 파일 주소를 직접 열어보지 못해 위젯으로 확인하고 최종 검수는 사람이 수행해야 하며, 영상 내 손가락 모양과 로고 뭉침 현상을 주의해야 합니다.&quot;]"></head><body class="cat-tech"><div class="page"><header class="hdr"><div class="hdr-meta"><span class="chip brand"><span class="dot"></span>메이커 에반 | Maker Evan</span><span class="ey">YOUTUBE SUMMARIES · 2026-11-26 · 메이커 에반 | Maker Evan</span><span class="chip">🎬 영상</span></div><h1>Claude와 힉스필드 MCP 연동으로 6분 만에 광고 소재 세트 자동 생성</h1><p class="lead">Claude와 힉스필드 MCP 연동으로 6분 만에 광고 이미지·영상·카피 자동 생성</p><p class="report-scope" style="font-size:12px;line-height:1.7;opacity:.75">영상 발화자의 견해·경험을 원문에 근거해 정리한 요약입니다.</p></header><main class="grid"><section class="card s6" id="s1"><h2>힉스필드 MCP 커넥터 설정 및 연결 과정</h2><ul>
+<li>Claude 설정 화면에서 커스텀 커넥터를 추가하고 이름에 힉스필드, 주소에 mcp.힉스필드.ai/mcp를 입력하여 30초 만에 연결을 완료합니다.</li>
+<li>로그인 방식이 자동 설정되며 힉스필드 계정 접근 권한을 승인하면 커넥터 목록에 힉스필드가 등록되어 바로 사용 가능합니다.</li>
+</ul></section><section class="card s6" id="s2"><h2>광고 소재 생성 프롬프트 및 실행 전략</h2><ul>
+<li>가상 브랜드 &#x27;스틸&#x27; 텀블러를 대상으로 인스타 피드 이미지 3장, 세로 영상 1개, 소재별 카피를 요청하는 브리프를 Claude에게 전달했습니다.</li>
+<li>출근길 지하철, 새벽 텐트, 야근 책상 등 3가지 장면을 지정하되 모델 선택과 생성 방식은 Claude가 자율적으로 판단하도록 맡겼습니다.</li>
+<li>Claude는 제품 사진 생성, 기준 이미지 기반 장면 생성, 영상용 9:16 첫 화면 생성, 최종 영상 합성 순서로 작업 계획을 수립하고 실행했습니다.</li>
+</ul></section><section class="card s6" id="s3"><h2>생성 결과물 및 모델 선택 근거</h2><ul>
+<li>제품 사진 생성 시 첫 시도는 실패했으나 크레딧 환불 후 재시도로 성공했으며, 이 사진을 기준 이미지로 활용해 3개 장면에서 동일한 제품 일관성을 유지했습니다.</li>
+<li>이미지는 인물과 텍스트 표현이 안정적인 모델을, 영상은 시작 화면과 기준 이미지를 함께 입력할 수 있는 모델을 Claude가 직접 선택하여 사용했습니다.</li>
+<li>생성된 영상은 새벽 텐트 장면을 기반으로 해 뜨는 과정과 뚜껑 여는 동작, 김이 오르는 역광 효과를 포함하며 배경음까지 함께 생성되었습니다.</li>
+</ul></section><section class="card s6" id="s4"><h2>결과물 한계점 및 검수 사항</h2><ul>
+<li>Claude는 결과 파일 주소를 직접 열어보지 못해 위젯으로 확인하고 최종 검수는 사람이 수행해야 하며, 영상 내 손가락 모양과 로고 뭉침 현상을 주의해야 합니다.</li>
+<li>커스텀 커넥터 특성상 화면에 미인증 표시가 나타나며, 실제 집행 시 로고는 별도 합성을 권장하는 등 결과물의 아쉬운 점을 Claude가 스스로 지적했습니다.</li>
+</ul></section><section class="card s6" id="s5"><h2>비용 분석 및 활용 시나리오</h2><ul>
+<li>이미지 약 10크레딧, 영상 약 128크레딧을 소모해 총 140크레딧으로 작업이 완료되었으며, 결과물 수령까지 6분 남짓의 시간이 소요되었습니다.</li>
+<li>같은 제품으로 장면만 바꿔 소재 테스트를 하거나, 얼굴 없이 운영하는 채널 콘텐츠 제작, 마케팅 전체 흐름 관리, 리뷰 기반 광고 소재 제작 등에 활용할 수 있습니다.</li>
+</ul></section><section class="card s6" id="s6"><h2>용어 사전</h2><div class="tbl-wrap"><table><thead><tr><th>용어</th><th>뜻</th></tr></thead><tbody><tr><td>힉스필드 MCP</td><td>Claude와 연동되어 이미지 및 영상 생성 기능을 제공하는 외부 모델 서비스로, 커스텀 커넥터로 연결됩니다.</td></tr><tr><td>기준 이미지</td><td>일관된 제품 형태를 유지하기 위해 먼저 생성한 제품 사진으로, 이후 다양한 장면 생성 시 참조용으로 사용됩니다.</td></tr><tr><td>크레딧</td><td>힉스필드에서 이미지나 영상 생성 시 소모되는 유료 사용량 단위로, 실패 시 환불 처리됩니다.</td></tr><tr><td>커스텀 커넥터</td><td>Claude 설정에서 직접 주소를 입력하여 외부 서비스를 연결하는 기능으로, 미인증 표시가 나타날 수 있습니다.</td></tr></tbody></table></div></section></main><div class="video-wrap"><iframe src="https://www.youtube.com/embed/jysoh4zLXDw" title="영상 재생" loading="lazy" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div><div class="foot"><span class="dot"></span>메이커 에반 | Maker Evan · 2026-11-26</div><div id="to-list" style="text-align:center;margin:32px 0 8px"><a href="./" style="display:inline-block;padding:10px 22px;border-radius:999px;border:1px solid currentColor;color:inherit;text-decoration:none;font-size:14px;opacity:.72">← 목록으로</a></div></div></body></html>
